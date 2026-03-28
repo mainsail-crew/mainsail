@@ -516,8 +516,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
             }
 
             if (Array.isArray(valueA) && Array.isArray(valueB)) {
-                const reducedA = valueA.length ? valueA.reduce((sum: number, current: number) => sum + current, 0) : 0
-                const reducedB = valueB.length ? valueB.reduce((sum: number, current: number) => sum + current, 0) : 0
+                const reducedA = valueA.reduce((sum: number, current: number) => sum + current, 0)
+                const reducedB = valueB.reduce((sum: number, current: number) => sum + current, 0)
                 return reducedA - reducedB
             }
 
