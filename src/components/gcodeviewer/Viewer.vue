@@ -605,8 +605,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     async fileSelected(e: Event) {
         const input = e.target as HTMLInputElement | null
-        const viewerInstance = viewer
-        if (input === null || viewerInstance === null) return
+        if (input === null || viewer === null) return
 
         const reader = new FileReader()
         reader.addEventListener('load', async (event: ProgressEvent<FileReader>) => {
@@ -614,8 +613,8 @@ export default class Viewer extends Mixins(BaseMixin) {
             if (typeof blob === 'string') {
                 this.fileSize = blob.length
                 // Do something with result
-                await viewerInstance.processFile(blob)
-                this.fileData = viewerInstance.fileData
+                await viewer?.processFile(blob)
+                this.fileData = viewer?.fileData ?? ''
             }
             this.finishLoad()
         })
@@ -930,14 +929,13 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     loadToolColors(colors: string[]) {
-        if (viewer && colors.length) {
-            const viewerInstance = viewer
-            viewerInstance.gcodeProcessor.resetTools()
-            colors.forEach((color: string) => {
-                viewerInstance.gcodeProcessor.addTool(color, this.nozzle_diameter)
-            })
-            this.setReloadRequiredFlag()
-        }
+        if (!viewer || colors.length === 0) return
+
+        viewer?.gcodeProcessor.resetTools()
+        colors.forEach((color: string) => {
+            viewer?.gcodeProcessor.addTool(color, this.nozzle_diameter)
+        })
+        this.setReloadRequiredFlag()
     }
 
     @Watch('extruderColors')
@@ -1117,8 +1115,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             return
         }
 
-        const viewerInstance = viewer
-
         if (this.scrubInterval) {
             clearInterval(this.scrubInterval)
             this.scrubInterval = undefined
@@ -1129,11 +1125,11 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.scrubPosition = 0
         }
 
-        viewerInstance.gcodeProcessor.updateFilePosition(this.scrubPosition - 30000)
+        viewer?.gcodeProcessor.updateFilePosition(this.scrubPosition - 30000)
         this.scrubInterval = setInterval(() => {
             this.scrubPosition += 100 * this.scrubSpeed
-            viewerInstance.gcodeProcessor.updateFilePosition(this.scrubPosition)
-            viewerInstance.simulateToolPosition()
+            viewer?.gcodeProcessor.updateFilePosition(this.scrubPosition)
+            viewer?.simulateToolPosition()
             if (this.tracking || this.scrubPosition >= this.scrubFileSize) {
                 this.scrubPlaying = false
             }
