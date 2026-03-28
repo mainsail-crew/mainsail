@@ -685,7 +685,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         if (value === null) return '--'
 
         if (typeof value === 'string') {
-            if (csvSeperator !== null && value?.includes(csvSeperator)) value = '"' + value + '"'
+            if (csvSeperator !== null && value?.includes(csvSeperator)) value = `"${value}"`
 
             return value
         }
