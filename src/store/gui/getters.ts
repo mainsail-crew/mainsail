@@ -29,15 +29,11 @@ export const getters: GetterTree<GuiState, RootState> = {
     },
 
     getDatasetAdditionalSensorValue: (state) => (payload: { name: string; sensor: string }) => {
-        if (payload.name in state.view.tempchart.datasetSettings) {
-            const entry = state.view.tempchart.datasetSettings[payload.name]
-            if (typeof entry === 'object' && entry !== null && 'additionalSensors' in entry) {
-                const sensors = entry.additionalSensors as Record<string, unknown>
-                if (payload.sensor in sensors) return sensors[payload.sensor] as boolean
-            }
-        }
+        const entry = state.view.tempchart.datasetSettings[payload.name] ?? null
+        if (entry === null || typeof entry !== 'object' || !('additionalSensors' in entry)) return true
 
-        return true
+        const sensors = entry.additionalSensors as Record<string, unknown>
+        return (sensors[payload.sensor] ?? true) as boolean
     },
 
     getPanelExpand: (state) => (name: string, viewport: string) => {
