@@ -3,6 +3,7 @@ import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { maxEventHistory } from '@/store/variables'
+import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<ServerState> = {
     reset(state) {
@@ -62,13 +63,7 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     setData(state, payload) {
-        const validKeys = Object.keys(state) as (keyof ServerState)[]
-
-        Object.entries(payload).forEach(([key, value]) => {
-            if (!validKeys.includes(key as keyof ServerState)) return
-
-            Vue.set(state, key as keyof ServerState, value)
-        })
+        setDataDeep(state, payload)
     },
 
     setConsoleClearedThisSession(state) {
