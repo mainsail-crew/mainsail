@@ -670,7 +670,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
             const raw = job.metadata[key]
             if (typeof raw === 'string' || typeof raw === 'number') value = raw
         }
-        if (key === 'slicer' && 'slicer_version' in job.metadata) value += ` ${job.metadata.slicer_version}`
+        if (key === 'slicer' && 'slicer_version' in job.metadata) {
+            if (!value) value = 'Unknown'
+            value += ` ${job.metadata.slicer_version}`
+        }
 
         if (key.startsWith('history_field_')) {
             const sensorName = key.replace('history_field_', '')
