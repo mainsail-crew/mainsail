@@ -38,8 +38,6 @@ export class WebSocketClient {
 
     private handleMessage(data: JsonRpcResponse): void {
         const wait = this.getWaitById(data.id)
-    /*handleMessage(data: SocketIncomingMessage): void {
-        const wait = typeof data.id === 'number' ? this.getWaitById(data.id) : null*/
 
         // reject promise if it exists
         if (data.error && wait?.reject) {
@@ -363,21 +361,6 @@ export interface BatchMessage {
     method: string
     params: Params
     emitOptions: EmitOptions
-}
-
-interface SocketError {
-    code?: number
-    message?: string
-    [key: string]: unknown
-}
-
-interface SocketIncomingMessage {
-    id?: number
-    result?: unknown
-    error?: SocketError
-    method?: string
-    params?: unknown[]
-    [key: string]: unknown
 }
 
 interface Wait {
