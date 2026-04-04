@@ -222,7 +222,7 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
     }
 
     get releaseName() {
-        let name = this.hostStats.release_info?.name ?? ''
+        const name = this.hostStats.release_info?.name ?? ''
 
         if (name.startsWith('#')) return this.hostStats.release_info?.id ?? null
         if (name.startsWith('0.')) return null
@@ -265,7 +265,7 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
     }
 
     get cpuDesc() {
-        let output = this.hostStats.cpuDesc
+        const output = this.hostStats.cpuDesc
 
         return output
     }

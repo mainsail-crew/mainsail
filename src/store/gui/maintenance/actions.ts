@@ -4,6 +4,7 @@ import { GuiMaintenanceState, MaintenanceJson } from '@/store/gui/maintenance/ty
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import { themeDir } from '@/store/variables'
+import { ServerHistoryState } from '@/store/server/history/types'
 
 export const actions: ActionTree<GuiMaintenanceState, RootState> = {
     reset({ commit }) {
@@ -47,15 +48,21 @@ export const actions: ActionTree<GuiMaintenanceState, RootState> = {
             return
         }
 
-        const totals = await fetch(`${baseUrl}/server/history/totals`)
-            .then((response) => {
+        const totals: Partial<ServerHistoryState['job_totals']> = await fetch(`${baseUrl}/server/history/totals`)
+            .then(async (response) => {
                 if (response.status !== 200) return {}
 
-                return response.json()
+                const payload = (await response.json()) as unknown
+
+                // tmp solution until the moonraker api refactoring
+                return (
+                    (payload as { result?: { job_totals?: Partial<ServerHistoryState['job_totals']> } }).result
+                        ?.job_totals ?? {}
+                )
             })
-            .then((response: any) => response.result?.job_totals ?? {})
             .catch((e) => {
                 window.console.debug('History totals could not be loaded', e)
+                return {}
             })
 
         const total_filament = totals.total_filament_used ?? 0

@@ -72,20 +72,18 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { ServerUpdateManagerStateMessages } from '@/store/server/updateManager/types'
 import { mdiUpdate } from '@mdi/js'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
-@Component({
-    components: {},
-})
+@Component
 export default class TheUpdateDialog extends Mixins(BaseMixin) {
-    mdiUpdate = mdiUpdate
+    @Ref() readonly updaterLogScroll!: OverlayScrollbarsComponent
+    @Ref() readonly updaterLog!: HTMLDivElement
 
-    declare $refs: {
-        updaterLogScroll: any
-        updaterLog: HTMLDivElement
-    }
+    mdiUpdate = mdiUpdate
 
     headers = [
         {
@@ -106,7 +104,7 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
         return this.$store.state.server.updateManager.updateResponse.application ?? ''
     }
 
-    get messages() {
+    get messages(): ServerUpdateManagerStateMessages[] {
         return this.$store.state.server.updateManager.updateResponse.messages ?? []
     }
 
@@ -114,17 +112,27 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
         return this.$store.state.server.updateManager.updateResponse.complete ?? true
     }
 
-    customSort(items: any[], index: string, isDesc: boolean[]) {
+    customSort(items: ServerUpdateManagerStateMessages[], sortBy: string[], sortDesc: boolean[]) {
+        const sortKey = sortBy[0]
+        const isDescending = sortDesc[0]
+
         items.sort((a, b) => {
-            if (index[0] === 'date') {
-                if (!isDesc[0]) return new Date(b[index]).getTime() - new Date(a[index]).getTime()
-                else return new Date(a[index]).getTime() - new Date(b[index]).getTime()
-            } else {
-                if (typeof a[index] !== 'undefined') {
-                    if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase())
-                    else return b[index].toLowerCase().localeCompare(a[index].toLowerCase())
-                }
+            if (sortKey === 'date') {
+                const aDate = new Date(a.date).getTime()
+                const bDate = new Date(b.date).getTime()
+
+                if (!isDescending) return bDate - aDate
+
+                return aDate - bDate
             }
+
+            if (sortKey === 'message') {
+                if (!isDescending) return a.message.toLowerCase().localeCompare(b.message.toLowerCase())
+
+                return b.message.toLowerCase().localeCompare(a.message.toLowerCase())
+            }
+
+            return 0
         })
 
         return items
@@ -143,27 +151,23 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
             this.application !== null &&
             this.complete &&
             ['client', 'mainsail', 'full'].includes(this.application.toLowerCase())
-        )
+        ) {
             window.location.reload()
-        else {
-            this.$store.commit('server/updateManager/resetUpdateResponse')
-            this.$socket.emit(
-                'machine.update.status',
-                { refresh: false },
-                { action: 'server/updateManager/onUpdateStatus' }
-            )
+            return
         }
+
+        this.$store.commit('server/updateManager/resetUpdateResponse')
+        this.$socket.emit(
+            'machine.update.status',
+            { refresh: false },
+            { action: 'server/updateManager/onUpdateStatus' }
+        )
     }
 
     @Watch('messages')
     messagesChanged() {
         setTimeout(() => {
-            this.$nextTick(() => {
-                if (this.$refs.updaterLogScroll) {
-                    const overlayscroll = this.$refs.updaterLogScroll.osInstance()
-                    overlayscroll?.scroll({ y: '100%' })
-                }
-            })
+            this.updaterLogScroll.osInstance()?.scroll({ y: '100%' })
         }, 50)
     }
 }

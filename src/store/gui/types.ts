@@ -44,19 +44,7 @@ export interface GuiState {
             showEstimatedExtrusionInfo: boolean
         }
     }
-    dashboard: {
-        nonExpandPanels: {
-            [index: string]: string[]
-        }
-        mobileLayout: GuiStateLayoutoption[]
-        tabletLayout1: GuiStateLayoutoption[]
-        tabletLayout2: GuiStateLayoutoption[]
-        desktopLayout1: GuiStateLayoutoption[]
-        desktopLayout2: GuiStateLayoutoption[]
-        widescreenLayout1: GuiStateLayoutoption[]
-        widescreenLayout2: GuiStateLayoutoption[]
-        widescreenLayout3: GuiStateLayoutoption[]
-    }
+    dashboard: GuiStateDashboard
     editor: {
         escToClose: boolean
         confirmUnsavedChanges: boolean
@@ -198,7 +186,7 @@ export interface GuiState {
             hideMcuHostSensors: boolean
             hideMonitors: boolean
             autoscale: boolean
-            datasetSettings: any
+            datasetSettings: Record<string, Record<string, unknown>>
         }
         timelapse: {
             countPerPage: number
@@ -232,6 +220,22 @@ export interface GuiState {
         }
     }
 }
+
+export interface GuiStateDashboard {
+    nonExpandPanels: {
+        [index: string]: string[]
+    }
+    mobileLayout: GuiStateLayoutoption[]
+    tabletLayout1: GuiStateLayoutoption[]
+    tabletLayout2: GuiStateLayoutoption[]
+    desktopLayout1: GuiStateLayoutoption[]
+    desktopLayout2: GuiStateLayoutoption[]
+    widescreenLayout1: GuiStateLayoutoption[]
+    widescreenLayout2: GuiStateLayoutoption[]
+    widescreenLayout3: GuiStateLayoutoption[]
+}
+
+export type GuiStateDashboardLayoutKey = Exclude<keyof GuiStateDashboard, 'nonExpandPanels'>
 
 export interface GuiStateLayoutoption {
     name: string

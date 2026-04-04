@@ -18,9 +18,7 @@ export interface ServerState {
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]
-    config: ServerConfigResponse['config']
-    config_orig: ServerConfigResponse['orig']
-    config_files: ServerConfigResponse['files']
+    config: ServerConfigResponse
     system_info: {
         available_services: string[]
         cpu_info: ServerStateCpuInfo

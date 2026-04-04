@@ -26,12 +26,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiArrowExpandVertical, mdiSync } from '@mdi/js'
-
-export interface EndstopItem {
-    type: 'endstop' | 'probe'
-    name: string
-    value: string
-}
+import type { EndstopItem } from '@/store/printer/types'
 
 @Component({
     components: { Panel },

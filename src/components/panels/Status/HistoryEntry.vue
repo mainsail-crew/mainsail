@@ -1,6 +1,6 @@
 <template>
     <v-row
-        v-longpress:600="(e) => openContextMenu(e)"
+        v-longpress:600="openContextMenu"
         class="history-list-entry d-flex flex-row flex-nowrap cursor-pointer"
         @contextmenu="openContextMenu($event)">
         <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
@@ -86,6 +86,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
@@ -203,14 +204,14 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     }
 
     get estimatedTime() {
-        let totalSeconds = this.job.print_duration ?? 0
+        const totalSeconds = this.job.print_duration ?? 0
         if (totalSeconds == 0) return '--'
 
         return formatPrintTime(totalSeconds)
     }
 
     get totalTime() {
-        let totalSeconds: number = this.job.total_duration ?? 0
+        const totalSeconds: number = this.job.total_duration ?? 0
         if (totalSeconds === 0) return null
 
         return formatPrintTime(totalSeconds)
@@ -232,7 +233,7 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         return this.moonrakerComponents.includes('job_queue')
     }
 
-    openContextMenu(e: any) {
+    openContextMenu(e: MouseEvent | LongpressEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

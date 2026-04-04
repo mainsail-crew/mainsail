@@ -13,6 +13,7 @@ import { jobQueue } from '@/store/server/jobQueue'
 import { announcements } from '@/store/server/announcements'
 import { spoolman } from '@/store/server/spoolman'
 import { sensor } from '@/store/server/sensor'
+import { RootState } from '@/store/types'
 
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
@@ -28,8 +29,10 @@ export const getDefaultState = (): ServerState => {
         warnings: [],
         registered_directories: [],
         events: [],
-        config: {},
-        config_orig: {},
+        config: {
+            config: {},
+            orig: {},
+        },
         config_files: [],
         system_info: null,
         system_boot_at: null,
@@ -51,8 +54,7 @@ export const getDefaultState = (): ServerState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
-export const server: Module<ServerState, any> = {
+export const server: Module<ServerState, RootState> = {
     namespaced: true,
     state,
     getters,

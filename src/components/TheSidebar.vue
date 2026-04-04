@@ -84,7 +84,7 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin, Theme
         return !this.isMobile && this.$vuetify.breakpoint.mdAndDown
     }
 
-    get sidebarCssVars(): any {
+    get sidebarCssVars(): Record<string, string> {
         if (!this.boolNaviTemp) return {}
 
         return {

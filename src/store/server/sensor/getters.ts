@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex'
 import { ServerSensorState } from '@/store/server/sensor/types'
+import { RootState } from '@/store/types'
 
-// eslint-disable-next-line
-export const getters: GetterTree<ServerSensorState, any> = {
+export const getters: GetterTree<ServerSensorState, RootState> = {
     getSensors: (state) => {
         return Object.keys(state.sensors)
     },

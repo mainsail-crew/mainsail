@@ -179,7 +179,7 @@ import MmuMixin, {
 import type { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import { mdiSpeedometer, mdiRestart, mdiMinus, mdiPlus, mdiAdjust } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
-import { VColorPickerColor } from 'vuetify/src/components/VColorPicker/util'
+import { VColorPickerColor } from '@/types/vuetify'
 
 @Component
 export default class MmuEditGateMapDialogGateDetails extends Mixins(BaseMixin, MmuMixin) {

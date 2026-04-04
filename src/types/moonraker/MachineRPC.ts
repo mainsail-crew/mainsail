@@ -206,32 +206,7 @@ export interface MachineRPC {
      */
     'machine.peripherals.usb': () => Promise<{
         /** Array of USB device objects */
-        usb_devices: Array<{
-            /** The USB bus number as reported by the host */
-            bus_num: number
-            /** The USB device number as reported by the host */
-            device_num: number
-            /** Combination of bus and device number as unique location ID */
-            usb_location: string
-            /** The vendor ID as reported by the driver */
-            vendor_id: string
-            /** The product ID as reported by the driver */
-            product_id: string
-            /** The manufacturer name (null if not found) */
-            manufacturer: string | null
-            /** The product description (null if not found) */
-            product: string | null
-            /** The serial number (null if not found) */
-            serial: string | null
-            /** The class description (null if not found) */
-            class: string | null
-            /** The subclass description (null if not found) */
-            subclass: string | null
-            /** The protocol description (null if not found) */
-            protocol: string | null
-            /** Full device description from usb.ids file (null if not found) */
-            description: string | null
-        }>
+        usb_devices: Array<UsbDevice>
     }>
 
     /**
@@ -240,22 +215,7 @@ export interface MachineRPC {
      */
     'machine.peripherals.serial': () => Promise<{
         /** Array of serial device objects */
-        serial_devices: Array<{
-            /** The type of serial device: 'hardware_uart' or 'usb' */
-            device_type: 'hardware_uart' | 'usb'
-            /** The absolute file path to the device */
-            device_path: string
-            /** The device file name as reported by sysfs */
-            device_name: string
-            /** The name of the device driver */
-            driver_name: string
-            /** Symbolic link based on physical connection (null if not exists) */
-            path_by_hardware: string | null
-            /** Symbolic link based on reported IDs (null if not exists) */
-            path_by_id: string | null
-            /** USB location identifier (null for non-usb devices) */
-            usb_location: string | null
-        }>
+        serial_devices: SerialDevice[]
     }>
 
     /**
@@ -264,55 +224,9 @@ export interface MachineRPC {
      */
     'machine.peripherals.video': () => Promise<{
         /** Array of V4L2 device objects */
-        v4l2_devices: Array<{
-            /** The V4L2 name assigned to the device */
-            device_name: string
-            /** The absolute system path to the device file */
-            device_path: string
-            /** The camera name reported by the device driver */
-            camera_name: string
-            /** The name of the driver loaded for the device */
-            driver_name: string
-            /** An alternative device name from sysfs (null if not exists) */
-            alt_name: string | null
-            /** A description of the hardware location of the device */
-            hardware_bus: string
-            /** Array of capability strings as reported by V4L2 */
-            capabilities: string[]
-            /** The device version as reported by V4L2 */
-            version: string
-            /** Symbolic link based on physical connection (null if not exists) */
-            path_by_hardware: string | null
-            /** Symbolic link based on reported ID (null if not exists) */
-            path_by_id: string | null
-            /** USB location identifier (null for non-usb devices) */
-            usb_location: string | null
-            /** Array of supported modes with discrete resolutions */
-            modes: Array<{
-                /** The pixel format in V4L2 fourcc format */
-                format: string
-                /** A description of the mode provided by the driver */
-                description: string
-                /** Special condition flags: 'COMPRESSED', 'EMULATED' */
-                flags: string[]
-                /** Array of supported resolutions as 'WIDTHxHEIGHT' strings */
-                resolutions: string[]
-            }>
-        }>
+        v4l2_devices: V4l2Device[]
         /** Array of libcamera device objects */
-        libcamera_devices: Array<{
-            /** The ID of the device as reported by libcamera */
-            libcamera_id: string
-            /** The model name of the device */
-            model: string
-            /** Array of supported modes */
-            modes: Array<{
-                /** The pixel format of the mode */
-                format: string
-                /** Array of supported resolutions as 'WIDTHxHEIGHT' strings */
-                resolutions: string[]
-            }>
-        }>
+        libcamera_devices: LibcameraDevice[]
     }>
 
     /**
@@ -323,11 +237,132 @@ export interface MachineRPC {
         interface?: string
     }) => Promise<{
         /** Array of discovered CAN UUID objects */
-        can_uuids: Array<{
-            /** The UUID of the unassigned node */
-            uuid: string
-            /** The application running on the node: 'Klipper' or 'Katapult' */
-            application: string
-        }>
+        can_uuids: CanDevice[]
     }>
+}
+
+/**
+ * USB device reported by Moonraker.
+ */
+export interface UsbDevice {
+    /** The USB bus number as reported by the host. */
+    bus_num: number
+    /** The USB device number as reported by the host. */
+    device_num: number
+    /** Unique location identifier derived from the USB bus and device number. */
+    usb_location: string
+    /** Vendor ID reported by the driver. */
+    vendor_id: string
+    /** Product ID reported by the driver. */
+    product_id: string
+    /** Manufacturer name reported by the driver, or `null` if unavailable. */
+    manufacturer: string | null
+    /** Product name reported by the driver, or `null` if unavailable. */
+    product: string | null
+    /** Serial reported by the driver, or `null` if unavailable. */
+    serial: string | null
+    /** Class description reported by the driver, or `null` if unavailable. */
+    class: string | null
+    /** Subclass description reported by the driver, or `null` if unavailable. */
+    subclass: string | null
+    /** Protocol description reported by the driver, or `null` if unavailable. */
+    protocol: string | null
+    /** Full device description from `usb.ids`, or `null` if unavailable. */
+    description: string | null
+}
+
+/**
+ * Serial device reported by Moonraker.
+ */
+export interface SerialDevice {
+    /** Device type. Usually a USB serial adapter or a hardware UART. */
+    device_type: 'hardware_uart' | 'usb'
+    /** Absolute path to the device node. */
+    device_path: string
+    /** Device file name as reported by sysfs. */
+    device_name: string
+    /** Driver name bound to the device. */
+    driver_name: string
+    /** Stable path derived from the physical connection, or `null` if unavailable. */
+    path_by_hardware: string | null
+    /** Stable path derived from device identifiers, or `null` if unavailable. */
+    path_by_id: string | null
+    /** Matching USB location identifier, or `null` for non-USB devices. */
+    usb_location: string | null
+}
+
+/**
+ * V4L2 video mode reported by Moonraker.
+ */
+export interface V4l2Mode {
+    /** Pixel format in V4L2 fourcc format. */
+    format: string
+    /** Driver-provided mode description. */
+    description: string
+    /** Additional mode flags such as `COMPRESSED` or `EMULATED`. */
+    flags: string[]
+    /** Discrete supported resolutions formatted as `<WIDTH>x<HEIGHT>`. */
+    resolutions: string[]
+}
+
+/**
+ * V4L2 video capture device reported by Moonraker.
+ */
+export interface V4l2Device {
+    /** Device file name, usually similar to `video0`. */
+    device_name: string
+    /** Absolute path to the device node. */
+    device_path: string
+    /** Camera name reported by the driver. */
+    camera_name: string
+    /** Driver name bound to the device. */
+    driver_name: string
+    /** Alternative device name from sysfs, or `null` if unavailable. */
+    alt_name: string | null
+    /** Description of the hardware location of the device. */
+    hardware_bus: string
+    /** V4L2 capability flags reported by the device. */
+    capabilities: string[]
+    /** Device version reported by V4L2. */
+    version: string
+    /** Stable path derived from the physical connection, or `null` if unavailable. */
+    path_by_hardware: string | null
+    /** Stable path derived from the device identifier, or `null` if unavailable. */
+    path_by_id: string | null
+    /** Matching USB location identifier, or `null` for non-USB devices. */
+    usb_location: string | null
+    /** Supported V4L2 modes. May be empty when no discrete modes are reported. */
+    modes: V4l2Mode[]
+}
+
+/**
+ * Libcamera mode reported by Moonraker.
+ */
+export interface LibcameraMode {
+    /** Pixel format of the mode. */
+    format: string
+    /** Supported resolutions formatted as `<WIDTH>x<HEIGHT>`. */
+    resolutions: string[]
+}
+
+/**
+ * Libcamera device reported by Moonraker.
+ */
+export interface LibcameraDevice {
+    /** Device identifier reported by libcamera. */
+    libcamera_id: string
+    /** Model name of the device. */
+    model: string
+    /** Modes supported by the device. */
+    modes: LibcameraMode[]
+}
+
+/**
+ * Unassigned CAN UUID reported by Moonraker.
+ */
+export interface CanDevice {
+    /** UUID of the unassigned CAN node. */
+    uuid: string
+    /** Application running on the node, usually `Klipper` or `Katapult`. */
+    application: string
 }

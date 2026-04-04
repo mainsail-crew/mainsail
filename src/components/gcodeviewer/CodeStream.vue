@@ -26,7 +26,7 @@ export default class CodeStream extends Vue {
 
     mouseUp() {
         if (this.view) {
-            let line = this.view.state.doc.lineAt(this.view.state.selection.ranges[0].from)
+            const line = this.view.state.doc.lineAt(this.view.state.selection.ranges[0].from)
             this.$emit('update:currentline', line.to)
             this.view.contentDOM.blur()
             this.$emit('got-focus')
@@ -35,7 +35,7 @@ export default class CodeStream extends Vue {
 
     keyPress() {
         if (this.view) {
-            let line = this.view.state.doc.lineAt(this.view.state.selection.ranges[0].from)
+            const line = this.view.state.doc.lineAt(this.view.state.selection.ranges[0].from)
             this.$emit('update:currentline', line.to)
             this.$emit('got-focus')
         }
@@ -57,7 +57,7 @@ export default class CodeStream extends Vue {
     @Watch('currentLineNumber')
     currentlineUpdated(to: number) {
         if (this.view && this.shown) {
-            let line = this.view.state.doc.lineAt(to)
+            const line = this.view.state.doc.lineAt(to)
             this.view.dispatch({
                 selection: {
                     anchor: line.from,

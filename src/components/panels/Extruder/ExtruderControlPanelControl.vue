@@ -201,6 +201,7 @@ import NumberInput from '@/components/inputs/NumberInput.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ExtruderMixin from '@/components/mixins/extruder'
+import { parseNumber } from '@/plugins/helpers'
 
 @Component({
     components: {
@@ -243,7 +244,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ExtruderMixi
     }
 
     get maxExtrudeOnlyDistance(): number {
-        return this.activeExtruderSettings?.max_extrude_only_distance ?? 50
+        return parseNumber(this.activeExtruderSettings?.max_extrude_only_distance, 50)
     }
 
     get tooLargeExtrusion(): boolean {

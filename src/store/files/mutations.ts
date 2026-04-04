@@ -33,8 +33,7 @@ export const mutations: MutationTree<FileState> = {
 
         const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
         if (path && fileIndex !== undefined && fileIndex !== -1) {
-            // eslint-disable-next-line
-            const currentFile = { ...path[fileIndex] } as any
+            const currentFile = { ...path[fileIndex] } as FileStateFile
             currentFile.metadataRequested = true
 
             Vue.set(path, fileIndex, currentFile)
@@ -49,8 +48,7 @@ export const mutations: MutationTree<FileState> = {
 
         const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
         if (path && fileIndex !== undefined && fileIndex !== -1) {
-            // eslint-disable-next-line
-            const currentFile = { ...path[fileIndex] } as any
+            const currentFile = { ...path[fileIndex] } as FileStateFile
             allowedMetadata.forEach((key: string) => {
                 if (key in payload) currentFile[key] = payload[key]
             })

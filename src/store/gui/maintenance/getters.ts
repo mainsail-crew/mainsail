@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex'
 import { GuiMaintenanceState, GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import { RootState } from '@/store/types'
 
-// eslint-disable-next-line
-export const getters: GetterTree<GuiMaintenanceState, any> = {
+export const getters: GetterTree<GuiMaintenanceState, RootState> = {
     getEntries: (state) => {
         const entries: GuiMaintenanceStateEntry[] = []
 
@@ -14,8 +14,8 @@ export const getters: GetterTree<GuiMaintenanceState, any> = {
     },
 
     getOverdueEntries: (state, getters, rootState) => {
-        const currentTotalPrintTime = rootState.server.history.job_totals.total_print_time ?? 0
-        const currentTotalFilamentUsed = rootState.server.history.job_totals.total_filament_used ?? 0
+        const currentTotalPrintTime = rootState.server?.history?.job_totals.total_print_time ?? 0
+        const currentTotalFilamentUsed = rootState.server?.history?.job_totals.total_filament_used ?? 0
         const currentDate = new Date().getTime() / 1000
 
         const entries: GuiMaintenanceStateEntry[] = getters['getEntries'] ?? []

@@ -1,6 +1,6 @@
 <template>
     <tr
-        v-longpress:600="(e) => showContextMenu(e)"
+        v-longpress:600="showContextMenu"
         class="cursor-pointer"
         @contextmenu="showContextMenu($event)"
         @click="showPrintDialog = true">
@@ -79,6 +79,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import { FileStateGcodefile } from '@/store/files/types'
@@ -177,7 +178,7 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         return this.item.filename.slice(this.item.filename.lastIndexOf('/') + 1)
     }
 
-    showContextMenu(e: any) {
+    showContextMenu(e: MouseEvent | LongpressEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

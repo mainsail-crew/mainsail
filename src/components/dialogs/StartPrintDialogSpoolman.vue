@@ -58,7 +58,7 @@ export default class StartPrintDialogSpoolman extends Mixins(BaseMixin) {
     }
 
     get alerts() {
-        let alerts = []
+        const alerts = []
 
         if (this.activeSpoolId === null) {
             alerts.push({

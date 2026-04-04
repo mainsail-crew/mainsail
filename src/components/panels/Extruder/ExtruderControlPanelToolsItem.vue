@@ -56,7 +56,7 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get primaryTextColor(): string {
-        let splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
+        const splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
         if (splits) {
             const r = parseInt(splits[1], 16) * 0.2126
             const g = parseInt(splits[2], 16) * 0.7152

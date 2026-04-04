@@ -217,7 +217,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     sendWithParams() {
-        let params: string[] = []
+        const params: string[] = []
         this.paramArray.forEach((paramname: string) => {
             let value = this.params[paramname].value?.toString().trim()
 

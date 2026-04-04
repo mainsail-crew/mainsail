@@ -26,7 +26,7 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     @Prop({ type: Boolean, required: false, default: true }) readonly small!: boolean
 
     get cssStyle() {
-        let style = { cursor: 'default', fontSize: '1em' }
+        const style = { cursor: 'default', fontSize: '1em' }
         if (this.small) style.fontSize = '0.8em'
 
         return style

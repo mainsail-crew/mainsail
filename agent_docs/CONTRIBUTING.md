@@ -5,6 +5,7 @@
 Submit PRs against `develop` branch (not `master`).
 
 Sign off commits with DCO:
+
 ```
 Signed-off-by: Your Name <your.email@example.com>
 ```
@@ -18,6 +19,7 @@ Format: `type(scope): message`
 Scope is optional but recommended for clarity (e.g., `fix(webcam): ...`, `feat(console): ...`).
 
 Types:
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation
