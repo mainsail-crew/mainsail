@@ -133,7 +133,7 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin, TimelapseMix
     }
 
     get existsSnapshoturlInMoonrakerConfig() {
-        return 'snapshoturl' in (this.$store.state.server.config_orig?.timelapse ?? {})
+        return 'snapshoturl' in (this.$store.state.server.config.orig.timelapse ?? {})
     }
 
     get moonrakerTimelapseConfig() {
