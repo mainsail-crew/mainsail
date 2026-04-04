@@ -10,9 +10,7 @@ export class WebSocketClient {
     maxReconnects = 5
     reconnectInterval = 1000
     reconnects = 0
-    keepAliveTimeout = 1000
     messageId: number = 0
-    timerId: number | null = null
     store: Store<RootState> | null = null
     waits: Wait[] = []
     heartbeatTimer: number | null = null
@@ -30,8 +28,6 @@ export class WebSocketClient {
 
     handleMessage(data: JsonRpcResponse) {
         const wait = this.getWaitById(data.id)
-    /*handleMessage(data: SocketIncomingMessage): void {
-        const wait = typeof data.id === 'number' ? this.getWaitById(data.id) : null*/
 
         // reject promise if it exists
         if (data.error && wait?.reject) {
@@ -290,21 +286,6 @@ export interface BatchMessage {
     method: string
     params: Params
     emitOptions: emitOptions
-}
-
-interface SocketError {
-    code?: number
-    message?: string
-    [key: string]: unknown
-}
-
-interface SocketIncomingMessage {
-    id?: number
-    result?: unknown
-    error?: SocketError
-    method?: string
-    params?: unknown[]
-    [key: string]: unknown
 }
 
 export interface Wait {
