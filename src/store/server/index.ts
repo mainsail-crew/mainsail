@@ -32,7 +32,7 @@ export const getDefaultState = (): ServerState => {
         config: {
             config: {},
             orig: {},
-            files: []
+            files: [],
         },
         system_info: null,
         system_boot_at: null,
