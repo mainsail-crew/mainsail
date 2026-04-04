@@ -34,7 +34,7 @@ export const getters: GetterTree<ServerState, RootState> = {
     getConfigSection:
         (state) =>
         <T = Record<string, unknown>>(section: string, fallback: T | null = null): T | null => {
-            const config = state.config ?? {}
+            const config = state.config?.config ?? {}
             if (section in config) return config[section] as T
             return fallback
         },

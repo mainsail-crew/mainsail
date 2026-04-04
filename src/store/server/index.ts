@@ -32,8 +32,8 @@ export const getDefaultState = (): ServerState => {
         config: {
             config: {},
             orig: {},
+            files: []
         },
-        config_files: [],
         system_info: null,
         system_boot_at: null,
         cpu_temp: 0,
