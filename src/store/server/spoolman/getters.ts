@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
 import { ServerSpoolmanState } from './types'
+import { RootState } from '@/store/types'
 
-// eslint-disable-next-line
-export const getters: GetterTree<ServerSpoolmanState, any> = {}
+export const getters: GetterTree<ServerSpoolmanState, RootState> = {}

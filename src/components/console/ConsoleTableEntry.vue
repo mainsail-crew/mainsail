@@ -19,8 +19,7 @@ import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class ConsoleTableEntry extends Mixins(BaseMixin) {
-    @Prop({ required: true })
-    declare readonly event: ServerStateEvent
+    @Prop({ required: true }) readonly event!: ServerStateEvent
 
     get entryStyle() {
         const classes = ['ma-0', 'flex-nowrap']

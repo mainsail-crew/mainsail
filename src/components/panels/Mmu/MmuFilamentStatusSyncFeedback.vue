@@ -9,16 +9,16 @@
         <use xlink:href="#sync-feedback-buffer-box" transform="translate(232, 212)" />
         <g v-if="syncFeedbackActive">
             <transition name="fade">
-                <g v-if="hasFilamentTensionSensor && hasFilamentCompressionSensor" key="neutral">
+                <g v-if="syncFeedbackState === 'neutral'" key="neutral">
                     <text x="298" y="240">Neutral</text>
                     <use xlink:href="#sync-feedback" transform="translate(296, 247.5) scale(1.0,-1.0) rotate(90)" />
                 </g>
-                <g v-else-if="hasFilamentTensionSensor" key="tension">
+                <g v-else-if="syncFeedbackState === 'tension'" key="tension">
                     <text x="298" y="240">Tension</text>
                     <use xlink:href="#sync-feedback" transform="translate(272, 199) scale(1.2)" />
                     <use xlink:href="#sync-feedback" transform="translate(272, 271) scale(1.2,-1.2)" />
                 </g>
-                <g v-else-if="hasFilamentCompressionSensor" key="compression">
+                <g v-else-if="syncFeedbackState === 'compressed'" key="compression">
                     <text x="298" y="240">Compression</text>
                     <use xlink:href="#sync-feedback" transform="translate(272, 235) scale(1.2)" />
                     <use xlink:href="#sync-feedback" transform="translate(272, 235) scale(1.2,-1.2)" />
@@ -47,6 +47,10 @@ export default class MmuFilamentStatusSyncFeedback extends Mixins(BaseMixin, Mmu
 
     get syncFeedbackPistonPos(): number {
         return this.syncFeedbackBiasModelled * 12 + 234
+    }
+
+    get syncFeedbackState() {
+        return this.mmu?.sync_feedback_state ?? ''
     }
 }
 </script>

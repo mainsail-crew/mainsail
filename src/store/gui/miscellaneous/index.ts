@@ -3,6 +3,7 @@ import { actions } from '@/store/gui/miscellaneous/actions'
 import { mutations } from '@/store/gui/miscellaneous/mutations'
 import { getters } from '@/store/gui/miscellaneous/getters'
 import { GuiMiscellaneousState } from '@/store/gui/miscellaneous/types'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): GuiMiscellaneousState => {
     return {
@@ -13,8 +14,7 @@ export const getDefaultState = (): GuiMiscellaneousState => {
 // initial state
 const state = getDefaultState()
 
-// eslint-disable-next-line
-export const miscellaneous: Module<GuiMiscellaneousState, any> = {
+export const miscellaneous: Module<GuiMiscellaneousState, RootState> = {
     namespaced: true,
     state,
     getters,

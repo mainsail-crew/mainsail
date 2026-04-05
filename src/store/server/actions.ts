@@ -132,11 +132,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('socket/setInitializationStepComponent', 'ServerConfig', { root: true })
 
         const serverConfig = await Vue.$socket.emitAndWait('server.config')
-        commit('setData', {
-            config: serverConfig.config,
-            config_orig: serverConfig.orig,
-            config_files: serverConfig.files,
-        })
+        commit('setData', { config: serverConfig })
     },
 
     async initSystemInfo({ commit, dispatch }) {

@@ -113,7 +113,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
             return
         }
 
-        let items: string[] = []
+        const items: string[] = []
 
         const addElementToItems = (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {

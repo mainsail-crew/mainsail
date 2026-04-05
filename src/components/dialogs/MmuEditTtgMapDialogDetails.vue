@@ -135,7 +135,7 @@ export default class MmuEditTtgMapDialogDetails extends Mixins(BaseMixin, MmuMix
 
     get gateItems() {
         const gates = []
-        for (let i = 0; i < this.mmu?.num_gates!; i++) {
+        for (let i = 0; i < (this.mmu?.num_gates ?? 0); i++) {
             gates.push(i)
         }
 

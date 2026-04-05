@@ -197,10 +197,9 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     }
 
     save() {
-        const item = { ...this.item }
         // Remove type from item, this is not needed and comes from the history list
-        // @ts-ignore
-        if ('type' in item) delete item.type
+        const item = { ...this.item } as GuiMaintenanceStateEntry & { type?: string }
+        delete item.type
 
         item.name = this.name
         item.note = this.note

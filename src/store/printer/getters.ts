@@ -11,6 +11,9 @@ import {
     PrinterStateMcu,
     PrinterStateMacro,
     PrinterGetterObject,
+    PrinterConfigMcuTempSensor,
+    PrinterTempSensorObject,
+    McuTempSensorEntry,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -195,7 +198,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             fans.push({
                 name: object.name,
                 type: object.type,
-                speed: object.state.speed ?? 0,
+                speed: (object.state.speed as number) ?? 0,
                 controllable: controllableFans.includes(object.type),
             })
         })
@@ -409,18 +412,17 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrinterConfigObjects: (state) => (objectNames: string[]) => {
-        // eslint-disable-next-line
-        const output: any = {}
+        const settings = state.configfile.settings
+        if (!settings) return {}
 
-        if (state.configfile?.settings) {
-            Object.keys(state.configfile.settings).forEach((key) => {
-                const keySplits = key.split(' ')
+        const output: Record<string, unknown> = {}
+        Object.keys(settings).forEach((key) => {
+            const keySplits = key.split(' ')
 
-                if (objectNames.includes(keySplits[0])) {
-                    output[key] = state.configfile.settings[key]
-                }
-            })
-        }
+            if (objectNames.includes(keySplits[0])) {
+                output[key] = settings[key]
+            }
+        })
 
         return output
     },
@@ -432,10 +434,14 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
-            const settings = objects[key]
+            const settings = objects[key] as PrinterConfigMcuTempSensor
             const caseKey: string =
                 Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
-            if ('sensor_type' in settings && sensorTypes.includes(settings.sensor_type) && caseKey in state) {
+            if (
+                typeof settings.sensor_type === 'string' &&
+                sensorTypes.includes(settings.sensor_type) &&
+                caseKey in state
+            ) {
                 const value = state[caseKey]
 
                 output = {
@@ -451,20 +457,19 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getMcuTempSensors: (state, getters) => {
         const checkObjects = ['temperature_sensor', 'temperature_fan']
-        // eslint-disable-next-line
-        const output: { key: string; settings: any; object: any }[] = []
+        const output: McuTempSensorEntry[] = []
 
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
-            const value = objects[key]
+            const value: PrinterConfigMcuTempSensor = objects[key]
             const caseKey: string =
                 Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
 
-            if ('sensor_type' in value && value.sensor_type === 'temperature_mcu' && 'sensor_mcu' in value) {
+            if (value.sensor_type === 'temperature_mcu' && typeof value.sensor_mcu === 'string') {
                 output.push({
                     key: caseKey,
                     settings: value,
-                    object: caseKey in state ? state[caseKey] : {},
+                    object: (caseKey in state ? state[caseKey] : {}) as PrinterTempSensorObject,
                 })
             }
         })
@@ -473,18 +478,19 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getMcuTempSensor: (state, getters) => (mcuName: string) => {
-        interface McuTempSensor {
-            temperature: number
-            measured_min_temp: number | null
-            measured_max_temp: number | null
-        }
-
-        let output: McuTempSensor | null = null
+        let output: {
+            temperature: string
+            measured_min_temp: string | null
+            measured_max_temp: string | null
+        } | null = null
 
         const sensors = getters.getMcuTempSensors
-        // eslint-disable-next-line
-        sensors.forEach((sensor: { key: string; settings: any; object: any }) => {
-            if (mcuName.endsWith(sensor.settings?.sensor_mcu) && sensor.object?.temperature) {
+        sensors.forEach((sensor: McuTempSensorEntry) => {
+            if (
+                typeof sensor.settings.sensor_mcu === 'string' &&
+                mcuName.endsWith(sensor.settings.sensor_mcu) &&
+                typeof sensor.object.temperature === 'number'
+            ) {
                 output = {
                     temperature: sensor.object.temperature.toFixed(0),
                     measured_min_temp: sensor.object.measured_min_temp?.toFixed(1) ?? null,

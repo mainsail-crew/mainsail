@@ -164,7 +164,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
         this.$store.dispatch('server/spoolman/refreshSpools')
     }
 
-    customFilter(value: any, search: string, item: ServerSpoolmanStateSpool): boolean {
+    customFilter(_value: unknown, search: string, item: ServerSpoolmanStateSpool): boolean {
         if (search.trim().startsWith('web+spoolman:s-')) {
             const spoolId = parseInt(search.split('-')[1] ?? -1)
             return item.id === spoolId

@@ -1,5 +1,5 @@
 <template>
-    <svg ref="filStatusSvg" viewBox="140 20 285 421" preserveAspectRatio="xMidYMid meet" class="svg-colors">
+    <svg ref="filStatusSvg" viewBox="140 0 285 441" preserveAspectRatio="xMidYMid meet" class="svg-colors">
         <defs>
             <g
                 id="sync-feedback"
@@ -73,6 +73,10 @@
                     vector-effect="non-scaling-stroke" />
             </g>
         </defs>
+
+        <text x="282" y="18" font-size="16px" text-anchor="middle">
+            {{ statusText }}
+        </text>
 
         <rect x="150" y="30" width="265" height="130" class="zone-background" rx="10" ry="10" />
         <rect x="150" y="333" width="265" height="66" class="zone-background" rx="10" ry="10" />
@@ -205,7 +209,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { capitalize } from '@/plugins/helpers'
 import MmuMixin, {
+    ACTION_IDLE,
+    ACTION_LOADING,
+    ACTION_UNLOADING,
     ACTION_CUTTING_FILAMENT,
     ACTION_CUTTING_TIP,
     ACTION_FORMING_TIP,
@@ -427,8 +435,47 @@ export default class MmuFilamentStatus extends Mixins(BaseMixin, MmuMixin) {
         return this.mmuGrip === 'Gripped' || this.mmuServo === 'Down'
     }
 
+    get slicerToolMap() {
+        return this.mmu?.slicer_tool_map ?? undefined
+    }
+
     get syncFeedbackPistonText() {
         return (this.mmu?.sync_feedback_bias_modelled ?? 0.0).toFixed(2)
+    }
+
+    get totalToolchanges() {
+        return this.slicerToolMap?.total_toolchanges ?? 0
+    }
+
+    get numToolchanges() {
+        return this.mmu?.num_toolchanges ?? 0
+    }
+
+    get statusText() {
+        if (['complete', 'error', 'cancelled', 'started'].includes(this.mmuPrintState)) {
+            return capitalize(this.mmuPrintState)
+        }
+
+        if ([ACTION_LOADING, ACTION_UNLOADING].includes(this.mmuAction)) {
+            return `${this.mmuAction}: ${this.filamentPosition}mm`
+        }
+
+        if (this.mmuAction !== ACTION_IDLE) return this.mmuAction
+
+        if (this.mmuPrintState === 'printing') {
+            let str = `Printing (${this.numToolchanges}`
+            if (this.totalToolchanges > 0) str += `/${this.totalToolchanges}`
+            str += ' swaps)'
+            return str
+        }
+
+        const filament = this.mmu?.filament ?? 'Unknown'
+
+        return filament !== 'Unloaded' ? `Filament: ${this.filamentPosition}mm` : 'Filament: Unloaded'
+    }
+
+    get filamentPosition() {
+        return (this.mmu?.filament_position ?? 0).toFixed(1)
     }
 }
 </script>

@@ -2,7 +2,7 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
-import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
+import { GuiRemoteprintersState, GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
 
 export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     reset({ commit, dispatch, state }) {
@@ -17,7 +17,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         let value = rootState.configInstances ?? []
         if (rootState.instancesDB === 'browser') value = JSON.parse(localStorage.getItem('printers') ?? '{}')
         if (Array.isArray(value)) {
-            const printers: any = {}
+            const printers: Record<string, (typeof value)[number]> = {}
 
             value.forEach((printer) => {
                 const id = uuidv4()
@@ -49,7 +49,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
 
     upload({ state, rootState }, id) {
         if (rootState.instancesDB === 'browser') {
-            const printers: any[] = []
+            const printers: GuiRemoteprintersStatePrinter[] = []
 
             Object.keys(state.printers).forEach((id: string) => {
                 printers.push({

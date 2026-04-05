@@ -10,9 +10,7 @@ export class WebSocketClient {
     maxReconnects = 5
     reconnectInterval = 1000
     reconnects = 0
-    keepAliveTimeout = 1000
     messageId: number = 0
-    timerId: number | null = null
     store: Store<RootState> | null = null
     waits: Wait[] = []
     heartbeatTimer: number | null = null
@@ -32,7 +30,7 @@ export class WebSocketClient {
         const wait = this.getWaitById(data.id)
 
         // reject promise if it exists
-        if ('error' in data && wait?.reject) {
+        if (data.error && wait?.reject) {
             wait.reject(data.error)
             this.removeWaitById(wait.id)
             return
@@ -74,18 +72,18 @@ export class WebSocketClient {
         }
 
         // resolve promise if it exists
-        if (wait?.resolve) wait.resolve(data.result ?? {})
+        if (wait.resolve) wait.resolve(data.result ?? {})
 
         // pass result to action
         if (wait.action) {
             let result = data.result
-            if (result === 'ok') result = { result: result }
-            if (typeof result === 'string') result = { result: result }
+            if (result === 'ok') result = { result }
+            if (typeof result === 'string') result = { result }
 
-            const preload = {}
+            const preload: Record<string, unknown> = {}
             if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
             Object.assign(preload, { requestParams: wait.params })
-            Object.assign(preload, result)
+            Object.assign(preload, result as Record<string, unknown>)
             this.store?.dispatch(wait.action, preload)
         }
 
@@ -284,13 +282,6 @@ export interface WebSocketPluginOptions {
     store: Store<RootState>
 }
 
-export interface WebSocketClient {
-    connect(): void
-    close(): void
-    emit(method: string, params: Params, emitOptions: emitOptions): void
-    emitBatch(messages: BatchMessage[]): void
-}
-
 export interface BatchMessage {
     method: string
     params: Params
@@ -299,18 +290,15 @@ export interface BatchMessage {
 
 export interface Wait {
     id: number
-    params: any
+    params: unknown
     action?: string | null
-    actionPayload?: any
+    actionPayload?: Params
     loading?: string | null
     resolve?: (value: unknown) => void
     reject?: (reason?: JsonRpcError) => void
 }
 
-interface Params {
-    data?: any
-    [key: string]: any
-}
+type Params = object
 
 interface emitOptions {
     action?: string | null

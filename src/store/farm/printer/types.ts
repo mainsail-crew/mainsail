@@ -9,11 +9,9 @@ export interface FarmPrinterState {
     data: {
         gui: GuiState
         webcams: GuiWebcamStateWebcam[]
-        // eslint-disable-next-line
-        [key: string]: any
+        [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
     }
-    // eslint-disable-next-line
-    settings: any
+    settings: Record<string, unknown>
     databases: string[]
     current_file: FileStateFile
     theme_files: string[]
@@ -31,8 +29,14 @@ export interface FarmPrinterStateSocket {
     reconnects: number
     maxReconnects: number
     reconnectInterval: number
-    // eslint-disable-next-line
-    wsData: any[]
+    wsData: FarmPrinterWsDataEntry[]
+}
+
+export interface FarmPrinterWsDataEntry {
+    id: number
+    action?: string
+    params: Record<string, unknown>
+    actionPreload?: Record<string, unknown> | null
 }
 
 export interface FarmPrinterStateServer {

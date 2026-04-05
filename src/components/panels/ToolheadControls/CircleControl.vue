@@ -639,7 +639,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get xHomeClass() {
-        let classes = []
+        const classes = []
         if (this.homedAxes.includes('x')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
 
@@ -647,7 +647,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get yHomeClass() {
-        let classes = []
+        const classes = []
         if (this.homedAxes.includes('y')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
 
@@ -655,7 +655,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get xyHomeClass() {
-        let classes = []
+        const classes = []
         if (this.homedAxes.includes('xy')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
 
@@ -663,7 +663,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get xyzHomeClass() {
-        let classes = []
+        const classes = []
         if (this.homedAxes.includes('xyz')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
 
@@ -671,7 +671,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get zHomeClass() {
-        let classes = []
+        const classes = []
         if (this.homedAxes.includes('z')) classes.push('homed')
         if (this.isPrinting) classes.push('disabled')
 
@@ -679,7 +679,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get colorSpecialButton() {
-        let classes = []
+        const classes = []
         if (this.isPrinting) classes.push('disabled')
         if (this.existsQGL) classes.push(this.colorQuadGantryLevel)
         else if (this.existsZtilt) classes.push(this.colorZTilt)
@@ -688,7 +688,7 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get motorsOffClass() {
-        let classes = []
+        const classes = []
         classes.push(this.homedAxes !== '' ? 'primary' : 'warning')
         if (this.isPrinting) classes.push('disabled')
 

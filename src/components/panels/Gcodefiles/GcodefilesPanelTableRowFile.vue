@@ -122,6 +122,7 @@
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { FileStateGcodefile } from '@/store/files/types'
@@ -186,7 +187,7 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
 
     @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
-    @Prop({ type: Function, required: true }) readonly select!: Function
+    @Prop({ type: Function, required: true }) readonly select!: (value: boolean) => void
 
     get isGcodeFile() {
         const format = this.item.filename.slice(this.item.filename.lastIndexOf('.'))
@@ -216,7 +217,7 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
         return convertPrintStatusIconColor(this.item.last_status ?? '')
     }
 
-    showContextMenuAction(e: MouseEvent) {
+    showContextMenuAction(e: MouseEvent | LongpressEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 

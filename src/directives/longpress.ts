@@ -1,13 +1,27 @@
 import Vue from 'vue'
 
+export type LongpressEvent = Partial<Touch> & { preventDefault: () => void }
+
+type LongpressBinding = ((...args: unknown[]) => void) | { handler: (...args: unknown[]) => void; args: unknown[] }
+
+/**
+ * Resolve the callback from the directive binding.
+ * Accepts either a plain function or an object `{ handler, args }` where
+ * `args` are appended after the event parameter.
+ */
+function resolveHandler(value: LongpressBinding): (e: LongpressEvent) => void {
+    if (typeof value === 'function') return value
+    return (e: LongpressEvent) => value.handler(e, ...value.args)
+}
+
 Vue.directive('longpress', {
     bind: function (el, binding, vNode) {
-        // Make sure expression provided is a function
-        if (typeof binding.value !== 'function') {
+        // Make sure expression provided is a function or { handler, args } object
+        if (typeof binding.value !== 'function' && typeof binding.value?.handler !== 'function') {
             // Fetch name of component
             const compName = vNode.context?.$options.name
             // pass warning to console
-            let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be`
+            let warn = `[longpress:] provided expression '${binding.expression}' is not a function or { handler, args } object`
             if (compName) {
                 warn += ` Found in component '${compName}' `
             }
@@ -19,15 +33,17 @@ Vue.directive('longpress', {
 
         // Run Function
         const handler = (e: Partial<Touch> & { preventDefault: TouchEvent['preventDefault'] }) => {
-            binding.value(e)
+            resolveHandler(binding.value)(e)
         }
 
         // Define variable
         let pressTimer: number | null = null
+        let startX = 0
+        let startY = 0
+        const moveThreshold = 10
 
         // Define funtion handlers
         // Create timeout ( run function after 1s )
-        const before: string | null = null
         const start = (e: TouchEvent) => {
             if (e.type === 'click') {
                 return
@@ -36,6 +52,9 @@ Vue.directive('longpress', {
             if (!e.touches || e.touches.length < 1) {
                 return
             }
+
+            startX = e.touches[0].clientX
+            startY = e.touches[0].clientY
 
             document
                 .querySelector('body')
@@ -47,10 +66,6 @@ Vue.directive('longpress', {
 
             if (pressTimer === null) {
                 pressTimer = window.setTimeout(() => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    e.stopImmediatePropagation()
-                    e.cancelBubble = true
                     // Run function
                     handler({
                         clientX: e.touches[0].clientX,
@@ -71,31 +86,41 @@ Vue.directive('longpress', {
             return false
         }
 
+        // Cancel Timeout only if finger moved beyond threshold
+        const cancelOnMove = (e: TouchEvent) => {
+            if (pressTimer !== null && e.touches?.length) {
+                const dx = Math.abs(e.touches[0].clientX - startX)
+                const dy = Math.abs(e.touches[0].clientY - startY)
+                if (dx < moveThreshold && dy < moveThreshold) return
+            }
+            cancel()
+        }
+
         // Cancel Timeout
         const cancel = () => {
-            // Check if timer has a value or not
             if (pressTimer !== null) {
                 clearTimeout(pressTimer)
                 pressTimer = null
-                if (before) {
-                    document.querySelector('body')?.setAttribute('style', before)
-                }
-                /*console.log(e.type);
-                if (e.type === "touchend" && vNode.data.on.click) {
-                    vNode.data.on.click();
-                }*/
+            }
+        }
+
+        // Prevent native drag from interrupting the longpress detection.
+        // On touch devices, draggable="true" can trigger dragstart which
+        // causes a touchcancel, killing the longpress timer.
+        const preventDragDuringLongpress = (e: Event) => {
+            if (pressTimer !== null) {
+                e.preventDefault()
             }
         }
 
         // Add Event listeners
-        // el.addEventListener("mousedown", start);
         el.addEventListener('touchstart', start)
-        // Cancel timeouts if this events happen
-        //el.addEventListener("click", cancel);
-        //el.addEventListener("mouseout", cancel);
-        el.addEventListener('touchmove', cancel)
+        // Cancel timeouts if these events happen
+        el.addEventListener('touchmove', cancelOnMove, { passive: true })
         el.addEventListener('touchend', cancel)
         el.addEventListener('touchcancel', cancel)
+        // Block dragstart while longpress timer is running
+        el.addEventListener('dragstart', preventDragDuringLongpress)
 
         document.addEventListener('scroll', cancel, { passive: true })
     },

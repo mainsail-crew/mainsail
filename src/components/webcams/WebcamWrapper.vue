@@ -33,7 +33,7 @@ import WebcamWrapperItem from '@/components/webcams/WebcamWrapperItem.vue'
 })
 export default class WebcamWrapper extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
-    @Prop({ type: Boolean, default: true }) showFps!: Boolean
+    @Prop({ type: Boolean, default: true }) showFps!: boolean
     @Prop({ type: String, default: null }) printerUrl!: string | null
     @Prop({ type: String, default: null }) page!: string | null
 

@@ -3,6 +3,8 @@ import { W3C_COLORS } from '@/plugins/w3c'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
+export type MmuEspoolerState = 'rewind' | 'assist' | 'off'
+
 export interface Mmu {
     enabled: boolean
     num_gates: number
@@ -46,14 +48,7 @@ export interface Mmu {
     slicer_color_rgb: number[][]
     tool_extrusion_multipliers: number[]
     tool_speed_multipliers: number[]
-    slicer_tool_map: {
-        tools: any
-        referenced_tools: number[]
-        initial_tool: number | null
-        purge_volumes: number[]
-        total_toolchanges: number | null
-        skip_automap: boolean
-    }
+    slicer_tool_map: MmuSlicerToolMap
     action:
         | typeof ACTION_IDLE
         | typeof ACTION_LOADING
@@ -93,7 +88,7 @@ export interface Mmu {
     extruder_filament_remaining: number
     spoolman_support: 'off' | 'readonly' | 'push' | 'pull'
     bowden_progress: number
-    espooler_active: 'rewind' | 'assist' | 'off'
+    espooler_active: MmuEspoolerState
     sensors: {
         mmu_pre_gate?: boolean
         mmu_gear?: boolean
@@ -116,6 +111,7 @@ export interface Mmu {
         headroom: number
         min_headroom: number
     }
+    espooler?: MmuEspoolerState[]
 }
 
 export interface MmuMachine {
@@ -149,6 +145,23 @@ export interface MmuMachineUnit {
     has_bypass: boolean
     multi_gear: boolean
     environment_sensor: string
+}
+
+export interface MmuSlicerToolMap {
+    tools: Record<string, MmuSlicerToolMapTool>
+    referenced_tools: number[]
+    initial_tool: number | null
+    purge_volumes: number[][]
+    total_toolchanges: number | null
+    skip_automap: boolean
+}
+
+export interface MmuSlicerToolMapTool {
+    color: string
+    material: string
+    temp: number
+    name: string
+    in_use: boolean
 }
 
 export const NO_FILAMENT_COLOR = '#808182E3'
@@ -315,6 +328,10 @@ export default class MmuMixin extends Mixins(BaseMixin) {
 
     get mmuGrip() {
         return this.mmu?.grip ?? 'Unknown'
+    }
+
+    get mmuEspoolers() {
+        return this.mmu?.espooler
     }
 
     get configGateHomingEndstop(): string {
