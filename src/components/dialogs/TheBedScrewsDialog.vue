@@ -52,13 +52,13 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text :loading="loadingAbort" @click="sendAbort">
+                <v-btn text :loading="loadingAbort" :disabled="isBusy" @click="sendAbort">
                     {{ $t('BedScrews.Abort') }}
                 </v-btn>
-                <v-btn color="primary" text :loading="loadingAdjusted" @click="sendAdjusted">
+                <v-btn color="primary" text :loading="loadingAdjusted" :disabled="isBusy" @click="sendAdjusted">
                     {{ $t('BedScrews.Adjusted') }}
                 </v-btn>
-                <v-btn color="primary" text :loading="loadingAccept" @click="sendAccept">
+                <v-btn color="primary" text :loading="loadingAccept" :disabled="isBusy" @click="sendAccept">
                     {{ $t('BedScrews.Accept') }}
                 </v-btn>
             </v-card-actions>
@@ -122,6 +122,10 @@ export default class TheBedScrewsDialog extends Mixins(BaseMixin, ControlMixin) 
         return this.loadings.includes('bedScrewsAdjusted')
     }
 
+    get isBusy() {
+        return this.loadingAbort || this.loadingAccept || this.loadingAdjusted
+    }
+
     get screwNames() {
         const configKeys = Object.keys(this.config)
         const screwNameKeys = configKeys.filter((name: string) => name.startsWith('screw') && name.endsWith('_name'))
@@ -156,19 +160,19 @@ export default class TheBedScrewsDialog extends Mixins(BaseMixin, ControlMixin) 
     sendAbort() {
         const gcode = `ABORT`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAbort' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedScrewsAbort' })
     }
 
     sendAccept() {
         const gcode = `ACCEPT`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedScrewsAccept' })
     }
 
     sendAdjusted() {
         const gcode = `ADJUSTED`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedScrewsAdjusted' })
     }
 }
 </script>
