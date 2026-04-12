@@ -64,6 +64,8 @@ import { AppRoute } from '@/routes'
     },
 })
 export default class App extends Mixins(BaseMixin, ThemeMixin) {
+    private hiddenAt: number | null = null
+    private readonly longVisibilityGapMs = 180_000
     get title(): string {
         let title = this.$store.getters['getTitle']
 
@@ -387,11 +389,41 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         })
     }
 
+    async onDocumentVisibilityChange() {
+        if (document.visibilityState === 'hidden') {
+            this.hiddenAt = Date.now()
+            return
+        }
+
+        const now = Date.now()
+        const hiddenGap = this.hiddenAt ? now - this.hiddenAt : 0
+        this.hiddenAt = null
+
+        if (hiddenGap < this.longVisibilityGapMs) return
+
+        this.$store.dispatch('socket/setData', { isResyncing: true })
+        this.$store.dispatch('socket/clearLoadings')
+
+        try {
+            await this.$store.dispatch('printer/init')
+            await this.$store.dispatch('server/init')
+        } finally {
+            this.$store.dispatch('socket/setData', { isResyncing: false })
+        }
+    }
+
     mounted(): void {
         this.drawFavicon(this.print_percent)
         this.appHeight()
         window.addEventListener('resize', this.appHeight)
         window.addEventListener('orientationchange', this.appHeight)
+        document.addEventListener('visibilitychange', this.onDocumentVisibilityChange)
+    }
+
+    beforeDestroy(): void {
+        window.removeEventListener('resize', this.appHeight)
+        window.removeEventListener('orientationchange', this.appHeight)
+        document.removeEventListener('visibilitychange', this.onDocumentVisibilityChange)
     }
 }
 </script>
