@@ -5,6 +5,7 @@ import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
 import { deletePath } from '@/plugins/helpers'
+import { JsonRpcError } from '@/types/moonraker'
 
 const LOG_PREFIX = '[GUI]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
@@ -29,12 +30,10 @@ export const actions: ActionTree<GuiState, RootState> = {
             const payload = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: 'mainsail' })
             values = payload.value as GuiStateInitPayload
         } catch (error) {
-            logDebug('create Mainsail namespace')
-
             values = await this.dispatch('gui/getDefaults')
             values.initVersion = rootGetters['getVersion']
 
-            dispatch('restoreValues', values)
+            await dispatch('restoreValues', values)
         }
 
         if ('remoteprinters' in values) {
@@ -76,7 +75,11 @@ export const actions: ActionTree<GuiState, RootState> = {
             defaults = await fetch(urlDefaultJson).then((result) => result.json())
             if (defaults.error?.code === 404) logDebug('default.json not found')
 
-            if ('error' in defaults) return {}
+            if ('error' in defaults) {
+                logError(`Error while fetching default.json: ${defaults.error.message} (code: ${defaults.error.code})`)
+
+                return {}
+            }
         } catch (error) {
             logError('Error while parsing default.json', error)
         }
