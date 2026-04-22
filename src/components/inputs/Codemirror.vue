@@ -20,6 +20,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import { insertTab, indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
+import { yaml } from '@codemirror/lang-yaml'
 import { indentUnit } from '@codemirror/language'
 
 @Component
@@ -104,6 +105,7 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
+        else if (['yaml', 'yml'].includes(this.fileExtension)) extensions.push(yaml())
         else if (['css', 'scss', 'sass'].includes(this.fileExtension)) extensions.push(css())
 
         return extensions
