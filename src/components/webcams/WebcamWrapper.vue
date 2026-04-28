@@ -3,7 +3,7 @@
         <template v-if="webcam.service === 'grid'">
             <v-container v-if="webcams" fluid class="pb-4">
                 <v-row dense>
-                    <v-col v-for="gridWebcam in webcams" :key="gridWebcam.name" cols="6">
+                    <v-col v-for="gridWebcam in webcams" :key="gridWebcam.name" cols="6" class="webcam-grid-col">
                         <webcam-wrapper-item
                             :webcam="gridWebcam"
                             :printer-url="printerUrl"
@@ -33,7 +33,7 @@ import WebcamWrapperItem from '@/components/webcams/WebcamWrapperItem.vue'
 })
 export default class WebcamWrapper extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
-    @Prop({ type: Boolean, default: true }) showFps!: boolean
+    @Prop({ type: Boolean, default: true }) showFps!: Boolean
     @Prop({ type: String, default: null }) printerUrl!: string | null
     @Prop({ type: String, default: null }) page!: string | null
 
@@ -43,4 +43,11 @@ export default class WebcamWrapper extends Mixins(BaseMixin) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+@media (orientation: portrait) {
+    .webcam-grid-col {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+</style>
