@@ -1,7 +1,12 @@
 <template>
     <tr class="cursor-pointer" @click="setSpoolRow">
         <td style="width: 50px" class="pr-0 py-2">
-            <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" />
+            <spool-icon
+                :color="color"
+                :multi-color-hexes="spool.filament?.multi_color_hexes"
+                :multi-color-direction="spool.filament?.multi_color_direction"
+                style="width: 50px; float: left"
+                class="mr-3" />
         </td>
 
         <td class="py-2" style="min-width: 300px">

@@ -9,7 +9,11 @@
         </v-list-item-content>
 
         <v-list-item-avatar tile :size="avatarSize">
-            <spool-icon :color="color" @click-spool="clickSpool" />
+            <spool-icon
+                :color="color"
+                :multi-color-hexes="active_spool?.filament?.multi_color_hexes"
+                :multi-color-direction="active_spool?.filament?.multi_color_direction"
+                @click-spool="clickSpool" />
         </v-list-item-avatar>
     </v-list-item>
 </template>
