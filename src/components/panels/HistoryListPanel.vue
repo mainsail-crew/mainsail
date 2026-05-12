@@ -96,7 +96,7 @@
                                         hide-details
                                         :input-value="status.showInTable"
                                         :label="`${status.displayName} (${status.value})`"
-                                        @change="changeStatusVisible(status)" />
+                                        @change="changeStatusVisible(status.name)" />
                                 </v-list-item>
                                 <v-divider />
                             </template>
@@ -171,13 +171,8 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {
-    HistoryListPanelCol,
-    HistoryListRowJob,
-    ServerHistoryStateAllPrintStatusEntry,
-    ServerHistoryStateJob,
-} from '@/store/server/history/types'
-import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
+import { HistoryListPanelCol, HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
+import { caseInsensitiveSort, formatFilesize, toggleArrayItem } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseThick,
@@ -459,10 +454,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         return this.$store.state.gui.view.history.hideColums ?? []
     }
 
-    set hideColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
-    }
-
     get showMaintenanceEntries() {
         return this.$store.state.gui.view.history.showMaintenanceEntries
     }
@@ -537,15 +528,15 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     }
 
     changeColumnVisible(name: string) {
-        if (this.headers.filter((header) => header.value === name).length) {
-            const value = this.headers.filter((header) => header.value === name)[0].visible
+        const value = toggleArrayItem(this.hideColums, name)
 
-            this.$store.dispatch('gui/setHistoryColumns', { name: name, value: value })
-        }
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value })
     }
 
-    changeStatusVisible(status: ServerHistoryStateAllPrintStatusEntry) {
-        this.$store.dispatch('gui/toggleStatusInHistoryList', status.name)
+    changeStatusVisible(status: string) {
+        const value = toggleArrayItem(this.$store.state.gui.view.history.hidePrintStatus, status)
+
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hidePrintStatus', value })
     }
 
     exportHistory() {

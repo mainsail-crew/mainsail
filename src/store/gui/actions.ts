@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { GuiState, GuiStateDashboard, GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
-import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
+import { GuiState, GuiStateInitPayload, GuiViewport } from '@/store/gui/types'
 import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
 import { deletePath, isRecord } from '@/plugins/helpers'
+
+const LOG_PREFIX = '[GUI]'
+const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
@@ -18,176 +21,110 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('webcams/reset')
     },
 
-    init() {
-        window.console.debug('init gui')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore' })
+    async init({ commit, dispatch, rootGetters, rootState }) {
+        logDebug('init')
+
+        const values: GuiStateInitPayload = await (async () => {
+            try {
+                const payload = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: 'mainsail' })
+                return (payload?.value ?? {}) as GuiStateInitPayload
+            } catch {
+                logDebug('create Mainsail namespace')
+
+                const defaultValues = (await this.dispatch('gui/getDefaults')) as GuiStateInitPayload
+                defaultValues.initVersion = rootGetters['getVersion']
+
+                dispatch('restoreValues', defaultValues)
+                return defaultValues
+            }
+        })()
+
+        if ('remoteprinters' in values) {
+            if (rootState.instancesDB === 'moonraker') {
+                // TODO: convert to async module initialization
+                dispatch('remoteprinters/initStore', values.remoteprinters?.printers ?? {})
+            }
+            delete values.remoteprinters
+        }
+
+        for (const key of excludeKeys) {
+            const parts = key.split('.')
+            let value: unknown = values
+
+            for (const part of parts) {
+                if (!isRecord(value)) break
+                value = value[part]
+            }
+
+            if (value === undefined || value === null) continue
+
+            logDebug(`remove ${key} from gui namespace`)
+            await dispatch('deleteSetting', key)
+            deletePath(values, key)
+        }
+
+        commit('setData', values)
+
+        // TODO: convert to async module initialization
+        dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
+        dispatch('gui/webcams/init', null, { root: true })
     },
 
-    async initStore({ commit, dispatch, rootGetters, rootState }, payload) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-        const mainsailUrl = baseUrl + '?namespace=mainsail'
-
-        if ('remoteprinters' in payload.value) {
-            if (rootState.instancesDB === 'moonraker')
-                dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
-            delete payload.value.remoteprinters
-        }
-
-        // delete currentPath if exists
-        if (payload.value?.view?.gcodefiles?.currentPath) {
-            window.console.debug('remove currentPath from gui namespace')
-            await fetch(mainsailUrl + '&key=view.gcodefiles.currentPath', { method: 'DELETE' })
-        }
-
-        // delete currentPath if exists
-        if (payload.value?.view?.configfiles?.currentPath) {
-            window.console.debug('remove currentPath from gui namespace')
-            await fetch(mainsailUrl + '&key=view.configfiles.currentPath', { method: 'DELETE' })
-        }
-
-        //update cooldownGcode from V2.0.1 to V2.1.0
-        if ('cooldownGcode' in payload.value) {
-            window.console.debug('update cooldownGcode to new namespace')
-            dispatch('saveSetting', { name: 'presets.cooldownGcode', value: payload.value.cooldownGcode })
-
-            await fetch(mainsailUrl + '&key=cooldownGcode', { method: 'DELETE' })
-            delete payload.value.cooldownGcode
-        }
-
-        //update presets from V2.0.1 to V2.1.0
-        if ('presets' in payload.value && Array.isArray(payload.value.presets)) {
-            window.console.debug('update presets to new namespace')
-
-            payload.value.presets.forEach((preset: GuiPresetsStatePreset) => {
-                dispatch('presets/store', { values: preset })
-            })
-
-            delete payload.value.presets
-        }
-
-        //update nonExpandPanels from V2.1.x to V2.2.0
-        if (
-            'dashboard' in payload.value &&
-            'nonExpandPanels' in payload.value.dashboard &&
-            Array.isArray(payload.value.dashboard.nonExpandPanels)
-        ) {
-            await fetch(mainsailUrl + '&key=dashboard.nonExpandPanels', { method: 'DELETE' })
-            dispatch('saveSetting', {
-                name: 'dashboard.nonExpandPanels.widescreen',
-                value: payload.value.dashboard.nonExpandPanels,
-            })
-            delete payload.value.dashboard.nonExpandPanels
-        }
-
-        //update tools to temperatures panel from V2.1.x to V2.2.0
-        if ('dashboard' in payload.value) {
-            const dashboard = payload.value.dashboard as GuiStateDashboard
-            const layouts: GuiStateDashboardLayoutKey[] = [
-                'mobileLayout',
-                'tabletLayout1',
-                'tabletLayout2',
-                'desktopLayout1',
-                'desktopLayout2',
-                'widescreenLayout1',
-                'widescreenLayout2',
-                'widescreenLayout3',
-            ]
-
-            layouts.forEach((layout) => {
-                if (layout in dashboard) {
-                    const layoutArray = dashboard[layout] as GuiStateLayoutoption[]
-                    const index = layoutArray.findIndex((entry) => entry.name === 'tools')
-
-                    if (index !== -1) {
-                        layoutArray[index].name = 'temperature'
-
-                        dispatch('saveSetting', {
-                            name: 'dashboard.' + layout,
-                            value: layoutArray,
-                        })
-                    }
-                }
-            })
-        }
-
-        await commit('setData', payload.value)
-        await dispatch('socket/removeInitModule', 'gui/init', { root: true })
-    },
-
-    /*
-     * Create mainsail namespace in moonraker DB and fill in default values
-     */
-    async initDb({ dispatch, rootGetters }) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-
-        const urlDefault =
+    async getDefaults({ rootGetters }) {
+        const urlDefaultJson =
             rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
-        const responseDefault = await fetch(urlDefault)
+
         let defaults: Record<string, unknown> & { error?: { code?: number } } = {}
-        if (responseDefault) {
-            defaults = await responseDefault.json()
-            if (defaults.error?.code === 404) defaults = {}
+        try {
+            defaults = await fetch(urlDefaultJson).then((result) => result.json())
+            if (defaults.error?.code === 404) logDebug('default.json not found')
+
+            if ('error' in defaults) return {}
+        } catch (error) {
+            logError('Error while parsing default.json', error)
         }
 
-        for (const key in defaults) {
-            const namespaceDefaults = defaults[key]
+        return defaults
+    },
 
-            if (['webcams', 'timelapse'].includes(key) && isRecord(namespaceDefaults)) {
-                for (const key2 of Object.keys(namespaceDefaults)) {
-                    await fetch(baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            namespace: key,
-                            key: key2,
-                            value: namespaceDefaults[key2],
-                        }),
-                    })
-                }
-            } else {
-                await fetch(baseUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        namespace: 'mainsail',
-                        key: key,
-                        value: namespaceDefaults,
-                    }),
+    async restoreValues(_, values) {
+        const keys = Object.keys(values)
+
+        // these keys are handled separately, because they are in their own namespaces and not a child of mainsail
+        const ownNamespaces = ['timelapse', 'webcams']
+        const ownNamespaceKeys = keys.filter((key) => ownNamespaces.includes(key))
+        const mainsailKeys = keys.filter((key) => !ownNamespaces.includes(key))
+
+        for (const key of ownNamespaceKeys) {
+            const subKeys = Object.keys(values[key])
+            for (const subKey of subKeys) {
+                const value = values[key][subKey]
+                await Vue.$socket.emitAndWait('server.database.post_item', {
+                    namespace: key,
+                    key: subKey,
+                    value,
                 })
             }
         }
 
-        await fetch(baseUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                namespace: 'mainsail',
-                key: 'initVersion',
-                value: rootGetters['getVersion'],
-            }),
-        })
-
-        dispatch('init')
+        for (const key of mainsailKeys) {
+            const value = values[key]
+            await Vue.$socket.emitAndWait('server.database.post_item', { namespace: 'mainsail', key, value })
+        }
     },
 
-    saveSetting({ commit }, payload) {
+    async saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
         if (excludeKeys.includes(payload.name)) return
 
-        Vue.$socket.emit('server.database.post_item', {
+        await Vue.$socket.emitAndWait('server.database.post_item', {
             namespace: 'mainsail',
             key: payload.name,
             value: payload.value,
         })
     },
 
-    updateSettings(_, payload) {
+    async updateSettings(_, payload) {
         const keyName = payload.keyName
         let newState = payload.newVal
         if (
@@ -198,138 +135,92 @@ export const actions: ActionTree<GuiState, RootState> = {
         )
             newState = Object.assign(payload.value[keyName], { ...newState })
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
-    },
-
-    setGcodefilesMetadata({ commit, dispatch, state }, data) {
-        commit('setGcodefilesMetadata', data)
-        dispatch('updateSettings', {
-            keyName: 'view.gcodefiles.hideMetadataColumns',
-            newVal: state.view.gcodefiles.hideMetadataColumns,
+        await Vue.$socket.emitAndWait('server.database.post_item', {
+            namespace: 'mainsail',
+            key: keyName,
+            value: newState,
         })
     },
 
-    setGcodefilesShowHiddenFiles({ commit, dispatch, state }, data) {
-        commit('setGcodefilesShowHiddenFiles', data)
-        dispatch('updateSettings', {
-            keyName: 'view.gcodefiles.showHiddenFiles',
-            newVal: state.view.gcodefiles.showHiddenFiles,
-        })
+    async deleteSetting(_, key: string) {
+        await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
     },
 
-    setCurrentWebcam({ commit, dispatch, state }, payload) {
-        commit('setCurrentWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'view.webcam.currentCam',
-            newVal: state.view.webcam.currentCam,
-        })
-    },
-
-    setTempchartDatasetAdditionalSensorSetting({ commit, dispatch, state }, payload) {
-        commit('setTempchartDatasetAdditionalSensorSetting', payload)
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart',
-            newVal: state.view.tempchart,
-        })
-    },
-
-    async resetMoonrakerDB({ rootGetters }, payload) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-
-        const urlDefault =
-            rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
-
-        let defaults: Record<string, unknown> = {}
-        try {
-            defaults = await fetch(urlDefault).then((result) => result.json())
-        } catch (error) {
-            window.console.error('Error while fetching/parsing default.json', error)
-        }
+    async resetMoonrakerDB(_, payload) {
+        const defaults = await this.dispatch('gui/getDefaults')
 
         for (const key of payload) {
             if (['maintenance', 'timelapse', 'webcams'].includes(key)) {
-                const url = baseUrl + '?namespace=' + key
+                const objects = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: key })
 
-                const response = await fetch(url)
-                const objects = await response.json()
-                if (objects?.result?.value) {
-                    for (const item of Object.keys(objects?.result?.value)) {
-                        await fetch(url + '&key=' + item, { method: 'DELETE' })
+                if (objects?.value) {
+                    for (const item of Object.keys(objects?.value)) {
+                        await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: key, key: item })
                     }
                 }
 
-                if (key in defaults) {
-                    const namespaceDefaults = defaults[key]
-                    if (isRecord(namespaceDefaults)) {
-                        for (const key2 of Object.keys(namespaceDefaults)) {
-                            await fetch(baseUrl, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    namespace: key,
-                                    key: key2,
-                                    value: namespaceDefaults[key2],
-                                }),
-                            })
-                        }
-                    }
-                }
-            } else if (key === 'history_jobs') {
-                await fetch(rootGetters['socket/getUrl'] + '/server/history/job?all=true', { method: 'DELETE' })
-            } else if (key === 'history_totals') {
-                await fetch(rootGetters['socket/getUrl'] + '/server/history/reset_totals', { method: 'POST' })
-            } else {
-                await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=' + key, {
-                    method: 'DELETE',
-                })
+                if (!(key in defaults)) continue
 
-                if (key in defaults) {
-                    await fetch(baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            namespace: 'mainsail',
-                            key: key,
-                            value: defaults[key],
-                        }),
+                for (const key2 of Object.keys(defaults[key])) {
+                    await Vue.$socket.emitAndWait('server.database.post_item', {
+                        namespace: key,
+                        key: key2,
+                        value: defaults[key][key2],
                     })
                 }
+
+                continue
             }
+
+            if (key === 'history_jobs') {
+                await Vue.$socket.emitAndWait('server.history.delete_job', { all: true })
+                continue
+            }
+
+            if (key === 'history_totals') {
+                await Vue.$socket.emitAndWait('server.history.reset_totals')
+                continue
+            }
+
+            await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
+
+            if (!(key in defaults)) continue
+
+            await Vue.$socket.emitAndWait('server.database.post_item', {
+                namespace: 'mainsail',
+                key: key,
+                value: defaults[key],
+            })
         }
 
         window.location.reload()
     },
 
-    async backupMoonrakerDB({ rootGetters }, payload) {
+    async backupMoonrakerDB(_, payload) {
         const backup: Record<string, Record<string, unknown>> = {}
 
-        const responseMainsail = await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail')
-        const objectsMainsail = await responseMainsail.json()
-        const mainsailDb = (objectsMainsail?.result?.value ?? {}) as Record<string, unknown>
+        const mainsailDb = (await Vue.$socket
+            .emitAndWait('server.database.get_item', { namespace: 'mainsail' })
+            .then((res) => res.value ?? {})) as Record<string, unknown>
 
         for (const key of payload) {
             if (['timelapse', 'webcams'].includes(key)) {
-                const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + key
+                const result = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: key })
+                if (result?.value) backup[key] = { ...result.value }
 
-                const response = await fetch(url)
-                const objects = await response.json()
-                if (isRecord(objects?.result?.value)) backup[key] = { ...objects?.result?.value }
-            } else {
-                const mainsailValue = mainsailDb[key]
-                if (!isRecord(mainsailValue)) continue
-
-                backup[key] = { ...mainsailValue }
-
-                excludeKeys
-                    .filter((excludeKey) => excludeKey.startsWith(key + '.'))
-                    .forEach((excludeKey) => {
-                        deletePath(backup[key], excludeKey.substring(key.length + 1))
-                    })
+                continue
             }
+
+            const mainsailValue = mainsailDb[key]
+            if (!isRecord(mainsailValue)) continue
+
+            backup[key] = { ...mainsailValue }
+
+            excludeKeys
+                .filter((excludeKey) => excludeKey.startsWith(key + '.'))
+                .forEach((excludeKey) => {
+                    deletePath(backup[key], excludeKey.substring(key.length + 1))
+                })
         }
 
         const element = document.createElement('a')
@@ -342,115 +233,79 @@ export const actions: ActionTree<GuiState, RootState> = {
         document.body.removeChild(element)
     },
 
-    async restoreMoonrakerDB({ rootGetters }, payload) {
-        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-        const mainsailUrl = baseUrl + '?namespace=mainsail'
-        const responseNamespaces = await fetch(rootGetters['socket/getUrl'] + '/server/database/list')
-        const objectsNamespaces = await responseNamespaces.json()
-        const namespacesArray = objectsNamespaces?.result?.namespaces ?? []
-        let mainsailArray: string[] = []
+    async restoreMoonrakerDB(_, payload) {
+        const namespacesArray = await Vue.$socket
+            .emitAndWait('server.database.list')
+            .then((res) => res.namespaces ?? [])
 
+        let mainsailArray: string[] = []
         if (namespacesArray.includes('mainsail')) {
-            const responseMainsail = await fetch(mainsailUrl)
-            const objectsMainsail = await responseMainsail.json()
-            mainsailArray = Object.keys(objectsMainsail?.result?.value ?? {})
+            mainsailArray = await Vue.$socket
+                .emitAndWait('server.database.get_item', { namespace: 'mainsail' })
+                .then((res) => Object.keys(res.value ?? {}))
         }
 
         for (const key of payload.dbCheckboxes) {
             if (['timelapse', 'webcams'].includes(key)) {
                 if (namespacesArray.includes(key)) {
-                    const url = baseUrl + '?namespace=' + key
-                    const response = await fetch(url)
-                    const objects = await response.json()
-                    if (objects?.result?.value) {
-                        for (const item of Object.keys(objects?.result?.value)) {
-                            await fetch(url + '&key=' + item, { method: 'DELETE' })
-                        }
+                    const objects = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: key })
+                    for (const item of Object.keys(objects.value ?? {})) {
+                        await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: key, key: item })
                     }
                 }
 
                 for (const key2 of Object.keys(payload.restoreObjects[key])) {
                     const value = payload.restoreObjects[key][key2]
-                    await fetch(baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            namespace: key,
-                            key: key2,
-                            value,
-                        }),
+                    await Vue.$socket.emitAndWait('server.database.post_item', {
+                        namespace: key,
+                        key: key2,
+                        value,
                     })
                 }
-            } else {
-                if (mainsailArray.includes(key)) await fetch(mainsailUrl + '&key=' + key, { method: 'DELETE' })
-                await fetch(mainsailUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        namespace: 'mainsail',
-                        key,
-                        value: payload.restoreObjects[key],
-                    }),
-                })
+
+                continue
             }
+
+            if (mainsailArray.includes(key)) {
+                await Vue.$socket.emitAndWait('server.database.delete_item', { namespace: 'mainsail', key })
+            }
+
+            await Vue.$socket.emitAndWait('server.database.post_item', {
+                namespace: 'mainsail',
+                key,
+                value: payload.restoreObjects[key],
+            })
         }
 
         window.location.reload()
     },
 
-    setHistoryColumns({ commit, dispatch, state }, data) {
-        commit('setHistoryColumns', data)
-        dispatch('updateSettings', {
-            keyName: 'view.history',
-            newVal: state.view.history,
-        })
-    },
+    saveExpandPanel({ dispatch, state }, payload: { name: string; viewport: GuiViewport; value: boolean }) {
+        const array = [...state.dashboard.nonExpandPanels[payload.viewport]]
+        const index = array.indexOf(payload.name)
 
-    toggleStatusInHistoryList({ commit, dispatch, state }, name) {
-        const array: string[] = [...state.view.history.hidePrintStatus]
-        const index = array.indexOf(name)
-
-        if (index === -1) array.push(name)
-        else array.splice(index, 1)
-
-        commit('setHistoryHidePrintStatus', array)
-
-        dispatch('updateSettings', {
-            keyName: 'view.history.hidePrintStatus',
-            newVal: array,
-        })
-    },
-
-    saveExpandPanel({ commit, dispatch, state }, payload) {
-        if (!payload.value) commit('addClosePanel', { name: payload.name, viewport: payload.viewport })
-        else commit('removeClosePanel', { name: payload.name, viewport: payload.viewport })
-
-        dispatch('updateSettings', {
-            keyName: `dashboard.nonExpandPanels.${payload.viewport}`,
-            newVal: state.dashboard.nonExpandPanels[payload.viewport],
-        })
-    },
-
-    resetLayout({ dispatch }, name: GuiStateDashboardLayoutKey) {
-        const defaultState = getDefaultState()
-        const newVal = defaultState.dashboard[name]
+        if (!payload.value && index === -1) array.push(payload.name)
+        else if (payload.value && index !== -1) array.splice(index, 1)
 
         dispatch('saveSetting', {
-            name: 'dashboard.' + name,
-            value: newVal,
+            name: `dashboard.nonExpandPanels.${payload.viewport}`,
+            value: array,
+        })
+    },
+
+    resetLayout({ dispatch }, name: keyof GuiState['dashboard']) {
+        const defaultState = getDefaultState()
+        dispatch('saveSetting', {
+            name: `dashboard.${name}`,
+            value: defaultState.dashboard[name] ?? [],
         })
     },
 
     updateGcodeviewerCache({ dispatch, state }, payload) {
-        const klipperCache = state.gcodeViewer.klipperCache as Record<string, unknown>
-        const payloadCache = payload as Record<string, unknown>
+        const klipperCache = (state.gcodeViewer.klipperCache as Record<string, unknown>) ?? {}
 
-        Object.keys(payloadCache).forEach((key) => {
-            const value = payloadCache[key]
+        Object.keys(payload).forEach((key) => {
+            const value = payload[key]
             const oldValue = key in klipperCache ? klipperCache[key] : null
 
             if (JSON.stringify(value) !== JSON.stringify(oldValue))
@@ -458,44 +313,25 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    announcementDismissFlag(_, payload) {
-        window.console.log(payload)
+    setChartData({ dispatch, state }, payload: { objectName: string; dataset: string; value: boolean | string }) {
+        const value: Record<string, unknown> = { ...(state.view.tempchart.datasetSettings[payload.objectName] ?? {}) }
+        value[payload.dataset] = payload.value
+
+        dispatch('saveSetting', { name: `view.tempchart.datasetSettings.${payload.objectName}`, value })
     },
 
-    setChartDatasetStatus(
-        { commit, dispatch, state },
+    setChartDataAdditionalSensorStatus(
+        { dispatch, state },
         payload: { objectName: string; dataset: string; value: boolean }
     ) {
-        commit('setChartDatasetStatus', payload)
+        const value: Record<string, unknown> = {
+            ...(state.view.tempchart.datasetSettings[payload.objectName]?.additionalSensors ?? {}),
+        }
+        value[payload.dataset] = payload.value
 
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart.datasetSettings',
-            newVal: state.view.tempchart.datasetSettings,
-        })
-    },
-
-    setDatasetAdditionalSensorStatus(
-        { commit, dispatch, state },
-        payload: { objectName: string; dataset: string; value: boolean }
-    ) {
-        commit('setDatasetAdditionalSensorStatus', payload)
-
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart.datasetSettings',
-            newVal: state.view.tempchart.datasetSettings,
-        })
-    },
-
-    setChartColor({ commit, dispatch, state }, payload: { objectName: string; value: boolean }) {
-        commit('setChartDatasetStatus', {
-            objectName: payload.objectName,
-            dataset: 'color',
-            value: payload.value,
-        })
-
-        dispatch('updateSettings', {
-            keyName: 'view.tempchart.datasetSettings',
-            newVal: state.view.tempchart.datasetSettings,
+        dispatch('saveSetting', {
+            name: `view.tempchart.datasetSettings.${payload.objectName}.additionalSensors`,
+            value,
         })
     },
 }

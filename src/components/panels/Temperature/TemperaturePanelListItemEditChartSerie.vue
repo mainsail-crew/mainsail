@@ -28,7 +28,7 @@ export default class TemperaturePanelListItemEditChartSerie extends Mixins(BaseM
     }
 
     set value(newVal) {
-        this.$store.dispatch('gui/setChartDatasetStatus', {
+        this.$store.dispatch('gui/setChartData', {
             objectName: this.objectName,
             dataset: this.serieName,
             value: newVal,

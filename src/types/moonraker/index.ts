@@ -27,6 +27,7 @@
  */
 
 import type { DatabaseRPC } from './DatabaseRPC'
+import type { HistoryRPC } from './HistoryRPC'
 import type { MachineRPC } from './MachineRPC'
 import type { PrinterRPC } from './PrinterRPC'
 import type { ServerRPC } from './ServerRPC'
@@ -34,7 +35,7 @@ import type { ServerRPC } from './ServerRPC'
 /**
  * Combined Moonraker RPC Interface containing all method categories.
  */
-export interface MoonrakerRPCInterface extends DatabaseRPC, MachineRPC, PrinterRPC, ServerRPC {}
+export interface MoonrakerRPCInterface extends DatabaseRPC, HistoryRPC, MachineRPC, PrinterRPC, ServerRPC {}
 
 /**
  * Union type of all available RPC method names.

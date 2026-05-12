@@ -47,7 +47,7 @@
                         <v-col class="col-auto pl-0">
                             <v-icon
                                 :color="header.visible ? 'primary' : 'grey lighten-1'"
-                                @click.stop="changeMetadataVisible(header.value, !header.visible)">
+                                @click.stop="changeMetadataVisible(header.value)">
                                 {{ header.visible ? mdiCheckboxMarked : mdiCheckboxBlankOutline }}
                             </v-icon>
                         </v-col>
@@ -73,8 +73,14 @@ export default class GcodefilesPanelHeaderSettings extends Mixins(BaseMixin, Gco
     mdiCog = mdiCog
     mdiDragVertical = mdiDragVertical
 
-    changeMetadataVisible(name: string, value: boolean) {
-        this.$store.dispatch('gui/setGcodefilesMetadata', { name: name, value: value })
+    changeMetadataVisible(name: string) {
+        const value = [...(this.$store.state.gui.view.gcodefiles.hideMetadataColumns ?? [])]
+        const index = value.findIndex((value: string) => value === name)
+
+        if (index !== -1) value.splice(index, 1)
+        else value.push(name)
+
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.hideMetadataColumns', value })
     }
 }
 </script>

@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { GuiState, GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiState, GuiStateDashboard, GuiStateLayoutoption, GuiViewport } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
 import { RootState, Theme } from '@/store/types'
@@ -28,7 +28,7 @@ export const getters: GetterTree<GuiState, RootState> = {
         return ['temperature', 'target'].includes(payload.type)
     },
 
-    getDatasetAdditionalSensorValue: (state) => (payload: { name: string; sensor: string }) => {
+    getChartDataAdditionalSensorValue: (state) => (payload: { name: string; sensor: string }) => {
         const entry = state.view.tempchart.datasetSettings[payload.name] ?? null
         if (entry === null || typeof entry !== 'object' || !('additionalSensors' in entry)) return true
 
@@ -36,7 +36,7 @@ export const getters: GetterTree<GuiState, RootState> = {
         return (sensors[payload.sensor] ?? true) as boolean
     },
 
-    getPanelExpand: (state) => (name: string, viewport: string) => {
+    getPanelExpand: (state) => (name: string, viewport: GuiViewport) => {
         if ('dashboard' in state && viewport in state.dashboard.nonExpandPanels) {
             return !state.dashboard.nonExpandPanels[viewport].includes(name)
         }
@@ -116,7 +116,7 @@ export const getters: GetterTree<GuiState, RootState> = {
             let panels = state.dashboard[layoutName] as GuiStateLayoutoption[]
 
             panels = panels?.filter((element) => element !== null) ?? []
-            const allPossiblePanels = getters['getAllPossiblePanels']
+            const allPossiblePanels = getters['getAllPossiblePanels'] as string[]
 
             if (column < 2) {
                 const allViewportPanels = getters['getAllPanelsFromViewport'](viewport) as GuiStateLayoutoption[]

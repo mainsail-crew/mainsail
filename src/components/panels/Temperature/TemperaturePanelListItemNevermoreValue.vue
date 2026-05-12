@@ -126,7 +126,7 @@ export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseM
     }
 
     get guiSetting() {
-        return this.$store.getters['gui/getDatasetAdditionalSensorValue']({
+        return this.$store.getters['gui/getChartDataAdditionalSensorValue']({
             name: this.objectName,
             sensor: this.keyName,
         })
