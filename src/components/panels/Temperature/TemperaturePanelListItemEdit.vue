@@ -76,8 +76,9 @@ export default class TemperaturePanelListItemEdit extends Mixins(BaseMixin) {
     setChartColor(value: string | { hex: string }): void {
         if (typeof value === 'object' && 'hex' in value) value = value.hex
 
-        this.$store.dispatch('gui/setChartColor', {
+        this.$store.dispatch('gui/setChartData', {
             objectName: this.objectName,
+            dataset: 'color',
             value,
         })
 

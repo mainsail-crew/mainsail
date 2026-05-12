@@ -594,3 +594,25 @@ export function generateTimestamp(date: Date = new Date()): string {
 
     return `${dateString}-${timeString}`
 }
+
+/**
+ * Toggles an item in an array (adds if missing, removes if present).
+ * Returns a new array without mutating the original.
+ *
+ * @param array - The source array
+ * @param item - The item to toggle
+ * @returns A new array with the item added or removed
+ *
+ * @example
+ * toggleArrayItem([1, 2, 3], 2) // [1, 3]
+ * toggleArrayItem([1, 2, 3], 4) // [1, 2, 3, 4]
+ */
+export function toggleArrayItem<T>(array: T[], item: T): T[] {
+    const result = [...array]
+    const index = result.indexOf(item)
+
+    if (index === -1) result.push(item)
+    else result.splice(index, 1)
+
+    return result
+}

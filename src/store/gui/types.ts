@@ -6,8 +6,13 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { GuiNotificationState } from '@/store/gui/notifications/types'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { GuiNavigationState } from '@/store/gui/navigation/types'
+import { DeepPartial } from '@/types/utils'
+
+export type GuiViewport = 'mobile' | 'tablet' | 'desktop' | 'widescreen'
+export type GuiStateInitPayload = DeepPartial<GuiState>
 
 export interface GuiState {
+    initVersion: string | null
     general: {
         printername: string
         language: string
@@ -222,9 +227,7 @@ export interface GuiState {
 }
 
 export interface GuiStateDashboard {
-    nonExpandPanels: {
-        [index: string]: string[]
-    }
+    nonExpandPanels: Record<GuiViewport, string[]>
     mobileLayout: GuiStateLayoutoption[]
     tabletLayout1: GuiStateLayoutoption[]
     tabletLayout2: GuiStateLayoutoption[]
@@ -234,8 +237,6 @@ export interface GuiStateDashboard {
     widescreenLayout2: GuiStateLayoutoption[]
     widescreenLayout3: GuiStateLayoutoption[]
 }
-
-export type GuiStateDashboardLayoutKey = Exclude<keyof GuiStateDashboard, 'nonExpandPanels'>
 
 export interface GuiStateLayoutoption {
     name: string

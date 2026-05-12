@@ -1,9 +1,9 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import { GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 import { GuiMacrosState } from '@/store/gui/macros/types'
+import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
 
 export const actions: ActionTree<GuiMacrosState, RootState> = {
     reset({ commit }) {
@@ -58,38 +58,27 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         dispatch('groupUpload', payload.id)
     },
 
-    groupDelete({ commit, dispatch, rootState }, id) {
+    async groupDelete({ commit, dispatch, rootState }, id) {
         commit('groupDelete', id)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'macros.macrogroups.' + id })
-
-        const layouts: GuiStateDashboardLayoutKey[] = [
-            'mobileLayout',
-            'tabletLayout1',
-            'tabletLayout2',
-            'desktopLayout1',
-            'desktopLayout2',
-            'widescreenLayout1',
-            'widescreenLayout2',
-            'widescreenLayout3',
-        ]
-
-        layouts.forEach((layoutname) => {
-            const dashboard = rootState.gui?.dashboard
-            if (!dashboard) return
-
-            const layoutArray = [...(dashboard[layoutname] as GuiStateLayoutoption[])]
-            const index = layoutArray.findIndex((layoutPos) => layoutPos.name === 'macrogroup_' + id)
-            if (index === -1) return
-
-            commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
-            dispatch(
-                'gui/updateSettings',
-                {
-                    keyName: 'dashboard.' + layoutname,
-                    newVal: dashboard[layoutname],
-                },
-                { root: true }
-            )
+        await Vue.$socket.emitAndWait('server.database.delete_item', {
+            namespace: 'mainsail',
+            key: `macros.macrogroups.${id}`,
         })
+
+        type DashboardLayoutKey = Exclude<keyof GuiState['dashboard'], 'nonExpandPanels'>
+        const layouts = Object.keys(rootState.gui?.dashboard ?? {}).filter(
+            (key) => key !== 'nonExpandPanels'
+        ) as DashboardLayoutKey[]
+
+        for (const layoutname of layouts) {
+            const macrogroupId = `macrogroup_${id}`
+            const layoutArray: GuiStateLayoutoption[] = [...(rootState.gui?.dashboard[layoutname] ?? [])]
+            const index = layoutArray.findIndex((layoutPos) => layoutPos.name === macrogroupId)
+
+            if (index === -1) continue
+
+            layoutArray.splice(index, 1)
+            dispatch('gui/saveSetting', { name: `dashboard.${layoutname}`, value: layoutArray }, { root: true })
+        }
     },
 }

@@ -60,6 +60,9 @@ import Panel from '@/components/ui/Panel.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { mdiMenuDown, mdiViewGrid, mdiWebcam } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
+import { GuiState } from '@/store/gui/types'
+
+type WebcamPages = keyof GuiState['view']['webcam']['currentCam']
 
 @Component({
     components: {
@@ -67,7 +70,7 @@ import WebcamMixin from '@/components/mixins/webcam'
     },
 })
 export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
-    @Prop({ default: 'dashboard' }) declare currentPage?: string
+    @Prop({ default: 'dashboard' }) declare currentPage?: WebcamPages
 
     mdiWebcam = mdiWebcam
     mdiMenuDown = mdiMenuDown
@@ -93,7 +96,8 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     set currentCamId(newVal: string) {
-        this.$store.dispatch('gui/setCurrentWebcam', { page: this.currentPage, value: newVal })
+        const key = `view.webcam.currentCam.${this.currentPage}`
+        this.$store.dispatch('gui/saveSetting', { name: key, value: newVal })
     }
 
     get currentCam(): GuiWebcamStateWebcam {
