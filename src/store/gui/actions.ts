@@ -5,6 +5,7 @@ import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
 import { deletePath, isRecord } from '@/plugins/helpers'
+import { JsonRpcError } from '@/types/moonraker'
 
 const LOG_PREFIX = '[GUI]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
@@ -28,9 +29,15 @@ export const actions: ActionTree<GuiState, RootState> = {
             try {
                 const payload = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: 'mainsail' })
                 return (payload?.value ?? {}) as GuiStateInitPayload
-            } catch {
-                logDebug('create Mainsail namespace')
+            } catch (e) {
+                const code = (e as JsonRpcError).code || 0
+                if (code !== -32601) {
+                    const message = (e as JsonRpcError).message || 'Unknown error'
+                    logError('Error while fetching mainsail namespace', message)
+                    throw e
+                }
 
+                logDebug('create Mainsail namespace')
                 const defaultValues = (await this.dispatch('gui/getDefaults')) as GuiStateInitPayload
                 defaultValues.initVersion = rootGetters['getVersion']
 
@@ -96,13 +103,14 @@ export const actions: ActionTree<GuiState, RootState> = {
         const mainsailKeys = keys.filter((key) => !ownNamespaces.includes(key))
 
         for (const key of ownNamespaceKeys) {
-            const subKeys = Object.keys(values[key])
-            for (const subKey of subKeys) {
-                const value = values[key][subKey]
+            const namespaceValue = values[key]
+            if (!isRecord(namespaceValue)) continue
+
+            for (const subKey of Object.keys(namespaceValue)) {
                 await Vue.$socket.emitAndWait('server.database.post_item', {
                     namespace: key,
                     key: subKey,
-                    value,
+                    value: namespaceValue[subKey],
                 })
             }
         }
