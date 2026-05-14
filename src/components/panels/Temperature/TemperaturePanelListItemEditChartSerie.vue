@@ -11,11 +11,12 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { capitalize } from '@/plugins/helpers'
+import { GuiTempchartDatasetSetting } from '@/store/gui/types'
 
 @Component
 export default class TemperaturePanelListItemEditChartSerie extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: String, required: true }) readonly serieName!: string
+    @Prop({ type: String, required: true }) readonly serieName!: keyof GuiTempchartDatasetSetting
 
     get value() {
         return this.$store.getters['gui/getDatasetValue']({ name: this.objectName, type: this.serieName })
