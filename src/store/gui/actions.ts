@@ -5,11 +5,15 @@ import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
 import { deletePath, isRecord } from '@/plugins/helpers'
-import { JsonRpcError } from '@/types/moonraker'
+import { isJsonRpcError, JsonRpcError } from '@/types/moonraker'
 
 const LOG_PREFIX = '[GUI]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
 const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
+// Moonraker returns JSON-RPC -32601 ("Method not found") when the requested namespace does not exist.
+// This is expected on a fresh installation to seed defaults. All other errors propagate.
+const NAMESPACE_NOT_FOUND = -32601
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
@@ -30,18 +34,24 @@ export const actions: ActionTree<GuiState, RootState> = {
                 const payload = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: 'mainsail' })
                 return (payload?.value ?? {}) as GuiStateInitPayload
             } catch (e) {
-                const code = (e as JsonRpcError).code || 0
-                if (code !== -32601) {
+                if (!isJsonRpcError(e) || e.code !== NAMESPACE_NOT_FOUND) {
                     const message = (e as JsonRpcError).message || 'Unknown error'
                     logError('Error while fetching mainsail namespace', message)
                     throw e
                 }
 
                 logDebug('create Mainsail namespace')
-                const defaultValues = (await this.dispatch('gui/getDefaults')) as GuiStateInitPayload
+                let defaultValues: GuiStateInitPayload
+                try {
+                    defaultValues = (await this.dispatch('gui/getDefaults')) as GuiStateInitPayload
+                } catch (e) {
+                    logError('Failed to load theme defaults, seeding empty namespace', e)
+                    defaultValues = {}
+                }
+
                 defaultValues.initVersion = rootGetters['getVersion']
 
-                dispatch('restoreValues', defaultValues)
+                await dispatch('restoreValues', defaultValues)
                 return defaultValues
             }
         })()
@@ -81,14 +91,17 @@ export const actions: ActionTree<GuiState, RootState> = {
         const urlDefaultJson =
             rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
 
-        let defaults: Record<string, unknown> & { error?: { code?: number } } = {}
-        try {
-            defaults = await fetch(urlDefaultJson).then((result) => result.json())
-            if (defaults.error?.code === 404) logDebug('default.json not found')
+        const response = await fetch(urlDefaultJson)
+        const defaults: Record<string, unknown> & { error?: { code?: number; message?: string } } =
+            await response.json()
 
-            if ('error' in defaults) return {}
-        } catch (error) {
-            logError('Error while parsing default.json', error)
+        if (defaults.error?.code === 404) {
+            logDebug('default.json not found')
+            return {}
+        }
+
+        if (defaults.error) {
+            throw new Error(`Failed to load default.json: ${defaults.error.message ?? 'Unknown error'}`)
         }
 
         return defaults
@@ -169,11 +182,14 @@ export const actions: ActionTree<GuiState, RootState> = {
 
                 if (!(key in defaults)) continue
 
-                for (const key2 of Object.keys(defaults[key])) {
+                const namespaceDefaults = defaults[key]
+                if (!isRecord(namespaceDefaults)) continue
+
+                for (const key2 of Object.keys(namespaceDefaults)) {
                     await Vue.$socket.emitAndWait('server.database.post_item', {
                         namespace: key,
                         key: key2,
-                        value: defaults[key][key2],
+                        value: namespaceDefaults[key2],
                     })
                 }
 
