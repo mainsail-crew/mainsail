@@ -192,7 +192,7 @@ export interface GuiState {
             hideMcuHostSensors: boolean
             hideMonitors: boolean
             autoscale: boolean
-            datasetSettings: Record<string, Record<string, unknown>>
+            datasetSettings: Record<string, GuiTempchartDatasetSetting>
         }
         timelapse: {
             countPerPage: number
@@ -246,3 +246,12 @@ export interface GuiStateLayoutoption {
 }
 
 export type GuiStateUiSettingsDashboardFilesFilter = 'new' | 'failed' | 'completed'
+
+export interface GuiTempchartDatasetSetting {
+    temperature?: boolean
+    target?: boolean
+    power?: boolean
+    speed?: boolean
+    color?: string
+    additionalSensors?: Record<string, boolean>
+}
