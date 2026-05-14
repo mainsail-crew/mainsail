@@ -65,6 +65,18 @@ export interface JsonRpcError {
 }
 
 /**
+ * Helper function to check if an object is a valid JSON-RPC error.
+ * @param err
+ */
+export const isJsonRpcError = (err: unknown): err is JsonRpcError =>
+    typeof err === 'object' &&
+    err !== null &&
+    'code' in err &&
+    typeof (err as Record<string, unknown>).code === 'number' &&
+    'message' in err &&
+    typeof (err as Record<string, unknown>).message === 'string'
+
+/**
  * JSON-RPC 2.0 Response Object
  * @see https://moonraker.readthedocs.io/en/latest/external_api/introduction/#json-rpc-api-overview
  */
