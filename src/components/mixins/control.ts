@@ -69,7 +69,10 @@ export default class ControlMixin extends Vue {
     }
 
     get defaultActionButton() {
-        return this.$store.getters['gui/getDefaultControlActionButton']
+        if (this.$store.getters['printer/existsQGL']) return 'qgl'
+        else if (this.$store.getters['printer/existsZtilt']) return 'ztilt'
+
+        return 'm84'
     }
 
     get actionButton(): string {
