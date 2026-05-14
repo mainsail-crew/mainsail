@@ -1,11 +1,17 @@
 import { GetterTree } from 'vuex'
-import { GuiState, GuiStateDashboard, GuiStateLayoutoption, GuiViewport } from '@/store/gui/types'
+import {
+    GuiState,
+    GuiStateDashboard,
+    GuiStateLayoutoption,
+    GuiTempchartDatasetSetting,
+    GuiViewport,
+} from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
 import { RootState, Theme } from '@/store/types'
 
 export const getters: GetterTree<GuiState, RootState> = {
-    getThemeName(state) {
+    getThemeName(state): string {
         const theme = state.uiSettings.theme as string
 
         // return defaultTheme, if theme doesnt exists
@@ -14,32 +20,40 @@ export const getters: GetterTree<GuiState, RootState> = {
         return theme
     },
 
-    getDatasetValue: (state) => (payload: { name: string; type: string }) => {
-        const settings = state.view.tempchart.datasetSettings
+    getDatasetValue:
+        (state) =>
+        <K extends keyof GuiTempchartDatasetSetting>(payload: {
+            name: string
+            type: K
+        }): GuiTempchartDatasetSetting[K] | boolean => {
+            const entry = state.view.tempchart.datasetSettings[payload.name]
 
-        if (payload.name in settings && payload.type in settings[payload.name])
-            return settings[payload.name][payload.type]
+            if (entry && payload.type in entry) return entry[payload.type]
 
-        return ['temperature', 'target'].includes(payload.type)
-    },
+            return ['temperature', 'target'].includes(payload.type)
+        },
 
-    getChartDataAdditionalSensorValue: (state) => (payload: { name: string; sensor: string }) => {
-        const entry = state.view.tempchart.datasetSettings[payload.name] ?? null
-        if (entry === null || typeof entry !== 'object' || !('additionalSensors' in entry)) return true
+    getChartDataAdditionalSensorValue:
+        (state) =>
+        (payload: { name: string; sensor: string }): boolean => {
+            const entry = state.view.tempchart.datasetSettings[payload.name] ?? null
+            if (entry === null || typeof entry !== 'object' || !('additionalSensors' in entry)) return true
 
-        const sensors = entry.additionalSensors as Record<string, unknown>
-        return (sensors[payload.sensor] ?? true) as boolean
-    },
+            const sensors = entry.additionalSensors as Record<string, unknown>
+            return (sensors[payload.sensor] ?? true) as boolean
+        },
 
-    getPanelExpand: (state) => (name: string, viewport: GuiViewport) => {
-        if ('dashboard' in state && viewport in state.dashboard.nonExpandPanels) {
-            return !state.dashboard.nonExpandPanels[viewport].includes(name)
-        }
+    getPanelExpand:
+        (state) =>
+        (name: string, viewport: GuiViewport): boolean => {
+            if ('dashboard' in state && viewport in state.dashboard.nonExpandPanels) {
+                return !state.dashboard.nonExpandPanels[viewport].includes(name)
+            }
 
-        return true
-    },
+            return true
+        },
 
-    getAllPossiblePanels: (state, getters, rootState, rootGetters) => {
+    getAllPossiblePanels: (state, getters, rootState, rootGetters): string[] => {
         let allPanels = [...allDashboardPanels]
 
         // remove macros panel and add macrogroups panels if macroMode === expert
@@ -106,7 +120,7 @@ export const getters: GetterTree<GuiState, RootState> = {
 
     getPanels:
         (state, getters, rootState) =>
-        (viewport: string, column: number, onlyVisible: boolean = false) => {
+        (viewport: string, column: number, onlyVisible: boolean = false): GuiStateLayoutoption[] => {
             const layoutName = (column ? `${viewport}Layout${column}` : `${viewport}Layout`) as keyof GuiStateDashboard
             let panels = state.dashboard[layoutName] as GuiStateLayoutoption[]
 
@@ -153,29 +167,31 @@ export const getters: GetterTree<GuiState, RootState> = {
             return panels.filter((element) => allPossiblePanels.includes(element.name))
         },
 
-    getAllPanelsFromViewport: (state) => (viewport: string) => {
-        let panels: GuiStateLayoutoption[] = []
+    getAllPanelsFromViewport:
+        (state) =>
+        (viewport: string): GuiStateLayoutoption[] => {
+            let panels: GuiStateLayoutoption[] = []
 
-        const layoutKey = `${viewport}Layout` as keyof GuiStateDashboard
-        if (layoutKey in state.dashboard) {
-            panels = panels.concat(state.dashboard[layoutKey] as GuiStateLayoutoption[])
-        }
+            const layoutKey = `${viewport}Layout` as keyof GuiStateDashboard
+            if (layoutKey in state.dashboard) {
+                panels = panels.concat(state.dashboard[layoutKey] as GuiStateLayoutoption[])
+            }
 
-        let nr = 1
-        while (`${viewport}Layout${nr}` in state.dashboard) {
-            const layoutKeyNr = `${viewport}Layout${nr}` as keyof GuiStateDashboard
-            panels = panels.concat(state.dashboard[layoutKeyNr] as GuiStateLayoutoption[])
-            nr++
-        }
+            let nr = 1
+            while (`${viewport}Layout${nr}` in state.dashboard) {
+                const layoutKeyNr = `${viewport}Layout${nr}` as keyof GuiStateDashboard
+                panels = panels.concat(state.dashboard[layoutKeyNr] as GuiStateLayoutoption[])
+                nr++
+            }
 
-        return panels
-    },
+            return panels
+        },
 
-    getHours12Format: (state) => {
+    getHours12Format: (state): boolean => {
         const setting = state.general.timeFormat
         if (setting === '12hours') return true
         if (setting === null) {
-            return Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hour12
+            return Intl.DateTimeFormat(navigator.language, { hour: 'numeric' }).resolvedOptions().hour12 as boolean
         }
 
         return false
