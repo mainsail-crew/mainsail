@@ -12,7 +12,7 @@ import { RootState, Theme } from '@/store/types'
 
 export const getters: GetterTree<GuiState, RootState> = {
     getThemeName(state): string {
-        const theme = state.uiSettings.theme as string
+        const theme = state.uiSettings.theme
 
         // return defaultTheme, if theme doesnt exists
         if (themes.findIndex((tmp: Theme) => tmp.name === theme) === -1) return defaultTheme
