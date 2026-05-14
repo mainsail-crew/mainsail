@@ -5,8 +5,8 @@ import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
 import { RootState, Theme } from '@/store/types'
 
 export const getters: GetterTree<GuiState, RootState> = {
-    theme: (state): string => {
-        const theme = state.uiSettings.theme
+    getThemeName(state) {
+        const theme = state.uiSettings.theme as string
 
         // return defaultTheme, if theme doesnt exists
         if (themes.findIndex((tmp: Theme) => tmp.name === theme) === -1) return defaultTheme
@@ -14,16 +14,11 @@ export const getters: GetterTree<GuiState, RootState> = {
         return theme
     },
 
-    getTheme: (state, getters): Theme => {
-        return themes.find((theme: Theme) => theme.name === getters.theme) ?? themes[0]
-    },
-
     getDatasetValue: (state) => (payload: { name: string; type: string }) => {
-        if (
-            payload.name in state.view.tempchart.datasetSettings &&
-            payload.type in state.view.tempchart.datasetSettings[payload.name]
-        )
-            return state.view.tempchart.datasetSettings[payload.name][payload.type]
+        const settings = state.view.tempchart.datasetSettings
+
+        if (payload.name in settings && payload.type in settings[payload.name])
+            return settings[payload.name][payload.type]
 
         return ['temperature', 'target'].includes(payload.type)
     },

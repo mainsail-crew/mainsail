@@ -364,7 +364,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     get themeName() {
-        return this.$store.getters['gui/theme']
+        return this.$store.getters['gui/getThemeName']
     }
 
     set themeName(newVal: string) {

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { themes } from '@/store/variables'
+import { Theme } from '@/store/types'
 
 @Component
 export default class ThemeMixin extends Vue {
@@ -13,11 +15,11 @@ export default class ThemeMixin extends Vue {
     }
 
     get themeName() {
-        return this.$store.getters['gui/theme']
+        return this.$store.getters['gui/getThemeName']
     }
 
     get theme() {
-        return this.$store.getters['gui/getTheme']
+        return themes.find((theme: Theme) => theme.name === this.themeName) ?? themes[0]
     }
 
     get themeMode() {
