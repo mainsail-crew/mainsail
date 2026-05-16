@@ -6,9 +6,7 @@ export interface GuiConsoleState {
     entryStyle: 'default' | 'compact'
     height: number
     autoscroll: boolean
-    consolefilters: {
-        [key: string]: GuiConsoleStateFilter
-    }
+    consolefilters: Record<string, GuiConsoleStateFilter>
     rawOutput: boolean
 }
 

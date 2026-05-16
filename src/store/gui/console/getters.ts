@@ -5,39 +5,32 @@ import { timelapseConsoleFilters } from '@/store/variables'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiConsoleState, RootState> = {
-    getConsolefilters: (state) => {
-        const consolefilters: GuiConsoleStateFilter[] = []
+    getConsolefilters: (state): GuiConsoleStateFilter[] => {
+        const filters = Object.entries(state.consolefilters).map(([id, filter]) => ({
+            ...filter,
+            id,
+        }))
 
-        Object.keys(state.consolefilters).forEach((id: string) => {
-            consolefilters.push({ ...state.consolefilters[id], id })
-        })
-
-        return caseInsensitiveSort(consolefilters, 'name')
+        return caseInsensitiveSort(filters, 'name')
     },
 
-    getConsolefilterRules: (state, getters, rootState): string[] => {
+    getConsolefilterRules: (state): string[] => {
         const output: string[] = []
 
-        if (rootState.gui?.console?.hideWaitTemperatures) output.push('^(?:ok\\s+)?(B|C|T\\d*):')
+        if (state.hideWaitTemperatures) {
+            output.push('^(?:ok\\s+)?(B|C|T\\d*):')
+        }
 
-        if (rootState.gui?.console?.hideTlCommands)
-            timelapseConsoleFilters.forEach((rule: string) => {
-                output.push(rule)
-            })
+        if (state.hideTlCommands) {
+            output.push(...timelapseConsoleFilters)
+        }
 
-        Object.keys(state.consolefilters).forEach((id: string) => {
-            const filter = state.consolefilters[id]
-            if (filter.bool) {
-                filter.regex.split('\n').forEach((rule: string) => {
-                    if (rule !== '') output.push(rule)
-                })
-            }
-        })
+        const rules = Object.values(state.consolefilters)
+            .filter((filter) => filter.bool)
+            .flatMap((filter) => filter.regex.split('\n').filter((rule) => rule !== ''))
+
+        output.push(...rules)
 
         return output
-    },
-
-    getConsoleClearedSince: (state) => {
-        return state.cleared_since
     },
 }
