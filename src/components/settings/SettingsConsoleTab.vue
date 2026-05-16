@@ -269,13 +269,13 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     toggleFilter(filter: ConsoleFilter) {
-        const values = {
+        const value = {
             name: filter.name,
             bool: !filter.bool,
             regex: filter.regex,
         }
 
-        this.$store.dispatch('gui/console/filterUpdate', { id: filter.id, values })
+        this.$store.dispatch('gui/console/filterUpdate', { id: filter.id, value })
     }
 
     createFilter() {
@@ -299,8 +299,8 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
                 regex: this.form.regex,
             }
 
-            if (this.form.id) this.$store.dispatch('gui/console/filterUpdate', { id: this.form.id, values: filter })
-            else this.$store.dispatch('gui/console/filterStore', { values: filter })
+            if (this.form.id) this.$store.dispatch('gui/console/filterUpdate', { id: this.form.id, value: filter })
+            else this.$store.dispatch('gui/console/filterStore', { value: filter })
 
             this.clearForm()
         }

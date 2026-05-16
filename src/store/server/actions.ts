@@ -172,13 +172,13 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    async initGcodeStore({ commit, dispatch, rootGetters }) {
+    async initGcodeStore({ commit, dispatch, rootGetters, rootState }) {
         dispatch('socket/setInitializationStepComponent', 'GcodeStore', { root: true })
 
         commit('clearGcodeStore')
 
         const { gcode_store } = await Vue.$socket.emitAndWait('server.gcode_store')
-        const cleared_since = rootGetters['gui/console/getConsoleClearedSince']
+        const cleared_since = rootState.gui?.console?.cleared_since
         const filters = rootGetters['gui/console/getConsolefilterRules'] as string[]
         const regexFilters = filters
             .map((filter) => {
@@ -336,6 +336,11 @@ export const actions: ActionTree<ServerState, RootState> = {
         const isErrorMessage = ['error', 'response'].includes(event.type) && message.startsWith('!! ')
         const isOnConsolePage = ['/', '/console'].includes(router.currentRoute.path)
         if (isErrorMessage && !isOnConsolePage) Vue.$toast.error(event.formatMessage)
+    },
+
+    clearGcodeStore({ commit }) {
+        commit('setConsoleClearedThisSession')
+        commit('clearGcodeStore')
     },
 
     serviceStateChanged({ commit }, payload) {
