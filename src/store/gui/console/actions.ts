@@ -1,72 +1,54 @@
-import { ActionTree } from 'vuex'
+import { ActionContext, ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
-import Vue from 'vue'
-import { GuiConsoleState } from '@/store/gui/console/types'
+import { GuiConsoleState, GuiConsoleStateFilter } from '@/store/gui/console/types'
 
 export const actions: ActionTree<GuiConsoleState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    clear({ commit }) {
+    async clear({ dispatch }): Promise<void> {
         const cleared_since = new Date().valueOf()
-        Vue.$socket.emit('server.database.post_item', {
-            namespace: 'mainsail',
-            key: 'console.cleared_since',
-            value: cleared_since,
-        })
-
-        commit('clear', {
-            cleared_since,
-        })
-
-        commit('server/clearGcodeStore', {}, { root: true })
-        commit('server/setConsoleClearedThisSession', {}, { root: true })
+        await dispatch('server/clearGcodeStore', {}, { root: true })
+        await dispatch('saveSetting', { name: 'cleared_since', value: cleared_since })
     },
 
-    saveSetting({ dispatch }, payload) {
-        dispatch(
-            'gui/saveSetting',
-            {
-                name: 'console.' + payload.name,
-                value: payload.value,
-            },
-            { root: true }
-        )
+    async saveSetting<T extends keyof GuiConsoleState>(
+        { dispatch }: ActionContext<GuiConsoleState, RootState>,
+        payload: { name: T; value: GuiConsoleState[T] }
+    ) {
+        const key = `console.${payload.name}`
+        await dispatch('gui/saveSetting', { name: key, value: payload.value }, { root: true })
     },
 
-    filterUpload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', {
-            namespace: 'mainsail',
-            key: 'console.consolefilters.' + payload.id,
-            value: payload.value,
-        })
+    async filterUpload({ dispatch }, payload: { id: string; value: GuiConsoleStateFilter }): Promise<void> {
+        const key = `console.consolefilters.${payload.id}`
+        await dispatch('gui/saveSetting', { name: key, value: payload.value }, { root: true })
     },
 
-    filterStore({ commit, dispatch, state }, payload) {
-        const id = uuidv4()
+    async filterStore({ commit, dispatch }, payload: { value: GuiConsoleStateFilter }): Promise<void> {
+        const newPayload = { id: uuidv4(), ...payload }
 
-        commit('filterStore', { id, values: payload.values })
-        dispatch('filterUpload', {
-            id,
-            value: state.consolefilters[id],
-        })
+        commit('filterStore', newPayload)
+        await dispatch('filterUpload', newPayload)
     },
 
-    filterUpdate({ commit, dispatch, state }, payload) {
+    async filterUpdate(
+        { commit, dispatch, state },
+        payload: { id: string; value: Partial<GuiConsoleStateFilter> }
+    ): Promise<void> {
         commit('filterUpdate', payload)
-        dispatch('filterUpload', {
+        await dispatch('filterUpload', {
             id: payload.id,
             value: state.consolefilters[payload.id],
         })
     },
 
-    filterDelete({ commit }, payload) {
-        commit('filterDelete', payload)
-        Vue.$socket.emit('server.database.delete_item', {
-            namespace: 'mainsail',
-            key: 'console.consolefilters.' + payload,
-        })
+    async filterDelete({ commit, dispatch }, id: string): Promise<void> {
+        commit('filterDelete', id)
+
+        const key = `console.consolefilters.${id}`
+        await dispatch('gui/deleteSetting', key, { root: true })
     },
 }

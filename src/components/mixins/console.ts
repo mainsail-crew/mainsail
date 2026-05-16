@@ -59,11 +59,11 @@ export default class ConsoleMixin extends Vue {
         return this.$store.state.gui.gcodehistory.entries ?? []
     }
 
-    toggleFilter(id: string | number, filter: GuiConsoleStateFilter): void {
-        this.$store.dispatch('gui/console/filterUpdate', { id, values: filter })
+    async toggleFilter(id: string | number, filter: GuiConsoleStateFilter): Promise<void> {
+        await this.$store.dispatch('gui/console/filterUpdate', { id, value: filter })
     }
 
-    clearConsole() {
-        this.$store.dispatch('gui/console/clear')
+    async clearConsole(): Promise<void> {
+        await this.$store.dispatch('gui/console/clear')
     }
 }
