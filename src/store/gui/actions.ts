@@ -21,6 +21,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         dispatch('console/reset')
         dispatch('gcodehistory/reset')
+        dispatch('heightmap/reset')
         dispatch('macros/reset')
         dispatch('presets/reset')
         dispatch('webcams/reset')
