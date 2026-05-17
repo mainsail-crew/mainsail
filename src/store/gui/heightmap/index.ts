@@ -1,10 +1,11 @@
 import { Module } from 'vuex'
-import { HeightmapState } from './types'
+import { GuiHeightmapState } from './types'
 import { getters } from './getters'
 import { actions } from './actions'
+import { mutations } from './mutations'
 import { RootState } from '@/store/types'
 
-export const getDefaultState = (): HeightmapState => {
+export const getDefaultState = (): GuiHeightmapState => {
     return {
         activecolorscheme: 'portland',
         defaultOrientation: 'rightFront',
@@ -13,9 +14,10 @@ export const getDefaultState = (): HeightmapState => {
 
 const state = getDefaultState()
 
-export const heightmap: Module<HeightmapState, RootState> = {
+export const heightmap: Module<GuiHeightmapState, RootState> = {
     namespaced: true,
     state,
-    getters,
     actions,
+    getters,
+    mutations,
 }

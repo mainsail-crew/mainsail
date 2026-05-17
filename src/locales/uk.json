@@ -979,7 +979,7 @@
             "Heightmap": "Карта висот",
             "IsDefault": "(за замовчуванням)",
             "Schemes": {
-                "GrayScale": "Відтінки сірого",
+                "Grayscale": "Відтінки сірого",
                 "Hot": "Теплота",
                 "Hsv": "Hsv",
                 "Portland": "Портленд",

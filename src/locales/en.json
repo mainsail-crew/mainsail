@@ -1303,7 +1303,7 @@
                 "Top": "Top"
             },
             "Schemes": {
-                "GrayScale": "Grayscale",
+                "Grayscale": "Grayscale",
                 "Hot": "Hot",
                 "Hsv": "Hsv",
                 "Portland": "Portland",

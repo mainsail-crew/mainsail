@@ -25,11 +25,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiGrid } from '@mdi/js'
+import { COLOR_SCHEMES, ORIENTATIONS } from '@/store/gui/heightmap/types'
+import { capitalize } from '@/plugins/helpers'
 
 @Component({
     components: {
@@ -41,24 +43,15 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     mdiGrid = mdiGrid
 
     get availableOrientations() {
-        return [
-            {
-                text: this.$t('Settings.HeightmapTab.Orientations.RightFront'),
-                value: 'rightFront',
-            },
-            {
-                text: this.$t('Settings.HeightmapTab.Orientations.LeftFront'),
-                value: 'leftFront',
-            },
-            {
-                text: this.$t('Settings.HeightmapTab.Orientations.Front'),
-                value: 'front',
-            },
-            {
-                text: this.$t('Settings.HeightmapTab.Orientations.Top'),
-                value: 'top',
-            },
-        ]
+        return ORIENTATIONS.map((orientation) => {
+            let text = this.$t(`Settings.HeightmapTab.Orientations.${capitalize(orientation)}`)
+            if (orientation === 'rightFront') text += ` ${this.$t('Settings.HeightmapTab.IsDefault')}`
+
+            return {
+                text,
+                value: orientation,
+            }
+        })
     }
 
     get defaultOrientation() {
@@ -70,31 +63,15 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
     }
 
     get availableColorSchemes() {
-        return [
-            {
-                text:
-                    this.$t('Settings.HeightmapTab.Schemes.Portland') +
-                    ' ' +
-                    this.$t('Settings.HeightmapTab.IsDefault'),
-                value: 'portland',
-            },
-            {
-                text: this.$t('Settings.HeightmapTab.Schemes.Spring'),
-                value: 'spring',
-            },
-            {
-                text: this.$t('Settings.HeightmapTab.Schemes.Hot'),
-                value: 'hot',
-            },
-            {
-                text: this.$t('Settings.HeightmapTab.Schemes.Hsv'),
-                value: 'hsv',
-            },
-            {
-                text: this.$t('Settings.HeightmapTab.Schemes.GrayScale'),
-                value: 'grayScale',
-            },
-        ]
+        return COLOR_SCHEMES.map((scheme) => {
+            let text = this.$t(`Settings.HeightmapTab.Schemes.${capitalize(scheme)}`)
+            if (scheme === 'portland') text += ` ${this.$t('Settings.HeightmapTab.IsDefault')}`
+
+            return {
+                text,
+                value: scheme,
+            }
+        })
     }
 
     get colorScheme() {
@@ -103,11 +80,6 @@ export default class SettingsHeightmapTab extends Mixins(BaseMixin) {
 
     set colorScheme(newVal) {
         this.$store.dispatch('gui/heightmap/saveSetting', { name: 'activecolorscheme', value: newVal })
-    }
-
-    @Watch('colorScheme')
-    colorSchemeChanged(newVal: number) {
-        this.colorScheme = newVal
     }
 }
 </script>

@@ -922,7 +922,7 @@
             "Heightmap": "Maillage",
             "IsDefault": "(Défaut)",
             "Schemes": {
-                "GrayScale": "Niveaux de gris",
+                "Grayscale": "Niveaux de gris",
                 "Hot": "Chaud",
                 "Hsv": "Hsv",
                 "Portland": "Portland",
