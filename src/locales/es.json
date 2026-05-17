@@ -1012,7 +1012,7 @@
                 "Top": "Arriba"
             },
             "Schemes": {
-                "GrayScale": "Escala de grises",
+                "Grayscale": "Escala de grises",
                 "Hot": "Caliente",
                 "Hsv": "Espacio de color HSV",
                 "Portland": "Portland",

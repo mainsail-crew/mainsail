@@ -1275,7 +1275,7 @@
                 "Top": "顶部"
             },
             "Schemes": {
-                "GrayScale": "灰度",
+                "Grayscale": "灰度",
                 "Hot": "热色调",
                 "Hsv": "HSV色彩空间",
                 "Portland": "波特兰色彩方案",

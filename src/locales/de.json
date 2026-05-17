@@ -1293,7 +1293,7 @@
                 "Top": "Oben"
             },
             "Schemes": {
-                "GrayScale": "Graustufen",
+                "Grayscale": "Graustufen",
                 "Hot": "Heiß",
                 "Hsv": "Hsv",
                 "Portland": "Portland",

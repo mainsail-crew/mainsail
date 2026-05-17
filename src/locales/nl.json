@@ -881,7 +881,7 @@
             "Heightmap": "Hoogtekaart",
             "IsDefault": "(Standaard)",
             "Schemes": {
-                "GrayScale": "Grijstinten",
+                "Grayscale": "Grijstinten",
                 "Hot": "Heet",
                 "Hsv": "Hsv",
                 "Portland": "Portland",

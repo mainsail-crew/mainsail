@@ -13,7 +13,7 @@ export const getters: GetterTree<GuiHeightmapState, RootState> = {
                 return ['#ff00ff', '#ffff00']
             case 'hot':
                 return ['#000000', '#ff0000', '#ffff00', '#ffffff']
-            case 'grayScale':
+            case 'grayscale':
                 return ['#ffffff', '#000000']
             default:
                 // Portland colorscheme is being used as default.

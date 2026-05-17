@@ -1014,7 +1014,7 @@
                 "Top": "Alto"
             },
             "Schemes": {
-                "GrayScale": "Scala di Grigi",
+                "Grayscale": "Scala di Grigi",
                 "Hot": "Hot",
                 "Hsv": "Hsv",
                 "Portland": "Portland",
