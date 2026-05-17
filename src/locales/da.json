@@ -987,7 +987,7 @@
             "Heightmap": "Højdekort",
             "IsDefault": "(Standard)",
             "Schemes": {
-                "GrayScale": "Gråskala",
+                "Grayscale": "Gråskala",
                 "Hot": "Varm",
                 "Hsv": "TMV",
                 "Portland": "Portland",

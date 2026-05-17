@@ -1027,7 +1027,7 @@
                 "Top": "Horní"
             },
             "Schemes": {
-                "GrayScale": "Odstíny šedé",
+                "Grayscale": "Odstíny šedé",
                 "Hot": "Horký",
                 "Hsv": "Hsv",
                 "Portland": "Portland",

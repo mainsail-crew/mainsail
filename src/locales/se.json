@@ -920,7 +920,7 @@
             "Heightmap": "Höjdkarta",
             "IsDefault": "(Standard)",
             "Schemes": {
-                "GrayScale": "Gråskala",
+                "Grayscale": "Gråskala",
                 "Hot": "Varm",
                 "Hsv": "Hsv",
                 "Portland": "Portland",

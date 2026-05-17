@@ -1019,7 +1019,7 @@
                 "Top": "Вид вверху"
             },
             "Schemes": {
-                "GrayScale": "Градации серого",
+                "Grayscale": "Градации серого",
                 "Hot": "Hot",
                 "Hsv": "Hsv",
                 "Portland": "Portland",

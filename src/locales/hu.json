@@ -1021,7 +1021,7 @@
                 "Top": "Felső"
             },
             "Schemes": {
-                "GrayScale": "Szürkeárnyalat",
+                "Grayscale": "Szürkeárnyalat",
                 "Hot": "Forró",
                 "Hsv": "Hsv",
                 "Portland": "Portland",
