@@ -420,7 +420,9 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     }
 
     get editGroup(): GuiMacrosStateMacrogroup | null {
-        return this.$store.getters['gui/macros/getMacrogroup'](this.editGroupId)
+        if (this.editGroupId === null) return null
+
+        return this.$store.state.gui.macros.macrogroups[this.editGroupId] ?? null
     }
 
     get editGroupMacros() {
@@ -445,15 +447,14 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     }
 
     async addGroup() {
-        const values = {
+        this.editGroupId = await this.$store.dispatch('gui/macros/groupStore', {
             name: '',
             color: 'primary',
             colorCustom: '#fff',
             showInStandby: true,
             showInPause: true,
             showInPrinting: true,
-        }
-        this.editGroupId = await this.$store.dispatch('gui/macros/groupStore', { values })
+        })
 
         this.boolFormEdit = true
     }
