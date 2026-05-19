@@ -1,32 +1,31 @@
 import Vue from 'vue'
 import { MutationTree } from 'vuex'
-import { GuiMaintenanceState } from '@/store/gui/maintenance/types'
+import { GuiMaintenanceState, GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import { getDefaultState } from './index'
 
 export const mutations: MutationTree<GuiMaintenanceState> = {
-    reset(state) {
+    reset(state): void {
         Object.assign(state, getDefaultState())
     },
 
-    initStore(state, payload) {
+    initStore(state, payload: Record<string, GuiMaintenanceStateEntry>): void {
         Vue.set(state, 'entries', payload)
     },
 
-    store(state, payload) {
-        Vue.set(state.entries, payload.id, payload.values)
+    store(state, payload: { id: string; entry: GuiMaintenanceStateEntry }): void {
+        Vue.set(state.entries, payload.id, payload.entry)
     },
 
-    update(state, payload) {
+    update(state, payload: { id: string; entry: Partial<GuiMaintenanceStateEntry> }): void {
         if (!(payload.id in state.entries)) return
 
-        const entry = { ...state.entries[payload.id] }
-        Object.assign(entry, payload.entry)
-        Vue.set(state.entries, payload.id, entry)
+        const newEntry = { ...state.entries[payload.id], ...payload.entry }
+        Vue.set(state.entries, payload.id, newEntry)
     },
 
-    delete(state, payload) {
-        if (payload in state.entries) {
-            Vue.delete(state.entries, payload)
-        }
+    delete(state, id: string): void {
+        if (!(id in state.entries)) return
+
+        Vue.delete(state.entries, id)
     },
 }

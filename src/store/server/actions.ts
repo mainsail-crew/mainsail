@@ -58,7 +58,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             await dispatch('initServerConfig')
             await dispatch('initSystemInfo')
             await dispatch('initProcStats')
-            const dbNamespaces = (await dispatch('initDatabases')) as string[]
+            await dispatch('initDatabases')
 
             if (registeredDirectories.length) {
                 // TODO: convert to async module initialization
@@ -66,14 +66,6 @@ export const actions: ActionTree<ServerState, RootState> = {
             }
 
             await dispatch('gui/init', null, { root: true })
-
-            // TODO: convert to async module initialization
-            if (dbNamespaces.includes('maintenance')) {
-                dispatch('socket/addInitModule', 'gui/maintenance/init', { root: true })
-                dispatch('gui/maintenance/init', null, { root: true })
-            } else {
-                dispatch('gui/maintenance/initDb', null, { root: true })
-            }
 
             await dispatch('initServerComponents', components)
             await dispatch('initGcodeStore')
@@ -149,8 +141,6 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         const dbList = await Vue.$socket.emitAndWait('server.database.list')
         commit('setData', { dbNamespaces: dbList.namespaces })
-
-        return dbList.namespaces || []
     },
 
     async initServerComponents({ dispatch }, serverComponents: string[]) {
