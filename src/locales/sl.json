@@ -801,10 +801,10 @@
             "EditGateMapTitle": "Uredi filamente (Gate Map)",
             "EditTtgMap": "Preslikaj orodja",
             "EditTtgMapTitle": "Preslikaj orodja / filamente (TTG Map)",
-            "Main_gear": "Glavni zobnik",
             "Guard": "Varovalo",
             "Headline": "ERCF / MMU",
             "LargeFilamentStatus": "Prikaz stanja filamentov",
+            "Main_gear": "Glavni zobnik",
             "MmuMaintenance": "MMU Vzdrževanje",
             "MmuMaintenanceDialog": {
                 "Animation": "Animacija",
