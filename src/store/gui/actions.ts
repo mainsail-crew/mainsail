@@ -5,15 +5,11 @@ import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
 import { deletePath, isRecord } from '@/plugins/helpers'
-import { isJsonRpcError, JsonRpcError } from '@/types/moonraker'
+import { isJsonRpcError, JsonRpcError, NAMESPACE_NOT_FOUND } from '@/types/moonraker'
 
 const LOG_PREFIX = '[GUI]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
 const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
-
-// Moonraker returns JSON-RPC -32601 ("Method not found") when the requested namespace does not exist.
-// This is expected on a fresh installation to seed defaults. All other errors propagate.
-const NAMESPACE_NOT_FOUND = -32601
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
@@ -27,7 +23,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('webcams/reset')
     },
 
-    async init({ commit, dispatch, rootGetters, rootState }) {
+    async init({ commit, dispatch, rootGetters, rootState }): Promise<void> {
         logDebug('init')
 
         const values: GuiStateInitPayload = await (async () => {
@@ -82,6 +78,10 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         commit('setData', values)
+
+        await dispatch('gui/maintenance/init', null, { root: true }).catch((e) =>
+            logError('maintenance init failed', e)
+        )
 
         // TODO: convert to async module initialization
         dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
