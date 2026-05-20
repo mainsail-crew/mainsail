@@ -90,10 +90,12 @@
         <v-card-actions>
             <v-spacer />
             <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn v-if="presetId !== null" text color="primary" @click="updatePreset">
+            <v-btn v-if="presetId !== null" text color="primary" :loading="loading" @click="updatePreset">
                 {{ $t('Settings.Update') }}
             </v-btn>
-            <v-btn v-else text color="primary" @click="storePreset">{{ $t('Settings.Store') }}</v-btn>
+            <v-btn v-else text color="primary" :loading="loading" @click="storePreset">
+                {{ $t('Settings.Store') }}
+            </v-btn>
         </v-card-actions>
     </div>
 </template>
@@ -126,6 +128,7 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
     green: number | null = null
     blue: number | null = null
     white: number | null = null
+    loading = false
 
     rules = {
         required: (value: string) => value !== '' || 'required',
@@ -377,53 +380,58 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
         this.green = this.preset?.green ?? null
         this.blue = this.preset?.blue ?? null
         this.white = this.preset?.white ?? null
+        this.loading = false
     }
 
     close() {
         this.$emit('close')
     }
 
-    storePreset() {
-        this.$store.dispatch('gui/miscellaneous/storePreset', {
+    async storePreset(): Promise<void> {
+        this.loading = true
+        const preset: GuiMiscellaneousStateEntryPreset = {
+            name: this.presetname,
+            // parseInt & toString is just to force a integer
+            red: this.red !== null ? parseInt(this.red.toString(), 10) : 0,
+            green: this.green !== null ? parseInt(this.green.toString(), 10) : 0,
+            blue: this.blue !== null ? parseInt(this.blue.toString(), 10) : 0,
+            white: this.white !== null ? parseInt(this.white.toString(), 10) : 0,
+        }
+
+        await this.$store.dispatch('gui/miscellaneous/storePreset', {
             type: this.type,
             name: this.name,
-            preset: {
-                name: this.presetname,
-                // parseInt & toString is just to force a integer
-                red: this.red !== null ? parseInt(this.red.toString(), 10) : 0,
-                green: this.green !== null ? parseInt(this.green.toString(), 10) : 0,
-                blue: this.blue !== null ? parseInt(this.blue.toString(), 10) : 0,
-                white: this.white !== null ? parseInt(this.white.toString(), 10) : 0,
-            },
+            preset,
         })
 
+        this.loading = false
         this.close()
     }
 
-    updatePreset() {
-        this.$store.dispatch('gui/miscellaneous/updatePreset', {
+    async updatePreset(): Promise<void> {
+        this.loading = true
+        const preset: GuiMiscellaneousStateEntryPreset = {
+            name: this.presetname,
+            // parseInt & toString is just to force a integer
+            red: this.red !== null ? parseInt(this.red.toString(), 10) : 0,
+            green: this.green !== null ? parseInt(this.green.toString(), 10) : 0,
+            blue: this.blue !== null ? parseInt(this.blue.toString(), 10) : 0,
+            white: this.white !== null ? parseInt(this.white.toString(), 10) : 0,
+        }
+
+        await this.$store.dispatch('gui/miscellaneous/updatePreset', {
             type: this.type,
             name: this.name,
             presetId: this.presetId,
-            preset: {
-                name: this.presetname,
-                // parseInt & toString is just to force a integer
-                red: this.red !== null ? parseInt(this.red.toString(), 10) : 0,
-                green: this.green !== null ? parseInt(this.green.toString(), 10) : 0,
-                blue: this.blue !== null ? parseInt(this.blue.toString(), 10) : 0,
-                white: this.white !== null ? parseInt(this.white.toString(), 10) : 0,
-            },
+            preset,
         })
 
+        this.loading = false
         this.close()
     }
 
     existsPresetName(name: string) {
-        return (
-            this.presets.findIndex(
-                (preset: GuiMiscellaneousStateEntryPreset) => preset.name === name && preset.id !== this.presetId
-            ) >= 0
-        )
+        return this.presets.findIndex((preset) => preset.name === name && preset.id !== this.presetId) >= 0
     }
 }
 </script>

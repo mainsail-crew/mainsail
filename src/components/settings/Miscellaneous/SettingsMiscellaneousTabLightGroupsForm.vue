@@ -42,10 +42,16 @@
         <v-card-actions>
             <v-spacer />
             <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn v-if="groupId !== null" text color="primary" :disabled="!formValid" @click="updateGroup">
+            <v-btn
+                v-if="groupId !== null"
+                text
+                color="primary"
+                :disabled="!formValid"
+                :loading="loading"
+                @click="updateGroup">
                 {{ $t('Settings.Update') }}
             </v-btn>
-            <v-btn v-else text color="primary" :disabled="!formValid" @click="storeGroup">
+            <v-btn v-else text color="primary" :disabled="!formValid" :loading="loading" @click="storeGroup">
                 {{ $t('Settings.Store') }}
             </v-btn>
         </v-card-actions>
@@ -57,7 +63,6 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { caseInsensitiveSort } from '@/plugins/helpers'
-import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 
 @Component({
@@ -68,6 +73,7 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
     groupname = ''
     start = 1
     end = 1
+    loading = false
 
     @Prop({ type: String, default: null }) declare type: string | null
     @Prop({ type: String, default: null }) declare name: string | null
@@ -149,6 +155,7 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
         this.groupname = this.group?.name ?? ''
         this.start = this.group?.start ?? 1
         this.end = this.group?.end ?? 1
+        this.loading = false
     }
 
     close() {
@@ -161,43 +168,47 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
         })
     }
 
-    storeGroup() {
-        this.$store.dispatch('gui/miscellaneous/storeLightgroup', {
+    async storeGroup() {
+        this.loading = true
+        const lightgroup: GuiMiscellaneousStateEntryLightgroup = {
+            name: this.groupname,
+            // parseInt & toString is just to force integer
+            start: parseInt(this.start.toString(), 10),
+            end: parseInt(this.end.toString(), 10),
+        }
+
+        await this.$store.dispatch('gui/miscellaneous/storeLightgroup', {
             type: this.type,
             name: this.name,
-            lightgroup: {
-                name: this.groupname,
-                // parseInt & toString is just to force a integer
-                start: parseInt(this.start.toString(), 10),
-                end: parseInt(this.end.toString(), 10),
-            },
+            lightgroup,
         })
 
+        this.loading = false
         this.close()
     }
 
-    updateGroup() {
-        this.$store.dispatch('gui/miscellaneous/updateLightgroup', {
+    async updateGroup() {
+        this.loading = true
+        const lightgroup: GuiMiscellaneousStateEntryLightgroup = {
+            name: this.groupname,
+            // parseInt & toString is just to force integer
+            start: parseInt(this.start.toString(), 10),
+            end: parseInt(this.end.toString(), 10),
+        }
+
+        await this.$store.dispatch('gui/miscellaneous/updateLightgroup', {
             type: this.type,
             name: this.name,
             lightgroupId: this.groupId,
-            lightgroup: {
-                name: this.groupname,
-                // parseInt & toString is just to force a integer
-                start: parseInt(this.start.toString(), 10),
-                end: parseInt(this.end.toString(), 10),
-            },
+            lightgroup,
         })
 
+        this.loading = false
         this.close()
     }
 
     existsGroupName(name: string) {
-        return (
-            this.groups.findIndex(
-                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id !== this.groupId
-            ) >= 0
-        )
+        return this.groups.findIndex((group) => group.name === name && group.id !== this.groupId) >= 0
     }
 }
 </script>
