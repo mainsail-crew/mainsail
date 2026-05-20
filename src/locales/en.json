@@ -170,6 +170,7 @@
             "GcodeStore": "G-Code Store",
             "History": "History",
             "JobQueue": "Job Queue",
+            "Maintenance": "Maintenance",
             "Power": "Power-Devices",
             "ProcStats": "Process Statistics",
             "Sensor": "Moonraker Sensors",

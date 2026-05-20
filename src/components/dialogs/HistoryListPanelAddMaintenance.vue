@@ -112,6 +112,7 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiAdjust, mdiAlarm, mdiCalendar, mdiCloseThick, mdiNotebookPlus } from '@mdi/js'
+import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
 @Component({
     components: {
@@ -186,40 +187,42 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         this.showDialog = false
     }
 
-    save() {
+    async save() {
         const date = new Date()
-        this.$store.dispatch('gui/maintenance/store', {
-            entry: {
-                name: this.name,
-                note: this.note,
-                // divided by 1000 to get seconds, because history entries are also in seconds
-                start_time: date.getTime() / 1000,
-                end_time: null,
-                start_filament: this.totalFilamentUsed,
-                end_filament: null,
-                start_printtime: this.totalPrinttime,
-                end_printtime: null,
+        const entry: GuiMaintenanceStateEntry = {
+            name: this.name,
+            note: this.note,
+            perform_note: null,
+            // divided by 1000 to get seconds, because history entries are also in seconds
+            start_time: date.getTime() / 1000,
+            end_time: null,
+            start_filament: this.totalFilamentUsed,
+            end_filament: null,
+            start_printtime: this.totalPrinttime,
+            end_printtime: null,
+            last_entry: null,
 
-                reminder: {
-                    type: this.reminder,
+            reminder: {
+                type: this.reminder,
 
-                    filament: {
-                        bool: this.reminderFilament,
-                        value: this.reminderFilamentValue,
-                    },
+                filament: {
+                    bool: this.reminderFilament,
+                    value: this.reminderFilamentValue,
+                },
 
-                    printtime: {
-                        bool: this.reminderPrinttime,
-                        value: this.reminderPrinttimeValue,
-                    },
+                printtime: {
+                    bool: this.reminderPrinttime,
+                    value: this.reminderPrinttimeValue,
+                },
 
-                    date: {
-                        bool: this.reminderDate,
-                        value: this.reminderDateValue,
-                    },
+                date: {
+                    bool: this.reminderDate,
+                    value: this.reminderDateValue,
                 },
             },
-        })
+        }
+
+        await this.$store.dispatch('gui/maintenance/store', entry)
 
         this.closeDialog()
     }

@@ -86,3 +86,9 @@ export interface JsonRpcResponse {
     result?: unknown
     error?: JsonRpcError
 }
+
+/**
+ * Moonraker returns JSON-RPC -32601 ("Method not found") when the requested namespace does not exist.
+ * This is expected on a fresh installation to seed defaults. All other errors propagate.
+ */
+export const NAMESPACE_NOT_FOUND = -32601
