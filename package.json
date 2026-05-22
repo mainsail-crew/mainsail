@@ -81,7 +81,7 @@
         "@vitejs/plugin-vue2": "^2.3.4",
         "@vue/eslint-config-typescript": "^14.0.0",
         "autoprefixer": "^10.4.2",
-        "cypress": "^14.2.0",
+        "cypress": "^15.15.0",
         "eslint": "^10.0.0",
         "eslint-config-prettier": "^10.0.0",
         "eslint-plugin-jsonc": "^2.21.0",
