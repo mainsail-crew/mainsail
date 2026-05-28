@@ -38,7 +38,9 @@ export default class ZoffsetMixin extends Vue {
     }
     get isEndstopProbe() {
         // remove spaces and search for probe:z_virtual_endstop
-        return this.endstop_pin.replaceAll(' ', '').search('probe:z_virtual_endstop') !== -1
+        // guard against a missing endstop_pin (null) which some Klipper-compatible
+        // backends omit from stepper config; null.replaceAll would otherwise throw
+        return (this.endstop_pin ?? '').replaceAll(' ', '').search('probe:z_virtual_endstop') !== -1
     }
 
     get existZOffsetApplyProbe() {
