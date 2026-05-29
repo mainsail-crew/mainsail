@@ -206,18 +206,18 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
 
         // if tool is set, execute setMacroVariable, write to lane database and close, because it's not an active printing spool change
         if (this.tool) {
-            const filament = spool.filament;
+            const filament = spool.filament
             this.$socket.emit('server.database.post_item', {
-                "namespace": "lane_data",
-                "key": this.tool,
-                "value": {
-                    "lane": this.tool.substring(1),
-                    "color": filament.color_hex,
-                    "material": filament.material,
-                    "bed_temp": filament.settings_bed_temp,
-                    "nozzle_temp": filament.settings_extruder_temp,
-                }
-            });
+                namespace: 'lane_data',
+                key: this.tool,
+                value: {
+                    lane: this.tool.substring(1),
+                    color: filament.color_hex,
+                    material: filament.material,
+                    bed_temp: filament.settings_bed_temp,
+                    nozzle_temp: filament.settings_extruder_temp,
+                },
+            })
 
             this.setMacroVariable(spool)
             this.close()
