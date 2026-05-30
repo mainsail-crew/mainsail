@@ -69,16 +69,19 @@ export default class AfcMixin extends Vue {
 
     get afcMapList(): string[] {
         const lanes = this.afc.lanes ?? []
+        const seen = new Set<string>()
 
-        const mapList = []
         for (const laneName of lanes) {
             const lane = this.getAfcLaneObject(laneName)
-            if (lane === null) continue
+            if (lane?.map == null) continue
 
-            mapList.push(lane.map)
+            const tools = Array.isArray(lane.map) ? lane.map : [lane.map]
+            for (const tool of tools) {
+                seen.add(tool)
+            }
         }
 
-        return mapList.sort()
+        return [...seen].sort()
     }
 
     get afcExistsSpoolman() {

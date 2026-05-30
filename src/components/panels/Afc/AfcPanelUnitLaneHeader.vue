@@ -24,7 +24,9 @@ export default class AfcPanelUnitLaneHeader extends Mixins(BaseMixin, AfcMixin) 
     }
 
     get mappedTool() {
-        return this.lane.map ?? '--'
+        const map = this.lane.map
+        if (map == null || map.length === 0) return 'NONE'
+        return Array.isArray(map) ? map.join(', ') : map
     }
 }
 </script>
