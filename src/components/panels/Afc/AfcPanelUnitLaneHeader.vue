@@ -2,7 +2,7 @@
     <v-row class="flex-grow-0">
         <v-col class="px-6 pt-6 pb-3 py-4">
             <v-btn dense small class="w-100 elevation-0" @click="showDialog = true">
-                {{ name }} > {{ mappedTool }}
+                {{ mappedTool }} > {{ name }}
             </v-btn>
             <afc-unit-lane-mapping-tool-dialog v-model="showDialog" :name="name" />
         </v-col>
