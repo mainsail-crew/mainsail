@@ -3,6 +3,7 @@ import { getDefaultState as getGuiDefaultState } from '@/store/gui/index'
 import { actions } from '@/store/farm/printer/actions'
 import { mutations } from '@/store/farm/printer/mutations'
 import { getters } from '@/store/farm/printer/getters'
+import { defaultMoonrakerPort } from '@/store/variables'
 import { Module } from 'vuex'
 import { RootState } from '@/store/types'
 
@@ -12,7 +13,7 @@ export const getDefaultState = (): FarmPrinterState => {
         socket: {
             instance: null,
             hostname: '',
-            port: 7125,
+            port: defaultMoonrakerPort,
             path: '',
             webPort: 80,
             protocol: document.location.protocol === 'https:' ? 'wss' : 'ws',

@@ -1128,6 +1128,7 @@
         "Port": "Port",
         "PortRequired": "Port is required",
         "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
+        "SecureConnection": "Secure connection (HTTPS)",
         "SelectPrinter": "Select Printer",
         "TryAgain": "try again",
         "UpdatePrinter": "Update Printer",

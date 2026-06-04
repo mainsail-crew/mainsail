@@ -72,13 +72,24 @@
                             </v-col>
                             <v-col class="col-4">
                                 <v-text-field
-                                    v-model="dialogAddPrinter.port"
+                                    v-model.number="dialogAddPrinter.port"
                                     :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                     :label="$t('SelectPrinterDialog.Port')"
                                     hide-details="auto"
                                     required
                                     outlined
                                     dense />
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="!isHttps" class="mt-0 pt-0">
+                            <v-col class="py-0">
+                                <v-checkbox
+                                    v-model="dialogAddPrinter.secure"
+                                    :label="$t('SelectPrinterDialog.SecureConnection')"
+                                    hide-details="auto"
+                                    class="mt-1"
+                                    dense
+                                    @change="onSecureChange('add')" />
                             </v-col>
                         </v-row>
                         <v-row v-if="showOptionalSettings">
@@ -136,13 +147,24 @@
                             </v-col>
                             <v-col class="col-4">
                                 <v-text-field
-                                    v-model="dialogEditPrinter.port"
+                                    v-model.number="dialogEditPrinter.port"
                                     :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                     :label="$t('SelectPrinterDialog.Port')"
                                     required
                                     outlined
                                     dense
                                     hide-details="auto" />
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="!isHttps" class="mt-0 pt-0">
+                            <v-col class="py-0">
+                                <v-checkbox
+                                    v-model="dialogEditPrinter.secure"
+                                    :label="$t('SelectPrinterDialog.SecureConnection')"
+                                    hide-details="auto"
+                                    class="mt-1"
+                                    dense
+                                    @change="onSecureChange('edit')" />
                             </v-col>
                         </v-row>
                         <v-row v-if="showOptionalSettings">
@@ -269,6 +291,7 @@ import BaseMixin from './mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import { defaultMoonrakerPort, defaultSecureMoonrakerPort } from '@/store/variables'
 import {
     mdiCancel,
     mdiCheckboxMarkedCircle,
@@ -289,9 +312,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     dialogAddPrinter = {
         bool: false,
         hostname: '',
-        port: 7125,
+        port: defaultMoonrakerPort,
         path: '/',
         name: '',
+        secure: false,
     }
     editPrinterValid = false
     dialogEditPrinter = {
@@ -317,6 +341,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     mdiShowOptional = mdiCog
     mdiHideOptional = mdiCogOff
 
+    get isHttps() {
+        return window.location.protocol === 'https:'
+    }
+
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
     }
@@ -330,7 +358,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get defaultMoonrakerPort() {
-        return this.protocol === 'wss' ? 7130 : 7125
+        return this.protocol === 'wss' ? defaultSecureMoonrakerPort : defaultMoonrakerPort
     }
 
     get hostname() {
@@ -405,6 +433,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     createPrinter() {
         this.dialogAddPrinter.hostname = ''
         this.dialogAddPrinter.port = this.defaultMoonrakerPort
+        this.dialogAddPrinter.secure = false
         this.dialogAddPrinter.bool = true
     }
 
@@ -414,6 +443,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
             port: this.dialogAddPrinter.port,
             path: this.dialogAddPrinter.path,
             name: this.dialogAddPrinter.name,
+            protocol: this.isHttps || this.dialogAddPrinter.secure ? 'wss' : 'ws',
         }
         this.$store.dispatch('gui/remoteprinters/store', { values })
 
@@ -421,6 +451,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogAddPrinter.bool = false
         this.dialogAddPrinter.path = '/'
         this.dialogAddPrinter.name = ''
+        this.dialogAddPrinter.secure = false
     }
 
     editPrinter(printer: GuiRemoteprintersStatePrinter) {
@@ -429,6 +460,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogEditPrinter.id = printer.id ?? ''
         this.dialogEditPrinter.path = printer.path ?? '/'
         this.dialogEditPrinter.name = printer.name ?? ''
+        this.dialogEditPrinter.secure = printer.protocol === 'wss'
         this.dialogEditPrinter.bool = true
 
         this.showOptionalSettings = printer.name ? printer.name.length > 0 : false
@@ -441,6 +473,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
             path: this.dialogEditPrinter.path,
             id: this.dialogEditPrinter.id,
             name: this.dialogEditPrinter.name,
+            protocol: this.isHttps || this.dialogEditPrinter.secure ? 'wss' : 'ws',
         }
         this.$store.dispatch('gui/remoteprinters/update', {
             id: this.dialogEditPrinter.id,
@@ -455,15 +488,25 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogEditPrinter.bool = false
     }
 
+    onSecureChange(dialog: 'add' | 'edit') {
+        const d = dialog === 'add' ? this.dialogAddPrinter : this.dialogEditPrinter
+        if (d.secure && d.port === defaultMoonrakerPort) {
+            d.port = defaultSecureMoonrakerPort
+        } else if (!d.secure && d.port === defaultSecureMoonrakerPort) {
+            d.port = defaultMoonrakerPort
+        }
+    }
+
     connect(printer: FarmPrinterState) {
         this.$store.dispatch('socket/setData', {
             hostname: printer.socket.hostname,
             port: printer.socket.port,
             path: printer.socket.path,
+            protocol: printer.socket.protocol,
         })
         const normPath = printer.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
         const url =
-            this.protocol +
+            printer.socket.protocol +
             '://' +
             printer.socket.hostname +
             ':' +

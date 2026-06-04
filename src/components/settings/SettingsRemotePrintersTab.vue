@@ -59,12 +59,21 @@
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.RemotePrintersTab.Port')">
                     <v-text-field
-                        v-model="form.port"
+                        v-model.number="form.port"
                         :rules="[(v) => !!v || 'Port is required']"
                         hide-details="auto"
                         required
                         dense
                         outlined />
+                    <template v-if="protocol === 'ws'">
+                        <v-checkbox
+                            v-model="form.secure"
+                            :label="$t('SelectPrinterDialog.SecureConnection')"
+                            hide-details="auto"
+                            class="mt-1"
+                            dense
+                            @change="onSecureChange" />
+                    </template>
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
@@ -102,6 +111,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import { defaultMoonrakerPort, defaultSecureMoonrakerPort } from '@/store/variables'
 import { mdiCancel, mdiCheckboxMarkedCircle, mdiDelete, mdiPencil, mdiAlertOutline } from '@mdi/js'
 
 interface printerForm {
@@ -112,6 +122,7 @@ interface printerForm {
     path: string | null
     id: string | null
     namespace: string | null
+    secure: boolean
 }
 
 @Component({
@@ -127,11 +138,12 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     form: printerForm = {
         bool: false,
         hostname: '',
-        port: 7125,
+        port: defaultMoonrakerPort,
         path: '/',
         name: '',
         id: null,
         namespace: null,
+        secure: false,
     }
 
     get printers() {
@@ -143,7 +155,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     }
 
     get protocol() {
-        return this.$store.state.socket.protocol ?? 'ws'
+        return document.location.protocol === 'https:' ? 'wss' : 'ws'
     }
 
     formatPrinterName(printer: GuiRemoteprintersStatePrinter) {
@@ -152,11 +164,12 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
 
     createPrinter() {
         this.form.hostname = ''
-        this.form.port = 7125
+        this.form.port = defaultMoonrakerPort
         this.form.path = '/'
         this.form.name = ''
         this.form.id = null
         this.form.namespace = null
+        this.form.secure = false
         this.form.bool = true
     }
 
@@ -166,14 +179,15 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
             port: this.form.port,
             name: this.form.name,
             path: this.form.path,
+            protocol: this.protocol === 'wss' || this.form.secure ? 'wss' : 'ws',
         }
 
         this.$store.dispatch('gui/remoteprinters/store', { values: printer })
 
-        this.form.hostname = ''
-        this.form.port = 7125
+        this.form.port = defaultMoonrakerPort
         this.form.name = ''
         this.form.id = null
+        this.form.secure = false
         this.form.bool = false
     }
 
@@ -183,6 +197,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.port = printer.port
         this.form.path = printer.path ?? '/'
         this.form.name = printer.name ?? ''
+        this.form.secure = printer.protocol === 'wss'
         this.form.bool = true
     }
 
@@ -192,20 +207,30 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
             port: this.form.port,
             name: this.form.name,
             path: this.form.path,
+            protocol: this.protocol === 'wss' || this.form.secure ? 'wss' : 'ws',
         }
 
         this.$store.dispatch('gui/remoteprinters/update', { id: this.form.id, values })
 
         this.form.id = null
         this.form.hostname = ''
-        this.form.port = 7125
+        this.form.port = defaultMoonrakerPort
         this.form.path = '/'
         this.form.name = ''
+        this.form.secure = false
         this.form.bool = false
     }
 
     delPrinter(id: string) {
         this.$store.dispatch('gui/remoteprinters/delete', id)
+    }
+
+    onSecureChange() {
+        if (this.form.secure && this.form.port === defaultMoonrakerPort) {
+            this.form.port = defaultSecureMoonrakerPort
+        } else if (!this.form.secure && this.form.port === defaultSecureMoonrakerPort) {
+            this.form.port = defaultMoonrakerPort
+        }
     }
 }
 </script>

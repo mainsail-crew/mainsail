@@ -3,6 +3,7 @@ import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 import { GuiRemoteprintersState, GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import { defaultMoonrakerPort } from '@/store/variables'
 
 export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     reset({ commit, dispatch, state }) {
@@ -38,8 +39,9 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 {
                     id: printerId,
                     hostname: printer.hostname ?? '',
-                    port: printer.port ?? 7125,
+                    port: printer.port ?? defaultMoonrakerPort,
                     path: printer.path ?? '',
+                    protocol: printer.protocol ?? (document.location.protocol === 'https:' ? 'wss' : 'ws'),
                     settings: printer.settings ?? {},
                 },
                 { root: true }
@@ -57,6 +59,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                     port: state.printers[id].port,
                     name: state.printers[id].name,
                     path: state.printers[id].path,
+                    protocol: state.printers[id].protocol,
                     settings: state.printers[id].settings,
                 })
             })
@@ -67,6 +70,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 hostname: state.printers[id].hostname,
                 port: state.printers[id].port,
                 path: state.printers[id].path,
+                protocol: state.printers[id].protocol ?? (document.location.protocol === 'https:' ? 'wss' : 'ws'),
                 settings: state.printers[id].settings ?? {},
             }
 
@@ -87,9 +91,10 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
             {
                 id,
                 hostname: payload.values.hostname ?? '',
-                port: payload.values.port ?? 7125,
+                port: payload.values.port ?? defaultMoonrakerPort,
                 path: payload.values.path ?? '',
                 name: payload.values.name,
+                protocol: payload.values.protocol ?? (document.location.protocol === 'https:' ? 'wss' : 'ws'),
             },
             { root: true }
         )

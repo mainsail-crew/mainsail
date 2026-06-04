@@ -20,6 +20,7 @@ export const actions: ActionTree<RootState, RootState> = {
             hostname: printerSocket.hostname,
             port: printerSocket.port,
             path: printerSocket.path,
+            protocol: printerSocket.protocol,
         })
     },
 

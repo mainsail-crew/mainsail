@@ -1,4 +1,5 @@
 import Component from 'vue-class-component'
+import { defaultMoonrakerPort, defaultSecureMoonrakerPort } from '@/store/variables'
 import {
     mdiAlbum,
     mdiCampfire,
@@ -25,8 +26,8 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
 
         if (baseUrl.startsWith('/webcam')) {
             const ports = [80]
-            ports.push(this.$store.state.server.config?.config?.server?.port ?? 7125)
-            ports.push(this.$store.state.server.config?.config?.server?.ssl_port ?? 7130)
+            ports.push(this.$store.state.server.config?.config?.server?.port ?? defaultMoonrakerPort)
+            ports.push(this.$store.state.server.config?.config?.server?.ssl_port ?? defaultSecureMoonrakerPort)
 
             if (!ports.includes(this.hostPort)) url.port = this.hostPort.toString()
         }

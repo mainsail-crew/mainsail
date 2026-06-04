@@ -53,6 +53,7 @@ export const farm: Module<FarmState, RootState> = {
                 hostname: payload.values.hostname,
                 port: payload.values.port,
                 path: payload.values.path,
+                protocol: payload.values.protocol ?? (document.location.protocol === 'https:' ? 'wss' : 'ws'),
                 isConnecting: true,
             })
             dispatch(payload.id + '/reconnect')
