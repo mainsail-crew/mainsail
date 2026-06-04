@@ -40,43 +40,47 @@
                     <p class="text-center mt-3 mb-3">
                         {{ $t('ConnectionDialog.LoginPrompt') }}
                     </p>
-                    <v-text-field
-                        v-model="loginUsername"
-                        :label="$t('ConnectionDialog.Username')"
-                        dense
-                        outlined
-                        hide-details="auto"
-                        @input="clearLoginError" />
-                    <v-text-field
-                        v-model="loginPassword"
-                        :label="$t('ConnectionDialog.Password')"
-                        type="password"
-                        dense
-                        outlined
-                        hide-details="auto"
-                        class="mt-3"
-                        @input="clearLoginError" />
-                    <p v-if="authLoginError" class="text-center mt-1 red--text">
-                        {{ authLoginError }}
-                    </p>
-                    <v-checkbox
-                        v-model="loginRememberMe"
-                        :label="$t('ConnectionDialog.RememberMe')"
-                        dense
-                        hide-details
-                        class="mt-1" />
-                    <div class="text-center mt-3">
-                        <v-btn
-                            class="primary--text"
-                            :loading="authLoggingIn"
-                            :disabled="authLoggingIn || !loginUsername || !loginPassword"
-                            @click="login">
-                            {{ $t('ConnectionDialog.Login') }}
-                        </v-btn>
-                        <v-btn class="text--disabled ml-3" :disabled="authLoggingIn" @click="switchToChangePrinter">
-                            {{ $t('SelectPrinterDialog.ChangePrinter') }}
-                        </v-btn>
-                    </div>
+                    <form @submit.prevent="login">
+                        <v-text-field
+                            v-model="loginUsername"
+                            :label="$t('ConnectionDialog.Username')"
+                            autocomplete="username"
+                            dense
+                            outlined
+                            hide-details="auto"
+                            @input="clearLoginError" />
+                        <v-text-field
+                            v-model="loginPassword"
+                            :label="$t('ConnectionDialog.Password')"
+                            type="password"
+                            autocomplete="current-password"
+                            dense
+                            outlined
+                            hide-details="auto"
+                            class="mt-3"
+                            @input="clearLoginError" />
+                        <p v-if="authLoginError" class="text-center mt-1 red--text">
+                            {{ authLoginError }}
+                        </p>
+                        <v-checkbox
+                            v-model="loginRememberMe"
+                            :label="$t('ConnectionDialog.RememberMe')"
+                            hide-details="auto"
+                            class="mt-1" />
+                        <div class="text-center mt-3">
+                            <v-btn
+                                type="submit"
+                                class="primary--text"
+                                :loading="authLoggingIn"
+                                :disabled="authLoggingIn || !loginUsername || !loginPassword"
+                                @click="login">
+                                {{ $t('ConnectionDialog.Login') }}
+                            </v-btn>
+                            <v-btn class="text--disabled ml-3" :disabled="authLoggingIn" @click="switchToChangePrinter">
+                                {{ $t('SelectPrinterDialog.ChangePrinter') }}
+                            </v-btn>
+                        </div>
+                    </form>
                 </v-card-text>
             </template>
             <template v-else-if="connectingFailed">
