@@ -26,6 +26,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             commit('setAuthenticationRequired', authRequired)
 
             if (authRequired && !rootState.auth?.accessToken) {
+                if (rootState.auth?.isLoggingIn) return
                 dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
                 return
             }
