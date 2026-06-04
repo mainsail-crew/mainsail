@@ -82,7 +82,7 @@ export interface GuiState {
         cncMode: boolean
     }
     macros?: GuiMacrosState
-    navigation: GuiNavigationState
+    navigation?: GuiNavigationState
     notifications?: GuiNotificationState
     presets?: GuiPresetsState
     remoteprinters?: GuiRemoteprintersState
