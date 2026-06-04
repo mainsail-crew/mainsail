@@ -10,7 +10,9 @@ export const getters: GetterTree<SocketState, RootState> = {
         // remove last / in path
         if (path.endsWith('/')) path = path.slice(0, -1)
 
-        return `//${state.hostname}${port}${path}`
+        const protocol = state.protocol === 'wss' ? 'https:' : 'http:'
+
+        return `${protocol}//${state.hostname}${port}${path}`
     },
 
     getHostUrl: (state) => {
@@ -19,7 +21,13 @@ export const getters: GetterTree<SocketState, RootState> = {
         return `${protocol}://${state.hostname}/`
     },
 
-    getWebsocketUrl: (state, getters) => {
-        return state.protocol + ':' + getters['getUrl'] + '/websocket'
+    getWebsocketUrl: (state) => {
+        const port = state.port !== 80 ? ':' + state.port : ''
+        let path = '/' + state.path.replace(/^\/|\/$/g, '')
+
+        // remove last / in path
+        if (path.endsWith('/')) path = path.slice(0, -1)
+
+        return `${state.protocol}://${state.hostname}${port}${path}/websocket`
     },
 }
