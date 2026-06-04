@@ -35,6 +35,44 @@
                     <v-progress-linear color="primary" indeterminate />
                 </v-card-text>
             </template>
+            <template v-else-if="isUnauthorized">
+                <v-card-text>
+                    <p class="text-center mt-3 mb-3">
+                        {{ $t('ConnectionDialog.LoginPrompt') }}
+                    </p>
+                    <v-text-field
+                        v-model="loginUsername"
+                        :label="$t('ConnectionDialog.Username')"
+                        dense
+                        outlined
+                        hide-details="auto"
+                        @input="clearLoginError" />
+                    <v-text-field
+                        v-model="loginPassword"
+                        :label="$t('ConnectionDialog.Password')"
+                        type="password"
+                        dense
+                        outlined
+                        hide-details="auto"
+                        class="mt-3"
+                        @input="clearLoginError" />
+                    <p v-if="authLoginError" class="text-center mt-1 red--text">
+                        {{ authLoginError }}
+                    </p>
+                    <div class="text-center mt-3">
+                        <v-btn
+                            class="primary--text"
+                            :loading="authLoggingIn"
+                            :disabled="authLoggingIn || !loginUsername || !loginPassword"
+                            @click="login">
+                            {{ $t('ConnectionDialog.Login') }}
+                        </v-btn>
+                        <v-btn class="text--disabled ml-3" :disabled="authLoggingIn" @click="switchToChangePrinter">
+                            {{ $t('SelectPrinterDialog.ChangePrinter') }}
+                        </v-btn>
+                    </div>
+                </v-card-text>
+            </template>
             <template v-else-if="connectingFailed">
                 <v-card-text>
                     <p>
@@ -224,8 +262,18 @@
                                                 width="2.5" />
                                             <v-icon
                                                 v-if="!printer.socket.isConnecting"
+                                                small
+                                                class="mr-3"
                                                 :color="printer.socket.isConnected ? 'green' : 'red'">
                                                 {{ printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel }}
+                                            </v-icon>
+                                            <v-icon
+                                                v-if="printer.requiresAuth"
+                                                small
+                                                color="warning"
+                                                class="ml-1"
+                                                title="Authentication Required">
+                                                {{ mdiLock }}
                                             </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
@@ -300,6 +348,8 @@ import {
     mdiCogOff,
     mdiConnection,
     mdiDelete,
+    mdiHelp,
+    mdiLock,
     mdiPencil,
     mdiSync,
 } from '@mdi/js'
@@ -329,6 +379,9 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
     showOptionalSettings = false
 
+    loginUsername = ''
+    loginPassword = ''
+
     /**
      * Icons
      */
@@ -337,10 +390,12 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     mdiSync = mdiSync
     mdiDelete = mdiDelete
     mdiPencil = mdiPencil
+    mdiHelp = mdiHelp
     mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
     mdiCancel = mdiCancel
     mdiShowOptional = mdiCog
     mdiHideOptional = mdiCogOff
+    mdiLock = mdiLock
 
     get isHttps() {
         return window.location.protocol === 'https:'
@@ -391,7 +446,19 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get connectingFailed() {
-        return this.$store.state.socket.connectingFailed
+        return this.$store.state.socket.connectingFailed && !this.isUnauthorized
+    }
+
+    get isUnauthorized() {
+        return this.$store.state.socket.connectionFailedMessage === 'Unauthorized'
+    }
+
+    get authLoginError() {
+        return this.$store.state.auth?.loginError ?? null
+    }
+
+    get authLoggingIn() {
+        return this.$store.state.auth?.isLoggingIn ?? false
     }
 
     get showDialog() {
@@ -453,6 +520,17 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogAddPrinter.path = '/'
         this.dialogAddPrinter.name = ''
         this.dialogAddPrinter.secure = false
+    }
+
+    async login() {
+        await this.$store.dispatch('auth/login', {
+            username: this.loginUsername,
+            password: this.loginPassword,
+        })
+    }
+
+    clearLoginError() {
+        this.$store.commit('auth/setLoginError', null)
     }
 
     editPrinter(printer: GuiRemoteprintersStatePrinter) {

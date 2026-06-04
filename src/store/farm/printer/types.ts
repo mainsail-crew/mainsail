@@ -41,4 +41,5 @@ export interface FarmPrinterWsDataEntry {
 
 export interface FarmPrinterStateServer {
     klippy_connected: boolean
+    authentication_required?: boolean
 }

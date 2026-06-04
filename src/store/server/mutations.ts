@@ -14,6 +14,10 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'klippy_connected', true)
     },
 
+    setAuthenticationRequired(state, payload: boolean) {
+        Vue.set(state, 'authentication_required', payload)
+    },
+
     setKlippyState(state, payload) {
         Vue.set(state, 'klippy_state', payload)
     },

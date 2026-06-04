@@ -9,6 +9,7 @@ export interface ServerState {
     klippy_state: string
     klippy_state_timer: number | null
     klippy_message: string
+    authentication_required: boolean
     components: string[]
     failed_components: string[]
     failed_init_components: string[]

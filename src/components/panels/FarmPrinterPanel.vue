@@ -71,7 +71,17 @@
                                         class="my-auto" />
                                 </v-col>
                                 <v-col class="col" style="width: 100px">
-                                    <h3 class="font-weight-regular">{{ printer_status }}</h3>
+                                    <h3 class="font-weight-regular">
+                                        {{ printer_status }}
+                                        <v-icon
+                                            v-if="requiresAuth"
+                                            small
+                                            color="warning"
+                                            class="ml-1"
+                                            title="Authentication Required">
+                                            {{ mdiLock }}
+                                        </v-icon>
+                                    </h3>
                                     <span
                                         v-if="printer_current_filename !== ''"
                                         class="subtitle-2 text-truncate px-0 text--disabled d-block">
@@ -118,7 +128,7 @@ import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
+import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline, mdiLock } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 import WebcamMixin from '@/components/mixins/webcam'
 import WebcamWrapper from '@/components/webcams/WebcamWrapper.vue'
@@ -138,6 +148,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
     mdiMenuDown = mdiMenuDown
     mdiWebcamOff = mdiWebcamOff
     mdiFileOutline = mdiFileOutline
+    mdiLock = mdiLock
 
     imageHeight = 200
     resizeObserver: ResizeObserver | null = null
@@ -178,6 +189,10 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
 
     get printer_current_filename() {
         return this.$store.getters['farm/' + this.printer._namespace + '/getCurrentFilename']
+    }
+
+    get requiresAuth() {
+        return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterRequiresAuth']
     }
 
     get printer_image() {

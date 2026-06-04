@@ -3,6 +3,7 @@ import { ServerState } from '@/store/server/types'
 import { PrinterState } from '@/store/printer/types'
 import { GuiState } from '@/store/gui/types'
 import { EditorState } from '@/store/editor/types'
+import { AuthState } from '@/store/auth/types'
 
 export interface RootState {
     packageVersion: string
@@ -12,6 +13,7 @@ export interface RootState {
     configInstances: ConfigJsonInstance[]
 
     socket?: SocketState
+    auth?: AuthState
     gui?: GuiState
     printer?: PrinterState
     server?: ServerState

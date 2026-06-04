@@ -23,6 +23,7 @@ export const getDefaultState = (): ServerState => {
         klippy_state: '',
         klippy_state_timer: null,
         klippy_message: '',
+        authentication_required: false,
         components: [],
         failed_components: [],
         failed_init_components: [],

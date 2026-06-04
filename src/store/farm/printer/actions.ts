@@ -1,6 +1,7 @@
 import { ActionTree } from 'vuex'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import { RootState } from '@/store/types'
+import { clientName, clientType, clientUrl } from '@/store/variables'
 
 export const actions: ActionTree<FarmPrinterState, RootState> = {
     reset({ commit }) {
@@ -9,7 +10,8 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
 
     connect({ state, commit, dispatch, getters, rootGetters }) {
         commit('setSocketData', { isConnecting: true })
-        const socket = new WebSocket(getters.getSocketUrl)
+        const socketUrl = getters.getSocketUrl
+        const socket = new WebSocket(socketUrl)
 
         socket.onopen = () => {
             commit('setSocketData', {
@@ -19,9 +21,10 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 isConnected: true,
             })
 
+            // First check authorization status on the remote server
             dispatch('sendObj', {
-                method: 'server.info',
-                action: 'getServerInfo',
+                method: 'access.info',
+                action: 'getAccessInfo',
             })
         }
 
@@ -128,6 +131,66 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     getServerInfo({ commit, dispatch }, payload) {
         commit('setKlippyConnected', payload.klippy_connected)
         dispatch('initPrinter')
+    },
+
+    getServerConnectionIdentify({ dispatch }) {
+        dispatch('sendObj', {
+            method: 'server.info',
+            action: 'getServerInfo',
+        })
+    },
+
+    getAccessInfo({ state, commit, dispatch, rootState }, payload) {
+        // payload is the result of access.info
+
+        if ((payload.login_required || payload.trusted === false) && !rootState.auth?.accessToken) {
+            // Close the farm printer's local socket first
+            if (state.socket.instance) {
+                state.socket.instance.close()
+            }
+
+            // propagate Unauthorized to global socket handler so the login dialog can be shown
+            // set global socket target to this farm printer so the existing login dialog is used
+            // set the global socket target and start connecting so the global login dialog is used
+            dispatch(
+                'socket/setSocket',
+                {
+                    hostname: state.socket.hostname,
+                    port: state.socket.port,
+                    path: state.socket.path,
+                },
+                { root: true }
+            )
+
+            // mark this farm printer as requiring authentication
+            commit('setAuthenticationRequired', true)
+
+            // mark connection failed to surface login UI
+            dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
+            // mark this farm printer socket as disconnected
+            commit('setSocketData', {
+                isConnecting: false,
+                isConnected: false,
+            })
+            return
+        } else {
+            // we are authenticated, proceed
+            commit('setAuthenticationRequired', false)
+
+            const connectionParams = {
+                client_name: clientName,
+                version: rootState.packageVersion,
+                type: clientType as 'web',
+                url: clientUrl,
+                ...(rootState.auth?.accessToken ? { access_token: rootState.auth.accessToken } : {})
+            }
+
+            dispatch('sendObj', {
+                method: 'server.connection.identify',
+                params: connectionParams,
+                action: 'getServerConnectionIdentify',
+            })
+        }
     },
 
     initPrinter({ state, commit, dispatch }) {

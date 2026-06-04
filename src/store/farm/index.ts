@@ -33,6 +33,10 @@ export const farm: Module<FarmState, RootState> = {
                 }
             )
         },
+        getPrinterRequiresAuth: (state, getters) => (namespace: string) => {
+            return getters[namespace + '/getPrinterRequiresAuth'] ?? false
+        },
+
         existsPrinter: (state) => (namespace: string) => {
             return Object.keys(state).includes(namespace)
         },

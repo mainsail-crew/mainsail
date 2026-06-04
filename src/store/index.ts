@@ -7,6 +7,7 @@ import { RootState } from './types'
 
 // load modules
 import { socket } from '@/store/socket'
+import { auth } from '@/store/auth'
 import { server } from '@/store/server'
 import { printer } from '@/store/printer'
 import { files } from '@/store/files'
@@ -33,6 +34,7 @@ export default new Vuex.Store({
     state,
     modules: {
         socket,
+        auth,
         server,
         printer,
         files,

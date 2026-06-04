@@ -42,11 +42,19 @@ export const getters: GetterTree<FarmPrinterState, RootState> = {
         return state.socket
     },
 
+    getPrinterRequiresAuth: (state) => {
+        return state.server.authentication_required
+    },
+
     getLogoColor: (state) => {
         return state.data.gui?.uiSettings?.logo ?? defaultLogoColor
     },
 
-    getStatus: (state, getters) => {
+    getStatus: (state, getters, rootState) => {
+        if (state.server.authentication_required && !rootState.auth?.accessToken) {
+            return 'Authentication needed'
+        }
+
         if (!state.socket.isConnected) {
             return state.socket.isConnecting ? 'Connecting...' : 'Disconnected'
         } else if (!state.server.klippy_connected) {

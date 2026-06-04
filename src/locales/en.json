@@ -163,7 +163,11 @@
         "Failed": "Connection failed",
         "Help": "Help",
         "Initializing": "Initializing",
-        "TryAgain": "try again"
+        "Login": "Login",
+        "LoginPrompt": "Moonraker requires a username and password. Please log in to continue.",
+        "Password": "Password",
+        "TryAgain": "try again",
+        "Username": "Username"
     },
     "Console": {
         "CommandList": "Command list",

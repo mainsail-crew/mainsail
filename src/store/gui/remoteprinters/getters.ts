@@ -9,8 +9,9 @@ export const getters: GetterTree<GuiRemoteprintersState, RootState> = {
 
         Object.keys(state.printers).forEach((id: string) => {
             const socket = { ...rootGetters['farm/getPrinterSocketState'](id) }
+            const requiresAuth = rootGetters['farm/getPrinterRequiresAuth'](id)
 
-            printers.push({ ...state.printers[id], id, socket })
+            printers.push({ ...state.printers[id], id, socket, requiresAuth })
         })
 
         return caseInsensitiveSort(printers, 'hostname')

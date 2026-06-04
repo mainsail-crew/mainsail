@@ -13,6 +13,10 @@ export const minBrowserVersions = [{ name: 'safari', version: '16.5.2' }]
 export const defaultMoonrakerPort = 7125
 export const defaultSecureMoonrakerPort = 7130
 
+export const clientName = 'mainsail'
+export const clientType = 'web'
+export const clientUrl = 'https://github.com/mainsail-crew/mainsail'
+
 export const colorArray = ['#F44336', '#8e379d', '#03DAC5', '#3F51B5', '#ffde03', '#009688', '#E91E63']
 
 export const colorHeaterBed = '#2196F3'

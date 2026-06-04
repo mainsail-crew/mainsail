@@ -14,6 +14,7 @@ export interface GuiRemoteprintersStatePrinter {
     name?: string | null
     protocol?: 'ws' | 'wss' | null
     socket?: FarmPrinterStateSocket
+    requiresAuth?: boolean
     settings?: {
         [key: string]: unknown
     }

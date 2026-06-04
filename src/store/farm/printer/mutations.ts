@@ -64,6 +64,10 @@ export const mutations: MutationTree<FarmPrinterState> = {
         Vue.set(state.server, 'klippy_connected', payload)
     },
 
+    setAuthenticationRequired(state, payload) {
+        Vue.set(state.server, 'authentication_required', payload)
+    },
+
     setCurrentFile(state, payload) {
         if ('requestParams' in payload) delete payload.requestParams
         Vue.set(state, 'current_file', payload)

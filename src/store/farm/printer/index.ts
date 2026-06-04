@@ -26,6 +26,7 @@ export const getDefaultState = (): FarmPrinterState => {
         },
         server: {
             klippy_connected: false,
+            authentication_required: false,
         },
         data: {
             gui: getGuiDefaultState(),

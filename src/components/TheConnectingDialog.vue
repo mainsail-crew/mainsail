@@ -1,7 +1,43 @@
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
         <panel :title="titleText" :icon="mdiConnection" card-class="the-connection-dialog" :margin-bottom="false">
-            <v-card-text v-if="connectingFailed" class="pt-5">
+            <v-card-text v-if="isUnauthorized" class="pt-5">
+                <connection-status :moonraker="false" />
+                <p class="text-center mt-3 mb-3">
+                    {{ $t('ConnectionDialog.LoginPrompt') }}
+                </p>
+                <v-text-field
+                    v-model="loginUsername"
+                    :label="$t('ConnectionDialog.Username')"
+                    dense
+                    outlined
+                    hide-details="auto"
+                    @input="clearLoginError" />
+                <v-text-field
+                    v-model="loginPassword"
+                    :label="$t('ConnectionDialog.Password')"
+                    type="password"
+                    dense
+                    outlined
+                    hide-details="auto"
+                    @input="clearLoginError" />
+                <p v-if="authLoginError" class="text-center mt-1 red--text">
+                    {{ authLoginError }}
+                </p>
+                <div class="text-center mt-3">
+                    <v-btn
+                        class="primary--text"
+                        :loading="authLoggingIn"
+                        :disabled="authLoggingIn || !loginUsername || !loginPassword"
+                        @click="login">
+                        {{ $t('ConnectionDialog.Login') }}
+                    </v-btn>
+                    <v-btn class="text--disabled ml-3" :disabled="authLoggingIn" @click="reconnect">
+                        {{ $t('ConnectionDialog.TryAgain') }}
+                    </v-btn>
+                </div>
+            </v-card-text>
+            <v-card-text v-else-if="connectingFailed" class="pt-5">
                 <connection-status :moonraker="false" />
                 <p class="text-center mt-3 mb-0">
                     {{ $t('ConnectionDialog.CannotConnectTo', { host: formatHostname }) }}
@@ -51,6 +87,8 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
     mdiHelp = mdiHelp
 
     counter = 0
+    loginUsername = ''
+    loginPassword = ''
 
     get hostname() {
         return this.$store.state.socket.hostname
@@ -94,10 +132,33 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.state.socket.connectionFailedMessage ?? null
     }
 
+    get authLoginError() {
+        return this.$store.state.auth?.loginError ?? null
+    }
+
+    get authLoggingIn() {
+        return this.$store.state.auth?.isLoggingIn ?? false
+    }
+
+    get isUnauthorized() {
+        return this.connectionFailedMessage === 'Unauthorized'
+    }
+
     get helpButtonUrl() {
         if (!this.$store.state.socket.connectionFailedMessage) return null
 
         return `https://docs.mainsail.xyz/faq/mainsail_errors/connection-${this.connectionFailedMessage?.toLowerCase()}`
+    }
+
+    async login() {
+        await this.$store.dispatch('auth/login', {
+            username: this.loginUsername,
+            password: this.loginPassword,
+        })
+    }
+
+    clearLoginError() {
+        this.$store.commit('auth/setLoginError', null)
     }
 
     reconnect() {

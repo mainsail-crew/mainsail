@@ -4,7 +4,7 @@ import { ActionTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
-import { initableServerComponents } from '@/store/variables'
+import { initableServerComponents, clientName, clientType, clientUrl } from '@/store/variables'
 
 export const actions: ActionTree<ServerState, RootState> = {
     reset({ commit, dispatch }) {
@@ -21,17 +21,31 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         // identify client
         try {
-            const connection = await Vue.$socket.emitAndWait('server.connection.identify', {
-                client_name: 'mainsail',
+            const accessInfo = await Vue.$socket.emitAndWait<'access.info'>('access.info')
+            const authRequired = accessInfo.login_required || accessInfo.trusted === false
+            commit('setAuthenticationRequired', authRequired)
+
+            if (authRequired && !rootState.auth?.accessToken) {
+                dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
+                return
+            }
+
+            const connectionParams = {
+                client_name: clientName,
                 version: rootState.packageVersion,
-                type: 'web',
-                url: 'https://github.com/mainsail-crew/mainsail',
-            })
+                type: clientType as 'web',
+                url: clientUrl,
+                ...(rootState.auth?.accessToken ? { access_token: rootState.auth.accessToken } : {})
+            }
+
+            const connection = await Vue.$socket.emitAndWait('server.connection.identify', connectionParams)
             commit('setConnectionId', connection.connection_id)
+            commit('socket/setConnected', null, { root: true })
         } catch (e: unknown) {
-            const message = e instanceof Error ? e.message : String(e)
-            if (message === 'Unauthorized') {
-                this.dispatch('socket/setConnectionFailed', message)
+            const err = e as Record<string, unknown>
+            const message = e instanceof Error ? e.message : (typeof err?.message === 'string' ? err.message : String(e))
+            if (err?.code === 401 || message === 'Unauthorized') {
+                dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
             }
 
             window.console.error('Error while identifying client: ' + message)
