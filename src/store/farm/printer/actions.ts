@@ -158,6 +158,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     hostname: state.socket.hostname,
                     port: state.socket.port,
                     path: state.socket.path,
+                    protocol: state.socket.protocol,
                 },
                 { root: true }
             )
