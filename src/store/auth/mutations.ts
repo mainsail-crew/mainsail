@@ -6,21 +6,29 @@ const REFRESH_TOKEN_KEY = 'mainsail_moonraker_refresh_token'
 const USERNAME_KEY = 'mainsail_moonraker_username'
 
 export const mutations: MutationTree<AuthState> = {
-    setAuthToken(state, payload) {
+    setAuthToken(state, payload: { accessToken: string | null; refreshToken: string | null; username: string | null; rememberMe?: boolean }) {
         state.accessToken = payload.accessToken
         state.refreshToken = payload.refreshToken
         state.username = payload.username
         state.loginError = null
         state.isLoggingIn = false
 
-        if (payload.accessToken != null) localStorage.setItem(ACCESS_TOKEN_KEY, payload.accessToken)
-        else localStorage.removeItem(ACCESS_TOKEN_KEY)
+        const storage = payload.rememberMe ? localStorage : sessionStorage
+        const clearStorage = payload.rememberMe ? sessionStorage : localStorage
 
-        if (payload.refreshToken != null) localStorage.setItem(REFRESH_TOKEN_KEY, payload.refreshToken)
-        else localStorage.removeItem(REFRESH_TOKEN_KEY)
+        if (payload.accessToken != null) storage.setItem(ACCESS_TOKEN_KEY, payload.accessToken)
+        else storage.removeItem(ACCESS_TOKEN_KEY)
 
-        if (payload.username != null) localStorage.setItem(USERNAME_KEY, payload.username)
-        else localStorage.removeItem(USERNAME_KEY)
+        if (payload.refreshToken != null) storage.setItem(REFRESH_TOKEN_KEY, payload.refreshToken)
+        else storage.removeItem(REFRESH_TOKEN_KEY)
+
+        if (payload.username != null) storage.setItem(USERNAME_KEY, payload.username)
+        else storage.removeItem(USERNAME_KEY)
+
+        // Clear the other storage just in case
+        clearStorage.removeItem(ACCESS_TOKEN_KEY)
+        clearStorage.removeItem(REFRESH_TOKEN_KEY)
+        clearStorage.removeItem(USERNAME_KEY)
     },
 
     setLoginError(state, payload) {
@@ -41,5 +49,9 @@ export const mutations: MutationTree<AuthState> = {
         localStorage.removeItem(ACCESS_TOKEN_KEY)
         localStorage.removeItem(REFRESH_TOKEN_KEY)
         localStorage.removeItem(USERNAME_KEY)
+
+        sessionStorage.removeItem(ACCESS_TOKEN_KEY)
+        sessionStorage.removeItem(REFRESH_TOKEN_KEY)
+        sessionStorage.removeItem(USERNAME_KEY)
     },
 }

@@ -4,7 +4,7 @@ import { AuthState } from '@/store/auth/types'
 import { RootState } from '@/store/types'
 
 export const actions: ActionTree<AuthState, RootState> = {
-    async login({ commit, dispatch }, payload: { username: string; password: string }) {
+    async login({ commit, dispatch }, payload: { username: string; password: string; rememberMe?: boolean }) {
         commit('setLoggingIn', true)
         commit('setLoginError', null)
 
@@ -45,6 +45,7 @@ export const actions: ActionTree<AuthState, RootState> = {
                 accessToken,
                 refreshToken,
                 username: resultData.username,
+                rememberMe: payload.rememberMe,
             })
 
             await dispatch('server/init', null, { root: true })
@@ -67,7 +68,17 @@ export const actions: ActionTree<AuthState, RootState> = {
         }
     },
 
-    logout({ commit }) {
-        commit('reset')
+    async logout({ commit }) {
+        try {
+            if (Vue.$socket.instance?.readyState === WebSocket.OPEN) {
+                await Vue.$socket.emitAndWait<'access.logout'>('access.logout')
+            }
+        } catch (error) {
+            window.console.debug('Logout request failed or ignored', error)
+        } finally {
+            commit('reset')
+            // Reload the application to cleanly reset all state and reconnect
+            window.location.reload()
+        }
     },
 }

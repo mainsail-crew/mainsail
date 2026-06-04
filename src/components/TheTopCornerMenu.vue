@@ -77,6 +77,16 @@
                         <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
                     </v-list-item-action>
                 </v-list-item>
+                <template v-if="hasAuthToken">
+                    <v-divider class="mt-0"></v-divider>
+                    <v-subheader class="pt-2" style="height: auto">{{ $t('App.TopCornerMenu.Session') }}</v-subheader>
+                    <v-list-item class="minHeight30 pr-2" link @click="logout">
+                        <v-list-item-title>{{ $t('App.TopCornerMenu.Logout') }}</v-list-item-title>
+                        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
+                            <v-icon class="mr-2" small>{{ mdiLogout }}</v-icon>
+                        </v-list-item-action>
+                    </v-list-item>
+                </template>
             </v-list>
         </v-menu>
         <confirmation-dialog
@@ -101,7 +111,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiCloseThick, mdiPowerStandby, mdiRestart, mdiPower, mdiToggleSwitch, mdiToggleSwitchOff } from '@mdi/js'
+import { mdiCloseThick, mdiPowerStandby, mdiRestart, mdiPower, mdiToggleSwitch, mdiToggleSwitchOff, mdiLogout } from '@mdi/js'
 import TopCornerMenuService from '@/components/ui/TopCornerMenuService.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import ServiceMixins from '@/components/mixins/services'
@@ -131,6 +141,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
     mdiPower = mdiPower
     mdiToggleSwitch = mdiToggleSwitch
     mdiToggleSwitchOff = mdiToggleSwitchOff
+    mdiLogout = mdiLogout
 
     showMenu = false
     dialogPowerDeviceChange: dialogPowerDeviceChange = {
@@ -268,6 +279,15 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
     hostShutdown() {
         this.showMenu = false
         this.$socket.emit('machine.shutdown', {})
+    }
+
+    get hasAuthToken() {
+        return !!this.$store.state.auth?.accessToken
+    }
+
+    logout() {
+        this.showMenu = false
+        this.$store.dispatch('auth/logout')
     }
 }
 </script>

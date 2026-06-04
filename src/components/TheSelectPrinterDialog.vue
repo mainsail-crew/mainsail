@@ -59,6 +59,12 @@
                     <p v-if="authLoginError" class="text-center mt-1 red--text">
                         {{ authLoginError }}
                     </p>
+                    <v-checkbox
+                        v-model="loginRememberMe"
+                        :label="$t('ConnectionDialog.RememberMe')"
+                        dense
+                        hide-details
+                        class="mt-1" />
                     <div class="text-center mt-3">
                         <v-btn
                             class="primary--text"
@@ -381,6 +387,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     loginUsername = ''
     loginPassword = ''
+    loginRememberMe = true
 
     /**
      * Icons
@@ -450,7 +457,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get isUnauthorized() {
-        return this.$store.state.socket.connectionFailedMessage === 'Unauthorized'
+        return this.$store.state.socket.connectingFailed && this.$store.state.socket.connectionFailedMessage === 'Unauthorized'
     }
 
     get authLoginError() {
@@ -489,6 +496,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         else if (this.dialogEditPrinter.bool) return this.$t('SelectPrinterDialog.EditPrinter')
         else if (this.isConnecting) return this.$t('SelectPrinterDialog.Connecting', { host: this.formatHostname })
         else if (this.isConnected && !this.guiIsReady) return this.$t('ConnectionDialog.Initializing')
+        else if (this.isUnauthorized) return this.$t('SelectPrinterDialog.Connecting', { host: this.formatHostname })
         else if (this.connectingFailed)
             return this.$t('SelectPrinterDialog.ConnectionFailed', { host: this.formatHostname })
         else return this.$t('SelectPrinterDialog.SelectPrinter')
@@ -523,9 +531,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     async login() {
-        await this.$store.dispatch('auth/login', {
+        this.$store.dispatch('auth/login', {
             username: this.loginUsername,
             password: this.loginPassword,
+            rememberMe: this.loginRememberMe,
         })
     }
 
