@@ -325,6 +325,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         port: 0,
         path: '/',
         name: '',
+        secure: false,
     }
     showOptionalSettings = false
 
