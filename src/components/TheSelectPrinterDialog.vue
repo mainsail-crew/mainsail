@@ -461,7 +461,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get isUnauthorized() {
-        return this.$store.state.socket.connectingFailed && this.$store.state.socket.connectionFailedMessage === 'Unauthorized'
+        return (
+            this.$store.state.socket.connectingFailed &&
+            this.$store.state.socket.connectionFailedMessage === 'Unauthorized'
+        )
     }
 
     get authLoginError() {

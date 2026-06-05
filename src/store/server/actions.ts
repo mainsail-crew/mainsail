@@ -36,7 +36,7 @@ export const actions: ActionTree<ServerState, RootState> = {
                 version: rootState.packageVersion,
                 type: clientType as 'web',
                 url: clientUrl,
-                ...(rootState.auth?.accessToken ? { access_token: rootState.auth.accessToken } : {})
+                ...(rootState.auth?.accessToken ? { access_token: rootState.auth.accessToken } : {}),
             }
 
             const connection = await Vue.$socket.emitAndWait('server.connection.identify', connectionParams)
@@ -44,7 +44,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             commit('socket/setConnected', null, { root: true })
         } catch (e: unknown) {
             const err = e as Record<string, unknown>
-            const message = e instanceof Error ? e.message : (typeof err?.message === 'string' ? err.message : String(e))
+            const message = e instanceof Error ? e.message : typeof err?.message === 'string' ? err.message : String(e)
             if (err?.code === 401 || message === 'Unauthorized') {
                 dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
             }

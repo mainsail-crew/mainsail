@@ -183,7 +183,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 version: rootState.packageVersion,
                 type: clientType as 'web',
                 url: clientUrl,
-                ...(rootState.auth?.accessToken ? { access_token: rootState.auth.accessToken } : {})
+                ...(rootState.auth?.accessToken ? { access_token: rootState.auth.accessToken } : {}),
             }
 
             dispatch('sendObj', {

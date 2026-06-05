@@ -6,7 +6,15 @@ const REFRESH_TOKEN_KEY = 'mainsail_moonraker_refresh_token'
 const USERNAME_KEY = 'mainsail_moonraker_username'
 
 export const mutations: MutationTree<AuthState> = {
-    setAuthToken(state, payload: { accessToken: string | null; refreshToken: string | null; username: string | null; rememberMe?: boolean }) {
+    setAuthToken(
+        state,
+        payload: {
+            accessToken: string | null
+            refreshToken: string | null
+            username: string | null
+            rememberMe?: boolean
+        }
+    ) {
         state.accessToken = payload.accessToken
         state.refreshToken = payload.refreshToken
         state.username = payload.username
