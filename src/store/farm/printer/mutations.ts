@@ -64,7 +64,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
         Vue.set(state.server, 'klippy_connected', payload)
     },
 
-    setAuthenticationRequired(state, payload) {
+    setAuthenticationRequired(state, payload: boolean) {
         Vue.set(state.server, 'authentication_required', payload)
     },
 

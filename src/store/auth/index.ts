@@ -19,13 +19,18 @@ export const getDefaultState = (): AuthState => {
     const refreshKey = getAuthStorageKey(REFRESH_TOKEN_KEY, hostname, port)
     const userKey = getAuthStorageKey(USERNAME_KEY, hostname, port)
 
-    const rawAccess = localStorage.getItem(accessKey) || sessionStorage.getItem(accessKey)
-    const rawRefresh = localStorage.getItem(refreshKey) || sessionStorage.getItem(refreshKey)
-    const rawUser = localStorage.getItem(userKey) || sessionStorage.getItem(userKey)
+    const getValidItem = (key: string) => {
+        const local = localStorage.getItem(key)
+        if (local === null || local === 'null' || local === 'undefined') {
+            const session = sessionStorage.getItem(key)
+            return session === 'null' || session === 'undefined' ? null : session
+        }
+        return local
+    }
 
-    const accessToken = rawAccess && rawAccess !== 'null' && rawAccess !== 'undefined' ? rawAccess : null
-    const refreshToken = rawRefresh && rawRefresh !== 'null' && rawRefresh !== 'undefined' ? rawRefresh : null
-    const username = rawUser && rawUser !== 'null' && rawUser !== 'undefined' ? rawUser : null
+    const accessToken = getValidItem(accessKey)
+    const refreshToken = getValidItem(refreshKey)
+    const username = getValidItem(userKey)
 
     return {
         accessToken,
