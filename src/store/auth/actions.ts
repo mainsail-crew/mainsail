@@ -52,6 +52,23 @@ export const actions: ActionTree<AuthState, RootState> = {
 
             await dispatch('server/init', null, { root: true })
             commit('socket/setConnected', null, { root: true })
+
+            // Reconnect farm printers that share the same host/port and are disconnected due to auth
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((rootState as any).farm) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const farm = (rootState as any).farm as Record<string, any>
+                for (const [id, printer] of Object.entries(farm)) {
+                    if (
+                        printer.socket?.hostname === rootState.socket?.hostname &&
+                        printer.socket?.port === rootState.socket?.port &&
+                        printer.socket?.isConnected === false &&
+                        printer.server?.authentication_required
+                    ) {
+                        dispatch(`farm/${id}/reconnect`, null, { root: true })
+                    }
+                }
+            }
         } catch (error: unknown) {
             let message: string
             if (!error) {
