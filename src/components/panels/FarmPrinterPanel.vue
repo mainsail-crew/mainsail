@@ -78,7 +78,7 @@
                                             small
                                             color="warning"
                                             class="ml-1"
-                                            title="Authentication Required">
+                                            :title="$t('Panels.FarmPrinterPanel.AuthenticationRequired')">
                                             {{ mdiLock }}
                                         </v-icon>
                                     </h3>

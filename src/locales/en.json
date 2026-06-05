@@ -720,6 +720,7 @@
             "UnloadFilament": "Unload Filament"
         },
         "FarmPrinterPanel": {
+            "AuthenticationRequired": "Authentication required",
             "ReconnectToPrinter": "Reconnect",
             "SwitchToPrinter": "Switch to Printer",
             "WebcamOff": "Off"
