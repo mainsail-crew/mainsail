@@ -26,10 +26,10 @@ export function initializeHttpAuth(store: Store<RootState>): void {
 
         refreshPromise = (async () => {
             try {
-                const apiRoot = new URL(apiUrl, window.location.href)
-                const refreshUrl = new URL('/access/refresh_jwt', apiRoot)
+                const normalizedApiUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl
+                const refreshUrl = normalizedApiUrl + '/access/refresh_jwt'
 
-                const response = await nativeFetch(refreshUrl.toString(), {
+                const response = await nativeFetch(refreshUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
