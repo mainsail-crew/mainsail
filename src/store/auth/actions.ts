@@ -4,7 +4,10 @@ import { AuthState } from '@/store/auth/types'
 import { RootState } from '@/store/types'
 
 export const actions: ActionTree<AuthState, RootState> = {
-    async login({ commit, dispatch, rootState }, payload: { username: string; password: string; rememberMe?: boolean }) {
+    async login(
+        { commit, dispatch, rootState },
+        payload: { username: string; password: string; rememberMe?: boolean }
+    ) {
         commit('setLoggingIn', true)
         commit('setLoginError', null)
 

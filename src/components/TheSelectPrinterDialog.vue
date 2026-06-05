@@ -559,7 +559,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     updatePrinter() {
         const isSecure = this.isHttps || this.dialogEditPrinter.secure
-        
+
         let port = this.dialogEditPrinter.port
         if (this.isHttps && port === defaultMoonrakerPort) {
             port = defaultSecureMoonrakerPort
@@ -596,23 +596,12 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     connect(printer: FarmPrinterState) {
-        this.$store.dispatch('socket/setData', {
+        this.$store.dispatch('socket/setSocket', {
             hostname: printer.socket.hostname,
             port: printer.socket.port,
             path: printer.socket.path,
             protocol: printer.socket.protocol,
         })
-        const normPath = printer.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
-        const url =
-            printer.socket.protocol +
-            '://' +
-            printer.socket.hostname +
-            ':' +
-            printer.socket.port +
-            (normPath.length > 0 ? `/${normPath}` : '') +
-            '/websocket'
-        this.$socket.setUrl(url)
-        this.$socket.connect()
     }
 
     reconnect() {

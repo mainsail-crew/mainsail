@@ -27,6 +27,11 @@
                     <p v-if="authLoginError" class="text-center mt-1 red--text">
                         {{ authLoginError }}
                     </p>
+                    <v-checkbox
+                        v-model="loginRememberMe"
+                        :label="$t('ConnectionDialog.RememberMe')"
+                        hide-details="auto"
+                        class="mt-1" />
                     <div class="text-center mt-3">
                         <v-btn
                             type="submit"
@@ -93,6 +98,7 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
     counter = 0
     loginUsername = ''
     loginPassword = ''
+    loginRememberMe = true
 
     get hostname() {
         return this.$store.state.socket.hostname
@@ -158,6 +164,7 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
         await this.$store.dispatch('auth/login', {
             username: this.loginUsername,
             password: this.loginPassword,
+            rememberMe: this.loginRememberMe,
         })
     }
 

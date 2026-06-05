@@ -40,8 +40,17 @@ export const actions: ActionTree<ServerState, RootState> = {
             }
 
             const connection = await Vue.$socket.emitAndWait('server.connection.identify', connectionParams)
-            commit('setConnectionId', connection.connection_id)
+
             commit('setAuthenticationRequired', false)
+
+            // connection might be a number, string, or object depending on Moonraker version/proxy
+            if (connection && typeof connection === 'object' && 'connection_id' in connection) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                commit('setConnectionId', (connection as any).connection_id)
+            } else if (typeof connection === 'number') {
+                commit('setConnectionId', connection)
+            }
+
             commit('socket/setConnected', null, { root: true })
         } catch (e: unknown) {
             const err = e as Record<string, unknown>

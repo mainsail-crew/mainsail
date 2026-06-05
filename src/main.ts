@@ -82,6 +82,7 @@ const initLoad = async () => {
     const url = store.getters['socket/getWebsocketUrl']
     Vue.use(WebSocketPlugin, { url, store })
     initializeHttpAuth(store)
+    store.commit('auth/loadToken', { hostname: store.state.socket?.hostname, port: store.state.socket?.port })
     if (store?.state?.instancesDB === 'moonraker') Vue.$socket.connect()
 }
 
