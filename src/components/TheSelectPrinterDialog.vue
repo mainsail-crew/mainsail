@@ -631,7 +631,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
             const name = this.$route.query.printer.toString().toLowerCase()
             const matching = this.printers.filter(
-                (printer: GuiRemoteprintersStatePrinter) => printer.name?.toLowerCase() === name
+                (printer: GuiRemoteprintersStatePrinter) =>
+                    printer.name?.toLowerCase() === name ||
+                    printer.hostname?.toLowerCase() === name ||
+                    printer.hostname?.toLowerCase().split('.')[0] === name
             )
 
             // no printers found with this name

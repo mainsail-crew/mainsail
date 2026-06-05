@@ -16,7 +16,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
 
     initFromLocalstorage({ dispatch, rootState }) {
         let value = rootState.configInstances ?? []
-        if (rootState.instancesDB === 'browser') value = JSON.parse(localStorage.getItem('printers') ?? '{}')
+        if (rootState.instancesDB === 'browser') value = JSON.parse(localStorage.getItem('printers') ?? '[]')
         if (Array.isArray(value)) {
             const printers: Record<string, (typeof value)[number]> = {}
 
