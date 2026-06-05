@@ -72,8 +72,7 @@
                                 type="submit"
                                 class="primary--text"
                                 :loading="authLoggingIn"
-                                :disabled="authLoggingIn || !loginUsername || !loginPassword"
-                                @click="login">
+                                :disabled="authLoggingIn || !loginUsername || !loginPassword">
                                 {{ $t('ConnectionDialog.Login') }}
                             </v-btn>
                             <v-btn class="text--disabled ml-3" :disabled="authLoggingIn" @click="switchToChangePrinter">
