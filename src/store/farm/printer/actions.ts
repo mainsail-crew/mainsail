@@ -153,11 +153,12 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     getAccessInfo({ state, commit, dispatch, rootState }, payload) {
         // payload is the result of access.info
 
-        let accessToken = null
         // Also fetch token even if protocol is ws because Moonraker proxy might handle it, or we just want to know if we have one.
         // Actually, we'll keep the wss check if Mainsail requires it, but let's just fetch the key.
         const key = `mainsail_moonraker_access_token_${state.socket.hostname}_${state.socket.port}`
         const local = localStorage.getItem(key)
+        
+        let accessToken: string | null
         if (local === null || local === 'null' || local === 'undefined') {
             const session = sessionStorage.getItem(key)
             accessToken = session === 'null' || session === 'undefined' ? null : session
@@ -171,25 +172,9 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 state.socket.instance.close()
             }
 
-            // propagate Unauthorized to global socket handler so the login dialog can be shown
-            // set global socket target to this farm printer so the existing login dialog is used
-            dispatch(
-                'socket/setSocket',
-                {
-                    hostname: state.socket.hostname,
-                    port: state.socket.port,
-                    path: state.socket.path,
-                    protocol: state.socket.protocol,
-                },
-                { root: true }
-            )
-
             // mark this farm printer as requiring authentication
             commit('setAuthenticationRequired', true)
 
-            // mark connection failed to surface login UI
-            dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
-            commit('server/setAuthenticationRequired', true, { root: true })
             // mark this farm printer socket as disconnected
             commit('setSocketData', {
                 isConnecting: false,

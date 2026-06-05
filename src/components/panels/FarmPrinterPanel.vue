@@ -245,8 +245,8 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
     }
 
     clickPrinter() {
-        // If the printer is already connected, just switch to it
-        if (this.printer.socket.isConnected) {
+        // If the printer is already connected, or requires authentication, switch to it so the login dialog can be shown
+        if (this.printer.socket.isConnected || this.printer.server.authentication_required) {
             this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
             return
         }
