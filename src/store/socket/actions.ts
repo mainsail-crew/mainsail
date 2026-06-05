@@ -18,6 +18,8 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setData', payload)
 
         if ('$socket' in Vue.prototype) {
+            commit('auth/loadToken', { hostname: payload.hostname, port: payload.port }, { root: true })
+
             const normPath = payload.path.replaceAll(/(^\/*)|(\/*$)/g, '')
             const path = normPath.length > 0 ? `/${normPath}` : ''
             const newUrl = state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket'

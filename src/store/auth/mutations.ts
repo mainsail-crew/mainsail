@@ -60,6 +60,20 @@ export const mutations: MutationTree<AuthState> = {
         state.isLoggingIn = payload
     },
 
+    loadToken(state, payload: { hostname: string; port: string | number }) {
+        const accessKey = getAuthStorageKey(ACCESS_TOKEN_KEY, payload.hostname, payload.port)
+        const refreshKey = getAuthStorageKey(REFRESH_TOKEN_KEY, payload.hostname, payload.port)
+        const userKey = getAuthStorageKey(USERNAME_KEY, payload.hostname, payload.port)
+
+        const rawAccess = localStorage.getItem(accessKey) || sessionStorage.getItem(accessKey)
+        const rawRefresh = localStorage.getItem(refreshKey) || sessionStorage.getItem(refreshKey)
+        const rawUser = localStorage.getItem(userKey) || sessionStorage.getItem(userKey)
+
+        state.accessToken = rawAccess && rawAccess !== 'null' && rawAccess !== 'undefined' ? rawAccess : null
+        state.refreshToken = rawRefresh && rawRefresh !== 'null' && rawRefresh !== 'undefined' ? rawRefresh : null
+        state.username = rawUser && rawUser !== 'null' && rawUser !== 'undefined' ? rawUser : null
+    },
+
     reset(state, payload?: { hostname: string; port: string | number }) {
         state.accessToken = null
         state.refreshToken = null
