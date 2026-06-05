@@ -153,7 +153,19 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     getAccessInfo({ state, commit, dispatch, rootState }, payload) {
         // payload is the result of access.info
 
-        if ((payload.login_required || payload.trusted === false) && !rootState.auth?.accessToken) {
+        let accessToken = null
+        // Also fetch token even if protocol is ws because Moonraker proxy might handle it, or we just want to know if we have one.
+        // Actually, we'll keep the wss check if Mainsail requires it, but let's just fetch the key.
+        const key = `mainsail_moonraker_access_token_${state.socket.hostname}_${state.socket.port}`
+        const local = localStorage.getItem(key)
+        if (local === null || local === 'null' || local === 'undefined') {
+            const session = sessionStorage.getItem(key)
+            accessToken = session === 'null' || session === 'undefined' ? null : session
+        } else {
+            accessToken = local
+        }
+
+        if ((payload.login_required || payload.trusted === false) && !accessToken) {
             // Close the farm printer's local socket first
             if (state.socket.instance) {
                 state.socket.instance.close()
@@ -161,7 +173,6 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
 
             // propagate Unauthorized to global socket handler so the login dialog can be shown
             // set global socket target to this farm printer so the existing login dialog is used
-            // set the global socket target and start connecting so the global login dialog is used
             dispatch(
                 'socket/setSocket',
                 {
@@ -186,25 +197,13 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             })
             return
         } else {
-            // we are authenticated, proceed
-            let accessToken = null
-            if (state.socket.protocol === 'wss') {
-                const key = `mainsail_moonraker_access_token_${state.socket.hostname}_${state.socket.port}`
-                const local = localStorage.getItem(key)
-                if (local === null || local === 'null' || local === 'undefined') {
-                    const session = sessionStorage.getItem(key)
-                    accessToken = session === 'null' || session === 'undefined' ? null : session
-                } else {
-                    accessToken = local
-                }
-            }
-
+            // we are authenticated or we have an accessToken, proceed
             const connectionParams = {
                 client_name: clientName,
                 version: rootState.packageVersion,
                 type: clientType as 'web',
                 url: clientUrl,
-                ...(accessToken ? { access_token: accessToken } : {}),
+                ...(accessToken && state.socket.protocol === 'wss' ? { access_token: accessToken } : {}),
             }
 
             dispatch('sendObj', {

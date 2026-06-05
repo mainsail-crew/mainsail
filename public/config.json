@@ -5,6 +5,6 @@
     "hostname": null,
     "port": null,
     "path": null,
-    "instancesDB": "moonraker",
+    "instancesDB": "browser",
     "instances": []
 }
