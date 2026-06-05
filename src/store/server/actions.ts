@@ -41,6 +41,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
             const connection = await Vue.$socket.emitAndWait('server.connection.identify', connectionParams)
             commit('setConnectionId', connection.connection_id)
+            commit('setAuthenticationRequired', false)
             commit('socket/setConnected', null, { root: true })
         } catch (e: unknown) {
             const err = e as Record<string, unknown>
