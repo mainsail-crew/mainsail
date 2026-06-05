@@ -6,36 +6,40 @@
                 <p class="text-center mt-3 mb-3">
                     {{ $t('ConnectionDialog.LoginPrompt') }}
                 </p>
-                <v-text-field
-                    v-model="loginUsername"
-                    :label="$t('ConnectionDialog.Username')"
-                    dense
-                    outlined
-                    hide-details="auto"
-                    @input="clearLoginError" />
-                <v-text-field
-                    v-model="loginPassword"
-                    :label="$t('ConnectionDialog.Password')"
-                    type="password"
-                    dense
-                    outlined
-                    hide-details="auto"
-                    @input="clearLoginError" />
-                <p v-if="authLoginError" class="text-center mt-1 red--text">
-                    {{ authLoginError }}
-                </p>
-                <div class="text-center mt-3">
-                    <v-btn
-                        class="primary--text"
-                        :loading="authLoggingIn"
-                        :disabled="authLoggingIn || !loginUsername || !loginPassword"
-                        @click="login">
-                        {{ $t('ConnectionDialog.Login') }}
-                    </v-btn>
-                    <v-btn class="text--disabled ml-3" :disabled="authLoggingIn" @click="reconnect">
-                        {{ $t('ConnectionDialog.TryAgain') }}
-                    </v-btn>
-                </div>
+                <form @submit.prevent="login">
+                    <v-text-field
+                        v-model="loginUsername"
+                        :label="$t('ConnectionDialog.Username')"
+                        autocomplete="username"
+                        dense
+                        outlined
+                        hide-details="auto"
+                        @input="clearLoginError" />
+                    <v-text-field
+                        v-model="loginPassword"
+                        :label="$t('ConnectionDialog.Password')"
+                        type="password"
+                        autocomplete="current-password"
+                        dense
+                        outlined
+                        hide-details="auto"
+                        @input="clearLoginError" />
+                    <p v-if="authLoginError" class="text-center mt-1 red--text">
+                        {{ authLoginError }}
+                    </p>
+                    <div class="text-center mt-3">
+                        <v-btn
+                            type="submit"
+                            class="primary--text"
+                            :loading="authLoggingIn"
+                            :disabled="authLoggingIn || !loginUsername || !loginPassword">
+                            {{ $t('ConnectionDialog.Login') }}
+                        </v-btn>
+                        <v-btn class="text--disabled ml-3" :disabled="authLoggingIn" @click="reconnect">
+                            {{ $t('ConnectionDialog.TryAgain') }}
+                        </v-btn>
+                    </div>
+                </form>
             </v-card-text>
             <v-card-text v-else-if="connectingFailed" class="pt-5">
                 <connection-status :moonraker="false" />
