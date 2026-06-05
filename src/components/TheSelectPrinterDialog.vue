@@ -359,7 +359,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get defaultMoonrakerPort() {
-        return this.protocol === 'wss' ? defaultSecureMoonrakerPort : defaultMoonrakerPort
+        return this.isHttps ? defaultSecureMoonrakerPort : defaultMoonrakerPort
     }
 
     get hostname() {
@@ -434,7 +434,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     createPrinter() {
         this.dialogAddPrinter.hostname = ''
         this.dialogAddPrinter.port = this.defaultMoonrakerPort
-        this.dialogAddPrinter.secure = false
+        this.dialogAddPrinter.secure = this.isHttps
         this.dialogAddPrinter.bool = true
     }
 
@@ -461,20 +461,27 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogEditPrinter.id = printer.id ?? ''
         this.dialogEditPrinter.path = printer.path ?? '/'
         this.dialogEditPrinter.name = printer.name ?? ''
-        this.dialogEditPrinter.secure = printer.protocol === 'wss'
+        this.dialogEditPrinter.secure = this.isHttps || printer.protocol === 'wss'
         this.dialogEditPrinter.bool = true
 
         this.showOptionalSettings = printer.name ? printer.name.length > 0 : false
     }
 
     updatePrinter() {
+        const isSecure = this.isHttps || this.dialogEditPrinter.secure
+        
+        let port = this.dialogEditPrinter.port
+        if (this.isHttps && port === defaultMoonrakerPort) {
+            port = defaultSecureMoonrakerPort
+        }
+
         const values = {
             hostname: this.dialogEditPrinter.hostname,
-            port: this.dialogEditPrinter.port,
+            port: port,
             path: this.dialogEditPrinter.path,
             id: this.dialogEditPrinter.id,
             name: this.dialogEditPrinter.name,
-            protocol: this.isHttps || this.dialogEditPrinter.secure ? 'wss' : 'ws',
+            protocol: isSecure ? 'wss' : 'ws',
         }
         this.$store.dispatch('gui/remoteprinters/update', {
             id: this.dialogEditPrinter.id,

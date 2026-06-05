@@ -12,7 +12,7 @@ export interface GuiRemoteprintersStatePrinter {
     port: number
     path?: string | null
     name?: string | null
-    protocol?: string | null
+    protocol?: 'ws' | 'wss' | null
     socket?: FarmPrinterStateSocket
     settings?: {
         [key: string]: unknown

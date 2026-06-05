@@ -37,7 +37,7 @@ export interface ConfigJsonInstance {
     hostname: string
     port?: number
     path?: string
-    protocol?: string
+    protocol?: 'ws' | 'wss'
 }
 
 export interface Theme {

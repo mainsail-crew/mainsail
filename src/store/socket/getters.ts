@@ -22,7 +22,8 @@ export const getters: GetterTree<SocketState, RootState> = {
     },
 
     getWebsocketUrl: (state) => {
-        const port = state.port !== 80 ? ':' + state.port : ''
+        const defaultPort = state.protocol === 'wss' ? 443 : 80
+        const port = state.port !== defaultPort ? ':' + state.port : ''
         let path = '/' + state.path.replace(/^\/|\/$/g, '')
 
         // remove last / in path

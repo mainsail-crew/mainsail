@@ -158,18 +158,22 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         return document.location.protocol === 'https:' ? 'wss' : 'ws'
     }
 
+    get defaultPort() {
+        return this.protocol === 'wss' ? defaultSecureMoonrakerPort : defaultMoonrakerPort
+    }
+
     formatPrinterName(printer: GuiRemoteprintersStatePrinter) {
         return printer.hostname + (printer.port !== 80 ? ':' + printer.port : '') + (printer.path ?? '')
     }
 
     createPrinter() {
         this.form.hostname = ''
-        this.form.port = defaultMoonrakerPort
+        this.form.port = this.defaultPort
         this.form.path = '/'
         this.form.name = ''
         this.form.id = null
         this.form.namespace = null
-        this.form.secure = false
+        this.form.secure = this.protocol === 'wss'
         this.form.bool = true
     }
 
@@ -184,10 +188,10 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
 
         this.$store.dispatch('gui/remoteprinters/store', { values: printer })
 
-        this.form.port = defaultMoonrakerPort
+        this.form.port = this.defaultPort
         this.form.name = ''
         this.form.id = null
-        this.form.secure = false
+        this.form.secure = this.protocol === 'wss'
         this.form.bool = false
     }
 
@@ -197,27 +201,34 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.port = printer.port
         this.form.path = printer.path ?? '/'
         this.form.name = printer.name ?? ''
-        this.form.secure = printer.protocol === 'wss'
+        this.form.secure = this.protocol === 'wss' || printer.protocol === 'wss'
         this.form.bool = true
     }
 
     updatePrinter() {
+        const isSecure = this.protocol === 'wss' || this.form.secure
+        
+        let port = this.form.port
+        if (this.protocol === 'wss' && port === defaultMoonrakerPort) {
+            port = defaultSecureMoonrakerPort
+        }
+
         const values = {
             hostname: this.form.hostname,
-            port: this.form.port,
+            port: port,
             name: this.form.name,
             path: this.form.path,
-            protocol: this.protocol === 'wss' || this.form.secure ? 'wss' : 'ws',
+            protocol: isSecure ? 'wss' : 'ws',
         }
 
         this.$store.dispatch('gui/remoteprinters/update', { id: this.form.id, values })
 
         this.form.id = null
         this.form.hostname = ''
-        this.form.port = defaultMoonrakerPort
+        this.form.port = this.defaultPort
         this.form.path = '/'
         this.form.name = ''
-        this.form.secure = false
+        this.form.secure = this.protocol === 'wss'
         this.form.bool = false
     }
 
