@@ -87,7 +87,16 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     if (wsData.action) dispatch(wsData.action, preload)
                 }
 
-                if (requestIndex !== -1) commit('removeWsData', requestIndex)
+            } else if ('error' in data) {
+                const requestIndex = state.socket.wsData.findIndex((item) => item.id === data.id)
+                if (requestIndex !== -1) {
+                    const wsData = state.socket.wsData[requestIndex]
+                    if (wsData.action === 'getServerConnectionIdentify' && (data.error.code === 401 || data.error.message === 'Unauthorized')) {
+                        commit('setAuthenticationRequired', true)
+                        if (state.socket.instance) state.socket.instance.close()
+                    }
+                    commit('removeWsData', requestIndex)
+                }
             }
         }
     },
@@ -133,7 +142,8 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         dispatch('initPrinter')
     },
 
-    getServerConnectionIdentify({ dispatch }) {
+    getServerConnectionIdentify({ commit, dispatch }) {
+        commit('setAuthenticationRequired', false)
         dispatch('sendObj', {
             method: 'server.info',
             action: 'getServerInfo',
@@ -168,6 +178,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
 
             // mark connection failed to surface login UI
             dispatch('socket/setConnectionFailed', 'Unauthorized', { root: true })
+            commit('server/setAuthenticationRequired', true, { root: true })
             // mark this farm printer socket as disconnected
             commit('setSocketData', {
                 isConnecting: false,
@@ -176,14 +187,18 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             return
         } else {
             // we are authenticated, proceed
-            commit('setAuthenticationRequired', false)
+            let accessToken = null
+            if (state.socket.protocol === 'wss') {
+                const key = `mainsail_moonraker_access_token_${state.socket.hostname}_${state.socket.port}`
+                accessToken = localStorage.getItem(key) || sessionStorage.getItem(key)
+            }
 
             const connectionParams = {
                 client_name: clientName,
                 version: rootState.packageVersion,
                 type: clientType as 'web',
                 url: clientUrl,
-                ...(rootState.auth?.accessToken ? { access_token: rootState.auth.accessToken } : {}),
+                ...(accessToken ? { access_token: accessToken } : {}),
             }
 
             dispatch('sendObj', {

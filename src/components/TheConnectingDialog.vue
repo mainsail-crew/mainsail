@@ -141,7 +141,7 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get isUnauthorized() {
-        return this.connectionFailedMessage === 'Unauthorized'
+        return this.$store.state.server?.authentication_required ?? false
     }
 
     get helpButtonUrl() {

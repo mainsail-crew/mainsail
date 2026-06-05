@@ -4,7 +4,7 @@ import { AuthState } from '@/store/auth/types'
 import { RootState } from '@/store/types'
 
 export const actions: ActionTree<AuthState, RootState> = {
-    async login({ commit, dispatch }, payload: { username: string; password: string; rememberMe?: boolean }) {
+    async login({ commit, dispatch, rootState }, payload: { username: string; password: string; rememberMe?: boolean }) {
         commit('setLoggingIn', true)
         commit('setLoginError', null)
 
@@ -46,9 +46,12 @@ export const actions: ActionTree<AuthState, RootState> = {
                 refreshToken,
                 username: resultData.username,
                 rememberMe: payload.rememberMe,
+                hostname: rootState.socket?.hostname ?? '',
+                port: rootState.socket?.port ?? 80,
             })
 
             await dispatch('server/init', null, { root: true })
+            commit('socket/setConnected', null, { root: true })
         } catch (error: unknown) {
             let message: string
             if (!error) {
@@ -68,7 +71,7 @@ export const actions: ActionTree<AuthState, RootState> = {
         }
     },
 
-    async logout({ commit }) {
+    async logout({ commit, rootState }) {
         try {
             if (Vue.$socket.instance?.readyState === WebSocket.OPEN) {
                 await Vue.$socket.emitAndWait<'access.logout'>('access.logout')
@@ -76,7 +79,10 @@ export const actions: ActionTree<AuthState, RootState> = {
         } catch (error) {
             window.console.debug('Logout request failed or ignored', error)
         } finally {
-            commit('reset')
+            commit('reset', {
+                hostname: rootState.socket?.hostname ?? '',
+                port: rootState.socket?.port ?? 80,
+            })
             // Reload the application to cleanly reset all state and reconnect
             window.location.reload()
         }

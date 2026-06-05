@@ -50,13 +50,12 @@ export function initializeHttpAuth(store: Store<RootState>): void {
 
                 if (!accessToken) throw new Error('No access token returned')
 
-                const rememberMe = !!localStorage.getItem('mainsail_moonraker_refresh_token')
-
                 store.commit('auth/setAuthToken', {
                     accessToken,
                     refreshToken: newRefreshToken,
                     username: resultData.result?.username ?? resultData.username ?? store.state.auth?.username,
-                    rememberMe,
+                    hostname: store.state.socket?.hostname ?? '',
+                    port: store.state.socket?.port ?? 80,
                 })
 
                 return accessToken

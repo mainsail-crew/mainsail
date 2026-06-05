@@ -44,8 +44,9 @@ export const farm: Module<FarmState, RootState> = {
     actions: {
         registerPrinter({ commit, dispatch }, payload) {
             if (!this.hasModule(['farm', payload.id])) {
+                const protocol = payload.protocol ?? (document.location.protocol === 'https:' ? 'wss' : 'ws')
                 this.registerModule(['farm', payload.id], printer)
-                commit('farm/' + payload.id + '/setSocketData', { ...payload, _namespace: payload.id }, { root: true })
+                commit('farm/' + payload.id + '/setSocketData', { ...payload, protocol, _namespace: payload.id }, { root: true })
 
                 if ('settings' in payload)
                     commit('farm/' + payload.id + '/setSettings', payload.settings, { root: true })
