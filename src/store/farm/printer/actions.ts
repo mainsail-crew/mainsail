@@ -190,7 +190,13 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             let accessToken = null
             if (state.socket.protocol === 'wss') {
                 const key = `mainsail_moonraker_access_token_${state.socket.hostname}_${state.socket.port}`
-                accessToken = localStorage.getItem(key) || sessionStorage.getItem(key)
+                const local = localStorage.getItem(key)
+                if (local === null || local === 'null' || local === 'undefined') {
+                    const session = sessionStorage.getItem(key)
+                    accessToken = session === 'null' || session === 'undefined' ? null : session
+                } else {
+                    accessToken = local
+                }
             }
 
             const connectionParams = {

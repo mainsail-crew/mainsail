@@ -61,7 +61,7 @@ export const actions: ActionTree<AuthState, RootState> = {
                 for (const [id, printer] of Object.entries(farm)) {
                     if (
                         printer.socket?.hostname === rootState.socket?.hostname &&
-                        printer.socket?.port === rootState.socket?.port &&
+                        String(printer.socket?.port) === String(rootState.socket?.port) &&
                         printer.socket?.isConnected === false &&
                         printer.server?.authentication_required
                     ) {
