@@ -216,7 +216,6 @@ import {
 } from '@mdi/js'
 
 @Component({
-    name: 'JogPanel',
     components: {
         Panel,
     },
