@@ -233,7 +233,7 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiKeyboard = mdiKeyboard
 
     // Jog step presets (in mm)
-    jogSteps = [0.1, 0.5, 1.0, 5.0, 10.0, 25.0]
+    jogSteps = [0.1, 1.0, 5.0, 10.0, 25.0]
 
     mounted() {
         // Bind handler to preserve 'this' context
