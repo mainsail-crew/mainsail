@@ -168,7 +168,7 @@
                         block
                         :color="keyboardNavEnabled ? 'primary' : ''"
                         :outlined="!keyboardNavEnabled"
-                        @click="keyboardNavEnabled = !keyboardNavEnabled">
+                        @click="toggleKeyboardNav">
                         <v-icon small left>{{ mdiKeyboard }}</v-icon>
                         Keyboard Nav {{ keyboardNavEnabled ? '(ON)' : '(OFF)' }}
                     </v-btn>
@@ -215,6 +215,13 @@ import {
     components: {
         Panel,
     },
+    data() {
+        return {
+            selectedStepIndex: 2,
+            continuousJog: false,
+            keyboardNavEnabled: false,
+        }
+    },
 })
 export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiGamepad = mdiGamepad
@@ -226,41 +233,51 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiStop = mdiStop
     mdiKeyboard = mdiKeyboard
 
-    selectedStepIndex = 2
-    continuousJog = false
-    keyboardNavEnabled = false
-
     // Jog step presets (in mm)
     jogSteps = [0.1, 0.5, 1.0, 5.0, 10.0, 25.0]
 
     mounted() {
-        window.addEventListener('keydown', this.handleKeyboardJog)
+        // Bind handler to preserve 'this' context
+        this._keyboardJogHandler = this.handleKeyboardJog.bind(this)
+        document.addEventListener('keydown', this._keyboardJogHandler, true)
     }
 
     beforeDestroy() {
-        window.removeEventListener('keydown', this.handleKeyboardJog)
+        if (this._keyboardJogHandler) {
+            document.removeEventListener('keydown', this._keyboardJogHandler, true)
+        }
     }
 
-    handleKeyboardJog = (event: KeyboardEvent) => {
-        if (!this.keyboardNavEnabled || ['printing'].includes(this.printer_state)) return
+    handleKeyboardJog(event: KeyboardEvent) {
+        // Prevent default for arrow keys immediately
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+            event.preventDefault()
+        }
+        
+        console.log('🎮 handleKeyboardJog:', event.key, 'enabled=', this.keyboardNavEnabled)
+        
+        if (!this.keyboardNavEnabled || ['printing'].includes(this.printer_state)) {
+            console.log('  → skipped')
+            return
+        }
+        
+        // Skip if the event target is an input, textarea, or select element
+        const target = event.target as HTMLElement
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') return
         
         const step = this.currentStep
         
         switch (event.key) {
             case 'ArrowUp':
-                event.preventDefault()
                 this.jog('Y', step)
                 break
             case 'ArrowDown':
-                event.preventDefault()
                 this.jog('Y', -step)
                 break
             case 'ArrowLeft':
-                event.preventDefault()
                 this.jog('X', -step)
                 break
             case 'ArrowRight':
-                event.preventDefault()
                 this.jog('X', step)
                 break
             default:
@@ -318,6 +335,11 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
             // Single step jog
             this.doSendMove(`${axis}${distance > 0 ? '+' : ''}${distance}`, this.getAxisFeedrate(axis))
         }
+    }
+
+    toggleKeyboardNav() {
+        this.keyboardNavEnabled = !this.keyboardNavEnabled
+        console.log('Keyboard nav toggled:', this.keyboardNavEnabled)
     }
 
     jogStop() {
