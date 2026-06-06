@@ -179,13 +179,13 @@
             <v-row dense>
                 <v-col cols="6">
                     <span class="text-caption text--secondary">Status:</span>
-                    <v-chip small :color="['printing'].includes(printer_state) ? 'warning' : 'primary'">
+                    <v-chip small :color="['printing'].includes(printer_state) ? 'warning' : 'primary'" class="mx-2">
                         {{ printer_state }}
                     </v-chip>
                 </v-col>
                 <v-col cols="6" class="text-right">
                     <span class="text-caption text--secondary">Homed:</span>
-                    <v-chip small :color="allAxesHomed ? 'primary' : 'warning'">
+                    <v-chip small :color="allAxesHomed ? 'primary' : 'warning'" class="mx-2">
                         {{ homedAxesDisplay }}
                     </v-chip>
                 </v-col>
