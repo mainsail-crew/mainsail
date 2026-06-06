@@ -261,11 +261,6 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     get printer_state(): string {
         return this.$store.state.printer?.print_stats?.state ?? 'unknown'
     }
-
-    get klipperReadyForGui(): boolean {
-        return this.$store.getters['server/klipperReadyForGui']
-    }
-
     saveFeedrates() {
         this.$store.dispatch('gui/updateSettings', {
             control: {
