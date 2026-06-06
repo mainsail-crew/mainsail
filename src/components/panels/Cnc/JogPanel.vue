@@ -160,13 +160,18 @@
                 </v-col>
             </v-row>
 
-            <!-- Keyboard navigation info -->
+            <!-- Keyboard navigation toggle -->
             <v-row dense class="my-2">
                 <v-col cols="12">
-                    <v-chip small outlined size="small" class="d-block text-center">
+                    <v-btn
+                        small
+                        block
+                        :color="keyboardNavEnabled ? 'primary' : ''"
+                        :outlined="!keyboardNavEnabled"
+                        @click="keyboardNavEnabled = !keyboardNavEnabled">
                         <v-icon small left>{{ mdiKeyboardArrowUp }}</v-icon>
-                        Use arrow keys to jog
-                    </v-chip>
+                        Keyboard Nav {{ keyboardNavEnabled ? '(ON)' : '(OFF)' }}
+                    </v-btn>
                 </v-col>
             </v-row>
 
@@ -223,6 +228,7 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
 
     selectedStepIndex = 2
     continuousJog = false
+    keyboardNavEnabled = false
 
     // Jog step presets (in mm)
     jogSteps = [0.1, 0.5, 1.0, 5.0, 10.0, 25.0]
@@ -236,10 +242,9 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     handleKeyboardJog = (event: KeyboardEvent) => {
-        if (['printing'].includes(this.printer_state)) return
+        if (!this.keyboardNavEnabled || ['printing'].includes(this.printer_state)) return
         
         const step = this.currentStep
-        const handled = true
         
         switch (event.key) {
             case 'ArrowUp':
