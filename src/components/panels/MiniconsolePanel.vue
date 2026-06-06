@@ -2,7 +2,7 @@
     <panel
         v-if="socketIsConnected && klipperState !== 'disconnected'"
         :icon="mdiConsoleLine"
-        :title="$t('Panels.MiniconsolePanel.Headline')"
+        title="MDI"
         :collapsible="true"
         card-class="miniconsole-panel"
         :hide-buttons-on-collapse="true">

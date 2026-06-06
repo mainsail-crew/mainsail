@@ -52,7 +52,7 @@ const routes: AppRoute[] = [
     },
     {
         name: 'console',
-        title: 'Console',
+        title: 'MDI',
         path: '/console',
         icon: mdiConsoleLine,
         component: Console,

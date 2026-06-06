@@ -1093,7 +1093,7 @@
         "TurnDeviceOn": "Turn {device} on"
     },
     "Router": {
-        "Console": "Console",
+        "MDI": "MDI",
         "Dashboard": "Dashboard",
         "G-Code Files": "G-Code Files",
         "G-Code Viewer": "G-Code Viewer",
