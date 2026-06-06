@@ -214,15 +214,11 @@ import {
     components: {
         Panel,
     },
-    data() {
-        return {
-            selectedStepIndex: 2,
-            continuousJog: false,
-            keyboardNavEnabled: false,
-        }
-    },
 })
 export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
+    selectedStepIndex = 2
+    continuousJog = false
+    keyboardNavEnabled = false
     mdiGamepad = mdiGamepad
     mdiHome = mdiHome
     mdiChevronUp = mdiChevronUp
