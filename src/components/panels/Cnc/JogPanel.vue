@@ -82,7 +82,7 @@
             </v-row>
 
             <!-- XY and Z Jog Controls Container -->
-            <v-row dense class="mb-2">
+            <v-row dense class="mb-2 justify-center">
                 <!-- XY Jog Controls -->
                 <v-col cols="12" md="8" class="d-flex flex-column align-center">
                     <div class="text-center mb-3 w-100">
