@@ -84,7 +84,7 @@
             <!-- XY and Z Jog Controls Container -->
             <v-row dense class="mb-2 justify-center">
                 <!-- XY Jog Controls -->
-                <v-col cols="12" md="8" class="d-flex flex-column align-center">
+                <v-col cols="12" md="6" class="d-flex flex-column align-center">
                     <div class="text-center mb-3 w-100">
                         <span class="text-caption font-weight-bold">XY Jog ({{ currentStep }} mm)</span>
                     </div>
@@ -134,7 +134,7 @@
                 </v-col>
 
                 <!-- Z Jog Controls -->
-                <v-col cols="12" md="4" class="d-flex flex-column justify-center">
+                <v-col cols="12" md="6" class="d-flex flex-column justify-center">
                     <div class="text-center mb-3">
                         <span class="text-caption font-weight-bold">Z Jog</span>
                     </div>
