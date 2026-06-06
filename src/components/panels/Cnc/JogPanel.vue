@@ -160,14 +160,13 @@
                 </v-col>
             </v-row>
 
-            <!-- Continuous jog mode toggle (optional) -->
-            <v-row dense>
+            <!-- Keyboard navigation info -->
+            <v-row dense class="my-2">
                 <v-col cols="12">
-                    <v-checkbox
-                        v-model="continuousJog"
-                        label="Continuous Jog (hold button)"
-                        dense
-                        hide-details />
+                    <v-chip small outlined size="small" class="d-block text-center">
+                        <v-icon small left>{{ mdiKeyboardArrowUp }}</v-icon>
+                        Use arrow keys to jog
+                    </v-chip>
                 </v-col>
             </v-row>
 
@@ -204,6 +203,7 @@ import {
     mdiChevronLeft,
     mdiChevronRight,
     mdiStop,
+    mdiKeyboardArrowUp,
 } from '@mdi/js'
 
 @Component({
@@ -219,12 +219,49 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiChevronLeft = mdiChevronLeft
     mdiChevronRight = mdiChevronRight
     mdiStop = mdiStop
+    mdiKeyboardArrowUp = mdiKeyboardArrowUp
 
     selectedStepIndex = 2
     continuousJog = false
 
     // Jog step presets (in mm)
     jogSteps = [0.1, 0.5, 1.0, 5.0, 10.0, 25.0]
+
+    mounted() {
+        window.addEventListener('keydown', this.handleKeyboardJog)
+    }
+
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.handleKeyboardJog)
+    }
+
+    handleKeyboardJog = (event: KeyboardEvent) => {
+        if (['printing'].includes(this.printer_state)) return
+        
+        const step = this.currentStep
+        const handled = true
+        
+        switch (event.key) {
+            case 'ArrowUp':
+                event.preventDefault()
+                this.jog('Y', step)
+                break
+            case 'ArrowDown':
+                event.preventDefault()
+                this.jog('Y', -step)
+                break
+            case 'ArrowLeft':
+                event.preventDefault()
+                this.jog('X', -step)
+                break
+            case 'ArrowRight':
+                event.preventDefault()
+                this.jog('X', step)
+                break
+            default:
+                return
+        }
+    }
 
     get currentStep(): number {
         return this.jogSteps[this.selectedStepIndex]
