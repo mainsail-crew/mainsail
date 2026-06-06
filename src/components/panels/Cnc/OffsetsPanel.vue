@@ -7,11 +7,11 @@
                     <span class="text-caption font-weight-bold">Coordinate System:</span>
                 </v-col>
                 <v-col cols="12">
-                    <v-btn-toggle v-model="selectedOffsetIndex" dense small class="w-100">
-                         <v-tooltip v-for="(offset, idx) in gcodeMoveOffsets" :key="idx" top content-class="tooltip-opaque" transition="fade-transition" :open-delay="0" :close-delay="0">
+                    <v-btn-toggle :value="selectedOffsetIndex" dense small class="w-100" @change="onWcsChange">
+                        <v-tooltip v-for="(name, idx) in offsetNames" :key="idx" top content-class="tooltip-opaque" transition="fade-transition" :open-delay="0" :close-delay="0">
                             <template #activator="{ on, attrs }">
                                 <v-btn :value="idx" x-small v-bind="attrs" v-on="on">
-                                    {{ offsetNames[idx] }}
+                                    {{ name }}
                                 </v-btn>
                             </template>
                             {{ offsetTooltips[idx] }}
@@ -20,19 +20,19 @@
                 </v-col>
             </v-row>
 
-            <!-- Current Offset Display -->
+            <!-- Current Work Position Display -->
             <v-row dense class="mb-3">
                 <v-col cols="4" class="text-center">
                     <div class="text-caption text--secondary">X</div>
-                    <div class="font-weight-bold">{{ currentOffsetX.toFixed(3) }}</div>
+                    <div class="font-weight-bold">{{ currentWorkX.toFixed(3) }}</div>
                 </v-col>
                 <v-col cols="4" class="text-center">
                     <div class="text-caption text--secondary">Y</div>
-                    <div class="font-weight-bold">{{ currentOffsetY.toFixed(3) }}</div>
+                    <div class="font-weight-bold">{{ currentWorkY.toFixed(3) }}</div>
                 </v-col>
                 <v-col cols="4" class="text-center">
                     <div class="text-caption text--secondary">Z</div>
-                    <div class="font-weight-bold">{{ currentOffsetZ.toFixed(3) }}</div>
+                    <div class="font-weight-bold">{{ currentWorkZ.toFixed(3) }}</div>
                 </v-col>
             </v-row>
 
@@ -152,52 +152,61 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
         }
     }
 
-    get gcodeMoveOffsets(): number[][] {
-        return this.$store.state.printer?.gcode_move?.homed_origin ?? [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    get currentWorkPosition(): number[] {
+        // Work position in the currently active WCS. Klipper exposes this as
+        // `gcode_position` and reflects any G92 offset applied. Per-WCS origin
+        // offsets (G54_origin .. G59_origin) are not queryable in standard
+        // Klipper builds, and this build has no G10 support, so we display the
+        // single active work position rather than 6 separate origins.
+        return this.$store.state.printer?.gcode_move?.gcode_position ?? [0, 0, 0, 0]
     }
 
-    get currentOffsetX(): number {
-        return this.gcodeMoveOffsets[this.selectedOffsetIndex]?.[0] ?? 0
+    get currentWorkX(): number {
+        return this.currentWorkPosition[0] ?? 0
     }
 
-    get currentOffsetY(): number {
-        return this.gcodeMoveOffsets[this.selectedOffsetIndex]?.[1] ?? 0
+    get currentWorkY(): number {
+        return this.currentWorkPosition[1] ?? 0
     }
 
-    get currentOffsetZ(): number {
-        return this.gcodeMoveOffsets[this.selectedOffsetIndex]?.[2] ?? 0
+    get currentWorkZ(): number {
+        return this.currentWorkPosition[2] ?? 0
     }
 
-    get currentPosition(): number[] {
-        return this.$store.state.printer?.gcode_move?.position ?? [0, 0, 0, 0]
+    onWcsChange(idx: number | null) {
+        if (idx === null) return
+        // Send a modal G54..G59 so any gcode file run in this session that
+        // uses the same WCS sees a consistent active system. Klipper accepts
+        // these commands but does not currently report the active WCS back
+        // via gcode_move.gcode_system, so the selector's "active" state is
+        // maintained locally.
+        this.selectedOffsetIndex = idx
+        this.doSend(`G${54 + idx}`)
     }
 
     setWorkZeroXY() {
-        // G10 L2 Pn X0 Y0 - sets X and Y offset for coordinate system n to 0
-        const offset = this.selectedOffsetIndex + 1 // G54=1, G55=2, etc.
-        this.doSend(`G10 L2 P${offset} X0 Y0`)
+        // G92 X0 Y0 — set the work position counter to 0 on X and Y at the
+        // current machine location. Affects the currently active WCS. (Klipper
+        // does not support G10, which would be the GRBL/LinuxCNC equivalent.)
+        this.doSend('G92 X0 Y0')
     }
 
     setWorkZeroZ() {
-        // G10 L2 Pn Z0 - sets Z offset for coordinate system n to 0
-        const offset = this.selectedOffsetIndex + 1
-        this.doSend(`G10 L2 P${offset} Z0`)
+        this.doSend('G92 Z0')
     }
 
     applyOffsets() {
-        const offset = this.selectedOffsetIndex + 1
         const x = this.offsetInputX ?? 0
         const y = this.offsetInputY ?? 0
         const z = this.offsetInputZ ?? 0
-        this.doSend(`G10 L2 P${offset} X${x} Y${y} Z${z}`)
+        this.doSend(`G92 X${x} Y${y} Z${z}`)
         this.offsetInputX = 0
         this.offsetInputY = 0
         this.offsetInputZ = 0
     }
 
     resetOffsets() {
-        const offset = this.selectedOffsetIndex + 1
-        this.doSend(`G10 L2 P${offset} X0 Y0 Z0`)
+        this.doSend('G92 X0 Y0 Z0')
         this.offsetInputX = 0
         this.offsetInputY = 0
         this.offsetInputZ = 0

@@ -7,12 +7,14 @@ Mainsail is a Vue 2.7 + TypeScript web interface for Klipper 3D printer firmware
 
 ## Commands
 
-- `npm run serve` - Dev server (port 8080)
-- `npm run build` - Production build
-- `npm run lint:fix` - Fix linting
-- `npm run format` - Format code
-- `npm run test:unit` - Unit tests (Vitest)
-- `npm run test:ui` - E2E tests (Cypress)
+This fork uses **Bun** (not npm). Run scripts with `bun run <script>`.
+
+- `bun run serve` - Dev server (port 8080)
+- `bun run build` - Production build
+- `bun run lint:fix` - Fix linting
+- `bun run format` - Format code
+- `bun run test:unit` - Unit tests (Vitest)
+- `bun run test:ui` - E2E tests (Cypress)
 
 ## Guidelines
 

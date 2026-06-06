@@ -1,16 +1,34 @@
 # CNC Panels
 
-This directory contains scaffold panels for a CNC-focused Mainsail fork.
+This directory contains CNC-focused dashboard panels for the Mainsail fork.
 
-Planned V1 panels:
-- `CncStatusPanel.vue`
-- `DroPanel.vue`
-- `JogPanel.vue`
-- `OffsetsPanel.vue`
-- `SpindleCoolantPanel.vue`
-- `MdiPanel.vue`
+## Audit (June 2026)
 
-Expected integration points:
+| Panel | Data source | Status |
+| --- | --- | --- |
+| `CncStatusPanel.vue` | native Mainsail store (`printer.print_stats`, `printer.gcode_move`, `printer.toolhead`, `printer.system_stats`) | wired, renders |
+| `JogPanel.vue` | native store + `ControlMixin.doSend` | wired, renders |
+| `OffsetsPanel.vue` | `printer.gcode_move.gcode_position` + `G92` work-zero actions | wired, renders |
+| `SpindleCoolantPanel.vue` | `doSend` (`M3`/`M4`/`M5`/`M7`/`M8`/`M9`) | wired, renders |
+| `MdiPanel.vue` | — | stub, placeholder only |
+| `DroPanel.vue` | `printer.motion_report`, `printer.gcode_move`, `printer.toolhead` | wired, renders |
+
+## Integration points
+
 - dashboard panel registration in `src/store/variables.ts`
 - dashboard rendering pipeline in `src/store/gui/*`
-- Moonraker and agent-backed state in `src/store/cnc/`
+- Moonraker websocket subscription for read-only state — read directly from
+  the existing `printer` store, **no dedicated `cnc` Vuex module**
+- Moonraker CNC agent for CNC-specific state and guarded commands (see
+  `moonraker-cnc-agent/`)
+- Klipper stock build does **not** support `G10`; work-zero operations use
+  `G92` instead. See `klipper-macros/README.md` for the caveat table.
+
+## Re-registering this directory
+
+`upstream-mainsail/` is a submodule-shaped fork working tree. Component
+files in this directory are imported from `src/pages/Dashboard.vue` and
+listed in the layout definitions under `src/store/gui/` like any other
+Mainsail panel. To add a new panel, follow the same pattern as the existing
+files (Vue Class Component, `klipperReadyForGui` gate, mixins from
+`@/components/mixins/base` and `@/components/mixins/control`).

@@ -31,7 +31,7 @@ Types:
 ## Before Submitting
 
 ```bash
-npm run format
-npm run lint:fix
-npm run test:unit
+bun run format
+bun run lint:fix
+bun run test:unit
 ```

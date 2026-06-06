@@ -59,23 +59,31 @@ export default class DroPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCrosshairsGps = mdiCrosshairsGps
 
     get machinePosition() {
-        return this.$store.getters['cnc/machinePosition']
+        const p = this.$store.state.printer?.motion_report?.live_position ?? [0, 0, 0, 0]
+        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
     }
 
     get workPosition() {
-        return this.$store.getters['cnc/workPosition']
+        const p = this.$store.state.printer?.gcode_move?.gcode_position ?? [0, 0, 0, 0]
+        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
     }
 
     get workOffset() {
-        return this.$store.getters['cnc/workOffset']
+        return {
+            x: this.machinePosition.x - this.workPosition.x,
+            y: this.machinePosition.y - this.workPosition.y,
+            z: this.machinePosition.z - this.workPosition.z,
+        }
     }
 
     get axisMinimum() {
-        return this.$store.getters['cnc/axisMinimum']
+        const p = this.$store.state.printer?.toolhead?.axis_minimum ?? [0, 0, 0, 0]
+        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
     }
 
     get axisMaximum() {
-        return this.$store.getters['cnc/axisMaximum']
+        const p = this.$store.state.printer?.toolhead?.axis_maximum ?? [0, 0, 0, 0]
+        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
     }
 
     get coordinateModeLabel() {
@@ -83,7 +91,8 @@ export default class DroPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get liveVelocity() {
-        return `${Number(this.$store.getters['cnc/liveVelocity'] ?? 0).toFixed(2)} mm/s`
+        const v = this.$store.state.printer?.motion_report?.live_velocity ?? 0
+        return `${Number(v).toFixed(2)} mm/s`
     }
 
     get allAxesHomed() {
