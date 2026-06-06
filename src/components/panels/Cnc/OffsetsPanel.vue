@@ -8,9 +8,14 @@
                 </v-col>
                 <v-col cols="12">
                     <v-btn-toggle v-model="selectedOffsetIndex" dense small class="w-100">
-                        <v-btn v-for="(offset, idx) in gcodeMoveOffsets" :key="idx" :value="idx" x-small>
-                            {{ offsetNames[idx] }}
-                        </v-btn>
+                        <v-tooltip v-for="(offset, idx) in gcodeMoveOffsets" :key="idx" top>
+                            <template #activator="{ on, attrs }">
+                                <v-btn :value="idx" x-small v-bind="attrs" v-on="on">
+                                    {{ offsetNames[idx] }}
+                                </v-btn>
+                            </template>
+                            {{ offsetTooltips[idx] }}
+                        </v-tooltip>
                     </v-btn-toggle>
                 </v-col>
             </v-row>
@@ -129,6 +134,14 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiRestart = mdiRestart
 
     offsetNames = ['G54', 'G55', 'G56', 'G57', 'G58', 'G59']
+    offsetTooltips = [
+        'G54 - Primary work coordinate system',
+        'G55 - Secondary work coordinate system',
+        'G56 - Tertiary work coordinate system',
+        'G57 - Quaternary work coordinate system',
+        'G58 - Fifth work coordinate system',
+        'G59 - Sixth work coordinate system',
+    ]
 
     data() {
         return {
