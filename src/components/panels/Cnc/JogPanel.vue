@@ -169,7 +169,7 @@
                         :color="keyboardNavEnabled ? 'primary' : ''"
                         :outlined="!keyboardNavEnabled"
                         @click="keyboardNavEnabled = !keyboardNavEnabled">
-                        <v-icon small left>{{ mdiKeyboardArrowUp }}</v-icon>
+                        <v-icon small left>{{ mdiKeyboard }}</v-icon>
                         Keyboard Nav {{ keyboardNavEnabled ? '(ON)' : '(OFF)' }}
                     </v-btn>
                 </v-col>
@@ -208,7 +208,7 @@ import {
     mdiChevronLeft,
     mdiChevronRight,
     mdiStop,
-    mdiKeyboardArrowUp,
+    mdiKeyboard,
 } from '@mdi/js'
 
 @Component({
@@ -224,7 +224,7 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiChevronLeft = mdiChevronLeft
     mdiChevronRight = mdiChevronRight
     mdiStop = mdiStop
-    mdiKeyboardArrowUp = mdiKeyboardArrowUp
+    mdiKeyboard = mdiKeyboard
 
     selectedStepIndex = 2
     continuousJog = false
