@@ -220,7 +220,7 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiChevronRight = mdiChevronRight
     mdiStop = mdiStop
 
-    selectedStepIndex = 0
+    selectedStepIndex = 2
     continuousJog = false
 
     // Jog step presets (in mm)
