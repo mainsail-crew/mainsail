@@ -16,6 +16,10 @@ import {
     mdiWebcam,
     mdiAdjust,
     mdiMulticast,
+    mdiAxisArrow,
+    mdiCrosshairsGps,
+    mdiHandBackRight,
+    mdiTarget,
 } from '@mdi/js'
 import { afcIconLogo } from '@/plugins/afcIcons'
 
@@ -35,6 +39,21 @@ export default class DashboardMixin extends BaseMixin {
             const group = this.macrogroups.find((group: GuiMacrosStateMacrogroup) => group.id === groupId)
 
             return group ? group.name : 'Macrogroup'
+        }
+
+        switch (name) {
+            case 'cnc-status':
+                return 'CNC Status'
+            case 'dro':
+                return 'DRO'
+            case 'jog':
+                return 'Jog'
+            case 'offsets':
+                return 'Offsets'
+            case 'spindle-coolant':
+                return 'Spindle & Coolant'
+            case 'mdi':
+                return 'MDI'
         }
 
         if (name.includes('-')) {
@@ -79,6 +98,18 @@ export default class DashboardMixin extends BaseMixin {
                 return mdiMulticast
             case 'afc':
                 return afcIconLogo
+            case 'cnc-status':
+                return mdiAxisArrow
+            case 'dro':
+                return mdiCrosshairsGps
+            case 'jog':
+                return mdiHandBackRight
+            case 'offsets':
+                return mdiTarget
+            case 'spindle-coolant':
+                return mdiEngine
+            case 'mdi':
+                return mdiConsoleLine
 
             default:
                 return mdiInformation

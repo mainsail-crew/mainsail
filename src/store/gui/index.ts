@@ -71,6 +71,8 @@ export const getDefaultState = (): GuiState => {
             },
             mobileLayout: [
                 { name: 'webcam', visible: false },
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -81,6 +83,8 @@ export const getDefaultState = (): GuiState => {
             ],
             tabletLayout1: [
                 { name: 'webcam', visible: true },
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -93,6 +97,8 @@ export const getDefaultState = (): GuiState => {
             ],
             desktopLayout1: [
                 { name: 'webcam', visible: true },
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -104,6 +110,8 @@ export const getDefaultState = (): GuiState => {
                 { name: 'miniconsole', visible: true },
             ],
             widescreenLayout1: [
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -152,7 +160,7 @@ export const getDefaultState = (): GuiState => {
                 axis_maximum: null,
             },
             showGCodePanel: false,
-            cncMode: false,
+            cncMode: true,
         },
         navigation: {
             entries: [],

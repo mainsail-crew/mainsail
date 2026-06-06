@@ -21,6 +21,7 @@ export const getters: GetterTree<GuiMaintenanceState, RootState> = {
         const entries: GuiMaintenanceStateEntry[] = getters['getEntries'] ?? []
 
         return entries.filter((entry) => {
+            if (!entry?.reminder || typeof entry.reminder !== 'object') return false
             if (entry.reminder.type === null || entry.end_time !== null) return false
 
             if (entry.reminder.filament.bool) {

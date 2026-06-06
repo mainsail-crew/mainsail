@@ -83,18 +83,24 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import AfcPanel from '@/components/panels/AfcPanel.vue'
+import CncStatusPanel from '@/components/panels/Cnc/CncStatusPanel.vue'
+import DroPanel from '@/components/panels/Cnc/DroPanel.vue'
 import ExtruderControlPanel from '@/components/panels/ExtruderControlPanel.vue'
 import DashboardMixin from '@/components/mixins/dashboard'
+import JogPanel from '@/components/panels/Cnc/JogPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import LedEffectsPanel from '@/components/panels/LedEffectsPanel.vue'
 import MachineSettingsPanel from '@/components/panels/MachineSettingsPanel.vue'
 import MacrogroupPanel from '@/components/panels/MacrogroupPanel.vue'
 import MacrosPanel from '@/components/panels/MacrosPanel.vue'
+import MdiPanel from '@/components/panels/Cnc/MdiPanel.vue'
 import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
+import OffsetsPanel from '@/components/panels/Cnc/OffsetsPanel.vue'
 import SpoolmanPanel from '@/components/panels/SpoolmanPanel.vue'
 import MmuPanel from '@/components/panels/MmuPanel.vue'
+import SpindleCoolantPanel from '@/components/panels/Cnc/SpindleCoolantPanel.vue'
 import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
@@ -103,17 +109,23 @@ import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 @Component({
     components: {
         AfcPanel,
+        CncStatusPanel,
+        DroPanel,
         ExtruderControlPanel,
+        JogPanel,
         KlippyStatePanel,
         LedEffectsPanel,
         MachineSettingsPanel,
         MacrogroupPanel,
         MacrosPanel,
+        MdiPanel,
         MiniconsolePanel,
         MinSettingsPanel,
         MiscellaneousPanel,
+        OffsetsPanel,
         SpoolmanPanel,
         MmuPanel,
+        SpindleCoolantPanel,
         StatusPanel,
         ToolheadControlPanel,
         TemperaturePanel,

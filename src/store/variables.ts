@@ -109,6 +109,12 @@ export const maxGcodeHistory = 50
  */
 export const allDashboardPanels = [
     'afc',
+    'cnc-status',
+    'dro',
+    'jog',
+    'offsets',
+    'mdi',
+    'spindle-coolant',
     'toolhead-control',
     'extruder-control',
     'macros',
