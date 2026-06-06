@@ -38,7 +38,7 @@
                 </v-col>
                 <v-col cols="6">
                     <v-btn small block outlined @click="setWorkZeroXY">
-                        <v-icon small left>{{ mdiAxisXyArrowLock }}</v-icon>
+                        <v-icon small left>{{ mdiTarget }}</v-icon>
                         Set XY Zero
                     </v-btn>
                 </v-col>
@@ -110,7 +110,7 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import {
     mdiTable,
-    mdiAxisXyArrowLock,
+    mdiTarget,
     mdiAxisZArrow,
     mdiCheck,
     mdiRestart,
@@ -123,7 +123,7 @@ import {
 })
 export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiTable = mdiTable
-    mdiAxisXyArrowLock = mdiAxisXyArrowLock
+    mdiTarget = mdiTarget
     mdiAxisZArrow = mdiAxisZArrow
     mdiCheck = mdiCheck
     mdiRestart = mdiRestart
