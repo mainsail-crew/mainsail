@@ -82,63 +82,54 @@
             </v-row>
 
             <!-- XY Jog Controls -->
-            <v-row dense class="jog-panel__xy-grid mb-4">
-                <v-col cols="12" class="text-center mb-2">
+            <div class="mb-4">
+                <div class="text-center mb-3">
                     <span class="text-caption font-weight-bold">XY Jog ({{ currentStep }} mm)</span>
-                </v-col>
-
-                <!-- Top row: Y+ -->
-                <v-col cols="4" offset="4" class="text-center">
+                </div>
+                <div class="jog-panel__xy-pad">
+                    <!-- Up -->
                     <v-btn
+                        class="jog-panel__xy-btn"
                         large
                         :disabled="['printing'].includes(printer_state)"
-                        class="jog-panel__jog-btn"
                         @click="jog('Y', currentStep)">
                         <v-icon>{{ mdiChevronUp }}</v-icon>
                     </v-btn>
-                </v-col>
-
-                <!-- Middle row: X-, center, X+ -->
-                <v-col cols="4" class="text-center">
+                    <!-- Left -->
                     <v-btn
+                        class="jog-panel__xy-btn"
                         large
                         :disabled="['printing'].includes(printer_state)"
-                        class="jog-panel__jog-btn"
                         @click="jog('X', -currentStep)">
                         <v-icon>{{ mdiChevronLeft }}</v-icon>
                     </v-btn>
-                </v-col>
-                <v-col cols="4" class="text-center">
+                    <!-- Center (Stop) -->
                     <v-btn
+                        class="jog-panel__xy-btn jog-panel__xy-center"
                         large
-                        :disabled="['printing'].includes(printer_state)"
                         outlined
-                        class="jog-panel__center-btn"
+                        :disabled="['printing'].includes(printer_state)"
                         @click="jogStop">
                         <v-icon>{{ mdiStop }}</v-icon>
                     </v-btn>
-                </v-col>
-                <v-col cols="4" class="text-center">
+                    <!-- Right -->
                     <v-btn
+                        class="jog-panel__xy-btn"
                         large
                         :disabled="['printing'].includes(printer_state)"
-                        class="jog-panel__jog-btn"
                         @click="jog('X', currentStep)">
                         <v-icon>{{ mdiChevronRight }}</v-icon>
                     </v-btn>
-                </v-col>
-
-                <!-- Bottom row: Y- -->
-                <v-col cols="4" offset="4" class="text-center">
+                    <!-- Down -->
                     <v-btn
+                        class="jog-panel__xy-btn"
                         large
                         :disabled="['printing'].includes(printer_state)"
-                        class="jog-panel__jog-btn"
                         @click="jog('Y', -currentStep)">
                         <v-icon>{{ mdiChevronDown }}</v-icon>
                     </v-btn>
-                </v-col>
-            </v-row>
+                </div>
+            </div>
 
             <!-- Z Jog Controls -->
             <v-row dense class="jog-panel__z-row mb-2">
@@ -307,14 +298,48 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     gap: 8px;
 }
 
-.jog-panel__jog-btn {
+.jog-panel__xy-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 220px;
+    margin: 0 auto;
+}
+
+.jog-panel__xy-btn {
     aspect-ratio: 1 / 1;
     min-width: 60px !important;
 }
 
-.jog-panel__center-btn {
-    aspect-ratio: 1 / 1;
-    min-width: 60px !important;
+.jog-panel__xy-center {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* Position buttons in proper numpad layout */
+.jog-panel__xy-pad .v-btn:nth-child(1) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.jog-panel__xy-pad .v-btn:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.jog-panel__xy-pad .v-btn:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.jog-panel__xy-pad .v-btn:nth-child(4) {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.jog-panel__xy-pad .v-btn:nth-child(5) {
+    grid-column: 2;
+    grid-row: 3;
 }
 
 .jog-panel__z-row {
