@@ -1,5 +1,5 @@
 <template>
-    <panel v-if="klipperReadyForGui" :icon="mdiGamepad2" title="Jog" :collapsible="true" card-class="jog-panel">
+    <panel v-if="klipperReadyForGui" :icon="mdiGamepad" title="Jog" :collapsible="true" card-class="jog-panel">
         <!-- Homing and utility buttons -->
         <v-container class="py-2">
             <v-row dense class="mb-3">
@@ -206,7 +206,7 @@ import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import {
-    mdiGamepad2,
+    mdiGamepad,
     mdiHome,
     mdiChevronUp,
     mdiChevronDown,
@@ -221,7 +221,7 @@ import {
     },
 })
 export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiGamepad2 = mdiGamepad2
+    mdiGamepad = mdiGamepad
     mdiHome = mdiHome
     mdiChevronUp = mdiChevronUp
     mdiChevronDown = mdiChevronDown
