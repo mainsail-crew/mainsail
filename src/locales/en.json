@@ -87,7 +87,7 @@
             "SAVE_CONFIG": "SAVE CONFIG",
             "Uploading": "Uploading",
             "UploadOfFileSuccessful": "Upload of {file} successful!",
-            "UploadPrint": "Upload & Print"
+            "UploadPrint": "Upload G-Code"
         },
         "TopCornerMenu": {
             "ConfirmationDialog": {
@@ -1463,8 +1463,8 @@
             "BigThumbnailBackground": "Large thumbnail background color",
             "BoolBigThumbnail": "Large thumbnail",
             "BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
-            "BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
-            "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the top bar.",
+            "BoolHideUploadAndPrintButton": "Hide Upload G-Code Button",
+            "BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload G-Code\" button in the top bar.",
             "ConfirmOnCancelJob": "Require confirm on Cancel Job",
             "ConfirmOnCancelJobDescription": "Show a confirmation dialog on Cancel Job",
             "ConfirmOnCoolDown": "Require confirm on CoolDown",
