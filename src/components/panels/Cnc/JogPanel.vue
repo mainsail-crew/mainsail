@@ -271,10 +271,10 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     jog(axis: string, distance: number) {
         if (this.continuousJog) {
             // For continuous jog, emit a command and let go-to-zero handle it
-            this.doSendMove(`${axis}${distance > 0 ? '+' : ''}${Math.abs(distance)}`, this.getAxisFeedrate(axis))
+            this.doSendMove(`${axis}${distance > 0 ? '+' : ''}${distance}`, this.getAxisFeedrate(axis))
         } else {
             // Single step jog
-            this.doSendMove(`${axis}${distance > 0 ? '+' : ''}${Math.abs(distance)}`, this.getAxisFeedrate(axis))
+            this.doSendMove(`${axis}${distance > 0 ? '+' : ''}${distance}`, this.getAxisFeedrate(axis))
         }
     }
 
