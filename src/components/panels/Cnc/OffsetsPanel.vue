@@ -8,7 +8,7 @@
                 </v-col>
                 <v-col cols="12">
                     <v-btn-toggle v-model="selectedOffsetIndex" dense small class="w-100">
-                         <v-tooltip v-for="(offset, idx) in gcodeMoveOffsets" :key="idx" top content-class="tooltip-opaque">
+                         <v-tooltip v-for="(offset, idx) in gcodeMoveOffsets" :key="idx" top content-class="tooltip-opaque" transition="fade-transition" :open-delay="0" :close-delay="0">
                             <template #activator="{ on, attrs }">
                                 <v-btn :value="idx" x-small v-bind="attrs" v-on="on">
                                     {{ offsetNames[idx] }}
@@ -208,5 +208,10 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
 <style scoped>
 .tooltip-opaque {
     opacity: 1 !important;
+}
+
+/* Speed up tooltip fade transition (2x faster: 150ms instead of 300ms) */
+.tooltip-opaque.v-tooltip__content {
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.6, 1) !important;
 }
 </style>
