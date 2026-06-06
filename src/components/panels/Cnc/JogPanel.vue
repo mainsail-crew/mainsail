@@ -81,73 +81,72 @@
                 </v-col>
             </v-row>
 
-            <!-- XY Jog Controls -->
-            <div class="mb-4">
-                <div class="text-center mb-3">
-                    <span class="text-caption font-weight-bold">XY Jog ({{ currentStep }} mm)</span>
-                </div>
-                <div class="jog-panel__xy-pad">
-                    <!-- Up -->
-                    <v-btn
-                        class="jog-panel__xy-btn"
-                        large
-                        :disabled="['printing'].includes(printer_state)"
-                        @click="jog('Y', currentStep)">
-                        <v-icon>{{ mdiChevronUp }}</v-icon>
-                    </v-btn>
-                    <!-- Left -->
-                    <v-btn
-                        class="jog-panel__xy-btn"
-                        large
-                        :disabled="['printing'].includes(printer_state)"
-                        @click="jog('X', -currentStep)">
-                        <v-icon>{{ mdiChevronLeft }}</v-icon>
-                    </v-btn>
-                    <!-- Center (Stop) -->
-                    <v-btn
-                        class="jog-panel__xy-btn jog-panel__xy-center"
-                        large
-                        outlined
-                        :disabled="['printing'].includes(printer_state)"
-                        @click="jogStop">
-                        <v-icon>{{ mdiStop }}</v-icon>
-                    </v-btn>
-                    <!-- Right -->
-                    <v-btn
-                        class="jog-panel__xy-btn"
-                        large
-                        :disabled="['printing'].includes(printer_state)"
-                        @click="jog('X', currentStep)">
-                        <v-icon>{{ mdiChevronRight }}</v-icon>
-                    </v-btn>
-                    <!-- Down -->
-                    <v-btn
-                        class="jog-panel__xy-btn"
-                        large
-                        :disabled="['printing'].includes(printer_state)"
-                        @click="jog('Y', -currentStep)">
-                        <v-icon>{{ mdiChevronDown }}</v-icon>
-                    </v-btn>
-                </div>
-            </div>
-
-            <!-- Z Jog Controls -->
-            <v-row dense class="jog-panel__z-row mb-2">
-                <v-col cols="12" class="text-center mb-2">
-                    <span class="text-caption font-weight-bold">Z Jog</span>
+            <!-- XY and Z Jog Controls Container -->
+            <v-row dense class="mb-2">
+                <!-- XY Jog Controls -->
+                <v-col cols="12" md="8" class="d-flex flex-column align-center">
+                    <div class="text-center mb-3 w-100">
+                        <span class="text-caption font-weight-bold">XY Jog ({{ currentStep }} mm)</span>
+                    </div>
+                    <div class="jog-panel__xy-pad">
+                        <!-- Up -->
+                        <v-btn
+                            class="jog-panel__xy-btn"
+                            large
+                            :disabled="['printing'].includes(printer_state)"
+                            @click="jog('Y', currentStep)">
+                            <v-icon>{{ mdiChevronUp }}</v-icon>
+                        </v-btn>
+                        <!-- Left -->
+                        <v-btn
+                            class="jog-panel__xy-btn"
+                            large
+                            :disabled="['printing'].includes(printer_state)"
+                            @click="jog('X', -currentStep)">
+                            <v-icon>{{ mdiChevronLeft }}</v-icon>
+                        </v-btn>
+                        <!-- Center (Stop) -->
+                        <v-btn
+                            class="jog-panel__xy-btn jog-panel__xy-center"
+                            large
+                            outlined
+                            :disabled="['printing'].includes(printer_state)"
+                            @click="jogStop">
+                            <v-icon>{{ mdiStop }}</v-icon>
+                        </v-btn>
+                        <!-- Right -->
+                        <v-btn
+                            class="jog-panel__xy-btn"
+                            large
+                            :disabled="['printing'].includes(printer_state)"
+                            @click="jog('X', currentStep)">
+                            <v-icon>{{ mdiChevronRight }}</v-icon>
+                        </v-btn>
+                        <!-- Down -->
+                        <v-btn
+                            class="jog-panel__xy-btn"
+                            large
+                            :disabled="['printing'].includes(printer_state)"
+                            @click="jog('Y', -currentStep)">
+                            <v-icon>{{ mdiChevronDown }}</v-icon>
+                        </v-btn>
+                    </div>
                 </v-col>
-                <v-col cols="6">
+
+                <!-- Z Jog Controls -->
+                <v-col cols="12" md="4" class="d-flex flex-column justify-center">
+                    <div class="text-center mb-3">
+                        <span class="text-caption font-weight-bold">Z Jog</span>
+                    </div>
                     <v-btn
                         block
                         large
                         :disabled="['printing'].includes(printer_state)"
-                        class="jog-panel__jog-btn"
+                        class="jog-panel__jog-btn mb-2"
                         @click="jog('Z', currentStep)">
                         <v-icon>{{ mdiChevronUp }}</v-icon>
                         <span class="ml-2">+{{ currentStep }}</span>
                     </v-btn>
-                </v-col>
-                <v-col cols="6">
                     <v-btn
                         block
                         large
