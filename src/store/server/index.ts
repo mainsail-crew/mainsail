@@ -11,7 +11,6 @@ import { history } from '@/store/server/history'
 import { timelapse } from '@/store/server/timelapse'
 import { jobQueue } from '@/store/server/jobQueue'
 import { announcements } from '@/store/server/announcements'
-import { spoolman } from '@/store/server/spoolman'
 import { sensor } from '@/store/server/sensor'
 import { RootState } from '@/store/types'
 
@@ -65,7 +64,6 @@ export const server: Module<ServerState, RootState> = {
         timelapse,
         jobQueue,
         announcements,
-        spoolman,
         sensor,
     },
 }

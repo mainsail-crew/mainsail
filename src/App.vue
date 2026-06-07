@@ -366,18 +366,11 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     @Watch('print_percent')
     print_percentChanged(newVal: number): void {
         this.drawFavicon(newVal)
-        this.refreshSpoolman()
     }
 
     @Watch('printerIsPrinting')
     printerIsPrintingChanged(): void {
         this.drawFavicon(this.print_percent)
-    }
-
-    refreshSpoolman(): void {
-        if (this.moonrakerComponents.includes('spoolman')) {
-            this.$store.dispatch('server/spoolman/refreshActiveSpool', null, { root: true })
-        }
     }
 
     appHeight() {

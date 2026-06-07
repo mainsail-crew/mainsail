@@ -90,11 +90,6 @@
         <v-container v-if="axisControlVisible">
             <component :is="`${controlStyle}-control`" />
         </v-container>
-        <!-- Z-OFFSET CONTROL -->
-        <v-divider v-if="showZOffset" />
-        <v-container v-if="showZOffset">
-            <zoffset-control />
-        </v-container>
         <!-- SPEED FACTOR -->
         <v-divider v-if="showSpeedFactor" />
         <v-container v-if="showSpeedFactor">
@@ -124,7 +119,6 @@ import CrossControl from '@/components/panels/ToolheadControls/CrossControl.vue'
 import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
-import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
 
 @Component({
@@ -135,7 +129,6 @@ import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown,
         MoveToControl,
         Panel,
         ToolSlider,
-        ZoffsetControl,
     },
 })
 export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin) {
@@ -176,10 +169,6 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get showControl(): boolean {
         return this.$store.state.gui.view.toolhead.showControl ?? true
-    }
-
-    get showZOffset(): boolean {
-        return this.$store.state.gui.view.toolhead.showZOffset ?? true
     }
 
     get showSpeedFactor(): boolean {

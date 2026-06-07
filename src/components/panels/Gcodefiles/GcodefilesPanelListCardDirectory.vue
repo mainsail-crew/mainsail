@@ -1,7 +1,7 @@
 <template>
     <v-card
-        class="gcode-dir-card"
         v-longpress:600="showContextMenuAction"
+        class="gcode-dir-card"
         @click="goToDirectory"
         @contextmenu="showContextMenuAction($event)">
         <div class="gcode-dir-card__icon">

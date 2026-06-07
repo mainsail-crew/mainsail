@@ -13,10 +13,6 @@
                     {{ question }}
                 </p>
             </v-card-text>
-            <start-print-dialog-afc v-if="afcExists" :file="file" />
-            <start-print-dialog-mmu v-else-if="existsMmu" :file="file" />
-            <start-print-dialog-spoolman v-else-if="existsSpoolman" :file="file" />
-            <start-print-dialog-timelapse v-if="existsTimelapse" />
             <v-divider v-if="showDivider" class="my-0" />
             <v-card-actions>
                 <v-spacer />
@@ -37,47 +33,27 @@
 import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPrinter3d } from '@mdi/js'
-import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
-import AfcMixin from '@/components/mixins/afc'
 
 @Component({
-    components: { SettingsRow },
+    components: {},
 })
-export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
+export default class StartPrintDialog extends Mixins(BaseMixin) {
     mdiPrinter3d = mdiPrinter3d
 
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ required: true, default: '' }) readonly currentPath!: string
     @Prop({ required: true }) readonly file!: FileStateGcodefile
 
-    get existsMmu() {
-        return this.$store.state.printer.mmu?.enabled && this.$store.state.printer.mmu?.gate !== -2
-    }
-
-    get existsSpoolman() {
-        return this.moonrakerComponents.includes('spoolman')
-    }
-
     get existsTimelapse() {
         return this.moonrakerComponents.includes('timelapse')
     }
 
     get showDivider() {
-        return this.afcExists || this.existsSpoolman || this.existsTimelapse
-    }
-
-    get active_spool(): ServerSpoolmanStateSpool | null {
-        return this.$store.state.server.spoolman.active_spool ?? null
+        return this.existsTimelapse
     }
 
     get question() {
-        if (this.active_spool)
-            return this.$t('Dialogs.StartPrint.DoYouWantToStartFilenameFilament', {
-                filename: this.file?.filename ?? 'unknown',
-            })
-
         return this.$t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: this.file?.filename ?? 'unknown' })
     }
 

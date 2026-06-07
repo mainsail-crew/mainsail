@@ -1,9 +1,9 @@
 <template>
     <v-card
+        v-longpress:600="showContextMenuAction"
         class="gcode-card"
         :class="{ 'gcode-card--selected': isSelected }"
         :elevation="isSelected ? 4 : 1"
-        v-longpress:600="showContextMenuAction"
         @contextmenu="showContextMenuAction($event)">
         <div class="gcode-card__topbar">
             <v-simple-checkbox
@@ -15,10 +15,10 @@
                 <template #activator="{ on, attrs }">
                     <v-icon
                         v-bind="attrs"
-                        v-on="on"
                         small
                         class="gcode-card__status"
-                        :color="statusIconColor">
+                        :color="statusIconColor"
+                        v-on="on">
                         {{ statusIcon }}
                     </v-icon>
                 </template>

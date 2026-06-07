@@ -86,8 +86,6 @@ export default class DashboardMixin extends BaseMixin {
                 return mdiConsoleLine
             case 'machine-settings':
                 return mdiEngine
-            case 'afc':
-                return afcIconLogo
             case 'cnc-status':
                 return mdiAxisArrow
             case 'dro':
