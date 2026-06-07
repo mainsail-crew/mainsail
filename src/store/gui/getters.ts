@@ -68,12 +68,6 @@ export const getters: GetterTree<GuiState, RootState> = {
             allPanels = allPanels.filter((name) => !['toolhead-control', 'machine-settings'].includes(name))
         }
 
-        // remove extruder panel, if printerExtruderCount < 1
-        const printerExtruders = rootGetters['printer/getExtruders']
-        if (printerExtruders.length < 1) {
-            allPanels = allPanels.filter((name) => name !== 'extruder-control')
-        }
-
         // remove temperature panel, if sensors < 1
         const printerTemperatureSensors = rootState.printer?.heaters?.available_sensors ?? []
         if (printerTemperatureSensors.length < 1) {
@@ -84,21 +78,6 @@ export const getters: GetterTree<GuiState, RootState> = {
         const webcams = getters['webcams/getWebcams']
         if (webcams.length === 0) {
             allPanels = allPanels.filter((name) => name !== 'webcam')
-        }
-
-        // remove spoolman panel, if no spoolman component exists in moonraker
-        if (!rootState.server?.components.includes('spoolman')) {
-            allPanels = allPanels.filter((name) => name !== 'spoolman')
-        }
-
-        // remove afc panel, if no AFC module exists in Klipper
-        if (!rootState.printer?.AFC) {
-            allPanels = allPanels.filter((name) => name !== 'afc')
-        }
-
-        // remove mmu panel, if no Happy Hare exists in Klipper
-        if (!rootState.printer?.mmu) {
-            allPanels = allPanels.filter((name) => name !== 'mmu')
         }
 
         // remove led_effects panel, if no led_effect object exists in Klipper

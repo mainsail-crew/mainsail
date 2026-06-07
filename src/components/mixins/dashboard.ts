@@ -11,17 +11,13 @@ import {
     mdiGamepad,
     mdiInformation,
     mdiLedStrip,
-    mdiPrinter3dNozzle,
     mdiThermometerLines,
     mdiWebcam,
-    mdiAdjust,
-    mdiMulticast,
     mdiAxisArrow,
     mdiCrosshairsGps,
     mdiHandBackRight,
     mdiTarget,
 } from '@mdi/js'
-import { afcIconLogo } from '@/plugins/afcIcons'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
@@ -90,12 +86,6 @@ export default class DashboardMixin extends BaseMixin {
                 return mdiConsoleLine
             case 'machine-settings':
                 return mdiEngine
-            case 'extruder-control':
-                return mdiPrinter3dNozzle
-            case 'spoolman':
-                return mdiAdjust
-            case 'mmu':
-                return mdiMulticast
             case 'afc':
                 return afcIconLogo
             case 'cnc-status':

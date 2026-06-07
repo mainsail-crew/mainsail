@@ -52,9 +52,7 @@
                     </v-list>
                 </v-menu>
             </template>
-            <status-panel-printstatus-thumbnail />
-            <status-panel-exclude-object :show-dialog.sync="boolShowObjects" @update:showDialog="updateShowDialog" />
-            <status-panel-pause-at-layer-dialog :show-dialog.sync="boolShowPauseAtLayer" />
+
             <template v-if="print_stats_message">
                 <v-container>
                     <v-row>
@@ -141,9 +139,7 @@ import StatusPanelPrintstatus from '@/components/panels/Status/Printstatus.vue'
 import StatusPanelGcodefiles from '@/components/panels/Status/Gcodefiles.vue'
 import StatusPanelHistory from '@/components/panels/Status/History.vue'
 import StatusPanelJobqueue from '@/components/panels/Status/Jobqueue.vue'
-import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
-import StatusPanelPrintstatusThumbnail from '@/components/panels/Status/PrintstatusThumbnail.vue'
-import StatusPanelPauseAtLayerDialog from '@/components/panels/Status/PauseAtLayerDialog.vue'
+
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiAlertOutline,
@@ -173,13 +169,10 @@ import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
         KlippyStatePanel,
         MinSettingsPanel,
         Panel,
-        StatusPanelExcludeObject,
         StatusPanelGcodefiles,
         StatusPanelHistory,
         StatusPanelJobqueue,
         StatusPanelPrintstatus,
-        StatusPanelPrintstatusThumbnail,
-        StatusPanelPauseAtLayerDialog,
     },
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
@@ -195,8 +188,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiTrayFull = mdiTrayFull
 
     showCancelJobDialog = false
-    boolShowObjects = false
-    boolShowPauseAtLayer = false
 
     activeTab = 'files'
     lastFilename = ''
@@ -414,24 +405,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         this.$socket.emit('printer.gcode.script', { script: 'M117' })
     }
 
-    updateShowDialog(newVal: boolean) {
-        this.boolShowObjects = newVal
-    }
-
     btnPauseJob() {
         this.$socket.emit('printer.print.pause', {}, { loading: 'statusPrintPause' })
     }
 
     btnResumeJob() {
         this.$socket.emit('printer.print.resume', {}, { loading: 'statusPrintResume' })
-    }
-
-    btnExcludeObject() {
-        this.boolShowObjects = true
-    }
-
-    btnPauseAtLayer() {
-        this.boolShowPauseAtLayer = true
     }
 
     btnCancelJob() {

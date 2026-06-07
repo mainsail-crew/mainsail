@@ -36,13 +36,6 @@ export interface GuiState {
         reverseX: boolean
         reverseY: boolean
         reverseZ: boolean
-        extruder: {
-            feedamount: number
-            feedamounts: number[]
-            feedrate: number
-            feedrates: number[]
-            showEstimatedExtrusionInfo: boolean
-        }
     }
     dashboard: GuiStateDashboard
     editor: {
@@ -138,13 +131,6 @@ export interface GuiState {
             currentPath: string
             rootPath: string
             selectedFiles: FileStateFile[]
-        }
-        extruder: {
-            showTools: boolean
-            showExtrusionFactor: boolean
-            showPressureAdvance: boolean
-            showFirmwareRetraction: boolean
-            showExtruderControl: boolean
         }
         gcodefiles: {
             countPerPage: number
