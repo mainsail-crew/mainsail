@@ -5,6 +5,7 @@
                 <status-panel />
                 <template v-for="component in mobileLayout">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-mobileLayout-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -16,6 +17,7 @@
                 <status-panel />
                 <template v-for="component in tabletLayout1">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-tabletLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -24,6 +26,7 @@
             <v-col class="col-6">
                 <template v-for="component in tabletLayout2">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-tabletLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -35,6 +38,7 @@
                 <status-panel />
                 <template v-for="component in desktopLayout1">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -43,6 +47,7 @@
             <v-col class="col-7">
                 <template v-for="component in desktopLayout2">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -54,6 +59,7 @@
                 <status-panel />
                 <template v-for="component in widescreenLayout1">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -62,6 +68,7 @@
             <v-col class="col-5">
                 <template v-for="component in widescreenLayout2">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -70,6 +77,7 @@
             <v-col class="col-4">
                 <template v-for="component in widescreenLayout3">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout3-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -162,6 +170,20 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
 
     extractPanelId(name: string) {
         return name.split('_')[1] ?? null
+    }
+
+    get registeredPanelNames(): Set<string> {
+        return new Set([
+            'cnc-status', 'dro', 'jog', 'offsets', 'spindle-coolant', 'mdi',
+            'klippystate', 'minsettings', 'status',
+            'ledeffects', 'machinesettings', 'macrogroup', 'macros',
+            'miniconsole', 'miscellaneous', 'toolheadcontrol', 'temperature', 'webcam',
+        ])
+    }
+
+    isPanelKnown(name: string): boolean {
+        const prefix = name.split('_')[0]
+        return this.registeredPanelNames.has(prefix)
     }
 }
 </script>
