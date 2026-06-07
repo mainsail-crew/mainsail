@@ -231,7 +231,7 @@ export const getDefaultState = (): GuiState => {
                 sortBy: 'modified',
                 sortDesc: true,
                 showHiddenFiles: false,
-                showPrintedFiles: true,
+                showCompletedFiles: true,
                 hideMetadataColumns: ['filament_name', 'filament_type', 'filament_weight_total'],
                 orderMetadataColumns: [
                     'size',

@@ -5,7 +5,7 @@
             <gcodefiles-panel-header-path-size />
         </v-card-text>
         <v-divider class="mb-3" />
-        <gcodefiles-panel-table />
+        <gcodefiles-panel-list />
     </panel>
 </template>
 
@@ -13,13 +13,9 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
-import GcodefilesPanelHeader from '@/components/panels/Gcodefiles/GcodefilesPanelHeader.vue'
 import { mdiFileDocumentMultipleOutline } from '@mdi/js'
-import GcodefilesPanelHeaderPathSize from '@/components/panels/Gcodefiles/GcodefilesPanelHeaderPathSize.vue'
 
-@Component({
-    components: { GcodefilesPanelHeaderPathSize, GcodefilesPanelHeader },
-})
+@Component
 export default class GcodefilesPanel extends Mixins(BaseMixin, GcodefilesMixin) {
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
 }

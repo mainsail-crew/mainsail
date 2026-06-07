@@ -44,7 +44,7 @@ export const getters: GetterTree<FileState, RootState> = {
 
     getGcodeFiles:
         (state, getters, rootState, rootGetters) =>
-        (path: string | null, boolShowHiddenFiles: boolean, boolShowPrintedFiles: boolean) => {
+        (path: string | null, boolShowHiddenFiles: boolean, boolShowCompletedFiles: boolean) => {
             const rootGcodes = getters['getDirectory']('gcodes')
             if (rootGcodes === null) return []
 
@@ -150,7 +150,7 @@ export const getters: GetterTree<FileState, RootState> = {
                     }
                 }
 
-                if (boolShowPrintedFiles) output.push(tmp)
+                if (boolShowCompletedFiles) output.push(tmp)
                 else if (tmp.count_printed === 0) output.push(tmp)
             })
 

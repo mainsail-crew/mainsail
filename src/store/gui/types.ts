@@ -152,7 +152,7 @@ export interface GuiState {
             sortBy: string
             sortDesc: boolean
             showHiddenFiles: boolean
-            showPrintedFiles: boolean
+            showCompletedFiles: boolean
             hideMetadataColumns: string[]
             orderMetadataColumns: string[]
             currentPath: string

@@ -1,48 +1,97 @@
 <template>
-    <tr
+    <v-card
+        class="gcode-card"
+        :class="{ 'gcode-card--selected': isSelected }"
+        :elevation="isSelected ? 4 : 1"
         v-longpress:600="showContextMenuAction"
-        class="file-list-cursor user-select-none"
-        draggable="true"
-        @click="clickOnRow"
-        @contextmenu="showContextMenuAction($event)"
-        @dragstart="onDragStart"
-        @drag="onDrag">
-        <td class="file-list__select-td pr-0">
-            <v-simple-checkbox v-ripple :value="isSelected" class="pa-0 mr-0" @click.stop="select(!isSelected)" />
-        </td>
-        <td class="px-0 text-center" style="width: 32px">
-            <gcodefiles-thumbnail :item="item" />
-        </td>
-        <td class=" ">{{ item.filename }}</td>
-        <td class="text-right text-no-wrap">
+        @click="onCardClick"
+        @contextmenu="showContextMenuAction($event)">
+        <div class="gcode-card__topbar">
+            <v-simple-checkbox
+                :value="isSelected"
+                class="gcode-card__checkbox"
+                :ripple="false"
+                @click.stop="select(!isSelected)" />
             <v-tooltip v-if="item.last_status" top>
                 <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
-                        <span v-if="item.count_printed > 0" :class="`file-list__count_printed ${printStatusTextColor}`">
-                            {{ item.count_printed }}
-                        </span>
-                        <v-icon small :color="printStatusIconColor">{{ printStatusIcon }}</v-icon>
-                    </span>
+                    <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                        small
+                        class="gcode-card__status"
+                        :color="statusIconColor">
+                        {{ statusIcon }}
+                    </v-icon>
                 </template>
-                <span>{{ item.last_status.replace(/_/g, ' ') }}</span>
+                <span>{{ (item.last_status ?? '').replace(/_/g, ' ') }}</span>
             </v-tooltip>
-        </td>
-        <template v-for="col in tableColumns">
-            <gcodefiles-panel-table-row-file-metadata-slicer
-                v-if="col.value === 'slicer'"
-                :key="col.value"
-                :item="item" />
-            <gcodefiles-panel-table-row-file-metadata-filaments
-                v-else-if="col.value === 'filaments'"
-                :key="col.value"
-                :item="item" />
-            <gcodefiles-panel-table-row-file-metadata-filament-strings
-                v-else-if="['filament_name', 'filament_type'].includes(col.value)"
-                :key="col.value"
-                :item="item"
-                :column="col.value" />
-            <gcodefiles-panel-table-row-file-metadata v-else :key="col.value" :col="col" :item="item" />
-        </template>
+        </div>
+
+        <div class="gcode-card__body">
+            <div class="gcode-card__thumb">
+                <gcodefiles-thumbnail :item="item" />
+            </div>
+            <div class="gcode-card__info">
+                <div class="gcode-card__name" :title="item.filename">{{ item.filename }}</div>
+                <div class="gcode-card__sub">
+                    <span class="gcode-card__size">{{ formattedSize }}</span>
+                    <span class="gcode-card__sep">·</span>
+                    <span>{{ formatDateTime(item.modified) }}</span>
+                </div>
+                <div class="gcode-card__chips">
+                    <v-chip
+                        v-if="item.slicer"
+                        x-small
+                        outlined
+                        class="mr-1 gcode-card__chip">
+                        {{ item.slicer }}
+                    </v-chip>
+                    <v-chip
+                        v-if="item.count_printed > 0"
+                        x-small
+                        class="gcode-card__chip gcode-card__chip--runs">
+                        {{ item.count_printed }} {{ $t('Files.Runs') }}
+                    </v-chip>
+                </div>
+            </div>
+        </div>
+
+        <v-divider class="gcode-card__divider" />
+
+        <div class="gcode-card__stats">
+            <div class="gcode-card__stat">
+                <div class="gcode-card__stat-label">{{ $t('Files.PrintTime') }}</div>
+                <div class="gcode-card__stat-value">{{ secondsOrDash(item.estimated_time) }}</div>
+            </div>
+            <div class="gcode-card__stat">
+                <div class="gcode-card__stat-label">{{ $t('Files.LastPrintDuration') }}</div>
+                <div class="gcode-card__stat-value">{{ secondsOrDash(item.last_print_duration) }}</div>
+            </div>
+            <div class="gcode-card__stat">
+                <div class="gcode-card__stat-label">{{ $t('Files.LastTotalDuration') }}</div>
+                <div class="gcode-card__stat-value">{{ secondsOrDash(item.last_total_duration) }}</div>
+            </div>
+            <div class="gcode-card__stat">
+                <div class="gcode-card__stat-label">{{ $t('Files.LastStartTime') }}</div>
+                <div class="gcode-card__stat-value">{{ dateOrDash(item.last_start_time) }}</div>
+            </div>
+        </div>
+
+        <v-divider class="gcode-card__divider" />
+
+        <div class="gcode-card__action">
+            <v-btn
+                block
+                small
+                color="primary"
+                class="gcode-card__start"
+                :disabled="!isGcodeFile || !canStart"
+                @click.stop="showStartPrintDialog = true">
+                <v-icon left small>{{ mdiPlay }}</v-icon>
+                {{ $t('Files.PrintStart') }}
+            </v-btn>
+        </div>
+
         <v-menu
             v-model="showContextMenu"
             :position-x="showContextMenuX"
@@ -52,7 +101,7 @@
             <v-list>
                 <v-list-item
                     v-if="isGcodeFile"
-                    :disabled="!klipperReadyForGui || ['error', 'printing', 'paused'].includes(printer_state)"
+                    :disabled="!canStart"
                     @click="showStartPrintDialog = true">
                     <v-icon class="mr-1">{{ mdiPlay }}</v-icon>
                     {{ $t('Files.PrintStart') }}
@@ -73,7 +122,7 @@
                 </v-list-item>
                 <v-list-item
                     v-if="item.preheat_gcode !== null"
-                    :disabled="['error', 'printing', 'paused'].includes(printer_state)"
+                    :disabled="!canPreheat"
                     @click="doSend(item.preheat_gcode)">
                     <v-icon class="mr-1">{{ mdiFire }}</v-icon>
                     {{ $t('Files.Preheat') }}
@@ -90,7 +139,7 @@
                     <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Files.Download') }}
                 </v-list-item>
-                <v-list-item @click="editFile">
+                <v-list-item :disabled="!isGcodeFile" @click="editFile">
                     <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
@@ -108,6 +157,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
+
         <start-print-dialog v-model="showStartPrintDialog" :file="item" :current-path="currentPath" />
         <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="item.full_filename" />
         <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
@@ -118,8 +168,9 @@
             :text="$t('Files.DeleteSingleFileQuestion', { name: item.filename })"
             :action-button-text="$t('Buttons.Delete')"
             @action="deleteFile" />
-    </tr>
+    </v-card>
 </template>
+
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import type { LongpressEvent } from '@/directives/longpress'
@@ -141,29 +192,21 @@ import {
     mdiVideo3d,
 } from '@mdi/js'
 import ControlMixin from '@/components/mixins/control'
-import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath } from '@/plugins/helpers'
+import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import GcodefilesRenameFileDialog from '@/components/dialogs/GcodefilesRenameFileDialog.vue'
 import GcodefilesDuplicateFileDialog from '@/components/dialogs/GcodefilesDuplicateFileDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
-import GcodefilesPanelTableRowFileMetadata from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadata.vue'
-import GcodefilesPanelTableRowFileMetadataFilaments from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataFilaments.vue'
-import GcodefilesPanelTableRowFileMetadataSlicer from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataSlicer.vue'
-import GcodefilesPanelTableRowFileMetadataFilamentStrings from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowFileMetadataFilamentStrings.vue'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
 @Component({
     components: {
         ConfirmationDialog,
-        GcodefilesPanelTableRowFileMetadataFilamentStrings,
-        GcodefilesPanelTableRowFileMetadataFilaments,
-        GcodefilesPanelTableRowFileMetadataSlicer,
-        GcodefilesPanelTableRowFileMetadata,
         GcodefilesDuplicateFileDialog,
         GcodefilesRenameFileDialog,
         GcodefilesThumbnail,
     },
 })
-export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, ControlMixin, GcodefilesMixin) {
+export default class GcodefilesPanelListCardFile extends Mixins(BaseMixin, ControlMixin, GcodefilesMixin) {
     mdiCloudDownload = mdiCloudDownload
     mdiContentCopy = mdiContentCopy
     mdiDelete = mdiDelete
@@ -174,6 +217,19 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
     mdiPlaylistPlus = mdiPlaylistPlus
     mdiRenameBox = mdiRenameBox
     mdiVideo3d = mdiVideo3d
+
+    formatPrintTime = formatPrintTime
+    formatFilesize = formatFilesize
+
+    dateOrDash(value: Date | null | undefined): string {
+        if (value === null || value === undefined) return '--'
+        return this.formatDateTime(value)
+    }
+
+    secondsOrDash(value: number | null | undefined): string {
+        if (value === null || value === undefined) return '--'
+        return this.formatPrintTime(value)
+    }
 
     showContextMenu = false
     showContextMenuX = 0
@@ -195,26 +251,29 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
         return validGcodeExtensions.includes(format)
     }
 
-    get printStatusTextColor() {
-        switch (this.item.last_status) {
-            case 'in_progress':
-                return 'blue--text' //'blue-grey darken-1'
-            case 'completed':
-                return 'green--text' //'green'
-            case 'cancelled':
-                return 'red--text'
-
-            default:
-                return 'orange--text'
-        }
+    get canStart() {
+        return this.klipperReadyForGui && !['error', 'printing', 'paused'].includes(this.printer_state)
     }
 
-    get printStatusIcon() {
+    get canPreheat() {
+        return this.klipperReadyForGui && !['error', 'printing', 'paused'].includes(this.printer_state)
+    }
+
+    get formattedSize() {
+        return this.item.size !== undefined ? formatFilesize(this.item.size) : '--'
+    }
+
+    get statusIcon() {
         return convertPrintStatusIcon(this.item.last_status ?? '')
     }
 
-    get printStatusIconColor() {
+    get statusIconColor() {
         return convertPrintStatusIconColor(this.item.last_status ?? '')
+    }
+
+    onCardClick() {
+        if (!this.isGcodeFile || !this.canStart) return
+        this.showStartPrintDialog = true
     }
 
     showContextMenuAction(e: MouseEvent | LongpressEvent) {
@@ -229,12 +288,6 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
 
     closeContextMenu() {
         this.showContextMenu = false
-    }
-
-    clickOnRow() {
-        if (!this.isGcodeFile || ['error', 'printing', 'paused'].includes(this.printer_state)) return
-
-        this.showStartPrintDialog = true
     }
 
     addToQueue() {
@@ -282,18 +335,6 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
         )
     }
 
-    onDragStart(e: DragEvent) {
-        if (e.dataTransfer === null) return
-
-        e.dataTransfer.setData('filename', this.item.filename)
-        e.dataTransfer.effectAllowed = 'move'
-    }
-
-    onDrag(e: DragEvent) {
-        e.preventDefault()
-        e.stopPropagation()
-    }
-
     mounted() {
         EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
@@ -305,8 +346,162 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
 </script>
 
 <style scoped>
-.file-list__count_printed {
+.gcode-card {
     position: relative;
-    top: 1px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    background: rgb(var(--v-surface));
+    transition: transform 200ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 200ms cubic-bezier(0.25, 1, 0.5, 1),
+        border-color 200ms cubic-bezier(0.25, 1, 0.5, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    user-select: none;
+}
+
+.gcode-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 107, 53, 0.4);
+}
+
+.gcode-card--selected {
+    border-color: rgb(255, 107, 53);
+    background: rgba(255, 107, 53, 0.05);
+}
+
+.gcode-card__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px 0 12px;
+    min-height: 32px;
+}
+
+.gcode-card__checkbox {
+    opacity: 0;
+    transition: opacity 150ms cubic-bezier(0.25, 1, 0.5, 1);
+    margin: 0;
+}
+
+.gcode-card:hover .gcode-card__checkbox,
+.gcode-card--selected .gcode-card__checkbox {
+    opacity: 1;
+}
+
+.gcode-card__status {
+    margin-left: auto;
+}
+
+.gcode-card__body {
+    display: flex;
+    gap: 12px;
+    padding: 12px 12px 12px 12px;
+    min-height: 88px;
+}
+
+.gcode-card__thumb {
+    flex: 0 0 72px;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.gcode-card__info {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gcode-card__name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.92);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gcode-card__sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.gcode-card__size {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+.gcode-card__sep {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.gcode-card__chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+}
+
+.gcode-card__chip {
+    height: 20px !important;
+    font-size: 11px;
+}
+
+.gcode-card__chip--runs {
+    background: rgba(46, 204, 113, 0.15) !important;
+    color: rgb(46, 204, 113) !important;
+}
+
+.gcode-card__divider {
+    margin: 0;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.gcode-card__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 1px 0;
+}
+
+.gcode-card__stat {
+    background: rgb(var(--v-surface));
+    padding: 8px 12px;
+}
+
+.gcode-card__stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 2px;
+}
+
+.gcode-card__stat-value {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.gcode-card__action {
+    padding: 10px 12px 12px 12px;
+}
+
+.gcode-card__start {
+    height: 32px !important;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 </style>
