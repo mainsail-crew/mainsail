@@ -90,6 +90,7 @@ import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import { mdiFan, mdiPlay, mdiStop, mdiRotate3dVariant, mdiWater, mdiSpray } from '@mdi/js'
+import { setCncCoolant, setCncSpindle } from '@/store/files/cncApi'
 
 @Component({
     components: {
@@ -106,44 +107,75 @@ export default class SpindleCoolantPanel extends Mixins(BaseMixin, ControlMixin)
 
     spindleSpeedInput: number | null = null
 
-    // Spindle control methods
-    setSpindleOn() {
-        this.doSend(`M3 S${this.spindleSpeedInput || 0}`) // Default to 0 RPM if not set
+    async setSpindleOn() {
+        await this.sendSpindle('cw')
     }
 
-    setSpindleOff() {
-        this.doSend('M5')
+    async setSpindleOff() {
+        await this.sendSpindle('off')
     }
 
-    setSpindleCwl() {
-        this.doSend(`M3 S${this.spindleSpeedInput || 0}`) // M3 is Clockwise
+    async setSpindleCwl() {
+        await this.sendSpindle('cw')
     }
 
-    setSpindleCcwl() {
-        this.doSend(`M4 S${this.spindleSpeedInput || 0}`) // M4 is Counter-Clockwise
+    async setSpindleCcwl() {
+        await this.sendSpindle('ccw')
     }
 
-    setSpindleSpeed() {
+    async setSpindleSpeed() {
         if (this.spindleSpeedInput !== null) {
-            this.doSend(`S${this.spindleSpeedInput}`)
+            await this.sendSpindle(this.spindleSpeedInput > 0 ? 'cw' : 'off')
+        }
+    }
+
+    async sendSpindle(state: 'off' | 'cw' | 'ccw') {
+        const rpm = this.spindleSpeedInput ?? 0
+
+        try {
+            await setCncSpindle(this.$store.getters['socket/getUrl'], {
+                state,
+                rpm,
+            })
+            this.$store.dispatch('server/addEvent', {
+                message: `CNC spindle ${state}${state === 'off' ? '' : ` ${rpm}`}`,
+                type: 'command',
+            })
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to update spindle'
+            this.$toast.error(message)
         }
     }
 
     // Coolant control methods
-    setCoolantFloodOn() {
-        this.doSend('M8')
+    async setCoolantFloodOn() {
+        await this.sendCoolant({ flood: true, mist: false })
     }
 
-    setCoolantFloodOff() {
-        this.doSend('M9')
+    async setCoolantFloodOff() {
+        await this.sendCoolant({ flood: false, mist: false })
     }
 
-    setCoolantMistOn() {
-        this.doSend('M7')
+    async setCoolantMistOn() {
+        await this.sendCoolant({ flood: false, mist: true })
     }
 
-    setCoolantMistOff() {
-        this.doSend('M9')
+    async setCoolantMistOff() {
+        await this.sendCoolant({ flood: false, mist: false })
+    }
+
+    async sendCoolant(payload: { flood?: boolean; mist?: boolean }) {
+        try {
+            await setCncCoolant(this.$store.getters['socket/getUrl'], payload)
+            const active = payload.flood ? 'flood on' : payload.mist ? 'mist on' : 'off'
+            this.$store.dispatch('server/addEvent', {
+                message: `CNC coolant ${active}`,
+                type: 'command',
+            })
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to update coolant'
+            this.$toast.error(message)
+        }
     }
 }
 </script>

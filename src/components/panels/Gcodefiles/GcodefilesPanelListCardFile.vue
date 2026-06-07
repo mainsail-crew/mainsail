@@ -4,7 +4,6 @@
         :class="{ 'gcode-card--selected': isSelected }"
         :elevation="isSelected ? 4 : 1"
         v-longpress:600="showContextMenuAction"
-        @click="onCardClick"
         @contextmenu="showContextMenuAction($event)">
         <div class="gcode-card__topbar">
             <v-simple-checkbox
@@ -76,6 +75,35 @@
                 <div class="gcode-card__stat-value">{{ dateOrDash(item.last_start_time) }}</div>
             </div>
         </div>
+
+        <template v-if="cncMetadataViewModel">
+            <div class="gcode-card__stats gcode-card__stats--cnc">
+                <div class="gcode-card__stat">
+                    <div class="gcode-card__stat-label">CAM Tool</div>
+                    <div class="gcode-card__stat-value">{{ cncMetadataViewModel.camTool }}</div>
+                </div>
+                <div class="gcode-card__stat">
+                    <div class="gcode-card__stat-label">Tool</div>
+                    <div class="gcode-card__stat-value">{{ cncMetadataViewModel.tool }}</div>
+                </div>
+                <div class="gcode-card__stat">
+                    <div class="gcode-card__stat-label">Spindle</div>
+                    <div class="gcode-card__stat-value">{{ cncMetadataViewModel.spindle }}</div>
+                </div>
+                <div class="gcode-card__stat">
+                    <div class="gcode-card__stat-label">Plunge</div>
+                    <div class="gcode-card__stat-value">{{ cncMetadataViewModel.plungeFeed }}</div>
+                </div>
+                <div class="gcode-card__stat">
+                    <div class="gcode-card__stat-label">Cut</div>
+                    <div class="gcode-card__stat-value">{{ cncMetadataViewModel.cutFeed }}</div>
+                </div>
+                <div class="gcode-card__stat">
+                    <div class="gcode-card__stat-label">Rapid</div>
+                    <div class="gcode-card__stat-value">{{ cncMetadataViewModel.rapidFeed }}</div>
+                </div>
+            </div>
+        </template>
 
         <v-divider class="gcode-card__divider" />
 
@@ -193,6 +221,7 @@ import {
 } from '@mdi/js'
 import ControlMixin from '@/components/mixins/control'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatFilesize, formatPrintTime } from '@/plugins/helpers'
+import { buildCncMetadataViewModel, loadCncMetadata, type CncMetadataViewModel } from '@/store/files/cncMetadata'
 import GcodefilesRenameFileDialog from '@/components/dialogs/GcodefilesRenameFileDialog.vue'
 import GcodefilesDuplicateFileDialog from '@/components/dialogs/GcodefilesDuplicateFileDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
@@ -220,6 +249,10 @@ export default class GcodefilesPanelListCardFile extends Mixins(BaseMixin, Contr
 
     formatPrintTime = formatPrintTime
     formatFilesize = formatFilesize
+
+    cncMetadataViewModel: CncMetadataViewModel | null = null
+    cncMetadataLoading = false
+    private cncMetadataRequestId = 0
 
     dateOrDash(value: Date | null | undefined): string {
         if (value === null || value === undefined) return '--'
@@ -271,9 +304,19 @@ export default class GcodefilesPanelListCardFile extends Mixins(BaseMixin, Contr
         return convertPrintStatusIconColor(this.item.last_status ?? '')
     }
 
-    onCardClick() {
-        if (!this.isGcodeFile || !this.canStart) return
-        this.showStartPrintDialog = true
+    async refreshCncMetadata() {
+        if (!this.isGcodeFile) return
+        const requestId = ++this.cncMetadataRequestId
+        const filename = this.item.full_filename
+
+        this.cncMetadataLoading = true
+        const apiUrl = this.$store.getters['socket/getUrl']
+        const metadata = await loadCncMetadata(apiUrl, filename)
+
+        if (requestId !== this.cncMetadataRequestId) return
+
+        this.cncMetadataViewModel = buildCncMetadataViewModel(metadata)
+        this.cncMetadataLoading = false
     }
 
     showContextMenuAction(e: MouseEvent | LongpressEvent) {
@@ -337,6 +380,7 @@ export default class GcodefilesPanelListCardFile extends Mixins(BaseMixin, Contr
 
     mounted() {
         EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+        void this.refreshCncMetadata()
     }
 
     beforeDestroy() {
@@ -356,7 +400,6 @@ export default class GcodefilesPanelListCardFile extends Mixins(BaseMixin, Contr
         border-color 200ms cubic-bezier(0.25, 1, 0.5, 1);
     border: 1px solid rgba(255, 255, 255, 0.08);
     overflow: hidden;
-    user-select: none;
 }
 
 .gcode-card:hover {
@@ -493,6 +536,10 @@ export default class GcodefilesPanelListCardFile extends Mixins(BaseMixin, Contr
     font-family: 'IBM Plex Mono', ui-monospace, monospace;
     font-size: 13px;
     color: rgba(255, 255, 255, 0.85);
+}
+
+.gcode-card__stats--cnc {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .gcode-card__action {

@@ -209,6 +209,7 @@ import {
     mdiStop,
     mdiKeyboard,
 } from '@mdi/js'
+import { jogCnc, updateCncSettings } from '@/store/files/cncApi'
 
 @Component({
     components: {
@@ -264,16 +265,16 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
         
         switch (event.key) {
             case 'ArrowUp':
-                this.jog('Y', step)
+                void this.jog('Y', step)
                 break
             case 'ArrowDown':
-                this.jog('Y', -step)
+                void this.jog('Y', -step)
                 break
             case 'ArrowLeft':
-                this.jog('X', -step)
+                void this.jog('X', -step)
                 break
             case 'ArrowRight':
-                this.jog('X', step)
+                void this.jog('X', step)
                 break
             default:
                 return
@@ -307,11 +308,15 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
         return this.$store.state.printer?.print_stats?.state ?? 'unknown'
     }
     saveFeedrates() {
-        this.$store.dispatch('gui/updateSettings', {
-            control: {
-                feedrateXY: this.feedrateXY,
-                feedrateZ: this.feedrateZ,
-            },
+        const control = {
+            feedrateXY: this.feedrateXY,
+            feedrateZ: this.feedrateZ,
+        }
+
+        this.$store.dispatch('gui/updateSettings', { control })
+        void updateCncSettings(this.$store.getters['socket/getUrl'], { control }).catch((error) => {
+            const message = error instanceof Error ? error.message : 'Failed to persist CNC feedrates'
+            this.$toast.error(message)
         })
     }
 
@@ -322,13 +327,23 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
         return `${step}mm`
     }
 
-    jog(axis: string, distance: number) {
-        if (this.continuousJog) {
-            // For continuous jog, emit a command and let go-to-zero handle it
-            this.doSendMove(`${axis}${distance > 0 ? '+' : ''}${distance}`, this.getAxisFeedrate(axis))
-        } else {
-            // Single step jog
-            this.doSendMove(`${axis}${distance > 0 ? '+' : ''}${distance}`, this.getAxisFeedrate(axis))
+    async jog(axis: string, distance: number) {
+        const feedrate = this.getAxisFeedrate(axis)
+        const signedDistance = `${distance > 0 ? '+' : ''}${distance}`
+
+        try {
+            await jogCnc(this.$store.getters['socket/getUrl'], {
+                axis: axis as 'X' | 'Y' | 'Z',
+                distance,
+                feedrate,
+            })
+            this.$store.dispatch('server/addEvent', {
+                message: `CNC jog ${axis}${signedDistance} @ ${feedrate}`,
+                type: 'command',
+            })
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to jog CNC axis'
+            this.$toast.error(message)
         }
     }
 

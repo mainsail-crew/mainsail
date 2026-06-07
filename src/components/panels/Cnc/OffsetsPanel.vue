@@ -120,6 +120,7 @@ import {
     mdiCheck,
     mdiRestart,
 } from '@mdi/js'
+import { getCncWcs, selectCncWcs, setCncZero } from '@/store/files/cncApi'
 
 @Component({
     components: {
@@ -152,6 +153,10 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
         }
     }
 
+    mounted() {
+        void this.refreshActiveWcs()
+    }
+
     get currentWorkPosition(): number[] {
         // Work position in the currently active WCS. Klipper exposes this as
         // `gcode_position` and reflects any G92 offset applied. Per-WCS origin
@@ -173,26 +178,49 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
         return this.currentWorkPosition[2] ?? 0
     }
 
-    onWcsChange(idx: number | null) {
+    async refreshActiveWcs() {
+        try {
+            const wcs = await getCncWcs(this.$store.getters['socket/getUrl'])
+            const active = typeof wcs?.active === 'string' ? wcs.active : 'G54'
+            const index = this.offsetNames.indexOf(active)
+            this.selectedOffsetIndex = index >= 0 ? index : 0
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to load active WCS'
+            this.$toast.error(message)
+        }
+    }
+
+    async onWcsChange(idx: number | null) {
         if (idx === null) return
-        // Send a modal G54..G59 so any gcode file run in this session that
-        // uses the same WCS sees a consistent active system. Klipper accepts
-        // these commands but does not currently report the active WCS back
-        // via gcode_move.gcode_system, so the selector's "active" state is
-        // maintained locally.
-        this.selectedOffsetIndex = idx
-        this.doSend(`G${54 + idx}`)
+
+        const wcs = this.offsetNames[idx]
+        if (!wcs) return
+
+        try {
+            await selectCncWcs(this.$store.getters['socket/getUrl'], { wcs })
+            this.selectedOffsetIndex = idx
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to change work coordinate system'
+            this.$toast.error(message)
+        }
     }
 
-    setWorkZeroXY() {
-        // G92 X0 Y0 — set the work position counter to 0 on X and Y at the
-        // current machine location. Affects the currently active WCS. (Klipper
-        // does not support G10, which would be the GRBL/LinuxCNC equivalent.)
-        this.doSend('G92 X0 Y0')
+    async setWorkZeroXY() {
+        try {
+            await setCncZero(this.$store.getters['socket/getUrl'], { axes: ['X', 'Y'] })
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to set XY zero'
+            this.$toast.error(message)
+        }
     }
 
-    setWorkZeroZ() {
-        this.doSend('G92 Z0')
+    async setWorkZeroZ() {
+        try {
+            await setCncZero(this.$store.getters['socket/getUrl'], { axes: ['Z'] })
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to set Z zero'
+            this.$toast.error(message)
+        }
     }
 
     applyOffsets() {
