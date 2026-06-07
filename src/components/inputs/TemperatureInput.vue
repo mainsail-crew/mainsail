@@ -2,16 +2,17 @@
     <div class="d-flex align-center">
         <form @submit.prevent="setTemps">
             <v-text-field
-                v-model="value"
+                v-model.number="value"
                 suffix="°C"
                 type="number"
                 dense
                 outlined
                 hide-details
                 hide-spin-buttons
-                class="_temp-input pr-1"
+                class="_temp-input"
+                :style="inputStyle"
                 @blur="value = target"
-                @focus="$event.target.select()"></v-text-field>
+                @focus="$event.target.select()" />
         </form>
         <v-menu v-if="presets" :offset-y="true" left title="Preheat">
             <template #activator="{ on, attrs }">
@@ -60,7 +61,7 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     mdiFire = mdiFire
     mdiMenuDown = mdiMenuDown
 
-    private value: any = 0
+    value: number | string = 0
 
     @Prop({ type: String, required: true }) declare readonly name: string
     @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
@@ -69,26 +70,50 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     @Prop({ type: String, required: true }) declare readonly command: string
     @Prop({ type: String, required: true }) declare readonly attributeName: string
     @Prop({ type: Array, default: [] }) declare presets: number[]
+    @Prop({ type: Number, default: 3 }) declare readonly inputDigits: number
+
+    get inputStyle() {
+        const PER_DIGIT = 10
+        const WIDTH_C_GRAD = 21
+        const PADDING = 20
+        const SPACE_FOR_DECIMAL = 10
+
+        const width = this.inputDigits * PER_DIGIT + WIDTH_C_GRAD + PADDING + SPACE_FOR_DECIMAL
+
+        return {
+            width: `${width}px`,
+        }
+    }
+
+    private normalizeValue(raw: number | string | null): number {
+        if (typeof raw === 'string') raw = parseFloat(raw)
+        if (raw === null || isNaN(raw)) return 0
+        return raw
+    }
 
     setTemps(): void {
-        if (typeof this.value === 'object') this.value = this.value.value ?? 0
-        if (this.value === null) this.value = 0
+        const temp = this.normalizeValue(this.value)
 
-        if (this.value > this.max_temp) {
-            this.value = { value: this.target, text: this.target }
-            this.$toast.error(
-                this.$t('Panels.TemperaturePanel.TempTooHigh', { name: this.name, max: this.max_temp }) + ''
-            )
-        } else if (this.value < this.min_temp && this.value != 0) {
-            this.value = { value: this.target, text: this.target }
-            this.$toast.error(
-                this.$t('Panels.TemperaturePanel.TempTooLow', { name: this.name, min: this.min_temp }) + ''
-            )
-        } else if (this.target !== parseFloat(this.value)) {
-            const gcode = this.command + ' ' + this.attributeName + '=' + this.name + ' TARGET=' + this.value
-            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: gcode })
+        if (temp > this.max_temp) {
+            this.value = this.target
+            const key = 'Panels.TemperaturePanel.TempTooHigh'
+            const msg = this.$t(key, { name: this.name, max: this.max_temp }).toString()
+            this.$toast.error(msg)
+            return
         }
+
+        if (temp < this.min_temp && temp !== 0) {
+            this.value = this.target
+            const key = 'Panels.TemperaturePanel.TempTooLow'
+            const msg = this.$t(key, { name: this.name, min: this.min_temp }).toString()
+            this.$toast.error(msg)
+            return
+        }
+
+        // don't send a command if the temperature is unchanged
+        if (this.target === temp) return
+
+        this.doSend(`${this.command} ${this.attributeName}=${this.name} TARGET=${temp}`)
     }
 
     mounted() {
@@ -103,11 +128,6 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
 </script>
 
 <style scoped>
-._temp-input {
-    min-width: 4.2rem;
-    max-width: 5rem;
-}
-
 ._temp-input >>> .v-input__slot {
     min-height: 1rem !important;
     padding-left: 8px !important;

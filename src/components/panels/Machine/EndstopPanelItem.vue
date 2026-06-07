@@ -14,8 +14,8 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import { EndstopItem } from '@/components/panels/Machine/EndstopPanel.vue'
 import { convertName } from '@/plugins/helpers'
+import type { EndstopItem } from '@/store/printer/types'
 @Component({
     components: { Panel },
 })

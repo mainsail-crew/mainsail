@@ -1,11 +1,11 @@
 import { defaultLogoColor, themeDir, thumbnailBigMin } from '@/store/variables'
-import { convertName } from '@/plugins/helpers'
+import { convertName, escapePath } from '@/plugins/helpers'
 import { GetterTree } from 'vuex'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { RootState } from '@/store/types'
 
-// eslint-disable-next-line
-export const getters: GetterTree<FarmPrinterState, any> = {
+export const getters: GetterTree<FarmPrinterState, RootState> = {
     getSocketUrl: (state) => {
         const normPath = state.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
         const path = normPath.length > 0 ? `/${normPath}` : ''
@@ -17,13 +17,14 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     isCurrentPrinter: (state, getters, rootState) => {
-        return rootState.socket.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
+        return rootState.socket?.hostname === state.socket.hostname && rootState.socket.port === state.socket.port
     },
 
-    // eslint-disable-next-line
-    getSetting: (state) => (name: string, fallback: any) => {
-        return state.settings[name] ?? fallback
-    },
+    getSetting:
+        (state) =>
+        <T>(name: string, fallback: T): T => {
+            return (state.settings[name] as T | undefined) ?? fallback
+        },
 
     getPrinterName: (state) => {
         if (
@@ -140,8 +141,8 @@ export const getters: GetterTree<FarmPrinterState, any> = {
                     state.socket.port +
                     path +
                     '/server/files/gcodes/' +
-                    dir +
-                    thumbnail.relative_path
+                    escapePath(dir) +
+                    escapePath(thumbnail.relative_path)
                 )
         }
 

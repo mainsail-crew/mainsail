@@ -52,9 +52,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { V4l2Device } from '@/components/dialogs/DevicesDialogVideo.vue'
 import { sortResolutions } from '@/plugins/helpers'
 import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
+import type { V4l2Device } from '@/types/moonraker/MachineRPC'
 
 @Component({
     components: { TextfieldWithCopy },

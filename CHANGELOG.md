@@ -2,6 +2,45 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.17.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.17.0) - 2026-01-11
+### Features
+
+- **HappyHare**: Added flowrate % to flowguard meter when using proportional sensor
+- **HappyHare**: Adds tiny numeric indicator of sensor position for Proportional Feedback sync-feedback buffers ([#2343](https://github.com/mainsail-crew/mainsail/pull/2343))
+- **Preheat**: Add chamber temperature (M141) support to preheat gcode button ([#2382](https://github.com/mainsail-crew/mainsail/pull/2382))
+- **TemperaturePanel**: Add support for 'temperature_combined' sensor ([#2366](https://github.com/mainsail-crew/mainsail/pull/2366))
+- **Webcam**: Add iframe-based webcam service option ([#2384](https://github.com/mainsail-crew/mainsail/pull/2384))
+- Add LED effects panel  ([#2275](https://github.com/mainsail-crew/mainsail/pull/2275))
+
+### Bug Fixes and Improvements
+
+- **AFC**: Use correct fallback for empty spool color in filament dialog ([#2381](https://github.com/mainsail-crew/mainsail/pull/2381))
+- **Docker**: Add latest tag support for versioned releases ([#2374](https://github.com/mainsail-crew/mainsail/pull/2374))
+- **Dockerfile**: Remove unnecessary script copy for unprivileged image ([#2377](https://github.com/mainsail-crew/mainsail/pull/2377))
+- **HappyHare**: Fix EMU logo in dark mode ([#2369](https://github.com/mainsail-crew/mainsail/pull/2369))
+- **HistoryList**: Implement context menu close functionality using EventBus ([#2378](https://github.com/mainsail-crew/mainsail/pull/2378))
+- Update page title in inactive browser tabs ([#2383](https://github.com/mainsail-crew/mainsail/pull/2383))
+- Use natural sort for caseInsensitiveSort to handle numeric suffixes correctly ([#2380](https://github.com/mainsail-crew/mainsail/pull/2380))
+
+### Refactor
+
+- **Dialogs**: Modernize with VModel and consolidate buttons ([#2372](https://github.com/mainsail-crew/mainsail/pull/2372))
+- Remove unused PrinterStateLight type in printer store ([#2370](https://github.com/mainsail-crew/mainsail/pull/2370))
+- Move HistoryListPanelCol interface to centralized type ([#2379](https://github.com/mainsail-crew/mainsail/pull/2379))
+
+### Styling
+
+- **ESlint**: Fix attribute order in SettingsMacrosTabExpert.vue ([#2373](https://github.com/mainsail-crew/mainsail/pull/2373))
+- Run prettier and fix format in MmuFilamentStatus.vue ([#2385](https://github.com/mainsail-crew/mainsail/pull/2385))
+
+### Localization
+
+- **fr**: Update French translate file
+
+### Other
+
+- Update vite-plugin-pwa npm package and configuration ([#2371](https://github.com/mainsail-crew/mainsail/pull/2371))
+
 ## [2.16.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.16.1) - 2025-12-22
 ### Bug Fixes and Improvements
 

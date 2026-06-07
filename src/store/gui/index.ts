@@ -1,4 +1,5 @@
 import { GuiState } from '@/store/gui/types'
+import { RootState } from '@/store/types'
 import { Module } from 'vuex'
 import { actions } from '@/store/gui/actions'
 import { mutations } from '@/store/gui/mutations'
@@ -53,14 +54,7 @@ export const getDefaultState = (): GuiState => {
             reverseX: false,
             reverseY: false,
             reverseZ: false,
-            extruder: {
-                feedamount: 25,
-                feedamounts: [50, 25, 10, 5, 1],
-                feedrate: 5,
-                feedrates: [10, 5, 2, 1],
-                showEstimatedExtrusionInfo: true,
             },
-        },
         dashboard: {
             nonExpandPanels: {
                 mobile: [],
@@ -70,18 +64,18 @@ export const getDefaultState = (): GuiState => {
             },
             mobileLayout: [
                 { name: 'webcam', visible: false },
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
-                { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
                 { name: 'machine-settings', visible: true },
                 { name: 'miscellaneous', visible: true },
-                { name: 'temperature', visible: true },
-                { name: 'miniconsole', visible: false },
             ],
             tabletLayout1: [
                 { name: 'webcam', visible: true },
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
-                { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
                 { name: 'machine-settings', visible: true },
                 { name: 'miscellaneous', visible: true },
@@ -92,8 +86,9 @@ export const getDefaultState = (): GuiState => {
             ],
             desktopLayout1: [
                 { name: 'webcam', visible: true },
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
-                { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
                 { name: 'machine-settings', visible: true },
                 { name: 'miscellaneous', visible: true },
@@ -103,8 +98,9 @@ export const getDefaultState = (): GuiState => {
                 { name: 'miniconsole', visible: true },
             ],
             widescreenLayout1: [
+                { name: 'dro', visible: true },
+                { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
-                { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
                 { name: 'miscellaneous', visible: true },
             ],
@@ -151,7 +147,7 @@ export const getDefaultState = (): GuiState => {
                 axis_maximum: null,
             },
             showGCodePanel: false,
-            cncMode: false,
+            cncMode: true,
         },
         navigation: {
             entries: [],
@@ -209,20 +205,13 @@ export const getDefaultState = (): GuiState => {
                 rootPath: 'config',
                 selectedFiles: [],
             },
-            extruder: {
-                showTools: true,
-                showExtrusionFactor: true,
-                showPressureAdvance: true,
-                showFirmwareRetraction: true,
-                showExtruderControl: true,
-            },
             gcodefiles: {
                 countPerPage: 10,
                 search: '',
                 sortBy: 'modified',
                 sortDesc: true,
                 showHiddenFiles: false,
-                showPrintedFiles: true,
+                showCompletedFiles: true,
                 hideMetadataColumns: ['filament_name', 'filament_type', 'filament_weight_total'],
                 orderMetadataColumns: [
                     'size',
@@ -320,7 +309,7 @@ export const getDefaultState = (): GuiState => {
 // initial state
 const state = getDefaultState()
 
-export const gui: Module<GuiState, any> = {
+export const gui: Module<GuiState, RootState> = {
     namespaced: true,
     state,
     getters,

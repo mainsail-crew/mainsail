@@ -2,6 +2,7 @@ import { Store } from 'vuex'
 import _Vue from 'vue'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
+import type { RPCMethods, RPCParams, RPCResult } from '@/types/moonraker'
 
 export class WebSocketClient {
     url = ''
@@ -27,11 +28,11 @@ export class WebSocketClient {
         this.url = url
     }
 
-    handleMessage(data: any) {
-        const wait = this.getWaitById(data.id)
+    handleMessage(data: SocketIncomingMessage): void {
+        const wait = typeof data.id === 'number' ? this.getWaitById(data.id) : null
 
         // reject promise if it exists
-        if ('error' in data && wait?.reject) {
+        if (data.error && wait?.reject) {
             wait.reject(data.error)
             this.removeWaitById(wait.id)
             return
@@ -72,18 +73,18 @@ export class WebSocketClient {
         }
 
         // resolve promise if it exists
-        if (wait?.resolve) wait.resolve(data.result ?? {})
+        if (wait.resolve) wait.resolve(data.result ?? {})
 
         // pass result to action
         if (wait.action) {
             let result = data.result
-            if (result === 'ok') result = { result: result }
-            if (typeof result === 'string') result = { result: result }
+            if (result === 'ok') result = { result }
+            if (typeof result === 'string') result = { result }
 
-            const preload = {}
+            const preload: Record<string, unknown> = {}
             if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
             Object.assign(preload, { requestParams: wait.params })
-            Object.assign(preload, result)
+            Object.assign(preload, result as Record<string, unknown>)
             this.store?.dispatch(wait.action, preload)
         }
 
@@ -179,8 +180,12 @@ export class WebSocketClient {
         )
     }
 
-    async emitAndWait(method: string, params: Params | undefined = undefined, options: emitOptions = {}): Promise<any> {
-        return new Promise((resolve, reject) => {
+    emitAndWait<M extends RPCMethods>(
+        method: M,
+        params?: RPCParams<M>,
+        options: emitOptions = {}
+    ): Promise<RPCResult<M>> {
+        return new Promise<RPCResult<M>>((resolve, reject) => {
             if (this.instance?.readyState !== WebSocket.OPEN) reject()
 
             const id = this.messageId++
@@ -190,7 +195,7 @@ export class WebSocketClient {
                 action: options.action ?? null,
                 actionPayload: options.actionPayload ?? {},
                 loading: options.loading ?? null,
-                resolve,
+                resolve: resolve as (value: unknown) => void,
                 reject,
             })
 
@@ -259,33 +264,38 @@ export interface WebSocketPluginOptions {
     store: Store<RootState>
 }
 
-export interface WebSocketClient {
-    connect(): void
-    close(): void
-    emit(method: string, params: Params, emitOptions: emitOptions): void
-    emitBatch(messages: BatchMessage[]): void
-}
-
 export interface BatchMessage {
     method: string
     params: Params
     emitOptions: emitOptions
 }
 
-export interface Wait {
-    id: number
-    params: any
-    action?: string | null
-    actionPayload?: any
-    loading?: string | null
-    resolve?: (value: any) => void
-    reject?: (reason: any) => void
+interface SocketError {
+    code?: number
+    message?: string
+    [key: string]: unknown
 }
 
-interface Params {
-    data?: any
-    [key: string]: any
+interface SocketIncomingMessage {
+    id?: number
+    result?: unknown
+    error?: SocketError
+    method?: string
+    params?: unknown[]
+    [key: string]: unknown
 }
+
+export interface Wait {
+    id: number
+    params: unknown
+    action?: string | null
+    actionPayload?: Params
+    loading?: string | null
+    resolve?: (value: unknown) => void
+    reject?: (reason?: unknown) => void
+}
+
+type Params = object
 
 interface emitOptions {
     action?: string | null

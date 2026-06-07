@@ -126,8 +126,7 @@ export default class BaseMixin extends Vue {
     get isIOS() {
         return !!(
             navigator.userAgent.match(/(iPad|iPhone|iPod)/) ||
-            // @ts-ignore
-            (navigator.platform === 'MacIntel' && typeof navigator.standalone !== 'undefined')
+            (navigator.platform === 'MacIntel' && 'standalone' in navigator)
         )
     }
 
@@ -152,7 +151,7 @@ export default class BaseMixin extends Vue {
             }
 
             return url.toString()
-        } catch (e) {
+        } catch {
             window.console.warn('[Spoolman]: SpoolManager URL is invalid:', baseurl)
 
             return undefined
@@ -202,9 +201,8 @@ export default class BaseMixin extends Vue {
         let tmp: Date | null = null
 
         try {
-            // @ts-ignore
-            tmp = (typeof value.getMonth === 'function' ? value : new Date(value)) as Date
-        } catch (_) {
+            tmp = value instanceof Date ? value : new Date(value)
+        } catch {
             return 'UNKNOWN'
         }
 
@@ -232,10 +230,10 @@ export default class BaseMixin extends Vue {
                     output.push(`${tmp?.getDate()}`)
                     break
                 case 'mm':
-                    output.push((tmp?.getMonth() ?? 0).toString().padStart(2, '0'))
+                    output.push(((tmp?.getMonth() ?? 0) + 1).toString().padStart(2, '0'))
                     break
                 case 'm':
-                    output.push(`${tmp?.getMonth() ?? 0}`)
+                    output.push(`${(tmp?.getMonth() ?? 0) + 1}`)
                     break
                 case 'yyyy':
                     output.push(`${tmp?.getFullYear()}`)
@@ -254,12 +252,11 @@ export default class BaseMixin extends Vue {
     }
 
     formatTime(value: number | Date, boolSeconds = false): string {
-        let tmp = null
+        let tmp
 
         try {
-            // @ts-ignore
-            tmp = (typeof value.getMonth === 'function' ? value : new Date(value)) as Date
-        } catch (_) {
+            tmp = value instanceof Date ? value : new Date(value)
+        } catch {
             return 'UNKNOWN'
         }
 

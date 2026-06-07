@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moonraker-cnc-agent"
+version = "0.1.0"
+description = "CNC-specific Moonraker agent scaffold for Mainsail CNC workflows"
+requires-python = ">=3.9"
+dependencies = []

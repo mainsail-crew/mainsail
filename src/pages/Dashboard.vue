@@ -5,6 +5,7 @@
                 <status-panel />
                 <template v-for="component in mobileLayout">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-mobileLayout-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -16,6 +17,7 @@
                 <status-panel />
                 <template v-for="component in tabletLayout1">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-tabletLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -24,6 +26,7 @@
             <v-col class="col-6">
                 <template v-for="component in tabletLayout2">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-tabletLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -35,6 +38,7 @@
                 <status-panel />
                 <template v-for="component in desktopLayout1">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -43,6 +47,7 @@
             <v-col class="col-7">
                 <template v-for="component in desktopLayout2">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -54,6 +59,7 @@
                 <status-panel />
                 <template v-for="component in widescreenLayout1">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -62,6 +68,7 @@
             <v-col class="col-5">
                 <template v-for="component in widescreenLayout2">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -70,6 +77,7 @@
             <v-col class="col-4">
                 <template v-for="component in widescreenLayout3">
                     <component
+                        v-if="isPanelKnown(component.name)"
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout3-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
@@ -82,9 +90,11 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import AfcPanel from '@/components/panels/AfcPanel.vue'
-import ExtruderControlPanel from '@/components/panels/ExtruderControlPanel.vue'
+import CncStatusPanel from '@/components/panels/Cnc/CncStatusPanel.vue'
+import DroPanel from '@/components/panels/Cnc/DroPanel.vue'
+
 import DashboardMixin from '@/components/mixins/dashboard'
+import JogPanel from '@/components/panels/Cnc/JogPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import LedEffectsPanel from '@/components/panels/LedEffectsPanel.vue'
 import MachineSettingsPanel from '@/components/panels/MachineSettingsPanel.vue'
@@ -93,8 +103,8 @@ import MacrosPanel from '@/components/panels/MacrosPanel.vue'
 import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
-import SpoolmanPanel from '@/components/panels/SpoolmanPanel.vue'
-import MmuPanel from '@/components/panels/MmuPanel.vue'
+import OffsetsPanel from '@/components/panels/Cnc/OffsetsPanel.vue'
+import SpindleCoolantPanel from '@/components/panels/Cnc/SpindleCoolantPanel.vue'
 import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
@@ -102,8 +112,9 @@ import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 
 @Component({
     components: {
-        AfcPanel,
-        ExtruderControlPanel,
+        CncStatusPanel,
+        DroPanel,
+        JogPanel,
         KlippyStatePanel,
         LedEffectsPanel,
         MachineSettingsPanel,
@@ -112,8 +123,8 @@ import WebcamPanel from '@/components/panels/WebcamPanel.vue'
         MiniconsolePanel,
         MinSettingsPanel,
         MiscellaneousPanel,
-        SpoolmanPanel,
-        MmuPanel,
+        OffsetsPanel,
+        SpindleCoolantPanel,
         StatusPanel,
         ToolheadControlPanel,
         TemperaturePanel,
@@ -159,6 +170,20 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
 
     extractPanelId(name: string) {
         return name.split('_')[1] ?? null
+    }
+
+    get registeredPanelNames(): Set<string> {
+        return new Set([
+            'cnc-status', 'dro', 'jog', 'offsets', 'spindle-coolant', 'mdi',
+            'klippystate', 'minsettings', 'status',
+            'ledeffects', 'machinesettings', 'macrogroup', 'macros',
+            'miniconsole', 'miscellaneous', 'toolheadcontrol', 'temperature', 'webcam',
+        ])
+    }
+
+    isPanelKnown(name: string): boolean {
+        const prefix = name.split('_')[0]
+        return this.registeredPanelNames.has(prefix)
     }
 }
 </script>

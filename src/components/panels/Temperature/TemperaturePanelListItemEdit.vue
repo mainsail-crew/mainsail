@@ -73,7 +73,7 @@ export default class TemperaturePanelListItemEdit extends Mixins(BaseMixin) {
     }
 
     @Debounce(500)
-    setChartColor(value: string | any): void {
+    setChartColor(value: string | { hex: string }): void {
         if (typeof value === 'object' && 'hex' in value) value = value.hex
 
         this.$store.dispatch('gui/setChartColor', {

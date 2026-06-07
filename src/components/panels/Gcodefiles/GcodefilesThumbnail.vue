@@ -105,7 +105,7 @@ export default class GcodefilesThumbnail extends Mixins(BaseMixin) {
 
             baseArray.push(subdirectory)
         }
-        baseArray.push(relativePath)
+        baseArray.push(escapePath(relativePath))
         const baseUrl = baseArray.join('/')
 
         return `${baseUrl}?timestamp=${this.fileTimestamp}`

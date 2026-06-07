@@ -81,7 +81,7 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get mainStyle() {
-        let style: any = {
+        const style: Record<string, string> = {
             paddingLeft: '0',
         }
 
@@ -131,7 +131,7 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get primaryTextColor(): string {
-        let splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
+        const splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
         if (splits) {
             const r = parseInt(splits[1], 16) * 0.2126
             const g = parseInt(splits[2], 16) * 0.7152
@@ -236,9 +236,9 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
 
         // if progressAsFavicon is enabled and the printer is printing, draw the progress as favicon
         if (this.progressAsFavicon && this.printerIsPrinting) {
-            let faviconSize = 64
+            const faviconSize = 64
 
-            let canvas = document.createElement('canvas')
+            const canvas = document.createElement('canvas')
             canvas.width = faviconSize
             canvas.height = faviconSize
             const context = canvas.getContext('2d')
@@ -259,9 +259,9 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
             context.stroke()
 
             // draw the green circle based on percentage
-            let startAngle = 1.5 * Math.PI
+            const startAngle = 1.5 * Math.PI
             let endAngle = 0
-            let unitValue = (Math.PI - 0.5 * Math.PI) / 25
+            const unitValue = (Math.PI - 0.5 * Math.PI) / 25
             if (val >= 0 && val <= 25) endAngle = startAngle + val * unitValue
             else if (val > 25 && val <= 50) endAngle = startAngle + val * unitValue
             else if (val > 50 && val <= 75) endAngle = startAngle + val * unitValue
@@ -366,18 +366,11 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     @Watch('print_percent')
     print_percentChanged(newVal: number): void {
         this.drawFavicon(newVal)
-        this.refreshSpoolman()
     }
 
     @Watch('printerIsPrinting')
     printerIsPrintingChanged(): void {
         this.drawFavicon(this.print_percent)
-    }
-
-    refreshSpoolman(): void {
-        if (this.moonrakerComponents.includes('spoolman')) {
-            this.$store.dispatch('server/spoolman/refreshActiveSpool', null, { root: true })
-        }
     }
 
     appHeight() {

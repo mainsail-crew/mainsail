@@ -47,5 +47,5 @@ export interface ServerTimelapseSettingsState {
     previewimage: boolean
     time_format_code: string
     blockedsettings: string[]
-    [key: string]: any
+    [key: string]: unknown
 }

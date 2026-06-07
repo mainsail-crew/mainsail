@@ -34,27 +34,8 @@
                         <span>{{ button.text }}</span>
                     </v-tooltip>
                 </v-btn>
-                <v-menu v-if="multiFunctionButton" left offset-y :close-on-content-click="false" class="pa-0">
-                    <template #activator="{ on, attrs }">
-                        <v-btn icon tile v-bind="attrs" v-on="on">
-                            <v-icon>{{ mdiDotsVertical }}</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list dense>
-                        <v-list-item
-                            v-for="(entry, index) in multiFunctionMenuButtonsFiltered"
-                            :key="'multiFunction_' + index">
-                            <v-btn small style="width: 100%" @click="entry.click()">
-                                <v-icon left small>{{ entry.icon }}</v-icon>
-                                {{ entry.text }}
-                            </v-btn>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
             </template>
-            <status-panel-printstatus-thumbnail />
-            <status-panel-exclude-object :show-dialog.sync="boolShowObjects" @update:showDialog="updateShowDialog" />
-            <status-panel-pause-at-layer-dialog :show-dialog.sync="boolShowPauseAtLayer" />
+
             <template v-if="print_stats_message">
                 <v-container>
                     <v-row>
@@ -141,30 +122,24 @@ import StatusPanelPrintstatus from '@/components/panels/Status/Printstatus.vue'
 import StatusPanelGcodefiles from '@/components/panels/Status/Gcodefiles.vue'
 import StatusPanelHistory from '@/components/panels/Status/History.vue'
 import StatusPanelJobqueue from '@/components/panels/Status/Jobqueue.vue'
-import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
-import StatusPanelPrintstatusThumbnail from '@/components/panels/Status/PrintstatusThumbnail.vue'
-import StatusPanelPauseAtLayerDialog from '@/components/panels/Status/PauseAtLayerDialog.vue'
+
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiAlertOutline,
     mdiBroom,
     mdiCloseCircle,
-    mdiDotsVertical,
     mdiFileDocumentMultipleOutline,
     mdiHistory,
     mdiInformation,
-    mdiLayersPlus,
     mdiMessageProcessingOutline,
     mdiPause,
     mdiPlay,
     mdiPrinter,
-    mdiSelectionRemove,
     mdiSpeedometer,
     mdiStop,
     mdiStopCircleOutline,
     mdiTrayFull,
 } from '@mdi/js'
-import { PrinterStateMacro } from '@/store/printer/types'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 @Component({
@@ -173,19 +148,15 @@ import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
         KlippyStatePanel,
         MinSettingsPanel,
         Panel,
-        StatusPanelExcludeObject,
         StatusPanelGcodefiles,
         StatusPanelHistory,
         StatusPanelJobqueue,
         StatusPanelPrintstatus,
-        StatusPanelPrintstatusThumbnail,
-        StatusPanelPauseAtLayerDialog,
     },
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
     mdiAlertOutline = mdiAlertOutline
     mdiCloseCircle = mdiCloseCircle
-    mdiDotsVertical = mdiDotsVertical
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiInformation = mdiInformation
     mdiHistory = mdiHistory
@@ -194,13 +165,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     mdiStopCircleOutline = mdiStopCircleOutline
     mdiTrayFull = mdiTrayFull
 
-    declare $refs: {
-        bigThumbnail: any
-    }
-
     showCancelJobDialog = false
-    boolShowObjects = false
-    boolShowPauseAtLayer = false
 
     activeTab = 'files'
     lastFilename = ''
@@ -279,30 +244,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 click: this.btnCancelJob,
             },
             {
-                text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
-                color: 'warning',
-                icon: mdiSelectionRemove,
-                loadingName: 'excludeObjectButton',
-                status: () => {
-                    if (this.multiFunctionButton || this.printing_objects.length < 2) return false
-
-                    return ['paused', 'printing'].includes(this.printer_state)
-                },
-                click: this.btnExcludeObject,
-            },
-            {
-                text: this.$t('Panels.StatusPanel.PauseAtLayer.PauseAtLayer'),
-                color: 'warning',
-                icon: mdiLayersPlus,
-                loadingName: 'pauseAtLayer',
-                status: () => {
-                    if (this.multiFunctionButton || !this.displayPauseAtLayerButton) return false
-
-                    return ['paused', 'printing'].includes(this.printer_state)
-                },
-                click: this.btnPauseAtLayer,
-            },
-            {
                 text: this.$t('Panels.StatusPanel.ClearPrintStats'),
                 color: 'primary',
                 icon: mdiBroom,
@@ -325,10 +266,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.toolbarButtons.filter((button) => button.status())
     }
 
-    get printing_objects() {
-        return this.$store.state.printer.exclude_object?.objects ?? []
-    }
-
     get display_message() {
         return this.$store.state.printer.display_status?.message ?? null
     }
@@ -337,55 +274,8 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.message ?? null
     }
 
-    get layer_count() {
-        return this.$store.state.printer.print_stats?.info?.total_layer ?? null
-    }
-
-    get multiFunctionMenuButtons() {
-        return [
-            {
-                text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
-                loadingName: 'excludeObjectButton',
-                icon: mdiSelectionRemove,
-                status: () => this.printing_objects.length > 1,
-                disabled: () => ['paused', 'printing'].includes(this.printer_state),
-                click: this.btnExcludeObject,
-            },
-            {
-                text: this.$t('Panels.StatusPanel.PauseAtLayer.PauseAtLayer'),
-                loadingName: 'pauseAtLayer',
-                icon: mdiLayersPlus,
-                status: () => this.displayPauseAtLayerButton,
-                disabled: () => ['paused', 'printing'].includes(this.printer_state),
-                click: this.btnPauseAtLayer,
-            },
-        ]
-    }
-
-    get multiFunctionMenuButtonsFiltered() {
-        return this.multiFunctionMenuButtons.filter((button) => button.status())
-    }
-
-    get multiFunctionButton() {
-        if (!['paused', 'printing'].includes(this.printer_state)) return false
-
-        return this.multiFunctionMenuButtonsFiltered.length > 1
-    }
-
     get macros() {
         return this.$store.getters['printer/getMacros'] ?? []
-    }
-
-    get existsSetPauseAtLayer() {
-        return this.macros.findIndex((macro: PrinterStateMacro) => macro.name === 'SET_PAUSE_AT_LAYER') !== -1
-    }
-
-    get existsSetPauseNextLayer() {
-        return this.macros.findIndex((macro: PrinterStateMacro) => macro.name === 'SET_PAUSE_NEXT_LAYER') !== -1
-    }
-
-    get displayPauseAtLayerButton() {
-        return this.layer_count !== null && (this.existsSetPauseAtLayer || this.existsSetPauseNextLayer)
     }
 
     get displayFilesTab() {
@@ -418,24 +308,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         this.$socket.emit('printer.gcode.script', { script: 'M117' })
     }
 
-    updateShowDialog(newVal: boolean) {
-        this.boolShowObjects = newVal
-    }
-
     btnPauseJob() {
         this.$socket.emit('printer.print.pause', {}, { loading: 'statusPrintPause' })
     }
 
     btnResumeJob() {
         this.$socket.emit('printer.print.resume', {}, { loading: 'statusPrintResume' })
-    }
-
-    btnExcludeObject() {
-        this.boolShowObjects = true
-    }
-
-    btnPauseAtLayer() {
-        this.boolShowPauseAtLayer = true
     }
 
     btnCancelJob() {

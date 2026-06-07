@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex'
 import { GuiWebcamState, GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { RootState } from '@/store/types'
 
-// eslint-disable-next-line
-export const getters: GetterTree<GuiWebcamState, any> = {
+export const getters: GetterTree<GuiWebcamState, RootState> = {
     getWebcams: (state) => {
         return state.webcams.filter((webcam: GuiWebcamStateWebcam) => webcam.enabled)
     },

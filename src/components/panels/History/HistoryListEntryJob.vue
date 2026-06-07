@@ -1,7 +1,7 @@
 <template>
     <tr
         :key="item.job_id"
-        v-longpress:600="(e) => showContextMenu(e)"
+        v-longpress:600="showContextMenu"
         :class="cssClasses"
         @contextmenu="showContextMenu($event)"
         @click="detailsDialogBool = true">
@@ -90,9 +90,9 @@
                     {{ $t('History.AddNote') }}
                 </v-list-item>
                 <v-list-item
-                    v-if="item.exists"
+                    v-if="item.exists && file"
                     :disabled="printerIsPrinting || !klipperReadyForGui"
-                    @click="startPrint">
+                    @click="startPrintDialogBool = true">
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
@@ -110,20 +110,24 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <!-- details dialog -->
         <history-list-panel-details-dialog v-model="detailsDialogBool" :job="item" />
-        <!-- create/edit note dialog -->
         <history-list-panel-note-dialog v-model="noteDialogBool" :type="noteDialogType" :job="item" />
-        <!-- add to queue dialog -->
         <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="item.filename" />
+        <start-print-dialog
+            v-if="item.exists && file"
+            v-model="startPrintDialogBool"
+            :file="file"
+            :current-path="currentPath" />
     </tr>
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
-import { FileStateFileThumbnail } from '@/store/files/types'
+import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
+import { FileStateFileThumbnail, FileStateGcodefile } from '@/store/files/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import {
@@ -151,7 +155,13 @@ import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNot
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
 @Component({
-    components: { AddBatchToQueueDialog, HistoryListPanelNoteDialog, HistoryListPanelDetailsDialog, Panel },
+    components: {
+        AddBatchToQueueDialog,
+        HistoryListPanelNoteDialog,
+        HistoryListPanelDetailsDialog,
+        Panel,
+        StartPrintDialog,
+    },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
@@ -175,10 +185,20 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     noteDialogType: 'create' | 'edit' = 'create'
 
     addBatchToQueueDialogBool = false
+    startPrintDialogBool = false
 
     @Prop({ type: Object, required: true }) readonly item!: ServerHistoryStateJob
     @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
+
+    get file(): FileStateGcodefile | undefined {
+        return this.$store.getters['files/getFile']('gcodes/' + this.item.filename) ?? undefined
+    }
+
+    get currentPath(): string {
+        const lastSlash = this.item.filename.lastIndexOf('/')
+        return lastSlash > 0 ? '/' + this.item.filename.slice(0, lastSlash) : ''
+    }
 
     get smallThumbnail() {
         if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
@@ -218,7 +238,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get cssClasses() {
-        let output = ['file-list-cursor', 'user-select-none']
+        const output = ['file-list-cursor', 'user-select-none']
 
         if (!this.item.exists) output.push('text--disabled')
 
@@ -233,7 +253,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$emit('select', newVal)
     }
 
-    showContextMenu(e: any) {
+    showContextMenu(e: MouseEvent | LongpressEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 
@@ -245,12 +265,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     closeContextMenu() {
         this.contextMenuBool = false
-    }
-
-    startPrint() {
-        if (!this.item.exists) return
-
-        this.$socket.emit('printer.print.start', { filename: this.item.filename }, { action: 'switchToDashboard' })
     }
 
     createNote() {
@@ -277,17 +291,27 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
-        //@ts-ignore
-        let value = col.value in item ? item[col.value] : null
-        if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
-        if (col.value.startsWith('history_field_')) {
-            const fieldName = col.value.replace('history_field_', '')
-            const field = item.auxiliary_data?.find((field: any) => field.name === fieldName)
+        const key = col.value
+        let value: string | number | null = null
+        if (key in item) {
+            const raw = item[key as keyof ServerHistoryStateJob]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
+        } else if (key in item.metadata) {
+            const raw = item.metadata[key]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
+        }
+
+        if (key.startsWith('history_field_')) {
+            const fieldName = key.replace('history_field_', '')
+            const field = item.auxiliary_data?.find((field) => field.name === fieldName)
             if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
         }
+
         if (value === null) return '--'
 
-        if (col.value === 'slicer') value += '<br />' + item.metadata.slicer_version
+        if (key === 'slicer') return `${value}<br />${item.metadata.slicer_version}`
+
+        if (typeof value !== 'number') return value
 
         switch (col.outputType) {
             case 'filesize':
@@ -300,12 +324,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 return formatPrintTime(value, false)
 
             case 'temp':
-                return value?.toFixed() + ' °C'
+                return value.toFixed() + ' °C'
 
             case 'length':
                 if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                return value?.toFixed(2) + ' mm'
+                return value.toFixed(2) + ' mm'
 
             default:
                 return value

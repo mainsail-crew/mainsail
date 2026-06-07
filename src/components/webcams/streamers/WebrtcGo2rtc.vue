@@ -29,13 +29,13 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     pc: RTCPeerConnection | null = null
     ws: WebSocket | null = null
     restartPause = 2000
-    restartTimeout: any = null
+    restartTimeout: ReturnType<typeof setTimeout> | null = null
     status: string = 'connecting'
     aspectRatio: number | null = null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-    @Ref() declare video: HTMLVideoElement
+    @Ref() readonly video!: HTMLVideoElement
 
     mounted() {
         this.start()
@@ -65,13 +65,14 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get url() {
+        // eslint-disable-next-line no-useless-assignment -- urlSearch is used inside try after reassignment
         let urlSearch = ''
         let url = new URL(location.href)
 
         try {
             urlSearch = new URL(this.camSettings.stream_url).search.toString()
             url = new URL('api/ws' + urlSearch, this.camSettings.stream_url)
-        } catch (e) {
+        } catch {
             this.log('invalid url', this.camSettings.stream_url)
         }
 
@@ -124,7 +125,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         this.start()
     }
 
-    log(msg: string, obj?: any) {
+    log(msg: string, obj?: unknown) {
         if (obj) {
             window.console.log(`[WebRTC go2rtc] ${msg}`, obj)
             return
@@ -149,7 +150,7 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
             iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
         })
 
-        let localTracks: MediaStreamTrack[] = []
+        const localTracks: MediaStreamTrack[] = []
         const kinds = ['video', 'audio']
         kinds.forEach((kind: string) => {
             const track = this.pc?.addTransceiver(kind, { direction: 'recvonly' }).receiver.track

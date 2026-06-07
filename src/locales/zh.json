@@ -48,7 +48,7 @@
         },
         "Printers": "打印机列表",
         "TextfieldWithCopy": {
-            "Copied": "复制"
+            "Copied": "已复制"
         },
         "TheServiceWorker": {
             "DescriptionNeedUpdate": "本地缓存已过时，需要进行更新。请点击下面的按钮来更新缓存。",
@@ -145,6 +145,7 @@
     "Buttons": {
         "Cancel": "取消",
         "Close": "关闭",
+        "Confirm": "确认",
         "Delete": "删除",
         "No": "点错了",
         "Save": "保存",
@@ -449,7 +450,7 @@
             "klippy_disconnect": "Klippy失去连接",
             "klippy_shutdown": "Klippy关闭",
             "Others": "其他",
-            "server_exit": "服务终止"
+            "server_exit": "服务退出"
         },
         "Table": "表格",
         "Time": "时长",
@@ -519,6 +520,7 @@
         },
         "LogfilesPanel": {
             "Accept": "接受",
+            "Cancel": "取消",
             "Logfiles": "日志文件",
             "Rollover": "清理日志",
             "RolloverDescription": "请选择需要重置的日志：",
@@ -607,6 +609,8 @@
             "BufferDisabled": "缓存未激活",
             "BypassActive": "耗材已加载到旁通，工具切换已被禁用！",
             "Calibrate": "校准",
+            "CaptureTD": "读取耗材标签",
+            "Color": "颜色",
             "DebugJson": "调试JSON",
             "Detected": "已检测",
             "EjectFilament": "弹出耗材",
@@ -667,6 +671,7 @@
             },
             "ShowFilamentName": "显示耗材名称",
             "ShowLaneInfinite": "显示无限耗材按钮",
+            "ShowTd1Color": "显示TD-1颜色",
             "ShowTool": "显示工具\"{name}\"",
             "ShowUnit": "显示单元\"{name}\"",
             "ShowUnitIcons": "显示单元图标",
@@ -725,6 +730,10 @@
             "Restart": "重启Klipper",
             "ServiceReports": "{service} 报告"
         },
+        "LedEffectsPanel": {
+            "Headline": "LED特效",
+            "StopAll": "关闭所有特效"
+        },
         "MachineSettingsPanel": {
             "Headline": "机器设置",
             "MotionSettings": {
@@ -763,24 +772,28 @@
                 "White": "白"
             },
             "RunoutSensor": {
-                "Detected": "检测到",
-                "Empty": "无"
+                "Detected": "检测到耗材",
+                "Empty": "没有耗材"
             }
         },
         "MmuPanel": {
+            "Active": "激活",
             "ButtonCheckAllGates": "检查所有通道",
             "ButtonCheckGate": "检查通道",
             "ButtonEject": "弹出",
             "ButtonLoad": "加载",
-            "ButtonLoadExt": "加载拓展",
+            "ButtonLoadExt": "加载到挤出机",
             "ButtonPreload": "预加载",
-            "ButtonPrintStats": "打印统计",
-            "ButtonRecover": "恢复",
+            "ButtonPrintStats": "查看统计信息",
+            "ButtonRecover": "修复耗材状态",
+            "ButtonSelect": "选择",
             "ButtonSyncSpoolman": "同步Spoolman",
             "ButtonUnload": "卸载",
-            "ButtonUnloadExt": "卸载拓展",
+            "ButtonUnloadExt": "从挤出机卸载",
             "ButtonUnlock": "解锁",
             "Bypass": "旁通",
+            "Clog": "堵料",
+            "ClogTangleDetection": "堵料/缠绕检测",
             "Dialog": {
                 "AreYouSure": "是否确定？"
             },
@@ -788,9 +801,12 @@
             "EditGateMap": "编辑耗材",
             "EditGateMapTitle": "编辑耗材(通道映射)",
             "EditTtgMap": "映射工具",
-            "EditTtgMapTitle": "映射工具/耗材(TTG映射编辑)",
+            "EditTtgMapTitle": "映射工具/耗材(编辑耗材通道映射)",
             "Encoder": "编码器",
             "Extruder": "挤出机",
+            "Flow": "流量",
+            "Flowrate": "流量速率",
+            "Gate": "通道",
             "GateMapDialog": {
                 "BadTemperature": "温度超出范围",
                 "ChooseSpool": "选择料盘",
@@ -811,8 +827,9 @@
                 "SpoolmanPull": "Spoolman支持为\"拉取模式(PULL)\"。本地编辑大部分耗材通道属性已禁用。请在Spoolman数据库中分配料盘/耗材通道映射，或使用MMU_SPOOLMAN命令",
                 "Temperature": "温度"
             },
-            "Gear": "齿轮",
-            "Headline": "Mmu",
+            "Gear": "耗材驱动齿轮",
+            "Guard": "守护",
+            "Headline": "多色系统",
             "LargeFilamentStatus": "大耗材状态",
             "MmuMaintenance": "MMU维护",
             "MmuMaintenanceDialog": {
@@ -826,7 +843,7 @@
                 "ExitLedsDescription": "选择出口LED的点亮效果。",
                 "ExtruderOnly": "仅挤出机",
                 "Grip": "夹持",
-                "Home": "归位",
+                "Home": "归零",
                 "Intro": "直接管理特定MMU功能和选择性配置。",
                 "LedOptions": {
                     "FilamentColor": "耗材颜色",
@@ -879,17 +896,19 @@
                 "WarningPrefix": "警告:"
             },
             "Ok": "确定",
-            "PreGate": "预通道",
+            "PreGate": "通道入口",
             "RecoverState": "修复MMU状态",
+            "ShowClogDetection": "堵塞检测",
             "ShowDetails": "耗材详情",
             "ShowLogos": "显示Logo",
             "ShowName": "显示单元名称",
-            "ShowTtgMap": "TTG映射",
+            "ShowTtgMap": "耗材通道映射",
             "ShowUnavailableSpoolColor": "显示不可用料盘",
             "StartPrintDialogMmu": {
                 "MultiColor": "这似乎是使用{numTools}个工具的多材料单挤出机打印，你可能需要检查工具映射",
                 "SingleColor": "这似乎是单色打印，但你的MMU没有选择旁通。你可能需要检查所选工具"
             },
+            "Tangle": "缠绕",
             "Toolhead": "工具头",
             "ToolMapping": "工具映射",
             "ToolTip": {
@@ -903,14 +922,14 @@
                 "Color": "颜色",
                 "EndlessSpool": "无限料盘",
                 "FilamentInfo": "耗材信息",
-                "Gate": "耗材通道",
+                "Gate": "通道",
                 "MapSlicerTools": "将切片软件工具映射到MMU通道以用于打印",
                 "MapTools": "将工具映射到MMU通道",
                 "Material": "材料",
                 "Mismatch": "耗材可能不匹配：",
-                "NoGateData": "无耗材通道数据",
+                "NoGateData": "没有耗材通道数据",
                 "None": "无",
-                "NoSlicerInfo": "无切片软件信息，请为{tool}选择默认映射",
+                "NoSlicerInfo": "没有切片软件信息，请为{tool}选择默认映射",
                 "Reset": "重置",
                 "ResetConfirmation": "这将把全部工具到通道映射以及无限料盘组恢复为'mmu_parameters.cfg'中的默认值，若无默认则恢复为1:1默认映射",
                 "SelectTool": "选择工具，然后从列表中选择通道",
@@ -1517,6 +1536,7 @@
         "Update": "更新",
         "WebcamsTab": {
             "AddWebcam": "添加摄像头",
+            "AspectRatio": "长宽比",
             "Color": "颜色",
             "CreateWebcam": "添加摄像头",
             "EditCrowsnestConf": "编辑 crowsnest.conf",
@@ -1527,6 +1547,7 @@
             "HideFps": "隐藏FPS数值显示",
             "Hlsstream": "HLS视频流",
             "Horizontally": "水平",
+            "HtmlIframe": "HTML内嵌框架",
             "HtmlVideo": "HTML视频",
             "IconBed": "热床",
             "IconCam": "摄像头",
@@ -1536,6 +1557,7 @@
             "IconMcu": "主板",
             "IconNozzle": "喷嘴",
             "IconPrinter": "打印机",
+            "InvalidAspectRatio": "必须是 宽:高 的格式（例如 16:9）",
             "JMuxerStream": "原始h264视频流 (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "自适应MJPEG-Streamer(试验性)",

@@ -66,20 +66,18 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsGeneralTab from '@/components/settings/SettingsGeneralTab.vue'
 import SettingsWebcamsTab from '@/components/settings/SettingsWebcamsTab.vue'
 import SettingsMacrosTab from '@/components/settings/SettingsMacrosTab.vue'
 import SettingsControlTab from '@/components/settings/SettingsControlTab.vue'
 import SettingsConsoleTab from '@/components/settings/SettingsConsoleTab.vue'
-import SettingsPresetsTab from '@/components/settings/SettingsPresetsTab.vue'
 import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrintersTab.vue'
 import SettingsUiSettingsTab from '@/components/settings/SettingsUiSettingsTab.vue'
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
-import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 import SettingsNavigationTab from '@/components/settings/SettingsNavigationTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
@@ -89,28 +87,24 @@ import {
     mdiCog,
     mdiCogs,
     mdiConsoleLine,
+    mdiDipSwitch,
     mdiFileDocumentEditOutline,
-    mdiFire,
     mdiMonitorDashboard,
     mdiPalette,
     mdiPrinter3d,
-    mdiTimelapse,
     mdiTune,
     mdiVideo3d,
     mdiWebcam,
-    mdiDipSwitch,
     mdiMenu,
-    mdiGrid,
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
-import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 @Component({
     components: {
         Panel,
         SettingsUiSettingsTab,
         SettingsRemotePrintersTab,
-        SettingsPresetsTab,
         SettingsConsoleTab,
         SettingsControlTab,
         SettingsMacrosTab,
@@ -119,25 +113,18 @@ import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue
         SettingsDashboardTab,
         SettingsGCodeViewerTab,
         SettingsEditorTab,
-        SettingsTimelapseTab,
         SettingsMiscellaneousTab,
         SettingsNavigationTab,
-        SettingsHeightmapTab,
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
-    private showSettings = false
-    private activeTab = 'general'
+    @Ref() readonly settingsScroll!: OverlayScrollbarsComponent
 
-    /**
-     * Icons
-     */
     mdiCloseThick = mdiCloseThick
     mdiCogs = mdiCogs
 
-    declare $refs: {
-        settingsScroll: any
-    }
+    showSettings = false
+    activeTab = 'general'
 
     get tabTitles() {
         const tabs = [
@@ -177,11 +164,6 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 title: this.$t('Settings.ConsoleTab.Console'),
             },
             {
-                icon: mdiFire,
-                name: 'presets',
-                title: this.$t('Settings.PresetsTab.PreheatPresets'),
-            },
-            {
                 icon: mdiPrinter3d,
                 name: 'remote-printers',
                 title: this.$t('Settings.RemotePrintersTab.RemotePrinters'),
@@ -206,20 +188,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 name: 'navigation',
                 title: this.$t('Settings.NavigationTab.Navigation'),
             },
-            {
-                icon: mdiGrid,
-                name: 'heightmap',
-                title: this.$t('Settings.HeightmapTab.Heightmap'),
-            },
         ]
-
-        if (this.moonrakerComponents.includes('timelapse')) {
-            tabs.push({
-                icon: mdiTimelapse,
-                name: 'timelapse',
-                title: this.$t('Settings.TimelapseTab.Timelapse'),
-            })
-        }
 
         return tabs.sort((a, b) => {
             if (a.name === 'general') return -1
@@ -241,10 +210,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     }
 
     scrollToTop() {
-        if (this.$refs.settingsScroll) {
-            const overlayscroll = this.$refs.settingsScroll.osInstance()
-            overlayscroll?.scroll({ y: '0%' })
-        }
+        this.settingsScroll?.osInstance()?.scroll({ y: '0%' })
     }
 }
 </script>

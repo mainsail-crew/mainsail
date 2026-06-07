@@ -2,7 +2,7 @@
     <panel
         v-if="socketIsConnected && klipperState !== 'disconnected'"
         :icon="mdiConsoleLine"
-        :title="$t('Panels.MiniconsolePanel.Headline')"
+        title="MDI"
         :collapsible="true"
         card-class="miniconsole-panel"
         :hide-buttons-on-collapse="true">
@@ -94,6 +94,7 @@ import { mdiCog, mdiConsoleLine, mdiTrashCan } from '@mdi/js'
 import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
 import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 @Component({
     components: {
@@ -107,7 +108,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
     mdiConsoleLine = mdiConsoleLine
     mdiCog = mdiCog
 
-    @Ref() readonly miniConsoleScroll!: any
+    @Ref() readonly miniConsoleScroll?: OverlayScrollbarsComponent
     @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
 
     get consoleHeight() {

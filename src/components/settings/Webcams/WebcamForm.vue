@@ -285,7 +285,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get rulesStreamUrl() {
-        let rules = []
+        const rules = []
 
         if (this.webcam.service !== 'mjpegstreamer-adaptive') {
             rules.push(this.rules.required)
@@ -295,7 +295,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get rulesSnapshotUrl() {
-        let rules = []
+        const rules = []
 
         if (this.webcam.service === 'mjpegstreamer-adaptive') {
             rules.push(this.rules.required)
@@ -334,7 +334,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get classIconButtonArrow() {
-        let classes = ['_transition']
+        const classes = ['_transition']
 
         if (this.selectIcon) classes.push('_rotate-180')
 
@@ -386,8 +386,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
 
-        // @ts-ignore
-        this.webcam.extra_data.hideFps = newVal
+        this.webcam.extra_data!.hideFps = newVal
     }
 
     get enableAudio() {
@@ -403,8 +402,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
 
-        // @ts-ignore
-        this.webcam.extra_data.enableAudio = newVal
+        this.webcam.extra_data!.enableAudio = newVal
     }
 
     get nozzleCrosshairAvialable() {

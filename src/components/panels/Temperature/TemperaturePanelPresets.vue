@@ -90,7 +90,7 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
             if (attributes.bool) {
                 const splits = name.split(' ')
                 const printerObject = splits[0]
-                let printerObjectName = splits[1] ?? splits[0]
+                const printerObjectName = splits[1] ?? splits[0]
 
                 // set default heater command
                 let command = 'SET_HEATER_TEMPERATURE'

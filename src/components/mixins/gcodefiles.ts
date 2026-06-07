@@ -19,7 +19,7 @@ export default class GcodefilesMixin extends Vue {
     }
 
     set search(value: string) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.search', value })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.search', value })
     }
 
     get currentPath() {
@@ -30,7 +30,7 @@ export default class GcodefilesMixin extends Vue {
     }
 
     set currentPath(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.currentPath', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.currentPath', value: newVal })
     }
 
     get showHiddenFiles() {
@@ -41,16 +41,16 @@ export default class GcodefilesMixin extends Vue {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showHiddenFiles', value: newVal })
     }
 
-    get showPrintedFiles() {
-        return this.$store.state.gui.view.gcodefiles.showPrintedFiles ?? true
+    get showCompletedFiles() {
+        return this.$store.state.gui.view.gcodefiles.showCompletedFiles ?? true
     }
 
-    set showPrintedFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showPrintedFiles', value: newVal })
+    set showCompletedFiles(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showCompletedFiles', value: newVal })
     }
 
     get files() {
-        return this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
+        return this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showCompletedFiles)
     }
 
     get hideMetadataColumns() {
@@ -99,81 +99,6 @@ export default class GcodefilesMixin extends Vue {
                 outputType: 'date',
             },
             {
-                text: this.$t('Files.ObjectHeight').toString(),
-                value: 'object_height',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'length',
-            },
-            {
-                text: this.$t('Files.LayerHeight').toString(),
-                value: 'layer_height',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'length',
-            },
-            {
-                text: this.$t('Files.NozzleDiameter').toString(),
-                value: 'nozzle_diameter',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'length',
-            },
-            {
-                text: this.$t('Files.ExtruderTemp').toString(),
-                value: 'first_layer_extr_temp',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'temp',
-            },
-            {
-                text: this.$t('Files.BedTemp').toString(),
-                value: 'first_layer_bed_temp',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'temp',
-            },
-            {
-                text: this.$t('Files.ChamberTemp').toString(),
-                value: 'chamber_temp',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'temp',
-            },
-            {
-                text: this.$t('Files.Filaments').toString(),
-                value: 'filaments',
-                visible: true,
-                class: 'text-no-wrap',
-            },
-            {
-                text: this.$t('Files.FilamentName').toString(),
-                value: 'filament_name',
-                visible: true,
-                class: 'text-no-wrap',
-            },
-            {
-                text: this.$t('Files.FilamentType').toString(),
-                value: 'filament_type',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'string',
-            },
-            {
-                text: this.$t('Files.FilamentUsage').toString(),
-                value: 'filament_total',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'length',
-            },
-            {
-                text: this.$t('Files.FilamentWeight').toString(),
-                value: 'filament_weight_total',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'weight',
-            },
-            {
                 text: this.$t('Files.PrintTime').toString(),
                 value: 'estimated_time',
                 visible: true,
@@ -207,13 +132,6 @@ export default class GcodefilesMixin extends Vue {
                 visible: true,
                 class: 'text-no-wrap',
                 outputType: 'time',
-            },
-            {
-                text: this.$t('Files.LastFilamentUsed').toString(),
-                value: 'last_filament_used',
-                visible: true,
-                class: 'text-no-wrap',
-                outputType: 'length',
             },
             {
                 text: this.$t('Files.Slicer').toString(),
@@ -263,7 +181,7 @@ export default class GcodefilesMixin extends Vue {
     }
 
     set selectedFiles(newVal) {
-        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.selectedFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.selectedFiles', value: newVal })
     }
 
     existsFilename(name: string) {

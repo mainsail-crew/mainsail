@@ -10,7 +10,7 @@ import {
 import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
-import axios, { AxiosProgressEvent } from 'axios'
+import axios, { AxiosProgressEvent, AxiosResponse } from 'axios'
 import { BatchMessage } from '@/plugins/webSocketClient'
 
 export const actions: ActionTree<FileState, RootState> = {
@@ -31,11 +31,12 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     getDirectory({ state, commit, getters }, payload: ApiGetDirectoryReturn) {
-        const pathArray = payload.requestParams.path.split('/')
-        const root = pathArray.length ? pathArray[0] : payload.requestParams.path
+        const requestPath = (payload.requestParams?.path ?? '') as string
+        const pathArray = requestPath.split('/')
+        const root = pathArray.length ? pathArray[0] : requestPath
 
-        const slashIndex = payload.requestParams.path.indexOf('/')
-        const path = slashIndex > 1 ? payload.requestParams.path.slice(slashIndex + 1) : ''
+        const slashIndex = requestPath.indexOf('/')
+        const path = slashIndex > 1 ? requestPath.slice(slashIndex + 1) : ''
         const directory = getters['getDirectory'](root + '/' + path)
 
         if (directory?.childrens?.length) {
@@ -87,7 +88,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
                         Vue.$socket.emit(
                             'server.files.get_directory',
-                            { path: payload.requestParams.path + '/' + dir.dirname },
+                            { path: requestPath + '/' + dir.dirname },
                             { action: 'files/getDirectory' }
                         )
                     }
@@ -336,7 +337,7 @@ export const actions: ActionTree<FileState, RootState> = {
                         commit('uploadSetSpeed', rate)
                     },
                 })
-                .then((result: any) => {
+                .then((result: AxiosResponse<{ item: { path: string } }>) => {
                     commit('uploadSetShow', false)
                     const lastPos = result.data.item.path.lastIndexOf('/')
                     const filename = result.data.item.path.slice(lastPos + 1)

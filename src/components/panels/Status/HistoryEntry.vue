@@ -1,6 +1,6 @@
 <template>
     <v-row
-        v-longpress:600="(e) => openContextMenu(e)"
+        v-longpress:600="openContextMenu"
         class="history-list-entry d-flex flex-row flex-nowrap cursor-pointer"
         @contextmenu="openContextMenu($event)">
         <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
@@ -53,7 +53,10 @@
         </v-col>
         <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
-                <v-list-item v-if="job.exists" :disabled="printerIsPrinting || !klipperReadyForGui" @click="startPrint">
+                <v-list-item
+                    v-if="job.exists && file"
+                    :disabled="printerIsPrinting || !klipperReadyForGui"
+                    @click="startPrintDialogBool = true">
                     <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
@@ -72,13 +75,21 @@
             </v-list>
         </v-menu>
         <add-batch-to-queue-dialog v-model="addBatchToQueueDialogBool" :show-toast="true" :filename="job.filename" />
+        <start-print-dialog
+            v-if="job.exists && file"
+            v-model="startPrintDialogBool"
+            :file="file"
+            :current-path="currentPath" />
     </v-row>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
+import { FileStateGcodefile } from '@/store/files/types'
+import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import { mdiCloseThick, mdiDelete, mdiFile, mdiPlaylistPlus, mdiPrinter } from '@mdi/js'
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { ServerHistoryStateJobWithCount } from '@/store/server/history/types'
@@ -86,7 +97,9 @@ import { FileStateFileThumbnail } from '@/store/files/types'
 import { convertPrintStatusIcon, escapePath, formatPrintTime } from '@/plugins/helpers'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
-@Component
+@Component({
+    components: { StartPrintDialog },
+})
 export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiDelete = mdiDelete
@@ -101,6 +114,16 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     contextMenuY = 0
 
     addBatchToQueueDialogBool = false
+    startPrintDialogBool = false
+
+    get file(): FileStateGcodefile | undefined {
+        return this.$store.getters['files/getFile']('gcodes/' + this.job.filename) ?? undefined
+    }
+
+    get currentPath(): string {
+        const lastSlash = this.job.filename.lastIndexOf('/')
+        return lastSlash > 0 ? '/' + this.job.filename.slice(0, lastSlash) : ''
+    }
 
     get smallThumbnail() {
         if ((this.job.metadata?.thumbnails?.length ?? 0) < 1) return false
@@ -181,14 +204,14 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     }
 
     get estimatedTime() {
-        let totalSeconds = this.job.print_duration ?? 0
+        const totalSeconds = this.job.print_duration ?? 0
         if (totalSeconds == 0) return '--'
 
         return formatPrintTime(totalSeconds)
     }
 
     get totalTime() {
-        let totalSeconds: number = this.job.total_duration ?? 0
+        const totalSeconds: number = this.job.total_duration ?? 0
         if (totalSeconds === 0) return null
 
         return formatPrintTime(totalSeconds)
@@ -210,7 +233,7 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         return this.moonrakerComponents.includes('job_queue')
     }
 
-    openContextMenu(e: any) {
+    openContextMenu(e: MouseEvent | LongpressEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 
@@ -222,12 +245,6 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
 
     closeContextMenu() {
         this.showContextMenu = false
-    }
-
-    startPrint() {
-        if (!this.job.exists) return
-
-        this.$socket.emit('printer.print.start', { filename: this.job.filename })
     }
 
     addToQueue() {

@@ -87,6 +87,7 @@ import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
 import { mdiCog, mdiTrashCan } from '@mdi/js'
 import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 @Component({
     components: {
@@ -98,7 +99,7 @@ export default class PageConsole extends Mixins(BaseMixin, ConsoleMixin) {
     mdiCog = mdiCog
     mdiTrashCan = mdiTrashCan
 
-    @Ref() readonly consoleScroll!: any
+    @Ref() readonly consoleScroll!: OverlayScrollbarsComponent
     @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
 
     get events() {

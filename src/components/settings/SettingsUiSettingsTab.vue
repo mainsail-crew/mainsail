@@ -344,6 +344,7 @@ import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
 import ThemeMixin from '@/components/mixins/theme'
+import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
 
 @Component({
     components: { SettingsRow },
@@ -501,9 +502,10 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     set lockSlidersDelay(newVal) {
-        newVal >= 0
-            ? this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersDelay', value: newVal })
-            : {}
+        const value = Number(newVal)
+        if (!Number.isFinite(value) || value < 0) return
+
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersDelay', value })
     }
 
     get boolWideNavDrawer() {
@@ -711,25 +713,19 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
     }
 
-    clearColorObject(color: any): string {
-        if (typeof color === 'object' && 'hex' in color) color = color.hex
-        if (color.length > 7) color = color.substr(0, 7)
-        return color
+    @Debounce(500)
+    updateLogoColor(newVal: ColorPickerValue) {
+        this.logoColor = clearColorObject(newVal)
     }
 
     @Debounce(500)
-    updateLogoColor(newVal: any) {
-        this.logoColor = this.clearColorObject(newVal)
+    updatePrimaryColor(newVal: ColorPickerValue) {
+        this.primaryColor = clearColorObject(newVal)
     }
 
     @Debounce(500)
-    updatePrimaryColor(newVal: any) {
-        this.primaryColor = this.clearColorObject(newVal)
-    }
-
-    @Debounce(500)
-    updateBigThumbnailBackground(newVal: any) {
-        this.bigThumbnailBackground = this.clearColorObject(newVal)
+    updateBigThumbnailBackground(newVal: ColorPickerValue) {
+        this.bigThumbnailBackground = clearColorObject(newVal)
     }
 
     @Watch('theme')

@@ -5,7 +5,8 @@
         :option="chartOptions"
         :autoresize="true"
         :init-options="{ renderer: 'svg' }"
-        style="height: 200px; width: 100%" />
+        class="w-100"
+        style="height: 200px" />
 </template>
 
 <script lang="ts">
@@ -14,18 +15,23 @@ import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
 import HistoryStatsMixin from '@/components/mixins/historyStats'
-import VueECharts from 'vue-echarts'
+import type { ECBasicOption } from 'echarts/types/dist/shared.d'
 import type { ECharts } from 'echarts/core'
-import { ECBasicOption } from 'echarts/types/dist/shared.d'
+import type { EChartRef } from '@/types/echarts'
 import { formatPrintTime } from '@/plugins/helpers'
-import { HistoryStatsValueNames } from '@/store/server/history/types'
+import { HistoryStatsValueNames, ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
 
-@Component({
-    components: {},
-})
+@Component
 export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin, HistoryStatsMixin) {
     @Prop({ type: String, default: 'jobs' }) valueName!: HistoryStatsValueNames
-    @Ref('historyAllPrintStatus') historyAllPrintStatus!: typeof VueECharts
+    @Ref('historyAllPrintStatus') readonly historyAllPrintStatus!: EChartRef | undefined
+
+    getNumericTooltipValue(value: unknown): number {
+        const rawValue = Array.isArray(value) ? value[0] : value
+        const numericValue = Number(rawValue)
+
+        return Number.isFinite(numericValue) ? numericValue : 0
+    }
 
     get chartOptions(): ECBasicOption {
         return {
@@ -39,18 +45,20 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
             tooltip: {
                 trigger: 'item',
                 borderWidth: 0,
-                valueFormatter: (value: number) => {
-                    if (this.valueName === 'filament') {
-                        if (value > 1000) return Math.round(value / 1000).toString() + ' m'
+                valueFormatter: (value: unknown) => {
+                    const numericValue = this.getNumericTooltipValue(value)
 
-                        return value.toString() + ' mm'
+                    if (this.valueName === 'filament') {
+                        if (numericValue > 1000) return Math.round(numericValue / 1000).toString() + ' m'
+
+                        return numericValue.toString() + ' mm'
                     }
 
                     if (this.valueName === 'time') {
-                        return formatPrintTime(value, false)
+                        return formatPrintTime(numericValue, false)
                     }
 
-                    return value.toString()
+                    return numericValue.toString()
                 },
             },
             series: [
@@ -81,11 +89,12 @@ export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeM
 
     beforeDestroy() {
         if (typeof window === 'undefined') return
-        if (this.chart) this.chart.dispose()
+
+        this.chart?.dispose()
     }
 
     @Watch('groupedPrintStatusArray')
-    groupedPrintStatusArrayChanged(newVal: any) {
+    groupedPrintStatusArrayChanged(newVal: ServerHistoryStateAllPrintStatusEntry[]) {
         this.chart?.setOption(
             {
                 series: {

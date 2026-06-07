@@ -1,0 +1,11 @@
+; FreeCAD Path
+; Operation: Pocket
+G21 G90
+G0 X0 Y0 Z5
+G1 Z-2 F150
+G1 X40 Y0 F600
+G1 X40 Y40
+G1 X0 Y40
+G1 X0 Y0
+G0 Z5
+M30

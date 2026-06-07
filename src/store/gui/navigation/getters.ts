@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
 import { GuiNavigationState } from './types'
+import { RootState } from '@/store/types'
 
-// eslint-disable-next-line
-export const getters: GetterTree<GuiNavigationState, any> = {}
+export const getters: GetterTree<GuiNavigationState, RootState> = {}

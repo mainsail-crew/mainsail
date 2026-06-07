@@ -1,3 +1,5 @@
+import { CancelTokenSource } from 'axios'
+
 export interface EditorState {
     bool: boolean
     filename: string
@@ -12,7 +14,7 @@ export interface EditorState {
         total: number
         speed: string
     }
-    cancelToken: any
+    cancelToken: CancelTokenSource | null
     loadedHash: string
     changed: boolean
 }

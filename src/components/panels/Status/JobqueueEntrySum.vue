@@ -103,7 +103,7 @@ export default class StatusPanelJobqueueEntrySum extends Mixins(BaseMixin) {
     }
 
     get currentPrintEta() {
-        let eta = this.$store.getters['printer/getEstimatedTimeETA']
+        const eta = this.$store.getters['printer/getEstimatedTimeETA']
         if (eta) return eta
 
         // if no eta and printer is printing, use the estimated time from the current file + now.
@@ -120,7 +120,7 @@ export default class StatusPanelJobqueueEntrySum extends Mixins(BaseMixin) {
     get eta() {
         if (this.sums.estimatedTime === 0) return '--'
 
-        let eta = this.currentPrintEta + this.sums.estimatedTime * 1000
+        const eta = this.currentPrintEta + this.sums.estimatedTime * 1000
         const hours12Format = this.$store.getters['gui/getHours12Format'] ?? false
         const date = new Date(eta)
         let am = true
