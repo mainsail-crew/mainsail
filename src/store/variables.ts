@@ -29,6 +29,7 @@ export const additionalSensors = [
     'htu21d',
     'sgp40',
     'sht3x',
+    'sht4x',
     'temperature_combined',
 ]
 
