@@ -1,0 +1,20 @@
+name: example-cnc
+frontend:
+  show_machine_coords: true
+  show_work_coords: true
+  show_machine_health: true
+capabilities:
+  spindle:
+    enabled: true
+    mode: relay
+    variable_speed: false
+  coolant:
+    channels: 2
+  probe:
+    enabled: false
+  tool_setter:
+    enabled: false
+safety:
+  require_confirm_for_zero_reset: true
+  require_confirm_for_spindle_start: true
+  require_homing_before_offsets: true

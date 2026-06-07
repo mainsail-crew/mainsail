@@ -1,0 +1,15 @@
+; ESTLCAM 2.0
+; Material: Aluminum
+;
+T1 = 3mm end mill
+G21 G90
+T1
+S12000 M3
+G0 X0 Y0 Z5
+G1 Z-1 F100
+G1 X50 Y0 F500
+G1 X50 Y30
+G1 X0 Y30
+G1 X0 Y0
+G0 Z5
+M30
