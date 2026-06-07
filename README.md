@@ -4,7 +4,7 @@ CNC-focused control stack built around Klipper, Moonraker, and a maintained Main
 
 ## Overview
 
-A real [Mainsail](https://github.com/mainsail-prusa/mainsail) fork (`upstream-mainsail/`) extended with CNC-native dashboard panels, CNC-specific navigation terminology, file-card metadata enrichment, and a Moonraker-side CNC agent for normalized CNC state and guarded command endpoints.
+A real [Mainsail](https://github.com/mainsail-prusa/mainsail) fork extended with CNC-native dashboard panels, CNC-specific navigation terminology, file-card metadata enrichment, and a Moonraker-side CNC agent for normalized CNC state and guarded command endpoints.
 
 ## Mainsail Fork — CNC Features
 
@@ -95,7 +95,7 @@ Read-only Klipper state flows directly from Mainsail's Vuex store subscription �
 
 ## Status
 
-This repository has progressed well beyond its initial scaffold.
+This repository has progressed well beyond its initial scaffold. The fork is deployed and live on a BTT-CB1 at `/home/biqu/mainsail/`, tracked by Moonraker's update_manager on the `develop` branch. On-device builds are supported (Node.js v20 + Bun installed on the CB1).
 
 ### Mainsail fork features implemented
 
@@ -116,6 +116,7 @@ This repository has progressed well beyond its initial scaffold.
 - ✅ Guarded command endpoints: jog, set-zero, WCS select, spindle, coolant
 - ✅ Settings persistence: runtime store + GET/POST at `/server/cnc/settings`
 - ⏳ Machine actuation wiring (POST handlers persist agent state; Klipper/Moonraker layer needed)
+- ⏳ `[cnc_agent]` section removed from moonraker.conf (agent endpoints not actively wired)
 
 ### Klipper macros
 
@@ -136,21 +137,18 @@ Klipper on the BTT-CB1 (and most stock Klipper builds) does **not** support
 
 ## Primary Plan
 
-The main implementation plan lives here:
-
-- [IMPLEMENTATION_PLAN.md](/Users/isaaceliape/repos/mainsail-cnc/IMPLEMENTATION_PLAN.md)
-
-Read that file first if you want the current architecture, implementation phases, completed work, and next tasks.
+The main implementation plan lives in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
 ## Repository Layout
 
-- `upstream-mainsail/`: real frontend fork target
+- `src/`: Mainsail Vue frontend with CNC panels and modifications
 - `moonraker-cnc-agent/`: Moonraker CNC agent (Python component)
 - `klipper-macros/`: CNC macro contract scaffold
-- `scripts/`: deploy and ops scripts (see `install_to_moonraker.sh`)
-- `config/examples/`: example machine profile
+- `scripts/`: metadata extractor and test fixtures (`scripts/cnc_metadata_extractor.py`)
+- `config/examples/`: example machine profile and update-manager config
 - `docs/`: supporting architecture and API notes
-- `frontend/`: scratch panel scaffolds superseded by `upstream-mainsail/`
+- `deploy.sh`: portable build-and-deploy script (dry-run by default, `--live` to deploy)
+- `moonraker-cnc-update.conf`: drop-in Moonraker update_manager config snippet
 
 ## Architecture Summary
 
@@ -177,73 +175,48 @@ This project assumes:
 
 ## Development
 
-This project uses **Bun** for both the root and the upstream-mainsail fork
-(see `AGENTS.md`). `package-lock.json` is not used; lockfiles are `bun.lock`.
+This project uses **Bun**. `package-lock.json` is not used; lockfiles are `bun.lock`.
 
 ### Frontend dev server
 
 ```bash
-cd upstream-mainsail
 bun install
 bun run serve --host 0.0.0.0
 ```
 
-### Deploy the Moonraker CNC agent
+The dev server supports Hot Module Reload — changes apply without manual refresh.
 
+### Deploy to the CB1
+
+The repo is cloned on the CB1 at `/home/biqu/mainsail-cnc` and tracked by Moonraker's update_manager. Node.js v20 + Bun are installed on the CB1 so builds run on-device.
+
+**Automated (via Moonraker update_manager):**
+When you click **Update** in Mainsail's Machine → Update Manager panel, Moonraker runs `deploy.sh --live` which:
+1. `bun install --frozen-lockfile`
+2. `bun run build`
+3. Deploys `dist/` to `/home/biqu/mainsail/` (preserving `config.json`)
+4. Reloads nginx
+
+**Manual deploy from your Mac:**
 ```bash
-./scripts/install_to_moonraker.sh
+./deploy.sh --live   # dry-run by default; --live to actually deploy
 ```
 
-This rsyncs the package to the target, vendors it into Moonraker's
-`components/` directory, ensures the `[cnc_agent]` section is in the active
-`moonraker.conf`, restarts Moonraker, and verifies a clean load. Override the
-target with `CNC_HOST=myprinter` (defaults to `cnc`).
+Environment variables: `MAINSAIL_CNC_DIR` (source) and `MAINSAIL_DEPLOY_DIR` (target).
 
-### Mainsail update manager integration
+### Moonraker update_manager entry
 
-The install script also registers the project with Moonraker's update
-manager by default — a single `[update_manager mainsail-cnc]` section
-pointing at the monorepo clone on the printer. The agent, the Mainsail
-fork, and the Klipper macros all live in the same repo and version
-together, so one entry covers all three. After running the install
-script, the project appears in Mainsail's **Machine → Update Manager**
-panel and can be updated with a single click.
+A ready-to-paste snippet lives at `moonraker-cnc-update.conf`. On the CB1, the `[update_manager mainsail-cnc]` section is already in `/home/biqu/printer_data/config/moonraker.conf`, pointing at `https://github.com/isaaceliape/mainsail-cnc.git` on the `develop` branch.
 
-Manual update flow after clicking **Update** in the Mainsail UI (or after
-`git pull` on the CB1):
-
-1. Mainsail does `git pull` on `~/mainsail-cnc` and restarts Moonraker.
-2. Re-run `./scripts/install_to_moonraker.sh` to re-vendor the agent
-   from `moonraker-cnc-agent/src/...` into
-   `moonraker/moonraker/components/cnc_agent/` and pick up the new code.
-3. In `upstream-mainsail/`: `bun install` (only if `bun.lock` changed)
-   and `bun run build`, then refresh the browser.
-4. RESTART Klipper from the Mainsail dashboard to reload the macros.
-
-A standalone, hand-pasteable snippet lives at
-[`config/examples/update-manager.conf`](config/examples/update-manager.conf),
-and a full example `moonraker.conf` (with the agent component and the
-update-manager entry, commented) is at
-[`moonraker-cnc-agent/moonraker.conf`](moonraker-cnc-agent/moonraker.conf).
-
-Skip the update-manager work with `CNC_SKIP_UPDATE_MANAGER=1`, or skip
-just the clone/pull step (use an existing monorepo checkout) with
-`CNC_SKIP_CLONE=1`. Path overrides: `CNC_REPO_DIR`, `CNC_REPO_URL`,
-`CNC_CHANNEL`.
+The update_manager runs `deploy.sh --live` as its `post_update` hook.
 
 ## Current Focus
 
-- **CB1 validation** of Phase 3b — deploy agent + fork to CB1, run metadata
-  extractor on sample gcode files, verify sidecar rendering on the card grid
-- **Wire frontend → agent for CNC state** — replace native Klipper getters in
-  DRO/status panels with `/server/cnc/*` endpoints so the agent is the single
-  authoritative source
-- **Harden POST handlers** — move from stubs to guarded machine actuation:
-  jog, set-zero, WCS select, spindle, coolant
-- **Full MdiPanel implementation** — replace placeholder with CNC-native MDI
-  panel matching console page functionality
-- **Phase 4 safety hardening** — confirmations, disabled states when not homed,
-  machine-profile-driven feature toggles
+- **Remove remaining 3D-printer-specific code** — settings tabs (Timelapse, Presets, Heightmap), locale keys, StatusPanel references, G-code viewer extruder colors, SettingsControlTab extruder section. See [TODO.md](TODO.md) for the full list.
+- **Wire frontend → agent for CNC state** — replace native Klipper getters in DRO/status panels with `/server/cnc/*` endpoints so the agent is the authoritative source
+- **Harden POST handlers** — move from stubs to guarded machine actuation: jog, set-zero, WCS select, spindle, coolant
+- **Full MdiPanel implementation** — replace placeholder with CNC-native MDI panel matching console page functionality
+- **Phase 4 safety hardening** — confirmations, disabled states when not homed, machine-profile-driven feature toggles
 
 ## Notes
 
