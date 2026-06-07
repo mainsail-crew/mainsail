@@ -221,3 +221,4 @@ The update_manager runs `deploy.sh --live` as its `post_update` hook.
 ## Notes
 
 This is not being treated as a classic Mainsail plugin project. The working assumption is that a maintained fork is the correct frontend integration model for CNC-specific functionality.
+# test update
