@@ -250,7 +250,7 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
             event.preventDefault()
         }
         
-        console.log('🎮 handleKeyboardJog:', event.key, 'enabled=', this.keyboardNavEnabled)
+        console.log('[JogPanel] handleKeyboardJog:', event.key, 'enabled=', this.keyboardNavEnabled)
         
         if (!this.keyboardNavEnabled || ['printing'].includes(this.printer_state)) {
             console.log('  → skipped')

@@ -6,6 +6,40 @@ CNC-focused control stack built around Klipper, Moonraker, and a maintained Main
 
 A real [Mainsail](https://github.com/mainsail-prusa/mainsail) fork extended with CNC-native dashboard panels, CNC-specific navigation terminology, file-card metadata enrichment, and a Moonraker-side CNC agent for normalized CNC state and guarded command endpoints.
 
+## Installation
+
+See the full installation guide: [docs/INSTALLATION.md](docs/INSTALLATION.md)
+
+Two paths are documented:
+
+- **Quick install via KIAUH** — automated setup for Debian/Raspberry Pi/BTT-CB1
+- **Manual install** — full step-by-step from zero (Klipper, Moonraker, Nginx, Bun, build, deploy, agent)
+
+### Quick start (existing Klipper + Moonraker)
+
+```bash
+# 1. Clone the fork
+git clone https://github.com/isaaceliape/mainsail-cnc.git ~/mainsail-cnc
+cd ~/mainsail-cnc
+
+# 2. Install Bun (if not already installed)
+curl -fsSL https://bun.sh/install | bash
+export PATH="$HOME/.bun/bin:$PATH"
+
+# 3. Build and deploy
+bun install --frozen-lockfile
+bun run build
+./deploy.sh --live
+
+# 4. Install the Moonraker CNC agent
+./scripts/install_to_moonraker.sh
+
+# 5. Restart Moonraker
+sudo systemctl restart moonraker
+```
+
+Then open `http://<your-device-ip>` in a browser.
+
 ## Mainsail Fork — CNC Features
 
 ### Dashboard panels
