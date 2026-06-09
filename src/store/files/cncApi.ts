@@ -18,12 +18,6 @@ export interface CncSetZeroPayload {
     axes?: string[]
 }
 
-export interface CncJogPayload {
-    axis: 'X' | 'Y' | 'Z'
-    distance: number
-    feedrate: number
-}
-
 async function requestCnc<T>(apiUrl: string, path: string, body?: unknown): Promise<T | null> {
     const response = await fetch(`${apiUrl}${path}`, {
         method: 'POST',
@@ -82,10 +76,6 @@ export function selectCncWcs(apiUrl: string, payload: CncWcsSelectPayload) {
 
 export function setCncZero(apiUrl: string, payload: CncSetZeroPayload = {}) {
     return requestCnc(apiUrl, '/server/cnc/wcs/set-zero', payload)
-}
-
-export function jogCnc(apiUrl: string, payload: CncJogPayload) {
-    return requestCnc(apiUrl, '/server/cnc/jog', payload)
 }
 
 export function getCncSettings(apiUrl: string) {

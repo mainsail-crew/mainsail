@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
     getCncState,
     getCncWcs,
-    jogCnc,
     selectCncWcs,
     setCncCoolant,
     setCncSpindle,
@@ -50,7 +49,6 @@ describe('cncApi helper', () => {
             setCncUnits('http://localhost:7125', 'G20'),
             selectCncWcs('http://localhost:7125', { wcs: 'G56', offsets: { X: 1, Y: 2, Z: 3 } }),
             setCncZero('http://localhost:7125', { axes: ['X', 'Z'] }),
-            jogCnc('http://localhost:7125', { axis: 'X', distance: 5, feedrate: 1200 }),
             updateCncSettings('http://localhost:7125', { feedrateXY: 100, feedrateZ: 10 }),
         ])
 
@@ -69,10 +67,6 @@ describe('cncApi helper', () => {
         expect(fetchMock).toHaveBeenCalledWith(
             'http://localhost:7125/server/cnc/wcs/set-zero',
             expect.objectContaining({ body: JSON.stringify({ axes: ['X', 'Z'] }) })
-        )
-        expect(fetchMock).toHaveBeenCalledWith(
-            'http://localhost:7125/server/cnc/jog',
-            expect.objectContaining({ body: JSON.stringify({ axis: 'X', distance: 5, feedrate: 1200 }) })
         )
         expect(fetchMock).toHaveBeenCalledWith(
             'http://localhost:7125/server/cnc/settings',

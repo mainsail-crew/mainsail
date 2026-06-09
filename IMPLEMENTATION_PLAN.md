@@ -499,7 +499,7 @@ Completed across the project (commit `6de9345`):
 
 ## Phase 4: Safety and workflow hardening
 
-Status: planned
+Status: **in progress**
 
 Objectives:
 - reduce operator error
@@ -510,7 +510,8 @@ Tasks:
 2. add disabled states when not homed or not ready
 3. add machine capability gating
 4. add machine-profile-driven feature toggles
-5. test fallback behavior when hardware/features are missing
+5. add jog rate limiting (per-axis cooldown) — agent + frontend ✅
+6. test fallback behavior when hardware/features are missing
 
 Exit criteria:
 - panel actions are capability-aware

@@ -33,6 +33,9 @@ export interface GuiState {
         stepsCircleXY: number[]
         stepsCircleZ: number[]
         selectedCrossStep: null | number
+        selectedCncStepIndex: number
+        cncFeedrateXY: number
+        cncFeedrateZ: number
         reverseX: boolean
         reverseY: boolean
         reverseZ: boolean

@@ -41,6 +41,21 @@
                 </v-col>
             </v-row>
 
+            <v-row dense class="mb-3">
+                <v-col cols="12">
+                    <v-btn
+                        small
+                        block
+                        :disabled="['printing'].includes(printer_state)"
+                        color="grey"
+                        outlined
+                        @click="disableSteppers">
+                        <v-icon left small>mdi-close-circle-outline</v-icon>
+                        Disable Steppers
+                    </v-btn>
+                </v-col>
+            </v-row>
+
             <!-- Jog step size selector -->
             <v-row dense class="mb-3">
                 <v-col cols="12" class="d-flex align-center">
@@ -209,7 +224,7 @@ import {
     mdiStop,
     mdiKeyboard,
 } from '@mdi/js'
-import { jogCnc, updateCncSettings } from '@/store/files/cncApi'
+import { updateCncSettings } from '@/store/files/cncApi'
 
 @Component({
     components: {
@@ -217,7 +232,6 @@ import { jogCnc, updateCncSettings } from '@/store/files/cncApi'
     },
 })
 export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
-    selectedStepIndex = 2
     continuousJog = false
     keyboardNavEnabled = false
     mdiGamepad = mdiGamepad
@@ -230,39 +244,36 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiKeyboard = mdiKeyboard
 
     // Jog step presets (in mm)
-    jogSteps = [1.0, 5.0, 10.0, 25.0, 0.1]
+    jogSteps = [1.0, 5.0, 10.0, 25.0, 100.0]
+
+    // Per-axis rate limiting: last jog timestamp per axis+dir key (e.g. "X+" / "X-")
+    lastJogTimestamps: Record<string, number> = {}
+    jogRateLimitMs = 50
 
     mounted() {
-        // Bind handler to preserve 'this' context
-        this._keyboardJogHandler = this.handleKeyboardJog.bind(this)
-        document.addEventListener('keydown', this._keyboardJogHandler, true)
+        this.keyboardJogHandler = this.handleKeyboardJog.bind(this)
+        document.addEventListener('keydown', this.keyboardJogHandler, true)
     }
 
     beforeDestroy() {
-        if (this._keyboardJogHandler) {
-            document.removeEventListener('keydown', this._keyboardJogHandler, true)
+        if (this.keyboardJogHandler) {
+            document.removeEventListener('keydown', this.keyboardJogHandler, true)
         }
     }
 
     handleKeyboardJog(event: KeyboardEvent) {
-        // Prevent default for arrow keys immediately
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
             event.preventDefault()
         }
-        
-        console.log('[JogPanel] handleKeyboardJog:', event.key, 'enabled=', this.keyboardNavEnabled)
-        
+
         if (!this.keyboardNavEnabled || ['printing'].includes(this.printer_state)) {
-            console.log('  → skipped')
             return
         }
-        
-        // Skip if the event target is an input, textarea, or select element
+
         const target = event.target as HTMLElement
         if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') return
-        
+
         const step = this.currentStep
-        
         switch (event.key) {
             case 'ArrowUp':
                 void this.jog('Y', step)
@@ -276,13 +287,19 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
             case 'ArrowRight':
                 void this.jog('X', step)
                 break
-            default:
-                return
         }
     }
 
     get currentStep(): number {
         return this.jogSteps[this.selectedStepIndex]
+    }
+
+    get selectedStepIndex(): number {
+        return this.$store.state.gui.control.selectedCncStepIndex ?? 2
+    }
+
+    set selectedStepIndex(value: number) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.selectedCncStepIndex', value })
     }
 
     get homedAxesDisplay(): string {
@@ -307,14 +324,28 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     get printer_state(): string {
         return this.$store.state.printer?.print_stats?.state ?? 'unknown'
     }
+
+    get feedrateXY(): number {
+        return this.$store.state.gui.control.cncFeedrateXY ?? 500
+    }
+
+    set feedrateXY(value: number) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.cncFeedrateXY', value })
+    }
+
+    get feedrateZ(): number {
+        return this.$store.state.gui.control.cncFeedrateZ ?? 100
+    }
+
+    set feedrateZ(value: number) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.cncFeedrateZ', value })
+    }
+
     saveFeedrates() {
-        const control = {
+        void updateCncSettings(this.$store.getters['socket/getUrl'], {
             feedrateXY: this.feedrateXY,
             feedrateZ: this.feedrateZ,
-        }
-
-        this.$store.dispatch('gui/updateSettings', { control })
-        void updateCncSettings(this.$store.getters['socket/getUrl'], { control }).catch((error) => {
+        }).catch((error) => {
             const message = error instanceof Error ? error.message : 'Failed to persist CNC feedrates'
             this.$toast.error(message)
         })
@@ -327,29 +358,30 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
         return `${step}mm`
     }
 
-    async jog(axis: string, distance: number) {
-        const feedrate = this.getAxisFeedrate(axis)
-        const signedDistance = `${distance > 0 ? '+' : ''}${distance}`
-
-        try {
-            await jogCnc(this.$store.getters['socket/getUrl'], {
-                axis: axis as 'X' | 'Y' | 'Z',
-                distance,
-                feedrate,
-            })
-            this.$store.dispatch('server/addEvent', {
-                message: `CNC jog ${axis}${signedDistance} @ ${feedrate}`,
-                type: 'command',
-            })
-        } catch (error) {
-            const message = error instanceof Error ? error.message : 'Failed to jog CNC axis'
-            this.$toast.error(message)
+    jog(axis: string, distance: number) {
+        if (!this.socketIsConnected) {
+            this.$toast.error('Cannot jog — not connected to printer')
+            return
         }
+
+        const key = `${axis}${distance >= 0 ? '+' : '-'}`
+        const now = Date.now()
+        const last = this.lastJogTimestamps[key] ?? 0
+        if (now - last < this.jogRateLimitMs) return
+        this.lastJogTimestamps[key] = now
+
+        const feedrate = this.getAxisFeedrate(axis)
+        const script = `SAVE_GCODE_STATE NAME=_ui_movement\nG91\nG1 ${axis}${distance} F${feedrate * 60}\nRESTORE_GCODE_STATE NAME=_ui_movement`
+        this.doSend(script)
     }
 
     toggleKeyboardNav() {
         this.keyboardNavEnabled = !this.keyboardNavEnabled
         console.log('Keyboard nav toggled:', this.keyboardNavEnabled)
+    }
+
+    disableSteppers() {
+        this.doSend('M18')
     }
 
     jogStop() {

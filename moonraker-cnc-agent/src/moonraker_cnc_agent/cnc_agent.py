@@ -6,6 +6,7 @@ from typing import Any, Dict, Iterable, Mapping, Optional
 
 DEFAULT_SETTINGS_PATH = os.path.expanduser("~/printer_data/config/cnc_dashboard_settings.json")
 DEFAULT_WCS = "G54"
+DEFAULT_JOG_RATE_LIMIT_MS = 50
 VALID_UNITS = {"G20", "G21"}
 VALID_WCS = {"G53", "G54", "G55", "G56", "G57", "G58", "G59"}
 VALID_SPINDLE_STATES = {"off", "cw", "ccw"}
@@ -30,8 +31,11 @@ class CncAgent:
         self._state = self._build_default_state()
         self._state["settings"].update(self._load_settings())
         self._klippy_apis: Any = None
+        self._jog_rate_limit_ms = float(config.get("jog_rate_limit_ms", DEFAULT_JOG_RATE_LIMIT_MS))
+        self._last_jog: Dict[str, float] = {}
         self.server.register_event_handler("server:klippy_ready", self._on_klippy_ready)
         self.logger.info("CncAgent component initialized.")
+        self.logger.info("Jog rate limit: %.1fms per axis", self._jog_rate_limit_ms)
 
     def _build_default_state(self) -> Dict[str, Any]:
         return {
@@ -50,43 +54,54 @@ class CncAgent:
         self._register_http_endpoints()
 
     def _register_http_endpoints(self):
-        routes = [
-            ("/server/cnc/state", "GET", self.handle_state),
-            ("/server/cnc/spindle", "GET", self.handle_spindle_get),
-            ("/server/cnc/spindle", "POST", self.handle_spindle_post),
-            ("/server/cnc/coolant", "GET", self.handle_coolant_get),
-            ("/server/cnc/coolant", "POST", self.handle_coolant_post),
-            ("/server/cnc/units", "GET", self.handle_units_get),
-            ("/server/cnc/units", "POST", self.handle_units_post),
-            ("/server/cnc/wcs", "GET", self.handle_wcs_get),
-            ("/server/cnc/wcs/select", "POST", self.handle_wcs_select),
-            ("/server/cnc/wcs/set-zero", "POST", self.handle_set_zero),
-            ("/server/cnc/jog", "POST", self.handle_jog),
-            ("/server/cnc/settings", "GET", self.handle_settings_get),
-            ("/server/cnc/settings", "POST", self.handle_settings_post),
-        ]
-        for path, method, handler in routes:
-            self._register_endpoint(path, method, handler)
-
-    def _register_endpoint(self, path: str, method: str, handler: Any) -> bool:
         register_endpoint = getattr(self.server, "register_endpoint", None)
         if not callable(register_endpoint):
-            self.logger.debug("CncAgent: server does not expose register_endpoint; skipping %s %s", method, path)
-            return False
+            self.logger.debug("CncAgent: server does not expose register_endpoint; skipping registration")
+            return
 
-        attempts = [
-            (lambda: register_endpoint(path, method, handler)),
-            (lambda: register_endpoint(path, handler, method=method)),
-            (lambda: register_endpoint(path, handler)),
-        ]
-        for attempt in attempts:
-            try:
-                attempt()
-                return True
-            except TypeError:
-                continue
-        self.logger.exception("CncAgent: unable to register endpoint %s %s", method, path)
-        return False
+        endpoint_groups = {
+            "/server/cnc/state": {"GET": self.handle_state},
+            "/server/cnc/spindle": {
+                "GET": self.handle_spindle_get,
+                "POST": self.handle_spindle_post,
+            },
+            "/server/cnc/coolant": {
+                "GET": self.handle_coolant_get,
+                "POST": self.handle_coolant_post,
+            },
+            "/server/cnc/units": {
+                "GET": self.handle_units_get,
+                "POST": self.handle_units_post,
+            },
+            "/server/cnc/wcs": {"GET": self.handle_wcs_get},
+            "/server/cnc/wcs/select": {"POST": self.handle_wcs_select},
+            "/server/cnc/wcs/set-zero": {"POST": self.handle_set_zero},
+            "/server/cnc/jog": {"POST": self.handle_jog},
+            "/server/cnc/settings": {
+                "GET": self.handle_settings_get,
+                "POST": self.handle_settings_post,
+            },
+        }
+
+        for path, handlers in endpoint_groups.items():
+            methods = list(handlers.keys())
+            if len(handlers) == 1:
+                handler = next(iter(handlers.values()))
+            else:
+                handler = self._make_dispatcher(handlers)
+            register_endpoint(path, methods, handler)
+
+    @staticmethod
+    def _make_dispatcher(handlers):
+        async def dispatch(request):
+            method = getattr(request, "method", "GET")
+            handler = handlers.get(method)
+            if handler is None:
+                raise RuntimeError(
+                    f"Unsupported method {method} for endpoint"
+                )
+            return await handler(request)
+        return dispatch
 
     async def _on_klippy_ready(self):
         self.logger.info("Klipper is ready, CncAgent is active.")
@@ -346,6 +361,18 @@ class CncAgent:
         feedrate = payload.get("feedrate")
         if feedrate is None:
             raise ValueError("jog requires a feedrate")
+
+        import time as _time
+        now = _time.monotonic()
+        last = self._last_jog.get(axis)
+        if last is not None:
+            elapsed_ms = (now - last) * 1000
+            if elapsed_ms < self._jog_rate_limit_ms:
+                raise RuntimeError(
+                    f"jog rate limit on {axis}: {elapsed_ms:.0f}ms since last jog "
+                    f"(minimum {self._jog_rate_limit_ms:.0f}ms)"
+                )
+        self._last_jog[axis] = now
 
         script = (
             "SAVE_GCODE_STATE NAME=_ui_movement\n"

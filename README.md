@@ -12,7 +12,7 @@ See the full installation guide: [docs/INSTALLATION.md](docs/INSTALLATION.md)
 
 Two paths are documented:
 
-- **Quick install via KIAUH** — automated setup for Debian/Raspberry Pi/BTT-CB1
+- **Quick install via KIAUH** — automated setup for Debian/Raspberry Pi/any Linux SBC
 - **Manual install** — full step-by-step from zero (Klipper, Moonraker, Nginx, Bun, build, deploy, agent)
 
 ### Quick start (existing Klipper + Moonraker)
@@ -129,7 +129,7 @@ Read-only Klipper state flows directly from Mainsail's Vuex store subscription �
 
 ## Status
 
-This repository has progressed well beyond its initial scaffold. The fork is deployed and live on a BTT-CB1 at `/home/biqu/mainsail/`, tracked by Moonraker's update_manager on the `develop` branch. On-device builds are supported (Node.js v20 + Bun installed on the CB1).
+This repository has progressed well beyond its initial scaffold. The fork is deployed and live on a Linux SBC at `~/mainsail/`, tracked by Moonraker's update_manager on the `develop` branch. On-device builds are supported (Node.js v20 + Bun).
 
 ### Mainsail fork features implemented
 
@@ -219,24 +219,6 @@ bun run serve --host 0.0.0.0
 ```
 
 The dev server supports Hot Module Reload — changes apply without manual refresh.
-
-### Deploy to the CB1
-
-The repo is cloned on the CB1 at `/home/biqu/mainsail-cnc` and tracked by Moonraker's update_manager. Node.js v20 + Bun are installed on the CB1 so builds run on-device.
-
-**Automated (via Moonraker update_manager):**
-When you click **Update** in Mainsail's Machine → Update Manager panel, Moonraker runs `deploy.sh --live` which:
-1. `bun install --frozen-lockfile`
-2. `bun run build`
-3. Deploys `dist/` to `/home/biqu/mainsail/` (preserving `config.json`)
-4. Reloads nginx
-
-**Manual deploy from your Mac:**
-```bash
-./deploy.sh --live   # dry-run by default; --live to actually deploy
-```
-
-Environment variables: `MAINSAIL_CNC_DIR` (source) and `MAINSAIL_DEPLOY_DIR` (target).
 
 ### Moonraker update_manager entry
 

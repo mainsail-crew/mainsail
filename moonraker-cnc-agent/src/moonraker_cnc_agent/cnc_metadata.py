@@ -67,7 +67,8 @@ class CncMetadata:
                 self.extractor_path,
             )
             return
-        fm.register_gcode_processor(
+        ms = fm.get_metadata_storage()
+        ms.register_gcode_processor(
             PROCESSOR_NAME,
             {
                 "name": PROCESSOR_NAME,
