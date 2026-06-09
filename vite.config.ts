@@ -68,6 +68,18 @@ const PWAConfig: Partial<VitePWAOptions> = {
                     },
                 },
             },
+            {
+                // Avoid caching auth redirects on HTML navigation requests.
+                urlPattern: ({ request }) => request.mode === 'navigate',
+                handler: 'NetworkFirst',
+                options: {
+                    cacheName: 'mainsail-navigation-cache',
+                    // CRITICAL: This prevent redirects (301, 302) or auth failures from being cached
+                    cacheableResponse: {
+                        statuses: [200],
+                    },
+                },
+            },
         ],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
     },
