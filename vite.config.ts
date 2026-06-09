@@ -50,6 +50,12 @@ const PWAConfig: Partial<VitePWAOptions> = {
     },
     workbox: {
         globPatterns: ['**/*.{js,css,html,woff,woff2,png,svg}'],
+        // Only handle Mainsail's own client-side routes; all other paths
+        // (e.g. /spoolman, /authelia) must reach the real server.
+        navigateFallbackAllowlist: [
+            /^\/$/,
+            /^\/(allPrinters|cam|console|heightmap|files|viewer|history|timelapse|config|settings)(\/.*)?$/,
+        ],
         navigateFallbackDenylist: [/^\/(access|api|printer|server|websocket)/, /^\/webcam[2-4]?/],
         runtimeCaching: [
             {

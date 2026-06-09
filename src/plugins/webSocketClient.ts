@@ -16,6 +16,14 @@ export class WebSocketClient {
     store: Store<RootState> | null = null
     waits: Wait[] = []
     heartbeatTimer: number | null = null
+    /** Pending reconnect timer handle; cleared on each fresh connect() call. */
+    private reconnectTimer: number | null = null
+    /**
+     * AbortController for the in-flight probe fetch; also doubles as the
+     * "probe already launched" flag (null = not yet probed this sequence).
+     * Aborted and nulled on fresh connect(); nulled on successful open.
+     */
+    private probeController: AbortController | null = null
 
     constructor(options: WebSocketPluginOptions) {
         this.url = options.url
@@ -91,7 +99,26 @@ export class WebSocketClient {
         this.removeWaitById(wait.id)
     }
 
-    async connect() {
+    /**
+     * Open (or re-open) the WebSocket connection.
+     *
+     * @param reconnecting - Pass `true` only when called from the internal
+     *   reconnect timer. When `false` (the default), counters are reset so
+     *   that manual "Try Again" attempts start a fresh sequence.
+     */
+    async connect(reconnecting = false) {
+        if (!reconnecting) {
+            // Fresh connection attempt: cancel any in-flight probe and
+            // pending reconnect timer from the previous sequence.
+            this.probeController?.abort()
+            this.probeController = null
+            this.reconnects = 0
+            if (this.reconnectTimer !== null) {
+                clearTimeout(this.reconnectTimer)
+                this.reconnectTimer = null
+            }
+        }
+
         this.store?.dispatch('socket/setData', {
             isConnecting: true,
         })
@@ -101,18 +128,36 @@ export class WebSocketClient {
 
         this.instance.onopen = () => {
             this.reconnects = 0
+            this.probeController?.abort()
+            this.probeController = null
             this.store?.dispatch('socket/onOpen', event)
         }
 
         this.instance.onclose = (e) => {
-            if (e.wasClean || this.reconnects >= this.maxReconnects) {
+            // Clean close (intentional disconnect) — no probing needed.
+            if (e.wasClean) {
+                this.store?.dispatch('socket/onClose', e)
+                return
+            }
+
+            // On the first unclean failure, fire the HTTP probe in parallel
+            // with the reconnect loop. This lets us distinguish:
+            //   • Permanent failure (auth proxy redirect) → navigate immediately.
+            //   • Temporary failure (server down/starting) → probe throws or
+            //     returns non-redirected; reconnect loop continues normally.
+            if (this.probeController === null) {
+                this.probeAndRedirect()
+            }
+
+            if (this.reconnects >= this.maxReconnects) {
                 this.store?.dispatch('socket/onClose', e)
                 return
             }
 
             this.reconnects++
-            setTimeout(() => {
-                this.connect()
+            this.reconnectTimer = window.setTimeout(() => {
+                this.reconnectTimer = null
+                this.connect(true)
             }, this.reconnectInterval)
         }
 
@@ -141,6 +186,50 @@ export class WebSocketClient {
 
     close(): void {
         this.instance?.close()
+    }
+
+    /**
+     * Converts the WebSocket URL to its HTTP(S) equivalent and fetches
+     * /server/info. If the response was redirected (e.g. by an auth proxy),
+     * the whole page is navigated to the redirect target so the user can
+     * authenticate and return to Mainsail.
+     *
+     * Stores an AbortController so a subsequent fresh connect() can cancel
+     * the fetch before it resolves.
+     */
+    private async probeAndRedirect(): Promise<void> {
+        this.probeController = new AbortController()
+        const probeUrl = this.url
+            .replace(/^wss:/, 'https:')
+            .replace(/^ws:/, 'http:')
+            .replace(/\/websocket$/, '/server/info')
+
+        try {
+            const response = await fetch(probeUrl, { method: 'GET', redirect: 'follow', signal: this.probeController.signal })
+            if (response.redirected) {
+                // Auth proxies embed the original URL somewhere in their
+                // redirect URL (e.g. ?rd=, ?return=, ?next=). To handle this
+                // generically, we iterate through the query parameters and
+                // replace the one matching the probe URL (or its path) with
+                // the current page.
+                const authUrl = new URL(response.url)
+                const probeUrlObj = new URL(probeUrl)
+                for (const [key, value] of authUrl.searchParams.entries()) {
+                    if (value === probeUrl) {
+                        authUrl.searchParams.set(key, window.location.href)
+                        break
+                    } else if (value === probeUrlObj.pathname) {
+                        // If the proxy used a relative path, give it a relative
+                        // path back to avoid triggering open-redirect protections.
+                        authUrl.searchParams.set(key, window.location.pathname + window.location.search + window.location.hash)
+                        break
+                    }
+                }
+                window.location.href = authUrl.toString()
+            }
+        } catch {
+            // Network unreachable or aborted — no redirect to follow.
+        }
     }
 
     getWaitById(id: number): Wait | null {
