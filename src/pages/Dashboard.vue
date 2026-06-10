@@ -177,7 +177,7 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
             'cnc-status', 'dro', 'jog', 'offsets', 'spindle-coolant', 'mdi',
             'klippystate', 'minsettings', 'status',
             'ledeffects', 'machinesettings', 'macrogroup', 'macros',
-            'miniconsole', 'miscellaneous', 'toolheadcontrol', 'temperature', 'webcam',
+            'miniconsole', 'miscellaneous', 'toolhead-control', 'temperature', 'webcam',
         ])
     }
 
