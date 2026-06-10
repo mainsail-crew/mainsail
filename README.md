@@ -276,17 +276,6 @@ A ready-to-paste snippet lives at `moonraker-cnc-update.conf`. On the CB1, the `
 
 The update_manager runs `deploy.sh --live` as its `post_update` hook.
 
-## Current Focus
-
-- **Remove remaining 3D-printer-specific code** — settings tabs (Timelapse, Presets, Heightmap), locale keys, StatusPanel references, G-code viewer extruder colors, SettingsControlTab extruder section. See [TODO.md](TODO.md) for the full list.
-- **Wire frontend → agent for CNC state** — replace native Klipper getters in DRO/status panels with `/server/cnc/*` endpoints so the agent is the authoritative source
-- **Harden POST handlers** — move from stubs to guarded machine actuation: jog, set-zero, WCS select, spindle, coolant
-- **Full MdiPanel implementation** — replace placeholder with CNC-native MDI panel matching console page functionality
-- **Phase 4 safety hardening** — confirmations, disabled states when not homed, machine-profile-driven feature toggles
-- **Klipper config tuning** — `stealthchop_threshold: 30` for quieter high-speed spreads, homing center move feedrate capped at `max_velocity`
-- ~~WCS Phase 2 — wire Moonraker agent to live Klipper WCS state~~ _(done)_
-- ~~WCS Phase 3 — update OffsetsPanel frontend: replace G92 calls with G10 L20, show per-WCS origin offsets~~ _(done)_
-
 ## Contributors
 
 - **Shadowphyre** — documentation, WCS integration review, and project guidance
