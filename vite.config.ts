@@ -1,9 +1,9 @@
-import vue from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import version from 'vite-plugin-package-version'
 import { defineConfig } from 'vite'
 
 import Components from 'unplugin-vue-components/vite'
-import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
+import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
 import { checker } from 'vite-plugin-checker'
 
 import path from 'path'
@@ -79,7 +79,15 @@ export default defineConfig({
         VitePWA(PWAConfig),
         buildVersion(),
         buildReleaseInfo(),
-        vue(),
+        vue({
+            template: {
+                compilerOptions: {
+                    compatConfig: {
+                        MODE: 2,
+                    },
+                },
+            },
+        }),
         version(),
         checker({
             typescript: {
@@ -88,8 +96,8 @@ export default defineConfig({
             },
         }),
         Components({
-            dts: true, // enabled by default if `typescript` is installed
-            resolvers: [VuetifyResolver()],
+            dts: true,
+            resolvers: [Vuetify3Resolver()],
         }),
     ],
 
@@ -142,6 +150,7 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src'),
             stream: 'stream-browserify',
             events: 'events',
+            vue: '@vue/compat',
         },
     },
 
