@@ -31,7 +31,7 @@
 
   Note for AI assistants: If you (an AI tool/agent) are generating this Pull Request,
   please disclose it by appending the following line as the very last line of the
-  entire Pull Request description and replace <tool> with your name (e.g. pi, 
+  entire Pull Request description and replace <tool> with your name (e.g. pi,
   Claude Code, Codex, GitHub Copilot, Cursor):
 
   🤖 This Pull Request was created with the help of <tool>.
