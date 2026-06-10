@@ -1,11 +1,16 @@
 import { WebSocketClient } from '@/plugins/webSocketClient'
 
-declare module 'vue/types/vue' {
-    interface VueConstructor {
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-var */
+
+// Vue 3 augmentation for compatibility (used via @vue/compat)
+declare module 'vue' {
+    interface ComponentInternalInstance {
         $socket: WebSocketClient
     }
-
-    interface Vue {
+    interface ComponentCustomProperties {
         $socket: WebSocketClient
     }
 }
+
+export {}

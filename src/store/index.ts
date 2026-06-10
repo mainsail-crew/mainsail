@@ -1,11 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import { actions } from '@/store/actions'
 import { mutations } from '@/store/mutations'
 import { getters } from '@/store/getters'
 import { RootState } from './types'
 
-// load modules
 import { socket } from '@/store/socket'
 import { server } from '@/store/server'
 import { printer } from '@/store/printer'
@@ -14,8 +12,6 @@ import { gui } from '@/store/gui'
 import { farm } from '@/store/farm'
 import { editor } from '@/store/editor'
 import { gcodeviewer } from '@/store/gcodeviewer'
-
-Vue.use(Vuex)
 
 export const getDefaultState = (): RootState => {
     return {
@@ -29,7 +25,7 @@ export const getDefaultState = (): RootState => {
 
 const state = getDefaultState()
 
-export default new Vuex.Store({
+export default createStore({
     state,
     modules: {
         socket,
