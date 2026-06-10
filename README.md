@@ -214,10 +214,6 @@ and `[include ...origin-offset...]` from your config, and update zeroing macros
 to use `G10 L20 P{n}` — the `ZERO_X`/`Y`/`Z`/`ALL` macros in
 `klipper-macros/wcs_macros.cfg` do this automatically.
 
-## Primary Plan
-
-The main implementation plan lives in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
-
 ## Repository Layout
 
 - `src/`: Mainsail Vue frontend with CNC panels and modifications
