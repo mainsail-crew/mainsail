@@ -121,7 +121,7 @@ export default defineConfig({
                         }
 
                         // split these libs into their own chunks
-                        const chunkedLibs = ['vuetify', 'echarts', 'overlayscrollbars']
+                        const chunkedLibs = ['echarts', 'overlayscrollbars']
                         for (const lib of chunkedLibs) {
                             if (id.includes(`/node_modules/${lib}/`)) {
                                 return lib.replace('.js', '')
