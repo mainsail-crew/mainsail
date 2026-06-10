@@ -278,13 +278,13 @@ else
             printf 'channel: %s\n' "$CNC_CHANNEL"
             printf 'path: %s\n' "$REMOTE_REPO_DIR"
             printf 'origin: %s\n' "$CNC_REPO_URL"
-            printf 'primary_branch: main\n'
+            printf 'primary_branch: develop\n'
             printf 'enable_node_updates: False\n'
             printf 'is_system_service: False\n'
             printf 'info_tags:\n'
-            printf '    desc=Mainsail-CNC\n'
-            printf '    post_update=Re-run ./scripts/install_to_moonraker.sh to re-vendor the agent; `bun run build` in upstream-mainsail/ and refresh; RESTART Klipper for the macros.\n'
-            printf 'managed_services: moonraker\n'
+            printf '    desc=Mainsail CNC\n'
+            printf '    post_update=./deploy.sh --live && cp -f klipper-extras/work_coordinate_systems.py %s/work_coordinate_systems.py && cp -f klipper-macros/wcs_macros.cfg %s/wcs_macros.cfg && cp -f moonraker-cnc-agent/src/moonraker_cnc_agent/cnc_agent.py %s/cnc_agent/cnc_agent.py && cp -f moonraker-cnc-agent/src/moonraker_cnc_agent/cnc_metadata.py %s/cnc_metadata/cnc_metadata.py\n' "$REMOTE_KLIPPER_EXTRAS" "$REMOTE_MACROS_DIR" "$REMOTE_COMPONENTS_DIR" "$REMOTE_COMPONENTS_DIR"
+            printf 'managed_services: klipper moonraker\n'
             printf 'refresh_interval: 24\n'
         } > "$APPEND_BLOCK"
 
