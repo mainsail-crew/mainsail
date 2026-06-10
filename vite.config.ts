@@ -75,13 +75,26 @@ const PWAConfig: Partial<VitePWAOptions> = {
             },
             {
                 // Avoid caching auth redirects on HTML navigation requests.
-                urlPattern: ({ request, url }) => request.mode === 'navigate' && MAINSAIL_ROUTES.test(url.pathname),
+                urlPattern: new Function(
+                    '{ request, url }',
+                    `return request.mode === 'navigate' && ${MAINSAIL_ROUTES}.test(url.pathname)`
+                ) as any,
                 handler: 'NetworkFirst',
                 options: {
                     cacheName: 'mainsail-navigation-cache',
                     cacheableResponse: {
                         statuses: [200],
                     },
+                    plugins: [
+                        {
+                            cacheWillUpdate: async ({ response }) => {
+                                if (response && response.redirected) {
+                                    return null
+                                }
+                                return response
+                            },
+                        },
+                    ],
                 },
             },
         ],
