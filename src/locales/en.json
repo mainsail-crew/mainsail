@@ -677,7 +677,9 @@
             "Unloading": "Unloading",
             "UnloadLane": "Unload Lane",
             "Weight": "Weight",
-            "WeightSubtitle": "The weight of the filament in grams (without spool)."
+            "WeightRemaining": "{weight} g remaining",
+            "WeightSubtitle": "The weight of the filament in grams (without spool).",
+            "WeightUsed": "{weight} g used"
         },
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
