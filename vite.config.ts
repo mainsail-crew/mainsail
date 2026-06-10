@@ -12,6 +12,14 @@ import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import postcssNesting from 'postcss-nesting'
 
+/**
+ * Matches URL pathnames that belong to Mainsail's client-side router.
+ * Used by both navigateFallbackAllowlist and the navigation runtime cache
+ * so the service worker never intercepts paths owned by co-hosted apps
+ * (e.g. /spoolman, /authelia).
+ */
+const MAINSAIL_ROUTES = /^\/(allPrinters|cam|console|heightmap|files|viewer|history|timelapse|config|settings)(\/.*)?$|^\/$/
+
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
     includeAssets: ['fonts/**/*.woff2', 'img/**/*.svg', 'img/**/*.png'],
@@ -52,10 +60,7 @@ const PWAConfig: Partial<VitePWAOptions> = {
         globPatterns: ['**/*.{js,css,html,woff,woff2,png,svg}'],
         // Only handle Mainsail's own client-side routes; all other paths
         // (e.g. /spoolman, /authelia) must reach the real server.
-        navigateFallbackAllowlist: [
-            /^\/$/,
-            /^\/(allPrinters|cam|console|heightmap|files|viewer|history|timelapse|config|settings)(\/.*)?$/,
-        ],
+        navigateFallbackAllowlist: [MAINSAIL_ROUTES],
         navigateFallbackDenylist: [/^\/(access|api|printer|server|websocket)/, /^\/webcam[2-4]?/],
         runtimeCaching: [
             {
@@ -70,11 +75,10 @@ const PWAConfig: Partial<VitePWAOptions> = {
             },
             {
                 // Avoid caching auth redirects on HTML navigation requests.
-                urlPattern: ({ request }) => request.mode === 'navigate',
+                urlPattern: ({ request, url }) => request.mode === 'navigate' && MAINSAIL_ROUTES.test(url.pathname),
                 handler: 'NetworkFirst',
                 options: {
                     cacheName: 'mainsail-navigation-cache',
-                    // CRITICAL: This prevent redirects (301, 302) or auth failures from being cached
                     cacheableResponse: {
                         statuses: [200],
                     },
