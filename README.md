@@ -1,6 +1,6 @@
 # mainsail-cnc
 
-CNC-focused control stack built around Klipper, Moonraker, and a maintained Mainsail fork. Update test.
+CNC-focused control stack built around Klipper, Moonraker, and a maintained Mainsail fork.
 
 ## Overview
 
