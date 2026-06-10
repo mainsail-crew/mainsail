@@ -9,6 +9,20 @@
             </router-link>
             <v-toolbar-title class="text-no-wrap ml-0 pl-2 mr-2">{{ printerName }}</v-toolbar-title>
             <printer-selector v-if="countPrinters" />
+            <div v-if="klipperReadyForGui" class="topbar-dro mx-3">
+                <span
+                    v-for="axis in droAxes"
+                    :key="axis.id"
+                    class="topbar-dro__axis"
+                >
+                    <span :class="['topbar-dro__label', axis.homed ? 'primary--text' : 'warning--text']">{{ axis.id }}</span>
+                    <span class="topbar-dro__value">{{ axis.machine }}</span>
+                </span>
+                <span class="topbar-dro__sep">|</span>
+                <span class="topbar-dro__velocity">Vel {{ liveVelocity }}</span>
+                <span class="topbar-dro__sep">|</span>
+                <span class="topbar-dro__mode">{{ coordinateModeLabel }}</span>
+            </div>
             <v-spacer />
             <input
                 ref="fileUploadAndStart"
@@ -183,6 +197,41 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.getters['farm/countPrinters']
     }
 
+    get machinePosition() {
+        const p = this.$store.state.printer?.motion_report?.live_position ?? [0, 0, 0, 0]
+        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
+    }
+
+    get homedAxes(): string {
+        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
+    }
+
+    get xAxisHomed(): boolean { return this.homedAxes.includes('x') }
+    get yAxisHomed(): boolean { return this.homedAxes.includes('y') }
+    get zAxisHomed(): boolean { return this.homedAxes.includes('z') }
+
+    get liveVelocity() {
+        const v = this.$store.state.printer?.motion_report?.live_velocity ?? 0
+        return `${Number(v).toFixed(1)} mm/s`
+    }
+
+    get coordinateModeLabel() {
+        const abs = this.$store.state.printer?.gcode_move?.absolute_coordinates ?? true
+        return abs ? 'G90' : 'G91'
+    }
+
+    formatAxis(value: number, digits: number) {
+        return Number(value ?? 0).toFixed(digits)
+    }
+
+    get droAxes() {
+        return [
+            { id: 'X', homed: this.xAxisHomed, machine: this.formatAxis(this.machinePosition.x, 2) },
+            { id: 'Y', homed: this.yAxisHomed, machine: this.formatAxis(this.machinePosition.y, 2) },
+            { id: 'Z', homed: this.zAxisHomed, machine: this.formatAxis(this.machinePosition.z, 3) },
+        ]
+    }
+
     get boolHideUploadAndPrintButton() {
         return this.$store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
     }
@@ -321,6 +370,40 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
 ::v-deep .topbar .v-toolbar__content {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+}
+
+.topbar-dro {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.topbar-dro__axis {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+}
+
+.topbar-dro__label {
+    font-weight: 700;
+}
+
+.topbar-dro__sep {
+    opacity: 0.4;
+    margin: 0 0.1rem;
+}
+
+.topbar-dro__velocity {
+    opacity: 0.75;
+}
+
+.topbar-dro__mode {
+    opacity: 0.75;
+    font-size: 0.72rem;
 }
 
 .button-min-width-auto {
