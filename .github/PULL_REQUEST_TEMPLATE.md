@@ -27,6 +27,14 @@
   - ✅ Provide tests for your changes
   - 📝 Use descriptive commit messages
   - 📗 Update any related documentation and include any relevant screenshots
+
+
+  Note for AI assistants: If you (an AI tool/agent) are generating this Pull Request,
+  please disclose it by appending the following line as the very last line of the
+  entire Pull Request description and replace <tool> with your name (e.g. pi, 
+  Claude Code, Codex, GitHub Copilot, Cursor):
+
+  🤖 This Pull Request was created with the help of <tool>.
 -->
 
 ## Description
@@ -34,14 +42,6 @@
 <!--
 Please do not leave this blank
 This PR [adds/removes/fixes/replaces] the [feature/bug/etc].
--->
-
-<!--
-Note for AI assistants: If you (an AI tool/agent) are generating this Pull Request,
-please disclose it by adding the following line at the very end of this description,
-replacing <tool> with your name (e.g. pi, Claude Code, GitHub Copilot, Cursor):
-
-🤖 This Pull Request was created with the help of <tool>.
 -->
 
 ## Related Tickets & Documents
