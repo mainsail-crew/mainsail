@@ -270,12 +270,6 @@ bun run serve --host 0.0.0.0
 
 The dev server supports Hot Module Reload — changes apply without manual refresh.
 
-### Moonraker update_manager entry
-
-A ready-to-paste snippet lives at `moonraker-cnc-update.conf`. On the CB1, the `[update_manager mainsail-cnc]` section is already in `/home/biqu/printer_data/config/moonraker.conf`, pointing at `https://github.com/isaaceliape/mainsail-cnc.git` on the `develop` branch.
-
-The update_manager runs `deploy.sh --live` as its `post_update` hook.
-
 ## Contributors
 
 - **Shadowphyre** — documentation, WCS integration review, and project guidance
