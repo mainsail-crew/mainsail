@@ -287,6 +287,10 @@ The update_manager runs `deploy.sh --live` as its `post_update` hook.
 - ~~WCS Phase 2 — wire Moonraker agent to live Klipper WCS state~~ _(done)_
 - ~~WCS Phase 3 — update OffsetsPanel frontend: replace G92 calls with G10 L20, show per-WCS origin offsets~~ _(done)_
 
+## Contributors
+
+- **Shadowphyre** — documentation, WCS integration review, and project guidance
+
 ## Notes
 
 This is not being treated as a classic Mainsail plugin project. The working assumption is that a maintained fork is the correct frontend integration model for CNC-specific functionality.
