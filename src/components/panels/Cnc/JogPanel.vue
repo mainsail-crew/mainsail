@@ -372,7 +372,7 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
 
         const feedrate = this.getAxisFeedrate(axis)
         const script = `SAVE_GCODE_STATE NAME=_ui_movement\nG91\nG1 ${axis}${distance} F${feedrate * 60}\nRESTORE_GCODE_STATE NAME=_ui_movement`
-        this.doSend(script)
+        this.$socket.emit('printer.gcode.script', { script })
     }
 
     toggleKeyboardNav() {

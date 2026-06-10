@@ -192,7 +192,7 @@ export default class ControlMixin extends Vue {
             command = `_CLIENT_LINEAR_MOVE ${gcode} F=${feedrate * 60}`
         }
 
-        this.doSend(command)
+        this.$socket.emit('printer.gcode.script', { script: command })
     }
 
     doSend(gcode: string) {
