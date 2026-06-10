@@ -1,5 +1,9 @@
 # WCS (Work Coordinate Systems) — Integration Plan
 
+> **Status:** Fully implemented. See [klipper-macros/README.md](../klipper-macros/README.md)
+> for the WCS plugin setup guide and [docs/INSTALLATION.md](../docs/INSTALLATION.md#wcs-work-coordinate-systems)
+> for the WCS section. Below is the original design spec, kept for historical reference.
+
 ## Problem
 
 Stock Klipper does **not** support `G10 L2/L20` — the standard CNC commands for
@@ -167,4 +171,4 @@ The OffsetsPanel already has:
 - `klipper-macros/wcs_macros.cfg` — WCS macros
 - `moonraker-cnc-agent/src/moonraker_cnc_agent/cnc_agent.py` — Moonraker agent
 - `src/components/panels/Cnc/OffsetsPanel.vue` — frontend Offsets panel
-- `README.md` — see Klipper G-code caveats (to be updated)
+- `README.md` — see Klipper G-code caveats and WCS section

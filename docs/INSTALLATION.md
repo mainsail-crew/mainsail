@@ -538,6 +538,63 @@ install -m 0755 ~/mainsail-cnc/scripts/cnc_metadata_extractor.py ~/printer_data/
 
 ---
 
+## WCS (Work Coordinate Systems)
+
+This project includes a Klipper extra plugin (`klipper-extras/work_coordinate_systems.py`)
+that adds proper G10 L2/L20 support to Klipper, enabling:
+
+- **G54–G59** — six independent work coordinate system offset tables
+- **G10 L2 P<n>** — set WCS n to explicit machine coordinates
+- **G10 L20 P<n>** — set origin at current position (per-WCS zero)
+- **G53** — switch to raw machine coordinates
+- **WCS_STATUS** — report all offsets
+- Automatic persistence to `~/wcs_offsets.json` (survives Klipper restart)
+- State queryable via `printer.work_coordinate_systems.*` in the Moonraker API
+
+### What it replaces
+
+The WCS plugin replaces the old G92-based approach. Instead of `G92 X0 Y0`
+(which applies a global offset), the plugin uses per-WCS `G10 L20 P{n} X0 Y0`.
+This means:
+
+- Each WCS (G54–G59) has its own origin offset — no more switching WCS and
+  losing your zero
+- Offsets persist automatically — no `SAVE_VARIABLE` needed
+- CAM post-processors that emit `G10 L2 P{n}` work natively
+- The active WCS and all offset tables are queryable from the frontend
+
+### Enabling the WCS plugin
+
+The plugin is deployed automatically by `scripts/install_to_moonraker.sh`
+(step 7/11). After running the install script, add to `printer.cfg`:
+
+```ini
+[work_coordinate_systems]
+
+[include macros/wcs_macros.cfg]
+```
+
+Then restart Klipper. Verify with:
+
+```bash
+curl -s 'http://127.0.0.1:7125/printer/objects/query?work_coordinate_systems'
+```
+
+### Removing the old system (if migrating)
+
+If `macros.cfg` includes the following lines, remove or comment them out —
+they conflict with the WCS plugin:
+
+```ini
+# Remove these if present:
+# [include mpcnc/macros/coordinate-systems/*.cfg]
+# [include mpcnc/macros/origin-offset/*.cfg]
+```
+
+Also update any macro that uses `G92` for zeroing to use `G10 L20 P{n}` instead.
+The `ZERO_X`/`Y`/`Z`/`ALL` macros in `klipper-macros/wcs_macros.cfg` do this
+automatically.
+
 ## Troubleshooting
 
 ### Moonraker won't start after agent install
@@ -617,9 +674,11 @@ On-device builds may require more RAM than available. Options:
 |------|-------------|
 | `src/` | Mainsail Vue frontend with CNC panels |
 | `moonraker-cnc-agent/` | Moonraker CNC agent (Python component) |
-| `klipper-macros/` | CNC macro contract scaffold |
+| `klipper-extras/` | Klipper extra plugins (e.g. `work_coordinate_systems.py` for G10 L2/L20) |
+| `klipper-macros/` | CNC macros (WCS selector/zero macros, scaffold macros) |
 | `scripts/` | Metadata extractor, install scripts |
 | `config/examples/` | Example machine profile and update-manager config |
+| `specs/` | Design specs and integration plans (e.g. `wcs-integration.md`) |
 | `docs/` | Architecture, API, and milestone documentation |
 | `deploy.sh` | Build-and-deploy script (dry-run by default) |
 | `scripts/install_to_moonraker.sh` | Full install script for agent + update manager |

@@ -51,9 +51,35 @@ Six CNC panels registered in the dashboard system and visible when `cncMode` is 
 | **CNC Status** | Printer state, active job filename, feed override %, requested feed speed, max velocity, host load, free RAM. Auto-loads CAM metadata sidecar for the active file. |
 | **DRO** | Three-axis digital readout showing machine position, work position, computed offset, axis limits, homed flags, absolute/relative mode, and live velocity. Also rendered in compact form in the app header toolbar. |
 | **Jog** | Jog/homing controls — Home All / XY / Z, XY directional pad (cross layout), Z ± buttons, step-size selector (100 µm … 25 mm), configurable X/Y/Z feedrates, keyboard navigation, emergency stop (M112). |
-| **Offsets** | Work coordinate system manager — G54 … G59 selector, current work position display, per-axis Set Zero, manual offset entry with Apply / Reset (all via `G92`). |
+| **Offsets** | Work coordinate system manager — G54 … G59 selector, current work position, per-WCS origin offsets, per-axis Set Zero, manual offset entry with Apply / Reset (all via `G10 L20`). |
 | **Spindle & Coolant** | Spindle ON/OFF/CCW, RPM input (0–24 000), SET button. Flood and Mist coolant toggles. All commands sent through `/server/cnc/*` API. |
 | **MDI** *(placeholder)* | Dedicated CNC-native MDI panel stub. Full console/MDI functionality is available via the existing console page; a proper MDI panel is planned for V2. |
+
+### Work Coordinate Systems (WCS)
+
+This fork ships a Klipper extra plugin (`klipper-extras/work_coordinate_systems.py`)
+that adds **full G10 L2/L20 support** to Klipper — natively, without macro trickery.
+
+**Six independent offset tables** (G54–G59) with automatic JSON persistence to
+`~/wcs_offsets.json`. Each WCS stores its machine-space origin offset and
+survives Klipper restarts.
+
+**Dashboard-friendly macros** (`klipper-macros/wcs_macros.cfg`):
+
+| Macro | What it does |
+|-------|-------------|
+| `WCS_1` … `WCS_6` | Select G54–G59 |
+| `ZERO_X` / `Y` / `Z` / `ALL` | Set work zero in the active WCS |
+| `MACHINE_COORDS` | Switch to raw machine coordinates (G53) |
+
+**Moonraker integration** — the agent's `/server/cnc/wcs` endpoint queries live
+WCS state from Klipper via `printer.work_coordinate_systems.*`, so the frontend
+always shows authoritative data. The `set-zero` endpoint uses `G10 L20 P{n}`
+instead of `G92`.
+
+**The Offsets panel** shows both the current work position and the active WCS's
+origin offset in machine space. Per-WCS origin offsets are fetched from the
+agent and displayed for all six coordinate systems.
 
 Panels render through the standard responsive dashboard layout engine (mobile, tablet, desktop, widescreen columns). Default layouts include **DRO** and **Jog** in every viewport.
 
@@ -182,6 +208,12 @@ With the `[work_coordinate_systems]` Klipper extra plugin installed
 Without the plugin installed, stock Klipper behaviour applies:
 `G10` is unsupported and work-zero operations fall back to `G92`.
 
+**Migration from G92.** If you were using the old G92-based approach,
+the WCS plugin replaces it entirely. Remove any `[include ...coordinate-systems...]`
+and `[include ...origin-offset...]` from your config, and update zeroing macros
+to use `G10 L20 P{n}` — the `ZERO_X`/`Y`/`Z`/`ALL` macros in
+`klipper-macros/wcs_macros.cfg` do this automatically.
+
 ## Primary Plan
 
 The main implementation plan lives in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
@@ -252,8 +284,8 @@ The update_manager runs `deploy.sh --live` as its `post_update` hook.
 - **Full MdiPanel implementation** — replace placeholder with CNC-native MDI panel matching console page functionality
 - **Phase 4 safety hardening** — confirmations, disabled states when not homed, machine-profile-driven feature toggles
 - **Klipper config tuning** — `stealthchop_threshold: 30` for quieter high-speed spreads, homing center move feedrate capped at `max_velocity`
-- **WCS Phase 2** — wire Moonraker agent to live Klipper WCS state via `klippy_apis.query_objects()`
-- **WCS Phase 3** — update OffsetsPanel frontend: replace G92 calls with G10 L20, show per-WCS origin offsets
+- ~~WCS Phase 2 — wire Moonraker agent to live Klipper WCS state~~ _(done)_
+- ~~WCS Phase 3 — update OffsetsPanel frontend: replace G92 calls with G10 L20, show per-WCS origin offsets~~ _(done)_
 
 ## Notes
 
