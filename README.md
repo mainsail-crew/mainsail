@@ -49,7 +49,7 @@ Six CNC panels registered in the dashboard system and visible when `cncMode` is 
 | Panel | Description |
 |---|---|
 | **CNC Status** | Printer state, active job filename, feed override %, requested feed speed, max velocity, host load, free RAM. Auto-loads CAM metadata sidecar for the active file. |
-| **DRO** | Three-axis digital readout showing machine position, work position, computed offset, axis limits, homed flags, absolute/relative mode, and live velocity. |
+| **DRO** | Three-axis digital readout showing machine position, work position, computed offset, axis limits, homed flags, absolute/relative mode, and live velocity. Also rendered in compact form in the app header toolbar. |
 | **Jog** | Jog/homing controls — Home All / XY / Z, XY directional pad (cross layout), Z ± buttons, step-size selector (100 µm … 25 mm), configurable X/Y/Z feedrates, keyboard navigation, emergency stop (M112). |
 | **Offsets** | Work coordinate system manager — G54 … G59 selector, current work position display, per-axis Set Zero, manual offset entry with Apply / Reset (all via `G92`). |
 | **Spindle & Coolant** | Spindle ON/OFF/CCW, RPM input (0–24 000), SET button. Flood and Mist coolant toggles. All commands sent through `/server/cnc/*` API. |
@@ -142,6 +142,9 @@ This repository has progressed well beyond its initial scaffold. The fork is dep
 - ✅ Metadata extractor CLI (`scripts/cnc_metadata_extractor.py`)
 - ✅ Deploy script + Moonraker update-manager integration
 - ✅ Klipper G-code caveats documented (G10 unsupported, G92 for work-zero)
+- ✅ Compact DRO readout in app header toolbar (machine position, homed state, live velocity, G90/G91 mode)
+- ✅ Jog console log suppression — `SAVE_GCODE_STATE`/`G91`/`G1`/`RESTORE_GCODE_STATE` no longer spams the terminal
+- ✅ Homing override fix — corrected uppercase param keys (`'X'`/`'Y'`/`'Z'`) so `G28 X Y` no longer homes Z
 
 ### Moonraker CNC agent
 
@@ -233,6 +236,7 @@ The update_manager runs `deploy.sh --live` as its `post_update` hook.
 - **Harden POST handlers** — move from stubs to guarded machine actuation: jog, set-zero, WCS select, spindle, coolant
 - **Full MdiPanel implementation** — replace placeholder with CNC-native MDI panel matching console page functionality
 - **Phase 4 safety hardening** — confirmations, disabled states when not homed, machine-profile-driven feature toggles
+- **Klipper config tuning** — `stealthchop_threshold: 30` for quieter high-speed spreads, homing center move feedrate capped at `max_velocity`
 
 ## Notes
 
