@@ -63,12 +63,16 @@ class FakeFileManager:
 
 
 class FakeKlippyApis:
-    def __init__(self):
+    def __init__(self, wcs_state=None):
         self.scripts = []
+        self._wcs_state = wcs_state
 
     async def run_gcode(self, script, default=None):
         self.scripts.append(script)
         return "ok"
+
+    async def query_objects(self, objects, default=None):
+        return {"work_coordinate_systems": self._wcs_state} if self._wcs_state else {}
 
 
 class FakeConfig:
@@ -149,7 +153,10 @@ class CncAgentTests(unittest.TestCase):
 
         self.assertEqual(resolve(agent.handle_jog({"axis": "X", "distance": 5, "feedrate": 1200})), {"ok": True, "type": "jog", "axis": "X", "distance": 5.0, "feedrate": 1200.0})
         self.assertEqual(resolve(agent.handle_wcs_select({"wcs": "G54"}))["wcs"], "G54")
-        self.assertEqual(resolve(agent.handle_set_zero({"axes": ["X", "Z"]})), {"ok": True, "type": "set_zero", "axes": ["X", "Z"]})
+        result = resolve(agent.handle_set_zero({"axes": ["X", "Z"]}))
+        self.assertEqual(result["type"], "set_zero")
+        self.assertEqual(result["wcs"], "G54")
+        self.assertEqual(result["axes"], ["X", "Z"])
 
     def test_spindle_handler_sends_gcode(self):
         server = self._make_server()
@@ -184,13 +191,22 @@ class CncAgentTests(unittest.TestCase):
         self.assertEqual(server.klippy_apis.scripts[-1], "G20")
         self.assertEqual(agent.get_state()["units"], "G20")
 
-    def test_set_zero_handler_sends_g92(self):
+    def test_set_zero_handler_sends_g10_l20(self):
         server = self._make_server()
         agent = CncAgent(FakeConfig(server))
 
         asyncio.run(agent.handle_set_zero({"axes": ["X", "Y"]}))
 
-        self.assertEqual(server.klippy_apis.scripts[-1], "G92 X0 Y0")
+        self.assertEqual(server.klippy_apis.scripts[-1], "G10 L20 P1 X0 Y0")
+
+    def test_set_zero_rejects_g53(self):
+        server = self._make_server()
+        agent = CncAgent(FakeConfig(server))
+
+        agent.set_active_wcs("G53")
+
+        with self.assertRaises(ValueError):
+            asyncio.run(agent.handle_set_zero({"axes": ["X", "Y"]}))
 
     def test_jog_handler_sends_relative_move(self):
         server = self._make_server()

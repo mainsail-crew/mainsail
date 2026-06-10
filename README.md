@@ -145,6 +145,8 @@ This repository has progressed well beyond its initial scaffold. The fork is dep
 - ✅ Compact DRO readout in app header toolbar (machine position, homed state, live velocity, G90/G91 mode)
 - ✅ Jog console log suppression — `SAVE_GCODE_STATE`/`G91`/`G1`/`RESTORE_GCODE_STATE` no longer spams the terminal
 - ✅ Homing override fix — corrected uppercase param keys (`'X'`/`'Y'`/`'Z'`) so `G28 X Y` no longer homes Z
+- ✅ **WCS Klipper plugin** — G10 L2/L20 support, G54–G59 offset tables with JSON persistence (`klipper-extras/work_coordinate_systems.py`)
+- ✅ **WCS macros** — dashboard-friendly WCS selector and per-WCS zero macros (`klipper-macros/wcs_macros.cfg`)
 
 ### Moonraker CNC agent
 
@@ -161,16 +163,24 @@ This repository has progressed well beyond its initial scaffold. The fork is dep
 
 ### Klipper G-code caveats
 
-Klipper on the BTT-CB1 (and most stock Klipper builds) does **not** support
-`G10`. Work-zero operations use `G92` instead:
+With the `[work_coordinate_systems]` Klipper extra plugin installed
+(`klipper-extras/work_coordinate_systems.py`), this build **does** support
+`G10 L2/L20`:
 
-- `G92 X0 Y0` — set the work position counter to 0 at the current machine
-  location (the closest equivalent to GRBL/LinuxCNC's "set work zero")
-- `G54`–`G59` — accepted as modal commands, but Klipper does not currently
-  expose the active WCS via `gcode_move.gcode_system`, and per-WCS origin
-  offsets (G54_origin .. G59_origin) are not queryable in standard builds.
-  True per-WCS origins require a custom Klipper with G10 support, or
-  per-WCS tracking in the Moonraker CNC agent.
+- `G10 L2 P<n> X<v> Y<v> Z<v>` — set WCS n (G54–G59) to explicit machine-space
+  coordinates
+- `G10 L20 P<n> X<v> Y<v> Z<v>` — set WCS n so current tool position reads as
+  the given work coordinates (per-WCS zero)
+- `G54`–`G59` — active WCS selection, backed by offset tables persisted to
+  `~/wcs_offsets.json`
+- `G53` — switch to raw machine coordinates
+- Offsets survive Klipper restart (auto-loaded from JSON on `klippy:ready`)
+- State queryable via `printer.work_coordinate_systems.*` and the
+  `WCS_STATUS` command
+- Dashboard-friendly macros: `WCS_1`…`WCS_6`, `ZERO_X`/`Y`/`Z`/`ALL`
+
+Without the plugin installed, stock Klipper behaviour applies:
+`G10` is unsupported and work-zero operations fall back to `G92`.
 
 ## Primary Plan
 
@@ -180,9 +190,11 @@ The main implementation plan lives in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PL
 
 - `src/`: Mainsail Vue frontend with CNC panels and modifications
 - `moonraker-cnc-agent/`: Moonraker CNC agent (Python component)
-- `klipper-macros/`: CNC macro contract scaffold
+- `klipper-extras/`: Klipper extra plugins (e.g. `work_coordinate_systems.py`)
+- `klipper-macros/`: CNC macros (WCS selector/zero macros, scaffold macros)
 - `scripts/`: metadata extractor and test fixtures (`scripts/cnc_metadata_extractor.py`)
 - `config/examples/`: example machine profile and update-manager config
+- `specs/`: design specs and integration plans (e.g. `wcs-integration.md`)
 - `docs/`: supporting architecture and API notes
 - `deploy.sh`: portable build-and-deploy script (dry-run by default, `--live` to deploy)
 - `moonraker-cnc-update.conf`: drop-in Moonraker update_manager config snippet
@@ -202,10 +214,13 @@ This project assumes:
   select, spindle, coolant)
 - persists CNC dashboard settings (separate from Mainsail's settings)
 
-3. `Klipper macros`
-- perform machine actions and integrate with real hardware/motion behavior
-- (NB: stock Klipper does not support `G10` — work-zero operations use
-  `G92`. See the Klipper G-code caveats above.)
+3. `Klipper extras + macros`
+- Klipper extra plugins (in `klipper-extras/`) extend Klipper's g-code
+  language, e.g. `[work_coordinate_systems]` adds G10 L2/L20 support
+- Macros (in `klipper-macros/`) provide dashboard-friendly wrappers
+  around the extra plugins and machine-safe motion primitives
+- (NB: stock Klipper does not support `G10`; this fork ships a plugin
+  that does. See the Klipper G-code caveats above for details.)
 
 4. `Machine profile`
 - defines machine capabilities and safety rules
@@ -237,6 +252,8 @@ The update_manager runs `deploy.sh --live` as its `post_update` hook.
 - **Full MdiPanel implementation** — replace placeholder with CNC-native MDI panel matching console page functionality
 - **Phase 4 safety hardening** — confirmations, disabled states when not homed, machine-profile-driven feature toggles
 - **Klipper config tuning** — `stealthchop_threshold: 30` for quieter high-speed spreads, homing center move feedrate capped at `max_velocity`
+- **WCS Phase 2** — wire Moonraker agent to live Klipper WCS state via `klippy_apis.query_objects()`
+- **WCS Phase 3** — update OffsetsPanel frontend: replace G92 calls with G10 L20, show per-WCS origin offsets
 
 ## Notes
 

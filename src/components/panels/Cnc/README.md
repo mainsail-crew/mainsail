@@ -8,7 +8,7 @@ This directory contains CNC-focused dashboard panels for the Mainsail fork.
 | --- | --- | --- |
 | `CncStatusPanel.vue` | native Mainsail store (`printer.print_stats`, `printer.gcode_move`, `printer.toolhead`, `printer.system_stats`) | wired, renders |
 | `JogPanel.vue` | native store + `ControlMixin.doSend` | wired, renders |
-| `OffsetsPanel.vue` | `printer.gcode_move.gcode_position` + `G92` work-zero actions | wired, renders |
+| `OffsetsPanel.vue` | `printer.gcode_move.gcode_position` + `G10 L20` work-zero actions (WCS plugin) | wired, renders |
 | `SpindleCoolantPanel.vue` | `doSend` (`M3`/`M4`/`M5`/`M7`/`M8`/`M9`) | wired, renders |
 | `MdiPanel.vue` | — | stub, placeholder only |
 | `DroPanel.vue` | `printer.motion_report`, `printer.gcode_move`, `printer.toolhead` | wired, renders |
@@ -21,8 +21,11 @@ This directory contains CNC-focused dashboard panels for the Mainsail fork.
   the existing `printer` store, **no dedicated `cnc` Vuex module**
 - Moonraker CNC agent for CNC-specific state and guarded commands (see
   `moonraker-cnc-agent/`)
-- Klipper stock build does **not** support `G10`; work-zero operations use
-  `G92` instead. See `klipper-macros/README.md` for the caveat table.
+- With the `[work_coordinate_systems]` Klipper extra plugin (see
+  `klipper-extras/`), this build **does** support `G10 L2/L20`. Work-zero
+  operations use `G10 L20` per-WCS commands. The plugin is deployed as part
+  of `install_to_moonraker.sh`. Without it, stock Klipper behaviour applies
+  and work-zero falls back to `G92`.
 
 ## Re-registering this directory
 

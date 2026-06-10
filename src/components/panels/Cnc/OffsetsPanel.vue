@@ -20,8 +20,11 @@
                 </v-col>
             </v-row>
 
-            <!-- Current Work Position Display -->
-            <v-row dense class="mb-3">
+            <!-- Current Work Position -->
+            <v-row dense class="mb-1">
+                <v-col cols="12">
+                    <span class="text-caption font-weight-bold">Work Position:</span>
+                </v-col>
                 <v-col cols="4" class="text-center">
                     <div class="text-caption text--secondary">X</div>
                     <div class="font-weight-bold">{{ currentWorkX.toFixed(3) }}</div>
@@ -33,6 +36,25 @@
                 <v-col cols="4" class="text-center">
                     <div class="text-caption text--secondary">Z</div>
                     <div class="font-weight-bold">{{ currentWorkZ.toFixed(3) }}</div>
+                </v-col>
+            </v-row>
+
+            <!-- WCS Origin Offset -->
+            <v-row dense class="mb-3">
+                <v-col cols="12">
+                    <span class="text-caption font-weight-bold">Origin Offset (machine):</span>
+                </v-col>
+                <v-col cols="4" class="text-center">
+                    <div class="text-caption text--secondary">X</div>
+                    <div class="font-weight-medium">{{ wcsOriginOffsetX.toFixed(3) }}</div>
+                </v-col>
+                <v-col cols="4" class="text-center">
+                    <div class="text-caption text--secondary">Y</div>
+                    <div class="font-weight-medium">{{ wcsOriginOffsetY.toFixed(3) }}</div>
+                </v-col>
+                <v-col cols="4" class="text-center">
+                    <div class="text-caption text--secondary">Z</div>
+                    <div class="font-weight-medium">{{ wcsOriginOffsetZ.toFixed(3) }}</div>
                 </v-col>
             </v-row>
 
@@ -150,6 +172,7 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
             offsetInputX: 0,
             offsetInputY: 0,
             offsetInputZ: 0,
+            wcsOffsets: {} as Record<string, Record<string, number>>,
         }
     }
 
@@ -158,11 +181,6 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get currentWorkPosition(): number[] {
-        // Work position in the currently active WCS. Klipper exposes this as
-        // `gcode_position` and reflects any G92 offset applied. Per-WCS origin
-        // offsets (G54_origin .. G59_origin) are not queryable in standard
-        // Klipper builds, and this build has no G10 support, so we display the
-        // single active work position rather than 6 separate origins.
         return this.$store.state.printer?.gcode_move?.gcode_position ?? [0, 0, 0, 0]
     }
 
@@ -184,6 +202,9 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
             const active = typeof wcs?.active === 'string' ? wcs.active : 'G54'
             const index = this.offsetNames.indexOf(active)
             this.selectedOffsetIndex = index >= 0 ? index : 0
+            if (wcs?.offsets && typeof wcs.offsets === 'object') {
+                this.wcsOffsets = wcs.offsets as Record<string, Record<string, number>>
+            }
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to load active WCS'
             this.$toast.error(message)
@@ -223,18 +244,38 @@ export default class OffsetsPanel extends Mixins(BaseMixin, ControlMixin) {
         }
     }
 
+    get wcsP(): number {
+        return this.selectedOffsetIndex + 1
+    }
+
+    get wcsOriginOffsets(): Record<string, number> {
+        return this.wcsOffsets[this.offsetNames[this.selectedOffsetIndex]] ?? { X: 0, Y: 0, Z: 0 }
+    }
+
+    get wcsOriginOffsetX(): number {
+        return this.wcsOriginOffsets.X ?? 0
+    }
+
+    get wcsOriginOffsetY(): number {
+        return this.wcsOriginOffsets.Y ?? 0
+    }
+
+    get wcsOriginOffsetZ(): number {
+        return this.wcsOriginOffsets.Z ?? 0
+    }
+
     applyOffsets() {
         const x = this.offsetInputX ?? 0
         const y = this.offsetInputY ?? 0
         const z = this.offsetInputZ ?? 0
-        this.doSend(`G92 X${x} Y${y} Z${z}`)
+        this.doSend(`G10 L20 P${this.wcsP} X${x} Y${y} Z${z}`)
         this.offsetInputX = 0
         this.offsetInputY = 0
         this.offsetInputZ = 0
     }
 
     resetOffsets() {
-        this.doSend('G92 X0 Y0 Z0')
+        this.doSend(`G10 L20 P${this.wcsP} X0 Y0 Z0`)
         this.offsetInputX = 0
         this.offsetInputY = 0
         this.offsetInputZ = 0

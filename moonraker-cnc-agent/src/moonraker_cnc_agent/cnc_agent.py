@@ -44,6 +44,7 @@ class CncAgent:
             "units": "G21",
             "wcs": {
                 "active": DEFAULT_WCS,
+                "machine_mode": False,
                 "offsets": {code: {"X": 0.0, "Y": 0.0, "Z": 0.0} for code in VALID_WCS},
             },
             "capabilities": {},
@@ -127,6 +128,20 @@ class CncAgent:
         if klippy_apis is None:
             raise RuntimeError("Moonraker klippy_apis component is not available")
         return await klippy_apis.run_gcode(script)
+
+    async def _query_klipper_objects(self, objects: Dict[str, Any]) -> Dict[str, Any]:
+        klippy_apis = self._get_klippy_apis()
+        if klippy_apis is None:
+            return {}
+        query = getattr(klippy_apis, "query_objects", None)
+        if not callable(query):
+            return {}
+        try:
+            result = await query(objects)
+            return result if isinstance(result, dict) else {}
+        except Exception:
+            self.logger.warning("CncAgent: query_objects failed", exc_info=True)
+            return {}
 
     @staticmethod
     def _format_number(value: Any) -> str:
@@ -321,6 +336,17 @@ class CncAgent:
         return {"ok": True, "type": "units", "units": normalized}
 
     async def handle_wcs_get(self, request: Any = None):
+        wcs_state = await self._query_klipper_objects({"work_coordinate_systems": None})
+        remote = wcs_state.get("work_coordinate_systems", {})
+        if remote:
+            self._state["wcs"]["active"] = remote.get("active_wcs", DEFAULT_WCS)
+            self._state["wcs"]["machine_mode"] = remote.get("machine_mode", False)
+            raw_wcs = remote.get("wcs", {})
+            if raw_wcs:
+                self._state["wcs"]["offsets"] = {
+                    name: dict(zip("XYZ", vals))
+                    for name, vals in raw_wcs.items()
+                }
         return copy.deepcopy(self._state["wcs"])
 
     async def handle_wcs_select(self, request: Any = None):
@@ -328,27 +354,41 @@ class CncAgent:
         wcs = str(payload.get("wcs", DEFAULT_WCS)).upper()
         if wcs not in VALID_WCS:
             raise ValueError(f"unsupported WCS: {wcs!r}")
-        offsets = payload.get("offsets")
         if wcs != "G53":
             await self._execute_gcode(wcs)
-        if isinstance(offsets, dict):
-            self.set_active_wcs(wcs, offsets=offsets)
+        wcs_state = await self._query_klipper_objects({"work_coordinate_systems": None})
+        remote = wcs_state.get("work_coordinate_systems", {})
+        if remote:
+            self._state["wcs"]["active"] = remote.get("active_wcs", wcs)
+            self._state["wcs"]["machine_mode"] = remote.get("machine_mode", False)
+            raw_wcs = remote.get("wcs", {})
+            if raw_wcs:
+                self._state["wcs"]["offsets"] = {
+                    name: dict(zip("XYZ", vals))
+                    for name, vals in raw_wcs.items()
+                }
         else:
             self.set_active_wcs(wcs)
-        return {"ok": True, "type": "wcs_select", "wcs": self._state["wcs"]["active"], "offsets": copy.deepcopy(self._state["wcs"]["offsets"][self._state["wcs"]["active"]])}
+        return {
+            "ok": True,
+            "type": "wcs_select",
+            "wcs": self._state["wcs"]["active"],
+            "machine_mode": self._state["wcs"]["machine_mode"],
+            "offsets": copy.deepcopy(self._state["wcs"]["offsets"].get(self._state["wcs"]["active"], {"X": 0.0, "Y": 0.0, "Z": 0.0})),
+        }
 
     async def handle_set_zero(self, request: Any = None):
         axes = list(self._parse_axes(request))
         if not axes:
             axes = ["X", "Y", "Z"]
         active = self._state["wcs"]["active"]
-        current = self._state["wcs"]["offsets"].setdefault(active, {"X": 0.0, "Y": 0.0, "Z": 0.0})
-        command = "G92 " + " ".join(f"{axis}0" for axis in axes if axis in current)
+        if active == "G53":
+            raise ValueError("cannot zero axes in G53 machine-coordinate mode")
+        wcs_p = {"G54": 1, "G55": 2, "G56": 3, "G57": 4, "G58": 5, "G59": 6}.get(active, 1)
+        axis_args = " ".join(f"{axis}0" for axis in axes if axis in {"X", "Y", "Z"})
+        command = f"G10 L20 P{wcs_p} {axis_args}"
         await self._execute_gcode(command)
-        for axis in axes:
-            if axis in current:
-                current[axis] = 0.0
-        return {"ok": True, "type": "set_zero", "axes": axes}
+        return {"ok": True, "type": "set_zero", "wcs": active, "axes": axes}
 
     async def handle_jog(self, request: Any = None):
         payload = self._coerce_payload(request)
