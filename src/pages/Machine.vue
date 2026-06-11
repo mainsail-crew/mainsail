@@ -1,33 +1,10 @@
 <template>
-    <v-container fluid py-0 px-0>
-        <v-row>
-            <v-col class="v-col-12 v-col-md-6 pb-0 pb-md-3">
-                <config-files-panel></config-files-panel>
-            </v-col>
-            <v-col class="v-col-12 v-col-md-6 pt-0 pt-md-3">
-                <klippy-state-panel></klippy-state-panel>
-                <system-panel></system-panel>
-                <update-panel></update-panel>
-                <v-row>
-                    <v-col v-if="klipperState === 'ready'" class="v-col-12 v-v-col-sm-6 pb-0 pb-md-3">
-                        <endstop-panel></endstop-panel>
-                    </v-col>
-                    <v-col :class="klipperState !== 'ready' ? 'col-12' : 'col-12 v-col-sm-6 pt-0 pt-sm-3'">
-                        <logfiles-panel></logfiles-panel>
-                    </v-col>
-                </v-row>
-            </v-col>
-        </v-row>
-    </v-container>
+    <viewer></viewer>
 </template>
-<script setup lang="ts">
-import { useBase } from '@/composables/useBase'
-import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
-import UpdatePanel from '@/components/panels/Machine/UpdatePanel.vue'
-import LogfilesPanel from '@/components/panels/Machine/LogfilesPanel.vue'
-import EndstopPanel from '@/components/panels/Machine/EndstopPanel.vue'
-import ConfigFilesPanel from '@/components/panels/Machine/ConfigFilesPanel.vue'
-import SystemPanel from '@/components/panels/Machine/SystemPanel.vue'
 
-const { klipperState } = useBase()
+<script setup lang="ts">
+import Viewer from '@/components/gcodeviewer/Viewer.vue'
+import { useBase } from '@/composables/useBase'
+
+const { } = useBase()
 </script>

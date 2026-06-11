@@ -1,18 +1,10 @@
 <template>
-    <v-row>
-        <v-col>
-            <p class="mb-0">{{ text }}</p>
-        </v-col>
-    </v-row>
+    <viewer></viewer>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { ServerStateEventPromptContent } from '@/store/server/types'
+import Viewer from '@/components/gcodeviewer/Viewer.vue'
+import { useBase } from '@/composables/useBase'
 
-const props = defineProps({
-    event: { type: Object as () => ServerStateEventPromptContent, required: true },
-})
-
-const text = computed(() => props.event.message)
+const { } = useBase()
 </script>

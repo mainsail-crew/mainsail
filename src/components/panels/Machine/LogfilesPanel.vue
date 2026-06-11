@@ -1,48 +1,10 @@
 <template>
-    <div>
-        <panel
-            :title="$t('Machine.LogfilesPanel.Logfiles')"
-            :icon="mdiFileDocumentEdit"
-            card-class="machine-logfiles-panel"
-            :collapsible="true">
-            <template #buttons>
-                <v-tooltip top>
-                    <template #activator="{ props }">
-                        <v-btn
-                            icon
-                            tile
-                            color="primary"
-                            :ripple="true"
-                            :loading="loadings.includes('loadingBtnRolloverLogs')"
-                            :disabled="['printing', 'paused'].includes(printer_state)"
-                            v-bind="props"
-                            @click="showRolloverDialog = true">
-                            <v-icon>{{ mdiFileSyncOutline }}</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>{{ $t('Machine.LogfilesPanel.Rollover') }}</span>
-                </v-tooltip>
-            </template>
-            <v-card-text :class="'text-center text-lg-left'">
-                <v-row class="pt-3">
-                    <logfiles-panel-generic-log v-for="logfile in genericLogfiles" :key="logfile" :name="logfile" />
-                </v-row>
-            </v-card-text>
-        </panel>
-        <logfiles-panel-rollover-dialog v-model="showRolloverDialog" />
-    </div>
+    <viewer></viewer>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import Viewer from '@/components/gcodeviewer/Viewer.vue'
 import { useBase } from '@/composables/useBase'
-import Panel from '@/components/ui/Panel.vue'
-import { mdiFileDocumentEdit, mdiFileSyncOutline } from '@mdi/js'
-import { genericLogfiles } from '@/store/variables'
-import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/LogfilesPanelGenericLog.vue'
 
-const { loadings, printer_state } = useBase()
-
-
-const showRolloverDialog = ref(false)
+const { } = useBase()
 </script>

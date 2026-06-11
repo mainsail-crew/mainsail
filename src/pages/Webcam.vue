@@ -1,17 +1,10 @@
-<style scoped></style>
-
 <template>
-    <div>
-        <v-row>
-            <v-col col-12>
-                <webcam-panel current-page="page" />
-            </v-col>
-        </v-row>
-    </div>
+    <viewer></viewer>
 </template>
+
 <script setup lang="ts">
+import Viewer from '@/components/gcodeviewer/Viewer.vue'
 import { useBase } from '@/composables/useBase'
-import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 
 const { } = useBase()
 </script>
