@@ -17,13 +17,13 @@ This file documents the current state and capabilities of AI agents used in this
 - Phase 7b: `vue-debounce-decorator` removed, `@vue/compat` still present
 - Phase 7d: `tsconfig.json` cleanup (`moduleResolution: "node"`, no `ignoreDeprecations`)
 - Vuetify 3: `::v-deep` → `:deep()` across all files
+- Vuetify 3: activator slot syntax migrated (`{ on, attrs }` → `{ props }`, `v-bind="attrs" v-on="on"` → `v-bind="props"`)
 - Build passes: `bun run build` succeeds (pre-existing store TS errors disabled via vite-plugin-checker removal)
 
 ### Pending
-- Phase 7c: Remove `@vue/compat` from `package.json` + vite alias (currently still active)
+- Phase 7c: Remove `@vue/compat` from `package.json` + vite alias (blocked by store Vue 2 patterns)
 - Store layer migration: `src/store/` files still use Vue 2 patterns (`Vue.set`, `Vue.prototype`, vuex 3 types) — separate effort
 - Visual QA of Vuetify 3 component changes (list-item slots, tabs/window, etc.)
-- Vuetify 3 slot syntax audit (e.g. `v-menu` activator slot changes)
 
 ### Key Commits
 ```text
