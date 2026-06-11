@@ -7,14 +7,14 @@
         <v-card-text class="pa-0">
             <v-row align="center">
                 <v-col class="col-12 col-sm-6 col-md-4">
-                    <v-simple-table>
+                    <v-table>
                         <tbody>
                             <tr v-for="total in totals" :key="total.title">
                                 <td>{{ total.title }}</td>
                                 <td class="text-right">{{ total.value }}</td>
                             </tr>
                         </tbody>
-                    </v-simple-table>
+                    </v-table>
                 </v-col>
                 <v-col class="col-12 col-sm-6 col-md-4">
                     <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" :value-name="toggleValue" />

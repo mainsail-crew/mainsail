@@ -10,14 +10,12 @@
             <v-list-item
                 v-for="printer in printers"
                 :key="printer._namespace"
-                two-line
+                lines="two"
                 :disabled="!printer.socket.isConnected"
                 link
-                @click="changePrinter(printer)">
-                <v-list-item-content>
-                    <v-list-item-title>{{ getPrinterName(printer._namespace) }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ getPrinterDescription(printer) }}</v-list-item-subtitle>
-                </v-list-item-content>
+                @click="changePrinter(printer)"
+                :title="getPrinterName(printer._namespace)"
+                :subtitle="getPrinterDescription(printer)">
             </v-list-item>
         </v-list>
     </v-menu>

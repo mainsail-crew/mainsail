@@ -17,24 +17,20 @@
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item link @click="currentCamName = 'off'">
-                        <v-list-item-icon class="mr-2">
-                            <v-icon small class="mt-1">{{ mdiWebcamOff }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</v-list-item-title>
-                        </v-list-item-content>
+                        <template #prepend>
+                            <v-icon small class="mt-1 mr-2">{{ mdiWebcamOff }}</v-icon>
+                        </template>
+                        <template #title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</template>
                     </v-list-item>
                     <v-list-item
                         v-for="webcam of printer_webcams"
                         :key="webcam.name"
                         link
                         @click="currentCamName = webcam.name">
-                        <v-list-item-icon class="mr-2">
-                            <v-icon small class="mt-1">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title v-text="webcam.name" />
-                        </v-list-item-content>
+                        <template #prepend>
+                            <v-icon small class="mt-1 mr-2">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
+                        </template>
+                        <template #title v-text="webcam.name" />
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -280,7 +276,7 @@ function handleResize() {
     top: 48px;
 }
 
-::v-deep .farmprinter-panel {
+:deep(.farmprinter-panel) {
     position: relative;
 }
 </style>

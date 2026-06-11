@@ -8,33 +8,37 @@
             </template>
             <v-list dense>
                 <template v-if="klipperState !== 'disconnected'">
-                    <v-subheader class="" style="height: auto">
+                    <v-list-subheader class="" style="height: auto">
                         {{ $t('App.TopCornerMenu.KlipperControl') }}
-                    </v-subheader>
+                    </v-list-subheader>
                     <v-list-item
                         class="minHeight30 pr-2"
                         link
                         @click="checkDialog(klipperRestart, 'klipper', 'restart')">
-                        <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperRestart') }}</v-list-item-title>
-                        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
-                        </v-list-item-action>
+                        <template #title>{{ $t('App.TopCornerMenu.KlipperRestart') }}</template>
+                        <template #append>
+                            <div class="my-0 d-flex flex-row" style="min-width: auto">
+                                <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
+                            </div>
+                        </template>
                     </v-list-item>
                     <v-list-item
                         class="minHeight30 pr-2"
                         link
                         @click="checkDialog(klipperFirmwareRestart, 'klipper', 'firmwareRestart')">
-                        <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperFirmwareRestart') }}</v-list-item-title>
-                        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
-                        </v-list-item-action>
+                        <template #title>{{ $t('App.TopCornerMenu.KlipperFirmwareRestart') }}</template>
+                        <template #append>
+                            <div class="my-0 d-flex flex-row" style="min-width: auto">
+                                <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
+                            </div>
+                        </template>
                     </v-list-item>
                 </template>
                 <template v-if="services.length">
                     <v-divider v-if="klipperState !== 'disconnected'" class="mt-0" />
-                    <v-subheader class="pt-2" style="height: auto">
+                    <v-list-subheader class="pt-2" style="height: auto">
                         {{ $t('App.TopCornerMenu.ServiceControl') }}
-                    </v-subheader>
+                    </v-list-subheader>
                     <top-corner-menu-service
                         v-for="service in services"
                         :key="service"
@@ -43,9 +47,9 @@
                 </template>
                 <template v-if="powerDevices.length">
                     <v-divider class="mt-0"></v-divider>
-                    <v-subheader class="pt-2" style="height: auto">
+                    <v-list-subheader class="pt-2" style="height: auto">
                         {{ $t('App.TopCornerMenu.PowerDevices') }}
-                    </v-subheader>
+                    </v-list-subheader>
                     <v-list-item
                         v-for="(device, index) in powerDevices"
                         :key="index"
@@ -55,27 +59,33 @@
                             (device.locked_while_printing && ['printing', 'paused'].includes(printer_state))
                         "
                         @click="changeSwitch(device, device.status)">
-                        <v-list-item-title>{{ device.device }}</v-list-item-title>
-                        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">
-                                {{ device.status === 'on' ? mdiToggleSwitch : mdiToggleSwitchOff }}
-                            </v-icon>
-                        </v-list-item-action>
+                        <template #title>{{ device.device }}</template>
+                        <template #append>
+                            <div class="my-0 d-flex flex-row" style="min-width: auto">
+                                <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">
+                                    {{ device.status === 'on' ? mdiToggleSwitch : mdiToggleSwitchOff }}
+                                </v-icon>
+                            </div>
+                        </template>
                     </v-list-item>
                 </template>
                 <v-divider class="mt-0"></v-divider>
-                <v-subheader class="pt-2" style="height: auto">{{ $t('App.TopCornerMenu.HostControl') }}</v-subheader>
+                <v-list-subheader class="pt-2" style="height: auto">{{ $t('App.TopCornerMenu.HostControl') }}</v-list-subheader>
                 <v-list-item class="minHeight30 pr-2" link @click="checkDialog(hostReboot, 'host', 'reboot')">
-                    <v-list-item-title>{{ $t('App.TopCornerMenu.Reboot') }}</v-list-item-title>
-                    <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                        <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
-                    </v-list-item-action>
+                    <template #title>{{ $t('App.TopCornerMenu.Reboot') }}</template>
+                    <template #append>
+                        <div class="my-0 d-flex flex-row" style="min-width: auto">
+                            <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
+                        </div>
+                    </template>
                 </v-list-item>
                 <v-list-item class="minHeight30 pr-2" link @click="checkDialog(hostShutdown, 'host', 'shutdown')">
-                    <v-list-item-title>{{ $t('App.TopCornerMenu.Shutdown') }}</v-list-item-title>
-                    <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                        <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
-                    </v-list-item-action>
+                    <template #title>{{ $t('App.TopCornerMenu.Shutdown') }}</template>
+                    <template #append>
+                        <div class="my-0 d-flex flex-row" style="min-width: auto">
+                            <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
+                        </div>
+                    </template>
                 </v-list-item>
             </v-list>
         </v-menu>

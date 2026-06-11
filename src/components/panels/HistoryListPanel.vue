@@ -579,11 +579,11 @@ function formatDateTime(value: number): string {
 </script>
 
 <style scoped>
-.history-jobs-table ::v-deep th {
+.history-jobs-table :deep(th) {
     white-space: nowrap;
 }
 
-.history-jobs-table ::v-deep th.text-start {
+.history-jobs-table :deep(th).text-start {
     padding-right: 0 !important;
 }
 </style>

@@ -130,48 +130,44 @@ function closeDialog() {
     padding-top: 0;
 }
 
-::v-deep {
-    .git-commit-list-day {
-        padding-top: 24px;
-        padding-bottom: 0;
-
-        .v-timeline-item__dot--small {
-            width: 18px;
-            height: 15px;
-            margin-top: 2px;
-
-            &:before {
-                display: block;
-                content: ' ';
-                position: relative;
-                width: 18px;
-                height: 2px;
-                top: 7px;
-                background: rgba(255, 255, 255, 0.5);
-                z-index: 1;
-            }
-        }
-
-        .v-timeline-item__inner-dot {
-            background-color: #1e1e1e !important;
-            border: 2px solid rgba(255, 255, 255, 0.5) !important;
-            width: 8px;
-            height: 8px;
-            position: relative;
-            z-index: 2;
-            margin-left: 5px;
-            margin-top: 2px;
-        }
-
-        &.git-commit-list-warning {
-            .v-timeline-item__dot--small {
-                margin-top: 10px;
-            }
-        }
-    }
+:deep(.git-commit-list-day) {
+    padding-top: 24px;
+    padding-bottom: 0;
 }
 
-::v-deep .groupedCommits.mobile {
+:deep(.git-commit-list-day .v-timeline-item__dot--small) {
+    width: 18px;
+    height: 15px;
+    margin-top: 2px;
+}
+
+:deep(.git-commit-list-day .v-timeline-item__dot--small:before) {
+    display: block;
+    content: ' ';
+    position: relative;
+    width: 18px;
+    height: 2px;
+    top: 7px;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+}
+
+:deep(.git-commit-list-day .v-timeline-item__inner-dot) {
+    background-color: #1e1e1e !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    width: 8px;
+    height: 8px;
+    position: relative;
+    z-index: 2;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+:deep(.git-commit-list-day.git-commit-list-warning .v-timeline-item__dot--small) {
+    margin-top: 10px;
+}
+
+:deep(.groupedCommits).mobile {
     &:before {
         left: 20px;
     }

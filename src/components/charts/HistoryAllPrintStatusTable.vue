@@ -1,5 +1,5 @@
 <template>
-    <v-simple-table>
+    <v-table>
         <tbody>
             <history-all-print-status-table-item
                 v-for="status in aggregated.printStatusArrayChart"
@@ -7,7 +7,7 @@
                 :item="status"
                 :value-name="valueName" />
         </tbody>
-    </v-simple-table>
+    </v-table>
 </template>
 
 <script setup lang="ts">

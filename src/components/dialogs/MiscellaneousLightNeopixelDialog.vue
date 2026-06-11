@@ -371,7 +371,7 @@ function closePrompt() {
     gap: 6px;
 }
 
-.light-presets-container ::v-deep > div {
+.light-presets-container :deep(> div) {
     width: 28px;
     height: 28px;
     border-radius: 4px;

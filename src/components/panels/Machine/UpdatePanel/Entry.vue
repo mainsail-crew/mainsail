@@ -54,20 +54,16 @@
                         </template>
                         <v-list dense class="py-0">
                             <v-list-item v-if="!isCorrupt" @click="doRecovery(false)">
-                                <v-list-item-icon class="mr-0 pt-1">
-                                    <v-icon small>{{ mdiReload }}</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>{{ $t('Machine.UpdatePanel.SoftRecovery') }}</v-list-item-title>
-                                </v-list-item-content>
+                                <template #prepend>
+                                    <v-icon small class="mr-0 pt-1">{{ mdiReload }}</v-icon>
+                                </template>
+                                <template #title>{{ $t('Machine.UpdatePanel.SoftRecovery') }}</template>
                             </v-list-item>
                             <v-list-item :disabled="!existsRecoveryUrl" @click="doRecovery(true)">
-                                <v-list-item-icon class="mr-0 pt-1">
-                                    <v-icon small>{{ mdiReload }}</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>{{ $t('Machine.UpdatePanel.HardRecovery') }}</v-list-item-title>
-                                </v-list-item-content>
+                                <template #prepend>
+                                    <v-icon small class="mr-0 pt-1">{{ mdiReload }}</v-icon>
+                                </template>
+                                <template #title>{{ $t('Machine.UpdatePanel.HardRecovery') }}</template>
                             </v-list-item>
                         </v-list>
                     </v-menu>

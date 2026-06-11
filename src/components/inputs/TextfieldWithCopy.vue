@@ -40,7 +40,7 @@ function copy() {
 }
 </script>
 <style scoped>
-::v-deep .v-tooltip__content {
+:deep(.v-tooltip__content) {
     top: 4px !important;
     left: auto !important;
     right: 46px;

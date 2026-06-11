@@ -1,5 +1,5 @@
 <template>
-    <v-subheader class="_light-subheader">
+    <v-list-subheader class="_light-subheader">
         <v-icon small left @click="toggle">
             {{ isOn ? mdiLightbulbOnOutline : mdiLightbulbOutline }}
         </v-icon>
@@ -16,7 +16,7 @@
             :name="name"
             :index="group.start"
             @update-color="sendCommand" />
-    </v-subheader>
+    </v-list-subheader>
 </template>
 
 <script setup lang="ts">

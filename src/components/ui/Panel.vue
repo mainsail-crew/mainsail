@@ -96,7 +96,7 @@ const additionalStyle = computed(() => {
     overflow-y: hidden;
 }
 
-::v-deep .panel-toolbar .v-btn {
+:deep(.panel-toolbar) .v-btn {
     height: 100% !important;
     max-height: none;
 }

@@ -10,14 +10,12 @@
                     :class="itemClass"
                     v-bind="attrs"
                     v-on="on">
-                    <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                        <v-icon>{{ icon }}</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        <v-list-item-title tile class="menu-item-title">
-                            {{ title }}
-                        </v-list-item-title>
-                    </v-list-item-content>
+                    <template #prepend>
+                        <v-icon class="my-3 mr-3 menu-item-icon">{{ icon }}</v-icon>
+                    </template>
+                    <template #title>
+                        <span class="menu-item-title">{{ title }}</span>
+                    </template>
                 </v-list-item>
             </template>
             <span>{{ title }}</span>
@@ -30,7 +28,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { NaviPoint } from '@/components/mixins/navigation'
+import { NaviPoint } from '@/composables/useNavigation'
 
 const props = defineProps({
     item: { type: Object, required: true },

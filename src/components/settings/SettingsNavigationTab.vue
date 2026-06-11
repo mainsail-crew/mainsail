@@ -27,7 +27,7 @@ import { useTheme } from '@/composables/useTheme'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import SettingsNavigationTabItem from '@/components/settings/SettingsNavigationTabItem.vue'
-import type { NaviPoint } from '@/components/mixins/navigation'
+import type { NaviPoint } from '@/composables/useNavigation'
 
 const store = useStore()
 const { naviPoints } = useNavigation()

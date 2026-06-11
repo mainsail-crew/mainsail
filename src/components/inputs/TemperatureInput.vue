@@ -127,13 +127,13 @@ watch(() => props.target, (newVal: number) => {
 </script>
 
 <style scoped>
-._temp-input >>> .v-input__slot {
+._temp-input :deep(.v-input__slot) {
     min-height: 1rem !important;
     padding-left: 8px !important;
     padding-right: 8px !important;
 }
 
-._temp-input >>> .v-text-field__slot input {
+._temp-input :deep(.v-text-field__slot) input {
     padding-top: 4px;
     padding-bottom: 4px;
 }

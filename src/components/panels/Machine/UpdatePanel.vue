@@ -127,7 +127,7 @@ function btnSync() {
 </script>
 
 <style scoped>
-::v-deep .update-manager-list > div:last-child > div.row {
+:deep(.update-manager-list) > div:last-child > div.row {
     padding-bottom: 0 !important;
 }
 </style>

@@ -1,11 +1,13 @@
 <template>
     <v-card outlined class="mt-3 w-100">
-        <v-list-item three-line>
-            <v-list-item-content>
-                <div class="text-overline mb-2 d-flex flex-row">V4L2</div>
-                <v-list-item-title class="text-h5 mb-0">{{ device.camera_name }}</v-list-item-title>
-                <v-list-item-subtitle v-if="show_alt_name">{{ device.alt_name }}</v-list-item-subtitle>
-            </v-list-item-content>
+        <v-list-item lines="three">
+            <div class="text-overline mb-2 d-flex flex-row">V4L2</div>
+            <template #title>
+                <span class="text-h5 mb-0">{{ device.camera_name }}</span>
+            </template>
+            <template #subtitle v-if="show_alt_name">
+                <span>{{ device.alt_name }}</span>
+            </template>
         </v-list-item>
         <v-card-text>
             <v-row>

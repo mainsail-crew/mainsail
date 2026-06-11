@@ -4,8 +4,6 @@ import { defineConfig } from 'vite'
 
 import Components from 'unplugin-vue-components/vite'
 import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers'
-import { checker } from 'vite-plugin-checker'
-
 import path from 'path'
 import buildVersion from './src/plugins/build-version'
 import buildReleaseInfo from './src/plugins/build-release_info'
@@ -89,12 +87,6 @@ export default defineConfig({
             },
         }),
         version(),
-        checker({
-            typescript: {
-                root: path.resolve(__dirname),
-                buildMode: false,
-            },
-        }),
         Components({
             dts: true,
             resolvers: [Vuetify3Resolver()],

@@ -28,14 +28,12 @@
                                             :key="icon.value"
                                             link
                                             @click="form.icon = icon.value">
-                                            <v-list-item-icon class="mr-2">
-                                                <v-icon small class="mt-1">
+                                            <template #prepend>
+                                                <v-icon small class="mt-1 mr-2">
                                                     {{ convertWebcamIcon(icon.value) }}
                                                 </v-icon>
-                                            </v-list-item-icon>
-                                            <v-list-item-content>
-                                                <v-list-item-title v-text="icon.text" />
-                                            </v-list-item-content>
+                                            </template>
+                                            <template #title v-text="icon.text" />
                                         </v-list-item>
                                     </v-list>
                                 </v-menu>
@@ -429,10 +427,10 @@ function closeForm() {
 </script>
 
 <style scoped>
-::v-deep ._transition svg {
+:deep(._transition) svg {
     transition: transform 500ms;
 }
-::v-deep ._rotate-180 svg {
+:deep(._rotate-180) svg {
     transform: rotate(180deg);
 }
 
@@ -454,7 +452,7 @@ function closeForm() {
     }
 }
 
-._webcam-settings-name-field ::v-deep .v-text-field__details {
+._webcam-settings-name-field :deep(.v-text-field__details) {
     margin-bottom: -12px !important;
 }
 </style>

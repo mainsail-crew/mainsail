@@ -82,11 +82,11 @@ watch(showDialog, (newVal: boolean) => {
 </script>
 
 <style scoped>
-::v-deep .os-content .row:first-child {
+:deep(.os-content) .row:first-child {
     margin-top: 1em !important;
 }
 
-::v-deep .os-content .row:last-child {
+:deep(.os-content) .row:last-child {
     margin-bottom: 1em !important;
 }
 </style>

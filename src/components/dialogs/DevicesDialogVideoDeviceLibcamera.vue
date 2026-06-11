@@ -1,10 +1,10 @@
 <template>
     <v-card outlined class="mt-3 w-100">
-        <v-list-item three-line>
-            <v-list-item-content>
-                <div class="text-overline mb-2 d-flex flex-row">Libcamera</div>
-                <v-list-item-title class="text-h5 mb-0">{{ device.model }}</v-list-item-title>
-            </v-list-item-content>
+        <v-list-item lines="three">
+            <div class="text-overline mb-2 d-flex flex-row">Libcamera</div>
+            <template #title>
+                <span class="text-h5 mb-0">{{ device.model }}</span>
+            </template>
         </v-list-item>
         <v-card-text>
             <v-row class="mb-1">

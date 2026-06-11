@@ -1,14 +1,14 @@
 <template>
     <v-card outlined class="mt-3 w-100">
-        <v-list-item three-line>
-            <v-list-item-content>
-                <div class="text-overline mb-2 d-flex flex-row">
-                    <span>{{ device.device_type.toUpperCase().replaceAll('_', ' ') }}</span>
-                    <v-spacer />
-                    <span>{{ device.driver_name }}</span>
-                </div>
-                <v-list-item-title class="text-h5 mb-0">{{ device.device_name }}</v-list-item-title>
-            </v-list-item-content>
+        <v-list-item lines="three">
+            <div class="text-overline mb-2 d-flex flex-row">
+                <span>{{ device.device_type.toUpperCase().replaceAll('_', ' ') }}</span>
+                <v-spacer />
+                <span>{{ device.driver_name }}</span>
+            </div>
+            <template #title>
+                <span class="text-h5 mb-0">{{ device.device_name }}</span>
+            </template>
         </v-list-item>
         <v-card-text>
             <v-row>

@@ -130,11 +130,13 @@
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)">
                         <td class="file-list__select-td pr-0">
-                            <v-simple-checkbox
+                            <v-checkbox
                                 v-ripple
-                                :value="isSelected"
+                                :model-value="isSelected"
+                                density="compact"
+                                hide-details
                                 class="pa-0 mr-0"
-                                @click.stop="select(!isSelected)"></v-simple-checkbox>
+                                @click.stop="select(!isSelected)"></v-checkbox>
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
                             <template v-if="item.isDirectory">
@@ -379,7 +381,7 @@ import { useStore } from 'vuex'
 import { useSocket } from '@/composables/useSocket'
 import { useBase } from '@/composables/useBase'
 import type { LongpressEvent } from '@/directives/longpress'
-import { escapePath, formatFilesize, formatDateTime, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
@@ -407,7 +409,7 @@ interface dialogRenameObject {
     item: FileStateFile
 }
 
-const { loadings, apiUrl } = useBase()
+const { loadings, apiUrl, formatDateTime } = useBase()
 const store = useStore()
 const socket = useSocket()
 

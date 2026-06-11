@@ -277,11 +277,11 @@ function turnOffHeater() {
 </script>
 
 <style scoped>
-::v-deep .v-icon._no-focus-style:focus::after {
+:deep(.v-icon)._no-focus-style:focus::after {
     opacity: 0 !important;
 }
 
-::v-deep .cursor-pointer {
+:deep(.cursor-pointer) {
     cursor: pointer;
 }
 </style>

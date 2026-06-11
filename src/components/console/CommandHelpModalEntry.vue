@@ -1,11 +1,11 @@
 <template>
-    <v-list-item class="px-0" :two-line="twoLine">
-        <v-list-item-content class="px-0">
-            <v-list-item-title class="primary--text font-weight-bold cursor-pointer" @click="onCommand">
-                {{ command }}
-            </v-list-item-title>
-            <v-list-item-subtitle v-if="description" class="text-wrap">{{ description }}</v-list-item-subtitle>
-        </v-list-item-content>
+    <v-list-item class="px-0">
+        <template #title>
+            <span class="text-primary font-weight-bold cursor-pointer" @click="onCommand">{{ command }}</span>
+        </template>
+        <template #subtitle v-if="description">
+            <span class="text-wrap">{{ description }}</span>
+        </template>
     </v-list-item>
 </template>
 
@@ -29,7 +29,6 @@ const commandObject = computed(() => commands.value[props.command] ?? {})
 
 const description = computed<string | null>(() => commandObject.value.help ?? null)
 
-const twoLine = computed(() => description.value !== null)
 
 function onCommand() {
     emit('click-on-command', props.command)

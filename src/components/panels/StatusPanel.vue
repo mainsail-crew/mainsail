@@ -70,36 +70,36 @@
                 <v-divider class="mt-0 mb-0" />
             </template>
             <v-tabs v-model="activeTab" fixed-tabs>
-                <v-tab v-if="current_filename" href="#status">
+                <v-tab v-if="current_filename" value="status">
                     <v-icon>{{ mdiSpeedometer }}</v-icon>
                 </v-tab>
-                <v-tab v-if="displayFilesTab" href="#files">
+                <v-tab v-if="displayFilesTab" value="files">
                     <v-icon>{{ mdiFileDocumentMultipleOutline }}</v-icon>
                 </v-tab>
-                <v-tab v-if="displayHistoryTab" href="#history">
+                <v-tab v-if="displayHistoryTab" value="history">
                     <v-icon>{{ mdiHistory }}</v-icon>
                 </v-tab>
-                <v-tab href="#jobqueue">
+                <v-tab value="jobqueue">
                     <v-badge :color="jobQueueBadgeColor" :content="jobsCount.toString()" :inline="true">
                         <v-icon color="disabled">{{ mdiTrayFull }}</v-icon>
                     </v-badge>
                 </v-tab>
             </v-tabs>
             <v-divider class="my-0" />
-            <v-tabs-items v-model="activeTab" class="_border-radius">
-                <v-tab-item v-if="current_filename" value="status">
+            <v-window v-model="activeTab" class="_border-radius">
+                <v-window-item v-if="current_filename" value="status">
                     <status-panel-printstatus />
-                </v-tab-item>
-                <v-tab-item v-if="displayFilesTab" value="files">
+                </v-window-item>
+                <v-window-item v-if="displayFilesTab" value="files">
                     <status-panel-gcodefiles />
-                </v-tab-item>
-                <v-tab-item v-if="displayHistoryTab" value="history">
+                </v-window-item>
+                <v-window-item v-if="displayHistoryTab" value="history">
                     <status-panel-history />
-                </v-tab-item>
-                <v-tab-item value="jobqueue">
+                </v-window-item>
+                <v-window-item value="jobqueue">
                     <status-panel-jobqueue />
-                </v-tab-item>
-            </v-tabs-items>
+                </v-window-item>
+            </v-window>
         </panel>
         <confirmation-dialog
             v-model="showCancelJobDialog"

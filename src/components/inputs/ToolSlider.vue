@@ -1,7 +1,7 @@
 <template>
     <v-row dense>
         <v-col class="pa-0">
-            <v-subheader class="_tool-slider-subheader px-1">
+            <v-list-subheader class="_tool-slider-subheader px-1">
                 <v-icon small class="mr-2">
                     {{ icon }}
                 </v-icon>
@@ -37,7 +37,7 @@
                         </template>
                     </v-text-field>
                 </form>
-            </v-subheader>
+            </v-list-subheader>
             <transition name="fade">
                 <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
                     {{ errors()[0] }}
@@ -262,16 +262,16 @@ function increment(): void {
     margin-left: 12px;
 }
 
-._slider-input >>> .v-input__slot {
+._slider-input :deep(.v-input__slot) {
     min-height: 1rem !important;
 }
 
-._slider-input >>> .v-text-field__slot input {
+._slider-input :deep(.v-text-field__slot) input {
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
-._slider-input >>> .v-input__append-inner {
+._slider-input :deep(.v-input__append-inner) {
     margin: auto -5px auto 0 !important;
 }
 </style>

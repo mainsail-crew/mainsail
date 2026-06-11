@@ -2,12 +2,12 @@
     <v-container class="px-0 py-2">
         <v-row>
             <v-col class="pb-3">
-                <v-subheader class="_miscellaneous-sensor-subheader">
+                <v-list-subheader class="_miscellaneous-sensor-subheader">
                     <v-icon small class="mr-2">{{ unitToSymbol(unit) }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer />
                     <span>{{ output }}</span>
-                </v-subheader>
+                </v-list-subheader>
             </v-col>
         </v-row>
     </v-container>

@@ -2,7 +2,7 @@ import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { GuiNavigationState, GuiNavigationStateEntry } from './types'
 import Vue from 'vue'
-import { NaviPoint } from '@/components/mixins/navigation'
+import { NaviPoint } from '@/composables/useNavigation'
 
 export const mutations: MutationTree<GuiNavigationState> = {
     reset(state) {

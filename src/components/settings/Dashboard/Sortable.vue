@@ -80,7 +80,7 @@ function changeVisible(name: string, newVal: boolean) {
 </script>
 
 <style scoped>
-/deep/ .ghost {
+:deep(.ghost) {
     opacity: 0.5;
     background: #c8ebfb;
 }

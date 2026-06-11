@@ -1,7 +1,7 @@
 <template>
     <v-row class="my-0">
         <v-col class="py-2">
-            <v-subheader class="_light-subheader">
+            <v-list-subheader class="_light-subheader">
                 <v-icon v-if="groups.length === 0" small left @click="toggle">
                     {{ isOn ? mdiLightbulbOnOutline : mdiLightbulbOutline }}
                 </v-icon>
@@ -18,7 +18,7 @@
                     :type="type"
                     :name="name"
                     @update-color="sendCommand" />
-            </v-subheader>
+            </v-list-subheader>
             <miscellaneous-light-neopixel-group
                 v-for="group in groups"
                 :key="group.id"

@@ -2,7 +2,7 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import Vue from 'vue'
 import { GuiNavigationState, GuiNavigationStateEntry } from '@/store/gui/navigation/types'
-import { NaviPoint } from '@/components/mixins/navigation'
+import { NaviPoint } from '@/composables/useNavigation'
 
 export const actions: ActionTree<GuiNavigationState, RootState> = {
     reset({ commit }) {

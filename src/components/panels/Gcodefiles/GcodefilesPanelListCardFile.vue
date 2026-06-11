@@ -6,8 +6,10 @@
         :elevation="isSelected ? 4 : 1"
         @contextmenu="showContextMenuAction($event)">
         <div class="gcode-card__topbar">
-            <v-simple-checkbox
-                :value="isSelected"
+            <v-checkbox
+                :model-value="isSelected"
+                density="compact"
+                hide-details
                 class="gcode-card__checkbox"
                 :ripple="false"
                 @click.stop="select(!isSelected)" />

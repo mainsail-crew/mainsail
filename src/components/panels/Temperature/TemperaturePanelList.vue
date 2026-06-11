@@ -4,7 +4,7 @@
             mobile: (el) => el.width <= 395,
         }">
         <template #default="{ el }">
-            <v-simple-table class="temperature-panel-table">
+            <v-table class="temperature-panel-table">
                 <thead>
                     <tr>
                         <th class="icon">&nbsp;</th>
@@ -45,7 +45,7 @@
                             :is-responsive-mobile="el.is.mobile ?? false" />
                     </template>
                 </tbody>
-            </v-simple-table>
+            </v-table>
         </template>
     </responsive>
 </template>
@@ -137,33 +137,33 @@ function shortName(fullName: string) {
 
 <style scoped>
 .temperature-panel-table th,
-.temperature-panel-table ::v-deep td {
+.temperature-panel-table :deep(td) {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
     height: auto !important;
 }
 
-.temperature-panel-table ::v-deep tr:hover {
+.temperature-panel-table :deep(tr):hover {
     background: none !important;
 }
 
-.temperature-panel-table ::v-deep .icon {
+.temperature-panel-table :deep(.icon) {
     width: 24px;
     padding-right: 0 !important;
     text-align: center;
 }
 
-.temperature-panel-table ::v-deep .state {
+.temperature-panel-table :deep(.state) {
     width: 100px;
     text-align: right !important;
 }
 
-.temperature-panel-table ::v-deep .current {
+.temperature-panel-table :deep(.current) {
     width: 100px;
     text-align: right !important;
 }
 
-.temperature-panel-table ::v-deep .target {
+.temperature-panel-table :deep(.target) {
     width: 1px;
     white-space: nowrap;
 }

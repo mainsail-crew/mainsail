@@ -1,5 +1,5 @@
 <style scoped>
-.dashboard-rows-container /deep/ .v-list-item-group {
+.dashboard-rows-container :deep(.v-list-item-group) {
     min-height: 80px;
 }
 </style>

@@ -75,7 +75,7 @@ watch(() => props.currentline, (to: number) => {
 </script>
 
 <style scoped>
-/deep/ .cm-activeLine {
+:deep(.cm-activeLine) {
     background-color: #333 !important;
 }
 

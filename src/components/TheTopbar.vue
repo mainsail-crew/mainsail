@@ -327,7 +327,7 @@ function emergencyStop() {
 
 <style scoped>
 /*noinspection CssUnusedSymbol*/
-::v-deep .topbar .v-toolbar__content {
+:deep(.topbar) .v-toolbar__content {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
@@ -374,7 +374,7 @@ function emergencyStop() {
     height: 100% !important;
     max-height: none;
 }
-::v-deep .topbar .nav-logo {
+:deep(.topbar) .nav-logo {
     width: auto;
     height: 32px;
 }

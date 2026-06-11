@@ -62,7 +62,7 @@ const WebrtcGo2rtcAsync = defineAsyncComponent(() => import('@/components/webcam
 </script>
 
 <style scoped>
-::v-deep .webcamBackground {
+:deep(.webcamBackground) {
     display: flex;
     justify-content: center;
     overflow: hidden;
@@ -72,13 +72,13 @@ const WebrtcGo2rtcAsync = defineAsyncComponent(() => import('@/components/webcam
     max-height: calc(100vh - 155px);
 }
 
-::v-deep .webcamImage {
+:deep(.webcamImage) {
     width: 100%;
     transform-origin: center center;
     object-fit: contain;
 }
 
-html.theme--light ::v-deep .webcamBackground {
+html.theme--light :deep(.webcamBackground) {
     background: rgba(255, 255, 255, 0.7);
 }
 </style>

@@ -32,9 +32,11 @@
         </overlay-scrollbars>
         <template #append>
             <v-list-item class="small-list-item mb-2">
-                <v-list-item-icon class="menu-item-icon">
-                    <about-dialog />
-                </v-list-item-icon>
+                <template #prepend>
+                    <span class="menu-item-icon">
+                        <about-dialog />
+                    </span>
+                </template>
             </v-list-item>
         </template>
     </v-navigation-drawer>

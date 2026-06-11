@@ -30,23 +30,23 @@
                 </v-btn>
             </template>
             <v-tabs v-model="currentTab" fixed-tabs>
-                <v-tab v-for="t in tabs" :key="t.tab">{{ t.title }}</v-tab>
+                <v-tab v-for="t in tabs" :key="t.tab" :value="t.tab">{{ t.title }}</v-tab>
             </v-tabs>
             <overlay-scrollbars style="max-height: 400px; overflow-x: hidden">
-                <v-tabs-items v-model="currentTab">
-                    <v-tab-item v-for="canInterface in canInterfaces" :key="canInterface">
+                <v-window v-model="currentTab">
+                    <v-window-item v-for="canInterface in canInterfaces" :key="canInterface" :value="canInterface">
                         <devices-dialog-can :hide-system-entries="hideSystemEntries" :name="canInterface" />
-                    </v-tab-item>
-                    <v-tab-item key="serial">
+                    </v-window-item>
+                    <v-window-item value="serial">
                         <devices-dialog-serial :hide-system-entries="hideSystemEntries" />
-                    </v-tab-item>
-                    <v-tab-item key="usb">
+                    </v-window-item>
+                    <v-window-item value="usb">
                         <devices-dialog-usb :hide-system-entries="hideSystemEntries" />
-                    </v-tab-item>
-                    <v-tab-item key="video">
+                    </v-window-item>
+                    <v-window-item value="video">
                         <devices-dialog-video :hide-system-entries="hideSystemEntries" />
-                    </v-tab-item>
-                </v-tabs-items>
+                    </v-window-item>
+                </v-window>
             </overlay-scrollbars>
         </panel>
     </v-dialog>

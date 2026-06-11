@@ -19,7 +19,7 @@ import { useTheme } from '@/composables/useTheme'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import { mdiDragVertical, mdiCheckboxMarked, mdiCheckboxBlankOutline } from '@mdi/js'
-import type { NaviPoint } from '@/components/mixins/navigation'
+import type { NaviPoint } from '@/composables/useNavigation'
 
 const props = defineProps<{
     naviPoint: NaviPoint

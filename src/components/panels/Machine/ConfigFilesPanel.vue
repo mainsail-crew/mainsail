@@ -125,7 +125,7 @@
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, { isDirectory: true, filename: '..' })">
                         <td class="file-list__select-td pr-0">
-                            <v-simple-checkbox v-ripple disabled class="pa-0 mr-0" />
+                            <v-checkbox v-ripple disabled density="compact" hide-details class="pa-0 mr-0" />
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
                             <v-icon>{{ mdiFolderUpload }}</v-icon>
@@ -149,9 +149,11 @@
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, item)">
                         <td class="file-list__select-td pr-0">
-                            <v-simple-checkbox
+                            <v-checkbox
                                 v-ripple
-                                :value="isSelected"
+                                :model-value="isSelected"
+                                density="compact"
+                                hide-details
                                 class="pa-0 mr-0"
                                 @click.stop="select(!isSelected)" />
                         </td>
@@ -462,7 +464,7 @@ import { useBase } from '@/composables/useBase'
 import { useTheme } from '@/composables/useTheme'
 import { useSocket } from '@/composables/useSocket'
 import { useToast } from 'vue-toast-notification'
-import { escapePath, formatFilesize, formatDateTime, generateTimestamp, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, generateTimestamp, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import type { CancelTokenSource } from 'axios'
@@ -539,7 +541,7 @@ interface draggingFile {
 const store = useStore()
 const { t } = useI18n()
 const socket = useSocket()
-const { apiUrl, isMobile } = useBase()
+const { apiUrl, isMobile, formatDateTime } = useBase()
 const { machineButtonCol } = useTheme()
 const toast = useToast()
 

@@ -2,7 +2,7 @@
     <v-container class="px-0 py-2">
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
-                <v-subheader class="_fan-slider-subheader">
+                <v-list-subheader class="_fan-slider-subheader">
                     <v-icon
                         v-if="type === 'led' && target > 0"
                         class="mr-2"
@@ -40,7 +40,7 @@
                             @focus="$event.target.select()"
                             @keydown="checkInvalidChars" />
                     </form>
-                </v-subheader>
+                </v-list-subheader>
                 <transition v-if="controllable && pwm" name="fade">
                     <div v-show="errors.length > 0" class="_error-msg d-flex justify-end">
                         {{ errors[0] ?? '' }}
@@ -313,11 +313,11 @@ function submitInput(): void {
     margin-left: 12px;
 }
 
-._slider-input >>> .v-input__slot {
+._slider-input :deep(.v-input__slot) {
     min-height: 1rem !important;
 }
 
-._slider-input >>> .v-text-field__slot input {
+._slider-input :deep(.v-text-field__slot) input {
     padding: 4px 0 4px;
 }
 </style>

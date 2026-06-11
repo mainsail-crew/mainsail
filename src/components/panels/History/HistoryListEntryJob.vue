@@ -6,7 +6,7 @@
         @contextmenu="showContextMenu($event)"
         @click="detailsDialogBool = true">
         <td class="pr-0">
-            <v-simple-checkbox v-ripple :value="isSelected" class="pa-0 mr-0" @click.stop="select(!isSelected)" />
+            <v-checkbox v-ripple :model-value="isSelected" density="compact" hide-details class="pa-0 mr-0" @click.stop="select(!isSelected)" />
         </td>
         <td class="px-0 text-center" style="width: 32px">
             <template v-if="!item.exists">

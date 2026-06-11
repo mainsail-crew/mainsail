@@ -21,20 +21,16 @@
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item link @click="currentCamId = 'all'">
-                        <v-list-item-icon class="mr-2">
-                            <v-icon small class="mt-1">{{ mdiViewGrid }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title>{{ $t('Panels.WebcamPanel.All') }}</v-list-item-title>
-                        </v-list-item-content>
+                        <template #prepend>
+                            <v-icon small class="mt-1 mr-2">{{ mdiViewGrid }}</v-icon>
+                        </template>
+                        <template #title>{{ $t('Panels.WebcamPanel.All') }}</template>
                     </v-list-item>
                     <v-list-item v-for="webcam of webcams" :key="webcam.name" link @click="currentCamId = webcam.name">
-                        <v-list-item-icon class="mr-2">
-                            <v-icon small class="mt-1">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title v-text="webcam.name" />
-                        </v-list-item-content>
+                        <template #prepend>
+                            <v-icon small class="mt-1 mr-2">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
+                        </template>
+                        <template #title v-text="webcam.name" />
                     </v-list-item>
                 </v-list>
             </v-menu>

@@ -1,24 +1,26 @@
 <template>
     <v-list-item class="minHeight30 pr-2">
-        <v-list-item-title>
+        <template #title>
             <v-tooltip left>
                 <template #activator="{ on, attrs }">
                     <span v-bind="attrs" v-on="on">{{ name }}</span>
                 </template>
                 <span>{{ state }} ({{ subState }})</span>
             </v-tooltip>
-        </v-list-item-title>
-        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-            <v-btn v-if="state === 'inactive'" icon small @click="clickStart">
-                <v-icon small>{{ mdiPlay }}</v-icon>
-            </v-btn>
-            <v-btn v-else icon small @click="clickRestart">
-                <v-icon small>{{ mdiRestart }}</v-icon>
-            </v-btn>
-            <v-btn icon small :disabled="disableStopButton" :style="styleStopButton" @click="clickStop">
-                <v-icon small>{{ mdiStop }}</v-icon>
-            </v-btn>
-        </v-list-item-action>
+        </template>
+        <template #append>
+            <div class="my-0 d-flex flex-row" style="min-width: auto">
+                <v-btn v-if="state === 'inactive'" icon small @click="clickStart">
+                    <v-icon small>{{ mdiPlay }}</v-icon>
+                </v-btn>
+                <v-btn v-else icon small @click="clickRestart">
+                    <v-icon small>{{ mdiRestart }}</v-icon>
+                </v-btn>
+                <v-btn icon small :disabled="disableStopButton" :style="styleStopButton" @click="clickStop">
+                    <v-icon small>{{ mdiStop }}</v-icon>
+                </v-btn>
+            </div>
+        </template>
         <confirmation-dialog
             v-model="showRestartDialog"
             :title="dialogRestartTitle"
