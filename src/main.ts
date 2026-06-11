@@ -103,4 +103,6 @@ app.component('e-chart', EChart)
 initLoad().then(() => {
     app.use(store)
     app.mount('#app')
+}).catch((e) => {
+    window.console.error('Init failed:', e)
 })

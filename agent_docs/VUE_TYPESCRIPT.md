@@ -1,39 +1,37 @@
 # Vue & TypeScript
 
-## Vue Class Components
+## Vue 3 Composition API
 
-Use Vue Class Component with TypeScript decorators.
-Never use Vue 3 `<script setup>` or Options API.
+Use `<script setup lang="ts">` with Composition API.
+Never use `vue-class-component` / `vue-property-decorator` (Vue 2 only).
 
-See canonical example: [examples/VueComponentExample.vue](examples/VueComponentExample.vue)
+### `<script setup>` Member Order
 
-### Class Member Order
-
-1. `@Prop` declarations
-2. Data fields (class properties)
-3. Getters (computed properties)
-4. `@Watch` decorators
-5. Lifecycle hooks (mounted, beforeDestroy)
-6. Methods
+1. `import` statements
+2. `defineProps()` / `defineEmits()` / `defineModel()`
+3. `ref()` / `computed()` / `watch()`
+4. Composables (`useStore()`, `useI18n()`, custom composables)
+5. Lifecycle hooks (`onMounted`, `onBeforeUnmount`)
+6. Functions
 
 ### Documentation
 
-- [vue-class-component](https://class-component.vuejs.org/)
-- [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator)
+- [Vue 3 Script Setup](https://vuejs.org/api/sfc-script-setup.html)
+- [Vue 3 Composition API](https://vuejs.org/guide/extras/composition-api-faq.html)
 
 ## TypeScript
 
 Use explicit types for props, return values, and complex objects.
 Use `@/` alias for imports (e.g., `import { foo } from '@/store/types'`).
 
-Define `type`, `required`, and `default` for all props.
+Define types/interfaces for all props via `defineProps<{ ... }>()`.
 
 ## Template Best Practices
 
 Extract complex logic into computed properties.
 Keep templates declarative - no inline filtering or complex expressions.
 
-## Cleanup in beforeDestroy
+## Cleanup in onBeforeUnmount
 
 Always clean up resources:
 
@@ -42,3 +40,17 @@ Always clean up resources:
 - Observers (ResizeObserver, MutationObserver)
 - ECharts instances
 - WebSocket/WebRTC connections
+
+## Vuetiary 3 Component API
+
+| Vuetify 2 | Vuetify 3 |
+|-----------|-----------|
+| `<v-btn text>` | `<v-btn variant="text">` |
+| `<v-btn outlined>` | `<v-btn variant="outlined">` |
+| `<v-btn small>` | `<v-btn size="small">` |
+| `<v-btn tile>` | `<v-btn rounded="0">` |
+| `<v-btn block>` | `<v-btn class="d-block w-100">` |
+| `<v-alert dense>` | `<v-alert density="compact">` |
+| `col-6` class | `v-col-6` class |
+| `$vuetify.breakpoint` | `useDisplay()` |
+| `$vuetify.theme` | `useTheme()` |

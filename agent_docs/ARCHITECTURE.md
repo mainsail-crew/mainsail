@@ -1,13 +1,13 @@
 # Architecture
 
-**Stack:** Vue 2.7, Vuetify 2, Vuex 3, TypeScript (strict), Vite
+**Stack:** Vue 3.5, Vuetify 3, Vuex 4, TypeScript (strict), Vite
 
 ## Project Structure
 
 | Directory                | Purpose                                                                             |
 | ------------------------ | ----------------------------------------------------------------------------------- |
 | `src/components/`        | Vue components by feature (dialogs/, panels/, inputs/, webcams/, console/, charts/) |
-| `src/components/mixins/` | Reusable Vue mixins                                                                 |
+| `src/composables/`       | Reusable Vue composables (replacing Vue 2 mixins)                                   |
 | `src/pages/`             | Page components (Dashboard, Console, Files, Settings)                               |
 | `src/store/`             | Vuex modules                                                                        |
 | `src/plugins/`           | Vue plugins and utilities                                                           |
