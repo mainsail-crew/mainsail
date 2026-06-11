@@ -66,8 +66,6 @@ const initLoad = async () => {
         const res = await fetch(`${base}config.json`)
         const file = (await res.json()) as Record<string, unknown>
 
-        window.console.debug('Loaded config.json')
-
         await store.dispatch('importConfigJson', file)
 
         const locale = (file.defaultLocale ?? 'en') as string
@@ -75,18 +73,21 @@ const initLoad = async () => {
 
         const mode = file.defaultMode ?? defaultMode
     } catch (e) {
-        window.console.error('Failed to load config.json')
-        window.console.error(e)
+        window.console.error('Config init error:', e)
     }
 
-    const url = store.getters['socket/getWebsocketUrl']
-    const socket = new WebSocketClient({ url, store: store as unknown as WebSocketPluginOptions['store'] })
+    try {
+        const url = store.getters['socket/getWebsocketUrl']
+        const socket = new WebSocketClient({ url, store: store as unknown as WebSocketPluginOptions['store'] })
 
-    app.provide(SOCKET_KEY, socket)
-    app.config.globalProperties.$socket = socket
-    setSocket(socket)
+        app.provide(SOCKET_KEY, socket)
+        app.config.globalProperties.$socket = socket
+        setSocket(socket)
 
-    if (store?.state?.instancesDB === 'moonraker') socket.connect()
+        if (store?.state?.instancesDB === 'moonraker') socket.connect()
+    } catch (e) {
+        window.console.error('Socket init error:', e)
+    }
 }
 
 app.use(vuetify)
