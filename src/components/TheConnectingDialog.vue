@@ -32,78 +32,55 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-
-import ThemeMixin from '@/components/mixins/theme'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useTheme } from '@/composables/useTheme'
+import { useSocket } from '@/composables/useSocket'
 import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
 import { mdiConnection, mdiHelp } from '@mdi/js'
 
-@Component({
-    components: {
-        ConnectionStatus,
-    },
+const store = useStore()
+const { t } = useI18n()
+const { guiIsReady } = useBase()
+const { progressBarColor } = useTheme()
+const socket = useSocket()
+
+const counter = ref(0)
+
+const hostname = computed(() => store.state.socket.hostname)
+const port = computed(() => store.state.socket.port)
+const path = computed(() => store.state.socket.path)
+
+const formatHostname = computed(() =>
+    parseInt(port.value) !== 80 && port.value !== ''
+        ? hostname.value + ':' + port.value + path.value
+        : hostname.value + path.value
+)
+
+const isConnecting = computed(() => store.state.socket.isConnecting)
+const connectingFailed = computed(() => store.state.socket.connectingFailed)
+const showDialog = computed(() => true)
+
+const titleText = computed(() => {
+    if (connectingFailed.value) return t('ConnectionDialog.Failed', { host: formatHostname.value })
+    if (isConnecting.value) return t('ConnectionDialog.Connecting', { host: formatHostname.value })
+    if (!guiIsReady.value) return t('ConnectionDialog.Initializing')
+    return formatHostname.value
 })
-export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
-    mdiConnection = mdiConnection
-    mdiHelp = mdiHelp
 
-    counter = 0
+const connectionFailedMessage = computed(() => store.state.socket.connectionFailedMessage ?? null)
 
-    get hostname() {
-        return this.$store.state.socket.hostname
-    }
+const helpButtonUrl = computed(() => {
+    if (!store.state.socket.connectionFailedMessage) return null
+    return `https://docs.mainsail.xyz/faq/mainsail_errors/connection-${connectionFailedMessage.value?.toLowerCase()}`
+})
 
-    get port() {
-        return this.$store.state.socket.port
-    }
-
-    get path() {
-        return this.$store.state.socket.path
-    }
-
-    get formatHostname() {
-        return parseInt(this.port) !== 80 && this.port !== ''
-            ? this.hostname + ':' + this.port + this.path
-            : this.hostname + this.path
-    }
-
-    get isConnecting() {
-        return this.$store.state.socket.isConnecting
-    }
-
-    get connectingFailed() {
-        return this.$store.state.socket.connectingFailed
-    }
-
-    get showDialog() {
-        return true
-    }
-
-    get titleText() {
-        if (this.connectingFailed) return this.$t('ConnectionDialog.Failed', { host: this.formatHostname })
-        if (this.isConnecting) return this.$t('ConnectionDialog.Connecting', { host: this.formatHostname })
-        if (!this.guiIsReady) return this.$t('ConnectionDialog.Initializing')
-
-        return this.formatHostname
-    }
-
-    get connectionFailedMessage() {
-        return this.$store.state.socket.connectionFailedMessage ?? null
-    }
-
-    get helpButtonUrl() {
-        if (!this.$store.state.socket.connectionFailedMessage) return null
-
-        return `https://docs.mainsail.xyz/faq/mainsail_errors/connection-${this.connectionFailedMessage?.toLowerCase()}`
-    }
-
-    reconnect() {
-        this.counter++
-        this.$store.dispatch('socket/setData', { connectingFailed: false })
-        this.$socket.connect()
-    }
+function reconnect() {
+    counter.value++
+    store.dispatch('socket/setData', { connectingFailed: false })
+    socket.connect()
 }
 </script>

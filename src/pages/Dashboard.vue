@@ -87,13 +87,12 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useDashboard } from '@/composables/useDashboard'
 import CncStatusPanel from '@/components/panels/Cnc/CncStatusPanel.vue'
 import DroPanel from '@/components/panels/Cnc/DroPanel.vue'
-
-import DashboardMixin from '@/components/mixins/dashboard'
 import JogPanel from '@/components/panels/Cnc/JogPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import LedEffectsPanel from '@/components/panels/LedEffectsPanel.vue'
@@ -110,80 +109,35 @@ import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 
-@Component({
-    components: {
-        CncStatusPanel,
-        DroPanel,
-        JogPanel,
-        KlippyStatePanel,
-        LedEffectsPanel,
-        MachineSettingsPanel,
-        MacrogroupPanel,
-        MacrosPanel,
-        MiniconsolePanel,
-        MinSettingsPanel,
-        MiscellaneousPanel,
-        OffsetsPanel,
-        SpindleCoolantPanel,
-        StatusPanel,
-        ToolheadControlPanel,
-        TemperaturePanel,
-        WebcamPanel,
-    },
-})
-export default class PageDashboard extends Mixins(DashboardMixin) {
-    get mobileLayout() {
-        return this.$store.getters['gui/getPanels']('mobile', 0, true)
-    }
+const store = useStore()
+const { isMobile, isTablet, isDesktop, isWidescreen } = useDashboard()
 
-    get tabletLayout1() {
-        return this.$store.getters['gui/getPanels']('tablet', 1, true)
-    }
+const mobileLayout = computed(() => store.getters['gui/getPanels']('mobile', 0, true))
+const tabletLayout1 = computed(() => store.getters['gui/getPanels']('tablet', 1, true))
+const tabletLayout2 = computed(() => store.getters['gui/getPanels']('tablet', 2, true))
+const desktopLayout1 = computed(() => store.getters['gui/getPanels']('desktop', 1, true))
+const desktopLayout2 = computed(() => store.getters['gui/getPanels']('desktop', 2, true))
+const widescreenLayout1 = computed(() => store.getters['gui/getPanels']('widescreen', 1, true))
+const widescreenLayout2 = computed(() => store.getters['gui/getPanels']('widescreen', 2, true))
+const widescreenLayout3 = computed(() => store.getters['gui/getPanels']('widescreen', 3, true))
 
-    get tabletLayout2() {
-        return this.$store.getters['gui/getPanels']('tablet', 2, true)
-    }
+function extractPanelName(name: string) {
+    return name.split('_')[0] + '-panel'
+}
 
-    get desktopLayout1() {
-        return this.$store.getters['gui/getPanels']('desktop', 1, true)
-    }
+function extractPanelId(name: string) {
+    return name.split('_')[1] ?? null
+}
 
-    get desktopLayout2() {
-        return this.$store.getters['gui/getPanels']('desktop', 2, true)
-    }
+const registeredPanelNames = new Set([
+    'cnc-status', 'dro', 'jog', 'offsets', 'spindle-coolant', 'mdi',
+    'klippystate', 'minsettings', 'status',
+    'ledeffects', 'machinesettings', 'macrogroup', 'macros',
+    'miniconsole', 'miscellaneous', 'toolhead-control', 'temperature', 'webcam',
+])
 
-    get widescreenLayout1() {
-        return this.$store.getters['gui/getPanels']('widescreen', 1, true)
-    }
-
-    get widescreenLayout2() {
-        return this.$store.getters['gui/getPanels']('widescreen', 2, true)
-    }
-
-    get widescreenLayout3() {
-        return this.$store.getters['gui/getPanels']('widescreen', 3, true)
-    }
-
-    extractPanelName(name: string) {
-        return name.split('_')[0] + '-panel'
-    }
-
-    extractPanelId(name: string) {
-        return name.split('_')[1] ?? null
-    }
-
-    get registeredPanelNames(): Set<string> {
-        return new Set([
-            'cnc-status', 'dro', 'jog', 'offsets', 'spindle-coolant', 'mdi',
-            'klippystate', 'minsettings', 'status',
-            'ledeffects', 'machinesettings', 'macrogroup', 'macros',
-            'miniconsole', 'miscellaneous', 'toolhead-control', 'temperature', 'webcam',
-        ])
-    }
-
-    isPanelKnown(name: string): boolean {
-        const prefix = name.split('_')[0]
-        return this.registeredPanelNames.has(prefix)
-    }
+function isPanelKnown(name: string): boolean {
+    const prefix = name.split('_')[0]
+    return registeredPanelNames.has(prefix)
 }
 </script>

@@ -70,107 +70,98 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
 import { ServerUpdateManagerStateMessages } from '@/store/server/updateManager/types'
 import { mdiUpdate } from '@mdi/js'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
-@Component
-export default class TheUpdateDialog extends Mixins(BaseMixin) {
-    @Ref() readonly updaterLogScroll!: OverlayScrollbarsComponent
-    @Ref() readonly updaterLog!: HTMLDivElement
+const store = useStore()
+const socket = useSocket()
 
-    mdiUpdate = mdiUpdate
+const updaterLogScroll = ref<any>(null)
+const updaterLog = ref<any>(null)
 
-    headers = [
-        {
-            text: 'Date',
-            value: 'date',
-            width: '1%',
-            dateType: 'Date',
-        },
-        {
-            text: 'Message',
-            sortable: false,
-            value: 'message',
-            width: '99%',
-        },
-    ]
+const headers = [
+    {
+        text: 'Date',
+        value: 'date',
+        width: '1%',
+        dateType: 'Date',
+    },
+    {
+        text: 'Message',
+        sortable: false,
+        value: 'message',
+        width: '99%',
+    },
+]
 
-    get application() {
-        return this.$store.state.server.updateManager.updateResponse.application ?? ''
-    }
+const application = computed(() => store.state.server.updateManager.updateResponse.application ?? '')
 
-    get messages(): ServerUpdateManagerStateMessages[] {
-        return this.$store.state.server.updateManager.updateResponse.messages ?? []
-    }
+const messages = computed<ServerUpdateManagerStateMessages[]>(() => store.state.server.updateManager.updateResponse.messages ?? [])
 
-    get complete() {
-        return this.$store.state.server.updateManager.updateResponse.complete ?? true
-    }
+const complete = computed(() => store.state.server.updateManager.updateResponse.complete ?? true)
 
-    customSort(items: ServerUpdateManagerStateMessages[], sortBy: string[], sortDesc: boolean[]) {
-        const sortKey = sortBy[0]
-        const isDescending = sortDesc[0]
+function customSort(items: ServerUpdateManagerStateMessages[], sortBy: string[], sortDesc: boolean[]) {
+    const sortKey = sortBy[0]
+    const isDescending = sortDesc[0]
 
-        items.sort((a, b) => {
-            if (sortKey === 'date') {
-                const aDate = new Date(a.date).getTime()
-                const bDate = new Date(b.date).getTime()
+    items.sort((a, b) => {
+        if (sortKey === 'date') {
+            const aDate = new Date(a.date).getTime()
+            const bDate = new Date(b.date).getTime()
 
-                if (!isDescending) return bDate - aDate
+            if (!isDescending) return bDate - aDate
 
-                return aDate - bDate
-            }
-
-            if (sortKey === 'message') {
-                if (!isDescending) return a.message.toLowerCase().localeCompare(b.message.toLowerCase())
-
-                return b.message.toLowerCase().localeCompare(a.message.toLowerCase())
-            }
-
-            return 0
-        })
-
-        return items
-    }
-
-    formatTime(date: Date) {
-        const hours = date.getHours() < 10 ? '0' + date.getHours().toString() : date.getHours()
-        const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes().toString() : date.getMinutes()
-        const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds().toString() : date.getSeconds()
-
-        return hours + ':' + minutes + ':' + seconds
-    }
-
-    close() {
-        if (
-            this.application !== null &&
-            this.complete &&
-            ['client', 'mainsail', 'full'].includes(this.application.toLowerCase())
-        ) {
-            window.location.reload()
-            return
+            return aDate - bDate
         }
 
-        this.$store.commit('server/updateManager/resetUpdateResponse')
-        this.$socket.emit(
-            'machine.update.status',
-            { refresh: false },
-            { action: 'server/updateManager/onUpdateStatus' }
-        )
+        if (sortKey === 'message') {
+            if (!isDescending) return a.message.toLowerCase().localeCompare(b.message.toLowerCase())
+
+            return b.message.toLowerCase().localeCompare(a.message.toLowerCase())
+        }
+
+        return 0
+    })
+
+    return items
+}
+
+function formatTime(date: Date) {
+    const hours = date.getHours() < 10 ? '0' + date.getHours().toString() : date.getHours()
+    const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes().toString() : date.getMinutes()
+    const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds().toString() : date.getSeconds()
+
+    return hours + ':' + minutes + ':' + seconds
+}
+
+function close() {
+    if (
+        application.value !== null &&
+        complete.value &&
+        ['client', 'mainsail', 'full'].includes(application.value.toLowerCase())
+    ) {
+        window.location.reload()
+        return
     }
 
-    @Watch('messages')
-    messagesChanged() {
-        setTimeout(() => {
-            this.updaterLogScroll.osInstance()?.scroll({ y: '100%' })
-        }, 50)
-    }
+    store.commit('server/updateManager/resetUpdateResponse')
+    socket.emit(
+        'machine.update.status',
+        { refresh: false },
+        { action: 'server/updateManager/onUpdateStatus' }
+    )
 }
+
+watch(messages, () => {
+    setTimeout(() => {
+        updaterLogScroll.value?.osInstance()?.scroll({ y: '100%' })
+    }, 50)
+})
 </script>
 
 <style scoped>

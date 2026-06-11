@@ -27,17 +27,9 @@
         </v-row>
     </div>
 </template>
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-
-import Panel from '@/components/ui/Panel.vue'
+<script setup lang="ts">
+import { useBase } from '@/composables/useBase'
 import { mdiLockOutline } from '@mdi/js'
 
-@Component({
-    components: { Panel },
-})
-export default class PageHeightmap extends Mixins(BaseMixin) {
-    mdiLockOutline = mdiLockOutline
-}
+const { klipperReadyForGui } = useBase()
 </script>

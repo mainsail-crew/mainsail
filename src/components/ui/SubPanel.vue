@@ -28,29 +28,30 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import { mdiChevronDown } from '@mdi/js'
 
-@Component
-export default class Panel extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: mdiChevronDown }) declare readonly iconExpanded: string | null
-    @Prop({ required: false, default: mdiChevronDown }) declare readonly iconCollapsed: string | null
-    @Prop({ required: true, default: '' }) declare readonly title: string
-    @Prop({ required: true }) declare readonly subPanelClass: string
+const props = defineProps({
+    iconExpanded: { type: String, required: false, default: mdiChevronDown },
+    iconCollapsed: { type: String, required: false, default: mdiChevronDown },
+    title: { type: String, required: true, default: '' },
+    subPanelClass: { type: String, required: true },
+})
 
-    get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.subPanelClass, this.viewport)
-    }
+const store = useStore()
+const { viewport } = useBase()
 
-    set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', {
-            name: this.subPanelClass,
+const expand = computed({
+    get: () => store.getters['gui/getPanelExpand'](props.subPanelClass, viewport.value),
+    set: (newVal) => {
+        store.dispatch('gui/saveExpandPanel', {
+            name: props.subPanelClass,
             value: newVal,
-            viewport: this.viewport,
+            viewport: viewport.value,
         })
-    }
-}
+    },
+})
 </script>

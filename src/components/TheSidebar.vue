@@ -40,90 +40,65 @@
     </v-navigation-drawer>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useDisplay } from 'vuetify'
+import { useNavigation } from '@/composables/useNavigation'
+import { useTheme } from '@/composables/useTheme'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutDialog from '@/components/dialogs/AboutDialog.vue'
 import { navigationWidth, topbarHeight } from '@/store/variables'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import SidebarItem from '@/components/ui/SidebarItem.vue'
-import NavigationMixin from '@/components/mixins/navigation'
-import ThemeMixin from '@/components/mixins/theme'
 
-@Component({
-    components: {
-        SidebarItem,
-        TheSelectPrinterDialog,
-        AboutDialog,
-        MainsailLogo,
-    },
+const store = useStore()
+const display = useDisplay()
+const { isMobile, visibleNaviPoints } = useNavigation()
+const { sidebarLogo, sidebarBgImage, themeObj } = useTheme()
+const logoColor = computed(() => store.state.gui.uiSettings.logo)
+
+const navigationStyle = computed(() => store.state.gui.uiSettings.navigationStyle)
+
+const naviDrawer = computed({
+    get: (): boolean => store.state.naviDrawer,
+    set: (newVal) => store.dispatch('setNaviDrawer', newVal),
 })
-export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin, ThemeMixin) {
-    navigationWidth = navigationWidth
-    topbarHeight = topbarHeight
 
-    get naviDrawer(): boolean {
-        return this.$store.state.naviDrawer
+const sidebarBackground = computed((): string =>
+    store.getters['files/getCustomSidebarBackground'] ?? sidebarBgImage.value
+)
+
+const boolNaviTemp = computed((): boolean =>
+    !isMobile.value && display.mdAndDown.value
+)
+
+const sidebarCssVars = computed((): Record<string, string> => {
+    if (!boolNaviTemp.value) return {}
+    return {
+        top: `${topbarHeight}px !important`,
+        'padding-bottom': `${topbarHeight}px`,
     }
+})
 
-    set naviDrawer(newVal) {
-        this.$store.dispatch('setNaviDrawer', newVal)
-    }
+const printerName = computed((): string => {
+    if (store.state.gui.general.printername.length) return store.state.gui.general.printername
+    return store.state.printer.hostname
+})
 
-    get navigationStyle() {
-        return this.$store.state.gui.uiSettings.navigationStyle
-    }
+const logoCssVars = computed(() => {
+    if (navigationStyle.value === 'iconsOnly') return {}
+    return { 'margin-right': '16px' }
+})
 
-    get sidebarBackground(): string {
-        return this.$store.getters['files/getCustomSidebarBackground'] ?? this.sidebarBgImage
-    }
-
-    get boolNaviTemp(): boolean {
-        return !this.isMobile && this.$vuetify.breakpoint.mdAndDown
-    }
-
-    get sidebarCssVars(): Record<string, string> {
-        if (!this.boolNaviTemp) return {}
-
-        return {
-            top: `${topbarHeight}px !important`,
-            'padding-bottom': `${topbarHeight}px`,
-        }
-    }
-
-    get sidebarLogo(): string {
-        return this.$store.getters['files/getSidebarLogo']
-    }
-
-    get logoColor(): string {
-        return this.$store.state.gui.uiSettings.logo
-    }
-
-    get printerName(): string {
-        if (this.$store.state.gui.general.printername.length) return this.$store.state.gui.general.printername
-
-        return this.$store.state.printer.hostname
-    }
-
-    get logoCssVars() {
-        if (this.navigationStyle === 'iconsOnly') return {}
-
-        return { 'margin-right': '16px' }
-    }
-
-    get mobileLogoClass() {
-        return {
-            'sidebar-logo': true,
-            'no-text-decoration': true,
-            'no-background': true,
-            'no-border': true,
-            'pa-0': this.navigationStyle === 'iconsOnly',
-            'justify-center': this.navigationStyle === 'iconsOnly',
-        }
-    }
-}
+const mobileLogoClass = computed(() => ({
+    'sidebar-logo': true,
+    'no-text-decoration': true,
+    'no-background': true,
+    'no-border': true,
+    'pa-0': navigationStyle.value === 'iconsOnly',
+    'justify-center': navigationStyle.value === 'iconsOnly',
+}))
 </script>
 
 <style scoped>

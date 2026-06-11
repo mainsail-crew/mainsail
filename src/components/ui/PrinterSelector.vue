@@ -23,55 +23,38 @@
     </v-menu>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+import { useBase } from '@/composables/useBase'
 import router from '@/plugins/router'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import { mdiChevronDown } from '@mdi/js'
 
-@Component
-export default class PrinterSelector extends Mixins(BaseMixin) {
-    /**
-     * Icons
-     */
-    mdiChevronDown = mdiChevronDown
+const store = useStore()
+const route = useRoute()
+const { instancesDB } = useBase()
 
-    get displayMenuPoint() {
-        return (
-            (this.instancesDB !== 'moonraker' && this.countPrinters > 1) ||
-            (this.instancesDB === 'moonraker' && this.countPrinters)
-        )
-    }
+const countPrinters = computed(() => store.getters['farm/countPrinters'])
+const printers = computed(() => store.getters['farm/getPrinters'])
+const currentPage = computed(() => route.fullPath)
 
-    get printers() {
-        return this.$store.getters['farm/getPrinters']
-    }
+function getPrinterName(namespace: string) {
+    return store.getters['farm/' + namespace + '/getPrinterName']
+}
 
-    get countPrinters() {
-        return this.$store.getters['farm/countPrinters']
-    }
+function getPrinterDescription(printer: FarmPrinterState) {
+    return store.getters['farm/' + printer._namespace + '/getStatus']
+}
 
-    get currentPage() {
-        return this.$route.fullPath
+function changePrinter(printer: FarmPrinterState) {
+    if (printer.socket.isConnected) {
+        store.dispatch('changePrinter', { printer: printer._namespace })
     }
+}
 
-    switchToPrinters() {
-        router.push('/allPrinters')
-    }
-
-    getPrinterName(namespace: string) {
-        return this.$store.getters['farm/' + namespace + '/getPrinterName']
-    }
-
-    getPrinterDescription(printer: FarmPrinterState) {
-        return this.$store.getters['farm/' + printer._namespace + '/getStatus']
-    }
-
-    changePrinter(printer: FarmPrinterState) {
-        if (printer.socket.isConnected) {
-            this.$store.dispatch('changePrinter', { printer: printer._namespace })
-        }
-    }
+function switchToPrinters() {
+    router.push('/allPrinters')
 }
 </script>

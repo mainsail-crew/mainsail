@@ -125,26 +125,15 @@
     </svg>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
 
-@Component
-export default class ConnectionStatus extends Mixins(BaseMixin) {
-    @Prop({ default: false }) declare readonly moonraker: boolean | undefined
-    @Prop({ default: false }) declare readonly klipper: boolean | undefined
+const props = defineProps({
+    moonraker: { type: Boolean, default: false },
+    klipper: { type: Boolean, default: false },
+})
 
-    get colorMainsail() {
-        return '200,200,200'
-    }
-
-    get colorMoonraker() {
-        return this.moonraker ? '200,200,200' : '115,115,115'
-    }
-
-    get colorKlipper() {
-        return this.klipper ? '200,200,200' : '115,115,115'
-    }
-}
+const colorMainsail = computed(() => '200,200,200')
+const colorMoonraker = computed(() => props.moonraker ? '200,200,200' : '115,115,115')
+const colorKlipper = computed(() => props.klipper ? '200,200,200' : '115,115,115')
 </script>

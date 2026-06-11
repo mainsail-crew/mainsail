@@ -33,116 +33,109 @@
             @action="serviceStop" />
     </v-list-item>
 </template>
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
+import { useServices } from '@/composables/useServices'
 import { mdiPlay, mdiRestart, mdiStop } from '@mdi/js'
 import { capitalize } from '@/plugins/helpers'
-import ServiceMixins from '@/components/mixins/services'
 
-@Component({})
-export default class TopCornerMenuService extends Mixins(BaseMixin, ServiceMixins) {
-    mdiPlay = mdiPlay
-    mdiRestart = mdiRestart
-    mdiStop = mdiStop
+const props = defineProps({
+    service: { type: String, required: true },
+})
 
-    @Prop({ type: String, required: true }) service!: string
+const emit = defineEmits<{
+    (e: 'close-menu'): void
+}>()
 
-    showRestartDialog = false
-    showStopDialog = false
+const store = useStore()
+const { t } = useI18n()
+const { printerIsPrinting } = useBase()
+const socket = useSocket()
+const { hideOtherInstances, klipperInstance, moonrakerInstance } = useServices()
 
-    get name() {
-        if (this.hideOtherInstances && this.service === this.klipperInstance) return 'Klipper'
-        if (this.hideOtherInstances && this.service === this.moonrakerInstance) return 'Moonraker'
+const showRestartDialog = ref(false)
+const showStopDialog = ref(false)
 
-        return capitalize(this.service)
+const service_states = computed(() => store.state.server.system_info?.service_state ?? {})
+
+const name = computed(() => {
+    if (hideOtherInstances.value && props.service === klipperInstance.value) return 'Klipper'
+    if (hideOtherInstances.value && props.service === moonrakerInstance.value) return 'Moonraker'
+    return capitalize(props.service)
+})
+
+const state = computed(() => {
+    if (props.service in service_states.value) return service_states.value[props.service].active_state
+    return null
+})
+
+const subState = computed(() => {
+    if (props.service in service_states.value) return service_states.value[props.service].sub_state
+    return null
+})
+
+const dialogRestartTitle = computed(() => {
+    if (props.service === klipperInstance.value)
+        return t('App.TopCornerMenu.ConfirmationDialog.Title.KlipperRestart')
+    return t('App.TopCornerMenu.ConfirmationDialog.Title.ServiceRestart')
+})
+
+const dialogStopTitle = computed(() => t('App.TopCornerMenu.ConfirmationDialog.Title.ServiceStop'))
+
+const dialogRestartDescription = computed(() => {
+    if (props.service === klipperInstance.value)
+        return t('App.TopCornerMenu.ConfirmationDialog.Description.KlipperRestart')
+    return t('App.TopCornerMenu.ConfirmationDialog.Description.ServiceRestart')
+})
+
+const dialogStopDescription = computed(() => {
+    if (props.service === klipperInstance.value)
+        return t('App.TopCornerMenu.ConfirmationDialog.Description.KlipperStop')
+    return t('App.TopCornerMenu.ConfirmationDialog.Description.ServiceStop')
+})
+
+const disableStopButton = computed(() => state.value === 'inactive' || props.service === moonrakerInstance.value)
+
+const styleStopButton = computed(() =>
+    props.service === moonrakerInstance.value ? 'visibility: hidden;' : ''
+)
+
+function clickStart() {
+    socket.emit('machine.services.start', { service: props.service })
+    closeMenu()
+}
+
+function clickRestart() {
+    if (printerIsPrinting.value) {
+        showRestartDialog.value = true
+        return
     }
+    serviceRestart()
+}
 
-    get service_states() {
-        return this.$store.state.server.system_info?.service_state ?? {}
+function clickStop() {
+    if (printerIsPrinting.value) {
+        showStopDialog.value = true
+        return
     }
+    serviceStop()
+}
 
-    get state() {
-        if (this.service in this.service_states) return this.service_states[this.service].active_state
+function serviceRestart() {
+    socket.emit('machine.services.restart', { service: props.service })
+    closeMenu()
+}
 
-        return null
-    }
+function serviceStop() {
+    socket.emit('machine.services.stop', { service: props.service })
+    closeMenu()
+}
 
-    get subState() {
-        if (this.service in this.service_states) return this.service_states[this.service].sub_state
-
-        return null
-    }
-
-    get dialogRestartTitle() {
-        if (this.service === this.klipperInstance)
-            return this.$t('App.TopCornerMenu.ConfirmationDialog.Title.KlipperRestart')
-
-        return this.$t('App.TopCornerMenu.ConfirmationDialog.Title.ServiceRestart')
-    }
-
-    get dialogStopTitle() {
-        return this.$t('App.TopCornerMenu.ConfirmationDialog.Title.ServiceStop')
-    }
-
-    get dialogRestartDescription() {
-        if (this.service === this.klipperInstance)
-            return this.$t('App.TopCornerMenu.ConfirmationDialog.Description.KlipperRestart')
-
-        return this.$t('App.TopCornerMenu.ConfirmationDialog.Description.ServiceRestart')
-    }
-
-    get dialogStopDescription() {
-        if (this.service === this.klipperInstance)
-            return this.$t('App.TopCornerMenu.ConfirmationDialog.Description.KlipperStop')
-
-        return this.$t('App.TopCornerMenu.ConfirmationDialog.Description.ServiceStop')
-    }
-
-    get disableStopButton() {
-        return this.state === 'inactive' || this.service === this.moonrakerInstance
-    }
-
-    get styleStopButton() {
-        return this.service === this.moonrakerInstance ? 'visibility: hidden;' : ''
-    }
-
-    clickStart() {
-        this.$socket.emit('machine.services.start', { service: this.service })
-        this.closeMenu()
-    }
-
-    clickRestart() {
-        if (this.printerIsPrinting) {
-            this.showRestartDialog = true
-            return
-        }
-
-        this.serviceRestart()
-    }
-
-    clickStop() {
-        if (this.printerIsPrinting) {
-            this.showStopDialog = true
-            return
-        }
-
-        this.serviceStop()
-    }
-
-    serviceRestart() {
-        this.$socket.emit('machine.services.restart', { service: this.service })
-        this.closeMenu()
-    }
-
-    serviceStop() {
-        this.$socket.emit('machine.services.stop', { service: this.service })
-        this.closeMenu()
-    }
-
-    closeMenu() {
-        this.$emit('close-menu')
-    }
+function closeMenu() {
+    emit('close-menu')
 }
 </script>

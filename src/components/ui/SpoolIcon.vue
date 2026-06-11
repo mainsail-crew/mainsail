@@ -19,30 +19,22 @@
     </svg>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
 
-@Component({})
-export default class SpoolIcon extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: '#ff0' })
-    declare readonly color: string
+const props = defineProps({
+    color: { type: String, required: false, default: '#ff0' },
+})
 
-    get styleCircle1() {
-        return { fill: this.color }
-    }
+const emit = defineEmits<{
+    (e: 'click-spool'): void
+}>()
 
-    get styleCircle2() {
-        return { fill: '#bebebe' }
-    }
+const styleCircle1 = computed(() => ({ fill: props.color }))
+const styleCircle2 = computed(() => ({ fill: '#bebebe' }))
+const styleCircle3 = computed(() => ({ fill: '#343434' }))
 
-    get styleCircle3() {
-        return { fill: '#343434' }
-    }
-
-    clickSpool() {
-        this.$emit('click-spool')
-    }
+function clickSpool() {
+    emit('click-spool')
 }
 </script>

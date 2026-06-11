@@ -13,25 +13,18 @@
         </v-alert>
     </v-row>
 </template>
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import GcodefilesPanel from '@/components/panels/GcodefilesPanel.vue'
 import JobqueuePanel from '@/components/panels/JobqueuePanel.vue'
 import { mdiLockOutline } from '@mdi/js'
 
-@Component({
-    components: { JobqueuePanel, GcodefilesPanel },
-})
-export default class PageFiles extends Mixins(BaseMixin) {
-    mdiLockOutline = mdiLockOutline
+const store = useStore()
+const { existGcodesRootDirectory, moonrakerComponents } = useBase()
 
-    get queued_jobs() {
-        return this.$store.state.server.jobQueue.queued_jobs ?? []
-    }
+const queued_jobs = computed(() => store.state.server.jobQueue.queued_jobs ?? [])
 
-    get showJobQueue() {
-        return this.moonrakerComponents.includes('job_queue') && this.queued_jobs.length
-    }
-}
+const showJobQueue = computed(() => moonrakerComponents.value.includes('job_queue') && queued_jobs.value.length)
 </script>

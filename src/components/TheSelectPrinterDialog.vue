@@ -263,9 +263,13 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from './mixins/base'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
@@ -281,239 +285,186 @@ import {
     mdiSync,
 } from '@mdi/js'
 
-@Component({
-    components: { Panel },
+const store = useStore()
+const route = useRoute()
+const { t } = useI18n()
+const { guiIsReady, instancesDB } = useBase()
+const socket = useSocket()
+
+const addPrinterValid = ref(false)
+const dialogAddPrinter = ref({
+    bool: false,
+    hostname: '',
+    port: 7125,
+    path: '/',
+    name: '',
 })
-export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
-    addPrinterValid = false
-    dialogAddPrinter = {
-        bool: false,
-        hostname: '',
-        port: 7125,
-        path: '/',
-        name: '',
-    }
-    editPrinterValid = false
-    dialogEditPrinter = {
-        bool: false,
-        id: '',
-        hostname: '',
-        port: 0,
-        path: '/',
-        name: '',
-    }
-    showOptionalSettings = false
+const editPrinterValid = ref(false)
+const dialogEditPrinter = ref({
+    bool: false,
+    id: '',
+    hostname: '',
+    port: 0,
+    path: '/',
+    name: '',
+})
+const showOptionalSettings = ref(false)
 
-    /**
-     * Icons
-     */
-    mdiConnection = mdiConnection
-    mdiCloseThick = mdiCloseThick
-    mdiSync = mdiSync
-    mdiDelete = mdiDelete
-    mdiPencil = mdiPencil
-    mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
-    mdiCancel = mdiCancel
-    mdiShowOptional = mdiCog
-    mdiHideOptional = mdiCogOff
+const mdiShowOptional = mdiCog
+const mdiHideOptional = mdiCogOff
 
-    get printers() {
-        return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
-    }
+const printers = computed(() => store.getters['gui/remoteprinters/getRemoteprinters'] ?? [])
 
-    get canAddPrinters() {
-        return this.instancesDB !== 'json'
-    }
+const canAddPrinters = computed(() => instancesDB.value !== 'json')
 
-    get protocol() {
-        return this.$store.state.socket.protocol
-    }
+const protocol = computed(() => store.state.socket.protocol)
+const defaultMoonrakerPort = computed(() => protocol.value === 'wss' ? 7130 : 7125)
+const hostname = computed(() => store.state.socket.hostname)
+const port = computed(() => store.state.socket.port)
+const path = computed(() => store.state.socket.path)
+const name = computed(() => store.state.printer)
+const formatHostname = computed(() => hostname.value + (port.value !== '' ? ':' + port.value : '') + (path.value !== '' ? path.value : ''))
+const isConnected = computed(() => store.state.socket.isConnected)
+const isConnecting = computed(() => store.state.socket.isConnecting)
+const connectingFailed = computed(() => store.state.socket.connectingFailed)
+const showDialog = computed(() => !isConnected.value || (isConnected.value && !guiIsReady.value))
+const currentUrl = computed(() => {
+    let output = document.location.protocol + '//' + window.location.hostname
+    if (parseInt(window.location.port) !== 80 && window.location.port !== '') output += ':' + window.location.port
+    return output
+})
 
-    get defaultMoonrakerPort() {
-        return this.protocol === 'wss' ? 7130 : 7125
-    }
-
-    get hostname() {
-        return this.$store.state.socket.hostname
-    }
-
-    get port() {
-        return this.$store.state.socket.port
-    }
-
-    get path() {
-        return this.$store.state.socket.path
-    }
-
-    get name() {
-        return this.$store.state.printer
-    }
-
-    get formatHostname() {
-        return this.hostname + (this.port !== '' ? ':' + this.port : '') + (this.path !== '' ? this.path : '')
-    }
-
-    get isConnected() {
-        return this.$store.state.socket.isConnected
-    }
-
-    get isConnecting() {
-        return this.$store.state.socket.isConnecting
-    }
-
-    get connectingFailed() {
-        return this.$store.state.socket.connectingFailed
-    }
-
-    get showDialog() {
-        return !this.isConnected || (this.isConnected && !this.guiIsReady)
-    }
-
-    get currentUrl() {
-        let output = document.location.protocol + '//' + window.location.hostname
-        if (parseInt(window.location.port) !== 80 && window.location.port !== '') output += ':' + window.location.port
-
-        return output
-    }
-
-    get showCorsInfo() {
-        if (this.printers.length) {
-            this.printers.forEach((printer: GuiRemoteprintersStatePrinter) => {
-                if (printer && !printer.socket?.isConnected) return true
-            })
-
-            return false
-        }
-
-        return true
-    }
-
-    get panelTitle() {
-        if (this.dialogAddPrinter.bool) return this.$t('SelectPrinterDialog.AddPrinter')
-        else if (this.dialogEditPrinter.bool) return this.$t('SelectPrinterDialog.EditPrinter')
-        else if (this.isConnecting) return this.$t('SelectPrinterDialog.Connecting', { host: this.formatHostname })
-        else if (this.isConnected && !this.guiIsReady) return this.$t('ConnectionDialog.Initializing')
-        else if (this.connectingFailed)
-            return this.$t('SelectPrinterDialog.ConnectionFailed', { host: this.formatHostname })
-        else return this.$t('SelectPrinterDialog.SelectPrinter')
-    }
-
-    getPrinterName(namespace: string) {
-        return this.$store.getters['farm/getPrinterName'](namespace)
-    }
-
-    createPrinter() {
-        this.dialogAddPrinter.hostname = ''
-        this.dialogAddPrinter.port = this.defaultMoonrakerPort
-        this.dialogAddPrinter.bool = true
-    }
-
-    addPrinter() {
-        const values = {
-            hostname: this.dialogAddPrinter.hostname,
-            port: this.dialogAddPrinter.port,
-            path: this.dialogAddPrinter.path,
-            name: this.dialogAddPrinter.name,
-        }
-        this.$store.dispatch('gui/remoteprinters/store', { values })
-
-        this.dialogAddPrinter.hostname = ''
-        this.dialogAddPrinter.bool = false
-        this.dialogAddPrinter.path = '/'
-        this.dialogAddPrinter.name = ''
-    }
-
-    editPrinter(printer: GuiRemoteprintersStatePrinter) {
-        this.dialogEditPrinter.hostname = printer.hostname
-        this.dialogEditPrinter.port = printer.port
-        this.dialogEditPrinter.id = printer.id ?? ''
-        this.dialogEditPrinter.path = printer.path ?? '/'
-        this.dialogEditPrinter.name = printer.name ?? ''
-        this.dialogEditPrinter.bool = true
-
-        this.showOptionalSettings = printer.name ? printer.name.length > 0 : false
-    }
-
-    updatePrinter() {
-        const values = {
-            hostname: this.dialogEditPrinter.hostname,
-            port: this.dialogEditPrinter.port,
-            path: this.dialogEditPrinter.path,
-            id: this.dialogEditPrinter.id,
-            name: this.dialogEditPrinter.name,
-        }
-        this.$store.dispatch('gui/remoteprinters/update', {
-            id: this.dialogEditPrinter.id,
-            values,
+const showCorsInfo = computed(() => {
+    if (printers.value.length) {
+        printers.value.forEach((printer: GuiRemoteprintersStatePrinter) => {
+            if (printer && !printer.socket?.isConnected) return true
         })
-
-        this.dialogEditPrinter.bool = false
+        return false
     }
+    return true
+})
 
-    delPrinter() {
-        this.$store.dispatch('gui/remoteprinters/delete', this.dialogEditPrinter.id)
-        this.dialogEditPrinter.bool = false
-    }
+const panelTitle = computed(() => {
+    if (dialogAddPrinter.value.bool) return t('SelectPrinterDialog.AddPrinter')
+    else if (dialogEditPrinter.value.bool) return t('SelectPrinterDialog.EditPrinter')
+    else if (isConnecting.value) return t('SelectPrinterDialog.Connecting', { host: formatHostname.value })
+    else if (isConnected.value && !guiIsReady.value) return t('ConnectionDialog.Initializing')
+    else if (connectingFailed.value) return t('SelectPrinterDialog.ConnectionFailed', { host: formatHostname.value })
+    else return t('SelectPrinterDialog.SelectPrinter')
+})
 
-    connect(printer: FarmPrinterState) {
-        this.$store.dispatch('socket/setData', {
-            hostname: printer.socket.hostname,
-            port: printer.socket.port,
-            path: printer.socket.path,
-        })
-        const normPath = printer.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
-        const url =
-            this.protocol +
-            '://' +
-            printer.socket.hostname +
-            ':' +
-            printer.socket.port +
-            (normPath.length > 0 ? `/${normPath}` : '') +
-            '/websocket'
-        this.$socket.setUrl(url)
-        this.$socket.connect()
-    }
-
-    reconnect() {
-        this.$store.dispatch('socket/setData', { connectingFailed: false })
-        this.$socket.connect()
-    }
-
-    switchToChangePrinter() {
-        this.$store.dispatch('socket/setData', { connectingFailed: false })
-    }
-
-    checkPrinters() {
-        this.printers.forEach((printer: GuiRemoteprintersStatePrinter) => {
-            if (printer && !printer.socket?.isConnected && !printer.socket?.isConnecting) {
-                this.$store.dispatch('farm/' + printer.id + '/connect')
-            }
-        })
-    }
-
-    mounted() {
-        this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(() => {
-            if (!('printer' in this.$route.query)) return
-
-            const name = this.$route.query.printer.toString().toLowerCase()
-            const matching = this.printers.filter(
-                (printer: GuiRemoteprintersStatePrinter) => printer.name?.toLowerCase() === name
-            )
-
-            // no printers found with this name
-            if (matching.length == 0) {
-                window.console.error(`No printer with given name '${name}' found. Showing selection dialog instead.`)
-                return
-            }
-
-            // multiple printers found with this name
-            if (matching.length > 1) {
-                window.console.error(`Multiple printers with name '${name}' found. Showing selection dialog instead.`)
-                return
-            }
-
-            this.connect(matching[0])
-        })
-    }
+function getPrinterName(namespace: string) {
+    return store.getters['farm/getPrinterName'](namespace)
 }
+
+function createPrinter() {
+    dialogAddPrinter.value.hostname = ''
+    dialogAddPrinter.value.port = defaultMoonrakerPort.value
+    dialogAddPrinter.value.bool = true
+}
+
+function addPrinter() {
+    const values = {
+        hostname: dialogAddPrinter.value.hostname,
+        port: dialogAddPrinter.value.port,
+        path: dialogAddPrinter.value.path,
+        name: dialogAddPrinter.value.name,
+    }
+    store.dispatch('gui/remoteprinters/store', { values })
+    dialogAddPrinter.value.hostname = ''
+    dialogAddPrinter.value.bool = false
+    dialogAddPrinter.value.path = '/'
+    dialogAddPrinter.value.name = ''
+}
+
+function editPrinter(printer: GuiRemoteprintersStatePrinter) {
+    dialogEditPrinter.value.hostname = printer.hostname
+    dialogEditPrinter.value.port = printer.port
+    dialogEditPrinter.value.id = printer.id ?? ''
+    dialogEditPrinter.value.path = printer.path ?? '/'
+    dialogEditPrinter.value.name = printer.name ?? ''
+    dialogEditPrinter.value.bool = true
+    showOptionalSettings.value = printer.name ? printer.name.length > 0 : false
+}
+
+function updatePrinter() {
+    const values = {
+        hostname: dialogEditPrinter.value.hostname,
+        port: dialogEditPrinter.value.port,
+        path: dialogEditPrinter.value.path,
+        id: dialogEditPrinter.value.id,
+        name: dialogEditPrinter.value.name,
+    }
+    store.dispatch('gui/remoteprinters/update', {
+        id: dialogEditPrinter.value.id,
+        values,
+    })
+    dialogEditPrinter.value.bool = false
+}
+
+function delPrinter() {
+    store.dispatch('gui/remoteprinters/delete', dialogEditPrinter.value.id)
+    dialogEditPrinter.value.bool = false
+}
+
+function connect(printer: FarmPrinterState) {
+    store.dispatch('socket/setData', {
+        hostname: printer.socket.hostname,
+        port: printer.socket.port,
+        path: printer.socket.path,
+    })
+    const normPath = printer.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+    const url =
+        protocol.value +
+        '://' +
+        printer.socket.hostname +
+        ':' +
+        printer.socket.port +
+        (normPath.length > 0 ? `/${normPath}` : '') +
+        '/websocket'
+    socket.setUrl(url)
+    socket.connect()
+}
+
+function reconnect() {
+    store.dispatch('socket/setData', { connectingFailed: false })
+    socket.connect()
+}
+
+function switchToChangePrinter() {
+    store.dispatch('socket/setData', { connectingFailed: false })
+}
+
+function checkPrinters() {
+    printers.value.forEach((printer: GuiRemoteprintersStatePrinter) => {
+        if (printer && !printer.socket?.isConnected && !printer.socket?.isConnecting) {
+            store.dispatch('farm/' + printer.id + '/connect')
+        }
+    })
+}
+
+onMounted(() => {
+    store.dispatch('gui/remoteprinters/initFromLocalstorage').then(() => {
+        if (!('printer' in route.query)) return
+
+        const printerQuery = route.query.printer
+        if (printerQuery === null || printerQuery === undefined) return
+        const name = printerQuery.toString().toLowerCase()
+        const matching = printers.value.filter(
+            (printer: GuiRemoteprintersStatePrinter) => printer.name?.toLowerCase() === name
+        )
+
+        if (matching.length == 0) {
+            window.console.error(`No printer with given name '${name}' found. Showing selection dialog instead.`)
+            return
+        }
+
+        if (matching.length > 1) {
+            window.console.error(`Multiple printers with name '${name}' found. Showing selection dialog instead.`)
+            return
+        }
+
+        connect(matching[0])
+    })
+})
 </script>

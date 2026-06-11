@@ -64,10 +64,11 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
 import SettingsGeneralTab from '@/components/settings/SettingsGeneralTab.vue'
 import SettingsWebcamsTab from '@/components/settings/SettingsWebcamsTab.vue'
 import SettingsMacrosTab from '@/components/settings/SettingsMacrosTab.vue'
@@ -79,7 +80,6 @@ import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
 import SettingsNavigationTab from '@/components/settings/SettingsNavigationTab.vue'
-
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseThick,
@@ -100,118 +100,51 @@ import {
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
-@Component({
-    components: {
-        Panel,
-        SettingsUiSettingsTab,
-        SettingsRemotePrintersTab,
-        SettingsConsoleTab,
-        SettingsControlTab,
-        SettingsMacrosTab,
-        SettingsWebcamsTab,
-        SettingsGeneralTab,
-        SettingsDashboardTab,
-        SettingsGCodeViewerTab,
-        SettingsEditorTab,
-        SettingsMiscellaneousTab,
-        SettingsNavigationTab,
-    },
+const store = useStore()
+const { t } = useI18n()
+const { isMobile } = useBase()
+
+const settingsScroll = ref<any>(null)
+
+const showSettings = ref(false)
+const activeTab = ref('general')
+
+const tabTitles = computed(() => {
+    const tabs = [
+        { icon: mdiCog, name: 'general', title: t('Settings.GeneralTab.General') },
+        { icon: mdiPalette, name: 'ui-settings', title: t('Settings.UiSettingsTab.UiSettings') },
+        { icon: mdiMonitorDashboard, name: 'dashboard', title: t('Settings.DashboardTab.Dashboard') },
+        { icon: mdiWebcam, name: 'webcams', title: t('Settings.WebcamsTab.Webcams') },
+        { icon: mdiCodeTags, name: 'macros', title: t('Settings.MacrosTab.Macros') },
+        { icon: mdiTune, name: 'control', title: t('Settings.ControlTab.Control') },
+        { icon: mdiConsoleLine, name: 'console', title: t('Settings.ConsoleTab.Console') },
+        { icon: mdiPrinter3d, name: 'remote-printers', title: t('Settings.RemotePrintersTab.RemotePrinters') },
+        { icon: mdiVideo3d, name: 'g-code-viewer', title: t('Settings.GCodeViewerTab.GCodeViewer') },
+        { icon: mdiFileDocumentEditOutline, name: 'editor', title: t('Settings.EditorTab.Editor') },
+        { icon: mdiDipSwitch, name: 'miscellaneous', title: t('Settings.MiscellaneousTab.Miscellaneous') },
+        { icon: mdiMenu, name: 'navigation', title: t('Settings.NavigationTab.Navigation') },
+    ]
+
+    return tabs.sort((a, b) => {
+        if (a.name === 'general') return -1
+        if (b.name === 'general') return 1
+
+        const stringA = a.title.toString().toLowerCase()
+        const stringB = b.title.toString().toLowerCase()
+
+        if (stringA < stringB) return -1
+        if (stringA > stringB) return 1
+
+        return 0
+    })
 })
-export default class TheSettingsMenu extends Mixins(BaseMixin) {
-    @Ref() readonly settingsScroll!: OverlayScrollbarsComponent
 
-    mdiCloseThick = mdiCloseThick
-    mdiCogs = mdiCogs
+watch(activeTab, () => {
+    scrollToTop()
+})
 
-    showSettings = false
-    activeTab = 'general'
-
-    get tabTitles() {
-        const tabs = [
-            {
-                icon: mdiCog,
-                name: 'general',
-                title: this.$t('Settings.GeneralTab.General'),
-            },
-            {
-                icon: mdiPalette,
-                name: 'ui-settings',
-                title: this.$t('Settings.UiSettingsTab.UiSettings'),
-            },
-            {
-                icon: mdiMonitorDashboard,
-                name: 'dashboard',
-                title: this.$t('Settings.DashboardTab.Dashboard'),
-            },
-            {
-                icon: mdiWebcam,
-                name: 'webcams',
-                title: this.$t('Settings.WebcamsTab.Webcams'),
-            },
-            {
-                icon: mdiCodeTags,
-                name: 'macros',
-                title: this.$t('Settings.MacrosTab.Macros'),
-            },
-            {
-                icon: mdiTune,
-                name: 'control',
-                title: this.$t('Settings.ControlTab.Control'),
-            },
-            {
-                icon: mdiConsoleLine,
-                name: 'console',
-                title: this.$t('Settings.ConsoleTab.Console'),
-            },
-            {
-                icon: mdiPrinter3d,
-                name: 'remote-printers',
-                title: this.$t('Settings.RemotePrintersTab.RemotePrinters'),
-            },
-            {
-                icon: mdiVideo3d,
-                name: 'g-code-viewer',
-                title: this.$t('Settings.GCodeViewerTab.GCodeViewer'),
-            },
-            {
-                icon: mdiFileDocumentEditOutline,
-                name: 'editor',
-                title: this.$t('Settings.EditorTab.Editor'),
-            },
-            {
-                icon: mdiDipSwitch,
-                name: 'miscellaneous',
-                title: this.$t('Settings.MiscellaneousTab.Miscellaneous'),
-            },
-            {
-                icon: mdiMenu,
-                name: 'navigation',
-                title: this.$t('Settings.NavigationTab.Navigation'),
-            },
-        ]
-
-        return tabs.sort((a, b) => {
-            if (a.name === 'general') return -1
-            if (b.name === 'general') return 1
-
-            const stringA = a.title.toString().toLowerCase()
-            const stringB = b.title.toString().toLowerCase()
-
-            if (stringA < stringB) return -1
-            if (stringA > stringB) return 1
-
-            return 0
-        })
-    }
-
-    @Watch('activeTab')
-    activeTabWatch() {
-        this.scrollToTop()
-    }
-
-    scrollToTop() {
-        this.settingsScroll?.osInstance()?.scroll({ y: '0%' })
-    }
+function scrollToTop() {
+    settingsScroll.value?.osInstance()?.scroll({ y: '0%' })
 }
 </script>
 

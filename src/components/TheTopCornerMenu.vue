@@ -95,16 +95,18 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useServices } from '@/composables/useServices'
+import { useSocket } from '@/composables/useSocket'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiPowerStandby, mdiRestart, mdiPower, mdiToggleSwitch, mdiToggleSwitchOff } from '@mdi/js'
 import TopCornerMenuService from '@/components/ui/TopCornerMenuService.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
-import ServiceMixins from '@/components/mixins/services'
 
 interface dialogPowerDeviceChange {
     show: boolean
@@ -121,153 +123,148 @@ interface dialogConfirmation {
     actionButtonText: string
 }
 
-@Component({
-    components: { ConfirmationDialog, TopCornerMenuService, Panel },
+const store = useStore()
+const { t } = useI18n()
+const { klipperState, printer_state, printerIsPrinting } = useBase()
+const { hideOtherInstances, klipperInstance, moonrakerInstance } = useServices()
+const socket = useSocket()
+
+const showMenu = ref(false)
+const dialogPowerDeviceChange = ref<dialogPowerDeviceChange>({
+    show: false,
+    device: '',
+    value: '',
 })
-export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
-    mdiCloseThick = mdiCloseThick
-    mdiPowerStandby = mdiPowerStandby
-    mdiRestart = mdiRestart
-    mdiPower = mdiPower
-    mdiToggleSwitch = mdiToggleSwitch
-    mdiToggleSwitchOff = mdiToggleSwitchOff
+const dialogConfirmation = ref<dialogConfirmation>({
+    show: false,
+    serviceName: null,
+    executableFunction: null,
+    title: '',
+    description: '',
+    actionButtonText: '',
+})
 
-    showMenu = false
-    dialogPowerDeviceChange: dialogPowerDeviceChange = {
-        show: false,
-        device: '',
-        value: '',
-    }
+const services = computed(() => {
+    let services =
+        store.state.server.system_info?.available_services?.filter(
+            (name: string) => name !== 'klipper_mcu'
+        ) ?? []
 
-    dialogConfirmation: dialogConfirmation = {
-        show: false,
-        serviceName: null,
-        executableFunction: null,
-        title: '',
-        description: '',
-        actionButtonText: '',
-    }
-
-    get services() {
-        let services =
-            this.$store.state.server.system_info?.available_services?.filter(
-                (name: string) => name !== 'klipper_mcu'
-            ) ?? []
-
-        if (this.hideOtherInstances && this.klipperInstance !== '') {
-            services = services.filter(
-                (name: string) =>
-                    (!name.toLowerCase().startsWith('klipper-') && name.toLowerCase() !== 'klipper') ||
-                    name === this.klipperInstance
-            )
-        }
-
-        if (this.hideOtherInstances && this.moonrakerInstance !== '') {
-            services = services.filter(
-                (name: string) =>
-                    (!name.toLowerCase().startsWith('moonraker-') && name.toLowerCase() !== 'moonraker') ||
-                    name === this.moonrakerInstance
-            )
-        }
-
-        return services.sort()
-    }
-
-    get powerDevices() {
-        const devices = this.$store.getters['server/power/getDevices'] ?? []
-
-        return devices.filter((device: ServerPowerStateDevice) => !device.device.startsWith('_'))
-    }
-
-    get powerDeviceDialogTitle(): string {
-        return this.dialogPowerDeviceChange.value === 'off'
-            ? this.$t('PowerDeviceChangeDialog.TurnDeviceOn', {
-                  device: this.dialogPowerDeviceChange.device,
-              }).toString()
-            : this.$t('PowerDeviceChangeDialog.TurnDeviceOff', {
-                  device: this.dialogPowerDeviceChange.device,
-              }).toString()
-    }
-
-    checkDialog(executableFunction: (serviceName: string) => void, serviceName: string, action: string) {
-        if (!this.printerIsPrinting) {
-            executableFunction(serviceName)
-            return
-        }
-
-        this.dialogConfirmation.executableFunction = executableFunction
-        this.dialogConfirmation.serviceName = serviceName
-
-        const actionUppercase = action.trim().charAt(0).toUpperCase() + action.trim().slice(1)
-        let titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Service' + actionUppercase
-        let descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Service' + actionUppercase
-        let buttonKey = 'App.TopCornerMenu.' + actionUppercase
-
-        if (serviceName === 'klipper' && ['stop', 'restart', 'firmwareRestart'].includes(action)) {
-            titleKey =
-                'App.TopCornerMenu.ConfirmationDialog.Title.' +
-                (action !== 'stop' ? 'Klipper' : 'Service') +
-                actionUppercase
-            descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Klipper' + actionUppercase
-
-            if (action === 'firmwareRestart') buttonKey = 'App.TopCornerMenu.KlipperFirmwareRestart'
-        } else if (serviceName === 'host') {
-            titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Host' + actionUppercase
-            descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Host' + actionUppercase
-        }
-
-        this.dialogConfirmation.title = this.$t(titleKey).toString()
-        this.dialogConfirmation.description = this.$t(descriptionKey).toString()
-        this.dialogConfirmation.actionButtonText = this.$t(buttonKey).toString()
-        this.dialogConfirmation.show = true
-    }
-
-    executeDialog() {
-        this.dialogConfirmation.executableFunction(this.dialogConfirmation.serviceName)
-    }
-
-    klipperRestart() {
-        this.showMenu = false
-        this.$store.dispatch('server/addEvent', { message: 'RESTART', type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'RESTART' })
-    }
-
-    klipperFirmwareRestart() {
-        this.showMenu = false
-        this.$store.dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'FIRMWARE_RESTART' })
-    }
-
-    changeSwitch(device: ServerPowerStateDevice, value: string) {
-        this.dialogPowerDeviceChange.device = device.device
-        this.dialogPowerDeviceChange.value = value
-
-        const confirmOnPowerDeviceChange = this.$store.state.gui.uiSettings.confirmOnPowerDeviceChange
-        if (confirmOnPowerDeviceChange) {
-            this.dialogPowerDeviceChange.show = true
-        } else {
-            this.powerDeviceToggle()
-        }
-    }
-
-    powerDeviceToggle() {
-        const rpc =
-            this.dialogPowerDeviceChange.value === 'off' ? 'machine.device_power.on' : 'machine.device_power.off'
-        this.$socket.emit(
-            rpc,
-            { [this.dialogPowerDeviceChange.device]: null },
-            { action: 'server/power/responseToggle' }
+    if (hideOtherInstances.value && klipperInstance.value !== '') {
+        services = services.filter(
+            (name: string) =>
+                (!name.toLowerCase().startsWith('klipper-') && name.toLowerCase() !== 'klipper') ||
+                name === klipperInstance.value
         )
     }
 
-    hostReboot() {
-        this.showMenu = false
-        this.$socket.emit('machine.reboot', {})
+    if (hideOtherInstances.value && moonrakerInstance.value !== '') {
+        services = services.filter(
+            (name: string) =>
+                (!name.toLowerCase().startsWith('moonraker-') && name.toLowerCase() !== 'moonraker') ||
+                name === moonrakerInstance.value
+        )
     }
 
-    hostShutdown() {
-        this.showMenu = false
-        this.$socket.emit('machine.shutdown', {})
+    return services.sort()
+})
+
+const powerDevices = computed(() => {
+    const devices = store.getters['server/power/getDevices'] ?? []
+    return devices.filter((device: ServerPowerStateDevice) => !device.device.startsWith('_'))
+})
+
+const powerDeviceDialogTitle = computed((): string => {
+    return dialogPowerDeviceChange.value.value === 'off'
+        ? t('PowerDeviceChangeDialog.TurnDeviceOn', {
+              device: dialogPowerDeviceChange.value.device,
+          }).toString()
+        : t('PowerDeviceChangeDialog.TurnDeviceOff', {
+              device: dialogPowerDeviceChange.value.device,
+          }).toString()
+})
+
+function checkDialog(executableFunction: (serviceName: string) => void, serviceName: string, action: string) {
+    if (!printerIsPrinting.value) {
+        executableFunction(serviceName)
+        return
     }
+
+    dialogConfirmation.value.executableFunction = executableFunction
+    dialogConfirmation.value.serviceName = serviceName
+
+    const actionUppercase = action.trim().charAt(0).toUpperCase() + action.trim().slice(1)
+    let titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Service' + actionUppercase
+    let descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Service' + actionUppercase
+    let buttonKey = 'App.TopCornerMenu.' + actionUppercase
+
+    if (serviceName === 'klipper' && ['stop', 'restart', 'firmwareRestart'].includes(action)) {
+        titleKey =
+            'App.TopCornerMenu.ConfirmationDialog.Title.' +
+            (action !== 'stop' ? 'Klipper' : 'Service') +
+            actionUppercase
+        descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Klipper' + actionUppercase
+
+        if (action === 'firmwareRestart') buttonKey = 'App.TopCornerMenu.KlipperFirmwareRestart'
+    } else if (serviceName === 'host') {
+        titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Host' + actionUppercase
+        descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Host' + actionUppercase
+    }
+
+    dialogConfirmation.value.title = t(titleKey).toString()
+    dialogConfirmation.value.description = t(descriptionKey).toString()
+    dialogConfirmation.value.actionButtonText = t(buttonKey).toString()
+    dialogConfirmation.value.show = true
+}
+
+function executeDialog() {
+    const serviceName = dialogConfirmation.value.serviceName
+    if (serviceName !== null && dialogConfirmation.value.executableFunction !== null) {
+        dialogConfirmation.value.executableFunction(serviceName)
+    }
+}
+
+function klipperRestart() {
+    showMenu.value = false
+    store.dispatch('server/addEvent', { message: 'RESTART', type: 'command' })
+    socket.emit('printer.gcode.script', { script: 'RESTART' })
+}
+
+function klipperFirmwareRestart() {
+    showMenu.value = false
+    store.dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
+    socket.emit('printer.gcode.script', { script: 'FIRMWARE_RESTART' })
+}
+
+function changeSwitch(device: ServerPowerStateDevice, value: string) {
+    dialogPowerDeviceChange.value.device = device.device
+    dialogPowerDeviceChange.value.value = value
+
+    const confirmOnPowerDeviceChange = store.state.gui.uiSettings.confirmOnPowerDeviceChange
+    if (confirmOnPowerDeviceChange) {
+        dialogPowerDeviceChange.value.show = true
+    } else {
+        powerDeviceToggle()
+    }
+}
+
+function powerDeviceToggle() {
+    const rpc =
+        dialogPowerDeviceChange.value.value === 'off' ? 'machine.device_power.on' : 'machine.device_power.off'
+    socket.emit(
+        rpc,
+        { [dialogPowerDeviceChange.value.device]: null },
+        { action: 'server/power/responseToggle' }
+    )
+}
+
+function hostReboot() {
+    showMenu.value = false
+    socket.emit('machine.reboot', {})
+}
+
+function hostShutdown() {
+    showMenu.value = false
+    socket.emit('machine.shutdown', {})
 }
 </script>

@@ -35,57 +35,47 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, useSlots } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import { panelToolbarHeight } from '@/store/variables'
 import { mdiChevronDown } from '@mdi/js'
 import { TranslateResult } from 'vue-i18n'
 
-@Component
-export default class Panel extends Mixins(BaseMixin) {
-    mdiChevronDown = mdiChevronDown
-    panelToolbarHeight = panelToolbarHeight
+const props = defineProps({
+    icon: { type: String, default: null },
+    title: { type: [String, Object], required: true, default: '' },
+    collapsible: { type: Boolean, default: false },
+    cardClass: { type: String, required: true },
+    toolbarColor: { type: String, default: '' },
+    toolbarClass: { type: String, default: '' },
+    loading: { type: Boolean, default: false },
+    marginBottom: { type: Boolean, default: true },
+    hideButtonsOnCollapse: { type: Boolean, default: false },
+})
 
-    @Prop({ default: null }) declare readonly icon: string | null
-    @Prop({ required: true, default: '' }) declare readonly title: string | TranslateResult
-    @Prop({ default: false }) declare readonly collapsible: boolean
-    @Prop({ required: true }) declare readonly cardClass: string
-    @Prop({ default: '' }) declare readonly toolbarColor: string
-    @Prop({ default: '' }) declare readonly toolbarClass: string
-    @Prop({ default: false }) declare readonly loading: boolean
-    @Prop({ default: true }) declare readonly marginBottom: boolean
-    @Prop({ default: false }) declare readonly hideButtonsOnCollapse: boolean
+const store = useStore()
+const { viewport } = useBase()
+const slots = useSlots()
 
-    get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.cardClass, this.viewport)
-    }
+const expand = computed({
+    get: () => store.getters['gui/getPanelExpand'](props.cardClass, viewport.value),
+    set: (newVal) => store.dispatch('gui/saveExpandPanel', { name: props.cardClass, value: newVal, viewport: viewport.value }),
+})
 
-    set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal, viewport: this.viewport })
-    }
+const hasIconSlot = computed(() => !!slots.icon)
+const hasButtonsSlot = computed(() => !!slots.buttons)
 
-    get hasIconSlot() {
-        return !!this.$slots.icon
-    }
+const getToolbarClass = computed(() => {
+    let output = props.toolbarClass
+    if (props.collapsible) output += ' collapsible'
+    return output
+})
 
-    get hasButtonsSlot() {
-        return !!this.$slots.buttons
-    }
-
-    get getToolbarClass() {
-        let output = this.toolbarClass
-
-        if (this.collapsible) output += ' collapsible'
-
-        return output
-    }
-
-    get additionalStyle() {
-        return this.$vuetify.theme.dark ? '' : 'border-bottom: 1px solid #A8A8A8'
-    }
-}
+const additionalStyle = computed(() => {
+    return '' // Vue 3/Vuetify 3 handles theme differently
+})
 </script>
 
 <style scoped>

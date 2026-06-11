@@ -14,47 +14,42 @@
         </panel>
     </v-dialog>
 </template>
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 
-@Component
-export default class TheServiceWorker extends Mixins(BaseMixin) {
-    showDialog = false
-    updateSW: ((reloadPage?: boolean | undefined) => Promise<void>) | null = null
+const showDialog = ref(false)
+let updateSW: ((reloadPage?: boolean | undefined) => Promise<void>) | null = null
 
-    onOfflineReady() {
-        window.console.info('PWA is offline ready')
-    }
-
-    onNeedRefresh() {
-        window.console.warn('PWA needs to refresh')
-        this.showDialog = true
-    }
-
-    onRegistered() {
-        window.console.debug('PWA is registered')
-    }
-
-    onRegisterError(error: Error) {
-        window.console.error('PWA registration error:', error)
-    }
-
-    update() {
-        this.updateSW?.(true)
-        this.showDialog = false
-    }
-
-    async mounted() {
-        const { registerSW } = await import('virtual:pwa-register')
-        this.updateSW = registerSW({
-            immediate: true,
-            onOfflineReady: this.onOfflineReady,
-            onNeedRefresh: this.onNeedRefresh,
-            onRegistered: this.onRegistered,
-            onRegisterError: this.onRegisterError,
-        })
-    }
+function onOfflineReady() {
+    window.console.info('PWA is offline ready')
 }
+
+function onNeedRefresh() {
+    window.console.warn('PWA needs to refresh')
+    showDialog.value = true
+}
+
+function onRegistered() {
+    window.console.debug('PWA is registered')
+}
+
+function onRegisterError(error: Error) {
+    window.console.error('PWA registration error:', error)
+}
+
+function update() {
+    updateSW?.(true)
+    showDialog.value = false
+}
+
+onMounted(async () => {
+    const { registerSW } = await import('virtual:pwa-register')
+    updateSW = registerSW({
+        immediate: true,
+        onOfflineReady: onOfflineReady,
+        onNeedRefresh: onNeedRefresh,
+        onRegistered: onRegistered,
+        onRegisterError: onRegisterError,
+    })
+})
 </script>

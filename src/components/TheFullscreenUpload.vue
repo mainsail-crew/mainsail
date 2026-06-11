@@ -5,103 +5,99 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import Component from 'vue-class-component'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
 import { validGcodeExtensions } from '@/store/variables'
 import { mdiTrayArrowDown } from '@mdi/js'
 
-@Component
-export default class TheFullscreenUpload extends Mixins(BaseMixin) {
-    mdiTrayArrowDown = mdiTrayArrowDown
-    private visible = false
+const store = useStore()
+const route = useRoute()
+const { t } = useI18n()
+const { proxy } = getCurrentInstance()!
+const { } = useBase()
 
-    get dropzoneClasses() {
-        return {
-            'fullscreen-upload__dragzone--visible': this.visible,
+const visible = ref(false)
+
+const dropzoneClasses = computed(() => ({
+    'fullscreen-upload__dragzone--visible': visible.value,
+}))
+
+const currentRoute = computed(() => route.path ?? '')
+
+const currentPathGcodes = computed(() => store.state.gui.view.gcodefiles.currentPath ?? '')
+
+const currentPathConfig = computed(() => store.state.gui.view.configfiles.currentPath ?? '')
+
+function showDropZone() {
+    visible.value = true
+}
+
+function hideDropZone() {
+    visible.value = false
+}
+
+function onDragOverWindow(e: DragEvent) {
+    const types = e.dataTransfer?.types ?? []
+    if (!types.includes('Files')) return
+
+    e.preventDefault()
+    if (visible.value) return
+
+    showDropZone()
+}
+
+function onDragLeaveWindow(e: DragEvent) {
+    e.preventDefault()
+    hideDropZone()
+}
+
+async function onDrop(e: DragEvent) {
+    e.preventDefault()
+    hideDropZone()
+
+    if (e.dataTransfer?.files?.length) {
+        const files = [...e.dataTransfer.files]
+
+        await store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
+        await store.dispatch('files/uploadSetCurrentNumber', 0)
+        await store.dispatch('files/uploadSetMaxNumber', files.length)
+
+        for (const file of files) {
+            const extensionPos = file.name.lastIndexOf('.')
+            const extension = file.name.slice(extensionPos)
+            const isGcode = validGcodeExtensions.includes(extension)
+
+            let path = ''
+            if (currentRoute.value === '/files' && isGcode) path = currentPathGcodes.value
+            else if (currentRoute.value === '/config' && !isGcode) path = currentPathConfig.value
+
+            const root = isGcode ? 'gcodes' : 'config'
+            await store.dispatch('files/uploadIncrementCurrentNumber')
+            const result = await store.dispatch('files/uploadFile', { file, path, root })
+
+            if (result !== false)
+                proxy!.$toast.success(t('Files.SuccessfullyUploaded', { filename: result }).toString())
         }
-    }
 
-    get currentRoute() {
-        return this.$route.path ?? ''
-    }
-
-    get currentPathGcodes() {
-        return this.$store.state.gui.view.gcodefiles.currentPath ?? ''
-    }
-
-    get currentPathConfig() {
-        return this.$store.state.gui.view.configfiles.currentPath ?? ''
-    }
-
-    mounted() {
-        window.addEventListener('dragenter', this.onDragOverWindow)
-        window.addEventListener('dragover', this.onDragOverWindow)
-        window.addEventListener('dragleave', this.onDragLeaveWindow)
-    }
-
-    beforeDestroy() {
-        window.removeEventListener('dragenter', this.onDragOverWindow)
-        window.removeEventListener('dragover', this.onDragOverWindow)
-        window.removeEventListener('dragleave', this.onDragLeaveWindow)
-    }
-
-    showDropZone() {
-        this.visible = true
-    }
-
-    hideDropZone() {
-        this.visible = false
-    }
-
-    onDragOverWindow(e: DragEvent) {
-        const types = e.dataTransfer?.types ?? []
-        if (!types.includes('Files')) return
-
-        e.preventDefault()
-        if (this.visible) return
-
-        this.showDropZone()
-    }
-
-    onDragLeaveWindow(e: DragEvent) {
-        e.preventDefault()
-        this.hideDropZone()
-    }
-
-    async onDrop(e: DragEvent) {
-        e.preventDefault()
-        this.hideDropZone()
-
-        if (e.dataTransfer?.files?.length) {
-            const files = [...e.dataTransfer.files]
-
-            await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
-            await this.$store.dispatch('files/uploadSetMaxNumber', files.length)
-
-            for (const file of files) {
-                const extensionPos = file.name.lastIndexOf('.')
-                const extension = file.name.slice(extensionPos)
-                const isGcode = validGcodeExtensions.includes(extension)
-
-                let path = ''
-                if (this.currentRoute === '/files' && isGcode) path = this.currentPathGcodes
-                else if (this.currentRoute === '/config' && !isGcode) path = this.currentPathConfig
-
-                const root = isGcode ? 'gcodes' : 'config'
-                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
-                const result = await this.$store.dispatch('files/uploadFile', { file, path, root })
-
-                if (result !== false)
-                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
-            }
-
-            await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-        }
+        await store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
     }
 }
+
+onMounted(() => {
+    window.addEventListener('dragenter', onDragOverWindow)
+    window.addEventListener('dragover', onDragOverWindow)
+    window.addEventListener('dragleave', onDragLeaveWindow)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('dragenter', onDragOverWindow)
+    window.removeEventListener('dragover', onDragOverWindow)
+    window.removeEventListener('dragleave', onDragLeaveWindow)
+})
 </script>
 
 <style>

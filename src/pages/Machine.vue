@@ -20,24 +20,14 @@
         </v-row>
     </v-container>
 </template>
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { useBase } from '@/composables/useBase'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import UpdatePanel from '@/components/panels/Machine/UpdatePanel.vue'
 import LogfilesPanel from '@/components/panels/Machine/LogfilesPanel.vue'
 import EndstopPanel from '@/components/panels/Machine/EndstopPanel.vue'
 import ConfigFilesPanel from '@/components/panels/Machine/ConfigFilesPanel.vue'
 import SystemPanel from '@/components/panels/Machine/SystemPanel.vue'
-@Component({
-    components: {
-        SystemPanel,
-        ConfigFilesPanel,
-        EndstopPanel,
-        LogfilesPanel,
-        UpdatePanel,
-        KlippyStatePanel,
-    },
-})
-export default class PageMachine extends Mixins(BaseMixin) {}
+
+const { klipperState } = useBase()
 </script>

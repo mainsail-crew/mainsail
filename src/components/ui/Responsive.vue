@@ -8,19 +8,20 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import ResponsiveMixin from '@/components/mixins/responsive'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useResponsive } from '@/composables/useResponsive'
 
-@Component
-export default class Responsive extends Mixins(ResponsiveMixin) {
-    @Prop({ default: false }) declare protected noHide: boolean
+const props = defineProps({
+    noHide: { type: Boolean, default: false },
+    breakpoints: { type: Object, default: undefined },
+})
 
-    init = false
+const { el, targetRef } = useResponsive(props.breakpoints)
 
-    mounted() {
-        this.init = true
-    }
-}
+const init = ref(false)
+
+onMounted(() => {
+    init.value = true
+})
 </script>

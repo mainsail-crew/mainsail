@@ -15,37 +15,24 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-@Component({
-    components: {},
+const store = useStore()
+
+const status = computed(() => store.state.server.timelapse.rendering.status ?? '')
+
+const boolShowDialogRunning = computed(() => status.value === 'running')
+
+const boolShowDialogSuccess = computed({
+    get: () => status.value === 'success',
+    set: (newVal: boolean) => {
+        if (!newVal) store.dispatch('server/timelapse/resetSnackbar')
+    },
 })
-export default class TheTimelapseRenderingSnackbar extends Mixins(BaseMixin) {
-    get boolShowDialogRunning() {
-        return this.status === 'running'
-    }
 
-    get boolShowDialogSuccess() {
-        return this.status === 'success'
-    }
+const progress = computed(() => store.state.server.timelapse.rendering.progress ?? '')
 
-    set boolShowDialogSuccess(newVal) {
-        if (!newVal) this.$store.dispatch('server/timelapse/resetSnackbar')
-    }
-
-    get status() {
-        return this.$store.state.server.timelapse.rendering.status ?? ''
-    }
-
-    get progress() {
-        return this.$store.state.server.timelapse.rendering.progress ?? ''
-    }
-
-    get filename() {
-        return this.$store.state.server.timelapse.rendering.filename ?? ''
-    }
-}
+const filename = computed(() => store.state.server.timelapse.rendering.filename ?? '')
 </script>

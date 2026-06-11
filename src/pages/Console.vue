@@ -79,63 +79,53 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useConsole } from '@/composables/useConsole'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
 import { mdiCog, mdiTrashCan } from '@mdi/js'
-import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
-@Component({
-    components: {
-        CommandHelpModal,
-        ConsoleTable,
-    },
+const store = useStore()
+const { moonrakerComponents } = useBase()
+const { consoleDirection, autoscroll, hideWaitTemperatures, hideTlCommands, customFilters, rawOutput, toggleFilter, clearConsole } = useConsole()
+
+const consoleScroll = ref<any>(null)
+const gcodeCommandField = ref<any>(null)
+
+const events = computed(() => store.getters['server/getConsoleEvents'](consoleDirection.value === 'table'))
+
+watch(events, () => {
+    if (consoleDirection.value === 'shell' && autoscroll.value) {
+        setTimeout(() => {
+            scrollToBottom()
+        }, 50)
+    }
 })
-export default class PageConsole extends Mixins(BaseMixin, ConsoleMixin) {
-    mdiCog = mdiCog
-    mdiTrashCan = mdiTrashCan
 
-    @Ref() readonly consoleScroll!: OverlayScrollbarsComponent
-    @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
+watch(autoscroll, (newVal: boolean) => {
+    if (newVal) scrollToBottom()
+})
 
-    get events() {
-        return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table')
-    }
+function commandClick(msg: string): void {
+    gcodeCommandField.value?.setGcode(msg)
+}
 
-    @Watch('events')
-    eventsChanged() {
-        if (this.consoleDirection === 'shell' && this.autoscroll) {
-            setTimeout(() => {
-                this.scrollToBottom()
-            }, 50)
-        }
-    }
+onMounted(() => {
+    if (consoleDirection.value === 'shell') scrollToBottom()
+})
 
-    @Watch('autoscroll')
-    autoscrollChanged(newVal: boolean) {
-        if (newVal) this.scrollToBottom()
-    }
+function scrollToBottom() {
+    nextTick(() => {
+        if (!consoleScroll.value) return
 
-    commandClick(msg: string): void {
-        this.gcodeCommandField.setGcode(msg)
-    }
-
-    mounted() {
-        if (this.consoleDirection === 'shell') this.scrollToBottom()
-    }
-
-    scrollToBottom() {
-        this.$nextTick(() => {
-            if (!this.consoleScroll) return
-
-            const overlayscroll = this.consoleScroll.osInstance()
-            overlayscroll?.scroll({ y: '100%' })
-        })
-    }
+        const overlayscroll = consoleScroll.value.osInstance()
+        overlayscroll?.scroll({ y: '100%' })
+    })
 }
 </script>
 

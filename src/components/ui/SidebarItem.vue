@@ -26,57 +26,35 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { NaviPoint } from '@/components/mixins/navigation'
 
-@Component
-export default class SidebarItem extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) item!: NaviPoint
+const props = defineProps({
+    item: { type: Object, required: true },
+})
 
-    get navigationStyle() {
-        return this.$store.state.gui.uiSettings.navigationStyle
-    }
+const store = useStore()
+const route = useRoute()
 
-    get icon() {
-        return this.item.icon
-    }
-
-    get title() {
-        return this.item.title
-    }
-
-    get to() {
-        return this.item.to ?? undefined
-    }
-
-    get href() {
-        return this.item.href ?? undefined
-    }
-
-    get target() {
-        return this.item.target ?? undefined
-    }
-
-    get borderBottom() {
-        return this.item.to === '/allPrinters'
-    }
-
-    get isActive(): boolean {
-        if (this.item.target === '_blank' || !this.item.to) return false
-
-        return this.$route.path === this.item.to
-    }
-
-    get itemClass() {
-        return {
-            'small-list-item': true,
-            'active-nav-item': this.isActive,
-        }
-    }
-}
+const navigationStyle = computed(() => store.state.gui.uiSettings.navigationStyle)
+const icon = computed(() => (props.item as NaviPoint).icon)
+const title = computed(() => (props.item as NaviPoint).title)
+const to = computed(() => (props.item as NaviPoint).to ?? undefined)
+const href = computed(() => (props.item as NaviPoint).href ?? undefined)
+const target = computed(() => (props.item as NaviPoint).target ?? undefined)
+const borderBottom = computed(() => (props.item as NaviPoint).to === '/allPrinters')
+const isActive = computed(() => {
+    const item = props.item as NaviPoint
+    if (item.target === '_blank' || !item.to) return false
+    return route.path === item.to
+})
+const itemClass = computed(() => ({
+    'small-list-item': true,
+    'active-nav-item': isActive.value,
+}))
 </script>
 
 <style scoped>

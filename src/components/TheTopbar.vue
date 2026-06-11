@@ -87,11 +87,17 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Mixins, Ref } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { useDisplay } from 'vuetify'
+import { getCurrentInstance } from 'vue'
+import { useBase } from '@/composables/useBase'
+import { useTheme } from '@/composables/useTheme'
+import { useSocket } from '@/composables/useSocket'
 import { validGcodeExtensions } from '@/store/variables'
-import Component from 'vue-class-component'
 import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
@@ -104,7 +110,6 @@ import { topbarHeight } from '@/store/variables'
 import { mdiAlertOctagonOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
 import EmergencyStopDialog from '@/components/dialogs/EmergencyStopDialog.vue'
 import InlineSvg from 'vue-inline-svg'
-import ThemeMixin from '@/components/mixins/theme'
 
 type uploadSnackbar = {
     status: boolean
@@ -115,253 +120,208 @@ type uploadSnackbar = {
     cancelTokenSource: CancelTokenSource | null
 }
 
-@Component({
-    components: {
-        EmergencyStopDialog,
-        InlineSvg,
-        Panel,
-        TheSettingsMenu,
-        TheTopCornerMenu,
-        PrinterSelector,
-        MainsailLogo,
-        TheNotificationMenu,
-    },
+const store = useStore()
+const { t } = useI18n()
+const router = useRouter()
+const display = useDisplay()
+const { proxy } = getCurrentInstance()!
+const { klipperReadyForGui, klippyIsConnected, printer_state, printerIsPrinting, loadings, isIOS,
+    apiUrl, existGcodesRootDirectory } = useBase()
+const { sidebarLogo } = useTheme()
+const logoColor = computed(() => store.state.gui.uiSettings.logo)
+const socket = useSocket()
+
+const fileUploadAndStart = ref<HTMLInputElement | null>(null)
+const showEmergencyStopDialog = ref(false)
+
+const uploadSnackbar = ref<uploadSnackbar>({
+    status: false,
+    filename: '',
+    percent: 0,
+    speed: 0,
+    total: 0,
+    cancelTokenSource: null,
 })
-export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
-    mdiAlertOctagonOutline = mdiAlertOctagonOutline
-    mdiContentSave = mdiContentSave
-    mdiFileUpload = mdiFileUpload
-    mdiClose = mdiClose
-    mdiCloseThick = mdiCloseThick
 
-    topbarHeight = topbarHeight
+const gcodeInputFileAccept = computed(() => {
+    if (isIOS.value) return []
+    return validGcodeExtensions
+})
 
-    showEmergencyStopDialog = false
+const naviDrawer = computed({
+    get: () => store.state.naviDrawer,
+    set: (newVal) => store.dispatch('setNaviDrawer', newVal),
+})
 
-    uploadSnackbar: uploadSnackbar = {
-        status: false,
-        filename: '',
-        percent: 0,
-        speed: 0,
-        total: 0,
-        cancelTokenSource: null,
+const currentPage = computed(() => router.currentRoute.value.fullPath)
+
+const saveConfigPending = computed(() => store.state.printer.configfile?.save_config_pending ?? false)
+const hideSaveConfigForBedMash = computed(() => store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false)
+
+const showSaveConfigButton = computed(() => {
+    if (!klipperReadyForGui.value) return false
+    if (!hideSaveConfigForBedMash.value) return saveConfigPending.value
+
+    let pendingKeys = Object.keys(store.state.printer.configfile?.save_config_pending_items ?? {})
+    pendingKeys = pendingKeys.filter((key: string) => !key.startsWith('bed_mesh '))
+    return pendingKeys.length > 0
+})
+
+const printerName = computed((): string => {
+    if (store.state.gui.general.printername.length) return store.state.gui.general.printername
+    return store.state.printer.hostname
+})
+
+const machinePosition = computed(() => {
+    const p = store.state.printer?.motion_report?.live_position ?? [0, 0, 0, 0]
+    return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
+})
+
+const homedAxes = computed((): string => store.state.printer?.toolhead?.homed_axes ?? '')
+
+const xAxisHomed = computed((): boolean => homedAxes.value.includes('x'))
+const yAxisHomed = computed((): boolean => homedAxes.value.includes('y'))
+const zAxisHomed = computed((): boolean => homedAxes.value.includes('z'))
+
+const liveVelocity = computed(() => {
+    const v = store.state.printer?.motion_report?.live_velocity ?? 0
+    return `${Number(v).toFixed(1)} mm/s`
+})
+
+const coordinateModeLabel = computed(() => {
+    const abs = store.state.printer?.gcode_move?.absolute_coordinates ?? true
+    return abs ? 'G90' : 'G91'
+})
+
+function formatAxis(value: number, digits: number) {
+    return Number(value ?? 0).toFixed(digits)
+}
+
+const droAxes = computed(() => [
+    { id: 'X', homed: xAxisHomed.value, machine: formatAxis(machinePosition.value.x, 2) },
+    { id: 'Y', homed: yAxisHomed.value, machine: formatAxis(machinePosition.value.y, 2) },
+    { id: 'Z', homed: zAxisHomed.value, machine: formatAxis(machinePosition.value.z, 3) },
+])
+
+const boolHideUploadAndPrintButton = computed(() =>
+    store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
+)
+
+const isSvgLogo = computed(() =>
+    sidebarLogo.value.includes('.svg?timestamp=') || sidebarLogo.value.endsWith('.svg')
+)
+
+const logoClasses = computed(() => ['nav-logo', 'ml-2', 'mr-1', 'd-none', 'd-sm-flex'])
+
+const boolShowUploadAndPrint = computed(() =>
+    klippyIsConnected.value &&
+    existGcodesRootDirectory.value &&
+    ['standby', 'complete', 'cancelled'].includes(printer_state.value) &&
+    !boolHideUploadAndPrintButton.value
+)
+
+const countPrinters = computed(() => store.getters['farm/countPrinters'])
+
+const defaultNavigationStateSetting = computed(() =>
+    store.state.gui?.uiSettings?.defaultNavigationStateSetting ?? 'alwaysOpen'
+)
+
+onMounted(() => {
+    switch (defaultNavigationStateSetting.value) {
+        case 'alwaysClosed':
+            naviDrawer.value = false
+            break
+        case 'lastState':
+            naviDrawer.value = (localStorage.getItem('naviDrawer') ?? 'true') === 'true'
+            break
+        default:
+            naviDrawer.value = display.lgAndUp.value
+    }
+})
+
+function btnEmergencyStop() {
+    const confirmOnEmergencyStop = store.state.gui.uiSettings.confirmOnEmergencyStop
+    if (confirmOnEmergencyStop) {
+        showEmergencyStopDialog.value = true
+        return
+    }
+    emergencyStop()
+}
+
+function saveConfig() {
+    store.dispatch('server/addEvent', { message: 'SAVE_CONFIG', type: 'command' })
+    socket.emit('printer.gcode.script', { script: 'SAVE_CONFIG' }, { loading: 'topbarSaveConfig' })
+}
+
+function btnUploadAndStart() {
+    fileUploadAndStart.value?.click()
+}
+
+async function uploadAndStart() {
+    if (!fileUploadAndStart.value?.files?.length) return
+
+    await store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
+    const successFiles = []
+    for (const file of fileUploadAndStart.value.files) {
+        const result = await doUploadAndStart(file)
+        successFiles.push(result)
     }
 
-    formatFilesize = formatFilesize
-
-    @Ref() readonly fileUploadAndStart!: HTMLInputElement
-
-    get gcodeInputFileAccept() {
-        if (this.isIOS) return []
-
-        return validGcodeExtensions
+    await store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
+    for (const file of successFiles) {
+        const text = t('App.TopBar.UploadOfFileSuccessful', { file: file }).toString()
+        proxy!.$toast.success(text)
     }
 
-    get naviDrawer() {
-        return this.$store.state.naviDrawer
-    }
+    fileUploadAndStart.value.value = ''
+    if (currentPage.value !== '/') await router.push('/')
+}
 
-    set naviDrawer(newVal) {
-        this.$store.dispatch('setNaviDrawer', newVal)
-    }
+function doUploadAndStart(file: File) {
+    const formData = new FormData()
+    const filename = file.name
 
-    get currentPage() {
-        return this.$route.fullPath
-    }
+    uploadSnackbar.value.filename = filename
+    uploadSnackbar.value.status = true
+    uploadSnackbar.value.percent = 0
+    uploadSnackbar.value.speed = 0
 
-    get saveConfigPending() {
-        return this.$store.state.printer.configfile?.save_config_pending ?? false
-    }
+    formData.append('file', file, filename)
+    formData.append('print', 'true')
 
-    get hideSaveConfigForBedMash() {
-        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
-    }
+    return new Promise((resolve) => {
+        uploadSnackbar.value.cancelTokenSource = axios.CancelToken.source()
+        axios
+            .post(apiUrl.value + '/server/files/upload', formData, {
+                cancelToken: uploadSnackbar.value.cancelTokenSource.token,
+                headers: { 'Content-Type': 'multipart/form-data' },
+                onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+                    uploadSnackbar.value.percent = (progressEvent.progress ?? 0) * 100
+                    uploadSnackbar.value.speed = progressEvent.rate ?? 0
+                    uploadSnackbar.value.total = progressEvent.total ?? 0
+                },
+            })
+            .then((result) => {
+                uploadSnackbar.value.status = false
+                resolve(result.data.result)
+            })
+            .catch(() => {
+                uploadSnackbar.value.status = false
+                store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
+                const text = t('App.TopBar.CannotUploadTheFile').toString()
+                proxy!.$toast.error(text)
+            })
+    })
+}
 
-    get showSaveConfigButton() {
-        if (!this.klipperReadyForGui) return false
-        if (!this.hideSaveConfigForBedMash) return this.saveConfigPending
+function cancelUpload(): void {
+    uploadSnackbar.value.cancelTokenSource?.cancel()
+    uploadSnackbar.value.status = false
+}
 
-        let pendingKeys = Object.keys(this.$store.state.printer.configfile?.save_config_pending_items ?? {})
-        pendingKeys = pendingKeys.filter((key: string) => !key.startsWith('bed_mesh '))
-
-        return pendingKeys.length > 0
-    }
-
-    get printerName(): string {
-        if (this.$store.state.gui.general.printername.length) return this.$store.state.gui.general.printername
-
-        return this.$store.state.printer.hostname
-    }
-
-    get countPrinters() {
-        return this.$store.getters['farm/countPrinters']
-    }
-
-    get machinePosition() {
-        const p = this.$store.state.printer?.motion_report?.live_position ?? [0, 0, 0, 0]
-        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
-    }
-
-    get homedAxes(): string {
-        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
-    }
-
-    get xAxisHomed(): boolean { return this.homedAxes.includes('x') }
-    get yAxisHomed(): boolean { return this.homedAxes.includes('y') }
-    get zAxisHomed(): boolean { return this.homedAxes.includes('z') }
-
-    get liveVelocity() {
-        const v = this.$store.state.printer?.motion_report?.live_velocity ?? 0
-        return `${Number(v).toFixed(1)} mm/s`
-    }
-
-    get coordinateModeLabel() {
-        const abs = this.$store.state.printer?.gcode_move?.absolute_coordinates ?? true
-        return abs ? 'G90' : 'G91'
-    }
-
-    formatAxis(value: number, digits: number) {
-        return Number(value ?? 0).toFixed(digits)
-    }
-
-    get droAxes() {
-        return [
-            { id: 'X', homed: this.xAxisHomed, machine: this.formatAxis(this.machinePosition.x, 2) },
-            { id: 'Y', homed: this.yAxisHomed, machine: this.formatAxis(this.machinePosition.y, 2) },
-            { id: 'Z', homed: this.zAxisHomed, machine: this.formatAxis(this.machinePosition.z, 3) },
-        ]
-    }
-
-    get boolHideUploadAndPrintButton() {
-        return this.$store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
-    }
-
-    get isSvgLogo() {
-        return this.sidebarLogo.includes('.svg?timestamp=') || this.sidebarLogo.endsWith('.svg')
-    }
-
-    get logoColor(): string {
-        return this.$store.state.gui.uiSettings.logo
-    }
-
-    get logoClasses() {
-        return ['nav-logo', 'ml-2', 'mr-1', 'd-none', 'd-sm-flex']
-    }
-
-    get boolShowUploadAndPrint() {
-        return (
-            this.klippyIsConnected &&
-            this.existGcodesRootDirectory &&
-            ['standby', 'complete', 'cancelled'].includes(this.printer_state) &&
-            !this.boolHideUploadAndPrintButton
-        )
-    }
-
-    get defaultNavigationStateSetting() {
-        return this.$store.state.gui?.uiSettings?.defaultNavigationStateSetting ?? 'alwaysOpen'
-    }
-
-    mounted() {
-        //this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
-        switch (this.defaultNavigationStateSetting) {
-            case 'alwaysClosed':
-                this.naviDrawer = false
-                break
-
-            case 'lastState':
-                this.naviDrawer = (localStorage.getItem('naviDrawer') ?? 'true') === 'true'
-                break
-
-            default:
-                this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
-        }
-    }
-
-    btnEmergencyStop() {
-        const confirmOnEmergencyStop = this.$store.state.gui.uiSettings.confirmOnEmergencyStop
-        if (confirmOnEmergencyStop) {
-            this.showEmergencyStopDialog = true
-            return
-        }
-
-        this.emergencyStop()
-    }
-
-    emergencyStop() {
-        this.showEmergencyStopDialog = false
-        this.$socket.emit('printer.emergency_stop', {}, { loading: 'topbarEmergencyStop' })
-    }
-
-    saveConfig() {
-        this.$store.dispatch('server/addEvent', { message: 'SAVE_CONFIG', type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'SAVE_CONFIG' }, { loading: 'topbarSaveConfig' })
-    }
-
-    btnUploadAndStart() {
-        this.fileUploadAndStart?.click()
-    }
-
-    async uploadAndStart() {
-        if (!this.fileUploadAndStart?.files?.length) return
-
-        await this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
-        const successFiles = []
-        for (const file of this.fileUploadAndStart.files) {
-            const result = await this.doUploadAndStart(file)
-            successFiles.push(result)
-        }
-
-        await this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
-        for (const file of successFiles) {
-            const text = this.$t('App.TopBar.UploadOfFileSuccessful', { file: file }).toString()
-            this.$toast.success(text)
-        }
-
-        this.fileUploadAndStart.value = ''
-        if (this.currentPage !== '/') await this.$router.push('/')
-    }
-
-    doUploadAndStart(file: File) {
-        const formData = new FormData()
-        const filename = file.name
-
-        this.uploadSnackbar.filename = filename
-        this.uploadSnackbar.status = true
-        this.uploadSnackbar.percent = 0
-        this.uploadSnackbar.speed = 0
-
-        formData.append('file', file, filename)
-        formData.append('print', 'true')
-
-        return new Promise((resolve) => {
-            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
-            axios
-                .post(this.apiUrl + '/server/files/upload', formData, {
-                    cancelToken: this.uploadSnackbar.cancelTokenSource.token,
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: (progressEvent: AxiosProgressEvent) => {
-                        this.uploadSnackbar.percent = (progressEvent.progress ?? 0) * 100
-                        this.uploadSnackbar.speed = progressEvent.rate ?? 0
-                        this.uploadSnackbar.total = progressEvent.total ?? 0
-                    },
-                })
-                .then((result) => {
-                    this.uploadSnackbar.status = false
-                    resolve(result.data.result)
-                })
-                .catch(() => {
-                    this.uploadSnackbar.status = false
-                    this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
-                    const text = this.$t('App.TopBar.CannotUploadTheFile').toString()
-                    this.$toast.error(text)
-                })
-        })
-    }
-
-    cancelUpload(): void {
-        this.uploadSnackbar.cancelTokenSource?.cancel()
-        this.uploadSnackbar.status = false
-    }
+function emergencyStop() {
+    showEmergencyStopDialog.value = false
+    socket.emit('printer.emergency_stop', {}, { loading: 'topbarEmergencyStop' })
 }
 </script>
 
