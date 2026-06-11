@@ -1,6 +1,6 @@
 import { getDefaultState } from './index'
-import Vue from 'vue'
 import { MutationTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 
 export const mutations: MutationTree<ServerUpdateManagerState> = {
@@ -9,26 +9,26 @@ export const mutations: MutationTree<ServerUpdateManagerState> = {
     },
 
     resetRepos(state) {
-        Vue.set(state, 'git_repos', [])
-        Vue.set(state, 'web_repos', [])
-        Vue.set(state, 'system', {
+        state.git_repos = []
+        state.web_repos = []
+        state.system = {
             package_count: 0,
             package_list: [],
-        })
+        }
     },
 
     storeGitRepo(state, payload) {
         const newGitRepos = [...state.git_repos]
         newGitRepos.push({ ...payload })
 
-        Vue.set(state, 'git_repos', newGitRepos)
+        state.git_repos = newGitRepos
     },
 
     storeWebRepo(state, payload) {
         const newWebRepos = [...state.web_repos]
         newWebRepos.push({ ...payload })
 
-        Vue.set(state, 'web_repos', newWebRepos)
+        state.web_repos = newWebRepos
     },
 
     updateSystem(state, payload) {
@@ -36,18 +36,18 @@ export const mutations: MutationTree<ServerUpdateManagerState> = {
         newSystem.package_count = payload.package_count
         newSystem.package_list = payload.package_list
 
-        Vue.set(state, 'system', newSystem)
+        state.system = newSystem
     },
 
     addUpdateResponse(state, payload) {
         if (state.updateResponse.application !== payload.application)
-            Vue.set(state.updateResponse, 'application', payload.application)
+            state.updateResponse.application = payload.application
 
         if (state.updateResponse.complete !== payload.complete)
-            Vue.set(state.updateResponse, 'complete', payload.complete)
+            state.updateResponse.complete = payload.complete
 
         if ('complete' in payload && payload.complete)
-            Vue.$socket.emit(
+            getSocket().emit(
                 'machine.update.status',
                 { refresh: false },
                 { action: 'server/updateManager/onUpdateStatus' }
@@ -60,10 +60,10 @@ export const mutations: MutationTree<ServerUpdateManagerState> = {
     },
 
     resetUpdateResponse(state) {
-        Vue.set(state, 'updateResponse', {
+        state.updateResponse = {
             application: '',
             complete: true,
             messages: [],
-        })
+        }
     },
 }

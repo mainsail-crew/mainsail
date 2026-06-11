@@ -2,8 +2,8 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
 import { v4 as uuidv4 } from 'uuid'
-import Vue from 'vue'
 import { GuiMacrosState } from '@/store/gui/macros/types'
+import { getSocket, $toast } from '@/store/runtime'
 
 export const actions: ActionTree<GuiMacrosState, RootState> = {
     reset({ commit }) {
@@ -22,7 +22,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
     },
 
     groupUpload({ state }, id) {
-        Vue.$socket.emit('server.database.post_item', {
+        getSocket().emit('server.database.post_item', {
             namespace: 'mainsail',
             key: 'macros.macrogroups.' + id,
             value: state.macrogroups[id],
@@ -60,7 +60,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
 
     groupDelete({ commit, dispatch, rootState }, id) {
         commit('groupDelete', id)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'macros.macrogroups.' + id })
+        getSocket().emit('server.database.delete_item', { namespace: 'mainsail', key: 'macros.macrogroups.' + id })
 
         const layouts: GuiStateDashboardLayoutKey[] = [
             'mobileLayout',

@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 type StreamerTypes =
     | 'Hlsstreamer'
     | 'HtmlIframe'
@@ -13,8 +11,7 @@ type StreamerTypes =
     | 'WebrtcMediaMTX'
     | 'WebrtcGo2rtc'
 
-function getDynamicCamImport(componentName: StreamerTypes) {
-    // split each webcam streamer into its own chunk
+export function getDynamicCamImport(componentName: StreamerTypes) {
     switch (componentName) {
         case 'Hlsstreamer':
             return () => import('@/components/webcams/streamers/Hlsstreamer.vue')
@@ -40,6 +37,3 @@ function getDynamicCamImport(componentName: StreamerTypes) {
             return () => import('@/components/webcams/streamers/WebrtcGo2rtc.vue')
     }
 }
-
-export const DynamicCamLoader = (componentName: StreamerTypes) =>
-    Vue.component(componentName, getDynamicCamImport(componentName))

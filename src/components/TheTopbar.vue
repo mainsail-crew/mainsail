@@ -33,8 +33,8 @@
             <v-btn
                 v-if="showSaveConfigButton"
                 tile
-                :icon="$vuetify.breakpoint.smAndDown"
-                :text="$vuetify.breakpoint.mdAndUp"
+                :icon="smAndDown"
+                :text="mdAndUp"
                 color="primary"
                 class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
                 :disabled="printerIsPrinting"
@@ -46,8 +46,8 @@
             <v-btn
                 v-if="boolShowUploadAndPrint"
                 tile
-                :icon="$vuetify.breakpoint.smAndDown"
-                :text="$vuetify.breakpoint.mdAndUp"
+                :icon="smAndDown"
+                :text="mdAndUp"
                 color="primary"
                 class="button-min-width-auto px-3 d-none d-sm-flex upload-and-start-button"
                 :loading="loadings.includes('btnUploadAndStart')"
@@ -58,8 +58,8 @@
             <v-btn
                 v-if="klippyIsConnected"
                 tile
-                :icon="$vuetify.breakpoint.smAndDown"
-                :text="$vuetify.breakpoint.mdAndUp"
+                :icon="smAndDown"
+                :text="mdAndUp"
                 color="error"
                 class="button-min-width-auto px-3 emergency-button"
                 :loading="loadings.includes('topbarEmergencyStop')"
@@ -76,9 +76,9 @@
             <br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
             <br />
-            <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
+            <v-progress-linear class="mt-2" v-model="uploadSnackbar.percent"></v-progress-linear>
             <template #actions="{ props }">
-                <v-btn color="red" text v-bind="props" style="min-width: auto" @click="cancelUpload">
+                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelUpload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
@@ -123,7 +123,7 @@ type uploadSnackbar = {
 const store = useStore()
 const { t } = useI18n()
 const router = useRouter()
-const display = useDisplay()
+const { smAndDown, mdAndUp, lgAndUp } = useDisplay()
 const { proxy } = getCurrentInstance()!
 const { klipperReadyForGui, klippyIsConnected, printer_state, printerIsPrinting, loadings, isIOS,
     apiUrl, existGcodesRootDirectory } = useBase()
@@ -235,7 +235,7 @@ onMounted(() => {
             naviDrawer.value = (localStorage.getItem('naviDrawer') ?? 'true') === 'true'
             break
         default:
-            naviDrawer.value = display.lgAndUp.value
+            naviDrawer.value = lgAndUp.value
     }
 })
 

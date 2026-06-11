@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
+    <v-dialog :model-value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
             :title="$t('BedScrews.Headline').toString()"
             :icon="mdiArrowCollapseDown"
@@ -8,7 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn icon tile @click="sendAbort">
+                <v-btn icon @click="sendAbort">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -52,13 +52,13 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text :loading="loadingAbort" @click="sendAbort">
+                <v-btn variant="text" :loading="loadingAbort" @click="sendAbort">
                     {{ $t('BedScrews.Abort') }}
                 </v-btn>
-                <v-btn color="primary" text :loading="loadingAdjusted" @click="sendAdjusted">
+                <v-btn color="primary" variant="text" :loading="loadingAdjusted" @click="sendAdjusted">
                     {{ $t('BedScrews.Adjusted') }}
                 </v-btn>
-                <v-btn color="primary" text :loading="loadingAccept" @click="sendAccept">
+                <v-btn color="primary" variant="text" :loading="loadingAccept" @click="sendAccept">
                     {{ $t('BedScrews.Accept') }}
                 </v-btn>
             </v-card-actions>
@@ -83,8 +83,6 @@ const { isMobile, loadings } = useBase()
 const { homedAxes } = useControl()
 const socket = useSocket()
 
-const mdiArrowCollapseDown = mdiArrowCollapseDown
-const mdiCloseThick = mdiCloseThick
 
 const showDialog = computed(() => {
     if (!boolBedScrewsDialog.value) return false

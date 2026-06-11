@@ -11,12 +11,12 @@
                     <v-divider class="ml-3" />
                 </div>
                 <settings-row :title="$t('Settings.ControlTab.Style')">
-                    <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details attach />
+                    <v-select v-model="controlStyle" :items="controlStyles" item-title="text" item-value="value" outlined dense hide-details attach />
                 </settings-row>
                 <v-divider class="my-2" />
                 <template v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1">
                     <settings-row :title="$t('Settings.ControlTab.OverwriteActionButton')">
-                        <v-select v-model="actionButton" :items="actionOptions" outlined dense hide-details attach />
+                        <v-select v-model="actionButton" :items="actionOptions" item-title="text" item-value="value" outlined dense hide-details attach />
                     </settings-row>
                     <v-divider class="my-2" />
                 </template>
@@ -47,7 +47,7 @@
                         v-model="feedrateXY"
                         type="number"
                         suffix="mm/s"
-                        hide-details="auto"
+                        hide-details
                         :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
                         outlined
                         dense
@@ -60,7 +60,7 @@
                         v-model="feedrateZ"
                         type="number"
                         suffix="mm/s"
-                        hide-details="auto"
+                        hide-details
                         :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
                         outlined
                         dense
@@ -74,7 +74,7 @@
                         <v-combobox
                             v-model="stepsAll"
                             hide-selected
-                            hide-details="auto"
+                            hide-details
                             multiple
                             small-chips
                             :deletable-chips="true"
@@ -98,7 +98,7 @@
                         <v-combobox
                             v-model="stepsCircleXY"
                             hide-selected
-                            hide-details="auto"
+                            hide-details
                             multiple
                             small-chips
                             :deletable-chips="true"
@@ -117,7 +117,7 @@
                         <v-combobox
                             v-model="stepsCircleZ"
                             hide-selected
-                            hide-details="auto"
+                            hide-details
                             multiple
                             small-chips
                             :deletable-chips="true"
@@ -139,7 +139,7 @@
                         <v-combobox
                             v-model="stepsXY"
                             hide-selected
-                            hide-details="auto"
+                            hide-details
                             multiple
                             small-chips
                             :deletable-chips="true"
@@ -160,7 +160,7 @@
                         <v-combobox
                             v-model="stepsZ"
                             hide-selected
-                            hide-details="auto"
+                            hide-details
                             multiple
                             small-chips
                             :deletable-chips="true"
@@ -185,6 +185,8 @@
                         <v-select
                             v-model="offsetZSaveOption"
                             :items="offsetZSaveOptions"
+                            item-title="text"
+                            item-value="value"
                             class="mt-0"
                             hide-details
                             outlined
@@ -196,7 +198,7 @@
                     <v-combobox
                         v-model="offsetsZ"
                         hide-selected
-                        hide-details="auto"
+                        hide-details
                         multiple
                         small-chips
                         :deletable-chips="true"
@@ -222,7 +224,7 @@
                     <v-combobox
                         v-model="feedamountsE"
                         hide-selected
-                        hide-details="auto"
+                        hide-details
                         multiple
                         small-chips
                         :deletable-chips="true"
@@ -241,7 +243,7 @@
                     <v-combobox
                         v-model="feedratesE"
                         hide-selected
-                        hide-details="auto"
+                        hide-details
                         multiple
                         small-chips
                         :deletable-chips="true"

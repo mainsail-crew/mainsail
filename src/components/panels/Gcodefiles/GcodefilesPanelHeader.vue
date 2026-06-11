@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col class="col-12 d-flex align-center">
+        <v-col class="v-col-12 d-flex align-center">
             <v-text-field
                 v-model="search"
                 :append-icon="mdiMagnify"

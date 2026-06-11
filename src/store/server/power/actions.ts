@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import { ServerPowerState } from '@/store/server/power/types'
 import { RootState } from '@/store/types'
 
@@ -9,7 +9,7 @@ export const actions: ActionTree<ServerPowerState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices' })
+        getSocket().emit('machine.device_power.devices', {}, { action: 'server/power/getDevices' })
     },
 
     async getDevices({ commit, dispatch }, payload) {

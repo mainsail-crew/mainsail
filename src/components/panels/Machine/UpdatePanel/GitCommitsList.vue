@@ -6,12 +6,12 @@
             :margin-bottom="false"
             card-class="machine-update-commits-dialog">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
             <v-card-text class="py-0 px-0">
-                <overlay-scrollbars :style="overlayScrollbarsStyle" :options="{ overflowBehavior: { x: 'hidden' } }">
+                <OverlayScrollbarsComponent :style="overlayScrollbarsStyle" :options="{ overflowBehavior: { x: 'hidden' } }">
                     <v-timeline :class="timelineClassName" align-top dense style="min-height: 100%">
                         <git-commits-list-day
                             v-for="group of groupedCommits"
@@ -36,7 +36,7 @@
                             </v-row>
                         </v-timeline-item>
                     </v-timeline>
-                </overlay-scrollbars>
+                </OverlayScrollbarsComponent>
             </v-card-text>
         </panel>
     </v-dialog>
@@ -53,6 +53,7 @@ import {
 import { mdiUpdate, mdiCloseThick } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import GitCommitsListDay from '@/components/panels/Machine/UpdatePanel/GitCommitsListDay.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const props = defineProps<{
     'model-value': boolean
@@ -65,8 +66,6 @@ const emit = defineEmits<{
 
 const { isMobile } = useBase()
 
-const mdiUpdate = mdiUpdate
-const mdiCloseThick = mdiCloseThick
 
 function emitValue(val: boolean) {
     emit('update:model-value', val)

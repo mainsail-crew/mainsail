@@ -6,21 +6,21 @@
             card-class="history-perform-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
             <v-card-text class="pb-0">
                 <v-row>
                     <v-col>
-                        <v-textarea v-model="note" outlined hide-details="auto" :label="$t('History.AddANote')" />
+                        <v-textarea v-model="note" outlined hide-details :label="$t('History.AddANote')" />
                     </v-col>
                 </v-row>
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn v-if="showPerformButton" text color="primary" @click="perform">{{ performButtonText }}</v-btn>
+                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn v-if="showPerformButton" variant="text" color="primary" @click="perform">{{ performButtonText }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -37,8 +37,6 @@ import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 const store = useStore()
 const { t } = useI18n()
 
-const mdiCloseThick = mdiCloseThick
-const mdiNotebook = mdiNotebook
 
 const props = defineProps({
     modelValue: { type: Boolean },

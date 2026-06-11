@@ -2,15 +2,15 @@
     <v-dialog v-model="showDialog" width="400" :fullscreen="isMobile">
         <panel card-class="confirm-top-corner-menu-dialog" :icon="iconToUse" :title="title" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="close">
+                <v-btn icon @click="close">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
             <v-card-text>{{ text }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="close">{{ cancelButtonComputed }}</v-btn>
-                <v-btn text :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
+                <v-btn variant="text" @click="close">{{ cancelButtonComputed }}</v-btn>
+                <v-btn variant="text" :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -24,9 +24,6 @@ import { mdiAlert, mdiCloseThick } from '@mdi/js'
 
 const { t } = useI18n()
 const { isMobile } = useBase()
-
-const mdiAlert = mdiAlert
-const mdiCloseThick = mdiCloseThick
 
 const props = defineProps({
     modelValue: { type: Boolean },

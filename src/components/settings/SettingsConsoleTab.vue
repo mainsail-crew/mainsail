@@ -15,6 +15,8 @@
                     <v-select
                         v-model="consoleDirection"
                         :items="availableDirections"
+                        item-title="text"
+                        item-value="value"
                         hide-details
                         outlined
                         dense
@@ -25,6 +27,8 @@
                     <v-select
                         v-model="entryStyle"
                         :items="availableEntryStyles"
+                        item-title="text"
+                        item-value="value"
                         hide-details
                         outlined
                         dense
@@ -64,21 +68,17 @@
                     <v-divider v-if="index" class="my-2"></v-divider>
                     <settings-row :title="filter.name">
                         <v-btn
-                            small
-                            outlined
-                            class="minwidth-0 px-2"
+                            small variant="outlined" class="minwidth-0 px-2"
                             :color="filter.bool ? 'white' : 'grey'"
                             @click="toggleFilter(filter)">
                             <v-icon small>{{ filter.bool ? mdiFilter : mdiFilterOff }}</v-icon>
                         </v-btn>
-                        <v-btn small outlined class="ml-3" @click="editFilter(filter)">
+                        <v-btn small variant="outlined" class="ml-3" @click="editFilter(filter)">
                             <v-icon left small>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
-                            small
-                            outlined
-                            class="ml-3 minwidth-0 px-2"
+                            small variant="outlined" class="ml-3 minwidth-0 px-2"
                             color="error"
                             @click="deleteFilter(filter.id)">
                             <v-icon small>{{ mdiDelete }}</v-icon>
@@ -87,7 +87,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" @click="createFilter">{{ $t('Settings.ConsoleTab.AddFilter') }}</v-btn>
+                <v-btn variant="text" color="primary" @click="createFilter">{{ $t('Settings.ConsoleTab.AddFilter') }}</v-btn>
             </v-card-actions>
         </v-card>
         <v-card v-else flat>
@@ -103,21 +103,21 @@
                     <settings-row :title="$t('Settings.ConsoleTab.Name').toString()">
                         <v-text-field
                             v-model="form.name"
-                            hide-details="auto"
+                            hide-details
                             :rules="[rules.required, rules.unique]"
                             dense
                             outlined></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.ConsoleTab.Regex').toString()">
-                        <v-textarea v-model="form.regex" outlined hide-details="auto"></v-textarea>
+                        <v-textarea v-model="form.regex" outlined hide-details></v-textarea>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
-                    <v-btn text @click="form.bool = false">
+                    <v-btn variant="text" @click="form.bool = false">
                         {{ $t('Buttons.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text type="submit">
+                    <v-btn color="primary" variant="text" type="submit">
                         {{
                             form.id === null
                                 ? $t('Settings.ConsoleTab.StoreButton')

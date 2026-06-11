@@ -20,7 +20,7 @@
                     <span>{{ commitFormatDate }}</span>
                 </p>
             </v-col>
-            <v-col class="col-auto pt-0 pt-sm-4">
+            <v-col class="v-col-auto pt-0 pt-sm-4">
                 <v-chip outlined label small :href="commitHref" target="_blank">
                     {{ commitShortSha }}
                 </v-chip>
@@ -47,7 +47,6 @@ const props = defineProps<{
 const { browserLocale } = useBase()
 const { t } = useI18n()
 
-const mdiDotsHorizontal = mdiDotsHorizontal
 
 const showDetails = ref(false)
 

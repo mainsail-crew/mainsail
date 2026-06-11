@@ -2,7 +2,7 @@
     <div>
         <!-- HOME ALL / ACTION BUTTON -->
         <v-row no-gutters>
-            <v-col class="col-12 pb-0 text-center">
+            <v-col class="v-col-12 pb-0 text-center">
                 <v-btn
                     small
                     :disabled="['printing'].includes(printer_state)"

@@ -102,8 +102,6 @@ const props = defineProps<{
 const store = useStore()
 const socket = useSocket()
 
-const mdiCog = mdiCog
-const mdiSnowflake = mdiSnowflake
 
 const showEditDialog = ref(false)
 const showContextMenu = ref(false)

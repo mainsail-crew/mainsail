@@ -36,8 +36,6 @@ const props = defineProps<{
 const store = useStore()
 const socket = useSocket()
 
-const mdiLightbulbOnOutline = mdiLightbulbOnOutline
-const mdiLightbulbOutline = mdiLightbulbOutline
 
 const showDialog = ref(false)
 

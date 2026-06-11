@@ -5,7 +5,7 @@
             <settings-row :title="$t('Settings.MiscellaneousTab.Name')">
                 <v-text-field
                     v-model="groupname"
-                    hide-details="auto"
+                    hide-details
                     :rules="[rules.required, rules.groupUnique]"
                     dense
                     outlined />
@@ -16,7 +16,7 @@
                 :sub-title="$t('Settings.MiscellaneousTab.StartDescription')">
                 <v-text-field
                     v-model="start"
-                    hide-details="auto"
+                    hide-details
                     type="number"
                     :step="1"
                     :rules="[rules.required, rules.minStart, rules.max]"
@@ -30,7 +30,7 @@
                 :sub-title="$t('Settings.MiscellaneousTab.EndDescription')">
                 <v-text-field
                     v-model="end"
-                    hide-details="auto"
+                    hide-details
                     type="number"
                     :step="1"
                     :rules="[rules.required, rules.minEnd, rules.max]"
@@ -41,11 +41,11 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn v-if="groupId !== null" text color="primary" :disabled="!formValid" @click="updateGroup">
+            <v-btn variant="text" @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
+            <v-btn v-if="groupId !== null" variant="text" color="primary" :disabled="!formValid" @click="updateGroup">
                 {{ $t('Settings.Update') }}
             </v-btn>
-            <v-btn v-else text color="primary" :disabled="!formValid" @click="storeGroup">
+            <v-btn v-else variant="text" color="primary" :disabled="!formValid" @click="storeGroup">
                 {{ $t('Settings.Store') }}
             </v-btn>
         </v-card-actions>

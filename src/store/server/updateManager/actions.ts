@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { RootState } from '@/store/types'
 
@@ -9,7 +9,7 @@ export const actions: ActionTree<ServerUpdateManagerState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('machine.update.status', {}, { action: 'server/updateManager/onUpdateStatus' })
+        getSocket().emit('machine.update.status', {}, { action: 'server/updateManager/onUpdateStatus' })
     },
 
     async onUpdateStatus({ commit, dispatch }, payload) {

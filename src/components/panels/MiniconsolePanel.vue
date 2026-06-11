@@ -7,7 +7,7 @@
         card-class="miniconsole-panel"
         :hide-buttons-on-collapse="true">
         <template #buttons>
-            <v-btn icon tile @click="clearConsole">
+            <v-btn icon @click="clearConsole">
                 <v-icon small>{{ mdiTrashCan }}</v-icon>
             </v-btn>
             <command-help-modal :in-toolbar="true" @onCommand="commandClick($event)" />
@@ -16,7 +16,7 @@
                 :close-on-content-click="false"
                 :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template #activator="{ props }">
-                    <v-btn icon tile v-bind="props">
+                    <v-btn icon v-bind="props">
                         <v-icon small>{{ mdiCog }}</v-icon>
                     </v-btn>
                 </template>
@@ -67,7 +67,7 @@
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
                     <v-col>
-                        <overlay-scrollbars
+                        <OverlayScrollbarsComponent
                             ref="miniConsoleScroll"
                             :style="'height: ' + consoleHeight + 'px;'"
                             :options="{}">
@@ -77,7 +77,7 @@
                                 :is-mini="true"
                                 @command-click="commandClick" />
                             <v-divider />
-                        </overlay-scrollbars>
+                        </OverlayScrollbarsComponent>
                     </v-col>
                 </v-row>
             </v-card-text>

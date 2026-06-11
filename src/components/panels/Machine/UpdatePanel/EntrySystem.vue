@@ -12,7 +12,7 @@
                 </template>
                 <span v-else>{{ $t('Machine.UpdatePanel.OSPackages') }}</span>
             </v-col>
-            <v-col class="col-auto pr-6 text-right" align-self="center">
+            <v-col class="v-col-auto pr-6 text-right" align-self="center">
                 <v-chip
                     small
                     label
@@ -43,7 +43,6 @@ const store = useStore()
 const socket = useSocket()
 const { t } = useI18n()
 
-const mdiInformation = mdiInformation
 
 const boolShowPackageList = ref(false)
 

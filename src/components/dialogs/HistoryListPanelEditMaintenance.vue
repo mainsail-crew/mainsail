@@ -6,7 +6,7 @@
             card-class="history-edit-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -17,14 +17,14 @@
                             v-model="name"
                             :rules="nameInputRules"
                             :label="$t('History.Name')"
-                            hide-details="auto"
+                            hide-details
                             outlined
                             dense />
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col>
-                        <v-textarea v-model="note" outlined hide-details="auto" :label="$t('History.Note')" />
+                        <v-textarea v-model="note" outlined hide-details :label="$t('History.Note')" />
                     </v-col>
                 </v-row>
                 <v-row>
@@ -56,7 +56,7 @@
                                 <v-text-field
                                     v-model.number="reminderFilamentValue"
                                     :disabled="item.end_time !== null"
-                                    hide-details="auto"
+                                    hide-details
                                     type="number"
                                     class="mt-0"
                                     outlined
@@ -79,7 +79,7 @@
                                 <v-text-field
                                     v-model.number="reminderPrinttimeValue"
                                     :disabled="item.end_time !== null"
-                                    hide-details="auto"
+                                    hide-details
                                     type="number"
                                     class="mt-0"
                                     outlined
@@ -102,7 +102,7 @@
                                 <v-text-field
                                     v-model.number="reminderDateValue"
                                     :disabled="item.end_time !== null"
-                                    hide-details="auto"
+                                    hide-details
                                     type="number"
                                     class="mt-0"
                                     outlined
@@ -115,8 +115,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn color="primary" text :disabled="!isValid" @click="save">{{ $t('Buttons.Save') }}</v-btn>
+                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn color="primary" variant="text" :disabled="!isValid" @click="save">{{ $t('Buttons.Save') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -134,11 +134,6 @@ import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 const store = useStore()
 const { t } = useI18n()
 
-const mdiAdjust = mdiAdjust
-const mdiAlarm = mdiAlarm
-const mdiCalendar = mdiCalendar
-const mdiCloseThick = mdiCloseThick
-const mdiNotebook = mdiNotebook
 
 const props = defineProps({
     modelValue: { type: Boolean },

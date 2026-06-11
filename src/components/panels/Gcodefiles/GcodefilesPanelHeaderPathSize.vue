@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col class="col-12 py-2 d-flex align-center">
+        <v-col class="v-col-12 py-2 d-flex align-center">
             <span>
                 <b class="mr-1">{{ $t('Files.CurrentPath') }}:</b>
                 <path-navigation

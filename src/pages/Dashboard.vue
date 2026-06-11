@@ -13,7 +13,7 @@
             </v-col>
         </v-row>
         <v-row v-else-if="isTablet">
-            <v-col class="col-6">
+            <v-col class="v-col-6">
                 <status-panel />
                 <template v-for="component in tabletLayout1">
                     <component
@@ -23,7 +23,7 @@
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-6">
+            <v-col class="v-col-6">
                 <template v-for="component in tabletLayout2">
                     <component
                         v-if="isPanelKnown(component.name)"
@@ -34,7 +34,7 @@
             </v-col>
         </v-row>
         <v-row v-else-if="isDesktop">
-            <v-col class="col-5">
+            <v-col class="v-col-5">
                 <status-panel />
                 <template v-for="component in desktopLayout1">
                     <component
@@ -44,7 +44,7 @@
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-7">
+            <v-col class="v-col-7">
                 <template v-for="component in desktopLayout2">
                     <component
                         v-if="isPanelKnown(component.name)"
@@ -55,7 +55,7 @@
             </v-col>
         </v-row>
         <v-row v-else-if="isWidescreen">
-            <v-col class="col-3">
+            <v-col class="v-col-3">
                 <status-panel />
                 <template v-for="component in widescreenLayout1">
                     <component
@@ -65,7 +65,7 @@
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-5">
+            <v-col class="v-col-5">
                 <template v-for="component in widescreenLayout2">
                     <component
                         v-if="isPanelKnown(component.name)"
@@ -74,7 +74,7 @@
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-4">
+            <v-col class="v-col-4">
                 <template v-for="component in widescreenLayout3">
                     <component
                         v-if="isPanelKnown(component.name)"

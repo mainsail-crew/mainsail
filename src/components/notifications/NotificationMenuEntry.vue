@@ -19,9 +19,7 @@
                     class="notification-menu-entry__description text-body-2 mb-0 text--disabled font-weight-light"
                     v-html="formatedText" />
                 <v-btn
-                    v-if="entryType === 'maintenance'"
-                    outlined
-                    small
+                    v-if="entryType === 'maintenance'" variant="outlined" small
                     :color="alertColor"
                     class="mt-3 mb-0 w-100"
                     @click="showMaintenanceDetails = true">
@@ -59,9 +57,7 @@
                             :key="reminder.text"
                             :color="alertColor"
                             x-small
-                            plain
-                            text
-                            outlined
+                            plain variant="text" outlined
                             class="mx-1"
                             @click="reminder.clickFunction">
                             {{ reminder.text }}

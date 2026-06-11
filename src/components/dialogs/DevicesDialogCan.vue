@@ -1,5 +1,5 @@
 <template>
-    <overlay-scrollbars style="max-height: 400px; overflow-x: hidden">
+    <OverlayScrollbarsComponent style="max-height: 400px; overflow-x: hidden">
         <v-card-text>
             <v-row>
                 <v-col class="text-center">
@@ -12,12 +12,12 @@
                 </v-col>
             </v-row>
             <v-row v-else-if="loaded" class="mt-0">
-                <v-col class="col-8 mx-auto">
+                <v-col class="v-col-8 mx-auto">
                     <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.NoDeviceFound') }}</p>
                 </v-col>
             </v-row>
             <v-row v-else class="mt-0">
-                <v-col class="col-8 mx-auto">
+                <v-col class="v-col-8 mx-auto">
                     <p class="text-center text--disabled mb-0">{{ $t('DevicesDialog.ClickRefresh') }}</p>
                 </v-col>
             </v-row>
@@ -30,9 +30,7 @@
                                 <v-btn
                                     href="https://docs.mainsail.xyz/overview/features/query-devices#can-devices"
                                     color="info"
-                                    outlined
-                                    text
-                                    small>
+                                    outlined variant="text" small>
                                     open guide
                                 </v-btn>
                             </v-col>
@@ -41,7 +39,7 @@
                 </v-col>
             </v-row>
         </v-card-text>
-    </overlay-scrollbars>
+    </OverlayScrollbarsComponent>
 </template>
 
 <script setup lang="ts">
@@ -51,10 +49,10 @@ import DevicesDialogCanDevice from '@/components/dialogs/DevicesDialogCanDevice.
 import { mdiInformationVariantCircle } from '@mdi/js'
 import type { RPCResult } from '@/types/moonraker'
 import type { CanDevice } from '@/types/moonraker/MachineRPC'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const { apiUrl } = useBase()
 
-const mdiInformationVariantCircle = mdiInformationVariantCircle
 
 const props = defineProps({
     name: { type: String, required: true },

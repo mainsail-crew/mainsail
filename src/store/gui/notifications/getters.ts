@@ -103,8 +103,8 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
                 notifications.push({
                     id: 'flag/' + flag,
                     priority: flag.startsWith('Previously') ? 'high' : 'critical',
-                    title: i18n.t(`App.ThrottledStates.Title${flag}`),
-                    description: i18n.t(`App.ThrottledStates.Description${flag}`),
+                    title: i18n.global.t(`App.ThrottledStates.Title${flag}`),
+                    description: i18n.global.t(`App.ThrottledStates.Description${flag}`),
                     date,
                     dismissed: false,
                 } as GuiNotificationStateEntry)
@@ -138,7 +138,7 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
                 notifications.push({
                     id: `dependency/${dependency.serviceName}/${dependency.neededVersion}`,
                     priority: 'high',
-                    title: i18n.t('App.Notifications.DependencyName', { name: dependency.serviceName }).toString(),
+                    title: i18n.global.t('App.Notifications.DependencyName', { name: dependency.serviceName }).toString(),
                     description: i18n
                         .t('App.Notifications.DependencyDescription', {
                             name: dependency.serviceName,
@@ -179,17 +179,17 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
                 if (warning.startsWith('Unparsed config option')) {
                     const warningRegExp = RegExp(/'(?<option>.+): (?<value>.+)'.+\[(?<section>.+)\]/)
                     const output = warningRegExp.exec(warning)?.groups ?? { option: '', section: '', value: '' }
-                    description = i18n.t('App.Notifications.MoonrakerWarnings.UnparsedConfigOption', output).toString()
+                    description = i18n.global.t('App.Notifications.MoonrakerWarnings.UnparsedConfigOption', output).toString()
                 } else if (warning.startsWith('Unparsed config section')) {
                     const warningRegExp = RegExp(/\[(?<section>.+)\]/)
                     const output = warningRegExp.exec(warning)?.groups ?? { section: '' }
-                    description = i18n.t('App.Notifications.MoonrakerWarnings.UnparsedConfigSection', output).toString()
+                    description = i18n.global.t('App.Notifications.MoonrakerWarnings.UnparsedConfigSection', output).toString()
                 }
 
                 notifications.push({
                     id: `moonrakerWarning/${sha256(warning)}`,
                     priority: 'high',
-                    title: i18n.t('App.Notifications.MoonrakerWarnings.MoonrakerWarning').toString(),
+                    title: i18n.global.t('App.Notifications.MoonrakerWarnings.MoonrakerWarning').toString(),
                     description: description,
                     date,
                     dismissed: false,
@@ -221,9 +221,9 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
                 notifications.push({
                     id: `moonrakerFailedComponent/${component}`,
                     priority: 'high',
-                    title: i18n.t('App.Notifications.MoonrakerWarnings.MoonrakerComponent', { component }).toString(),
+                    title: i18n.global.t('App.Notifications.MoonrakerWarnings.MoonrakerComponent', { component }).toString(),
                     description: i18n
-                        .t('App.Notifications.MoonrakerWarnings.MoonrakerFailedComponentDescription', { component })
+                        .global.t('App.Notifications.MoonrakerWarnings.MoonrakerFailedComponentDescription', { component })
                         .toString(),
                     date,
                     dismissed: false,
@@ -258,10 +258,10 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
                     id: `moonrakerFailedInitComponent/${component}`,
                     priority: 'high',
                     title: i18n
-                        .t('App.Notifications.MoonrakerWarnings.MoonrakerInitComponent', { component })
+                        .global.t('App.Notifications.MoonrakerWarnings.MoonrakerInitComponent', { component })
                         .toString(),
                     description: i18n
-                        .t('App.Notifications.MoonrakerWarnings.MoonrakerFailedInitComponentDescription', { component })
+                        .global.t('App.Notifications.MoonrakerWarnings.MoonrakerFailedInitComponentDescription', { component })
                         .toString(),
                     date,
                     dismissed: false,
@@ -290,18 +290,18 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
             warnings = warnings.filter((warning) => !warningsDismisses.includes(sha256(warning.message)))
 
             warnings.forEach((warning) => {
-                let title = i18n.t('App.Notifications.KlipperWarnings.KlipperWarning').toString()
+                let title = i18n.global.t('App.Notifications.KlipperWarnings.KlipperWarning').toString()
                 let description = warning.message
 
                 // add possible translations
                 if (warning.type === 'deprecated_value') {
-                    title = i18n.t('App.Notifications.KlipperWarnings.DeprecatedValueHeadline').toString()
-                    description = i18n.t('App.Notifications.KlipperWarnings.DeprecatedValue', warning).toString()
+                    title = i18n.global.t('App.Notifications.KlipperWarnings.DeprecatedValueHeadline').toString()
+                    description = i18n.global.t('App.Notifications.KlipperWarnings.DeprecatedValue', warning).toString()
                 } else if (warning.type === 'deprecated_option') {
-                    title = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOptionHeadline').toString()
-                    description = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOption', warning).toString()
+                    title = i18n.global.t('App.Notifications.KlipperWarnings.DeprecatedOptionHeadline').toString()
+                    description = i18n.global.t('App.Notifications.KlipperWarnings.DeprecatedOption', warning).toString()
                 } else if (warning.type === 'runtime_warning') {
-                    title = i18n.t('App.Notifications.KlipperWarnings.KlipperRuntimeWarning').toString()
+                    title = i18n.global.t('App.Notifications.KlipperWarnings.KlipperRuntimeWarning').toString()
                 }
 
                 // generate url to mainsail docs to fix this warning
@@ -354,7 +354,7 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
             notifications.push({
                 id: `browserWarning/${minBrowserVersion.name}/${minBrowserVersion.version}`,
                 priority: 'critical',
-                title: i18n.t('App.Notifications.BrowserWarnings.Headline').toString(),
+                title: i18n.global.t('App.Notifications.BrowserWarnings.Headline').toString(),
                 description: i18n
                     .t('App.Notifications.BrowserWarnings.Description', {
                         name: minBrowserVersion.name,
@@ -391,8 +391,8 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
             notifications.push({
                 id: `maintenance/${entry.id}`,
                 priority: 'high',
-                title: i18n.t('App.Notifications.MaintenanceReminder').toString(),
-                description: i18n.t('App.Notifications.MaintenanceReminderText', { name: entry.name }).toString(),
+                title: i18n.global.t('App.Notifications.MaintenanceReminder').toString(),
+                description: i18n.global.t('App.Notifications.MaintenanceReminderText', { name: entry.name }).toString(),
                 date,
                 dismissed: false,
             })
@@ -415,8 +415,8 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
                     notifications.push({
                         id: `tmcwarning/${key}-ot`,
                         priority: 'critical',
-                        title: i18n.t('App.Notifications.TmcOtFlag').toString(),
-                        description: i18n.t('App.Notifications.TmcOtFlagText', { name }).toString(),
+                        title: i18n.global.t('App.Notifications.TmcOtFlag').toString(),
+                        description: i18n.global.t('App.Notifications.TmcOtFlagText', { name }).toString(),
                         date,
                         dismissed: false,
                         url: 'https://www.klipper3d.org/TMC_Drivers.html#tmc-reports-error-ot1overtemperror',
@@ -427,8 +427,8 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
                     notifications.push({
                         id: `tmcwarning/${key}-otpw`,
                         priority: 'high',
-                        title: i18n.t('App.Notifications.TmcOtpwFlag').toString(),
-                        description: i18n.t('App.Notifications.TmcOtpwFlagText', { name }).toString(),
+                        title: i18n.global.t('App.Notifications.TmcOtpwFlag').toString(),
+                        description: i18n.global.t('App.Notifications.TmcOtpwFlagText', { name }).toString(),
                         date,
                         dismissed: false,
                         url: 'https://www.klipper3d.org/TMC_Drivers.html#tmc-reports-error-ot1overtemperror',

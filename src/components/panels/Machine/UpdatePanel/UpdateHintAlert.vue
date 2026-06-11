@@ -1,5 +1,5 @@
 <template>
-    <v-alert text dense border="left" color="orange" :icon="mdiAlertCircle">
+    <v-alert text dense border="start" color="orange" :icon="mdiAlertCircle">
         <template v-if="boolTitle">
             <strong>{{ $t('Machine.UpdatePanel.UpdateWarning', { name: formatName }) }}</strong>
             <br />
@@ -40,9 +40,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const mdiAlertCircle = mdiAlertCircle
-const mdiEye = mdiEye
-const mdiOpenInNew = mdiOpenInNew
 
 const name = computed(() => props.repo?.name ?? 'UNKNOWN')
 

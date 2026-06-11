@@ -1,6 +1,5 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import Vue from 'vue'
 import { GuiMacrosState, GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
 
 export const mutations: MutationTree<GuiMacrosState> = {
@@ -9,7 +8,7 @@ export const mutations: MutationTree<GuiMacrosState> = {
     },
 
     groupStore(state, payload) {
-        Vue.set(state.macrogroups, payload.id, payload.values)
+        state.macrogroups[payload.id] = payload.values
     },
 
     groupUpdate(state, payload) {
@@ -17,7 +16,7 @@ export const mutations: MutationTree<GuiMacrosState> = {
             const preset = { ...state.macrogroups[payload.id] }
             Object.assign(preset, payload.values)
 
-            Vue.set(state.macrogroups, payload.id, preset)
+            state.macrogroups[payload.id] = preset
         }
     },
 
@@ -36,7 +35,7 @@ export const mutations: MutationTree<GuiMacrosState> = {
         if (macros.length) newMacro.pos = Math.max(...macros.map((m: GuiMacrosStateMacrogroupMacro) => m.pos)) + 1
         macros.push(newMacro)
 
-        Vue.set(state.macrogroups[payload.id], 'macros', macros)
+        state.macrogroups[payload.id].macros = macros
     },
 
     updateMacroFromMacrogroup<K extends keyof GuiMacrosStateMacrogroupMacro>(
@@ -50,7 +49,7 @@ export const mutations: MutationTree<GuiMacrosState> = {
         const macro = { ...macros[updateMacroIndex] }
         macro[payload.option] = payload.value
         macros[updateMacroIndex] = macro
-        Vue.set(state.macrogroups[payload.id], 'macros', macros)
+        state.macrogroups[payload.id].macros = macros
     },
 
     removeMacroFromMacrogroup(state, payload) {
@@ -67,12 +66,12 @@ export const mutations: MutationTree<GuiMacrosState> = {
                 })
         }
 
-        Vue.set(state.macrogroups[payload.id], 'macros', macros)
+        state.macrogroups[payload.id].macros = macros
     },
 
     groupDelete(state, payload) {
         if (payload in state.macrogroups) {
-            Vue.delete(state.macrogroups, payload)
+            delete state.macrogroups[payload]
         }
     },
 }

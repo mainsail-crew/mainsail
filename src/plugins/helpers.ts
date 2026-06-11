@@ -12,7 +12,6 @@ import {
     mdiScale,
     mdiThermometer,
 } from '@mdi/js'
-import Vue from 'vue'
 import { VColorPickerColor } from '@/types/vuetify'
 
 export const isRecord = (value: unknown): value is Record<string, unknown> => {
@@ -55,7 +54,7 @@ export const setDataDeep = (currentState: unknown, payload: unknown): void => {
             return
         }
 
-        Vue.set(currentState, key, value)
+        currentState[key] = value
     })
 }
 

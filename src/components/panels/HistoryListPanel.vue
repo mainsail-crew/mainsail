@@ -2,7 +2,7 @@
     <panel :icon="mdiFileDocumentMultipleOutline" :title="$t('History.PrintHistory')" card-class="history-list-panel">
         <v-card-text>
             <v-row>
-                <v-col class="col-4 d-flex align-center">
+                <v-col class="v-col-4 d-flex align-center">
                     <v-text-field
                         v-model="search"
                         :append-icon="mdiMagnify"
@@ -73,7 +73,7 @@
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
-                                    :input-value="showMaintenanceEntries"
+                                    :model-value="showMaintenanceEntries"
                                     :label="$t('History.MaintenanceEntries')"
                                     @change="showMaintenanceEntries = !showMaintenanceEntries" />
                             </v-list-item>
@@ -81,7 +81,7 @@
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
-                                    :input-value="showPrintJobs"
+                                    :model-value="showPrintJobs"
                                     :label="$t('History.PrintJobs')"
                                     @change="showPrintJobs = !showPrintJobs" />
                             </v-list-item>
@@ -91,7 +91,7 @@
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
-                                        :input-value="status.showInTable"
+                                        :model-value="status.showInTable"
                                         :label="`${status.displayName} (${status.value})`"
                                         @change="changeStatusVisible(status)" />
                                 </v-list-item>
@@ -120,8 +120,7 @@
             class="history-jobs-table"
             :headers="filteredHeaders"
             :custom-sort="sortFiles"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
+            v-model:sort-by="sortBy"
             :items-per-page.sync="countPerPage"
             :footer-props="{
                 itemsPerPageText: $t('History.Jobs'),
@@ -141,14 +140,14 @@
                 <history-list-entry-job
                     v-if="item.type === 'job'"
                     :key="item.select_id"
-                    :is-selected="isSelected"
+                    :is-selected="isSelected(item)"
                     :item="item"
                     :table-fields="tableFields"
                     @select="select" />
                 <history-list-entry-maintenance
                     v-else-if="item.type === 'maintenance'"
                     :key="item.select_id"
-                    :is-selected="isSelected"
+                    :is-selected="isSelected(item)"
                     :item="item"
                     :table-fields="tableFields"
                     @select="select" />
@@ -209,8 +208,7 @@ const { t } = useI18n()
 const store = useStore()
 
 const search = ref('')
-const sortBy = ref('start_time')
-const sortDesc = ref(true)
+const sortBy = ref<{ key: string; order?: 'asc' | 'desc' }[]>([{ key: 'start_time', order: 'desc' }])
 
 const addMaintenanceDialog = ref(false)
 const deleteSelectedDialog = ref(false)
@@ -232,7 +230,7 @@ const entries = computed<HistoryListPanelRow[]>(() => {
         })
     }
 
-    if (sortBy.value !== 'start_time') return entries
+    if (sortBy.value[0]?.key !== 'start_time') return entries
 
     if (showMaintenanceEntries.value) {
         entries = [

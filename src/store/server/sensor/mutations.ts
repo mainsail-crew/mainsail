@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { ServerSensorState } from '@/store/server/sensor/types'
@@ -9,12 +8,12 @@ export const mutations: MutationTree<ServerSensorState> = {
     },
 
     setSensors(state, payload) {
-        Vue.set(state, 'sensors', payload)
+        state.sensors = payload
     },
 
     updateSensor(state, payload) {
         if (!(payload.key in state.sensors)) return
 
-        Vue.set(state.sensors[payload.key], 'values', payload.value)
+        state.sensors[payload.key].values = payload.value
     },
 }

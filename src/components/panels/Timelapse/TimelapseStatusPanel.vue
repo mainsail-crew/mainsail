@@ -28,12 +28,12 @@
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row :title="$t('Timelapse.Enabled')" :dynamic-slot-width="true">
-                        <v-switch :input-value="enabled" hide-details class="mt-0" @change="toggleEnabled"></v-switch>
+                        <v-switch :model-value="enabled" hide-details class="mt-0" @change="toggleEnabled"></v-switch>
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row :title="$t('Timelapse.Autorender')" :dynamic-slot-width="true">
                         <v-switch
-                            :input-value="autorender"
+                            :model-value="autorender"
                             hide-details
                             class="mt-0"
                             @change="toggleAutorender"></v-switch>
@@ -53,7 +53,7 @@
         <v-card-text v-else>
             <v-row>
                 <v-col class="text-center">
-                    <span class="text--secondary">{{ $t('Timelapse.NoTimelapseData') }}</span>
+                    <span class="text--secondary">{{ $t('Timelapse.NoActiveTimelapse') }}</span>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -77,9 +77,6 @@ const { framesCount, estimatedVideoLength } = useTimelapse()
 const store = useStore()
 const socket = useSocket()
 
-const mdiInformation = mdiInformation
-const mdiFile = mdiFile
-const mdiCloseThick = mdiCloseThick
 
 const boolDialogRendersettings = ref(false)
 const scale = ref(1)

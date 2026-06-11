@@ -7,7 +7,7 @@
             :disabled="disabled"
             :step="step"
             :readonly="readonly"
-            hide-details="auto"
+            hide-details
             type="number"
             hide-spin-buttons
             outlined

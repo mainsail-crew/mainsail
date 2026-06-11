@@ -2,9 +2,7 @@
     <div>
         <v-row class="pt-3">
             <v-col class="text-center">
-                <v-btn
-                    text
-                    color="primary"
+                <v-btn variant="text" color="primary"
                     small
                     :disabled="['printing', 'paused'].includes(printer_state)"
                     @click="clickUpdate">
@@ -29,7 +27,6 @@ const { printer_state } = useBase()
 const store = useStore()
 const socket = useSocket()
 
-const mdiProgressUpload = mdiProgressUpload
 
 const boolShowDialog = ref(false)
 

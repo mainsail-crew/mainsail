@@ -3,7 +3,7 @@
         v-longpress:600="openContextMenu"
         class="history-list-entry d-flex flex-row flex-nowrap cursor-pointer"
         @contextmenu="openContextMenu($event)">
-        <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
+        <v-col class="v-col-auto d-flex flex-column justify-center pr-0 py-0">
             <v-tooltip
                 v-if="smallThumbnail"
                 top
@@ -38,7 +38,7 @@
             </div>
             <small v-if="description" class="text-truncate">{{ description }}</small>
         </v-col>
-        <v-col class="col-auto d-flex flex-column justify-center pa-0 pr-3">
+        <v-col class="v-col-auto d-flex flex-column justify-center pa-0 pr-3">
             <v-tooltip top>
                 <template #activator="{ props }">
                     <span v-bind="props">

@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { PrinterState } from '@/store/printer/types'
@@ -14,7 +13,7 @@ export const mutations: MutationTree<PrinterState> = {
         }
 
         for (const [key, value] of Object.entries(defaultState)) {
-            Vue.set(state, key, value)
+            state[key] = value
         }
     },
 
@@ -23,13 +22,13 @@ export const mutations: MutationTree<PrinterState> = {
             const value = payload[key]
 
             if (typeof value !== 'object' || value === null || !(key in state)) {
-                Vue.set(state, key, value)
+                state[key] = value
                 return
             }
 
             if (typeof value === 'object') {
                 Object.keys(value).forEach((subkey) => {
-                    Vue.set(state[key], subkey, value[subkey])
+                    state[key][subkey] = value[subkey]
                 })
             }
         })
@@ -37,18 +36,18 @@ export const mutations: MutationTree<PrinterState> = {
 
     setBedMeshProfiles(state, payload) {
         if ('bed_mesh' in state) {
-            Vue.set(state.bed_mesh, 'profiles', payload)
+            state.bed_mesh.profiles = payload
         }
     },
 
     clearCurrentFile(state) {
-        Vue.set(state, 'current_file', {})
+        state.current_file = {}
     },
 
     setEndstopStatus(state, payload) {
         delete payload.requestParams
 
-        Vue.set(state, 'endstops', payload)
+        state.endstops = payload
     },
 
     removeBedMeshProfile(state, payload) {
@@ -58,7 +57,7 @@ export const mutations: MutationTree<PrinterState> = {
     },
 
     clearScrewsTiltAdjust(state) {
-        Vue.set(state.screws_tilt_adjust, 'error', false)
-        Vue.set(state.screws_tilt_adjust, 'results', {})
+        state.screws_tilt_adjust.error = false
+        state.screws_tilt_adjust.results = {}
     },
 }

@@ -5,21 +5,19 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.Mode')"
                     :sub-title="$t('Settings.UiSettingsTab.ModeDescription')">
-                    <v-select v-model="mode" :items="modes" class="mt-0" hide-details outlined dense />
+                    <v-select v-model="mode" :items="modes" item-title="text" item-value="value" class="mt-0" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.Theme')"
                     :sub-title="$t('Settings.UiSettingsTab.ThemeDescription')">
-                    <v-select v-model="themeName" :items="themes" class="mt-0" hide-details outlined dense />
+                    <v-select v-model="themeName" :items="themes" item-title="text" item-value="value" class="mt-0" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
                     <v-btn
                         v-if="logoColor.toLowerCase() !== defaultLogoColor.toLowerCase()"
-                        small
-                        text
-                        class="minwidth-0"
+                        small variant="text" class="minwidth-0"
                         @click="logoColor = defaultLogoColor">
                         <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
@@ -38,9 +36,7 @@
                 <settings-row :title="$t('Settings.UiSettingsTab.Primary')">
                     <v-btn
                         v-if="primaryColor.toLowerCase() !== defaultPrimaryColor.toLowerCase()"
-                        small
-                        text
-                        class="minwidth-0"
+                        small variant="text" class="minwidth-0"
                         @click="primaryColor = defaultPrimaryColor">
                         <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
@@ -60,9 +56,7 @@
                     :title="$t('Settings.UiSettingsTab.GcodeThumbnails')"
                     :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription')"
                     :dynamic-slot-width="true">
-                    <v-btn
-                        outlined
-                        small
+                    <v-btn variant="outlined" small
                         color="primary"
                         href="https://docs.mainsail.xyz/overview/features/thumbnails"
                         target="_blank">
@@ -88,9 +82,7 @@
                     <settings-row :title="$t('Settings.UiSettingsTab.BigThumbnailBackground')">
                         <v-btn
                             v-if="bigThumbnailBackground.toLowerCase() !== defaultBigThumbnailBackground.toLowerCase()"
-                            small
-                            text
-                            class="minwidth-0"
+                            small variant="text" class="minwidth-0"
                             @click="bigThumbnailBackground = defaultBigThumbnailBackground">
                             <v-icon small>{{ mdiRestart }}</v-icon>
                         </v-btn>
@@ -190,6 +182,8 @@
                     <v-select
                         v-model="navigationStyleSetting"
                         :items="navigationStyles"
+                        item-title="text"
+                        item-value="value"
                         class="mt-0"
                         hide-details
                         outlined
@@ -202,6 +196,8 @@
                     <v-select
                         v-model="defaultNavigationStateSetting"
                         :items="defaultNavigationStateSettings"
+                        item-title="text"
+                        item-value="value"
                         class="mt-0"
                         hide-details
                         outlined
@@ -222,6 +218,8 @@
                     <v-select
                         v-model="powerDeviceName"
                         :items="powerDeviceOptions"
+                        item-title="text"
+                        item-value="value"
                         class="mt-0"
                         hide-details
                         outlined
@@ -302,6 +300,8 @@
                     <v-select
                         v-model="dashboardFilesFilter"
                         :items="dashboardFilesFilters"
+                        item-title="text"
+                        item-value="value"
                         multiple
                         hide-details
                         dense

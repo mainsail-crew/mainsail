@@ -6,7 +6,7 @@
             :icon="mdiPlaylistPlus"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -35,8 +35,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                    <v-btn color="primary" text type="submit" :disabled="!isValid">
+                    <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                    <v-btn color="primary" variant="text" type="submit" :disabled="!isValid">
                         {{ $t('Files.AddToQueue') }}
                     </v-btn>
                 </v-card-actions>
@@ -68,10 +68,6 @@ const showDialog = computed({
     set: (val) => emit('update:modelValue', val),
 })
 
-const mdiChevronDown = mdiChevronDown
-const mdiChevronUp = mdiChevronUp
-const mdiPlaylistPlus = mdiPlaylistPlus
-const mdiCloseThick = mdiCloseThick
 
 const inputField = ref<FocusableRef | null>(null)
 

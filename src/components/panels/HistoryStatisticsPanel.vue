@@ -6,7 +6,7 @@
         :collapsible="true">
         <v-card-text class="pa-0">
             <v-row align="center">
-                <v-col class="col-12 col-sm-6 col-md-4">
+                <v-col class="v-col-12 v-col-sm-6 v-col-md-4">
                     <v-table>
                         <tbody>
                             <tr v-for="total in totals" :key="total.title">
@@ -16,7 +16,7 @@
                         </tbody>
                     </v-table>
                 </v-col>
-                <v-col class="col-12 col-sm-6 col-md-4">
+                <v-col class="v-col-12 v-col-sm-6 v-col-md-4">
                     <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" :value-name="toggleValue" />
                     <history-all-print-status-table v-else :value-name="toggleValue" />
                     <div class="text-center mb-3">
@@ -26,9 +26,7 @@
                         </v-btn-toggle>
                         <v-tooltip v-if="!allLoaded" top>
                             <template #activator="{ props }">
-                                <v-btn
-                                    outlined
-                                    small
+                                <v-btn variant="outlined" small
                                     :loading="loadings.includes('historyLoadAll')"
                                     class="ml-3 minwidth-0 px-2"
                                     color="primary"
@@ -48,7 +46,7 @@
                         </v-btn-toggle>
                     </div>
                 </v-col>
-                <v-col class="col-12 col-sm-12 col-md-4">
+                <v-col class="v-col-12 v-col-sm-12 v-col-md-4">
                     <history-filament-usage v-if="toggleChart === 'filament_usage'" />
                     <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'" />
                     <div class="text-center mt-3">

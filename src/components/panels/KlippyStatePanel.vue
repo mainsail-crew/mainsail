@@ -1,6 +1,6 @@
 <template>
     <div v-if="klipperState !== 'ready' && socketIsConnected">
-        <v-alert v-if="klippyIsConnected" :color="messageType.color" dense text border="left" class="mb-0 mb-6">
+        <v-alert v-if="klippyIsConnected" :color="messageType.color" dense text border="start" class="mb-0 mb-6">
             <p class="font-weight-medium d-flex align-center">
                 <v-icon :color="messageType.color" class="pr-2">{{ messageType.icon }}</v-icon>
                 {{ serviceReportsKlipper }}
@@ -10,11 +10,11 @@
                 <v-divider class="mt-2 pb-3" />
                 <v-row>
                     <v-col>
-                        <v-btn small outlined text :class="buttonClasses" @click="restart">
+                        <v-btn small variant="outlined" :class="buttonClasses" @click="restart">
                             <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                             {{ $t('Panels.KlippyStatePanel.Restart') }}
                         </v-btn>
-                        <v-btn small outlined text :class="buttonClasses" @click="firmwareRestart">
+                        <v-btn small variant="outlined" :class="buttonClasses" @click="firmwareRestart">
                             <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                             {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
                         </v-btn>
@@ -23,9 +23,7 @@
                         <v-btn
                             :href="apiUrl + '/server/files/klippy.log'"
                             small
-                            outlined
-                            text
-                            :class="buttonClasses"
+                            variant="outlined" :class="buttonClasses"
                             @click="downloadLog">
                             <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
                             {{ $t('Panels.KlippyStatePanel.KlipperLog') }}
@@ -33,9 +31,7 @@
                         <v-btn
                             :href="apiUrl + '/server/files/moonraker.log'"
                             small
-                            outlined
-                            text
-                            :class="buttonClasses"
+                            variant="outlined" :class="buttonClasses"
                             @click="downloadLog">
                             <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
                             {{ $t('Panels.KlippyStatePanel.MoonrakerLog') }}
@@ -47,7 +43,7 @@
                 <v-progress-circular indeterminate :color="messageType.color" />
             </v-card-text>
         </v-alert>
-        <v-alert v-else-if="isPrinterPowerOff" dense text border="left" class="mb-6">
+        <v-alert v-else-if="isPrinterPowerOff" dense text border="start" class="mb-6">
             <p class="font-weight-medium d-flex align-center">
                 <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
                 {{ $t('Panels.KlippyStatePanel.PrinterSwitchedOff') }}
@@ -55,14 +51,14 @@
             <p>{{ $t('Panels.KlippyStatePanel.PrinterSwitchedOffDescription') }}</p>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn small outlined text :class="`${messageType.color}--text my-1`" @click="powerOn">
+                    <v-btn small variant="outlined" :class="`${messageType.color}--text my-1`" @click="powerOn">
                         <v-icon class="mr-sm-2">{{ mdiPower }}</v-icon>
                         {{ $t('Panels.KlippyStatePanel.PowerOn') }}
                     </v-btn>
                 </v-col>
             </v-row>
         </v-alert>
-        <v-alert v-else-if="klipperState === 'disconnected'" dense text border="left" class="mb-6">
+        <v-alert v-else-if="klipperState === 'disconnected'" dense text border="start" class="mb-6">
             <p class="font-weight-medium d-flex align-center">
                 <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
                 {{ serviceReportsMoonraker }}

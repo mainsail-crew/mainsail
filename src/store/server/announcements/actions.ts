@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import { RootState } from '@/store/types'
 import { ServerAnnouncementsState } from './types'
 
@@ -9,7 +9,7 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('server.announcements.list', {}, { action: 'server/announcements/getList' })
+        getSocket().emit('server.announcements.list', {}, { action: 'server/announcements/getList' })
     },
 
     async getList({ commit, dispatch }, payload) {
@@ -40,10 +40,10 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
     },
 
     close(_, payload) {
-        Vue.$socket.emit('server.announcements.dismiss', { entry_id: payload.entry_id })
+        getSocket().emit('server.announcements.dismiss', { entry_id: payload.entry_id })
     },
 
     dismiss(_, payload) {
-        Vue.$socket.emit('server.announcements.dismiss', { entry_id: payload.entry_id, wake_time: payload.time })
+        getSocket().emit('server.announcements.dismiss', { entry_id: payload.entry_id, wake_time: payload.time })
     },
 }

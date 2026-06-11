@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn icon tile @click="showSettings = true">
+        <v-btn icon @click="showSettings = true">
             <v-icon>{{ mdiCogs }}</v-icon>
         </v-btn>
         <v-dialog
@@ -18,7 +18,7 @@
                 style="overflow: hidden"
                 :height="isMobile ? 0 : 548">
                 <template #buttons>
-                    <v-btn icon tile @click="showSettings = false">
+                    <v-btn icon @click="showSettings = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
@@ -27,36 +27,35 @@
                         <v-tab
                             v-for="(tab, index) of tabTitles"
                             :key="index"
-                            :href="'#' + tab.name"
+                            :value="tab.name"
                             class="justify-start">
-                            <v-icon left v-html="tab.icon"></v-icon>
+                            <v-icon left>{{ tab.icon }}</v-icon>
                             {{ tab.title }}
                         </v-tab>
                     </v-tabs>
                 </template>
                 <v-row class="flex-row flex-nowrap">
-                    <v-col v-if="!isMobile" class="col-auto pr-0">
-                        <overlay-scrollbars ref="settingsTabsScroll" class="settings-tabs-bar height500">
-                            <v-tabs v-model="activeTab" :vertical="true">
+                    <v-col v-if="!isMobile" class="pr-0" style="flex: 0 0 200px; max-width: 200px;">
+                        <OverlayScrollbarsComponent ref="settingsTabsScroll" class="settings-tabs-bar height500">
+                            <v-tabs v-model="activeTab" direction="end" class="settings-tabs-vertical">
                                 <v-tab
                                     v-for="(tab, index) of tabTitles"
                                     :key="index"
-                                    :href="'#' + tab.name"
-                                    class="justify-start"
-                                    style="width: 200px">
-                                    <v-icon left v-html="tab.icon"></v-icon>
-                                    <span class="text-truncate">{{ tab.title }}</span>
+                                    :value="tab.name"
+                                    class="justify-start">
+                                    <v-icon>{{ tab.icon }}</v-icon>
+                                    {{ tab.title }}
                                 </v-tab>
                             </v-tabs>
-                        </overlay-scrollbars>
+                        </OverlayScrollbarsComponent>
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'min-width: 500px;'">
-                        <overlay-scrollbars
+                        <OverlayScrollbarsComponent
                             ref="settingsScroll"
                             :class="'settings-tabs ' + (isMobile ? '' : 'height500')"
                             :options="{ overflowBehavior: { x: 'hidden' } }">
-                            <component :is="'settings-' + activeTab + '-tab'" @scrollToTop="scrollToTop" />
-                        </overlay-scrollbars>
+                            <component :is="activeTabComponent" @scrollToTop="scrollToTop" />
+                        </OverlayScrollbarsComponent>
                     </v-col>
                 </v-row>
             </panel>
@@ -109,6 +108,23 @@ const settingsScroll = ref<any>(null)
 const showSettings = ref(false)
 const activeTab = ref('general')
 
+const settingsTabComponents = {
+    general: SettingsGeneralTab,
+    'ui-settings': SettingsUiSettingsTab,
+    dashboard: SettingsDashboardTab,
+    webcams: SettingsWebcamsTab,
+    macros: SettingsMacrosTab,
+    control: SettingsControlTab,
+    console: SettingsConsoleTab,
+    'remote-printers': SettingsRemotePrintersTab,
+    'g-code-viewer': SettingsGCodeViewerTab,
+    editor: SettingsEditorTab,
+    miscellaneous: SettingsMiscellaneousTab,
+    navigation: SettingsNavigationTab,
+} as const
+
+const activeTabComponent = computed(() => settingsTabComponents[activeTab.value as keyof typeof settingsTabComponents] ?? SettingsGeneralTab)
+
 const tabTitles = computed(() => {
     const tabs = [
         { icon: mdiCog, name: 'general', title: t('Settings.GeneralTab.General') },
@@ -144,7 +160,9 @@ watch(activeTab, () => {
 })
 
 function scrollToTop() {
-    settingsScroll.value?.osInstance()?.scroll({ y: '0%' })
+    const osInstance = settingsScroll.value?.osInstance?.()
+    const viewport = osInstance?.elements?.().viewport as HTMLElement | undefined
+    viewport?.scrollTo({ top: 0, behavior: 'auto' })
 }
 </script>
 
@@ -166,6 +184,21 @@ html.theme--light .settings-tabs-bar {
 .settings-tabs.height500 {
     height: 500px;
     max-height: calc(var(--app-height) - 111px);
+}
+
+.settings-tabs-vertical {
+    flex-direction: column !important;
+    align-items: stretch !important;
+}
+
+.settings-tabs-vertical .v-slide-group__content {
+    flex-direction: column !important;
+}
+
+.settings-tabs-vertical .v-tab {
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    height: 48px !important;
 }
 </style>
 

@@ -6,7 +6,7 @@
             :icon="mdiFileSyncOutline"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -32,10 +32,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">
+                <v-btn variant="text" @click="closeDialog">
                     {{ $t('Buttons.Cancel') }}
                 </v-btn>
-                <v-btn color="primary" text @click="btnRolloverLogs">
+                <v-btn color="primary" variant="text" @click="btnRolloverLogs">
                     {{ $t('Machine.LogfilesPanel.Accept') }}
                 </v-btn>
             </v-card-actions>
@@ -60,11 +60,9 @@ const props = defineProps<{
     'model-value': boolean
 }>()
 
-const { loadings } = useBase()
+const { loadings, isMobile } = useBase()
 const socket = useSocket()
 
-const mdiCloseThick = mdiCloseThick
-const mdiFileSyncOutline = mdiFileSyncOutline
 
 const showDialog = ref(props['model-value'])
 const selectedRolloverLogs = ref<string[]>([])

@@ -6,14 +6,14 @@
             card-class="history-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="showEditDialog = true">
+                <v-btn icon @click="showEditDialog = true">
                     <v-icon>{{ mdiPencil }}</v-icon>
                 </v-btn>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
-            <overlay-scrollbars style="height: 350px">
+            <OverlayScrollbarsComponent style="height: 350px">
                 <v-card-text class="pb-0">
                     <v-row>
                         <v-col>
@@ -37,12 +37,12 @@
                             :last="entry.id === history[history.length - 1].id" />
                     </v-timeline>
                 </v-card-text>
-            </overlay-scrollbars>
+            </OverlayScrollbarsComponent>
             <v-divider class="mt-0" />
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn v-if="showPerformButton" text color="primary" @click="showPerformDialog = true">
+                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn v-if="showPerformButton" variant="text" color="primary" @click="showPerformDialog = true">
                     {{ $t('History.Perform') }}
                 </v-btn>
             </v-card-actions>
@@ -66,14 +66,12 @@ import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'
 import HistoryListPanelPerformMaintenance from '@/components/dialogs/HistoryListPanelPerformMaintenance.vue'
 import HistoryListPanelEditMaintenance from '@/components/dialogs/HistoryListPanelEditMaintenance.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const store = useStore()
 const { t } = useI18n()
 const { formatDateTime } = useBase()
 
-const mdiCloseThick = mdiCloseThick
-const mdiNotebook = mdiNotebook
-const mdiPencil = mdiPencil
 
 const props = defineProps({
     modelValue: { type: Boolean },
@@ -89,7 +87,11 @@ const showDialog = computed({
 const showEditDialog = ref(false)
 const showPerformDialog = ref(false)
 
-const date = computed(() => formatDateTime(props.item.start_time * 1000, false))
+const date = computed(() => {
+    if (!props.item.start_time) return '--'
+
+    return formatDateTime(props.item.start_time * 1000, false)
+})
 
 const note = computed(() => props.item.note.replaceAll('\n', '<br>'))
 

@@ -34,8 +34,6 @@ const { loadings } = useBase()
 const store = useStore()
 const socket = useSocket()
 
-const mdiArrowExpandVertical = mdiArrowExpandVertical
-const mdiSync = mdiSync
 
 const items = computed(() => {
     let output: EndstopItem[] = []

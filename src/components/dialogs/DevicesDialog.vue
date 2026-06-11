@@ -11,7 +11,7 @@
             <template #buttons>
                 <v-menu :left="true" :offset-y="true" :close-on-content-click="false" attach="#devices-dialog">
                     <template #activator="{ props }">
-                        <v-btn icon tile v-bind="props">
+                        <v-btn icon v-bind="props">
                             <v-icon small>{{ mdiCog }}</v-icon>
                         </v-btn>
                     </template>
@@ -25,14 +25,14 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon @click="closePrompt">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
             <v-tabs v-model="currentTab" fixed-tabs>
                 <v-tab v-for="t in tabs" :key="t.tab" :value="t.tab">{{ t.title }}</v-tab>
             </v-tabs>
-            <overlay-scrollbars style="max-height: 400px; overflow-x: hidden">
+            <OverlayScrollbarsComponent style="max-height: 400px; overflow-x: hidden">
                 <v-window v-model="currentTab">
                     <v-window-item v-for="canInterface in canInterfaces" :key="canInterface" :value="canInterface">
                         <devices-dialog-can :hide-system-entries="hideSystemEntries" :name="canInterface" />
@@ -47,7 +47,7 @@
                         <devices-dialog-video :hide-system-entries="hideSystemEntries" />
                     </v-window-item>
                 </v-window>
-            </overlay-scrollbars>
+            </OverlayScrollbarsComponent>
         </panel>
     </v-dialog>
 </template>
@@ -59,13 +59,11 @@ import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 
 import { mdiCog, mdiCloseThick, mdiUsb } from '@mdi/js'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const store = useStore()
 const { isMobile } = useBase()
 
-const mdiCog = mdiCog
-const mdiUsb = mdiUsb
-const mdiCloseThick = mdiCloseThick
 
 const currentTab = ref('serial')
 const hideSystemEntries = ref(true)

@@ -21,7 +21,6 @@ const props = defineProps<{
 const { apiUrl, klipperState } = useBase()
 const store = useStore()
 
-const mdiDownload = mdiDownload
 
 const logfiles = computed(() =>
     store.getters['files/getDirectory']('logs')?.childrens ?? []

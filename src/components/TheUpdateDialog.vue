@@ -1,7 +1,7 @@
 <template>
-    <v-dialog :value="application !== ''" persistent max-width="800" class="mx-0">
+    <v-dialog v-model="showDialog" persistent max-width="800" class="mx-0">
         <v-card :loading="!complete">
-            <template slot="progress">
+            <template #progress>
                 <v-progress-linear color="primary" indeterminate></v-progress-linear>
             </template>
             <v-toolbar flat dense>
@@ -26,41 +26,32 @@
             <v-card-text class="px-3">
                 <v-row>
                     <v-col class="py-6 px-0">
-                        <overlay-scrollbars ref="updaterLogScroll" class="updaterLogScroll">
-                            <v-data-table
-                                ref="updaterLog"
-                                :headers="headers"
-                                :items="messages"
-                                item-key="date"
-                                hide-default-footer
-                                hide-default-header
-                                disable-pagination
-                                class="updaterLog"
-                                :custom-sort="customSort"
-                                sort-by="date"
-                                :sort-desc="true"
-                                color="primary">
-                                <template #no-data>
-                                    <div class="py-2">{{ $t('App.UpdateDialog.Empty') }}</div>
-                                </template>
-
-                                <template #item="{ item }">
-                                    <tr>
-                                        <td class="log-cell title-cell py-2">
-                                            {{ formatTime(item.date) }}
-                                        </td>
-                                        <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width: 100%">
+                        <OverlayScrollbarsComponent ref="updaterLogScroll" class="updaterLogScroll">
+                            <table class="updaterLog">
+                                <thead>
+                                    <tr v-if="messages.length">
+                                        <th>{{ $t('History.Time') }}</th>
+                                        <th>{{ $t('History.Message') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="!messages.length">
+                                        <td colspan="2" class="py-2">{{ $t('App.UpdateDialog.Empty') }}</td>
+                                    </tr>
+                                    <tr v-for="(item, index) in sortedMessages" :key="index">
+                                        <td class="log-cell title-cell py-2">{{ formatTime(item.date) }}</td>
+                                        <td class="log-cell content-cell pl-0 py-2" style="width: 100%">
                                             <span v-if="item.message" class="message" v-html="item.message"></span>
                                         </td>
                                     </tr>
-                                </template>
-                            </v-data-table>
-                        </overlay-scrollbars>
+                                </tbody>
+                            </table>
+                        </OverlayScrollbarsComponent>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn text :disabled="!complete" color="primary" @click="close">
+                        <v-btn variant="text" :disabled="!complete" color="primary" @click="close">
                             {{ $t('Buttons.Close') }}
                         </v-btn>
                     </v-col>
@@ -82,54 +73,21 @@ const store = useStore()
 const socket = useSocket()
 
 const updaterLogScroll = ref<any>(null)
-const updaterLog = ref<any>(null)
 
-const headers = [
-    {
-        text: 'Date',
-        value: 'date',
-        width: '1%',
-        dateType: 'Date',
-    },
-    {
-        text: 'Message',
-        sortable: false,
-        value: 'message',
-        width: '99%',
-    },
-]
+const showDialog = computed({
+    get: () => application.value !== '',
+    set: () => {},
+})
 
 const application = computed(() => store.state.server.updateManager.updateResponse.application ?? '')
 
 const messages = computed<ServerUpdateManagerStateMessages[]>(() => store.state.server.updateManager.updateResponse.messages ?? [])
 
+const sortedMessages = computed(() => {
+    return [...messages.value].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+})
+
 const complete = computed(() => store.state.server.updateManager.updateResponse.complete ?? true)
-
-function customSort(items: ServerUpdateManagerStateMessages[], sortBy: string[], sortDesc: boolean[]) {
-    const sortKey = sortBy[0]
-    const isDescending = sortDesc[0]
-
-    items.sort((a, b) => {
-        if (sortKey === 'date') {
-            const aDate = new Date(a.date).getTime()
-            const bDate = new Date(b.date).getTime()
-
-            if (!isDescending) return bDate - aDate
-
-            return aDate - bDate
-        }
-
-        if (sortKey === 'message') {
-            if (!isDescending) return a.message.toLowerCase().localeCompare(b.message.toLowerCase())
-
-            return b.message.toLowerCase().localeCompare(a.message.toLowerCase())
-        }
-
-        return 0
-    })
-
-    return items
-}
 
 function formatTime(date: Date) {
     const hours = date.getHours() < 10 ? '0' + date.getHours().toString() : date.getHours()
@@ -174,9 +132,11 @@ watch(messages, () => {
 .updaterLog .title-cell {
     white-space: nowrap;
     vertical-align: top;
+    width: 1%;
 }
 
-.updaterLog.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+.updaterLog td, .updaterLog th {
     height: auto;
+    padding: 4px 8px;
 }
 </style>

@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { getDefaultState } from './index'
+import { getSocket, $toast } from '@/store/runtime'
 import { findDirectory } from '@/plugins/helpers'
 import { MutationTree } from 'vuex'
 import { FileState, FileStateFile } from '@/store/files/types'
@@ -36,7 +36,7 @@ export const mutations: MutationTree<FileState> = {
             const currentFile = { ...path[fileIndex] } as FileStateFile
             currentFile.metadataRequested = true
 
-            Vue.set(path, fileIndex, currentFile)
+            path[fileIndex] = currentFile
         } else window.console.error('file not found in filetree: ' + payload.filename)
     },
 
@@ -55,7 +55,7 @@ export const mutations: MutationTree<FileState> = {
             currentFile.metadataRequested = true
             currentFile.metadataPulled = true
 
-            Vue.set(path, fileIndex, currentFile)
+            path[fileIndex] = currentFile
         } else window.console.error('file not found in filetree: ' + payload.filename)
     },
 
@@ -91,7 +91,7 @@ export const mutations: MutationTree<FileState> = {
 
                 const extension = filename.substring(filename.lastIndexOf('.') + 1)
                 if (payload.item.root === 'gcodes' && extension === 'gcode') {
-                    Vue.$socket.emit(
+                    getSocket().emit(
                         'server.files.metadata',
                         { filename: payload.item.path },
                         { action: 'files/getMetadata' }
@@ -242,12 +242,12 @@ export const mutations: MutationTree<FileState> = {
         const parent = findDirectory(state.filetree, parentPath.split('/'))
         const directory = parent?.find((element) => element.isDirectory && element.filename === pathName)
 
-        if (directory) Vue.set(directory, 'disk_usage', payload.disk_usage)
+        if (directory) directory.disk_usage = payload.disk_usage
     },
 
     setRootPermissions(state, payload) {
         const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload.name)
-        if (rootState) Vue.set(rootState, 'permissions', payload.permissions)
+        if (rootState) rootState.permissions = payload.permissions
     },
 
     uploadClearState(state) {
@@ -258,34 +258,34 @@ export const mutations: MutationTree<FileState> = {
         upload.speed = 0
         upload.percent = 0
 
-        Vue.set(state, 'upload', upload)
+        state.upload = upload
     },
 
     uploadSetShow(state, payload) {
-        Vue.set(state.upload, 'show', payload)
+        state.upload.show = payload
     },
 
     uploadSetFilename(state, payload) {
-        Vue.set(state.upload, 'filename', payload)
+        state.upload.filename = payload
     },
 
     uploadSetCancelTokenSource(state, payload) {
-        Vue.set(state.upload, 'cancelTokenSource', payload)
+        state.upload.cancelTokenSource = payload
     },
 
     uploadSetCurrentNumber(state, payload) {
-        Vue.set(state.upload, 'currentNumber', payload)
+        state.upload.currentNumber = payload
     },
 
     uploadSetMaxNumber(state, payload) {
-        Vue.set(state.upload, 'maxNumber', payload)
+        state.upload.maxNumber = payload
     },
 
     uploadSetPercent(state, payload) {
-        if (state.upload.percent !== payload) Vue.set(state.upload, 'percent', payload)
+        if (state.upload.percent !== payload) state.upload.percent = payload
     },
 
     uploadSetSpeed(state, payload) {
-        if (state.upload.speed !== payload) Vue.set(state.upload, 'speed', payload)
+        if (state.upload.speed !== payload) state.upload.speed = payload
     },
 }

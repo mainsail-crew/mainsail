@@ -378,12 +378,6 @@ const {
 } = useControl()
 const store = useStore()
 
-const mdiChevronUp = mdiChevronUp
-const mdiChevronLeft = mdiChevronLeft
-const mdiChevronRight = mdiChevronRight
-const mdiChevronDown = mdiChevronDown
-const mdiEngineOff = mdiEngineOff
-const mdiHome = mdiHome
 
 const selectedCrossStep = computed(() => store.state.gui.control.selectedCrossStep)
 

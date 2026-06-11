@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" :max-width="600" persistent @keydown.esc="closeDialog">
         <panel :title="panelTitle" :icon="icon" card-class="history-note-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -15,8 +15,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn color="primary" text @click="saveNote">{{ $t('Buttons.Save') }}</v-btn>
+                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn color="primary" variant="text" @click="saveNote">{{ $t('Buttons.Save') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -33,7 +33,6 @@ import { mdiCloseThick, mdiNoteEditOutline, mdiNotePlusOutline } from '@mdi/js'
 const store = useStore()
 const { t } = useI18n()
 
-const mdiCloseThick = mdiCloseThick
 
 const note = ref('')
 

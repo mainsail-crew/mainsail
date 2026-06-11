@@ -68,7 +68,7 @@
                 <v-dialog v-model="paramsDialog">
                     <panel :title="macro.name" :card-class="`macro-params-mobile-${macro.name}`" :margin-bottom="false">
                         <template #buttons>
-                            <v-btn icon tile @click="paramsDialog = false">
+                            <v-btn icon @click="paramsDialog = false">
                                 <v-icon>{{ mdiCloseThick }}</v-icon>
                             </v-btn>
                         </template>

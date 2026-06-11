@@ -46,10 +46,8 @@
                         small
                         block
                         :disabled="['printing'].includes(printer_state)"
-                        color="grey"
-                        outlined
-                        @click="disableSteppers">
-                        <v-icon left small>mdi-close-circle-outline</v-icon>
+                        color="grey" variant="outlined" @click="disableSteppers">
+                        <v-icon left small>{{ mdiCloseCircleOutline }}</v-icon>
                         Disable Steppers
                     </v-btn>
                 </v-col>
@@ -115,9 +113,7 @@
                         </v-btn>
                         <v-btn
                             class="jog-panel__xy-btn jog-panel__xy-center"
-                            large
-                            outlined
-                            :disabled="['printing'].includes(printer_state)"
+                            large variant="outlined" :disabled="['printing'].includes(printer_state)"
                             @click="jogStop">
                             <v-icon>{{ mdiStop }}</v-icon>
                         </v-btn>
@@ -212,6 +208,7 @@ import {
     mdiChevronRight,
     mdiStop,
     mdiKeyboard,
+    mdiCloseCircleOutline,
 } from '@mdi/js'
 import { updateCncSettings } from '@/store/files/cncApi'
 

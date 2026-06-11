@@ -6,7 +6,7 @@
             :margin-bottom="false"
             card-class="machine-update-hint-dialog">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -26,8 +26,8 @@
             <v-divider />
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Machine.UpdatePanel.Abort') }}</v-btn>
-                <v-btn text color="primary" :disabled="!checkboxUpdateQuestion" @click="doUpdate">
+                <v-btn variant="text" @click="closeDialog">{{ $t('Machine.UpdatePanel.Abort') }}</v-btn>
+                <v-btn variant="text" color="primary" :disabled="!checkboxUpdateQuestion" @click="doUpdate">
                     {{ $t('Machine.UpdatePanel.StartUpdate') }}
                 </v-btn>
             </v-card-actions>
@@ -53,8 +53,6 @@ const emit = defineEmits<{
     'open-commit-history': []
 }>()
 
-const mdiCloseThick = mdiCloseThick
-const mdiProgressQuestion = mdiProgressQuestion
 
 const checkboxUpdateQuestion = ref(false)
 

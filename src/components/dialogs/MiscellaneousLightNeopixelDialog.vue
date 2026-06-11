@@ -6,7 +6,7 @@
             card-class="miscellaneous-light-neopixel-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon @click="closePrompt">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -124,8 +124,6 @@ interface ColorData {
 
 const store = useStore()
 
-const mdiCloseThick = mdiCloseThick
-const mdiLightbulbOutline = mdiLightbulbOutline
 
 const props = defineProps({
     modelValue: { type: Boolean },

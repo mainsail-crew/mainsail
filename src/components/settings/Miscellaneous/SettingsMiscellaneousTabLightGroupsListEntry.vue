@@ -1,10 +1,10 @@
 <template>
     <settings-row :title="group.name" :sub-title="subTitle" :dynamic-slot-width="true">
-        <v-btn small outlined class="ml-3" @click="editGroup">
+        <v-btn small variant="outlined" class="ml-3" @click="editGroup">
             <v-icon left small>{{ mdiPencil }}</v-icon>
             {{ $t('Settings.Edit') }}
         </v-btn>
-        <v-btn small outlined class="ml-3 minwidth-0 px-2" color="error" @click="deleteGroup">
+        <v-btn small variant="outlined" class="ml-3 minwidth-0 px-2" color="error" @click="deleteGroup">
             <v-icon small>{{ mdiDelete }}</v-icon>
         </v-btn>
     </settings-row>

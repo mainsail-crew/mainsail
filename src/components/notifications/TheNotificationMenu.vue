@@ -10,19 +10,19 @@
         transition="slide-y-transition"
         :min-width="isMobile ? '100%' : null">
         <template #activator="{ props }">
-            <v-btn icon tile class="minwidth-0" v-bind="props">
+            <v-btn icon class="minwidth-0" v-bind="props">
                 <v-badge
                     :content="notifications.length <= 9 ? notifications.length : '9+'"
                     :value="notifications.length > 0"
                     :color="colorBadge"
                     overlap>
-                    <v-icon>{{ attrs['aria-expanded'] === 'false' ? mdiBellOutline : mdiBell }}</v-icon>
+                    <v-icon>{{ !boolMenu ? mdiBellOutline : mdiBell }}</v-icon>
                 </v-badge>
             </v-btn>
         </template>
         <v-card flat :min-width="300" :max-width="isMobile ? null : 400">
             <template v-if="notifications.length">
-                <overlay-scrollbars class="announcement-menu__scrollbar">
+                <OverlayScrollbarsComponent class="announcement-menu__scrollbar">
                     <v-card-text>
                         <template v-for="(entry, index) in notifications" :key="entry.id">
                             <notification-menu-entry
@@ -31,12 +31,12 @@
                                 :parent-state="boolMenu" />
                         </template>
                     </v-card-text>
-                </overlay-scrollbars>
+                </OverlayScrollbarsComponent>
                 <template v-if="notifications.length > 1">
                     <v-divider />
                     <v-card-actions>
                         <v-spacer />
-                        <v-btn text color="primary" class="mr-2" @click="dismissAll">
+                        <v-btn variant="text" color="primary" class="mr-2" @click="dismissAll">
                             <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
                             {{ $t('App.Notifications.DismissAll') }}
                         </v-btn>
@@ -57,6 +57,7 @@ import { useBase } from '@/composables/useBase'
 import NotificationMenuEntry from '@/components/notifications/NotificationMenuEntry.vue'
 import { mdiBell, mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
 import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const store = useStore()
 const { isMobile } = useBase()

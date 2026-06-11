@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import Vue from 'vue'
 import { GuiNavigationState, GuiNavigationStateEntry } from '@/store/gui/navigation/types'
+import { getSocket, $toast } from '@/store/runtime'
 import { NaviPoint } from '@/composables/useNavigation'
 
 export const actions: ActionTree<GuiNavigationState, RootState> = {
@@ -10,7 +10,7 @@ export const actions: ActionTree<GuiNavigationState, RootState> = {
     },
 
     upload({ state }) {
-        Vue.$socket.emit('server.database.post_item', {
+        getSocket().emit('server.database.post_item', {
             namespace: 'mainsail',
             key: 'navigation.entries',
             value: state.entries,

@@ -12,7 +12,7 @@
                     <v-text-field
                         v-model="form.name"
                         :placeholder="$t('Settings.PresetsTab.PresetNamePlaceholder')"
-                        hide-details="auto"
+                        hide-details
                         :rules="[rules.required, rules.unique]"
                         dense
                         outlined />
@@ -23,7 +23,7 @@
                         <v-checkbox v-model="value.bool" hide-details class="shrink mt-0" />
                         <v-text-field
                             v-model="value.value"
-                            hide-details="auto"
+                            hide-details
                             :rules="[rules.invalid]"
                             type="number"
                             suffix="°C"
@@ -39,10 +39,10 @@
                 </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text @click="closeForm">
+                <v-btn variant="text" @click="closeForm">
                     {{ $t('Buttons.Cancel') }}
                 </v-btn>
-                <v-btn color="primary" text type="submit" :disabled="!valid">
+                <v-btn color="primary" variant="text" type="submit" :disabled="!valid">
                     {{ storeButtonText }}
                 </v-btn>
             </v-card-actions>

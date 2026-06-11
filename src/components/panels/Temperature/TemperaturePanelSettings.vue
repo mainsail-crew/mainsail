@@ -1,7 +1,7 @@
 <template>
     <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.TemperaturePanel.SetupTemperatures')">
         <template #activator="{ props }">
-            <v-btn icon tile v-bind="props">
+            <v-btn icon v-bind="props">
                 <v-icon small>{{ mdiCog }}</v-icon>
             </v-btn>
         </template>
@@ -48,7 +48,6 @@ import { useStore } from 'vuex'
 import { mdiCog } from '@mdi/js'
 
 const store = useStore()
-const mdiCog = mdiCog
 
 const boolTempchart = computed(() => store.state.gui.view.tempchart.boolTempchart ?? false)
 function toggleBoolTempchart(val: boolean) {

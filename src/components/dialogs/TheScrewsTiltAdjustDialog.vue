@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
+    <v-dialog :model-value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
             :title="$t('ScrewsTiltAdjust.Headline')"
             :icon="mdiArrowCollapseDown"
@@ -8,7 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn icon tile @click="clearScrewsTiltAdjust">
+                <v-btn icon @click="clearScrewsTiltAdjust">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -29,10 +29,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="retryScrewsTiltAdjust">
+                <v-btn variant="text" @click="retryScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Retry') }}
                 </v-btn>
-                <v-btn color="primary" text @click="clearScrewsTiltAdjust">
+                <v-btn color="primary" variant="text" @click="clearScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Accept') }}
                 </v-btn>
             </v-card-actions>
@@ -54,8 +54,6 @@ const store = useStore()
 const { isMobile } = useBase()
 const { doSend } = useControl()
 
-const mdiArrowCollapseDown = mdiArrowCollapseDown
-const mdiCloseThick = mdiCloseThick
 
 const error = computed(() => store.state.printer.screws_tilt_adjust?.error ?? false)
 

@@ -24,7 +24,7 @@
                 </template>
                 <span v-else>{{ versionOutput }}</span>
             </v-col>
-            <v-col class="col-auto pr-6 text-right" align-self="center">
+            <v-col class="v-col-auto pr-6 text-right" align-self="center">
                 <v-chip
                     v-if="anomalies.length > 0"
                     small
@@ -89,7 +89,7 @@
                     dense
                     text
                     color="orange"
-                    border="left"
+                    border="start"
                     :icon="mdiCloseCircle">
                     <p class="text--disabled mb-0">{{ message }}</p>
                 </v-alert>
@@ -103,7 +103,7 @@
                     dense
                     text
                     color="grey"
-                    border="left"
+                    border="start"
                     :icon="mdiInformation">
                     {{ message }}
                 </v-alert>
@@ -149,12 +149,6 @@ const store = useStore()
 const socket = useSocket()
 const { t } = useI18n()
 
-const mdiInformation = mdiInformation
-const mdiMenuDown = mdiMenuDown
-const mdiReload = mdiReload
-const mdiCloseCircle = mdiCloseCircle
-const mdiUpdate = mdiUpdate
-const mdiInformationOutline = mdiInformationOutline
 
 const boolShowCommitList = ref(false)
 const boolShowUpdateHint = ref(false)

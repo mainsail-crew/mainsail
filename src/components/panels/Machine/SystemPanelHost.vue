@@ -121,13 +121,13 @@
                     </template>
                 </div>
             </v-col>
-            <v-col v-if="cpuUsage !== null" class="px-2 col-auto d-flex flex-column justify-center align-center">
+            <v-col v-if="cpuUsage !== null" class="px-2 v-col-auto d-flex flex-column justify-center align-center">
                 <v-progress-circular :rotate="-90" :size="55" :width="7" :value="cpuUsage" :color="cpuUsageColor">
                     {{ cpuUsage }}
                 </v-progress-circular>
                 <span class="mt-2">{{ $t('Machine.SystemPanel.Cpu') }}</span>
             </v-col>
-            <v-col v-else class="px-2 col-auto d-flex flex-column justify-center align-center">
+            <v-col v-else class="px-2 v-col-auto d-flex flex-column justify-center align-center">
                 <v-progress-circular
                     :rotate="-90"
                     :size="55"
@@ -140,7 +140,7 @@
             </v-col>
             <v-col
                 v-if="hostStats.memUsage !== null"
-                class="px-2 col-auto d-flex flex-column justify-center align-center">
+                class="px-2 v-col-auto d-flex flex-column justify-center align-center">
                 <v-progress-circular
                     :rotate="-90"
                     :size="55"
@@ -159,12 +159,12 @@
                 card-class="machine-systemload-host-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="hostDetailsDialog = false">
+                    <v-btn icon @click="hostDetailsDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
-                    <overlay-scrollbars style="height: 350px" class="px-6">
+                    <OverlayScrollbarsComponent style="height: 350px" class="px-6">
                         <template v-if="Object.keys(systemInfo).length">
                             <div v-for="(infoGroup, key, index) of systemInfo" :key="key">
                                 <template v-if="key !== 'available_services'">
@@ -190,7 +190,7 @@
                                 </v-col>
                             </v-row>
                         </template>
-                    </overlay-scrollbars>
+                    </OverlayScrollbarsComponent>
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -204,12 +204,11 @@ import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { formatFilesize } from '@/plugins/helpers'
 import { mdiTextBoxSearchOutline, mdiCloseThick } from '@mdi/js'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const { klipperReadyForGui } = useBase()
 const store = useStore()
 
-const mdiCloseThick = mdiCloseThick
-const mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
 
 const hostDetailsDialog = ref(false)
 

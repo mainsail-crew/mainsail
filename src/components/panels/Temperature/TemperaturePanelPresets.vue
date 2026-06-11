@@ -2,9 +2,7 @@
     <div style="height: 100%">
         <v-menu v-if="presets.length" :offset-y="true" left>
             <template #activator="{ props }">
-                <v-btn
-                    text
-                    tile
+                <v-btn variant="text" tile
                     color="primary"
                     v-bind="props"
                     :disabled="['printing', 'paused'].includes(printer_state)"
@@ -34,8 +32,8 @@
         </v-menu>
         <v-btn
             v-else
-            :icon="$vuetify.breakpoint.smAndDown"
-            :text="$vuetify.breakpoint.mdAndUp"
+            :icon="smAndDown"
+            :text="mdAndUp"
             tile
             color="primary"
             @click="btnCoolDown">
@@ -57,6 +55,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useDisplay } from 'vuetify'
 import { useSocket } from '@/composables/useSocket'
 import { useBase } from '@/composables/useBase'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
@@ -64,12 +63,9 @@ import { mdiFire, mdiMenuDown, mdiSnowflake } from '@mdi/js'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
 const { printer_state } = useBase()
+const { smAndDown, mdAndUp } = useDisplay()
 const store = useStore()
 const socket = useSocket()
-
-const mdiFire = mdiFire
-const mdiMenuDown = mdiMenuDown
-const mdiSnowflake = mdiSnowflake
 
 const showCoolDownDialog = ref(false)
 

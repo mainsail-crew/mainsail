@@ -17,9 +17,7 @@
                         <div class="d-flex align-center">
                             <v-btn
                                 v-if="z_gcode_offset !== 0"
-                                :loading="loadings.includes('babySteppingClear')"
-                                text
-                                small
+                                :loading="loadings.includes('babySteppingClear')" variant="text" small
                                 plain
                                 class="px-2 mr-1"
                                 @click="clearZOffset()">
@@ -28,9 +26,7 @@
                             </v-btn>
                             <v-btn
                                 v-if="showSaveButton"
-                                color="primary"
-                                text
-                                small
+                                color="primary" variant="text" small
                                 plain
                                 class="px-2"
                                 @click="saveZOffset">
@@ -106,14 +102,14 @@
                         </v-card-text>
                         <v-card-actions v-if="printerIsPrinting">
                             <v-spacer></v-spacer>
-                            <v-btn text @click="saveOffsetDialog = false">{{ $t('Panels.ZoffsetPanel.Ok') }}</v-btn>
+                            <v-btn variant="text" @click="saveOffsetDialog = false">{{ $t('Panels.ZoffsetPanel.Ok') }}</v-btn>
                         </v-card-actions>
                         <v-card-actions v-else>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" text @click="saveConfig">
+                            <v-btn color="primary" variant="text" @click="saveConfig">
                                 {{ $t('Panels.ZoffsetPanel.SaveConfig') }}
                             </v-btn>
-                            <v-btn text @click="saveOffsetDialog = false">{{ $t('Panels.ZoffsetPanel.Later') }}</v-btn>
+                            <v-btn variant="text" @click="saveOffsetDialog = false">{{ $t('Panels.ZoffsetPanel.Later') }}</v-btn>
                         </v-card-actions>
                     </panel>
                 </v-dialog>
@@ -146,12 +142,6 @@ const {
 const store = useStore()
 const socket = useSocket()
 
-const mdiBroom = mdiBroom
-const mdiContentSave = mdiContentSave
-const mdiArrowCollapseDown = mdiArrowCollapseDown
-const mdiInformation = mdiInformation
-const mdiArrowExpandUp = mdiArrowExpandUp
-const mdiLayersOutline = mdiLayersOutline
 
 const saveOffsetDialog = ref(false)
 

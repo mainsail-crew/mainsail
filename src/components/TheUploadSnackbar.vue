@@ -1,13 +1,13 @@
 <template>
-    <v-snackbar v-if="show" :timeout="-1" :value="true" fixed right bottom>
+    <v-snackbar v-if="show" :timeout="-1" fixed right bottom>
         <span v-if="maxNumber > 1" class="mr-1">({{ currentNumber }}/{{ maxNumber }})</span>
         <strong>{{ $t('Editor.Uploading') + ' ' + filename }}</strong>
         <br />
         {{ percent }} % @ {{ speed }}/s
         <br />
-        <v-progress-linear class="mt-2" :value="percent"></v-progress-linear>
+        <v-progress-linear class="mt-2" v-model="percent"></v-progress-linear>
         <template #actions="{ props }">
-            <v-btn color="red" text v-bind="props" style="min-width: auto" @click="cancelUpload">
+            <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelUpload">
                 <v-icon class="0">{{ mdiClose }}</v-icon>
             </v-btn>
         </template>

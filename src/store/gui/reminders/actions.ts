@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import { GuiRemindersState } from '@/store/gui/reminders/types'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
@@ -10,7 +10,7 @@ export const actions: ActionTree<GuiRemindersState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('server.database.get_item', { namespace: 'reminders' }, { action: 'gui/reminders/initStore' })
+        getSocket().emit('server.database.get_item', { namespace: 'reminders' }, { action: 'gui/reminders/initStore' })
     },
 
     async initStore({ commit, dispatch }, payload) {
@@ -20,7 +20,7 @@ export const actions: ActionTree<GuiRemindersState, RootState> = {
     },
 
     upload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'reminders', key: payload.id, value: payload.value })
+        getSocket().emit('server.database.post_item', { namespace: 'reminders', key: payload.id, value: payload.value })
     },
 
     store({ commit, dispatch, state }, payload) {
@@ -43,7 +43,7 @@ export const actions: ActionTree<GuiRemindersState, RootState> = {
 
     delete({ commit }, payload) {
         commit('delete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'reminders', key: payload })
+        getSocket().emit('server.database.delete_item', { namespace: 'reminders', key: payload })
     },
 
     repeat({ dispatch, getters, state, rootState }, payload) {

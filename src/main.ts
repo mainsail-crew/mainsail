@@ -5,12 +5,22 @@ import App from '@/App.vue'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as vuetifyDirectives from 'vuetify/directives'
+import { aliases as mdiAliases, mdi } from 'vuetify/iconsets/mdi-svg'
+import { use } from 'echarts/core'
+import { SVGRenderer } from 'echarts/renderers'
+import { BarChart, LineChart, PieChart } from 'echarts/charts'
+import { DatasetComponent, GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
 import VueToast from 'vue-toast-notification'
+import VueLoadImage from 'vue-load-image'
+import EChart from 'vue-echarts'
+import { ObserveVisibility } from 'vue-observe-visibility'
 import 'vue-toast-notification/dist/theme-sugar.css'
+import 'vuetify/styles'
 import 'overlayscrollbars/overlayscrollbars.css'
 
 import { WebSocketClient, type WebSocketPluginOptions } from '@/plugins/webSocketClient'
 import { SOCKET_KEY } from '@/composables/useSocket'
+import { setSocket } from '@/store/runtime'
 import vLongpress from '@/directives/longpress'
 import vResponsiveClass from '@/directives/responsive-class'
 
@@ -20,9 +30,16 @@ import router from '@/plugins/router'
 import store from '@/store'
 import i18n from '@/plugins/i18n'
 
+use([SVGRenderer, BarChart, LineChart, PieChart, DatasetComponent, GridComponent, LegendComponent, TooltipComponent])
+
 const vuetify = createVuetify({
     components,
     directives: vuetifyDirectives,
+    icons: {
+        defaultSet: 'mdi',
+        sets: { mdi },
+        aliases: mdiAliases,
+    },
     theme: {
         defaultTheme: 'dark',
         themes: {
@@ -67,6 +84,7 @@ const initLoad = async () => {
 
     app.provide(SOCKET_KEY, socket)
     app.config.globalProperties.$socket = socket
+    setSocket(socket)
 
     if (store?.state?.instancesDB === 'moonraker') socket.connect()
 }
@@ -78,6 +96,9 @@ app.use(VueToast, { duration: 3000, position: 'top-right' })
 
 app.directive('longpress', vLongpress)
 app.directive('responsive-class', vResponsiveClass)
+app.directive('observe-visibility', ObserveVisibility)
+app.component('vue-load-image', VueLoadImage)
+app.component('e-chart', EChart)
 
 initLoad().then(() => {
     app.use(store)

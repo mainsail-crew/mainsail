@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.NewDirectory')" card-class="gcodefiles-new-directory-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon @click="closePrompt">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -18,12 +18,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn
                     :disabled="isInvalidName || name.length === 0"
-                    color="primary"
-                    text
-                    @click="createDirectoryAction">
+                    color="primary" variant="text" @click="createDirectoryAction">
                     {{ $t('Files.Create') }}
                 </v-btn>
             </v-card-actions>
@@ -44,7 +42,6 @@ const { t } = useI18n()
 const socket = useSocket()
 const { currentPath, existsFilename } = useGcodeFiles()
 
-const mdiCloseThick = mdiCloseThick
 
 const name = ref('')
 const isInvalidName = ref(false)

@@ -3,7 +3,7 @@
         <v-card-title>{{ title }}</v-card-title>
         <v-card-text>
             <v-row>
-                <v-col class="col-12 col-sm-6">
+                <v-col class="v-col-12 v-v-col-sm-6">
                     <v-row>
                         <v-col class="d-flex">
                             <v-item-group>
@@ -40,7 +40,7 @@
                             <v-text-field
                                 v-model="form.name"
                                 :label="$t('Settings.WebcamsTab.Name')"
-                                hide-details="auto"
+                                hide-details
                                 outlined
                                 :rules="[rules.required, rules.unique]"
                                 class="_webcam-settings-name-field"
@@ -52,7 +52,7 @@
                             <v-text-field
                                 v-model="form.stream_url"
                                 :label="$t('Settings.WebcamsTab.UrlStream')"
-                                hide-details="auto"
+                                hide-details
                                 outlined
                                 dense
                                 :rules="rulesStreamUrl" />
@@ -63,7 +63,7 @@
                             <v-text-field
                                 v-model="form.snapshot_url"
                                 :label="$t('Settings.WebcamsTab.UrlSnapshot')"
-                                hide-details="auto"
+                                hide-details
                                 outlined
                                 dense
                                 :rules="rulesSnapshotUrl" />
@@ -85,7 +85,7 @@
                             <v-text-field
                                 v-model="form.aspect_ratio"
                                 :label="$t('Settings.WebcamsTab.AspectRatio')"
-                                hide-details="auto"
+                                hide-details
                                 outlined
                                 dense
                                 :rules="[rules.required, rules.aspect]" />
@@ -200,14 +200,14 @@
                         </v-row>
                     </template>
                 </v-col>
-                <v-col class="col-12 col-sm-6 text-center" align-self="center">
+                <v-col class="v-col-12 v-v-col-sm-6 text-center" align-self="center">
                     <webcam-wrapper :webcam="webcam" page="settings" />
                 </v-col>
             </v-row>
         </v-card-text>
         <v-card-actions class="d-flex justify-end">
-            <v-btn text @click="closeForm">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn color="primary" text type="submit" :disabled="!valid">{{ actionButtonText }}</v-btn>
+            <v-btn variant="text" @click="closeForm">{{ $t('Buttons.Cancel') }}</v-btn>
+            <v-btn color="primary" variant="text" type="submit" :disabled="!valid">{{ actionButtonText }}</v-btn>
         </v-card-actions>
     </v-form>
 </template>

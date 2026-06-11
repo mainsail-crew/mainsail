@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import { GuiState, GuiStateDashboard, GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { RootState } from '@/store/types'
@@ -20,7 +20,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     init() {
         window.console.debug('init gui')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore' })
+        getSocket().emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore' })
     },
 
     async initStore({ commit, dispatch, rootGetters, rootState }, payload) {
@@ -180,7 +180,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('saveSetting', payload)
         if (excludeKeys.includes(payload.name)) return
 
-        Vue.$socket.emit('server.database.post_item', {
+        getSocket().emit('server.database.post_item', {
             namespace: 'mainsail',
             key: payload.name,
             value: payload.value,
@@ -198,7 +198,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         )
             newState = Object.assign(payload.value[keyName], { ...newState })
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
+        getSocket().emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
     },
 
     setGcodefilesMetadata({ commit, dispatch, state }, data) {

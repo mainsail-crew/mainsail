@@ -77,15 +77,7 @@ export default defineConfig({
         VitePWA(PWAConfig),
         buildVersion(),
         buildReleaseInfo(),
-        vue({
-            template: {
-                compilerOptions: {
-                    compatConfig: {
-                        MODE: 2,
-                    },
-                },
-            },
-        }),
+        vue(),
         version(),
         Components({
             dts: true,
@@ -142,7 +134,6 @@ export default defineConfig({
             '@': path.resolve(__dirname, './src'),
             stream: 'stream-browserify',
             events: 'events',
-            vue: '@vue/compat',
         },
     },
 

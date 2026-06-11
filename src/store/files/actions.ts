@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import {
     ApiGetDirectoryReturn,
     ApiGetDirectoryReturnDir,
@@ -25,7 +25,7 @@ export const actions: ActionTree<FileState, RootState> = {
                     name: dirname,
                     permissions: 'r',
                 })
-                Vue.$socket.emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
+                getSocket().emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
             }
         })
     },
@@ -86,7 +86,7 @@ export const actions: ActionTree<FileState, RootState> = {
                             },
                         })
 
-                        Vue.$socket.emit(
+                        getSocket().emit(
                             'server.files.get_directory',
                             { path: requestPath + '/' + dir.dirname },
                             { action: 'files/getDirectory' }
@@ -144,7 +144,7 @@ export const actions: ActionTree<FileState, RootState> = {
         if (rootPath === 'gcodes') {
             const requestFilename = payload.filename.slice(7)
             commit('setMetadataRequested', { filename: requestFilename })
-            Vue.$socket.emit(
+            getSocket().emit(
                 'server.files.metascan',
                 { filename: requestFilename },
                 { action: 'files/getScanMetadata' }
@@ -157,7 +157,7 @@ export const actions: ActionTree<FileState, RootState> = {
             dispatch('getMetadata', payload)
 
             const filename = payload.filename
-            Vue.$toast.success(i18n.t('Files.ScanMetaSuccess', { filename }).toString())
+            $toast.success(i18n.global.t('Files.ScanMetaSuccess', { filename }).toString())
         }
     },
 
@@ -166,7 +166,7 @@ export const actions: ActionTree<FileState, RootState> = {
         let messages: BatchMessage[] = []
         for (const { filename } of payload) {
             if (messages.length >= 100) {
-                Vue.$socket.emitBatch(messages)
+                getSocket().emitBatch(messages)
                 messages = []
             }
             const rootPath = filename.slice(0, filename.indexOf('/'))
@@ -180,7 +180,7 @@ export const actions: ActionTree<FileState, RootState> = {
                 })
             }
         }
-        Vue.$socket.emitBatch(messages)
+        getSocket().emitBatch(messages)
     },
 
     getMetadata({ commit, rootState }, payload) {
@@ -238,7 +238,7 @@ export const actions: ActionTree<FileState, RootState> = {
                 commit('setCreateDir', payload)
 
                 // Request directory details to update disk usage
-                Vue.$socket.emit(
+                getSocket().emit(
                     'server.files.get_directory',
                     { path: `${payload.item.root}/${payload.item.path}` },
                     { action: 'files/getDirectory' }
@@ -266,7 +266,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
     getMove(_, payload) {
         if (payload.error) {
-            Vue.$toast.error(payload.error.message)
+            $toast.error(payload.error.message)
         } else {
             const filename = payload.requestParams.dest
                 .substr(payload.requestParams.dest.lastIndexOf('/'))
@@ -274,40 +274,40 @@ export const actions: ActionTree<FileState, RootState> = {
             const sourceDir = payload.requestParams.source.substr(0, payload.requestParams.source.lastIndexOf('/'))
             const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
 
-            if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t('Files.SuccessfullyRenamed', { filename }))
-            else Vue.$toast.success(<string>i18n.t('Files.SuccessfullyMoved', { filename }))
+            if (sourceDir === destDir) $toast.success(<string>i18n.global.t('Files.SuccessfullyRenamed', { filename }))
+            else $toast.success(<string>i18n.global.t('Files.SuccessfullyMoved', { filename }))
         }
     },
 
     getCreateDir(_, payload) {
         if (payload.error) {
-            Vue.$toast.error(payload.error.message)
+            $toast.error(payload.error.message)
         } else {
             const newPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/') + 1)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyCreated', { filename: newPath }))
+            $toast.success(<string>i18n.global.t('Files.SuccessfullyCreated', { filename: newPath }))
         }
     },
 
     getDeleteDir(_, payload) {
         if (payload.error) {
-            Vue.$toast.error(payload.error.message)
+            $toast.error(payload.error.message)
         } else {
             const delPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/') + 1)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
+            $toast.success(<string>i18n.global.t('Files.SuccessfullyDeleted', { filename: delPath }))
         }
     },
 
     getDeleteFile(_, payload) {
         if (payload.error) {
-            Vue.$toast.error(payload.error.message)
+            $toast.error(payload.error.message)
         } else {
             const delPath = payload.item.path.substr(payload.item.path.lastIndexOf('/') + 1)
             const fileExtension = payload.item.path.substr(payload.item.path.lastIndexOf('.') + 1)
 
             if (!(payload.item.root === 'timelapse' && fileExtension === 'jpg'))
-                Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
+                $toast.success(<string>i18n.global.t('Files.SuccessfullyDeleted', { filename: delPath }))
         }
     },
 
@@ -345,7 +345,7 @@ export const actions: ActionTree<FileState, RootState> = {
                 })
                 .catch(() => {
                     commit('uploadSetShow', false)
-                    Vue.$toast.error(i18n.t('FullscreenUpload.CannotUploadFile').toString())
+                    $toast.error(i18n.global.t('FullscreenUpload.CannotUploadFile').toString())
                     resolve(false)
                 })
         })
@@ -375,17 +375,17 @@ export const actions: ActionTree<FileState, RootState> = {
 
     rolloverLog(_, payload) {
         payload.rolled_over.forEach((name: string) => {
-            Vue.$toast.success(<string>i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }))
+            $toast.success(<string>i18n.global.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }))
         })
 
         Object.keys(payload.failed).forEach((name: string) => {
             const message = payload.failed[name]
 
-            Vue.$toast.error(<string>i18n.t('Machine.LogfilesPanel.RolloverToastFailed', { name, message }))
+            $toast.error(<string>i18n.global.t('Machine.LogfilesPanel.RolloverToastFailed', { name, message }))
         })
 
         setTimeout(() => {
-            Vue.$socket.emit('server.files.get_directory', { path: 'logs' }, { action: 'files/getDirectory' })
+            getSocket().emit('server.files.get_directory', { path: 'logs' }, { action: 'files/getDirectory' })
         }, 500)
     },
 }

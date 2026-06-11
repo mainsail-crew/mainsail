@@ -12,14 +12,12 @@
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
                         :icon="printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel">
-                        <v-btn small outlined :disabled="!canAddPrinters" @click="editPrinter(printer)">
+                        <v-btn small variant="outlined" :disabled="!canAddPrinters" @click="editPrinter(printer)">
                             <v-icon left small>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
-                            small
-                            outlined
-                            class="ml-3 minwidth-0 px-2"
+                            small variant="outlined" class="ml-3 minwidth-0 px-2"
                             color="error"
                             :disabled="!canAddPrinters"
                             @click="delPrinter(printer.id)">
@@ -29,7 +27,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" :disabled="!canAddPrinters" @click="createPrinter">
+                <v-btn variant="text" color="primary" :disabled="!canAddPrinters" @click="createPrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>
             </v-card-actions>
@@ -51,7 +49,7 @@
                             (v) => !v.startsWith('http:') || 'invalid hostname/IP',
                             (v) => !v.startsWith('https:') || 'invalid hostname/IP',
                         ]"
-                        hide-details="auto"
+                        hide-details
                         required
                         dense
                         outlined />
@@ -61,7 +59,7 @@
                     <v-text-field
                         v-model="form.port"
                         :rules="[(v) => !!v || 'Port is required']"
-                        hide-details="auto"
+                        hide-details
                         required
                         dense
                         outlined />
@@ -71,7 +69,7 @@
                     <v-text-field
                         v-model="form.path"
                         :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
-                        hide-details="auto"
+                        hide-details
                         outlined
                         dense />
                 </settings-row>
@@ -80,16 +78,16 @@
                     <settings-row
                         :title="$t('Settings.RemotePrintersTab.Name')"
                         :sub-title="$t('Settings.RemotePrintersTab.NameDescription')">
-                        <v-text-field v-model="form.name" outlined hide-details="auto" dense />
+                        <v-text-field v-model="form.name" outlined hide-details dense />
                     </settings-row>
                 </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text @click="form.bool = false">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn v-if="form.id === null" text color="primary" @click="storePrinter">
+                <v-btn variant="text" @click="form.bool = false">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn v-if="form.id === null" variant="text" color="primary" @click="storePrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>
-                <v-btn v-else text color="primary" @click="updatePrinter">
+                <v-btn v-else variant="text" color="primary" @click="updatePrinter">
                     {{ $t('Settings.RemotePrintersTab.UpdatePrinter') }}
                 </v-btn>
             </v-card-actions>

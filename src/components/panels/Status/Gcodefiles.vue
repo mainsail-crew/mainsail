@@ -4,7 +4,7 @@
             :items="gcodeFiles"
             hide-default-footer
             class="dashboard-gcodes-table"
-            sort-by="time_added"
+            :sort-by="sortByModel"
             mobile-breakpoint="0">
             <template #no-data>
                 <div class="text-center">{{ $t('Panels.StatusPanel.EmptyGcodes') }}</div>
@@ -29,13 +29,14 @@ import StatusPanelGcodefilesEntry from '@/components/panels/Status/GcodefilesEnt
 const { loadings } = useBase()
 const store = useStore()
 
-const filesGcodeCard = ref<HTMLElement | null>(null)
+const filesGcodeCard = ref<{ $el?: HTMLElement } | HTMLElement | null>(null)
 const contentTdWidth = ref(100)
 let resizeObserver: ResizeObserver | null = null
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
 const filesLimit = computed(() => store.state.gui.uiSettings.dashboardFilesLimit ?? 5)
 const filesFilter = computed(() => store.state.gui.uiSettings.dashboardFilesFilter ?? [])
+const sortByModel = [{ key: 'time_added', order: 'desc' as const }]
 
 const gcodeFiles = computed(() => {
     let gcodes = store.getters['files/getAllGcodes'] ?? []
@@ -72,9 +73,16 @@ const gcodeFiles = computed(() => {
     return gcodes
 })
 
+function getFilesGcodeCardElement() {
+    if (!filesGcodeCard.value) return null
+    if ('$el' in filesGcodeCard.value) return filesGcodeCard.value.$el ?? null
+    return filesGcodeCard.value
+}
+
 function calcContentTdWidth() {
-    if (filesGcodeCard.value) {
-        contentTdWidth.value = filesGcodeCard.value.clientWidth - 48 - 48 - 32
+    const element = getFilesGcodeCardElement()
+    if (element) {
+        contentTdWidth.value = element.clientWidth - 48 - 48 - 32
     }
 }
 
@@ -89,8 +97,9 @@ function handleResize() {
 
 onMounted(() => {
     resizeObserver = new ResizeObserver(() => handleResize())
-    if (filesGcodeCard.value) {
-        resizeObserver.observe(filesGcodeCard.value)
+    const element = getFilesGcodeCardElement()
+    if (element) {
+        resizeObserver.observe(element)
     }
     calcContentTdWidth()
 })

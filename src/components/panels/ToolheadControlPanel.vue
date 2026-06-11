@@ -8,7 +8,7 @@
         <template #buttons>
             <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ props }">
-                    <v-btn icon tile v-bind="props" :disabled="['printing'].includes(printer_state)">
+                    <v-btn icon v-bind="props" :disabled="['printing'].includes(printer_state)">
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
                     </v-btn>
                 </template>

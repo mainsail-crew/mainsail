@@ -147,14 +147,6 @@ export interface GuiState {
             currentPath: string
             selectedFiles: FileStateGcodefile[]
         }
-        heightmap: {
-            probed: boolean
-            mesh: boolean
-            flat: boolean
-            wireframe: boolean
-            scaleGradient: boolean
-            scaleZMax: number
-        }
         history: {
             countPerPage: number
             toggleChartCol2: 'chart' | 'table'

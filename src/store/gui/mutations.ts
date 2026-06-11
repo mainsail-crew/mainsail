@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { GuiState, GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
@@ -32,15 +31,15 @@ export const mutations: MutationTree<GuiState> = {
         if (data.value && index !== -1) array.splice(index, 1)
         else if (!data.value && index === -1) array.push(data.name)
 
-        Vue.set(state.view.gcodefiles, 'hideMetadataColumns', array)
+        state.view.gcodefiles.hideMetadataColumns = array
     },
 
     setGcodefilesShowHiddenFiles(state, value) {
-        Vue.set(state.view.gcodefiles, 'showHiddenFiles', value)
+        state.view.gcodefiles.showHiddenFiles = value
     },
 
     setCurrentWebcam(state, payload) {
-        Vue.set(state.view.webcam.currentCam, payload.page, payload.value)
+        state.view.webcam.currentCam[payload.page] = payload.value
     },
 
     setHistoryColumns(state, data) {
@@ -52,7 +51,7 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     setHistoryHidePrintStatus(state, payload) {
-        Vue.set(state.view.history, 'hidePrintStatus', payload)
+        state.view.history.hidePrintStatus = payload
     },
 
     addClosePanel(state, payload) {
@@ -61,7 +60,7 @@ export const mutations: MutationTree<GuiState> = {
         if (!nonExpandPanels.includes(payload.name)) {
             nonExpandPanels.push(payload.name)
 
-            Vue.set(state.dashboard.nonExpandPanels, payload.viewport, nonExpandPanels)
+            state.dashboard.nonExpandPanels[payload.viewport] = nonExpandPanels
         }
     },
 
@@ -71,7 +70,7 @@ export const mutations: MutationTree<GuiState> = {
         if (index > -1) {
             nonExpandPanels.splice(index, 1)
 
-            Vue.set(state.dashboard.nonExpandPanels, payload.viewport, nonExpandPanels)
+            state.dashboard.nonExpandPanels[payload.viewport] = nonExpandPanels
         }
     },
 
@@ -80,7 +79,7 @@ export const mutations: MutationTree<GuiState> = {
             ...(state.dashboard[payload.layoutname as keyof GuiStateDashboard] as GuiStateLayoutoption[]),
         ]
         layoutArray.splice(payload.index, 1)
-        Vue.set(state.dashboard, payload.layoutname, layoutArray)
+        state.dashboard[payload.layoutname as keyof GuiStateDashboard] = layoutArray as unknown as GuiStateLayoutoption[]
     },
 
     setChartDatasetStatus(state, payload: { objectName: string; dataset: string; value: boolean }) {
@@ -89,11 +88,11 @@ export const mutations: MutationTree<GuiState> = {
             const newVal: Record<string, boolean> = {}
             newVal[payload.dataset] = payload.value
 
-            Vue.set(state.view.tempchart.datasetSettings, payload.objectName, newVal)
+            state.view.tempchart.datasetSettings[payload.objectName] = newVal
             return
         }
 
-        Vue.set(state.view.tempchart.datasetSettings[payload.objectName], payload.dataset, payload.value)
+        state.view.tempchart.datasetSettings[payload.objectName][payload.dataset] = payload.value
     },
 
     setDatasetAdditionalSensorStatus(state, payload: { objectName: string; dataset: string; value: boolean }) {
@@ -102,7 +101,7 @@ export const mutations: MutationTree<GuiState> = {
             const newVal: { additionalSensors: Record<string, boolean> } = { additionalSensors: {} }
             newVal.additionalSensors[payload.dataset] = payload.value
 
-            Vue.set(state.view.tempchart.datasetSettings, payload.objectName, newVal)
+            state.view.tempchart.datasetSettings[payload.objectName] = newVal
             return
         }
 
@@ -111,14 +110,10 @@ export const mutations: MutationTree<GuiState> = {
             const newVal: Record<string, boolean> = {}
             newVal[payload.dataset] = payload.value
 
-            Vue.set(state.view.tempchart.datasetSettings[payload.objectName], 'additionalSensors', newVal)
+            state.view.tempchart.datasetSettings[payload.objectName].additionalSensors = newVal
             return
         }
 
-        Vue.set(
-            state.view.tempchart.datasetSettings[payload.objectName].additionalSensors as Record<string, boolean>,
-            payload.dataset,
-            payload.value
-        )
+        state.view.tempchart.datasetSettings[payload.objectName].additionalSensors[payload.dataset] = payload.value
     },
 }

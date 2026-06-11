@@ -1,7 +1,6 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { GuiNotificationState } from './types'
-import Vue from 'vue'
 
 export const mutations: MutationTree<GuiNotificationState> = {
     reset(state) {
@@ -12,7 +11,7 @@ export const mutations: MutationTree<GuiNotificationState> = {
         const dismiss = [...state.dismiss]
         dismiss.push(payload)
 
-        Vue.set(state, 'dismiss', dismiss)
+        state.dismiss = dismiss
     },
 
     removeDismiss(state, payload) {
@@ -23,6 +22,6 @@ export const mutations: MutationTree<GuiNotificationState> = {
         )
         if (index !== -1) dismiss.splice(index)
 
-        Vue.set(state, 'dismiss', dismiss)
+        state.dismiss = dismiss
     },
 }

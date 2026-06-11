@@ -36,7 +36,7 @@
             </v-tooltip>
         </td>
         <td class="text-left text-no-wrap">
-            {{ formatDateTime(item.start_time * 1000, false) }}
+            {{ startDateText }}
         </td>
         <td :colspan="tableFields.length - 1" />
         <v-menu v-model="contextMenuBool" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
@@ -143,6 +143,11 @@ const restTextDays = computed(() => {
 const reminder = computed(() => props.item.reminder?.type ?? null)
 const alarmIcon = computed(() => reminder.value === 'repeat' ? mdiAlarmMultiple : mdiAlarm)
 const icon = computed(() => props.item.end_time !== null ? mdiNotebookCheck : mdiNotebook)
+const startDateText = computed(() => {
+    if (!props.item.start_time) return '--'
+
+    return formatDateTime(props.item.start_time * 1000, false)
+})
 
 function select(newVal: boolean) {
     emit('select', newVal)

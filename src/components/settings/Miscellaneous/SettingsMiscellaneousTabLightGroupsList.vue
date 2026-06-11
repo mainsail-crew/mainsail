@@ -16,8 +16,8 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn text @click="close">{{ $t('Buttons.Close') }}</v-btn>
-            <v-btn text color="primary" @click="createGroup">{{ $t('Settings.MiscellaneousTab.AddGroup') }}</v-btn>
+            <v-btn variant="text" @click="close">{{ $t('Buttons.Close') }}</v-btn>
+            <v-btn variant="text" color="primary" @click="createGroup">{{ $t('Settings.MiscellaneousTab.AddGroup') }}</v-btn>
         </v-card-actions>
     </div>
 </template>

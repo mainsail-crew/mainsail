@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
-import Vue from 'vue'
 import { GuiRemoteprintersState, GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import { getSocket, $toast } from '@/store/runtime'
 
 export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     reset({ commit, dispatch, state }) {
@@ -70,7 +70,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 settings: state.printers[id].settings ?? {},
             }
 
-            Vue.$socket.emit('server.database.post_item', {
+            getSocket().emit('server.database.post_item', {
                 namespace: 'mainsail',
                 key: 'remoteprinters.printers.' + id,
                 value,
@@ -120,7 +120,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
 
         if (rootState.instancesDB === 'browser') dispatch('upload')
         else {
-            Vue.$socket.emit('server.database.delete_item', {
+            getSocket().emit('server.database.delete_item', {
                 namespace: 'mainsail',
                 key: 'remoteprinters.printers.' + id,
             })

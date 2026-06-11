@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { MutationTree } from 'vuex'
 import { GuiMaintenanceState } from '@/store/gui/maintenance/types'
 import { getDefaultState } from './index'
@@ -9,11 +8,11 @@ export const mutations: MutationTree<GuiMaintenanceState> = {
     },
 
     initStore(state, payload) {
-        Vue.set(state, 'entries', payload)
+        state.entries = payload
     },
 
     store(state, payload) {
-        Vue.set(state.entries, payload.id, payload.values)
+        state.entries[payload.id] = payload.values
     },
 
     update(state, payload) {
@@ -21,12 +20,12 @@ export const mutations: MutationTree<GuiMaintenanceState> = {
 
         const entry = { ...state.entries[payload.id] }
         Object.assign(entry, payload.entry)
-        Vue.set(state.entries, payload.id, entry)
+        state.entries[payload.id] = entry
     },
 
     delete(state, payload) {
         if (payload in state.entries) {
-            Vue.delete(state.entries, payload)
+            delete state.entries[payload]
         }
     },
 }

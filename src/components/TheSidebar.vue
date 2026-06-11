@@ -12,7 +12,7 @@
             <v-img :src="sidebarBackground" height="100%" />
         </template>
 
-        <overlay-scrollbars class="nav-scrollbar">
+        <OverlayScrollbarsComponent class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item
                     v-if="isMobile"
@@ -29,7 +29,7 @@
                 </v-list-item>
                 <sidebar-item v-for="(category, index) in visibleNaviPoints" :key="index" :item="category" />
             </v-list>
-        </overlay-scrollbars>
+        </OverlayScrollbarsComponent>
         <template #append>
             <v-list-item class="small-list-item mb-2">
                 <template #prepend>
@@ -53,6 +53,7 @@ import AboutDialog from '@/components/dialogs/AboutDialog.vue'
 import { navigationWidth, topbarHeight } from '@/store/variables'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import SidebarItem from '@/components/ui/SidebarItem.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const store = useStore()
 const display = useDisplay()

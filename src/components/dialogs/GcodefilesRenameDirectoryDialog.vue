@@ -5,7 +5,7 @@
             card-class="gcodefiles-rename-directory-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon @click="closePrompt">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -21,12 +21,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn
                     :disabled="isInvalidName || name.length === 0"
-                    color="primary"
-                    text
-                    @click="renameDirectoryAction">
+                    color="primary" variant="text" @click="renameDirectoryAction">
                     {{ $t('Files.Rename') }}
                 </v-btn>
             </v-card-actions>
@@ -47,7 +45,6 @@ const { t } = useI18n()
 const socket = useSocket()
 const { currentPath, existsFilename } = useGcodeFiles()
 
-const mdiCloseThick = mdiCloseThick
 
 const name = ref('')
 const isInvalidName = ref(true)

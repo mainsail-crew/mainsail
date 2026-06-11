@@ -1,7 +1,6 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { ServerAnnouncementsState } from './types'
-import Vue from 'vue'
 
 export const mutations: MutationTree<ServerAnnouncementsState> = {
     reset(state) {
@@ -9,11 +8,11 @@ export const mutations: MutationTree<ServerAnnouncementsState> = {
     },
 
     setEntries(state, payload) {
-        Vue.set(state, 'entries', payload)
+        state.entries = payload
     },
 
     setFeeds(state, payload) {
-        Vue.set(state, 'feeds', payload)
+        state.feeds = payload
     },
 
     setDismissed(state, payload) {
@@ -27,6 +26,6 @@ export const mutations: MutationTree<ServerAnnouncementsState> = {
             } else entries[index].date_dismissed = new Date()
         }
 
-        Vue.set(state, 'entries', entries)
+        state.entries = entries
     },
 }

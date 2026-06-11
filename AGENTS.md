@@ -14,15 +14,25 @@ This file documents the current state and capabilities of AI agents used in this
 - Phase 5: All 255+ `.vue` files rewritten from class components to `<script setup>`
 - Phase 6: Vuetify 3 template migration (list-item, tabs, subheader, checkbox, table renames)
 - Phase 7a: Mixin files deleted (`src/components/mixins/`)
-- Phase 7b: `vue-debounce-decorator` removed, `@vue/compat` still present
+- Phase 7b: `vue-debounce-decorator` removed
+- Phase 7c: `@vue/compat` removed from `package.json` + `vite.config.ts` alias + compatConfig
 - Phase 7d: `tsconfig.json` cleanup (`moduleResolution: "node"`, no `ignoreDeprecations`)
-- Vuetify 3: `::v-deep` → `:deep()` across all files
-- Vuetify 3: activator slot syntax migrated (`{ on, attrs }` → `{ props }`, `v-bind="attrs" v-on="on"` → `v-bind="props"`)
-- Build passes: `bun run build` succeeds (pre-existing store TS errors disabled via vite-plugin-checker removal)
+- Phase 7e: Removed `vite-plugin-checker`
+- Phase 7f: Vuetify 3 slot syntax — all `#activator="{ on, attrs }"` → `#activator="{ props }"`, `v-bind="attrs" v-on="on"` → `v-bind="props"`
+- Phase 8 (store migration): Created `src/store/runtime.ts` — socket singleton (`getSocket()`/`setSocket()`) + shared `$toast` via `useToast()`
+- All mutation files: `Vue.set(state, key, val)` → `state[key] = val`, `Vue.delete(state, key)` → `delete state[key]`
+- All action/mutation files: `Vue.$socket.emit/emitAndWait/emitBatch` → `getSocket().emit/emitAndWait/emitBatch`, `Vue.$toast.success/error` → `$toast.success/error`
+- All store files: `import Vue from 'vue'` removed (zero remaining)
+- `src/plugins/helpers.ts`: `Vue.set` → direct assignment, import removed
+- `src/components/inputs/CodemirrorAsync.ts`: `Vue.component` → `defineAsyncComponent`
+- `src/components/webcams/streamers/DynamicCamLoader.ts`: `Vue.component` → exported `getDynamicCamImport()`
+- **Zero `import Vue from 'vue'` remaining anywhere in `src/`**
+- Fixed pre-existing runtime bugs: `i18n.t` → `i18n.global.t` in 5 files, `$vuetify.breakpoint` → `useDisplay()` in 3 files, `attrs['aria-expanded']` → `boolMenu` in TheNotificationMenu
+- Removed 152 redundant `const mdiXxx = mdiXxx` self-assignments across 55 files (TDZ errors in `<script setup>`)
+- Build passes, dev server runs with zero console errors
+- `@vue/compat` fully removed — app now runs on pure Vue 3.5 + Vuetify 3
 
 ### Pending
-- Phase 7c: Remove `@vue/compat` from `package.json` + vite alias (blocked by store Vue 2 patterns)
-- Store layer migration: `src/store/` files still use Vue 2 patterns (`Vue.set`, `Vue.prototype`, vuex 3 types) — separate effort
 - Visual QA of Vuetify 3 component changes (list-item slots, tabs/window, etc.)
 
 ### Key Commits
@@ -50,6 +60,6 @@ d5e768fc phase2: global infrastructure for Vue 3
 ## Operational Guidelines
 
 - **Build verification**: Always run `bun run build` after changes. The build must pass before committing.
-- **Store layer**: Pre-existing Vue 2 patterns in `src/store/` are deferred — do not modify them unless explicitly asked.
-- **`@vue/compat`**: Still active via `package.json` + vite alias. Removal is a pending step.
-
+- **Store layer**: Store migration is complete — all Vue 2 patterns (`Vue.set`, `Vue.$socket`, `Vue.$toast`, `import Vue`) removed.
+- **`@vue/compat`**: Fully removed — app runs on pure Vue 3.5 + Vuetify 3.
+- **Runtime fixes applied**: `i18n.global.t`, `useDisplay()`, `boolMenu`, removed `const mdiXxx = mdiXxx` TDZ bugs across 55 files.

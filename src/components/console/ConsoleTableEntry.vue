@@ -1,6 +1,6 @@
 <template>
     <v-row :class="entryStyle">
-        <v-col class="col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
+        <v-col class="v-col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
         <v-col
             v-if="!rawOutput"
             :class="messageClass"

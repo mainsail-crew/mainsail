@@ -4,26 +4,26 @@
     <v-card-text class="pa-0">
         <v-container class="py-0">
             <v-row class="text-center pt-5 pb-2 mb-0" align="center">
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
                     <br />
                     <span class="text-no-wrap">
                         {{ outputFilamentUsed }}
                     </span>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong>
                     <br />
                     <span class="text-no-wrap">
                         {{ 'estimated_time' in current_file ? formatTime(current_file.estimated_time) : '--' }}
                     </span>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <strong>{{ $t('Panels.StatusPanel.Print') }}</strong>
                     <br />
                     <span class="text-no-wrap">{{ print_time ? formatTime(print_time) : '--' }}</span>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
                     <br />
                     <span class="text-no-wrap">

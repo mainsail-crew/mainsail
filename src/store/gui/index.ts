@@ -23,7 +23,6 @@ import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { maintenance } from '@/store/gui/maintenance'
 import { webcams } from '@/store/gui/webcams'
-import { heightmap } from '@/store/gui/heightmap'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -234,14 +233,6 @@ export const getDefaultState = (): GuiState => {
                 currentPath: '',
                 selectedFiles: [],
             },
-            heightmap: {
-                probed: true,
-                mesh: false,
-                flat: false,
-                wireframe: true,
-                scaleGradient: false,
-                scaleZMax: 0.5,
-            },
             history: {
                 countPerPage: 10,
                 toggleChartCol2: 'chart',
@@ -329,6 +320,5 @@ export const gui: Module<GuiState, RootState> = {
         presets,
         remoteprinters,
         webcams,
-        heightmap,
     },
 }

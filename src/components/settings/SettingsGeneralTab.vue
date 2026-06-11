@@ -7,21 +7,21 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.Language')">
-                    <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense />
+                    <v-select v-model="currentLanguage" :items="availableLanguages" item-title="text" item-value="value" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.DateFormat')">
-                    <v-select v-model="dateFormat" :items="dateFormatItems" hide-details outlined dense />
+                    <v-select v-model="dateFormat" :items="dateFormatItems" item-title="text" item-value="value" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.TimeFormat')">
-                    <v-select v-model="timeFormat" :items="timeFormatItems" hide-details outlined dense />
+                    <v-select v-model="timeFormat" :items="timeFormatItems" item-title="text" item-value="value" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.GeneralTab.CalcPrintProgress')"
                     :sub-title="$t('Settings.GeneralTab.CalcPrintProgressDescription')">
-                    <v-select v-model="calcPrintProgress" :items="calcPrintProgressItems" hide-details dense outlined />
+                    <v-select v-model="calcPrintProgress" :items="calcPrintProgressItems" item-title="text" item-value="value" hide-details dense outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
@@ -30,6 +30,8 @@
                     <v-select
                         v-model="calcEstimateTime"
                         :items="calcEstimateItems"
+                        item-title="text"
+                        item-value="value"
                         multiple
                         hide-details
                         dense
@@ -39,7 +41,7 @@
                 <settings-row
                     :title="$t('Settings.GeneralTab.CalcEtaTime')"
                     :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
-                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined />
+                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" item-title="text" item-value="value" multiple hide-details dense outlined />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.GeneralTab.MainsailSettingsMoonrakerDb')" :dynamic-slot-width="true">

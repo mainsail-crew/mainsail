@@ -60,7 +60,7 @@
                                 {{ display_message }}
                             </span>
                         </v-col>
-                        <v-col class="col-auto py-2">
+                        <v-col class="v-col-auto py-2">
                             <v-icon class="text--disabled cursor-pointer" small @click="clearDisplayMessage">
                                 {{ mdiCloseCircle }}
                             </v-icon>

@@ -1,5 +1,4 @@
 import { getDefaultState } from './index'
-import Vue from 'vue'
 import { MutationTree } from 'vuex'
 import { ServerHistoryState } from '@/store/server/history/types'
 
@@ -9,32 +8,32 @@ export const mutations: MutationTree<ServerHistoryState> = {
     },
 
     resetJobs(state) {
-        Vue.set(state, 'jobs', [])
+        state.jobs = []
     },
 
     setTotals(state, payload) {
-        Vue.set(state, 'job_totals', payload)
+        state.job_totals = payload
     },
 
     setAuxiliaryTotals(state, payload) {
-        Vue.set(state, 'auxiliary_totals', payload)
+        state.auxiliary_totals = payload
     },
 
     setHistoryNotes(state, payload) {
         const job = state.jobs.find((job) => job.job_id === payload.job_id)
-        if (job) Vue.set(job, 'note', payload.text)
+        if (job) job.note = payload.text
     },
 
     addJob(state, payload) {
         const jobs = [...state.jobs]
         jobs.push(payload)
 
-        Vue.set(state, 'jobs', jobs)
+        state.jobs = jobs
     },
 
     updateJob(state, payload) {
         const index = state.jobs.findIndex((job) => job.job_id === payload.job_id)
-        if (index !== -1) Vue.set(state.jobs, index, payload)
+        if (index !== -1) state.jobs[index] = payload
     },
 
     destroyJob(state, payload) {
@@ -43,6 +42,6 @@ export const mutations: MutationTree<ServerHistoryState> = {
     },
 
     setAllLoaded(state) {
-        Vue.set(state, 'all_loaded', true)
+        state.all_loaded = true
     },
 }

@@ -25,9 +25,6 @@ import { mdiHelpCircleOutline, mdiMoonWaningCrescent } from '@mdi/js'
 
 const store = useStore()
 
-const mdiHelpCircleOutline = mdiHelpCircleOutline
-const mdiMoonWaningCrescent = mdiMoonWaningCrescent
-
 const mainsailVersion = computed(() => store.state.packageVersion)
 
 const klipperVersion = computed(() => store.state.printer?.software_version ?? '')

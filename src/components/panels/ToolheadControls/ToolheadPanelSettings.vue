@@ -1,7 +1,7 @@
 <template>
     <v-menu :offset-y="true" :left="true" :close-on-content-click="false">
         <template #activator="{ props }">
-            <v-btn icon tile v-bind="props">
+            <v-btn icon v-bind="props">
                 <v-icon small>{{ mdiCog }}</v-icon>
             </v-btn>
         </template>
@@ -56,7 +56,6 @@ import { useStore } from 'vuex'
 import { mdiCog } from '@mdi/js'
 
 const store = useStore()
-const mdiCog = mdiCog
 
 const showPosition = computed(() => store.state.gui.view.toolhead.showPosition ?? true)
 function toggleShowPosition(val: boolean) {

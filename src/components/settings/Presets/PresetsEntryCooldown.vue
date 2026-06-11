@@ -1,6 +1,6 @@
 <template>
     <settings-row :title="$t('Settings.PresetsTab.Cooldown')">
-        <v-btn small outlined class="ml-3" @click="editCooldown">
+        <v-btn small variant="outlined" class="ml-3" @click="editCooldown">
             <v-icon left small>{{ mdiPencil }}</v-icon>
             {{ $t('Settings.Edit') }}
         </v-btn>

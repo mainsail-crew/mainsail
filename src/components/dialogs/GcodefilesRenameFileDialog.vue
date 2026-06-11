@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.RenameFile')" card-class="gcodefiles-rename-file-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="showDialog = false">
+                <v-btn icon @click="showDialog = false">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -18,8 +18,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="showDialog = false">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn :disabled="isInvalidName || name.length === 0" color="primary" text @click="renameFileAction">
+                <v-btn variant="text" @click="showDialog = false">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn :disabled="isInvalidName || name.length === 0" color="primary" variant="text" @click="renameFileAction">
                     {{ $t('Files.Rename') }}
                 </v-btn>
             </v-card-actions>
@@ -41,7 +41,6 @@ const { t } = useI18n()
 const socket = useSocket()
 const { currentPath, existsFilename } = useGcodeFiles()
 
-const mdiCloseThick = mdiCloseThick
 
 const name = ref('')
 const isInvalidName = ref(true)

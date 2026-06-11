@@ -60,13 +60,13 @@
                     <span class="text-caption font-weight-bold">Set Work Zero:</span>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block outlined @click="setWorkZeroXY">
+                    <v-btn small block variant="outlined" @click="setWorkZeroXY">
                         <v-icon small left>{{ mdiTarget }}</v-icon>
                         Set XY Zero
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block outlined @click="setWorkZeroZ">
+                    <v-btn small block variant="outlined" @click="setWorkZeroZ">
                         <v-icon small left>{{ mdiAxisZArrow }}</v-icon>
                         Set Z Zero
                     </v-btn>
@@ -114,7 +114,7 @@
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block outlined @click="resetOffsets">
+                    <v-btn small block variant="outlined" @click="resetOffsets">
                         <v-icon small left>{{ mdiRestart }}</v-icon>
                         Reset
                     </v-btn>

@@ -1,7 +1,6 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { GuiWebcamState } from '@/store/gui/webcams/types'
-import Vue from 'vue'
 
 export const mutations: MutationTree<GuiWebcamState> = {
     reset(state) {
@@ -9,6 +8,6 @@ export const mutations: MutationTree<GuiWebcamState> = {
     },
 
     initStore(state, payload) {
-        Vue.set(state, 'webcams', payload)
+        state.webcams = payload
     },
 }

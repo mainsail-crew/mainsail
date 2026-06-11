@@ -17,29 +17,25 @@
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
                 :title="title">
                 <template #buttons>
-                    <v-btn text tile class="d-none d-md-flex" @click="dialogDevices = true">
+                    <v-btn variant="text" tile class="d-none d-md-flex" @click="dialogDevices = true">
                         <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
                         {{ $t('Editor.DeviceDialog') }}
                     </v-btn>
                     <v-btn
-                        v-if="restartServiceName === 'klipper'"
-                        text
-                        tile
+                        v-if="restartServiceName === 'klipper'" variant="text" tile
                         :href="klipperConfigReference"
                         target="_blank"
                         class="d-none d-md-flex">
                         <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
-                    <v-btn v-if="existsFileStructure" text tile class="d-none d-md-flex" @click="toggleFileStructure">
+                    <v-btn v-if="existsFileStructure" variant="text" tile class="d-none d-md-flex" @click="toggleFileStructure">
                         <v-icon small class="mr-1">{{ mdiFormatListCheckbox }}</v-icon>
                         {{ $t('Editor.FileStructure') }}
                     </v-btn>
                     <v-btn
                         v-if="restartServiceNameExists"
-                        color="primary"
-                        text
-                        tile
+                        color="primary" variant="text" tile
                         class="d-none d-sm-flex"
                         @click="save(restartServiceName)">
                         <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
@@ -48,7 +44,7 @@
                     <v-btn v-if="isWriteable" icon tile @click="save(null)">
                         <v-icon>{{ mdiContentSave }}</v-icon>
                     </v-btn>
-                    <v-btn icon tile @click="close">
+                    <v-btn icon @click="close">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
@@ -117,7 +113,7 @@
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
             </template>
             <template #actions="{ props }">
-                <v-btn color="red" text v-bind="props" style="min-width: auto" tile @click="cancelDownload">
+                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" tile @click="cancelDownload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
@@ -129,7 +125,7 @@
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogConfirmChange = false">
+                    <v-btn icon @click="dialogConfirmChange = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
@@ -143,14 +139,14 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn text @click="discardChanges">
+                    <v-btn variant="text" @click="discardChanges">
                         {{ $t('Editor.DontSave') }}
                     </v-btn>
-                    <v-btn text color="primary" @click="save">
+                    <v-btn variant="text" color="primary" @click="save">
                         {{ $t('Editor.SaveClose') }}
                     </v-btn>
                     <template v-if="restartServiceNameExists">
-                        <v-btn text color="primary" @click="save(restartServiceName)">
+                        <v-btn variant="text" color="primary" @click="save(restartServiceName)">
                             {{ $t('Editor.SaveRestart') }}
                         </v-btn>
                     </template>

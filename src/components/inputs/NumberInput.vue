@@ -12,7 +12,7 @@
             :max="max"
             :dec="dec"
             hide-spin-buttons
-            hide-details="auto"
+            hide-details
             outlined
             dense
             class="d-flex align-top"

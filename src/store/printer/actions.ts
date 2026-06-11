@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import { getSocket, $toast } from '@/store/runtime'
 import { PrinterState } from '@/store/printer/types'
 import { RootState } from '@/store/types'
 
@@ -19,8 +19,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
         dispatch('socket/addInitModule', 'printer/initTempHistory', { root: true })
         dispatch('socket/addInitModule', 'server/gcode_store', { root: true })
 
-        Vue.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
-        Vue.$socket.emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
+        getSocket().emit('printer.info', {}, { action: 'printer/getInfo' })
+        getSocket().emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
 
         dispatch('initSubscripts')
     },
@@ -46,7 +46,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
     },
 
     async initSubscripts({ dispatch }) {
-        const payload = await Vue.$socket.emitAndWait('printer.objects.list')
+        const payload = await getSocket().emitAndWait('printer.objects.list')
 
         let subscripts = {}
         const blocklist = ['menu']
@@ -58,7 +58,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
         })
 
         if (Object.keys(subscripts).length > 0) {
-            const result = await Vue.$socket.emitAndWait('printer.objects.subscribe', { objects: subscripts }, {})
+            const result = await getSocket().emitAndWait('printer.objects.subscribe', { objects: subscripts }, {})
 
             // reset screws_tilt_adjust if it exists
             if ('screws_tilt_adjust' in result.status) {
@@ -74,7 +74,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
             }, 200)
         }
 
-        Vue.$socket.emit('server.temperature_store', { include_monitors: true }, { action: 'printer/tempHistory/init' })
+        getSocket().emit('server.temperature_store', { include_monitors: true }, { action: 'printer/tempHistory/init' })
 
         dispatch('socket/removeInitModule', 'printer/initSubscripts', { root: true })
     },
@@ -132,7 +132,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
     },
 
     async initGcodes({ commit }) {
-        const gcodes = await Vue.$socket.emitAndWait('printer.objects.query', { objects: { gcode: ['commands'] } }, {})
+        const gcodes = await getSocket().emitAndWait('printer.objects.query', { objects: { gcode: ['commands'] } }, {})
 
         commit('setData', gcodes.status)
     },
@@ -145,7 +145,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
             reInitList[extruderName] = ['can_extrude']
         })
 
-        const result = await Vue.$socket.emitAndWait('printer.objects.query', { objects: reInitList }, {})
+        const result = await getSocket().emitAndWait('printer.objects.query', { objects: reInitList }, {})
         dispatch('getData', result.status)
     },
 
@@ -161,11 +161,11 @@ export const actions: ActionTree<PrinterState, RootState> = {
         dispatch('server/addEvent', { message: payload, type: 'command' }, { root: true })
 
         if (payload.toLowerCase().trim() === 'm112') {
-            Vue.$socket.emit('printer.emergency_stop', {}, { loading: 'sendGcode' })
+            getSocket().emit('printer.emergency_stop', {}, { loading: 'sendGcode' })
             return
         }
 
-        Vue.$socket.emit('printer.gcode.script', { script: payload }, { loading: 'sendGcode' })
+        getSocket().emit('printer.gcode.script', { script: payload }, { loading: 'sendGcode' })
     },
 
     clearScrewsTiltAdjust({ commit }) {

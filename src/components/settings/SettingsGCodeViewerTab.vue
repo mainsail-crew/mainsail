@@ -100,7 +100,7 @@
                         v-model="minFeed"
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
                         dense
-                        hide-details="auto"
+                        hide-details
                         outlined
                         suffix="mm/s"
                         type="number"
@@ -127,7 +127,7 @@
                         v-model="maxFeed"
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
                         dense
-                        hide-details="auto"
+                        hide-details
                         outlined
                         suffix="mm/s"
                         type="number"

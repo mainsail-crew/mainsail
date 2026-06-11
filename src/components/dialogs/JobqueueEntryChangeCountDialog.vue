@@ -6,7 +6,7 @@
             card-class="jobqueue-change-count-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -35,8 +35,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn color="primary" text @click="update">{{ $t('JobQueue.ChangeCount') }}</v-btn>
+                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn color="primary" variant="text" @click="update">{{ $t('JobQueue.ChangeCount') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -53,10 +53,6 @@ import type { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 const store = useStore()
 const { t } = useI18n()
 
-const mdiCloseThick = mdiCloseThick
-const mdiChevronUp = mdiChevronUp
-const mdiChevronDown = mdiChevronDown
-const mdiCounter = mdiCounter
 
 const props = defineProps({
     modelValue: { type: Boolean },

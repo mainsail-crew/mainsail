@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import Vue from 'vue'
 import { GuiGcodehistoryState } from '@/store/gui/gcodehistory/types'
+import { getSocket, $toast } from '@/store/runtime'
 import { maxGcodeHistory } from '@/store/variables'
 
 export const actions: ActionTree<GuiGcodehistoryState, RootState> = {
@@ -10,7 +10,7 @@ export const actions: ActionTree<GuiGcodehistoryState, RootState> = {
     },
 
     upload({ state }) {
-        Vue.$socket.emit('server.database.post_item', {
+        getSocket().emit('server.database.post_item', {
             namespace: 'mainsail',
             key: 'gcodehistory.entries',
             value: state.entries,

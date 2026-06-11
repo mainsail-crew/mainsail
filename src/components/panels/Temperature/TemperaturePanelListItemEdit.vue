@@ -2,7 +2,7 @@
     <v-dialog :model-value="showDialog" @update:model-value="$emit('update:model-value', $event)" persistent :width="400">
         <panel :title="formatName" :icon="icon" card-class="temperature-edit-heater-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -18,7 +18,7 @@
                     :object-name="objectName"
                     :additional-sensor="additionalSensor" />
                 <v-row>
-                    <v-col class="col-12 text-center pb-0">
+                    <v-col class="v-col-12 text-center pb-0">
                         <v-color-picker
                             hide-mode-switch
                             mode="hexa"
@@ -53,7 +53,6 @@ const emit = defineEmits<{
 }>()
 
 const store = useStore()
-const mdiCloseThick = mdiCloseThick
 
 const chartSeries = computed(() =>
     store.getters['printer/tempHistory/getSerieNames'](props.objectName) ?? []

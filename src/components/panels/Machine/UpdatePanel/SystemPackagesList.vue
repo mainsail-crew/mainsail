@@ -6,7 +6,7 @@
             :margin-bottom="false"
             card-class="machine-update-system-packages-list-dialog">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
+                <v-btn icon @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -20,7 +20,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text color="primary" @click="closeDialog">{{ $t('Buttons.Close') }}</v-btn>
+                <v-btn variant="text" color="primary" @click="closeDialog">{{ $t('Buttons.Close') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -40,8 +40,6 @@ const emit = defineEmits<{
     'update:model-value': [value: boolean]
 }>()
 
-const mdiCloseThick = mdiCloseThick
-const mdiPackageVariantClosed = mdiPackageVariantClosed
 
 const showDialog = computed(() => props['model-value'])
 

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
+    <v-dialog :model-value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
             :title="headline"
             :icon="mdiInformation"
@@ -8,7 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon @click="closePrompt">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -53,8 +53,6 @@ const store = useStore()
 const { isMobile } = useBase()
 const socket = useSocket()
 
-const mdiInformation = mdiInformation
-const mdiCloseThick = mdiCloseThick
 
 const internalCloseCommand = ref<number | null>(null)
 let checkpointEvent: ServerStateEvent | null = null

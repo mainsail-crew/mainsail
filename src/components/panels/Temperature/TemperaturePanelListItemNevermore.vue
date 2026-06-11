@@ -48,7 +48,6 @@ const props = defineProps<{
 }>()
 
 const store = useStore()
-const mdiFan = mdiFan
 
 const showEditDialog = ref(false)
 const nevermoreValues = ['temperature', 'pressure', 'humidity']

@@ -12,7 +12,7 @@
             </template>
             <v-card-text class="">
                 <v-row>
-                    <v-col class="col-4">
+                    <v-col class="v-col-4">
                         <v-select
                             v-model="variable_fps"
                             :label="$t('Timelapse.Type')"
@@ -21,7 +21,7 @@
                             dense
                             hide-details />
                     </v-col>
-                    <v-col class="col-4">
+                    <v-col class="v-col-4">
                         <template v-if="variable_fps">
                             <v-text-field
                                 v-model="variable_fps_min"
@@ -69,7 +69,7 @@
                             hide-spin-buttons
                             class="mt-3" />
                     </v-col>
-                    <v-col class="col-4">
+                    <v-col class="v-col-4">
                         <v-text-field
                             v-if="variable_fps"
                             v-model="variableTargetFps"
@@ -92,8 +92,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn text color="primary" @click="startRender">{{ $t('Timelapse.StartRender') }}</v-btn>
+                <v-btn variant="text" @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn variant="text" color="primary" @click="startRender">{{ $t('Timelapse.StartRender') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>
@@ -118,8 +118,6 @@ const {
     estimatedVideoLength,
 } = useTimelapse()
 
-const mdiCloseThick = mdiCloseThick
-const mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
 
 const props = defineProps({
     modelValue: { type: Boolean },

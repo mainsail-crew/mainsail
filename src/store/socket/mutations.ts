@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { SocketState } from '@/store/socket/types'
@@ -7,29 +6,29 @@ export const mutations: MutationTree<SocketState> = {
     reset(state) {
         const defaults = getDefaultState()
 
-        Vue.set(state, 'initializationList', defaults.initializationList)
+        state.initializationList = defaults.initializationList
     },
 
     setConnected(state) {
-        Vue.set(state, 'isConnected', true)
-        Vue.set(state, 'isConnecting', false)
-        Vue.set(state, 'connectingFailed', false)
+        state.isConnected = true
+        state.isConnecting = false
+        state.connectingFailed = false
     },
 
     setDisconnected(state, message?: string) {
-        Vue.set(state, 'isConnected', false)
-        Vue.set(state, 'isConnecting', false)
-        Vue.set(state, 'connectingFailed', true)
-        Vue.set(state, 'connection_id', null)
+        state.isConnected = false
+        state.isConnecting = false
+        state.connectingFailed = true
+        state.connection_id = null
 
-        if (message) Vue.set(state, 'connectionFailedMessage', message)
+        if (message) state.connectionFailedMessage = message
     },
 
     setData(state, payload) {
         if ('socket' in payload) payload = payload.socket
 
         Object.entries(payload).forEach(([key, value]) => {
-            Vue.set(state, key, value)
+            state[key] = value
         })
     },
 
@@ -43,7 +42,7 @@ export const mutations: MutationTree<SocketState> = {
     },
 
     clearLoadings(state) {
-        if (state.loadings.length) Vue.set(state, 'loadings', [])
+        if (state.loadings.length) state.loadings = []
     },
 
     addInitModule(state, payload) {
@@ -52,7 +51,7 @@ export const mutations: MutationTree<SocketState> = {
         if (index > -1) return
 
         list.push(payload)
-        Vue.set(state, 'initializationList', list)
+        state.initializationList = list
     },
 
     removeInitModule(state, payload) {
@@ -61,7 +60,7 @@ export const mutations: MutationTree<SocketState> = {
         if (index === -1) return
 
         list.splice(index, 1)
-        Vue.set(state, 'initializationList', list)
+        state.initializationList = list
     },
 
     removeInitComponent(state, payload) {
@@ -79,6 +78,6 @@ export const mutations: MutationTree<SocketState> = {
         // remove all items
         indexes.forEach((index) => list.splice(index, 1))
 
-        Vue.set(state, 'initializationList', list)
+        state.initializationList = list
     },
 }

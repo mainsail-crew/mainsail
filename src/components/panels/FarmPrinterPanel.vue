@@ -10,7 +10,7 @@
         <template #buttons>
             <v-menu v-if="showWebcamSwitch" :offset-y="true" title="Webcam">
                 <template #activator="{ props }">
-                    <v-btn text v-bind="props">
+                    <v-btn variant="text" v-bind="props">
                         <v-icon small>{{ mdiWebcam }}</v-icon>
                         <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
@@ -53,7 +53,7 @@
                             class="white--text py-2"
                             style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)">
                             <v-row>
-                                <v-col class="col-auto pr-0 d-flex align-center" style="width: 58px">
+                                <v-col class="v-col-auto pr-0 d-flex align-center" style="width: 58px">
                                     <img
                                         v-if="printer_logo"
                                         :src="printer_logo"

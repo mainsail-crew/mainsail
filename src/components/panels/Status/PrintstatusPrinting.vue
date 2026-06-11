@@ -4,7 +4,7 @@
     <v-card-text class="pa-0">
         <v-container class="py-0">
             <v-row class="text-center py-5" align="center">
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <template v-if="live_velocity !== null">
                     <v-tooltip top>
                         <template #activator="{ props }">
@@ -23,7 +23,7 @@
                         <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
                     </template>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <v-tooltip top>
                         <template #activator="{ props }">
                             <div v-bind="props">
@@ -37,7 +37,7 @@
                         <span>{{ $t('Panels.StatusPanel.Max') }}: {{ outputMaxFlow }}</span>
                     </v-tooltip>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <v-tooltip top>
                         <template #activator="{ props }">
                             <div v-bind="props">
@@ -55,7 +55,7 @@
                         </span>
                     </v-tooltip>
                 </v-col>
-                <v-col class="col-3 pa-0 text-center">
+                <v-col class="v-col-3 pa-0 text-center">
                     <v-tooltip top>
                         <template #activator="{ props }">
                             <div v-bind="props" class="text-center">
@@ -74,7 +74,7 @@
         <v-divider class="my-0"></v-divider>
         <v-container class="py-0">
             <v-row class="text-center pt-5 pb-2 mb-0" align="center">
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <v-tooltip top>
                         <template #activator="{ props }">
                             <div v-bind="props" class="text-center">
@@ -94,14 +94,14 @@
                         </div>
                     </v-tooltip>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong>
                     <br />
                     <span class="text-no-wrap">
                         {{ estimated_time_slicer ? formatDuration(estimated_time_slicer) : '--' }}
                     </span>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <v-tooltip top>
                         <template #activator="{ props }">
                             <div v-bind="props" class="text-center">
@@ -121,7 +121,7 @@
                         </div>
                     </v-tooltip>
                 </v-col>
-                <v-col class="col-3 pa-0">
+                <v-col class="v-col-3 pa-0">
                     <strong>{{ $t('Panels.StatusPanel.ETA') }}</strong>
                     <br />
                     <span class="text-no-wrap">{{ eta }}</span>

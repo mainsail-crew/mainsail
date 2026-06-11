@@ -93,8 +93,6 @@ const store = useStore()
 const socket = useSocket()
 const { t } = useI18n()
 
-const mdiCrosshairsGps = mdiCrosshairsGps
-const mdiGrid = mdiGrid
 
 interface MoveToAxisInput {
     pos: string

@@ -4,7 +4,7 @@
             <v-icon left small>{{ mdiPencil }}</v-icon>
             {{ $t('Settings.MiscellaneousTab.Groups') }}
         </v-btn>
-        <v-btn small outlined class="ml-3" @click="openPresets">
+        <v-btn small variant="outlined" class="ml-3" @click="openPresets">
             <v-icon left small>{{ mdiPalette }}</v-icon>
             {{ $t('Settings.MiscellaneousTab.Presets') }}
         </v-btn>

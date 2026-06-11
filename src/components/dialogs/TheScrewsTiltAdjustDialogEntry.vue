@@ -22,8 +22,6 @@ interface ScrewsTiltAdjustResult {
 
 const store = useStore()
 
-const mdiRotateLeft = mdiRotateLeft
-const mdiRotateRight = mdiRotateRight
 
 const props = defineProps({
     name: { type: String, required: true },

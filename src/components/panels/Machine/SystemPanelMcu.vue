@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </v-col>
-            <v-col class="px-2 col-auto d-flex justify-center align-center">
+            <v-col class="px-2 v-col-auto d-flex justify-center align-center">
                 <v-progress-circular
                     :rotate="-90"
                     :size="55"
@@ -75,16 +75,16 @@
         <v-dialog v-model="mcuDetailsDialog" :max-width="400" :max-height="500" scrollable>
             <panel
                 :title="mcu.name"
-                icon="mdi-text-box-search-outline"
+                :icon="mdiTextBoxSearchOutline"
                 card-class="machine-systemload-mcu-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="mcuDetailsDialog = false">
+                    <v-btn icon @click="mcuDetailsDialog = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
-                    <overlay-scrollbars style="height: 350px" class="px-6">
+                    <OverlayScrollbarsComponent style="height: 350px" class="px-6">
                         <template v-if="mcu.mcu_constants">
                             <v-row>
                                 <v-col>
@@ -113,7 +113,7 @@
                                 </v-row>
                             </div>
                         </template>
-                    </overlay-scrollbars>
+                    </OverlayScrollbarsComponent>
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -123,14 +123,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiCloseThick } from '@mdi/js'
+import { mdiCloseThick, mdiTextBoxSearchOutline } from '@mdi/js'
 import type { PrinterStateMcu } from '@/store/printer/types'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 defineProps<{
     mcu: PrinterStateMcu
 }>()
 
-const mdiCloseThick = mdiCloseThick
 
 const mcuDetailsDialog = ref(false)
 </script>

@@ -1,6 +1,5 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import Vue from 'vue'
 import {
     GuiMiscellaneousState,
     GuiMiscellaneousStateEntry,
@@ -22,41 +21,41 @@ export const mutations: MutationTree<GuiMiscellaneousState> = {
             presets: {},
         }
 
-        Vue.set(state.entries, payload.id, values)
+        state.entries[payload.id] = values
     },
 
     storeLightgroup(state, payload: payloadCreateLightgroup) {
         const lightgroupId = uuidv4()
 
-        Vue.set(state.entries[payload.entryId].lightgroups, lightgroupId, payload.values)
+        state.entries[payload.entryId].lightgroups[lightgroupId] = payload.values
     },
 
     updateLightgroup(state, payload: payloadUpdateLightgroup) {
-        Vue.set(state.entries[payload.entryId].lightgroups, payload.lightgroupId, payload.values)
+        state.entries[payload.entryId].lightgroups[payload.lightgroupId] = payload.values
     },
 
     destroyLightgroup(state, payload: payloadDestroyLightgroup) {
         const entry = { ...state.entries[payload.entryId] }
         delete entry.lightgroups[payload.lightgroupId]
 
-        Vue.set(state.entries, payload.entryId, entry)
+        state.entries[payload.entryId] = entry
     },
 
     storePreset(state, payload: payloadCreatePreset) {
         const presetId = uuidv4()
 
-        Vue.set(state.entries[payload.entryId].presets, presetId, payload.values)
+        state.entries[payload.entryId].presets[presetId] = payload.values
     },
 
     updatePreset(state, payload: payloadUpdatePreset) {
-        Vue.set(state.entries[payload.entryId].presets, payload.presetId, payload.values)
+        state.entries[payload.entryId].presets[payload.presetId] = payload.values
     },
 
     destroyPreset(state, payload: payloadDestroyPreset) {
         const entry = { ...state.entries[payload.entryId] }
         delete entry.presets[payload.presetId]
 
-        Vue.set(state.entries, payload.entryId, entry)
+        state.entries[payload.entryId] = entry
     },
 }
 

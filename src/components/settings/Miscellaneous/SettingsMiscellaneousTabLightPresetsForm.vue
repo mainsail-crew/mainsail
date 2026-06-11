@@ -5,7 +5,7 @@
             <settings-row :title="$t('Settings.MiscellaneousTab.Name')">
                 <v-text-field
                     v-model="presetname"
-                    hide-details="auto"
+                    hide-details
                     :rules="[rules.required, rules.presetUnique]"
                     dense
                     outlined />
@@ -89,11 +89,11 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn text @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn v-if="presetId !== null" text color="primary" @click="updatePreset">
+            <v-btn variant="text" @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
+            <v-btn v-if="presetId !== null" variant="text" color="primary" @click="updatePreset">
                 {{ $t('Settings.Update') }}
             </v-btn>
-            <v-btn v-else text color="primary" @click="storePreset">{{ $t('Settings.Store') }}</v-btn>
+            <v-btn v-else variant="text" color="primary" @click="storePreset">{{ $t('Settings.Store') }}</v-btn>
         </v-card-actions>
     </div>
 </template>

@@ -4,14 +4,14 @@
         <v-btn small :loading="loadings.includes('restoreUploadButton')" class="ml-3" @click="restoreDb">
             {{ $t('Settings.GeneralTab.Restore') }}
         </v-btn>
-        <v-dialog :value="showDialog" persistent :width="360">
+        <v-dialog v-model="showDialog" persistent :width="360">
             <panel
                 :title="$t('Settings.GeneralTab.Restore')"
                 card-class="mainsail-restore-dialog"
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
                 <template #buttons>
-                    <v-btn icon tile @click="closeDialog">
+                    <v-btn icon @click="closeDialog">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>

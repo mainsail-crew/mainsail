@@ -5,7 +5,7 @@
                 <console-textarea ref="gcodeCommandField" />
             </v-col>
 
-            <v-col class="col-auto d-flex align-center">
+            <v-col class="v-col-auto d-flex align-center">
                 <v-btn class="mr-3 px-2 minwidth-0" color="lightgray" @click="clearConsole">
                     <v-icon>{{ mdiTrashCan }}</v-icon>
                 </v-btn>
@@ -65,13 +65,13 @@
             <v-col :class="consoleDirection === 'table' ? 'col' : 'col pt-0'">
                 <v-card>
                     <v-card-text class="pa-0">
-                        <overlay-scrollbars ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
+                        <OverlayScrollbarsComponent ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
                             <console-table
                                 ref="console"
                                 :is-mini="false"
                                 :events="events"
                                 @command-click="commandClick" />
-                        </overlay-scrollbars>
+                        </OverlayScrollbarsComponent>
                     </v-card-text>
                 </v-card>
             </v-col>

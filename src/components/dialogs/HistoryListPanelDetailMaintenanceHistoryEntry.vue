@@ -35,9 +35,6 @@ const store = useStore()
 const { t } = useI18n()
 const { formatDateTime } = useBase()
 
-const mdiAdjust = mdiAdjust
-const mdiAlarm = mdiAlarm
-const mdiCalendar = mdiCalendar
 
 const props = defineProps({
     item: { type: Object as () => GuiMaintenanceStateEntry, default: () => ({}) as GuiMaintenanceStateEntry },
@@ -45,7 +42,11 @@ const props = defineProps({
     last: { type: Boolean, default: false },
 })
 
-const date = computed(() => formatDateTime(props.item.start_time * 1000, false))
+const date = computed(() => {
+    if (!props.item.start_time) return '--'
+
+    return formatDateTime(props.item.start_time * 1000, false)
+})
 
 const dateText = computed(() => {
     if (props.last) return t('History.EntryCreatedAt', { date: date.value })

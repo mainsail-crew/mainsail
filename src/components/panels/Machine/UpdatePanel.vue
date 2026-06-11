@@ -42,7 +42,7 @@
                 <template v-else>
                     <v-row class="mt-0 mb-0">
                         <v-col class="px-6">
-                            <v-alert class="mb-0" text dense type="info" border="left">
+                            <v-alert class="mb-0" text dense type="info" border="start">
                                 {{ $t('Machine.UpdatePanel.InitUpdateManager') }}
                             </v-alert>
                         </v-col>
@@ -59,6 +59,9 @@ import { useStore } from 'vuex'
 import { useSocket } from '@/composables/useSocket'
 import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
+import UpdatePanelEntry from '@/components/panels/Machine/UpdatePanel/Entry.vue'
+import UpdatePanelEntrySystem from '@/components/panels/Machine/UpdatePanel/EntrySystem.vue'
+import UpdatePanelEntryAll from '@/components/panels/Machine/UpdatePanel/EntryAll.vue'
 import { mdiRefresh, mdiInformation, mdiCloseThick, mdiUpdate } from '@mdi/js'
 import { ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
 import semver from 'semver'
@@ -67,10 +70,6 @@ const { loadings, printer_state } = useBase()
 const store = useStore()
 const socket = useSocket()
 
-const mdiRefresh = mdiRefresh
-const mdiInformation = mdiInformation
-const mdiCloseThick = mdiCloseThick
-const mdiUpdate = mdiUpdate
 
 const enableUpdateManager = computed(() =>
     store.state.server.components.includes('update_manager')

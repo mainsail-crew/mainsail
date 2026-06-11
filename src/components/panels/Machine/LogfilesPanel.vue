@@ -43,8 +43,6 @@ import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/L
 
 const { loadings, printer_state } = useBase()
 
-const mdiFileDocumentEdit = mdiFileDocumentEdit
-const mdiFileSyncOutline = mdiFileSyncOutline
 
 const showRolloverDialog = ref(false)
 </script>

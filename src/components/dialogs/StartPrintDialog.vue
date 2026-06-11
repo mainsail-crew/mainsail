@@ -16,11 +16,9 @@
             <v-divider v-if="showDivider" class="my-0" />
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn
-                    color="primary"
-                    text
-                    :disabled="printerIsPrinting || !klipperReadyForGui"
+                    color="primary" variant="text" :disabled="printerIsPrinting || !klipperReadyForGui"
                     @click="startPrint(file.filename)">
                     {{ $t('Dialogs.StartPrint.Print') }}
                 </v-btn>

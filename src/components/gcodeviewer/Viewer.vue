@@ -4,8 +4,8 @@
             <template #buttons>
                 <v-btn
                     v-show="reloadRequired"
-                    :icon="display.xs"
-                    :text="display.smAndUp"
+                    :icon="xs"
+                    :text="smAndUp"
                     tile
                     color="info"
                     class="ml-3"
@@ -13,7 +13,7 @@
                     <span class="d-none d-sm-block">{{ $t('GCodeViewer.ReloadRequired') }}</span>
                     <v-icon class="d-sm-none">{{ mdiReloadAlert }}</v-icon>
                 </v-btn>
-                <v-btn icon tile @click="resetCamera">
+                <v-btn icon @click="resetCamera">
                     <v-icon>{{ mdiCameraRetake }}</v-icon>
                 </v-btn>
             </template>
@@ -43,7 +43,7 @@
                             min="0"
                             persistent-hint />
                     </v-col>
-                    <v-col class="col-auto pt-0 text-center">
+                    <v-col class="v-col-auto pt-0 text-center">
                         <v-btn class="px-2 minwidth-0" color="primary" @click="scrubPlaying = !scrubPlaying">
                             <v-icon v-if="scrubPlaying">{{ mdiPause }}</v-icon>
                             <v-icon v-else>{{ mdiPlay }}</v-icon>
@@ -65,7 +65,7 @@
                         <v-row>
                             <v-col
                                 order-md="2"
-                                class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4">
+                                class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 v-col-md-4">
                                 <template v-if="loadedFile === null">
                                     <v-btn
                                         v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile"
@@ -88,22 +88,23 @@
                                     </v-btn>
                                 </template>
                             </v-col>
-                            <v-col class="col-12 col-sm-6 col-md-4">
+                            <v-col class="v-col-12 v-col-sm-6 v-col-md-4">
                                 <v-select
                                     v-model="colorMode"
                                     :items="colorModes"
                                     :label="$t('GCodeViewer.ColorMode')"
-                                    item-text="text"
+                                    item-title="text"
+                                    item-value="value"
                                     dense
                                     hide-details
                                     outlined></v-select>
                             </v-col>
-                            <v-col order-md="3" class="col-12 col-sm-6 col-md-4 d-flex">
+                            <v-col order-md="3" class="v-col-12 v-col-sm-6 v-col-md-4 d-flex">
                                 <v-select
                                     v-model="renderQuality"
                                     :items="renderQualities"
                                     :label="$t('GCodeViewer.RenderQuality')"
-                                    item-text="label"
+                                    item-title="label"
                                     dense
                                     hide-details
                                     outlined></v-select>
@@ -214,9 +215,9 @@
                 <br />
                 <strong>{{ loadedFile }}</strong>
             </div>
-            <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
+            <v-progress-linear class="mt-2" v-model="loadingPercent"></v-progress-linear>
             <template #actions="{ props }">
-                <v-btn color="red" text v-bind="props" style="min-width: auto" @click="cancelRendering()">
+                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelRendering()">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
@@ -229,7 +230,7 @@
                     <br />
                     <strong>{{ downloadSnackbar.filename }}</strong>
                 </div>
-                <v-progress-linear class="mt-2" :value="downloadSnackbar.percent" />
+                <v-progress-linear class="mt-2" v-model="downloadSnackbar.percent" />
             </template>
             <template v-else>
                 <div>
@@ -240,7 +241,7 @@
                 <v-progress-linear class="mt-2" indeterminate />
             </template>
             <template #actions="{ props }">
-                <v-btn color="red" text v-bind="props" style="min-width: auto" @click="cancelDownload">
+                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelDownload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
@@ -309,7 +310,7 @@ const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const display = useDisplay()
+const { xs, smAndUp } = useDisplay()
 const socket = useSocket()
 const { apiUrl, printerIsPrinting, printerIsPrintingOnly } = useBase()
 
@@ -331,6 +332,15 @@ const loadedFile = ref<string | null>(null)
 
 const reloadRequired = ref(false)
 const fileSize = ref(0)
+
+const renderQualities = computed(() => [
+    { label: t('GCodeViewer.Low'), value: 2 },
+    { label: t('GCodeViewer.Medium'), value: 3 },
+    { label: t('GCodeViewer.High'), value: 4 },
+    { label: t('GCodeViewer.Ultra'), value: 5 },
+    { label: t('GCodeViewer.Max'), value: 6 },
+])
+
 const renderQuality = ref(renderQualities.value[2])
 
 const scrubPosition = ref(0)
@@ -356,14 +366,6 @@ const excludeObject = ref({
 const fileData = ref('')
 
 const resizeObserver = ref<ResizeObserver | null>(null)
-
-const renderQualities = computed(() => [
-    { label: t('GCodeViewer.Low'), value: 2 },
-    { label: t('GCodeViewer.Medium'), value: 3 },
-    { label: t('GCodeViewer.High'), value: 4 },
-    { label: t('GCodeViewer.Ultra'), value: 5 },
-    { label: t('GCodeViewer.Max'), value: 6 },
-])
 
 onMounted(async () => {
     loadedFile.value = store.state.gcodeviewer?.loadedFileBackup ?? null

@@ -283,7 +283,7 @@ function tooltipFormatter(params: TopLevelFormatterParams): string {
         if (displayName.indexOf(' ') !== -1) displayName = displayName.substring(displayName.indexOf(' ') + 1)
 
         outputRows += '<div class="row">'
-        outputRows += `<div class="col-auto py-0">${entry.marker}<span class='ml-2'>${convertName(displayName)}:</span></div>`
+        outputRows += `<div class="v-col-auto py-0">${entry.marker}<span class='ml-2'>${convertName(displayName)}:</span></div>`
         outputRows += '<div class="col text-right py-0 font-weight-bold">'
 
         const seriesNameTemperature = `${baseSeriesName}-temperature`

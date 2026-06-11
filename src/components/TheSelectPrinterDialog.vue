@@ -9,7 +9,7 @@
             <template #buttons>
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool">
-                        <v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false">
+                        <v-btn icon class="minwidth-0" @click="dialogEditPrinter.bool = false">
                             <v-icon>{{ mdiCloseThick }}</v-icon>
                         </v-btn>
                     </template>
@@ -24,7 +24,7 @@
                         </v-btn>
                     </template>
                     <template v-else-if="printers.length > 0">
-                        <v-btn icon tile class="minwidth-0" color="primary" @click="checkPrinters">
+                        <v-btn icon class="minwidth-0" color="primary" @click="checkPrinters">
                             <v-icon>{{ mdiSync }}</v-icon>
                         </v-btn>
                     </template>
@@ -45,10 +45,10 @@
                         }}
                     </p>
                     <div class="text-center">
-                        <v-btn text color="white" class="mr-3" @click="switchToChangePrinter">
+                        <v-btn variant="text" color="white" class="mr-3" @click="switchToChangePrinter">
                             {{ $t('SelectPrinterDialog.ChangePrinter') }}
                         </v-btn>
-                        <v-btn text color="primary" @click="reconnect">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
+                        <v-btn variant="text" color="primary" @click="reconnect">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
                     </div>
                 </v-card-text>
             </template>
@@ -56,7 +56,7 @@
                 <v-form v-model="addPrinterValid" @submit.prevent="addPrinter">
                     <v-card-text>
                         <v-row>
-                            <v-col class="col-8">
+                            <v-col class="v-col-8">
                                 <v-text-field
                                     v-model="dialogAddPrinter.hostname"
                                     :rules="[
@@ -67,15 +67,15 @@
                                     :label="$t('SelectPrinterDialog.HostnameIp')"
                                     required
                                     outlined
-                                    hide-details="auto"
+                                    hide-details
                                     dense />
                             </v-col>
-                            <v-col class="col-4">
+                            <v-col class="v-col-4">
                                 <v-text-field
                                     v-model="dialogAddPrinter.port"
                                     :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                     :label="$t('SelectPrinterDialog.Port')"
-                                    hide-details="auto"
+                                    hide-details
                                     required
                                     outlined
                                     dense />
@@ -87,7 +87,7 @@
                                     v-model="dialogAddPrinter.path"
                                     :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                     :label="$t('SelectPrinterDialog.Path')"
-                                    hide-details="auto"
+                                    hide-details
                                     outlined
                                     dense />
                             </v-col>
@@ -96,7 +96,7 @@
                                     v-model="dialogAddPrinter.name"
                                     :label="$t('SelectPrinterDialog.Name')"
                                     outlined
-                                    hide-details="auto"
+                                    hide-details
                                     dense />
                             </v-col>
                         </v-row>
@@ -110,7 +110,7 @@
                             :true-value="false"
                             :false-value="true" />
                         <v-spacer />
-                        <v-btn color="primary" text class="middle" type="submit" :disabled="!addPrinterValid">
+                        <v-btn color="primary" variant="text" class="middle" type="submit" :disabled="!addPrinterValid">
                             {{ $t('SelectPrinterDialog.AddPrinter') }}
                         </v-btn>
                     </v-card-actions>
@@ -120,7 +120,7 @@
                 <v-form v-model="editPrinterValid" @submit.prevent="updatePrinter">
                     <v-card-text>
                         <v-row>
-                            <v-col class="col-8">
+                            <v-col class="v-col-8">
                                 <v-text-field
                                     v-model="dialogEditPrinter.hostname"
                                     :rules="[
@@ -132,9 +132,9 @@
                                     required
                                     outlined
                                     dense
-                                    hide-details="auto" />
+                                    hide-details />
                             </v-col>
-                            <v-col class="col-4">
+                            <v-col class="v-col-4">
                                 <v-text-field
                                     v-model="dialogEditPrinter.port"
                                     :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
@@ -142,7 +142,7 @@
                                     required
                                     outlined
                                     dense
-                                    hide-details="auto" />
+                                    hide-details />
                             </v-col>
                         </v-row>
                         <v-row v-if="showOptionalSettings">
@@ -151,7 +151,7 @@
                                     v-model="dialogEditPrinter.path"
                                     :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                     :label="$t('SelectPrinterDialog.Path')"
-                                    hide-details="auto"
+                                    hide-details
                                     outlined
                                     dense />
                             </v-col>
@@ -160,7 +160,7 @@
                                     v-model="dialogEditPrinter.name"
                                     :label="$t('SelectPrinterDialog.Name')"
                                     outlined
-                                    hide-details="auto"
+                                    hide-details
                                     dense />
                             </v-col>
                         </v-row>
@@ -177,7 +177,7 @@
                             :true-value="false"
                             :false-value="true" />
                         <v-spacer />
-                        <v-btn color="primary" text type="submit" :disabled="!editPrinterValid">
+                        <v-btn color="primary" variant="text" type="submit" :disabled="!editPrinterValid">
                             {{ $t('SelectPrinterDialog.UpdatePrinter') }}
                         </v-btn>
                     </v-card-actions>
@@ -193,7 +193,7 @@
                                     style="cursor: pointer"
                                     @click="connect(printer)">
                                     <v-row align="center">
-                                        <v-col class="col-auto pr-0">
+                                        <v-col class="v-col-auto pr-0">
                                             <v-progress-circular
                                                 v-if="printer.socket.isConnecting"
                                                 indeterminate
@@ -207,11 +207,9 @@
                                             </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
-                                        <v-col v-if="canAddPrinters" class="col-auto pa-0">
+                                        <v-col v-if="canAddPrinters" class="v-col-auto pa-0">
                                             <v-btn
-                                                tile
-                                                text
-                                                icon
+                                                tile variant="text" icon
                                                 large
                                                 class="mr-1"
                                                 @click.stop.prevent="editPrinter(printer)">
@@ -244,7 +242,7 @@
                         </v-row>
                         <v-row>
                             <v-col class="text-center mt-0">
-                                <v-btn text color="primary" @click="createPrinter">
+                                <v-btn variant="text" color="primary" @click="createPrinter">
                                     {{ $t('SelectPrinterDialog.AddPrinter') }}
                                 </v-btn>
                             </v-col>

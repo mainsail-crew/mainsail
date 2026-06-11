@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
+    <v-dialog :model-value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
             :title="$t('ManualProbe.Headline').toString()"
             :icon="mdiArrowCollapseDown"
@@ -8,7 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn icon tile @click="sendAbort">
+                <v-btn icon @click="sendAbort">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -79,10 +79,10 @@
             </sub-panel>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text :loading="loadingAbort" @click="sendAbort">
+                <v-btn variant="text" :loading="loadingAbort" @click="sendAbort">
                     {{ $t('ManualProbe.Abort') }}
                 </v-btn>
-                <v-btn color="primary" text :loading="loadingAccept" @click="sendAccept">
+                <v-btn color="primary" variant="text" :loading="loadingAccept" @click="sendAccept">
                     {{ $t('ManualProbe.Accept') }}
                 </v-btn>
             </v-card-actions>
@@ -111,13 +111,6 @@ const store = useStore()
 const { isMobile, loadings } = useBase()
 const socket = useSocket()
 
-const mdiArrowCollapseDown = mdiArrowCollapseDown
-const mdiArrowExpandUp = mdiArrowExpandUp
-const mdiPlusThick = mdiPlusThick
-const mdiMinusThick = mdiMinusThick
-const mdiChevronTripleLeft = mdiChevronTripleLeft
-const mdiChevronTripleRight = mdiChevronTripleRight
-const mdiCloseThick = mdiCloseThick
 
 const showDialog = computed(() => {
     if (!boolManualProbeDialog.value) return false
