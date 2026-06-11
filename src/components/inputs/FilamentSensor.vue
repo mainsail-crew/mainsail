@@ -16,55 +16,52 @@
     </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
 import { convertName } from '@/plugins/helpers'
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+import { useBase } from '@/composables/useBase'
 import { mdiPrinter3dNozzleAlert, mdiToggleSwitch, mdiToggleSwitchOffOutline } from '@mdi/js'
 
-@Component
-export default class FilamentSensor extends Mixins(BaseMixin) {
-    /**
-     * Icons
-     */
+const { t } = useI18n()
+const store = useStore()
+const socket = useSocket()
+useBase()
 
-    mdiToggleSwitch = mdiToggleSwitch
-    mdiToggleSwitchOffOutline = mdiToggleSwitchOffOutline
-    mdiPrinter3dNozzleAlert = mdiPrinter3dNozzleAlert
+const props = defineProps<{
+    type: string
+    name: string
+    enabled: boolean
+    filament_detected: boolean
+    filament_diameter?: number
+}>()
 
-    convertName = convertName
+const statusColor = computed(() => {
+    if (!props.enabled) return 'gray'
+    else if (props.filament_detected) return 'success'
 
-    @Prop({ type: String, required: true }) declare readonly type: string
-    @Prop({ type: String, required: true }) declare readonly name: string
-    @Prop({ type: Boolean, required: true }) declare readonly enabled: boolean
-    @Prop({ type: Boolean, required: true }) declare readonly filament_detected: boolean
-    @Prop({ type: Number }) declare readonly filament_diameter: number
+    return 'warning'
+})
 
-    get statusColor() {
-        if (!this.enabled) return 'gray'
-        else if (this.filament_detected) return 'success'
-
-        return 'warning'
+const statusText = computed(() => {
+    if (props.filament_diameter !== undefined && props.filament_detected) {
+        return props.filament_diameter.toPrecision(3) + 'mm'
     }
+    if (props.filament_detected) return t('Panels.MiscellaneousPanel.RunoutSensor.Detected')
 
-    get statusText() {
-        if (this.filament_diameter !== undefined && this.filament_detected) {
-            return this.filament_diameter.toPrecision(3) + 'mm'
-        }
-        if (this.filament_detected) return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Detected')
+    return t('Panels.MiscellaneousPanel.RunoutSensor.Empty')
+})
 
-        return this.$t('Panels.MiscellaneousPanel.RunoutSensor.Empty')
+function changeSensor() {
+    const gcodes = ['SET_FILAMENT_SENSOR SENSOR=' + props.name + ' ENABLE=' + (props.enabled ? 0 : 1)]
+    if (props.type == 'hall_filament_width_sensor') {
+        gcodes.push((props.enabled ? 'DIS' : 'EN') + 'ABLE_FILAMENT_WIDTH_SENSOR')
     }
-
-    changeSensor() {
-        const gcodes = ['SET_FILAMENT_SENSOR SENSOR=' + this.name + ' ENABLE=' + (this.enabled ? 0 : 1)]
-        if (this.type == 'hall_filament_width_sensor') {
-            gcodes.push((this.enabled ? 'DIS' : 'EN') + 'ABLE_FILAMENT_WIDTH_SENSOR')
-        }
-        for (const gcode of gcodes) {
-            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: gcode })
-        }
+    for (const gcode of gcodes) {
+        store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        socket.emit('printer.gcode.script', { script: gcode })
     }
 }
 </script>

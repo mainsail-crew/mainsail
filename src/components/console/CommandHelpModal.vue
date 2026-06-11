@@ -55,53 +55,47 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import BaseMixin from '@/components/mixins/base'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
-import Component from 'vue-class-component'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiHelp, mdiCloseThick } from '@mdi/js'
 import CommandHelpModalEntry from '@/components/console/CommandHelpModalEntry.vue'
 
-@Component({
-    components: { CommandHelpModalEntry, Panel },
-})
-export default class CommandHelpModal extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: false }) readonly isMini!: boolean
-    @Prop({ required: false, default: false }) readonly inToolbar!: boolean
+const props = defineProps<{
+    isMini?: boolean
+    inToolbar?: boolean
+}>()
 
-    cmdListSearch = ''
-    isOpen = false
+const emit = defineEmits<{
+    (e: 'onCommand', gcode: string): void
+}>()
 
-    /**
-     * Icons
-     */
+const store = useStore()
+const { isMobile } = useBase()
 
-    mdiHelp = mdiHelp
-    mdiCloseThick = mdiCloseThick
+const cmdListSearch = ref('')
+const isOpen = ref(false)
 
-    get helplist(): string[] {
-        return Object.keys(this.$store.state.printer.gcode?.commands ?? {})
-    }
+const helplist = computed<string[]>(() => Object.keys(store.state.printer.gcode?.commands ?? {}))
 
-    get helplistFiltered(): string[] {
-        return this.helplist
-            .filter((cmd) => cmd.includes(this.cmdListSearch.toUpperCase()))
-            .sort((a, b) => a.localeCompare(b))
-    }
+const helplistFiltered = computed<string[]>(() =>
+    helplist.value
+        .filter((cmd) => cmd.includes(cmdListSearch.value.toUpperCase()))
+        .sort((a, b) => a.localeCompare(b))
+)
 
-    onCommand(gcode: string): void {
-        this.$emit('onCommand', gcode)
-        this.isOpen = false
-    }
-
-    @Watch('isOpen')
-    onIsOpen(val: boolean): void {
-        if (val) return
-
-        this.cmdListSearch = ''
-    }
+function onCommand(gcode: string): void {
+    emit('onCommand', gcode)
+    isOpen.value = false
 }
+
+watch(isOpen, (val: boolean) => {
+    if (val) return
+
+    cmdListSearch.value = ''
+})
 </script>
 
 <style scoped>

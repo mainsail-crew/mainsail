@@ -22,12 +22,13 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useWebcam } from '@/composables/useWebcam'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import WebcamMixin from '@/components/mixins/webcam'
+import WebcamNozzleCrosshair from '@/components/webcams/WebcamNozzleCrosshair.vue'
 
 const CONTENT_LENGTH = 'content-length'
 
@@ -35,308 +36,279 @@ const SOI = new Uint8Array(2)
 SOI[0] = 0xff
 SOI[1] = 0xd8
 
-@Component
-export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
-    // current read stream frames counter
-    frames = 0
-    // current displayed fps
-    currentFPS = 0
-    status: string = 'connecting'
-    statusMessage: string = ''
-    streamState = false
-    aspectRatio: null | number = null
-    timerFPS: number | null = null
-    timerRestart: number | null = null
-    reader: ReadableStreamDefaultReader<Uint8Array> | null
+const props = defineProps({
+    camSettings: { type: Object, required: true },
+    printerUrl: { default: null },
+    showFps: { type: Boolean, default: true },
+    page: { type: String, default: null },
+})
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
-    @Prop({ default: true }) readonly showFps!: boolean
-    @Prop({ type: String, default: null }) readonly page!: string | null
-    @Ref() readonly image!: HTMLImageElement
+const store = useStore()
+const { t } = useI18n()
+const { convertUrl, getWrapperStyle, generateTransform, updateAspectRatioFromImage, viewport } = useWebcam()
 
-    constructor() {
-        super()
-        this.reader = null
+const image = ref<HTMLImageElement | null>(null)
+
+const frames = ref(0)
+const currentFPS = ref(0)
+const status = ref('connecting')
+const statusMessage = ref('')
+const streamState = ref(false)
+const aspectRatio = ref<number | null>(null)
+
+let timerFPS: number | null = null
+let timerRestart: number | null = null
+let reader: ReadableStreamDefaultReader<Uint8Array> | null = null
+
+const url = computed(() => convertUrl(props.camSettings?.stream_url, props.printerUrl))
+
+const wrapperStyle = computed(() => getWrapperStyle(aspectRatio.value, props.camSettings.rotation))
+
+const webcamStyle = computed(() => ({
+    transform: generateTransform(
+        props.camSettings.flip_horizontal ?? false,
+        props.camSettings.flip_vertical ?? false,
+        props.camSettings.rotation ?? 0,
+        aspectRatio.value ?? 1
+    ),
+}))
+
+const fpsOutput = computed(() => currentFPS.value.toString().padStart(2, '0'))
+
+const showFpsCounter = computed(() => {
+    if (!props.showFps) return false
+    return !(props.camSettings.extra_data?.hideFps ?? false)
+})
+
+const expanded = computed(() => {
+    if (props.page !== 'dashboard') return true
+    return store.getters['gui/getPanelExpand']('webcam-panel', viewport.value) ?? false
+})
+
+const showNozzleCrosshair = computed(() => {
+    const nozzleCrosshair = props.camSettings.extra_data?.nozzleCrosshair ?? false
+    return nozzleCrosshair && status.value === 'connected'
+})
+
+watch(expanded, (newExpanded) => {
+    if (!newExpanded) {
+        stopStream()
+        return
     }
+    startStream()
+}, { immediate: true })
 
-    get url() {
-        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
+watch(() => props.camSettings, () => {
+    aspectRatio.value = null
+    restartStream()
+}, { deep: true })
+
+function log(msg: string, obj?: unknown) {
+    if (obj) {
+        window.console.log(`[MJPEG streamer] ${msg}`, obj)
+        return
     }
+    window.console.log(`[MJPEG streamer] ${msg}`)
+}
 
-    get wrapperStyle() {
-        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
-    }
-
-    get webcamStyle() {
-        return {
-            transform: this.generateTransform(
-                this.camSettings.flip_horizontal ?? false,
-                this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
-                this.aspectRatio ?? 1
-            ),
+function getLength(headers: string) {
+    let contentLength = -1
+    headers.split('\n').forEach((header: string) => {
+        const pair = header.split(':')
+        if (pair[0].toLowerCase() === CONTENT_LENGTH) {
+            contentLength = Number(pair[1])
         }
+    })
+    return contentLength
+}
+
+async function startStream(skipStatus: boolean = false) {
+    if (streamState.value) return
+    streamState.value = true
+
+    if (!skipStatus) {
+        status.value = 'connecting'
+        statusMessage.value = t('Panels.WebcamPanel.ConnectingTo', { url: url.value }).toString()
     }
 
-    get fpsOutput() {
-        return this.currentFPS.toString().padStart(2, '0')
-    }
+    clearTimeouts()
 
-    get showFpsCounter() {
-        if (!this.showFps) return false
+    try {
+        const streamUrl = new URL(url.value)
+        streamUrl.searchParams.append('timestamp', new Date().getTime().toString())
 
-        return !(this.camSettings.extra_data?.hideFps ?? false)
-    }
+        let response: Response | null = await fetch(streamUrl.toString(), { mode: 'cors' })
 
-    get expanded(): boolean {
-        if (this.page !== 'dashboard') return true
-
-        return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
-    }
-
-    get showNozzleCrosshair() {
-        const nozzleCrosshair = this.camSettings.extra_data?.nozzleCrosshair ?? false
-
-        return nozzleCrosshair && this.status === 'connected'
-    }
-
-    // start or stop the video when the expanded state changes
-    @Watch('expanded', { immediate: true })
-    expandChanged(newExpanded: boolean): void {
-        if (!newExpanded) {
-            this.stopStream()
+        if (!response.ok) {
+            log(`${response.status}: ${response.statusText}`)
+            await stopStream()
             return
         }
 
-        this.startStream()
-    }
-
-    log(msg: string, obj?: unknown) {
-        if (obj) {
-            window.console.log(`[MJPEG streamer] ${msg}`, obj)
+        if (!response.body) {
+            log('ReadableStream not yet supported in this browser.')
+            await stopStream()
             return
         }
 
-        window.console.log(`[MJPEG streamer] ${msg}`)
-    }
+        timerFPS = window.setInterval(() => {
+            currentFPS.value = frames.value
+            frames.value = 0
+        }, 1000)
 
-    getLength(headers: string) {
+        timerRestart = window.setTimeout(() => {
+            restartStream(true)
+        }, 10000)
+
+        reader = response.body?.getReader()
+
+        await readStream()
+
+        reader = null
+        response = null
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error)
+        log(message)
+        status.value = 'error'
+        statusMessage.value = t('Panels.WebcamPanel.ErrorWhileConnecting', { url: url.value }).toString()
+
+        timerRestart = window.setTimeout(() => {
+            restartStream()
+        }, 5000)
+    }
+}
+
+async function readStream() {
+    if (!reader) return
+
+    try {
+        let headers = ''
         let contentLength = -1
-        headers.split('\n').forEach((header: string) => {
-            const pair = header.split(':')
-            if (pair[0].toLowerCase() === CONTENT_LENGTH) {
-                // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc
-                contentLength = Number(pair[1])
-            }
-        })
-        return contentLength
-    }
+        let imageBuffer: Uint8Array = new Uint8Array(0)
+        let bytesRead = 0
+        let skipFrame = false
 
-    async startStream(skipStatus: boolean = false) {
-        if (this.streamState) {
-            return
-        }
-        this.streamState = true
+        let done: boolean | null = null
+        let value: Uint8Array | undefined
 
-        if (!skipStatus) {
-            this.status = 'connecting'
-            this.statusMessage = this.$t('Panels.WebcamPanel.ConnectingTo', { url: this.url }).toString()
-        }
+        do {
+            ;({ done, value } = await reader!.read())
 
-        // reset counter and timeout/interval
-        this.clearTimeouts()
+            if (done || !value) continue
 
-        try {
-            //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
-
-            const url = new URL(this.url)
-            url.searchParams.append('timestamp', new Date().getTime().toString())
-
-            let response: Response | null = await fetch(url.toString(), { mode: 'cors' })
-
-            if (!response.ok) {
-                this.log(`${response.status}: ${response.statusText}`)
-                await this.stopStream()
-                return
-            }
-
-            if (!response.body) {
-                this.log('ReadableStream not yet supported in this browser.')
-                await this.stopStream()
-                return
-            }
-
-            this.timerFPS = window.setInterval(() => {
-                this.currentFPS = this.frames
-                this.frames = 0
-            }, 1000)
-
-            this.timerRestart = window.setTimeout(() => {
-                this.restartStream(true)
-            }, 10000)
-
-            this.reader = response.body?.getReader()
-
-            await this.readStream()
-
-            // cleanup
-            this.reader = null
-            response = null
-        } catch (error: unknown) {
-            const message = error instanceof Error ? error.message : String(error)
-            this.log(message)
-            this.status = 'error'
-            this.statusMessage = this.$t('Panels.WebcamPanel.ErrorWhileConnecting', { url: this.url }).toString()
-
-            this.timerRestart = window.setTimeout(() => {
-                this.restartStream()
-            }, 5000)
-        }
-    }
-
-    async readStream() {
-        // stop if the stream is not ready
-        if (!this.reader) return
-
-        try {
-            // variables to read the stream
-            let headers = ''
-            let contentLength = -1
-            let imageBuffer: Uint8Array = new Uint8Array(0)
-            let bytesRead = 0
-            let skipFrame = false
-
-            let done: boolean | null = null
-            let value
-
-            do {
-                ;({ done, value } = await this.reader.read())
-
-                if (done || !value) continue
-
-                for (let index = 0; index < value.length; index++) {
-                    // we've found the start of the frame. Everything we've read till now is the header.
-                    if (value[index] === SOI[0] && value[index + 1] === SOI[1]) {
-                        contentLength = this.getLength(headers)
-                        imageBuffer = new Uint8Array(new ArrayBuffer(contentLength))
-                    }
-
-                    // we're still reading the header.
-                    if (contentLength <= 0) {
-                        headers += String.fromCharCode(value[index])
-                        continue
-                    }
-
-                    // we're now reading the jpeg.
-                    if (bytesRead < contentLength) {
-                        imageBuffer[bytesRead++] = value[index]
-                        continue
-                    }
-
-                    // we're done reading the jpeg. Time to render it.
-                    if (this.image && !skipFrame) {
-                        const objectURL = URL.createObjectURL(new Blob([imageBuffer], { type: 'image/jpeg' }))
-                        this.image.src = objectURL
-                        skipFrame = true
-
-                        // update status to 'connected' if the first frame is received
-                        if (this.status !== 'connected') {
-                            this.status = 'connected'
-                            this.statusMessage = ''
-                        }
-
-                        this.image.onload = () => {
-                            URL.revokeObjectURL(objectURL)
-                            skipFrame = false
-                        }
-                    }
-                    this.frames++
-                    contentLength = 0
-                    bytesRead = 0
-                    headers = ''
+            for (let index = 0; index < value.length; index++) {
+                if (value[index] === SOI[0] && value[index + 1] === SOI[1]) {
+                    contentLength = getLength(headers)
+                    imageBuffer = new Uint8Array(new ArrayBuffer(contentLength))
                 }
-            } while (!done)
-        } catch (error: unknown) {
-            const message = error instanceof Error ? error.message : String(error)
-            this.log(`readStream error: ${message}`, error)
-        } finally {
-            this.reader?.releaseLock()
-        }
+
+                if (contentLength <= 0) {
+                    headers += String.fromCharCode(value[index])
+                    continue
+                }
+
+                if (bytesRead < contentLength) {
+                    imageBuffer[bytesRead++] = value[index]
+                    continue
+                }
+
+                if (image.value && !skipFrame) {
+                    const objectURL = URL.createObjectURL(new Blob([imageBuffer], { type: 'image/jpeg' }))
+                    image.value.src = objectURL
+                    skipFrame = true
+
+                    if (status.value !== 'connected') {
+                        status.value = 'connected'
+                        statusMessage.value = ''
+                    }
+
+                    image.value.onload = () => {
+                        URL.revokeObjectURL(objectURL)
+                        skipFrame = false
+                    }
+                }
+                frames.value++
+                contentLength = 0
+                bytesRead = 0
+                headers = ''
+            }
+        } while (!done)
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error)
+        log(`readStream error: ${message}`, error)
+    } finally {
+        reader?.releaseLock()
     }
+}
 
-    mounted() {
-        document.addEventListener('visibilitychange', this.documentVisibilityChanged)
+onMounted(() => {
+    document.addEventListener('visibilitychange', documentVisibilityChanged)
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener('visibilitychange', documentVisibilityChanged)
+    stopStream()
+})
+
+function clearTimeouts() {
+    frames.value = 0
+    if (timerFPS) {
+        window.clearInterval(timerFPS)
+        timerFPS = null
     }
-
-    beforeDestroy() {
-        document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
-        this.stopStream()
+    if (timerRestart) {
+        window.clearTimeout(timerRestart)
+        timerRestart = null
     }
+}
 
-    clearTimeouts() {
-        this.frames = 0
-        if (this.timerFPS) {
-            window.clearInterval(this.timerFPS)
-            this.timerFPS = null
-        }
-        if (this.timerRestart) {
-            window.clearTimeout(this.timerRestart)
-            this.timerRestart = null
-        }
+async function stopStream(skipStatus: boolean = false) {
+    streamState.value = false
+
+    if (!skipStatus) {
+        status.value = 'disconnected'
+        statusMessage.value = t('Panels.WebcamPanel.Disconnected').toString()
     }
+    clearTimeouts()
 
-    async stopStream(skipStatus: boolean = false) {
-        this.streamState = false
-
-        if (!skipStatus) {
-            this.status = 'disconnected'
-            this.statusMessage = this.$t('Panels.WebcamPanel.Disconnected').toString()
-        }
-        this.clearTimeouts()
-
-        try {
-            await this.reader?.cancel()
-            this.reader?.releaseLock()
-            this.reader = null
-        } catch (error) {
-            this.log('Error cancelling reader:', error)
-        }
+    try {
+        await reader?.cancel()
+        reader?.releaseLock()
+        reader = null
+    } catch (error) {
+        log('Error cancelling reader:', error)
     }
+}
 
-    async restartStream(skipStatus: boolean = false) {
-        await this.stopStream(skipStatus)
-        await this.startStream(skipStatus)
-    }
+async function restartStream(skipStatus: boolean = false) {
+    await stopStream(skipStatus)
+    await startStream(skipStatus)
+}
 
-    @Watch('camSettings', { deep: true })
-    camSettingsChanged() {
-        this.aspectRatio = null
-        this.restartStream()
-    }
+function documentVisibilityChanged() {
+    const visibility = document.visibilityState
+    const bool = visibility === 'visible'
 
-    // this function check if you changed the browser tab
-    documentVisibilityChanged() {
-        const visibility = document.visibilityState
-        let bool = visibility === 'visible'
-
-        if (this.page === 'dashboard' && !this.expanded) {
-            bool = false
-        }
-
+    if (props.page === 'dashboard' && !expanded.value) {
         if (!bool) {
-            this.stopStream()
+            stopStream()
             return
         }
-
-        this.startStream()
+        startStream()
+        return
     }
 
-    onload() {
-        if (this.aspectRatio !== null) return
-
-        this.aspectRatio = this.updateAspectRatioFromImage(this.image)
+    if (!bool) {
+        stopStream()
+        return
     }
+
+    startStream()
+}
+
+function onload() {
+    if (aspectRatio.value !== null) return
+    aspectRatio.value = updateAspectRatioFromImage(image.value)
 }
 </script>
 

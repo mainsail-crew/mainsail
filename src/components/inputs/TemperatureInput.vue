@@ -48,83 +48,82 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
+<script setup lang="ts">
+import { ref, computed, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { inject } from 'vue'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import { mdiSnowflake, mdiFire, mdiMenuDown } from '@mdi/js'
 
-@Component
-export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
-    mdiSnowflake = mdiSnowflake
-    mdiFire = mdiFire
-    mdiMenuDown = mdiMenuDown
+const { t } = useI18n()
+const { printer_state } = useBase()
+const { doSend } = useControl()
+const $toast = inject('$toast')
 
-    value: number | string = 0
+const props = defineProps<{
+    name: string
+    target?: number
+    min_temp: number
+    max_temp: number
+    command: string
+    attributeName: string
+    presets?: number[]
+    inputDigits?: number
+}>()
 
-    @Prop({ type: String, required: true }) declare readonly name: string
-    @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
-    @Prop({ type: Number, required: true }) declare readonly min_temp: number
-    @Prop({ type: Number, required: true }) declare readonly max_temp: number
-    @Prop({ type: String, required: true }) declare readonly command: string
-    @Prop({ type: String, required: true }) declare readonly attributeName: string
-    @Prop({ type: Array, default: [] }) declare presets: number[]
-    @Prop({ type: Number, default: 3 }) declare readonly inputDigits: number
+const value = ref<number | string>(0)
 
-    get inputStyle() {
-        const PER_DIGIT = 10
-        const WIDTH_C_GRAD = 21
-        const PADDING = 20
-        const SPACE_FOR_DECIMAL = 10
+const inputStyle = computed(() => {
+    const PER_DIGIT = 10
+    const WIDTH_C_GRAD = 21
+    const PADDING = 20
+    const SPACE_FOR_DECIMAL = 10
 
-        const width = this.inputDigits * PER_DIGIT + WIDTH_C_GRAD + PADDING + SPACE_FOR_DECIMAL
+    const width = (props.inputDigits ?? 3) * PER_DIGIT + WIDTH_C_GRAD + PADDING + SPACE_FOR_DECIMAL
 
-        return {
-            width: `${width}px`,
-        }
+    return {
+        width: `${width}px`,
     }
+})
 
-    private normalizeValue(raw: number | string | null): number {
-        if (typeof raw === 'string') raw = parseFloat(raw)
-        if (raw === null || isNaN(raw)) return 0
-        return raw
-    }
-
-    setTemps(): void {
-        const temp = this.normalizeValue(this.value)
-
-        if (temp > this.max_temp) {
-            this.value = this.target
-            const key = 'Panels.TemperaturePanel.TempTooHigh'
-            const msg = this.$t(key, { name: this.name, max: this.max_temp }).toString()
-            this.$toast.error(msg)
-            return
-        }
-
-        if (temp < this.min_temp && temp !== 0) {
-            this.value = this.target
-            const key = 'Panels.TemperaturePanel.TempTooLow'
-            const msg = this.$t(key, { name: this.name, min: this.min_temp }).toString()
-            this.$toast.error(msg)
-            return
-        }
-
-        // don't send a command if the temperature is unchanged
-        if (this.target === temp) return
-
-        this.doSend(`${this.command} ${this.attributeName}=${this.name} TARGET=${temp}`)
-    }
-
-    mounted() {
-        this.value = this.target
-    }
-
-    @Watch('target')
-    targetChanged(newVal: number): void {
-        this.value = newVal
-    }
+function normalizeValue(raw: number | string | null): number {
+    if (typeof raw === 'string') raw = parseFloat(raw)
+    if (raw === null || isNaN(raw)) return 0
+    return raw
 }
+
+function setTemps(): void {
+    const temp = normalizeValue(value.value)
+
+    if (temp > props.max_temp) {
+        value.value = props.target ?? 0
+        const key = 'Panels.TemperaturePanel.TempTooHigh'
+        const msg = t(key, { name: props.name, max: props.max_temp }).toString()
+        $toast?.error(msg)
+        return
+    }
+
+    if (temp < props.min_temp && temp !== 0) {
+        value.value = props.target ?? 0
+        const key = 'Panels.TemperaturePanel.TempTooLow'
+        const msg = t(key, { name: props.name, min: props.min_temp }).toString()
+        $toast?.error(msg)
+        return
+    }
+
+    if ((props.target ?? 0) === temp) return
+
+    doSend(`${props.command} ${props.attributeName}=${props.name} TARGET=${temp}`)
+}
+
+onMounted(() => {
+    value.value = props.target ?? 0
+})
+
+watch(() => props.target, (newVal: number) => {
+    value.value = newVal
+})
 </script>
 
 <style scoped>

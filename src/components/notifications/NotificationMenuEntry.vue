@@ -77,9 +77,10 @@
     </v-alert>
 </template>
 
-<script lang="ts">
-import BaseMixin from '@/components/mixins/base'
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
 import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
 import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
 import { TranslateResult } from 'vue-i18n'
@@ -90,100 +91,92 @@ interface ReminderOption {
     clickFunction: () => void
 }
 
-@Component({
-    components: {},
+const { t } = useI18n()
+const store = useStore()
+
+const props = defineProps<{
+    entry: GuiNotificationStateEntry
+    parentState?: boolean
+}>()
+
+const expand = ref(false)
+const showMaintenanceDetails = ref(false)
+
+const formatedText = computed(() =>
+    props.entry.description.replace(
+        /(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim,
+        '<a href="$1" target="_blank" class="' + alertColor.value + '--text">$1</a>'
+    )
+)
+
+const alertColor = computed(() => {
+    if (props.entry.priority === 'critical') return 'error'
+    if (props.entry.priority === 'high') return 'warning'
+
+    return 'info'
 })
-export default class NotificationMenuEntry extends Mixins(BaseMixin) {
-    mdiClose = mdiClose
-    mdiLinkVariant = mdiLinkVariant
-    mdiBellOffOutline = mdiBellOffOutline
 
-    expand = false
-    showMaintenanceDetails = false
+const entryType = computed(() => {
+    const posFirstSlash = props.entry.id.indexOf('/')
+    if (posFirstSlash === -1) return ''
 
-    @Prop({ required: true })
-    declare readonly entry: GuiNotificationStateEntry
+    return props.entry.id.slice(0, posFirstSlash)
+})
 
-    @Prop({ default: true })
-    declare readonly parentState: boolean
+const maintenanceEntry = computed(() => {
+    if (entryType.value !== 'maintenance') return null
 
-    get formatedText() {
-        return this.entry.description.replace(
-            /(\bhttps?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim,
-            '<a href="$1" target="_blank" class="' + this.alertColor + '--text">$1</a>'
-        )
+    const id = props.entry.id.replace('maintenance/', '')
+    const entries = store.getters['gui/maintenance/getEntries']
+
+    return entries.find((entry: GuiMaintenanceStateEntry) => entry.id === id)
+})
+
+const reminderTimes = computed(() => {
+    let output: ReminderOption[] = [
+        {
+            text: t('App.Notifications.NextReboot'),
+            clickFunction: () => dismiss('reboot', null),
+        },
+        { text: t('App.Notifications.Never'), clickFunction: () => close() },
+    ]
+
+    if (['announcement', 'maintenance'].includes(entryType.value)) {
+        output = []
+        output.push({
+            text: t('App.Notifications.OneHourShort'),
+            clickFunction: () => dismiss('time', 60 * 60),
+        })
+        output.push({
+            text: t('App.Notifications.OneDayShort'),
+            clickFunction: () => dismiss('time', 60 * 60 * 24),
+        })
+        output.push({
+            text: t('App.Notifications.OneWeekShort'),
+            clickFunction: () => dismiss('time', 60 * 60 * 24 * 7),
+        })
     }
 
-    get alertColor() {
-        if (this.entry.priority === 'critical') return 'error'
-        if (this.entry.priority === 'high') return 'warning'
+    return output
+})
 
-        return 'info'
-    }
+function xButtonAction() {
+    if (entryType.value === 'announcement') return close()
 
-    get entryType() {
-        const posFirstSlash = this.entry.id.indexOf('/')
-        if (posFirstSlash === -1) return ''
-
-        return this.entry.id.slice(0, posFirstSlash)
-    }
-
-    get maintenanceEntry() {
-        if (this.entryType !== 'maintenance') return null
-
-        const id = this.entry.id.replace('maintenance/', '')
-        const entries = this.$store.getters['gui/maintenance/getEntries']
-
-        return entries.find((entry: GuiMaintenanceStateEntry) => entry.id === id)
-    }
-
-    get reminderTimes() {
-        let output: ReminderOption[] = [
-            {
-                text: this.$t('App.Notifications.NextReboot'),
-                clickFunction: () => this.dismiss('reboot', null),
-            },
-            { text: this.$t('App.Notifications.Never'), clickFunction: () => this.close() },
-        ]
-
-        if (['announcement', 'maintenance'].includes(this.entryType)) {
-            output = []
-            output.push({
-                text: this.$t('App.Notifications.OneHourShort'),
-                clickFunction: () => this.dismiss('time', 60 * 60),
-            })
-            output.push({
-                text: this.$t('App.Notifications.OneDayShort'),
-                clickFunction: () => this.dismiss('time', 60 * 60 * 24),
-            })
-            output.push({
-                text: this.$t('App.Notifications.OneWeekShort'),
-                clickFunction: () => this.dismiss('time', 60 * 60 * 24 * 7),
-            })
-        }
-
-        return output
-    }
-
-    xButtonAction() {
-        if (this.entryType === 'announcement') return this.close()
-
-        this.dismiss('reboot', null)
-    }
-
-    close() {
-        this.$store.dispatch('gui/notifications/close', { id: this.entry.id })
-    }
-
-    dismiss(type: 'time' | 'reboot', time: number | null) {
-        this.$store.dispatch('gui/notifications/dismiss', { id: this.entry.id, type, time })
-    }
-
-    @Watch('parentState')
-    parentStateUpdate(newVal: boolean) {
-        if (!newVal) this.expand = false
-    }
+    dismiss('reboot', null)
 }
+
+function close() {
+    store.dispatch('gui/notifications/close', { id: props.entry.id })
+}
+
+function dismiss(type: 'time' | 'reboot', time: number | null) {
+    store.dispatch('gui/notifications/dismiss', { id: props.entry.id, type, time })
+}
+
+watch(() => props.parentState, (newVal: boolean) => {
+    if (!newVal) expand.value = false
+})
 </script>
 
 <style scoped>

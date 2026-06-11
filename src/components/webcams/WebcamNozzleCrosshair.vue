@@ -6,62 +6,68 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop, Ref } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import { Debounce } from 'vue-debounce-decorator'
 
-@Component
-export default class WebcamWrapper extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
-    @Ref() readonly container!: HTMLDivElement
+const props = defineProps({
+    webcam: { type: Object, required: true },
+})
 
-    clientHeight = 0
-    resizeObserver: ResizeObserver | null = null
+const container = ref<HTMLDivElement | null>(null)
+const clientHeight = ref(0)
 
-    get color() {
-        return this.webcam.extra_data?.nozzleCrosshairColor ?? '#ff0000'
+let resizeObserver: ResizeObserver | null = null
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
+
+const w = computed(() => props.webcam as GuiWebcamStateWebcam)
+
+const color = computed(() => w.value.extra_data?.nozzleCrosshairColor ?? '#ff0000')
+
+const styleLines = computed(() => ({
+    backgroundColor: color.value,
+}))
+
+const styleCircle = computed(() => {
+    const nozzleCrosshairSize = w.value.extra_data?.nozzleCrosshairSize ?? 0.1
+    const size = clientHeight.value * nozzleCrosshairSize
+
+    return {
+        borderColor: color.value,
+        width: `${size}px`,
+        height: `${size}px`,
+        marginLeft: `-${size / 2}px`,
+        marginTop: `-${size / 2}px`,
     }
+})
 
-    get styleLines() {
-        return {
-            backgroundColor: this.color,
-        }
-    }
-
-    get styleCircle() {
-        const nozzleCrosshairSize = this.webcam.extra_data?.nozzleCrosshairSize ?? 0.1
-        const size = this.clientHeight * nozzleCrosshairSize
-
-        return {
-            borderColor: this.color,
-            width: `${size}px`,
-            height: `${size}px`,
-            marginLeft: `-${size / 2}px`,
-            marginTop: `-${size / 2}px`,
-        }
-    }
-
-    mounted() {
-        this.handleResize()
-
-        this.resizeObserver = new ResizeObserver(() => this.handleResize())
-        this.resizeObserver.observe(this.container)
-    }
-
-    beforeDestroy() {
-        this.resizeObserver?.disconnect()
-    }
-
-    @Debounce(200)
-    handleResize() {
-        this.$nextTick(() => {
-            this.clientHeight = this.container.clientHeight
-        })
+function debounce(fn: () => void, time: number) {
+    return () => {
+        if (debounceTimer) clearTimeout(debounceTimer)
+        debounceTimer = setTimeout(() => fn(), time)
     }
 }
+
+const handleResize = debounce(() => {
+    nextTick(() => {
+        if (container.value) {
+            clientHeight.value = container.value.clientHeight
+        }
+    })
+}, 200)
+
+onMounted(() => {
+    handleResize()
+
+    resizeObserver = new ResizeObserver(() => handleResize())
+    if (container.value) {
+        resizeObserver.observe(container.value)
+    }
+})
+
+onBeforeUnmount(() => {
+    resizeObserver?.disconnect()
+})
 </script>
 
 <style scoped>

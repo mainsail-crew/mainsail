@@ -39,7 +39,6 @@
                 </form>
             </v-subheader>
             <transition name="fade">
-                <!-- display errors-->
                 <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
                     {{ errors()[0] }}
                 </div>
@@ -80,176 +79,149 @@
     </v-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
-import { Debounce } from 'vue-debounce-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
+import debounce from 'lodash.debounce'
 import { mdiLockOpenVariantOutline, mdiLockOutline, mdiMinus, mdiPlus, mdiRestart } from '@mdi/js'
 import { TranslateResult } from 'vue-i18n'
 
-@Component
-export default class ToolSlider extends Mixins(BaseMixin) {
-    mdiRestart = mdiRestart
-    mdiLockOutline = mdiLockOutline
-    mdiLockOpenVariantOutline = mdiLockOpenVariantOutline
-    mdiMinus = mdiMinus
-    mdiPlus = mdiPlus
+const { t } = useI18n()
+const store = useStore()
+const socket = useSocket()
+const { isTouchDevice } = useBase()
 
-    declare private timeout: ReturnType<typeof setTimeout>
-    private isLocked: boolean = false
-    private invalidChars: string[] = ['e', 'E', '+']
+const props = defineProps<{
+    target: number
+    command: string
+    attributeName?: string
+    label?: string | TranslateResult
+    icon?: string
+    unit?: string
+    attributeScale?: number
+    min?: number
+    max?: number
+    hasInputField?: boolean
+    dynamicRange?: boolean
+    defaultValue?: number
+    step?: number
+    multi?: number
+}>()
 
-    private value = 0
-    private numInput = 0
-    private startValue = 0
-    private processedMax = 100
-    private dynamicStep = 50
+let timeout: ReturnType<typeof setTimeout>
+const isLocked = ref(false)
+const invalidChars = ['e', 'E', '+']
 
-    @Prop({ type: Number, required: true }) declare readonly target: number
-    @Prop({ type: String, required: true }) declare readonly command: string
-    @Prop({ type: String, default: '' }) declare readonly attributeName: string
-    @Prop({ default: '' }) declare readonly label: string | TranslateResult
-    @Prop({ type: String, default: '' }) declare readonly icon: string
-    @Prop({ type: String, default: '%' }) declare readonly unit: string
-    @Prop({ type: Number, default: 1 }) declare readonly attributeScale: number
-    @Prop({ type: Number, default: 0 }) declare readonly min: number
-    @Prop({ type: Number, default: 100 }) declare readonly max: number
-    @Prop({ type: Boolean, required: false, default: false }) declare readonly hasInputField: boolean
-    @Prop({ type: Boolean, default: false }) declare readonly dynamicRange: boolean
-    @Prop({ type: Number, default: 100 }) declare readonly defaultValue: number
-    @Prop({ type: Number, default: 100 }) declare readonly step: number
-    @Prop({ type: Number, default: 1 }) declare readonly multi: number
+const _value = ref(0)
+const numInput = ref(0)
+const processedMax = ref(100)
+const dynamicStep = ref(50)
 
-    created(): void {
-        this.value = this.target * this.multi
-        this.numInput = this.value
-        this.startValue = this.target * this.multi
-        this.dynamicStep = Math.floor(this.max / 2)
+const inputMin = computed(() => props.min ?? 0)
 
-        if (this.value >= this.processedMax) {
-            this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
-        }
+const lockSliders = computed(() => store.state.gui.uiSettings.lockSlidersOnTouchDevices)
+
+watch([lockSliders, isTouchDevice], () => {
+    isLocked.value = lockSliders.value && isTouchDevice.value
+}, { immediate: true })
+
+function startLockTimer(): void {
+    const t = store.state.gui.uiSettings.lockSlidersDelay ?? 0
+    if (!isTouchDevice.value || !lockSliders.value || t <= 0) return
+    timeout = setTimeout(() => (isLocked.value = true), t * 1000)
+}
+
+function resetLockTimer(): void {
+    clearTimeout(timeout)
+}
+
+const colorBar = computed(() => (props.max ?? 100) < _value.value ? 'warning' : 'primary')
+
+const changeSlider = debounce(() => {
+    sendCmd()
+
+    if (!props.dynamicRange) return
+    if (_value.value >= processedMax.value) {
+        processedMax.value = _value.value + dynamicStep.value
+    }
+}, 250)
+
+watch(_value, (newVal: number) => {
+    numInput.value = newVal
+}, { immediate: true })
+
+watch(() => props.target, (newVal: number) => {
+    _value.value = Math.round(newVal * (props.multi ?? 1))
+
+    if (!props.dynamicRange) return
+    if (_value.value >= processedMax.value) {
+        processedMax.value = _value.value + dynamicStep.value
+    }
+}, { immediate: true })
+
+watch(() => props.max, (newVal: number) => {
+    processedMax.value = newVal > _value.value ? newVal : Math.ceil(_value.value / dynamicStep.value) * dynamicStep.value
+}, { immediate: true })
+
+function checkInvalidChars(event: KeyboardEvent): void {
+    if (inputMin.value >= 0) invalidChars.push('-')
+    if (invalidChars.includes(event.key)) event.preventDefault()
+}
+
+function errors() {
+    const errs: string[] = []
+    if (numInput.value.toString() === '') {
+        errs.push(t('App.NumberInput.NoEmptyAllowedError'))
+    }
+    if (numInput.value < inputMin.value) {
+        errs.push(t('App.NumberInput.GreaterOrEqualError', { min: inputMin.value }))
+    }
+    if ((!props.dynamicRange && numInput.value > (props.max ?? 100)) || numInput.value < inputMin.value) {
+        errs.push(t('App.NumberInput.MustBeBetweenError', { min: inputMin.value, max: props.max ?? 100 }))
+    }
+    return errs
+}
+
+function submitInput(): void {
+    if (errors().length > 0) return
+    if (!props.dynamicRange && numInput.value > (props.max ?? 100)) _value.value = props.max ?? 100
+    else _value.value = numInput.value
+    sendCmd()
+}
+
+function resetSlider(): void {
+    _value.value = props.defaultValue ?? 100
+    numInput.value = props.defaultValue ?? 100
+    processedMax.value = props.max ?? 100
+    if (_value.value >= processedMax.value) {
+        processedMax.value = (Math.ceil(_value.value / dynamicStep.value) + 1) * dynamicStep.value
     }
 
-    @Watch('lockSliders', { immediate: true })
-    lockSlidersChanged(): void {
-        this.isLocked = this.lockSliders && this.isTouchDevice
-    }
+    sendCmd()
+}
 
-    startLockTimer(): void {
-        const t = this.lockSlidersDelay
-        if (!this.isTouchDevice || !this.lockSliders || t <= 0) return
-        this.timeout = setTimeout(() => (this.isLocked = true), t * 1000)
-    }
+function sendCmd(): void {
+    const val = (Math.max(1, _value.value) * (props.attributeScale ?? 1)).toFixed(0)
+    const gcode = `${props.command} ${props.attributeName ?? ''}${val}`
 
-    resetLockTimer(): void {
-        clearTimeout(this.timeout)
-    }
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode })
 
-    get lockSliders(): boolean {
-        return this.$store.state.gui.uiSettings.lockSlidersOnTouchDevices
-    }
+    startLockTimer()
+}
 
-    get lockSlidersDelay(): number {
-        return this.$store.state.gui.uiSettings.lockSlidersDelay
-    }
+function decrement(): void {
+    _value.value = _value.value > inputMin.value ? Math.round(_value.value - (props.step ?? 1)) : inputMin.value
+    sendCmd()
+}
 
-    get colorBar(): string {
-        return this.max < this.value ? 'warning' : 'primary'
-    }
-
-    @Debounce(250)
-    changeSlider(): void {
-        this.sendCmd()
-
-        if (!this.dynamicRange) return
-        if (this.value >= this.processedMax) {
-            this.processedMax = this.value + this.dynamicStep
-        }
-    }
-
-    @Watch('value', { immediate: true })
-    valueChanged(newVal: number): void {
-        this.numInput = newVal
-    }
-
-    @Watch('target', { immediate: true })
-    targetChanged(newVal: number): void {
-        this.value = Math.round(newVal * this.multi)
-
-        if (!this.dynamicRange) return
-        if (this.value >= this.processedMax) {
-            this.processedMax = this.value + this.dynamicStep
-        }
-    }
-
-    @Watch('max', { immediate: true })
-    maxChanged(newVal: number): void {
-        this.processedMax = newVal > this.value ? newVal : Math.ceil(this.value / this.dynamicStep) * this.dynamicStep
-    }
-
-    // input validation //
-    checkInvalidChars(event: KeyboardEvent): void {
-        // add '-' to invalid characters if no negative input is allowed
-        if (this.min >= 0) this.invalidChars.push('-')
-        if (this.invalidChars.includes(event.key)) event.preventDefault()
-    }
-
-    errors() {
-        const errors = []
-        if (this.numInput.toString() === '') {
-            // "Input must not be empty!"
-            errors.push(this.$t('App.NumberInput.NoEmptyAllowedError'))
-        }
-        if (this.numInput < this.min) {
-            // "Must be grater or equal than {min}!"
-            errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min }))
-        }
-        if ((!this.dynamicRange && this.numInput > this.max) || this.numInput < this.min) {
-            // "Must be between {min} and {max}!"
-            errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min, max: this.max }))
-        }
-        return errors
-    }
-
-    submitInput(): void {
-        if (this.errors().length > 0) return
-        if (!this.dynamicRange && this.numInput > this.max) this.value = this.max
-        else this.value = this.numInput
-        this.sendCmd()
-    }
-
-    resetSlider(): void {
-        this.value = this.defaultValue
-        this.numInput = this.defaultValue
-        this.processedMax = this.max
-        if (this.value >= this.processedMax) {
-            this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
-        }
-
-        this.sendCmd()
-    }
-
-    sendCmd(): void {
-        const val = (Math.max(1, this.value) * this.attributeScale).toFixed(0)
-        const gcode = `${this.command} ${this.attributeName}${val}`
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
-
-        this.startLockTimer()
-    }
-
-    decrement(): void {
-        this.value = this.value > this.min ? Math.round(this.value - this.step) : this.min
-        this.sendCmd()
-    }
-
-    increment(): void {
-        this.value =
-            this.value < this.processedMax || this.dynamicRange ? Math.round(this.value + this.step) : this.processedMax
-        this.sendCmd()
-    }
+function increment(): void {
+    _value.value =
+        _value.value < processedMax.value || props.dynamicRange ? Math.round(_value.value + (props.step ?? 1)) : processedMax.value
+    sendCmd()
 }
 </script>
 

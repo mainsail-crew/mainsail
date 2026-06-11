@@ -2,7 +2,7 @@
     <v-simple-table>
         <tbody>
             <history-all-print-status-table-item
-                v-for="status in printStatusArrayChart"
+                v-for="status in aggregated.printStatusArrayChart"
                 :key="status.name"
                 :item="status"
                 :value-name="valueName" />
@@ -10,18 +10,14 @@
     </v-simple-table>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import HistoryStatsMixin from '@/components/mixins/historyStats'
+<script setup lang="ts">
+import { useHistoryStats } from '@/composables/useHistoryStats'
 import HistoryAllPrintStatusTableItem from '@/components/charts/HistoryAllPrintStatusTableItem.vue'
 import { HistoryStatsValueNames } from '@/store/server/history/types'
 
-@Component({
-    components: { HistoryAllPrintStatusTableItem },
-})
-export default class HistoryAllPrintStatusTable extends Mixins(BaseMixin, HistoryStatsMixin) {
-    @Prop({ type: String, default: 'amount' }) valueName!: HistoryStatsValueNames
-}
+const props = defineProps<{
+    valueName?: HistoryStatsValueNames
+}>()
+
+const aggregated = useHistoryStats(props.valueName ?? 'amount')
 </script>

@@ -11,85 +11,79 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import Hls from 'hls.js'
+import { useWebcam } from '@/composables/useWebcam'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import WebcamMixin from '@/components/mixins/webcam'
 
-@Component
-export default class Hlsstreamer extends Mixins(BaseMixin, WebcamMixin) {
-    aspectRatio: null | number = null
-    isVisible = true
-    hls: Hls | null = null
+const props = defineProps({
+    camSettings: { type: Object, required: true },
+    printerUrl: { default: null },
+})
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
-    @Ref() readonly video!: HTMLVideoElement
+const { convertUrl, getWrapperStyle, generateTransform, updateAspectRatioFromVideo } = useWebcam()
 
-    get url() {
-        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
-    }
+const video = ref<HTMLVideoElement | null>(null)
+const aspectRatio = ref<number | null>(null)
+const isVisible = ref(true)
+let hlsInstance: Hls | null = null
 
-    get wrapperStyle() {
-        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
-    }
+const url = computed(() => convertUrl(props.camSettings?.stream_url, props.printerUrl))
 
-    get webcamStyle() {
-        return {
-            transform: this.generateTransform(
-                this.camSettings.flip_horizontal ?? false,
-                this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
-                this.aspectRatio ?? 1
-            ),
-        }
-    }
+const wrapperStyle = computed(() => getWrapperStyle(aspectRatio.value, props.camSettings.rotation))
 
-    visibilityChanged(isVisible: boolean) {
-        this.isVisible = isVisible
-    }
+const webcamStyle = computed(() => ({
+    transform: generateTransform(
+        props.camSettings.flip_horizontal ?? false,
+        props.camSettings.flip_vertical ?? false,
+        props.camSettings.rotation ?? 0,
+        aspectRatio.value ?? 1
+    ),
+}))
 
-    mounted() {
-        this.play()
-    }
+function visibilityChanged(isVisibleVal: boolean) {
+    isVisible.value = isVisibleVal
+}
 
-    onLoadedMetadata() {
-        this.aspectRatio = this.updateAspectRatioFromVideo(this.video)
-    }
+onMounted(() => {
+    play()
+})
 
-    updated() {
-        this.play()
-    }
+function onLoadedMetadata() {
+    aspectRatio.value = updateAspectRatioFromVideo(video.value)
+}
 
-    play() {
-        if (Hls.isSupported()) {
-            this.hls?.destroy()
+function play() {
+    if (!video.value) return
 
-            this.hls = new Hls({
-                enableWorker: true,
-                lowLatencyMode: true,
-                maxLiveSyncPlaybackRate: 2,
-                liveSyncDuration: 0.5,
-                liveMaxLatencyDuration: 2,
-                backBufferLength: 5,
-            })
-            this.hls.loadSource(this.url)
-            this.hls.attachMedia(this.video)
-            this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                this.video.play()
-            })
-        } else if (this.video.canPlayType('application/vnd.apple.mpegurl')) {
-            fetch(this.url).then(() => {
-                this.video.src = this.url
-                this.video.play()
-            })
-        }
-    }
+    if (Hls.isSupported()) {
+        hlsInstance?.destroy()
 
-    beforeUnmount() {
-        this.hls?.destroy()
+        hlsInstance = new Hls({
+            enableWorker: true,
+            lowLatencyMode: true,
+            maxLiveSyncPlaybackRate: 2,
+            liveSyncDuration: 0.5,
+            liveMaxLatencyDuration: 2,
+            backBufferLength: 5,
+        })
+        hlsInstance.loadSource(url.value)
+        hlsInstance.attachMedia(video.value)
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.value?.play()
+        })
+    } else if (video.value.canPlayType('application/vnd.apple.mpegurl')) {
+        fetch(url.value).then(() => {
+            if (video.value) {
+                video.value.src = url.value
+                video.value.play()
+            }
+        })
     }
 }
+
+onBeforeUnmount(() => {
+    hlsInstance?.destroy()
+})
 </script>

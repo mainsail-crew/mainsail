@@ -10,102 +10,92 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import JMuxer from 'jmuxer'
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+import { useWebcam } from '@/composables/useWebcam'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import WebcamMixin from '@/components/mixins/webcam'
 
-@Component
-export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
-    jmuxer: JMuxer | null = null
-    status: string = 'connecting'
-    aspectRatio: number | null = null
+const props = defineProps({
+    camSettings: { type: Object, required: true },
+    printerUrl: { default: null },
+})
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
-    @Ref() readonly video!: HTMLVideoElement
+const { convertUrl, getWrapperStyle, generateTransform, updateAspectRatioFromVideo } = useWebcam()
 
-    get url() {
-        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
+const video = ref<HTMLVideoElement | null>(null)
+let jmuxer: JMuxer | null = null
+const status = ref('connecting')
+const aspectRatio = ref<number | null>(null)
+
+const url = computed(() => convertUrl(props.camSettings?.stream_url, props.printerUrl))
+
+const wrapperStyle = computed(() => getWrapperStyle(aspectRatio.value, props.camSettings.rotation))
+
+const webcamStyle = computed(() => ({
+    transform: generateTransform(
+        props.camSettings.flip_horizontal ?? false,
+        props.camSettings.flip_vertical ?? false,
+        props.camSettings.rotation ?? 0,
+        aspectRatio.value ?? 1
+    ),
+}))
+
+onMounted(() => {
+    play()
+})
+
+function play() {
+    status.value = 'connecting'
+    jmuxer?.destroy()
+
+    if (!url.value.startsWith('ws://') && !url.value.startsWith('wss://')) {
+        console.error('jmuxer error: only websocket streams supported (ws://.. or wss://..)')
+        status.value = 'error'
+        return
     }
 
-    get wrapperStyle() {
-        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
-    }
+    const targetFps = props.camSettings.target_fps || 10
 
-    get webcamStyle() {
-        return {
-            transform: this.generateTransform(
-                this.camSettings.flip_horizontal ?? false,
-                this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
-                this.aspectRatio ?? 1
-            ),
-        }
-    }
+    jmuxer = new JMuxer({
+        node: video.value,
+        mode: 'video',
+        flushingTime: 0,
+        fps: targetFps,
+        onReady: () => {
+            status.value = 'connected'
+            console.log('jmuxer ready')
+        },
+        onError: (data: unknown) => {
+            status.value = 'error'
+            console.log('jmuxer error:', data)
+        },
+    })
 
-    mounted() {
-        this.play()
-    }
-
-    play() {
-        this.status = 'connecting'
-        this.jmuxer?.destroy()
-
-        // Only websocket streams supported
-        if (!this.url.startsWith('ws://') && !this.url.startsWith('wss://')) {
-            console.error('jmuxer error: only websocket streams supported (ws://.. or wss://..)')
-            this.status = 'error'
-            return
-        }
-
-        const targetFps = this.camSettings.target_fps || 10
-
-        this.jmuxer = new JMuxer({
-            node: this.video,
-            mode: 'video',
-            flushingTime: 0,
-            fps: targetFps,
-            // debug: true,
-            onReady: () => {
-                this.status = 'connected'
-                console.log('jmuxer ready')
-            },
-            onError: (data: unknown) => {
-                this.status = 'error'
-                console.log('jmuxer error:', data)
-            },
+    const ws = new WebSocket(url.value)
+    ws.binaryType = 'arraybuffer'
+    ws.addEventListener('message', (event) => {
+        jmuxer?.feed({
+            video: new Uint8Array(event.data),
         })
+    })
 
-        const ws = new WebSocket(this.url)
-        ws.binaryType = 'arraybuffer'
-        ws.addEventListener('message', (event) => {
-            this.jmuxer?.feed({
-                video: new Uint8Array(event.data),
-            })
-        })
+    ws.addEventListener('error', () => {
+        status.value = 'error'
+        console.log('jmuxer ws error')
+    })
+}
 
-        ws.addEventListener('error', (event) => {
-            this.status = 'error'
-            console.log('jmuxer ws error:', event)
-        })
-    }
+onBeforeUnmount(() => {
+    jmuxer?.destroy()
+})
 
-    beforeUnmount() {
-        this.jmuxer?.destroy()
-    }
+watch(() => props.camSettings, () => {
+    play()
+}, { deep: true })
 
-    @Watch('camSettings', { deep: true })
-    onCamSettingsChanged() {
-        // restart stream, when camSettings change
-        this.play()
-    }
-
-    onLoadedMetadata() {
-        this.aspectRatio = this.updateAspectRatioFromVideo(this.video)
-    }
+function onLoadedMetadata() {
+    aspectRatio.value = updateAspectRatioFromVideo(video.value)
 }
 </script>
 

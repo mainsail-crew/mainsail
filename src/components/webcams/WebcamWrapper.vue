@@ -19,28 +19,22 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamWrapperItem from '@/components/webcams/WebcamWrapperItem.vue'
 
-@Component({
-    components: {
-        WebcamWrapperItem,
-    },
+const props = defineProps({
+    webcam: { type: Object, required: true },
+    showFps: { type: Boolean, default: true },
+    printerUrl: { type: String, default: null },
+    page: { type: String, default: null },
 })
-export default class WebcamWrapper extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
-    @Prop({ type: Boolean, default: true }) showFps!: boolean
-    @Prop({ type: String, default: null }) printerUrl!: string | null
-    @Prop({ type: String, default: null }) page!: string | null
 
-    get webcams(): GuiWebcamStateWebcam[] {
-        return this.$store.getters['gui/webcams/getWebcams']
-    }
-}
+const store = useStore()
+
+const webcams = computed<GuiWebcamStateWebcam[]>(() => store.getters['gui/webcams/getWebcams'])
 </script>
 
 <style scoped></style>

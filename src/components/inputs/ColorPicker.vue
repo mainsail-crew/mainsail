@@ -4,60 +4,59 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
 import { ColorPickerProps, IroColorPicker as IroCP } from '@jaames/iro/dist/ColorPicker.d'
 
-@Component
-export default class ColorPicker extends Mixins(BaseMixin) {
-    colorPicker: IroCP | null = null
+const props = defineProps<{
+    color?: IroColor | string
+    options?: ColorPickerProps
+}>()
 
-    @Ref('picker')
-    readonly picker!: HTMLElement
+const emit = defineEmits<{
+    (e: 'change', color: IroColor): void
+    (e: 'update:color', color: IroColor): void
+}>()
 
-    @Prop({ type: [Object, String], default: '#ffffff' })
-    readonly color!: IroColor
+useBase()
 
-    @Prop({ type: Object, default: () => ({}) })
-    readonly options!: ColorPickerProps
+let colorPicker: IroCP | null = null
+const picker = ref<HTMLElement | null>(null)
 
-    @Watch('color', { deep: true })
-    colorChanged(value: string) {
-        if (this.colorPicker && this.colorPicker.color.rgbString !== value) {
-            this.colorPicker.color.rgbString = value
-        }
+watch(() => props.color, (value) => {
+    if (colorPicker && colorPicker.color.rgbString !== value) {
+        colorPicker.color.rgbString = value as string
     }
+}, { deep: true })
 
-    get internalOptions(): ColorPickerProps {
-        return {
-            ...this.options,
-            color: this.color,
-            borderWidth: 2,
-            sliderSize: 16,
-        }
-    }
+const internalOptions = computed<ColorPickerProps>(() => ({
+    ...(props.options ?? {}),
+    color: props.color ?? '#ffffff',
+    borderWidth: 2,
+    sliderSize: 16,
+}))
 
-    emitColorChange(color: IroColor) {
-        this.$emit('change', color)
-        this.$emit('update:color', color)
-    }
-
-    onColorChange(color: IroColor) {
-        this.emitColorChange(color)
-    }
-
-    mounted() {
-        this.colorPicker = iro.ColorPicker(this.picker, this.internalOptions)
-        this.colorPicker.on('color:change', this.onColorChange)
-    }
-
-    beforeDestroy() {
-        this.colorPicker?.off('color:change', this.onColorChange)
-    }
+function emitColorChange(color: IroColor) {
+    emit('change', color)
+    emit('update:color', color)
 }
+
+function onColorChange(color: IroColor) {
+    emitColorChange(color)
+}
+
+onMounted(() => {
+    colorPicker = iro.ColorPicker(picker.value!, internalOptions.value)
+    colorPicker.on('color:change', onColorChange)
+})
+
+onBeforeUnmount(() => {
+    colorPicker?.off('color:change', onColorChange)
+})
 </script>
 
 <style scoped></style>

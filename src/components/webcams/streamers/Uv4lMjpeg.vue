@@ -11,98 +11,81 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useWebcam } from '@/composables/useWebcam'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import WebcamMixin from '@/components/mixins/webcam'
 
-@Component
-export default class Uv4lMjpeg extends Mixins(BaseMixin, WebcamMixin) {
-    aspectRatio: null | number = null
-    isVisible = false
-    isVisibleViewport = false
-    isVisibleDocument = true
+const props = defineProps({
+    camSettings: { type: Object, required: true },
+    printerUrl: { default: null },
+})
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
+const { convertUrl, getWrapperStyle, generateTransform, updateAspectRatioFromImage } = useWebcam()
 
-    @Ref('image') readonly image!: HTMLImageElement
+const image = ref<HTMLImageElement | null>(null)
+const aspectRatio = ref<number | null>(null)
+const isVisibleViewport = ref(false)
+const isVisibleDocument = ref(true)
 
-    get url() {
-        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
-    }
+const url = computed(() => convertUrl(props.camSettings?.stream_url, props.printerUrl))
 
-    get wrapperStyle() {
-        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
-    }
+const wrapperStyle = computed(() => getWrapperStyle(aspectRatio.value, props.camSettings.rotation))
 
-    get webcamStyle() {
-        return {
-            transform: this.generateTransform(
-                this.camSettings.flip_horizontal ?? false,
-                this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
-                this.aspectRatio ?? 1
-            ),
-        }
-    }
+const webcamStyle = computed(() => ({
+    transform: generateTransform(
+        props.camSettings.flip_horizontal ?? false,
+        props.camSettings.flip_vertical ?? false,
+        props.camSettings.rotation ?? 0,
+        aspectRatio.value ?? 1
+    ),
+}))
 
-    mounted() {
-        document.addEventListener('visibilitychange', this.documentVisibilityChanged)
-    }
+onMounted(() => {
+    document.addEventListener('visibilitychange', documentVisibilityChanged)
+})
 
-    beforeDestroy() {
-        document.removeEventListener('visibilitychange', this.documentVisibilityChanged)
-        this.stopStream()
-    }
+onBeforeUnmount(() => {
+    document.removeEventListener('visibilitychange', documentVisibilityChanged)
+    stopStream()
+})
 
-    startStream() {
-        if (this.isVisible) return
-
-        this.image?.setAttribute('src', this.url)
-    }
-
-    stopStream() {
-        if (!this.image) return
-
-        this.image.removeAttribute('src')
-        URL.revokeObjectURL(this.url)
-    }
-
-    // this function checks if the browser tab was changed
-    documentVisibilityChanged() {
-        const visibility = document.visibilityState
-        this.isVisibleDocument = visibility === 'visible'
-        if (!this.isVisibleDocument) this.stopStream()
-        this.visibilityChanged()
-    }
-
-    // this function checks if the webcam is in the viewport
-    viewportVisibilityChanged(newVal: boolean) {
-        this.isVisibleViewport = newVal
-        this.visibilityChanged()
-    }
-
-    visibilityChanged() {
-        if (this.isVisibleViewport && this.isVisibleDocument) {
-            this.startStream()
-            return
-        }
-
-        this.stopStream()
-    }
-
-    onload() {
-        if (this.aspectRatio !== null) return
-
-        this.aspectRatio = this.updateAspectRatioFromImage(this.image)
-    }
-
-    @Watch('url')
-    async urlChanged() {
-        this.stopStream()
-        this.startStream()
-    }
+function startStream() {
+    image.value?.setAttribute('src', url.value)
 }
+
+function stopStream() {
+    if (!image.value) return
+    image.value.removeAttribute('src')
+    URL.revokeObjectURL(url.value)
+}
+
+function documentVisibilityChanged() {
+    isVisibleDocument.value = document.visibilityState === 'visible'
+    if (!isVisibleDocument.value) stopStream()
+    visibilityChanged()
+}
+
+function viewportVisibilityChanged(newVal: boolean) {
+    isVisibleViewport.value = newVal
+    visibilityChanged()
+}
+
+function visibilityChanged() {
+    if (isVisibleViewport.value && isVisibleDocument.value) {
+        startStream()
+        return
+    }
+    stopStream()
+}
+
+function onload() {
+    if (aspectRatio.value !== null) return
+    aspectRatio.value = updateAspectRatioFromImage(image.value)
+}
+
+watch(url, () => {
+    stopStream()
+    startStream()
+})
 </script>

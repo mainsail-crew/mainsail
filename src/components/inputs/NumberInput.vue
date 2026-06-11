@@ -48,117 +48,101 @@
     </form>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
 import { mdiChevronDown, mdiChevronUp, mdiRestart } from '@mdi/js'
 import { TranslateResult } from 'vue-i18n'
 
-@Component
-export default class NumberInput extends Mixins(BaseMixin) {
-    mdiRestart = mdiRestart
-    mdiChevronUp = mdiChevronUp
-    mdiChevronDown = mdiChevronDown
+const { t } = useI18n()
+useBase()
 
-    private value: string = '0'
-    private error: boolean = false
-    private invalidChars: string[] = ['e', 'E', '+']
+const props = defineProps<{
+    label: TranslateResult | string
+    param: string
+    target: number
+    defaultValue?: number | null
+    min: number
+    max: number | null
+    dec: number
+    step?: number
+    unit?: string
+    hasSpinner?: boolean
+    spinnerFactor?: number
+    disabled?: boolean
+    outputErrorMsg?: boolean
+}>()
 
-    // input field name and identifier
-    @Prop({ required: true }) declare readonly label: TranslateResult | string
-    @Prop({ type: String, required: true }) declare readonly param: string
-    // props defining incoming data
-    @Prop({ type: Number, required: true }) declare readonly target: number
-    @Prop({ type: Number, required: false, default: null }) declare readonly defaultValue: number
-    // props for internal processing
-    @Prop({ type: Number, required: true }) declare readonly min: number
-    @Prop({ default: null }) declare readonly max: number | null
-    @Prop({ type: Number, required: true }) declare readonly dec: number
-    @Prop({ type: Number, required: false, default: 1 }) declare readonly step: number
-    @Prop({ type: String, required: false }) declare readonly unit: string
-    // spinner related props
-    @Prop({ type: Boolean, required: false, default: false }) declare readonly hasSpinner: boolean
-    @Prop({ type: Number, required: false, default: 1 }) declare readonly spinnerFactor: number
-    // props for general internal behaviour
-    @Prop({ type: Boolean, required: false, default: false }) declare readonly disabled: boolean
-    @Prop({ type: Boolean, required: false, default: false }) declare readonly outputErrorMsg: boolean
+const emit = defineEmits<{
+    (e: 'submit', payload: { name: string; value: number }): void
+}>()
 
-    created(): void {
-        this.value = this.target.toString()
-    }
+const value = ref(props.target.toString())
+const error = ref(false)
+const invalidChars = ['e', 'E', '+']
 
-    @Watch('target')
-    updateTarget(): void {
-        this.value = this.target.toString()
-    }
+watch(() => props.target, () => {
+    value.value = props.target.toString()
+})
 
-    incrementValue(): void {
-        if (this.inputValue + this.step * this.spinnerFactor < this.max! || this.max === null) {
-            this.value = (
-                Math.round((this.inputValue + this.step * this.spinnerFactor) * 10 ** this.dec) /
-                10 ** this.dec
-            ).toString()
-        } else this.value = this.max.toString()
+function incrementValue(): void {
+    if (inputValue.value + (props.step ?? 1) * (props.spinnerFactor ?? 1) < props.max! || props.max === null) {
+        value.value = (
+            Math.round((inputValue.value + (props.step ?? 1) * (props.spinnerFactor ?? 1)) * 10 ** props.dec) /
+            10 ** props.dec
+        ).toString()
+    } else value.value = props.max.toString()
 
-        this.submit()
-    }
-
-    decrementValue(): void {
-        if (this.inputValue - this.step * this.spinnerFactor > this.min) {
-            this.value = (
-                Math.round((this.inputValue - this.step * this.spinnerFactor) * 10 ** this.dec) /
-                10 ** this.dec
-            ).toString()
-        } else this.value = this.min.toString()
-
-        this.submit()
-    }
-
-    resetToDefault(): void {
-        this.value = this.defaultValue?.toString()
-        this.submit()
-    }
-
-    submit(): void {
-        if (this.invalidInput) return
-        this.$emit('submit', { name: this.param, value: this.inputValue })
-    }
-
-    // input validation //
-    checkInvalidChars(event: KeyboardEvent): void {
-        // add '-' to invalid characters if no negative input is allowed
-        if (this.min >= 0) this.invalidChars.push('-')
-        if (this.invalidChars.includes(event.key)) event.preventDefault()
-    }
-
-    // this function only parse this.value, to escape an empty input
-    get inputValue(): number {
-        if (this.value.toString() === '') return 0
-
-        return parseFloat(this.value.replace(',', '.'))
-    }
-
-    get invalidInput(): boolean {
-        return this.inputErrors.length > 0
-    }
-
-    get inputErrors() {
-        if (!this.outputErrorMsg) return []
-
-        const errors = []
-        if (this.max === null && this.inputValue < this.min) {
-            // "Must be grater or equal than {min}!"
-            errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min }))
-        }
-        if (this.max !== null && (this.inputValue > this.max! || this.inputValue < this.min)) {
-            // "Must be between {min} and {max}!"
-            errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min, max: this.max }))
-        }
-
-        return errors
-    }
+    submit()
 }
+
+function decrementValue(): void {
+    if (inputValue.value - (props.step ?? 1) * (props.spinnerFactor ?? 1) > props.min) {
+        value.value = (
+            Math.round((inputValue.value - (props.step ?? 1) * (props.spinnerFactor ?? 1)) * 10 ** props.dec) /
+            10 ** props.dec
+        ).toString()
+    } else value.value = props.min.toString()
+
+    submit()
+}
+
+function resetToDefault(): void {
+    value.value = props.defaultValue?.toString() ?? ''
+    submit()
+}
+
+function submit(): void {
+    if (invalidInput.value) return
+    emit('submit', { name: props.param, value: inputValue.value })
+}
+
+function checkInvalidChars(event: KeyboardEvent): void {
+    if (props.min >= 0) invalidChars.push('-')
+    if (invalidChars.includes(event.key)) event.preventDefault()
+}
+
+const inputValue = computed<number>(() => {
+    if (value.value.toString() === '') return 0
+    return parseFloat(value.value.replace(',', '.'))
+})
+
+const invalidInput = computed(() => inputErrors.value.length > 0)
+
+const inputErrors = computed(() => {
+    if (!props.outputErrorMsg) return []
+
+    const errs: string[] = []
+    if (props.max === null && inputValue.value < props.min) {
+        errs.push(t('App.NumberInput.GreaterOrEqualError', { min: props.min }))
+    }
+    if (props.max !== null && (inputValue.value > props.max! || inputValue.value < props.min)) {
+        errs.push(t('App.NumberInput.MustBeBetweenError', { min: props.min, max: props.max }))
+    }
+
+    return errs
+})
 </script>
 
 <style scoped>

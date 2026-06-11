@@ -10,41 +10,35 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useWebcam } from '@/composables/useWebcam'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import WebcamMixin from '@/components/mixins/webcam'
 
-@Component
-export default class HtmlVideo extends Mixins(BaseMixin, WebcamMixin) {
-    aspectRatio: number | null = null
+const props = defineProps({
+    camSettings: { type: Object, required: true },
+    printerUrl: { default: null },
+})
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
+const { convertUrl, getWrapperStyle, generateTransform, updateAspectRatioFromVideo } = useWebcam()
 
-    @Ref('video') readonly video!: HTMLVideoElement
-    get url() {
-        return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
-    }
+const video = ref<HTMLVideoElement | null>(null)
+const aspectRatio = ref<number | null>(null)
 
-    get wrapperStyle() {
-        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
-    }
+const url = computed(() => convertUrl(props.camSettings?.stream_url, props.printerUrl))
 
-    get webcamStyle() {
-        return {
-            transform: this.generateTransform(
-                this.camSettings.flip_horizontal ?? false,
-                this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
-                this.aspectRatio ?? 1
-            ),
-        }
-    }
+const wrapperStyle = computed(() => getWrapperStyle(aspectRatio.value, props.camSettings.rotation))
 
-    onLoadedMetadata() {
-        this.aspectRatio = this.updateAspectRatioFromVideo(this.video)
-    }
+const webcamStyle = computed(() => ({
+    transform: generateTransform(
+        props.camSettings.flip_horizontal ?? false,
+        props.camSettings.flip_vertical ?? false,
+        props.camSettings.rotation ?? 0,
+        aspectRatio.value ?? 1
+    ),
+}))
+
+function onLoadedMetadata() {
+    aspectRatio.value = updateAspectRatioFromVideo(video.value)
 }
 </script>

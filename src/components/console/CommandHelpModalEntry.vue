@@ -9,33 +9,29 @@
     </v-list-item>
 </template>
 
-<script lang="ts">
-import BaseMixin from '@/components/mixins/base'
-import { Mixins, Prop } from 'vue-property-decorator'
-import Component from 'vue-class-component'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-@Component
-export default class CommandHelpModalEntry extends Mixins(BaseMixin) {
-    @Prop({ required: true, type: String }) readonly command!: string
+const props = defineProps<{
+    command: string
+}>()
 
-    get commands(): { [key: string]: { help?: string } } {
-        return this.$store.state.printer.gcode?.commands ?? {}
-    }
+const emit = defineEmits<{
+    (e: 'click-on-command', command: string): void
+}>()
 
-    get commandObject(): { help?: string } {
-        return this.commands[this.command] ?? {}
-    }
+const store = useStore()
 
-    get description(): string | null {
-        return this.commandObject.help ?? null
-    }
+const commands = computed(() => store.state.printer.gcode?.commands ?? {})
 
-    get twoLine(): boolean {
-        return this.description !== null
-    }
+const commandObject = computed(() => commands.value[props.command] ?? {})
 
-    onCommand() {
-        this.$emit('click-on-command', this.command)
-    }
+const description = computed<string | null>(() => commandObject.value.help ?? null)
+
+const twoLine = computed(() => description.value !== null)
+
+function onCommand() {
+    emit('click-on-command', props.command)
 }
 </script>

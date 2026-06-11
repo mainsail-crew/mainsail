@@ -14,33 +14,29 @@
         </template>
     </v-text-field>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { mdiContentCopy } from '@mdi/js'
 import { copyToClipboard } from '@/plugins/helpers'
 import { v4 as uuidv4 } from 'uuid'
 
-@Component
-export default class TextfieldWithCopy extends Mixins(BaseMixin) {
-    mdiContentCopy = mdiContentCopy
+const props = defineProps<{
+    label: string
+    value: string
+}>()
 
-    @Prop({ type: String, required: true }) label!: string
-    @Prop({ type: String, required: true }) value!: string
+const isShowTooltip = ref(false)
+const cssClassName = ref('')
 
-    isShowTooltip = false
-    cssClassName = ''
+onMounted(() => {
+    cssClassName.value = `textfield-with-copy-${uuidv4()}`
+})
 
-    mounted() {
-        this.cssClassName = `textfield-with-copy-${uuidv4()}`
-    }
+function copy() {
+    copyToClipboard(props.value)
 
-    copy() {
-        copyToClipboard(this.value)
-
-        this.isShowTooltip = true
-        setTimeout(() => (this.isShowTooltip = false), 2000)
-    }
+    isShowTooltip.value = true
+    setTimeout(() => (isShowTooltip.value = false), 2000)
 }
 </script>
 <style scoped>

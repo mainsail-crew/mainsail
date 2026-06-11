@@ -18,43 +18,37 @@
     </form>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useBase } from '@/composables/useBase'
 
-@Component({
-    components: {},
+const props = defineProps<{
+    position: string
+    currentPos: string
+    label?: string
+    suffix?: string
+    step?: number
+    disabled?: boolean
+    readonly?: boolean
+}>()
+
+const emit = defineEmits<{
+    (e: 'update:position', value: string): void
+    (e: 'submit'): void
+}>()
+
+const position = computed({
+    get: () => props.position,
+    set: (val) => emit('update:position', val),
 })
-export default class MoveToInput extends Mixins(BaseMixin) {
-    @VModel({ type: String })
-    declare position: string
 
-    @Prop({ type: String, required: true })
-    declare readonly currentPos: string
-
-    @Prop({ type: String, required: false })
-    declare readonly label: string
-
-    @Prop({ type: String, required: false })
-    declare readonly suffix: string
-
-    @Prop({ type: Number, required: false, default: 1 })
-    declare readonly step: number
-
-    @Prop({ type: Boolean, required: false })
-    declare readonly disabled: boolean
-
-    @Prop({ type: Boolean, required: false })
-    declare readonly readonly: boolean
-
-    onBlur() {
-        if (this.position !== this.currentPos) {
-            this.position = this.currentPos
-        }
+function onBlur() {
+    if (position.value !== props.currentPos) {
+        position.value = props.currentPos
     }
+}
 
-    submit(): void {
-        this.$emit('submit')
-    }
+function submit(): void {
+    emit('submit')
 }
 </script>

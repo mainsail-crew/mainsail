@@ -9,105 +9,103 @@
         style="height: 200px" />
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import ThemeMixin from '@/components/mixins/theme'
-import HistoryStatsMixin from '@/components/mixins/historyStats'
+<script setup lang="ts">
+import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import { useBase } from '@/composables/useBase'
+import { useTheme } from '@/composables/useTheme'
+import { useHistoryStats } from '@/composables/useHistoryStats'
 import type { ECBasicOption } from 'echarts/types/dist/shared.d'
 import type { ECharts } from 'echarts/core'
 import type { EChartRef } from '@/types/echarts'
 import { formatPrintTime } from '@/plugins/helpers'
 import { HistoryStatsValueNames, ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
 
-@Component
-export default class HistoryAllPrintStatusChart extends Mixins(BaseMixin, ThemeMixin, HistoryStatsMixin) {
-    @Prop({ type: String, default: 'jobs' }) valueName!: HistoryStatsValueNames
-    @Ref('historyAllPrintStatus') readonly historyAllPrintStatus!: EChartRef | undefined
+const props = defineProps<{
+    valueName?: HistoryStatsValueNames
+}>()
 
-    getNumericTooltipValue(value: unknown): number {
-        const rawValue = Array.isArray(value) ? value[0] : value
-        const numericValue = Number(rawValue)
+const { fgColorHi } = useTheme()
+const aggregated = useHistoryStats(props.valueName ?? 'jobs')
+const { groupedPrintStatusArray } = aggregated
 
-        return Number.isFinite(numericValue) ? numericValue : 0
-    }
+const historyAllPrintStatus = ref<EChartRef | undefined>()
 
-    get chartOptions(): ECBasicOption {
-        return {
-            animation: false,
-            grid: {
-                top: 10,
-                right: 0,
-                bottom: 0,
-                left: 10,
-            },
-            tooltip: {
-                trigger: 'item',
-                borderWidth: 0,
-                valueFormatter: (value: unknown) => {
-                    const numericValue = this.getNumericTooltipValue(value)
+function getNumericTooltipValue(value: unknown): number {
+    const rawValue = Array.isArray(value) ? value[0] : value
+    const numericValue = Number(rawValue)
 
-                    if (this.valueName === 'filament') {
-                        if (numericValue > 1000) return Math.round(numericValue / 1000).toString() + ' m'
+    return Number.isFinite(numericValue) ? numericValue : 0
+}
 
-                        return numericValue.toString() + ' mm'
-                    }
+const chartOptions = computed<ECBasicOption>(() => ({
+    animation: false,
+    grid: {
+        top: 10,
+        right: 0,
+        bottom: 0,
+        left: 10,
+    },
+    tooltip: {
+        trigger: 'item',
+        borderWidth: 0,
+        valueFormatter: (value: unknown) => {
+            const numericValue = getNumericTooltipValue(value)
 
-                    if (this.valueName === 'time') {
-                        return formatPrintTime(numericValue, false)
-                    }
+            if (props.valueName === 'filament') {
+                if (numericValue > 1000) return Math.round(numericValue / 1000).toString() + ' m'
 
-                    return numericValue.toString()
+                return numericValue.toString() + ' mm'
+            }
+
+            if (props.valueName === 'time') {
+                return formatPrintTime(numericValue, false)
+            }
+
+            return numericValue.toString()
+        },
+    },
+    series: [
+        {
+            type: 'pie',
+            data: groupedPrintStatusArray.value,
+            avoidLabelOverlap: false,
+            minAngle: 5,
+            radius: ['35%', '60%'],
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
                 },
             },
-            series: [
-                {
-                    type: 'pie',
-                    data: this.groupedPrintStatusArray,
-                    avoidLabelOverlap: false,
-                    minAngle: 5,
-                    radius: ['35%', '60%'],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)',
-                        },
-                    },
-                    label: {
-                        color: this.fgColorHi,
-                    },
-                },
-            ],
-        }
-    }
-
-    get chart(): ECharts | null {
-        return this.historyAllPrintStatus?.chart ?? null
-    }
-
-    beforeDestroy() {
-        if (typeof window === 'undefined') return
-
-        this.chart?.dispose()
-    }
-
-    @Watch('groupedPrintStatusArray')
-    groupedPrintStatusArrayChanged(newVal: ServerHistoryStateAllPrintStatusEntry[]) {
-        this.chart?.setOption(
-            {
-                series: {
-                    data: newVal,
-                },
+            label: {
+                color: fgColorHi.value,
             },
-            false,
-            true
-        )
-    }
+        },
+    ],
+}))
 
-    visibilityChanged(isVisible: boolean) {
-        if (isVisible) this.chart?.resize()
-    }
+const chart = computed<ECharts | null>(() => historyAllPrintStatus.value?.chart ?? null)
+
+onBeforeUnmount(() => {
+    if (typeof window === 'undefined') return
+
+    chart.value?.dispose()
+})
+
+watch(groupedPrintStatusArray, (newVal: ServerHistoryStateAllPrintStatusEntry[]) => {
+    chart.value?.setOption(
+        {
+            series: {
+                data: newVal,
+            },
+        },
+        false,
+        true
+    )
+})
+
+function visibilityChanged(isVisible: boolean) {
+    if (isVisible) chart.value?.resize()
 }
 </script>

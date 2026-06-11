@@ -2,72 +2,76 @@
     <div ref="view" class="codeview" @mouseup="mouseUp" @keydown="keyPress"></div>
 </template>
 
-<script lang="ts">
-import { Component, PropSync, Prop, Vue, Watch } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, watch, onMounted, computed } from 'vue'
 import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
 
-@Component({})
-export default class CodeStream extends Vue {
-    @PropSync('currentline') currentLineNumber!: number
-    @Prop({ type: String, default: '' }) declare document: string
-    @Prop({ type: Boolean, default: false }) declare isSimulating: boolean
-    @Prop({ type: Boolean, default: false }) declare shown: boolean
+const props = defineProps<{
+    currentline?: number
+    document?: string
+    isSimulating?: boolean
+    shown?: boolean
+}>()
 
-    view: EditorView | undefined = undefined
+const emit = defineEmits<{
+    (e: 'update:currentline', value: number): void
+    (e: 'got-focus'): void
+}>()
 
-    private mounted() {
-        this.view = new EditorView({
-            doc: this.document,
-            extensions: [basicSetup, EditorState.readOnly.of(true)],
-            parent: this.$refs['view'] as HTMLElement,
-        })
-    }
+const view = ref<HTMLElement | null>(null)
 
-    mouseUp() {
-        if (this.view) {
-            const line = this.view.state.doc.lineAt(this.view.state.selection.ranges[0].from)
-            this.$emit('update:currentline', line.to)
-            this.view.contentDOM.blur()
-            this.$emit('got-focus')
-        }
-    }
+let editorView: EditorView | undefined = undefined
 
-    keyPress() {
-        if (this.view) {
-            const line = this.view.state.doc.lineAt(this.view.state.selection.ranges[0].from)
-            this.$emit('update:currentline', line.to)
-            this.$emit('got-focus')
-        }
-    }
+onMounted(() => {
+    editorView = new EditorView({
+        doc: props.document ?? '',
+        extensions: [basicSetup, EditorState.readOnly.of(true)],
+        parent: view.value!,
+    })
+})
 
-    @Watch('document')
-    documentUpdated() {
-        if (this.view && this.shown) {
-            this.view.dispatch({
-                changes: {
-                    from: 0,
-                    to: this.view.state.doc.length,
-                    insert: this.document,
-                },
-            })
-        }
-    }
-
-    @Watch('currentLineNumber')
-    currentlineUpdated(to: number) {
-        if (this.view && this.shown) {
-            const line = this.view.state.doc.lineAt(to)
-            this.view.dispatch({
-                selection: {
-                    anchor: line.from,
-                    head: line.from,
-                },
-                scrollIntoView: true,
-            })
-        }
+function mouseUp() {
+    if (editorView) {
+        const line = editorView.state.doc.lineAt(editorView.state.selection.ranges[0].from)
+        emit('update:currentline', line.to)
+        editorView.contentDOM.blur()
+        emit('got-focus')
     }
 }
+
+function keyPress() {
+    if (editorView) {
+        const line = editorView.state.doc.lineAt(editorView.state.selection.ranges[0].from)
+        emit('update:currentline', line.to)
+        emit('got-focus')
+    }
+}
+
+watch(() => props.document, () => {
+    if (editorView && props.shown) {
+        editorView.dispatch({
+            changes: {
+                from: 0,
+                to: editorView.state.doc.length,
+                insert: props.document ?? '',
+            },
+        })
+    }
+})
+
+watch(() => props.currentline, (to: number) => {
+    if (editorView && props.shown) {
+        const line = editorView.state.doc.lineAt(to)
+        editorView.dispatch({
+            selection: {
+                anchor: line.from,
+                head: line.from,
+            },
+            scrollIntoView: true,
+        })
+    }
+})
 </script>
 
 <style scoped>

@@ -10,47 +10,44 @@
     </v-btn>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
 
 interface LedEffectState {
     enabled: boolean
 }
 
-@Component
-export default class LedEffectButton extends Mixins(BaseMixin) {
-    @Prop({ required: true }) readonly name!: string
+const store = useStore()
+const socket = useSocket()
+const { printerIsPrintingOnly, loadings } = useBase()
 
-    get ledEffectState(): LedEffectState | undefined {
-        const printer = this.$store.state.printer ?? {}
-        const objectKey = `led_effect ${this.name}`
+const props = defineProps<{
+    name: string
+}>()
 
-        return printer[objectKey]
-    }
+const ledEffectState = computed<LedEffectState | undefined>(() => {
+    const printer = store.state.printer ?? {}
+    const objectKey = `led_effect ${props.name}`
 
-    get isEnabled() {
-        return this.ledEffectState?.enabled ?? false
-    }
+    return printer[objectKey]
+})
 
-    get buttonColor() {
-        return this.isEnabled ? 'success' : 'primary'
-    }
+const isEnabled = computed(() => ledEffectState.value?.enabled ?? false)
 
-    get loadingKey() {
-        return `led_effect_${this.name}`
-    }
+const buttonColor = computed(() => (isEnabled.value ? 'success' : 'primary'))
 
-    get isLoading() {
-        return this.loadings.includes(this.loadingKey)
-    }
+const loadingKey = computed(() => `led_effect_${props.name}`)
 
-    toggleEffect() {
-        let command = `SET_LED_EFFECT EFFECT="${this.name}"`
-        if (this.isEnabled) command += ' STOP=1'
+const isLoading = computed(() => loadings.value.includes(loadingKey.value))
 
-        this.$store.dispatch('server/addEvent', { message: command, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: command }, { loading: this.loadingKey })
-    }
+function toggleEffect() {
+    let command = `SET_LED_EFFECT EFFECT="${props.name}"`
+    if (isEnabled.value) command += ' STOP=1'
+
+    store.dispatch('server/addEvent', { message: command, type: 'command' })
+    socket.emit('printer.gcode.script', { script: command }, { loading: loadingKey.value })
 }
 </script>

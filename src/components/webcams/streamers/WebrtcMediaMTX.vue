@@ -18,11 +18,11 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
+import { useWebcam } from '@/composables/useWebcam'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import WebcamMixin from '@/components/mixins/webcam'
 import { capitalize } from '@/plugins/helpers'
 
 interface OfferData {
@@ -35,375 +35,339 @@ interface RTCIceServerWithCredentialType extends RTCIceServer {
     credentialType?: string
 }
 
-@Component
-export default class WebrtcMediaMTX extends Mixins(BaseMixin, WebcamMixin) {
-    capitalize = capitalize
+const props = defineProps({
+    camSettings: { type: Object, required: true },
+    printerUrl: { default: null },
+    page: { type: String, default: null },
+})
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) readonly printerUrl!: string | null
-    @Prop({ type: String, default: null }) readonly page!: string | null
-    @Ref() readonly video!: HTMLVideoElement
+const store = useStore()
+const { convertUrl, getWrapperStyle, generateTransform, updateAspectRatioFromVideo, viewport } = useWebcam()
 
-    pc: RTCPeerConnection | null = null
-    restartTimeout: ReturnType<typeof setTimeout> | null = null
-    status: string = 'connecting'
-    eTag: string | null = null
-    sessionUuid: string | null = null
-    queuedCandidates: RTCIceCandidate[] = []
-    offerData: OfferData = {
-        iceUfrag: '',
-        icePwd: '',
-        medias: [],
+const video = ref<HTMLVideoElement | null>(null)
+
+let pc: RTCPeerConnection | null = null
+let restartTimeout: ReturnType<typeof setTimeout> | null = null
+const status = ref('connecting')
+let eTag: string | null = null
+let sessionUuid: string | null = null
+let queuedCandidates: RTCIceCandidate[] = []
+const offerData: OfferData = { iceUfrag: '', icePwd: '', medias: [] }
+const RESTART_PAUSE = 2000
+const aspectRatio = ref<number | null>(null)
+
+const wrapperStyle = computed(() => getWrapperStyle(aspectRatio.value, props.camSettings.rotation))
+
+const webcamStyle = computed(() => ({
+    transform: generateTransform(
+        props.camSettings.flip_horizontal ?? false,
+        props.camSettings.flip_vertical ?? false,
+        props.camSettings.rotation ?? 0,
+        aspectRatio.value ?? 1
+    ),
+}))
+
+const url = computed(() => {
+    let baseUrl = props.camSettings.stream_url
+    if (!baseUrl.endsWith('/')) baseUrl += '/'
+    baseUrl += 'whep'
+    return convertUrl(baseUrl, props.printerUrl)
+})
+
+const expanded = computed(() => {
+    if (props.page !== 'dashboard') return true
+    return store.getters['gui/getPanelExpand']('webcam-panel', viewport.value) ?? false
+})
+
+watch(url, () => {
+    terminate()
+    start()
+})
+
+watch(expanded, (newExpanded) => {
+    if (!newExpanded) {
+        terminate()
+        return
     }
-    RESTART_PAUSE = 2000
-    aspectRatio: number | null = null
+    start()
+}, { immediate: true })
 
-    // stop the video and close the streams if the component is going to be destroyed so we don't leave hanging streams
-    beforeDestroy() {
-        this.terminate()
-
-        // clear any potentially open restart timeout
-        if (this.restartTimeout) clearTimeout(this.restartTimeout)
+function log(msg: string, obj?: unknown) {
+    if (obj) {
+        window.console.log(`[WebRTC mediamtx] ${msg}`, obj)
+        return
     }
+    window.console.log(`[WebRTC mediamtx] ${msg}`)
+}
 
-    get wrapperStyle() {
-        return this.getWrapperStyle(this.aspectRatio, this.camSettings.rotation)
-    }
+function unquoteCredential(v: string) {
+    return JSON.parse(`"${v}"`)
+}
 
-    get webcamStyle() {
-        return {
-            transform: this.generateTransform(
-                this.camSettings.flip_horizontal ?? false,
-                this.camSettings.flip_vertical ?? false,
-                this.camSettings.rotation ?? 0,
-                this.aspectRatio ?? 1
-            ),
-        }
-    }
+function linkToIceServers(links: string | null): RTCIceServer[] {
+    if (links === null) return []
 
-    get url() {
-        let baseUrl = this.camSettings.stream_url
-        if (!baseUrl.endsWith('/')) baseUrl += '/'
-        baseUrl += 'whep'
+    return links.split(', ').map((link) => {
+        const m = link.match(
+            /^<(.+?)>; rel="ice-server"(; username="(.*?)"; credential="(.*?)"; credential-type="password")?/i
+        )
 
-        return this.convertUrl(baseUrl, this.printerUrl)
-    }
+        if (m === null) return { urls: '' }
 
-    // stop and restart the video if the url changes
-    @Watch('url')
-    changedUrl() {
-        this.terminate()
-        this.start()
-    }
+        const ret: RTCIceServerWithCredentialType = { urls: [m[1]] }
 
-    get expanded(): boolean {
-        if (this.page !== 'dashboard') return true
-
-        return this.$store.getters['gui/getPanelExpand']('webcam-panel', this.viewport) ?? false
-    }
-
-    // start or stop the video when the expanded state changes
-    @Watch('expanded', { immediate: true })
-    expandChanged(newExpanded: boolean): void {
-        if (!newExpanded) {
-            this.terminate()
-            return
-        }
-
-        this.start()
-    }
-
-    log(msg: string, obj?: unknown) {
-        if (obj) {
-            window.console.log(`[WebRTC mediamtx] ${msg}`, obj)
-            return
-        }
-
-        window.console.log(`[WebRTC mediamtx] ${msg}`)
-    }
-
-    // webrtc player methods
-    // adapted from https://github.com/bluenviron/mediamtx/blob/main/internal/core/webrtc_read_index.html
-
-    unquoteCredential = (v: string) => JSON.parse(`"${v}"`)
-
-    linkToIceServers(links: string | null): RTCIceServer[] {
-        if (links === null) return []
-
-        return links.split(', ').map((link) => {
-            const m: RegExpMatchArray | null = link.match(
-                /^<(.+?)>; rel="ice-server"(; username="(.*?)"; credential="(.*?)"; credential-type="password")?/i
-            )
-
-            // break if match is null
-            if (m === null) return { urls: '' }
-
-            const ret: RTCIceServerWithCredentialType = {
-                urls: [m[1]],
-            }
-
-            if (m.length > 3) {
-                ret.username = this.unquoteCredential(m[3])
-                ret.credential = this.unquoteCredential(m[4])
-                ret.credentialType = 'password'
-            }
-
-            return ret
-        })
-    }
-
-    parseOffer(offer: string) {
-        const ret: OfferData = {
-            iceUfrag: '',
-            icePwd: '',
-            medias: [],
-        }
-
-        for (const line of offer.split('\r\n')) {
-            if (line.startsWith('m=')) {
-                ret.medias.push(line.slice('m='.length))
-            } else if (ret.iceUfrag === '' && line.startsWith('a=ice-ufrag:')) {
-                ret.iceUfrag = line.slice('a=ice-ufrag:'.length)
-            } else if (ret.icePwd === '' && line.startsWith('a=ice-pwd:')) {
-                ret.icePwd = line.slice('a=ice-pwd:'.length)
-            }
+        if (m.length > 3) {
+            ret.username = unquoteCredential(m[3])
+            ret.credential = unquoteCredential(m[4])
+            ret.credentialType = 'password'
         }
 
         return ret
+    })
+}
+
+function parseOffer(offer: string) {
+    const ret: OfferData = { iceUfrag: '', icePwd: '', medias: [] }
+
+    for (const line of offer.split('\r\n')) {
+        if (line.startsWith('m=')) {
+            ret.medias.push(line.slice('m='.length))
+        } else if (ret.iceUfrag === '' && line.startsWith('a=ice-ufrag:')) {
+            ret.iceUfrag = line.slice('a=ice-ufrag:'.length)
+        } else if (ret.icePwd === '' && line.startsWith('a=ice-pwd:')) {
+            ret.icePwd = line.slice('a=ice-pwd:'.length)
+        }
     }
 
-    generateSdpFragment(offerData: OfferData, candidates: RTCIceCandidate[]) {
-        // I don't found a specification for this, but it seems to be the only way to make it work
-        const candidatesByMedia: Record<number, RTCIceCandidate[]> = {}
-        for (const candidate of candidates) {
-            const mid = candidate.sdpMLineIndex
-            if (mid === null) continue
+    return ret
+}
 
-            // create the array if it doesn't exist
-            if (!(mid in candidatesByMedia)) candidatesByMedia[mid] = []
-            candidatesByMedia[mid].push(candidate)
-        }
+function generateSdpFragment(offerData: OfferData, candidates: RTCIceCandidate[]) {
+    const candidatesByMedia: Record<number, RTCIceCandidate[]> = {}
+    for (const candidate of candidates) {
+        const mid = candidate.sdpMLineIndex
+        if (mid === null) continue
 
-        let frag = 'a=ice-ufrag:' + offerData.iceUfrag + '\r\n' + 'a=ice-pwd:' + offerData.icePwd + '\r\n'
-        let mid = 0
+        if (!(mid in candidatesByMedia)) candidatesByMedia[mid] = []
+        candidatesByMedia[mid].push(candidate)
+    }
 
-        for (const media of offerData.medias) {
-            if (candidatesByMedia[mid] !== undefined) {
-                frag += 'm=' + media + '\r\n' + 'a=mid:' + mid + '\r\n'
+    let frag = 'a=ice-ufrag:' + offerData.iceUfrag + '\r\n' + 'a=ice-pwd:' + offerData.icePwd + '\r\n'
+    let mid = 0
 
-                for (const candidate of candidatesByMedia[mid]) {
-                    frag += 'a=' + candidate.candidate + '\r\n'
-                }
+    for (const media of offerData.medias) {
+        if (candidatesByMedia[mid] !== undefined) {
+            frag += 'm=' + media + '\r\n' + 'a=mid:' + mid + '\r\n'
+
+            for (const candidate of candidatesByMedia[mid]) {
+                frag += 'a=' + candidate.candidate + '\r\n'
             }
-
-            mid++
         }
 
-        return frag
+        mid++
     }
 
-    async start() {
-        // clear any potentially open restart timeout
-        if (this.restartTimeout !== null) {
-            clearTimeout(this.restartTimeout)
-            this.restartTimeout = null
-        }
+    return frag
+}
 
-        // stop if url is not valid
-        if (this.url === null) {
-            this.log('invalid url')
+async function start() {
+    if (restartTimeout !== null) {
+        clearTimeout(restartTimeout)
+        restartTimeout = null
+    }
 
-            this.scheduleRestart()
+    if (url.value === null) {
+        log('invalid url')
+        scheduleRestart()
+        return
+    }
+
+    log('requesting ICE servers from ' + url.value)
+
+    try {
+        const res = await fetch(url.value, { method: 'OPTIONS' })
+        if (res.status !== 204) {
+            log('error: Received bad status code:', res.status)
+            scheduleRestart()
             return
         }
 
-        this.log('requesting ICE servers from ' + this.url)
-
-        try {
-            const res = await fetch(this.url, { method: 'OPTIONS' })
-            if (res.status !== 204) {
-                this.log('error: Received bad status code:', res.status)
-                this.scheduleRestart()
-                return
-            }
-
-            await this.onIceServers(res)
-        } catch {
-            this.log('error: Cannot connect to backend')
-            this.scheduleRestart()
-        }
-    }
-
-    async onIceServers(res: Response) {
-        const iceServers = this.linkToIceServers(res.headers.get('Link'))
-        this.log('ice servers:', iceServers)
-
-        // https://webrtc.org/getting-started/unified-plan-transition-guide
-        this.pc = new RTCPeerConnection({
-            iceServers,
-            sdpSemantics: 'unified-plan',
-        } as RTCConfiguration & { sdpSemantics?: string })
-
-        const direction = 'sendrecv'
-        this.pc.addTransceiver('video', { direction })
-        this.pc.addTransceiver('audio', { direction })
-
-        this.pc.onicecandidate = (evt: RTCPeerConnectionIceEvent) => this.onLocalCandidate(evt)
-        this.pc.oniceconnectionstatechange = () => this.onConnectionState()
-
-        this.pc.ontrack = (evt) => {
-            this.log('new track:', evt.track.kind)
-            this.video.srcObject = evt.streams[0]
-        }
-
-        const offer = await this.pc.createOffer()
-        await this.onLocalOffer(offer)
-    }
-
-    async onLocalOffer(offer: RTCSessionDescriptionInit) {
-        try {
-            const res = await fetch(this.url ?? '', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/sdp' },
-                body: offer.sdp,
-            })
-
-            if (res.status !== 201) {
-                this.log('error: Received bad status code:', res.status)
-                this.scheduleRestart()
-                return
-            }
-
-            this.offerData = this.parseOffer(offer.sdp ?? '')
-            this.pc?.setLocalDescription(offer)
-
-            this.eTag = res.headers.get('ETag')
-            const location = res.headers.get('Location') ?? ''
-            this.sessionUuid = location?.substring(location.lastIndexOf('/') + 1) ?? null
-
-            // fallback for MediaMTX v1.0.x with broken ETag header
-            if (res.headers.has('E-Tag')) this.eTag = res.headers.get('E-Tag')
-
-            const sdp = await res.text()
-            this.onRemoteAnswer(
-                new RTCSessionDescription({
-                    type: 'answer',
-                    sdp,
-                })
-            )
-        } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : String(err ?? 'unknown error')
-            this.log(message)
-            this.scheduleRestart()
-        }
-    }
-
-    onRemoteAnswer(answer: RTCSessionDescription) {
-        if (this.restartTimeout !== null) return
-
-        try {
-            this.pc?.setRemoteDescription(answer)
-        } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : String(err)
-            this.log(message)
-            this.scheduleRestart()
-        }
-
-        if (this.queuedCandidates.length !== 0) {
-            this.sendLocalCandidates(this.queuedCandidates)
-            this.queuedCandidates = []
-        }
-    }
-
-    onConnectionState() {
-        if (this.restartTimeout !== null) return
-
-        this.status = this.pc?.iceConnectionState ?? ''
-        this.log('peer connection state:', this.status)
-
-        switch (this.status) {
-            case 'disconnected':
-                this.scheduleRestart()
-        }
-    }
-
-    onLocalCandidate(evt: RTCPeerConnectionIceEvent) {
-        if (this.restartTimeout !== null) return
-
-        if (evt.candidate !== null) {
-            if (this.eTag === '') {
-                this.queuedCandidates.push(evt.candidate)
-                return
-            }
-
-            this.sendLocalCandidates([evt.candidate])
-        }
-    }
-
-    async sendLocalCandidates(candidates: RTCIceCandidate[]) {
-        if (this.sessionUuid === null) {
-            this.log('Session-UUID is null')
-            this.scheduleRestart()
-
-            return
-        }
-
-        const url = (this.url ?? '') + '/' + this.sessionUuid
-        try {
-            const res = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/trickle-ice-sdpfrag',
-                    'If-Match': this.eTag,
-                } as HeadersInit,
-                body: this.generateSdpFragment(this.offerData, candidates),
-            })
-
-            if (res.status === 204) return
-
-            if (res.status === 404) {
-                this.log('stream not found')
-                this.scheduleRestart()
-                return
-            }
-
-            this.log(`bad status code ${res.status}`)
-            this.scheduleRestart()
-        } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : String(err)
-            this.log(message)
-            this.scheduleRestart()
-        }
-    }
-
-    terminate() {
-        this.log('terminating')
-
-        if (this.pc !== null) {
-            this.pc.close()
-            this.pc = null
-        }
-    }
-
-    scheduleRestart() {
-        if (this.restartTimeout !== null) return
-
-        this.terminate()
-
-        this.restartTimeout = setTimeout(() => {
-            this.log('scheduling restart')
-            this.restartTimeout = null
-            this.start()
-        }, this.RESTART_PAUSE)
-
-        this.eTag = ''
-        this.queuedCandidates = []
-    }
-
-    onLoadedMetadata() {
-        this.aspectRatio = this.updateAspectRatioFromVideo(this.video)
+        await onIceServers(res)
+    } catch {
+        log('error: Cannot connect to backend')
+        scheduleRestart()
     }
 }
+
+async function onIceServers(res: Response) {
+    const iceServers = linkToIceServers(res.headers.get('Link'))
+    log('ice servers:', iceServers)
+
+    pc = new RTCPeerConnection({
+        iceServers,
+        sdpSemantics: 'unified-plan',
+    } as RTCConfiguration & { sdpSemantics?: string })
+
+    const direction = 'sendrecv'
+    pc.addTransceiver('video', { direction })
+    pc.addTransceiver('audio', { direction })
+
+    pc.onicecandidate = (evt: RTCPeerConnectionIceEvent) => onLocalCandidate(evt)
+    pc.oniceconnectionstatechange = () => onConnectionState()
+
+    pc.ontrack = (evt) => {
+        log('new track:', evt.track.kind)
+        if (video.value) {
+            video.value.srcObject = evt.streams[0]
+        }
+    }
+
+    const offer = await pc.createOffer()
+    await onLocalOffer(offer)
+}
+
+async function onLocalOffer(offer: RTCSessionDescriptionInit) {
+    try {
+        const res = await fetch(url.value ?? '', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/sdp' },
+            body: offer.sdp,
+        })
+
+        if (res.status !== 201) {
+            log('error: Received bad status code:', res.status)
+            scheduleRestart()
+            return
+        }
+
+        Object.assign(offerData, parseOffer(offer.sdp ?? ''))
+        pc?.setLocalDescription(offer)
+
+        eTag = res.headers.get('ETag')
+        const location = res.headers.get('Location') ?? ''
+        sessionUuid = location?.substring(location.lastIndexOf('/') + 1) ?? null
+
+        // fallback for MediaMTX v1.0.x with broken ETag header
+        if (res.headers.has('E-Tag')) eTag = res.headers.get('E-Tag')
+
+        const sdp = await res.text()
+        onRemoteAnswer(new RTCSessionDescription({ type: 'answer', sdp }))
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err ?? 'unknown error')
+        log(message)
+        scheduleRestart()
+    }
+}
+
+function onRemoteAnswer(answer: RTCSessionDescription) {
+    if (restartTimeout !== null) return
+
+    try {
+        pc?.setRemoteDescription(answer)
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err)
+        log(message)
+        scheduleRestart()
+    }
+
+    if (queuedCandidates.length !== 0) {
+        sendLocalCandidates(queuedCandidates)
+        queuedCandidates = []
+    }
+}
+
+function onConnectionState() {
+    if (restartTimeout !== null) return
+
+    status.value = pc?.iceConnectionState ?? ''
+    log('peer connection state:', status.value)
+
+    switch (status.value) {
+        case 'disconnected':
+            scheduleRestart()
+    }
+}
+
+function onLocalCandidate(evt: RTCPeerConnectionIceEvent) {
+    if (restartTimeout !== null) return
+
+    if (evt.candidate !== null) {
+        if (eTag === '') {
+            queuedCandidates.push(evt.candidate)
+            return
+        }
+
+        sendLocalCandidates([evt.candidate])
+    }
+}
+
+async function sendLocalCandidates(candidates: RTCIceCandidate[]) {
+    if (sessionUuid === null) {
+        log('Session-UUID is null')
+        scheduleRestart()
+        return
+    }
+
+    const candidateUrl = (url.value ?? '') + '/' + sessionUuid
+    try {
+        const res = await fetch(candidateUrl, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/trickle-ice-sdpfrag',
+                'If-Match': eTag,
+            } as HeadersInit,
+            body: generateSdpFragment(offerData, candidates),
+        })
+
+        if (res.status === 204) return
+
+        if (res.status === 404) {
+            log('stream not found')
+            scheduleRestart()
+            return
+        }
+
+        log(`bad status code ${res.status}`)
+        scheduleRestart()
+    } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err)
+        log(message)
+        scheduleRestart()
+    }
+}
+
+function terminate() {
+    log('terminating')
+
+    if (pc !== null) {
+        pc.close()
+        pc = null
+    }
+}
+
+function scheduleRestart() {
+    if (restartTimeout !== null) return
+
+    terminate()
+
+    restartTimeout = setTimeout(() => {
+        log('scheduling restart')
+        restartTimeout = null
+        start()
+    }, RESTART_PAUSE)
+
+    eTag = ''
+    queuedCandidates = []
+}
+
+function onLoadedMetadata() {
+    aspectRatio.value = updateAspectRatioFromVideo(video.value)
+}
+
+onBeforeUnmount(() => {
+    terminate()
+    if (restartTimeout) clearTimeout(restartTimeout)
+})
 </script>
 
 <style scoped>

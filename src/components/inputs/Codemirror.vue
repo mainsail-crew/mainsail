@@ -4,12 +4,13 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 // Inspired by this repo: https://github.com/surmon-china/vue-codemirror
 
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
-import ThemeMixin from '../mixins/theme'
+import { ref, onMounted, onBeforeUnmount, watch, nextTick, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useTheme } from '@/composables/useTheme'
 import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
 import { EditorState } from '@codemirror/state'
@@ -22,113 +23,111 @@ import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
 import { indentUnit } from '@codemirror/language'
 
-@Component
-export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
-    private content = ''
-    private codemirror: null | EditorView = null
-    private cminstance: null | EditorView = null
+const props = defineProps<{
+    code?: string
+    value?: string
+    name?: string
+    fileExtension?: string
+}>()
 
-    @Ref('editor') editor!: HTMLElement
+const emit = defineEmits<{
+    (e: 'ready', cm: EditorView): void
+    (e: 'lineChange', line: number): void
+    (e: 'input', content: string): void
+}>()
 
-    @Prop({ required: false, default: '' })
-    declare readonly code: string
+const store = useStore()
+useBase()
+const { themeMode } = useTheme()
 
-    @Prop({ required: false, default: '' })
-    declare value: string
+const editor = ref<HTMLElement | null>(null)
 
-    @Prop({ required: false, default: 'codemirror' })
-    declare readonly name: string
+let content = ''
+let codemirror: null | EditorView = null
+let cminstance: null | EditorView = null
 
-    @Prop({ required: false, default: '' })
-    declare readonly fileExtension: string
-
-    @Watch('value')
-    valueChanged(newVal: string) {
-        const cm_value = this.cminstance?.state?.doc.toString()
-        if (newVal !== cm_value) {
-            this.setCmValue(newVal)
-        }
+watch(() => props.value, (newVal) => {
+    const cm_value = cminstance?.state?.doc.toString()
+    if (newVal !== cm_value) {
+        setCmValue(newVal ?? '')
     }
+})
 
-    mounted(): void {
-        this.initialize()
-    }
+onMounted(() => {
+    initialize()
+})
 
-    beforeDestroy() {
-        this.destroy()
-    }
+onBeforeUnmount(() => {
+    destroy()
+})
 
-    destroy() {
-        this.cminstance?.destroy()
-    }
+function destroy() {
+    cminstance?.destroy()
+}
 
-    initialize() {
-        this.codemirror = new EditorView({
-            parent: this.editor,
-        })
-        this.cminstance = this.codemirror
+function initialize() {
+    codemirror = new EditorView({
+        parent: editor.value!,
+    })
+    cminstance = codemirror
 
-        this.$nextTick(() => {
-            this.setCmValue(this.code || this.value || this.content)
+    nextTick(() => {
+        setCmValue(props.code || props.value || content || '')
 
-            this.$emit('ready', this.codemirror)
-        })
-    }
+        emit('ready', codemirror)
+    })
+}
 
-    setCmValue(content: string) {
-        this.cminstance?.setState(EditorState.create({ doc: content, extensions: this.cmExtensions }))
-    }
+function setCmValue(content: string) {
+    cminstance?.setState(EditorState.create({ doc: content, extensions: cmExtensions }))
+}
 
-    get cmExtensions() {
-        const extensions = [
-            EditorView.theme({}, { dark: this.themeMode === 'dark' }),
-            basicSetup,
-            this.vscodeTheme,
-            indentUnit.of(' '.repeat(this.tabSize)),
-            keymap.of([
-                { key: 'Tab', run: insertTab },
-                { key: 'Shift-Tab', run: indentLess },
-            ]),
-            EditorView.updateListener.of((update) => {
-                if (update.selectionSet) {
-                    const line = this.cminstance?.state?.doc.lineAt(this.cminstance?.state?.selection.main.head).number
-                    this.$emit('lineChange', line)
-                }
-                this.content = update.state?.doc.toString()
-                if (this.$emit) {
-                    this.$emit('input', this.content)
-                }
-            }),
-        ]
+const cmExtensions = computed(() => {
+    const extensions = [
+        EditorView.theme({}, { dark: themeMode.value === 'dark' }),
+        basicSetup,
+        vscodeTheme.value,
+        indentUnit.of(' '.repeat(tabSize.value)),
+        keymap.of([
+            { key: 'Tab', run: insertTab },
+            { key: 'Shift-Tab', run: indentLess },
+        ]),
+        EditorView.updateListener.of((update) => {
+            if (update.selectionSet) {
+                const line = cminstance?.state?.doc.lineAt(cminstance?.state?.selection.main.head).number ?? 0
+                emit('lineChange', line)
+            }
+            content = update.state?.doc.toString()
+            if (content) {
+                emit('input', content)
+            }
+        }),
+    ]
 
-        if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
-        else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
-        else if (['json'].includes(this.fileExtension)) extensions.push(json())
-        else if (['css', 'scss', 'sass'].includes(this.fileExtension)) extensions.push(css())
+    const ext = props.fileExtension ?? ''
+    if (['cfg', 'conf'].includes(ext)) extensions.push(StreamLanguage.define(klipper_config))
+    else if (['gcode'].includes(ext)) extensions.push(StreamLanguage.define(gcode))
+    else if (['json'].includes(ext)) extensions.push(json())
+    else if (['css', 'scss', 'sass'].includes(ext)) extensions.push(css())
 
-        return extensions
-    }
+    return extensions
+})
 
-    visibilityChanged(isVisible: boolean) {
-        if (isVisible) this.cminstance?.focus()
-    }
+function visibilityChanged(isVisible: boolean) {
+    if (isVisible) cminstance?.focus()
+}
 
-    get tabSize() {
-        return this.$store.state.gui.editor.tabSize || 2
-    }
+const tabSize = computed(() => store.state.gui.editor?.tabSize || 2)
 
-    get vscodeTheme() {
-        return this.themeMode === 'dark' ? vscodeDark : vscodeLight
-    }
+const vscodeTheme = computed(() => (themeMode.value === 'dark' ? vscodeDark : vscodeLight))
 
-    gotoLine(line: number) {
-        const l = this.cminstance?.state?.doc.line(line)
-        if (!l) return
+function gotoLine(line: number) {
+    const l = cminstance?.state?.doc.line(line)
+    if (!l) return
 
-        this.cminstance?.dispatch({
-            selection: { head: l.from, anchor: l.to },
-            scrollIntoView: true,
-        })
-    }
+    cminstance?.dispatch({
+        selection: { head: l.from, anchor: l.to },
+        scrollIntoView: true,
+    })
 }
 </script>

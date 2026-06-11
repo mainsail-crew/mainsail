@@ -14,22 +14,21 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import Vue from 'vue'
-import { Prop } from 'vue-property-decorator'
-import { ServerStateEvent } from '@/store/server/types'
+<script setup lang="ts">
+import { useStore } from 'vuex'
+import type { ServerStateEvent } from '@/store/server/types'
 import ConsoleTableEntry from '@/components/console/ConsoleTableEntry.vue'
 
-@Component({
-    components: { ConsoleTableEntry },
-})
-export default class ConsoleTable extends Vue {
-    @Prop({ required: true }) readonly events!: ServerStateEvent[]
-    @Prop({ required: false, default: false }) readonly isMini!: boolean
+const props = defineProps<{
+    events: ServerStateEvent[]
+    isMini?: boolean
+}>()
 
-    commandClick(msg: string) {
-        this.$emit('command-click', msg)
-    }
+const emit = defineEmits<{
+    (e: 'command-click', msg: string): void
+}>()
+
+function commandClick(msg: string) {
+    emit('command-click', msg)
 }
 </script>
