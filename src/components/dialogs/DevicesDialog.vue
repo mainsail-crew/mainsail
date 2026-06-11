@@ -29,11 +29,11 @@
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
-            <v-tabs v-model="tab" fixed-tabs>
-                <v-tab v-for="tab in tabs" :key="tab.tab">{{ tab.title }}</v-tab>
+            <v-tabs v-model="currentTab" fixed-tabs>
+                <v-tab v-for="t in tabs" :key="t.tab">{{ t.title }}</v-tab>
             </v-tabs>
             <overlay-scrollbars style="max-height: 400px; overflow-x: hidden">
-                <v-tabs-items v-model="tab">
+                <v-tabs-items v-model="currentTab">
                     <v-tab-item v-for="canInterface in canInterfaces" :key="canInterface">
                         <devices-dialog-can :hide-system-entries="hideSystemEntries" :name="canInterface" />
                     </v-tab-item>
@@ -52,59 +52,64 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 
 import { mdiCog, mdiCloseThick, mdiUsb } from '@mdi/js'
 
-@Component({
-    components: { Panel },
+const store = useStore()
+const { isMobile } = useBase()
+
+const mdiCog = mdiCog
+const mdiUsb = mdiUsb
+const mdiCloseThick = mdiCloseThick
+
+const currentTab = ref('serial')
+const hideSystemEntries = ref(true)
+
+const props = defineProps({
+    modelValue: { type: Boolean },
 })
-export default class DevicesDialog extends Mixins(BaseMixin) {
-    mdiCog = mdiCog
-    mdiUsb = mdiUsb
-    mdiCloseThick = mdiCloseThick
+const emit = defineEmits(['update:modelValue'])
 
-    tab = 'serial'
-    hideSystemEntries = true
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    @VModel({ type: Boolean }) showDialog!: boolean
+const tabs = computed(() => {
+    const output: { tab: string; title: string }[] = [
+        {
+            tab: 'serial',
+            title: 'Serial',
+        },
+        {
+            tab: 'usb',
+            title: 'USB',
+        },
+        {
+            tab: 'video',
+            title: 'Video',
+        },
+    ]
 
-    get tabs() {
-        const output: { tab: string; title: string }[] = [
-            {
-                tab: 'serial',
-                title: 'Serial',
-            },
-            {
-                tab: 'usb',
-                title: 'USB',
-            },
-            {
-                tab: 'video',
-                title: 'Video',
-            },
-        ]
-
-        this.canInterfaces.forEach((name) => {
-            output.push({
-                tab: name,
-                title: name.toUpperCase(),
-            })
+    canInterfaces.value.forEach((name) => {
+        output.push({
+            tab: name,
+            title: name.toUpperCase(),
         })
+    })
 
-        return output.sort((a, b) => a.title.localeCompare(b.title))
-    }
+    return output.sort((a, b) => a.title.localeCompare(b.title))
+})
 
-    get canInterfaces() {
-        return Object.keys(this.$store.state.server.system_info?.canbus ?? {})
-    }
+const canInterfaces = computed(() => Object.keys(store.state.server.system_info?.canbus ?? {}))
 
-    closePrompt() {
-        this.showDialog = false
-    }
+function closePrompt() {
+    showDialog.value = false
 }
 </script>
 

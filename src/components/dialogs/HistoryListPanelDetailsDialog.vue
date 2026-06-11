@@ -12,9 +12,9 @@
             </template>
             <v-card-text class="pa-0">
                 <overlay-scrollbars style="height: 350px" class="px-6">
-                    <template v-for="(entry, index) in entries">
-                        <v-divider v-if="index > 0" :key="'history_detail_entry_divider_' + index" class="my-3" />
-                        <v-row :key="'history_detail_entry_' + index">
+                    <template v-for="(entry, index) in entries" :key="'history_detail_entry_' + index">
+                        <v-divider v-if="index > 0" class="my-3" />
+                        <v-row>
                             <v-col>{{ entry.name }}</v-col>
                             <v-col class="text-right">{{ entry.value }}</v-col>
                         </v-row>
@@ -25,154 +25,154 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiCloseThick, mdiUpdate } from '@mdi/js'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 
-@Component({
-    components: {
-        Panel,
-        SettingsRow,
-    },
+const { t, te } = useI18n()
+const { formatDateTime } = useBase()
+
+const mdiCloseThick = mdiCloseThick
+const mdiUpdate = mdiUpdate
+
+const props = defineProps({
+    modelValue: { type: Boolean },
+    job: { type: Object as () => ServerHistoryStateJob, required: true },
 })
-export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiUpdate = mdiUpdate
+const emit = defineEmits(['update:modelValue'])
 
-    formatFilesize = formatFilesize
-    formatPrintTime = formatPrintTime
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, required: true }) readonly job!: ServerHistoryStateJob
+const entries = computed(() => {
+    const entries: { name: string; value: string | null; exists: boolean }[] = [
+        {
+            name: t('History.Filename').toString(),
+            value: props.job.filename,
+            exists: true,
+        },
+        {
+            name: t('History.Filesize').toString(),
+            value: formatFilesize(props.job.metadata?.filesize ?? 0),
+            exists: (props.job.metadata?.filesize ?? 0) > 0,
+        },
+        {
+            name: t('History.LastModified').toString(),
+            value: formatDateTime((props.job.metadata?.modified ?? 0) * 1000),
+            exists: (props.job.metadata?.modified ?? 0) > 0,
+        },
+        {
+            name: t('History.Status').toString(),
+            value: te(`History.StatusValues.${props.job.status}`, 'en')
+                ? t(`History.StatusValues.${props.job.status}`).toString()
+                : props.job.status,
+            exists: true,
+        },
+        {
+            name: t('History.StartTime').toString(),
+            value: formatDateTime(props.job.start_time * 1000),
+            exists: true,
+        },
+        {
+            name: t('History.EndTime').toString(),
+            value: formatDateTime(props.job.end_time * 1000),
+            exists: props.job.end_time > 0,
+        },
+        {
+            name: t('History.EstimatedTime').toString(),
+            value: formatPrintTime(props.job.metadata?.estimated_time ?? 0),
+            exists: props.job.metadata && 'estimated_time' in props.job.metadata,
+        },
+        {
+            name: t('History.PrintDuration').toString(),
+            value: formatPrintTime(props.job.print_duration ?? 0),
+            exists: props.job.print_duration > 0,
+        },
+        {
+            name: t('History.TotalDuration').toString(),
+            value: formatPrintTime(props.job.total_duration ?? 0),
+            exists: props.job.total_duration > 0,
+        },
+        {
+            name: t('History.EstimatedFilamentWeight').toString(),
+            value: `${Math.round((props.job.metadata?.filament_weight_total ?? 0) * 100) / 100} g`,
+            exists: props.job.metadata && 'filament_weight_total' in props.job.metadata,
+        },
+        {
+            name: t('History.EstimatedFilament').toString(),
+            value: `${Math.round(props.job.metadata?.filament_total ?? 0)} mm`,
+            exists: props.job.metadata && 'filament_total' in props.job.metadata,
+        },
+        {
+            name: t('History.FilamentUsed').toString(),
+            value: `${Math.round(props.job.metadata?.filament_used ?? 0)} mm`,
+            exists: props.job.metadata && 'filament_used' in props.job.metadata,
+        },
+        {
+            name: t('History.FirstLayerExtTemp').toString(),
+            value: `${props.job.metadata?.first_layer_extr_temp ?? 0} °C`,
+            exists: props.job.metadata && 'first_layer_extr_temp' in props.job.metadata,
+        },
+        {
+            name: t('History.FirstLayerBedTemp').toString(),
+            value: `${props.job.metadata?.first_layer_bed_temp ?? 0} °C`,
+            exists: props.job.metadata && 'first_layer_bed_temp' in props.job.metadata,
+        },
+        {
+            name: t('History.FirstLayerHeight').toString(),
+            value: `${props.job.metadata?.first_layer_height ?? 0} mm`,
+            exists: props.job.metadata && 'first_layer_height' in props.job.metadata,
+        },
+        {
+            name: t('History.LayerHeight').toString(),
+            value: `${props.job.metadata?.layer_height ?? 0} mm`,
+            exists: props.job.metadata && 'layer_height' in props.job.metadata,
+        },
+        {
+            name: t('History.ObjectHeight').toString(),
+            value: `${props.job.metadata?.object_height ?? 0} mm`,
+            exists: props.job.metadata && 'object_height' in props.job.metadata,
+        },
+        {
+            name: t('History.Slicer').toString(),
+            value: props.job.metadata?.slicer ?? '--',
+            exists: props.job.metadata && 'slicer' in props.job.metadata,
+        },
+        {
+            name: t('History.SlicerVersion').toString(),
+            value: props.job.metadata?.slicer_version ?? '--',
+            exists: props.job.metadata && 'slicer_version' in props.job.metadata,
+        },
+    ]
 
-    get entries() {
-        const entries: { name: string; value: string | null; exists: boolean }[] = [
-            {
-                name: this.$t('History.Filename').toString(),
-                value: this.job.filename,
+    if ('auxiliary_data' in props.job) {
+        props.job.auxiliary_data?.forEach((data) => {
+            let value = data.value.toString()
+            if (!Array.isArray(data.value)) {
+                value = `${Math.round(data.value * 1000) / 1000} ${data.units}`
+            }
+            if (value === '') value = '--'
+
+            entries.push({
+                name: data.description,
+                value,
                 exists: true,
-            },
-            {
-                name: this.$t('History.Filesize').toString(),
-                value: formatFilesize(this.job.metadata?.filesize ?? 0),
-                exists: (this.job.metadata?.filesize ?? 0) > 0,
-            },
-            {
-                name: this.$t('History.LastModified').toString(),
-                value: this.formatDateTime((this.job.metadata?.modified ?? 0) * 1000),
-                exists: (this.job.metadata?.modified ?? 0) > 0,
-            },
-            {
-                name: this.$t('History.Status').toString(),
-                value: this.$te(`History.StatusValues.${this.job.status}`, 'en')
-                    ? this.$t(`History.StatusValues.${this.job.status}`).toString()
-                    : this.job.status,
-                exists: true,
-            },
-            {
-                name: this.$t('History.StartTime').toString(),
-                value: this.formatDateTime(this.job.start_time * 1000),
-                exists: true,
-            },
-            {
-                name: this.$t('History.EndTime').toString(),
-                value: this.formatDateTime(this.job.end_time * 1000),
-                exists: this.job.end_time > 0,
-            },
-            {
-                name: this.$t('History.EstimatedTime').toString(),
-                value: this.formatPrintTime(this.job.metadata?.estimated_time ?? 0),
-                exists: this.job.metadata && 'estimated_time' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.PrintDuration').toString(),
-                value: this.formatPrintTime(this.job.print_duration ?? 0),
-                exists: this.job.print_duration > 0,
-            },
-            {
-                name: this.$t('History.TotalDuration').toString(),
-                value: this.formatPrintTime(this.job.total_duration ?? 0),
-                exists: this.job.total_duration > 0,
-            },
-            {
-                name: this.$t('History.EstimatedFilamentWeight').toString(),
-                value: `${Math.round((this.job.metadata?.filament_weight_total ?? 0) * 100) / 100} g`,
-                exists: this.job.metadata && 'filament_weight_total' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.EstimatedFilament').toString(),
-                value: `${Math.round(this.job.metadata?.filament_total ?? 0)} mm`,
-                exists: this.job.metadata && 'filament_total' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.FilamentUsed').toString(),
-                value: `${Math.round(this.job.metadata?.filament_used ?? 0)} mm`,
-                exists: this.job.metadata && 'filament_used' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.FirstLayerExtTemp').toString(),
-                value: `${this.job.metadata?.first_layer_extr_temp ?? 0} °C`,
-                exists: this.job.metadata && 'first_layer_extr_temp' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.FirstLayerBedTemp').toString(),
-                value: `${this.job.metadata?.first_layer_bed_temp ?? 0} °C`,
-                exists: this.job.metadata && 'first_layer_bed_temp' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.FirstLayerHeight').toString(),
-                value: `${this.job.metadata?.first_layer_height ?? 0} mm`,
-                exists: this.job.metadata && 'first_layer_height' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.LayerHeight').toString(),
-                value: `${this.job.metadata?.layer_height ?? 0} mm`,
-                exists: this.job.metadata && 'layer_height' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.ObjectHeight').toString(),
-                value: `${this.job.metadata?.object_height ?? 0} mm`,
-                exists: this.job.metadata && 'object_height' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.Slicer').toString(),
-                value: this.job.metadata?.slicer ?? '--',
-                exists: this.job.metadata && 'slicer' in this.job.metadata,
-            },
-            {
-                name: this.$t('History.SlicerVersion').toString(),
-                value: this.job.metadata?.slicer_version ?? '--',
-                exists: this.job.metadata && 'slicer_version' in this.job.metadata,
-            },
-        ]
-
-        if ('auxiliary_data' in this.job) {
-            this.job.auxiliary_data?.forEach((data) => {
-                let value = data.value.toString()
-                if (!Array.isArray(data.value)) {
-                    value = `${Math.round(data.value * 1000) / 1000} ${data.units}`
-                }
-                if (value === '') value = '--'
-
-                entries.push({
-                    name: data.description,
-                    value,
-                    exists: true,
-                })
             })
-        }
-
-        return entries.filter((entry) => entry.exists)
+        })
     }
 
-    closeDialog() {
-        this.showDialog = false
-    }
+    return entries.filter((entry) => entry.exists)
+})
+
+function closeDialog() {
+    showDialog.value = false
 }
 </script>
 

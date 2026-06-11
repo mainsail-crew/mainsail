@@ -55,70 +55,74 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiNotebook, mdiPencil } from '@mdi/js'
-import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'
 import HistoryListPanelPerformMaintenance from '@/components/dialogs/HistoryListPanelPerformMaintenance.vue'
+import HistoryListPanelEditMaintenance from '@/components/dialogs/HistoryListPanelEditMaintenance.vue'
 
-@Component({
-    components: { HistoryListPanelPerformMaintenance, Panel, HistoryListPanelDetailMaintenanceHistoryEntry },
+const store = useStore()
+const { t } = useI18n()
+const { formatDateTime } = useBase()
+
+const mdiCloseThick = mdiCloseThick
+const mdiNotebook = mdiNotebook
+const mdiPencil = mdiPencil
+
+const props = defineProps({
+    modelValue: { type: Boolean },
+    item: { type: Object as () => GuiMaintenanceStateEntry, default: () => ({}) as GuiMaintenanceStateEntry },
 })
-export default class HistoryListPanelDetailMaintenance extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiNotebook = mdiNotebook
-    mdiPencil = mdiPencil
+const emit = defineEmits(['update:modelValue'])
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    showEditDialog = false
-    showPerformDialog = false
+const showEditDialog = ref(false)
+const showPerformDialog = ref(false)
 
-    get date() {
-        return this.formatDateTime(this.item.start_time * 1000, false)
+const date = computed(() => formatDateTime(props.item.start_time * 1000, false))
+
+const note = computed(() => props.item.note.replaceAll('\n', '<br>'))
+
+const showPerformButton = computed(() => {
+    if (props.item.end_time) return false
+
+    return props.item.reminder?.type ?? false
+})
+
+const allEntries = computed(() => store.getters['gui/maintenance/getEntries'] ?? [])
+
+const history = computed(() => {
+    const array = []
+
+    let latest_entry_id = props.item.id
+    while (latest_entry_id) {
+        const entry = allEntries.value.find((entry: GuiMaintenanceStateEntry) => entry.id === latest_entry_id)
+        if (!entry) break
+        array.push(entry)
+        latest_entry_id = entry.last_entry
     }
 
-    get note() {
-        return this.item.note.replaceAll('\n', '<br>')
-    }
+    return array
+})
 
-    get showPerformButton() {
-        if (this.item.end_time) return false
+const outputFirstPointOfHistory = computed(() => {
+    if (props.item.reminder.type === null) return t('History.EntrySince')
+    if (props.item.end_time === null) return t('History.EntryNextPerform')
 
-        return this.item.reminder?.type ?? false
-    }
+    return t('History.EntryPerformedAt', { date: formatDateTime(props.item.end_time * 1000) })
+})
 
-    get allEntries() {
-        return this.$store.getters['gui/maintenance/getEntries'] ?? []
-    }
-
-    get history() {
-        const array = []
-
-        let latest_entry_id = this.item.id
-        while (latest_entry_id) {
-            const entry = this.allEntries.find((entry: GuiMaintenanceStateEntry) => entry.id === latest_entry_id)
-            if (!entry) break
-            array.push(entry)
-            latest_entry_id = entry.last_entry
-        }
-
-        return array
-    }
-
-    get outputFirstPointOfHistory() {
-        if (this.item.reminder.type === null) return this.$t('History.EntrySince')
-        if (this.item.end_time === null) return this.$t('History.EntryNextPerform')
-
-        return this.$t('History.EntryPerformedAt', { date: this.formatDateTime(this.item.end_time * 1000) })
-    }
-
-    closeDialog() {
-        this.showDialog = false
-    }
+function closeDialog() {
+    showDialog.value = false
 }
 </script>

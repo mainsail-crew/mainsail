@@ -28,36 +28,37 @@
     </v-card-text>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useBase } from '@/composables/useBase'
 import type { RPCResult } from '@/types/moonraker'
 import type { SerialDevice } from '@/types/moonraker/MachineRPC'
 
-@Component
-export default class DevicesDialogSerial extends Mixins(BaseMixin) {
-    devices: SerialDevice[] = []
-    loading = false
-    loaded = false
+const { apiUrl } = useBase()
 
-    @Prop({ type: Boolean, default: false }) hideSystemEntries!: boolean
+const props = defineProps({
+    hideSystemEntries: { type: Boolean, default: false },
+})
 
-    get filteredDevices() {
-        if (!this.hideSystemEntries) return this.devices
+const devices = ref<SerialDevice[]>([])
+const loading = ref(false)
+const loaded = ref(false)
 
-        return this.devices.filter((device) => device.device_type !== 'hardware_uart')
-    }
+const filteredDevices = computed(() => {
+    if (!props.hideSystemEntries) return devices.value
 
-    async refresh() {
-        this.loading = true
+    return devices.value.filter((device) => device.device_type !== 'hardware_uart')
+})
 
-        this.devices = await fetch(this.apiUrl + '/machine/peripherals/serial')
-            .then((res) => res.json())
-            .then((res: { result?: RPCResult<'machine.peripherals.serial'> }) => res.result?.serial_devices ?? [])
+async function refresh() {
+    loading.value = true
 
-        this.loading = false
-        this.loaded = true
-    }
+    devices.value = await fetch(apiUrl.value + '/machine/peripherals/serial')
+        .then((res) => res.json())
+        .then((res: { result?: RPCResult<'machine.peripherals.serial'> }) => res.result?.serial_devices ?? [])
+
+    loading.value = false
+    loaded.value = true
 }
 </script>
 

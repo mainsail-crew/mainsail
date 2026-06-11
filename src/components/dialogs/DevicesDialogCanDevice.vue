@@ -17,16 +17,11 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
 import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
 import type { CanDevice } from '@/types/moonraker/MachineRPC'
 
-@Component({
-    components: { TextfieldWithCopy },
+defineProps({
+    device: { type: Object as () => CanDevice, required: true },
 })
-export default class DevicesDialogCanDevice extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) device!: CanDevice
-}
 </script>

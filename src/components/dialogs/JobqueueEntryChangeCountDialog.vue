@@ -41,55 +41,62 @@
         </panel>
     </v-dialog>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import type { FocusableRef } from '@/types/vuetify'
-import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiChevronUp, mdiChevronDown, mdiCounter } from '@mdi/js'
-import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import type { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
-@Component({
-    components: { Panel },
+const store = useStore()
+const { t } = useI18n()
+
+const mdiCloseThick = mdiCloseThick
+const mdiChevronUp = mdiChevronUp
+const mdiChevronDown = mdiChevronDown
+const mdiCounter = mdiCounter
+
+const props = defineProps({
+    modelValue: { type: Boolean },
+    job: { type: Object as () => ServerJobQueueStateJob, required: true },
 })
-export default class JobqueueEntryChangeCountDialog extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiChevronUp = mdiChevronUp
-    mdiChevronDown = mdiChevronDown
-    mdiCounter = mdiCounter
+const emit = defineEmits(['update:modelValue'])
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, required: true }) job!: ServerJobQueueStateJob
-    @Ref() readonly inputField!: FocusableRef
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    count = 1
+const inputField = ref<FocusableRef | null>(null)
 
-    countInputRules = [
-        (value: string) => !!value || this.$t('JobQueue.InvalidCountEmpty'),
-        (value: string) => parseInt(value) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
-    ]
+const count = ref(1)
 
-    update() {
-        this.$store.dispatch('server/jobQueue/changeCount', {
-            job_id: this.job.job_id,
-            count: this.count,
-        })
+const countInputRules = [
+    (value: string) => !!value || t('JobQueue.InvalidCountEmpty'),
+    (value: string) => parseInt(value) > 0 || t('JobQueue.InvalidCountGreaterZero'),
+]
 
-        this.closeDialog()
-    }
+function update() {
+    store.dispatch('server/jobQueue/changeCount', {
+        job_id: props.job.job_id,
+        count: count.value,
+    })
 
-    closeDialog() {
-        this.showDialog = false
-    }
-
-    @Watch('showDialog')
-    onShowDialogChanged(newVal: boolean) {
-        if (!newVal) return
-
-        this.count = (this.job.combinedIds?.length ?? 0) + 1
-        setTimeout(() => {
-            this.inputField.focus()
-        })
-    }
+    closeDialog()
 }
+
+function closeDialog() {
+    showDialog.value = false
+}
+
+watch(showDialog, (newVal: boolean) => {
+    if (!newVal) return
+
+    count.value = (props.job.combinedIds?.length ?? 0) + 1
+    setTimeout(() => {
+        inputField.value?.focus()
+    })
+})
 </script>

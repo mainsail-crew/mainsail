@@ -6,22 +6,22 @@
     </v-card-text>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
 
-@Component
-export default class StartPrintDialogTimelapse extends Mixins(BaseMixin) {
-    get timelapseEnabled() {
-        return this.$store.state.server.timelapse?.settings?.enabled ?? false
-    }
+const store = useStore()
+const socket = useSocket()
 
-    set timelapseEnabled(newVal) {
-        this.$socket.emit(
+const timelapseEnabled = computed({
+    get: () => store.state.server.timelapse?.settings?.enabled ?? false,
+    set: (newVal) => {
+        socket.emit(
             'machine.timelapse.post_settings',
             { enabled: newVal },
             { action: 'server/timelapse/initSettings' }
         )
-    }
-}
+    },
+})
 </script>

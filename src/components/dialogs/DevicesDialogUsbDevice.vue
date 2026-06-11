@@ -20,31 +20,29 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
 import type { UsbDevice } from '@/types/moonraker/MachineRPC'
 
-@Component
-export default class DevicesDialogUsbDevice extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) device!: UsbDevice
+const props = defineProps({
+    device: { type: Object as () => UsbDevice, required: true },
+})
 
-    get details() {
-        const keys = ['protocol', 'class', 'serial', 'usb_location'] as const
-        const output: { key: string; value: string }[] = []
+const details = computed(() => {
+    const keys = ['protocol', 'class', 'serial', 'usb_location'] as const
+    const output: { key: string; value: string }[] = []
 
-        keys.forEach((key) => {
-            let value = this.device[key]
-            if (value === null) return
+    keys.forEach((key) => {
+        let value = props.device[key]
+        if (value === null) return
 
-            if (key === 'class' && this.device.subclass !== null) {
-                value += `, ${this.device.subclass}`
-            }
+        if (key === 'class' && props.device.subclass !== null) {
+            value += `, ${props.device.subclass}`
+        }
 
-            output.push({ key, value })
-        })
+        output.push({ key, value })
+    })
 
-        return output
-    }
-}
+    return output
+})
 </script>

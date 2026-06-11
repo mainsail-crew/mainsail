@@ -30,69 +30,78 @@
         </panel>
     </v-dialog>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useSocket } from '@/composables/useSocket'
 import type { FocusableRef } from '@/types/vuetify'
-import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick, mdiGrid } from '@mdi/js'
 
-@Component
-export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiGrid = mdiGrid
+const store = useStore()
+const { t } = useI18n()
+const socket = useSocket()
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: String, required: true }) name!: string
-    @Ref() readonly input!: FocusableRef
+const mdiCloseThick = mdiCloseThick
+const mdiGrid = mdiGrid
 
-    isInvalidName = false
-    newName = ''
+const props = defineProps({
+    modelValue: { type: Boolean },
+    name: { type: String, required: true },
+})
+const emit = defineEmits(['update:modelValue'])
 
-    rules = [
-        (value: string) => !!value || this.$t('Heightmap.InvalidNameEmpty'),
-        (value: string) => value !== 'default' || this.$t('Heightmap.InvalidNameReserved'),
-        (value: string) =>
-            !this.profileNames.includes(value) || value === this.name || this.$t('Heightmap.InvalidNameAlreadyExists'),
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-        // eslint-disable-next-line no-control-regex
-        (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || this.$t('Heightmap.InvalidNameAscii'),
-    ]
+const input = ref<FocusableRef | null>(null)
 
-    get profileNames() {
-        return Object.keys(this.$store.state.printer.bed_mesh?.profiles ?? {})
+const isInvalidName = ref(false)
+const newName = ref('')
+
+const profileNames = computed(() => Object.keys(store.state.printer.bed_mesh?.profiles ?? {}))
+
+const rules = [
+    (value: string) => !!value || t('Heightmap.InvalidNameEmpty'),
+    (value: string) => value !== 'default' || t('Heightmap.InvalidNameReserved'),
+    (value: string) =>
+        !profileNames.value.includes(value) || value === props.name || t('Heightmap.InvalidNameAlreadyExists'),
+
+    // eslint-disable-next-line no-control-regex
+    (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || t('Heightmap.InvalidNameAscii'),
+]
+
+function renameProfile() {
+    if (props.name === newName.value) {
+        closeDialog()
+        return
     }
 
-    renameProfile() {
-        if (this.name === this.newName) {
-            this.closeDialog()
-            return
-        }
+    const gcode = `BED_MESH_PROFILE SAVE="${newName.value}"\nBED_MESH_PROFILE REMOVE="${props.name}"`
 
-        const gcode = `BED_MESH_PROFILE SAVE="${this.newName}"\nBED_MESH_PROFILE REMOVE="${this.name}"`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshRename' })
 
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshRename' })
-
-        this.closeDialog()
-    }
-
-    closeDialog() {
-        this.showDialog = false
-    }
-
-    onUpdateError(hasError: boolean) {
-        this.isInvalidName = hasError
-    }
-
-    @Watch('showDialog')
-    onShowDialogChanged(newVal: boolean) {
-        if (!newVal) return
-
-        this.newName = this.name
-
-        setTimeout(() => {
-            this.input?.focus()
-        })
-    }
+    closeDialog()
 }
+
+function closeDialog() {
+    showDialog.value = false
+}
+
+function onUpdateError(hasError: boolean) {
+    isInvalidName.value = hasError
+}
+
+watch(showDialog, (newVal: boolean) => {
+    if (!newVal) return
+
+    newName.value = props.name
+
+    setTimeout(() => {
+        input.value?.focus()
+    })
+})
 </script>

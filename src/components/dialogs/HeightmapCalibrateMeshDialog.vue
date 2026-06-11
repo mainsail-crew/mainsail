@@ -34,51 +34,62 @@
         </panel>
     </v-dialog>
 </template>
-<script lang="ts">
-import { Component, Mixins, Ref, VModel, Watch } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useSocket } from '@/composables/useSocket'
 import type { FocusableRef } from '@/types/vuetify'
-import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick, mdiGrid } from '@mdi/js'
 
-@Component
-export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiGrid = mdiGrid
+const store = useStore()
+const { t } = useI18n()
+const socket = useSocket()
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Ref() readonly input!: FocusableRef
+const mdiCloseThick = mdiCloseThick
+const mdiGrid = mdiGrid
 
-    isInvalidName = false
-    name = ''
+const props = defineProps({
+    modelValue: { type: Boolean },
+})
+const emit = defineEmits(['update:modelValue'])
 
-    rules = [
-        (value: string) => !!value || this.$t('Heightmap.InvalidNameEmpty'),
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-        // eslint-disable-next-line no-control-regex
-        (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || this.$t('Heightmap.InvalidNameAscii'),
-    ]
+const input = ref<FocusableRef | null>(null)
 
-    calibrateMesh(): void {
-        const gcode = `BED_MESH_CALIBRATE PROFILE="${this.name}"`
+const isInvalidName = ref(false)
+const name = ref('')
 
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshCalibrate' })
+const rules = [
+    (value: string) => !!value || t('Heightmap.InvalidNameEmpty'),
 
-        this.closeDialog()
-    }
+    // eslint-disable-next-line no-control-regex
+    (value: string) => value === value.replace(/[^\x00-\x7F]/g, '') || t('Heightmap.InvalidNameAscii'),
+]
 
-    closeDialog() {
-        this.showDialog = false
-    }
+function calibrateMesh(): void {
+    const gcode = `BED_MESH_CALIBRATE PROFILE="${name.value}"`
 
-    @Watch('showDialog')
-    onShowDialogChanged(newVal: boolean) {
-        if (!newVal) return
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshCalibrate' })
 
-        this.name = 'default'
-        setTimeout(() => {
-            this.input?.focus()
-        })
-    }
+    closeDialog()
 }
+
+function closeDialog() {
+    showDialog.value = false
+}
+
+watch(showDialog, (newVal: boolean) => {
+    if (!newVal) return
+
+    name.value = 'default'
+    setTimeout(() => {
+        input.value?.focus()
+    })
+})
 </script>

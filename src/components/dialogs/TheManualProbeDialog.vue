@@ -90,94 +90,85 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
 import Panel from '@/components/ui/Panel.vue'
-import Responsive from '@/components/ui/Responsive.vue'
 
 import {
     mdiArrowCollapseDown,
     mdiArrowExpandUp,
-    mdiInformation,
     mdiPlusThick,
     mdiMinusThick,
     mdiChevronTripleLeft,
     mdiChevronTripleRight,
     mdiCloseThick,
 } from '@mdi/js'
-@Component({
-    components: { Panel, Responsive },
+
+const store = useStore()
+const { isMobile, loadings } = useBase()
+const socket = useSocket()
+
+const mdiArrowCollapseDown = mdiArrowCollapseDown
+const mdiArrowExpandUp = mdiArrowExpandUp
+const mdiPlusThick = mdiPlusThick
+const mdiMinusThick = mdiMinusThick
+const mdiChevronTripleLeft = mdiChevronTripleLeft
+const mdiChevronTripleRight = mdiChevronTripleRight
+const mdiCloseThick = mdiCloseThick
+
+const showDialog = computed(() => {
+    if (!boolManualProbeDialog.value) return false
+
+    return store.state.printer.manual_probe?.is_active ?? false
 })
-export default class TheManualProbeDialog extends Mixins(BaseMixin) {
-    mdiArrowCollapseDown = mdiArrowCollapseDown
-    mdiArrowExpandUp = mdiArrowExpandUp
-    mdiInformation = mdiInformation
-    mdiPlusThick = mdiPlusThick
-    mdiMinusThick = mdiMinusThick
-    mdiChevronTripleLeft = mdiChevronTripleLeft
-    mdiChevronTripleRight = mdiChevronTripleRight
-    mdiCloseThick = mdiCloseThick
 
-    get showDialog() {
-        if (!this.boolManualProbeDialog) return false
+const boolManualProbeDialog = computed(() => store.state.gui.uiSettings.boolManualProbeDialog ?? true)
 
-        return this.$store.state.printer.manual_probe?.is_active ?? false
-    }
+const offsetsZ = computed(() => {
+    const offsets = [1, 0.1, 0.05, 0.01, 0.005]
 
-    get boolManualProbeDialog() {
-        return this.$store.state.gui.uiSettings.boolManualProbeDialog ?? true
-    }
+    return offsets.sort()
+})
 
-    get offsetsZ() {
-        const offsets = [1, 0.1, 0.05, 0.01, 0.005]
+const z_position = computed(() => (store.state.printer.manual_probe?.z_position ?? 0).toFixed(3))
 
-        return offsets.sort()
-    }
+const z_position_lower = computed(() => {
+    const value = store.state.printer.manual_probe?.z_position_lower ?? null
+    if (value === null) return '??????'
 
-    get z_position() {
-        return (this.$store.state.printer.manual_probe?.z_position ?? 0).toFixed(3)
-    }
+    return value.toFixed(3)
+})
 
-    get z_position_lower() {
-        const value = this.$store.state.printer.manual_probe?.z_position_lower ?? null
-        if (value === null) return '??????'
+const z_position_upper = computed(() => {
+    const value = store.state.printer.manual_probe?.z_position_upper ?? null
+    if (value === null) return '??????'
 
-        return value.toFixed(3)
-    }
+    return value.toFixed(3)
+})
 
-    get z_position_upper() {
-        const value = this.$store.state.printer.manual_probe?.z_position_upper ?? null
-        if (value === null) return '??????'
+const loadingAbort = computed(() => loadings.value.includes('manualProbeAbort'))
 
-        return value.toFixed(3)
-    }
+const loadingAccept = computed(() => loadings.value.includes('manualProbeAccept'))
 
-    get loadingAbort() {
-        return this.loadings.includes('manualProbeAbort')
-    }
+function sendTestZ(offset: string) {
+    const gcode = `TESTZ Z=${offset}`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode })
+}
 
-    get loadingAccept() {
-        return this.loadings.includes('manualProbeAccept')
-    }
+function sendAbort() {
+    const gcode = `ABORT`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAbort' })
+}
 
-    sendTestZ(offset: string) {
-        const gcode = `TESTZ Z=${offset}`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
-    }
-
-    sendAbort() {
-        const gcode = `ABORT`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAbort' })
-    }
-
-    sendAccept() {
-        const gcode = `ACCEPT`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
-    }
+function sendAccept() {
+    const gcode = `ACCEPT`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
 }
 </script>
 

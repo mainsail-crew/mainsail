@@ -106,139 +106,136 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiAdjust, mdiAlarm, mdiCalendar, mdiCloseThick, mdiNotebookPlus } from '@mdi/js'
 
-@Component({
-    components: {
-        Panel,
-        SettingsRow,
-    },
+const store = useStore()
+const { t } = useI18n()
+
+const mdiAdjust = mdiAdjust
+const mdiAlarm = mdiAlarm
+const mdiCalendar = mdiCalendar
+const mdiCloseThick = mdiCloseThick
+const mdiNotebookPlus = mdiNotebookPlus
+
+const props = defineProps({
+    modelValue: { type: Boolean },
 })
-export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
-    mdiAdjust = mdiAdjust
-    mdiAlarm = mdiAlarm
-    mdiCalendar = mdiCalendar
-    mdiCloseThick = mdiCloseThick
-    mdiNotebookPlus = mdiNotebookPlus
+const emit = defineEmits(['update:modelValue'])
 
-    @VModel({ type: Boolean }) showDialog!: boolean
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    name: string = ''
-    note: string = ''
-    reminder: 'one-time' | 'repeat' | null = null
+const name = ref('')
+const note = ref('')
+const reminder = ref<'one-time' | 'repeat' | null>(null)
 
-    reminderFilament: boolean = false
-    reminderFilamentValue: number = 0
+const reminderFilament = ref(false)
+const reminderFilamentValue = ref(0)
 
-    reminderPrinttime: boolean = false
-    reminderPrinttimeValue: number = 0
+const reminderPrinttime = ref(false)
+const reminderPrinttimeValue = ref(0)
 
-    reminderDate: boolean = false
-    reminderDateValue: number = 0
+const reminderDate = ref(false)
+const reminderDateValue = ref(0)
 
-    nameInputRules = [(value: string) => !!value || this.$t('History.InvalidNameEmpty')]
+const nameInputRules = [(value: string) => !!value || t('History.InvalidNameEmpty')]
 
-    get reminderItems() {
-        return [
-            {
-                text: this.$t('History.NoReminder').toString(),
-                value: null,
-            },
-            {
-                text: this.$t('History.OneTime').toString(),
-                value: 'one-time',
-            },
-            {
-                text: this.$t('History.Repeat').toString(),
-                value: 'repeat',
-            },
-        ]
+const reminderItems = computed(() => [
+    {
+        text: t('History.NoReminder').toString(),
+        value: null,
+    },
+    {
+        text: t('History.OneTime').toString(),
+        value: 'one-time',
+    },
+    {
+        text: t('History.Repeat').toString(),
+        value: 'repeat',
+    },
+])
+
+const totalFilamentUsed = computed(() => store.state.server.history.job_totals?.total_filament_used ?? 0)
+
+const totalPrinttime = computed(() => store.state.server.history.job_totals?.total_print_time ?? 0)
+
+const isValid = computed(() => {
+    if (name.value === '') return false
+
+    if (reminder.value !== null) {
+        if (!reminderFilament.value && !reminderPrinttime.value && !reminderDate.value) return false
+
+        if (reminderFilament.value && reminderFilamentValue.value <= 0) return false
+        if (reminderPrinttime.value && reminderPrinttimeValue.value <= 0) return false
+        if (reminderDate.value && reminderDateValue.value <= 0) return false
     }
 
-    get totalFilamentUsed() {
-        return this.$store.state.server.history.job_totals?.total_filament_used ?? 0
-    }
+    return true
+})
 
-    get totalPrinttime() {
-        return this.$store.state.server.history.job_totals?.total_print_time ?? 0
-    }
+function closeDialog() {
+    showDialog.value = false
+}
 
-    get isValid() {
-        if (this.name === '') return false
+function save() {
+    const date = new Date()
+    store.dispatch('gui/maintenance/store', {
+        entry: {
+            name: name.value,
+            note: note.value,
+            // divided by 1000 to get seconds, because history entries are also in seconds
+            start_time: date.getTime() / 1000,
+            end_time: null,
+            start_filament: totalFilamentUsed.value,
+            end_filament: null,
+            start_printtime: totalPrinttime.value,
+            end_printtime: null,
 
-        if (this.reminder !== null) {
-            if (!this.reminderFilament && !this.reminderPrinttime && !this.reminderDate) return false
+            reminder: {
+                type: reminder.value,
 
-            if (this.reminderFilament && this.reminderFilamentValue <= 0) return false
-            if (this.reminderPrinttime && this.reminderPrinttimeValue <= 0) return false
-            if (this.reminderDate && this.reminderDateValue <= 0) return false
-        }
+                filament: {
+                    bool: reminderFilament.value,
+                    value: reminderFilamentValue.value,
+                },
 
-        return true
-    }
+                printtime: {
+                    bool: reminderPrinttime.value,
+                    value: reminderPrinttimeValue.value,
+                },
 
-    closeDialog() {
-        this.showDialog = false
-    }
-
-    save() {
-        const date = new Date()
-        this.$store.dispatch('gui/maintenance/store', {
-            entry: {
-                name: this.name,
-                note: this.note,
-                // divided by 1000 to get seconds, because history entries are also in seconds
-                start_time: date.getTime() / 1000,
-                end_time: null,
-                start_filament: this.totalFilamentUsed,
-                end_filament: null,
-                start_printtime: this.totalPrinttime,
-                end_printtime: null,
-
-                reminder: {
-                    type: this.reminder,
-
-                    filament: {
-                        bool: this.reminderFilament,
-                        value: this.reminderFilamentValue,
-                    },
-
-                    printtime: {
-                        bool: this.reminderPrinttime,
-                        value: this.reminderPrinttimeValue,
-                    },
-
-                    date: {
-                        bool: this.reminderDate,
-                        value: this.reminderDateValue,
-                    },
+                date: {
+                    bool: reminderDate.value,
+                    value: reminderDateValue.value,
                 },
             },
-        })
+        },
+    })
 
-        this.closeDialog()
-    }
-
-    resetValues() {
-        this.name = ''
-        this.note = ''
-        this.reminder = null
-        this.reminderFilament = false
-        this.reminderFilamentValue = 0
-        this.reminderPrinttime = false
-        this.reminderPrinttimeValue = 0
-        this.reminderDate = false
-        this.reminderDateValue = 0
-    }
-
-    @Watch('showDialog')
-    onShowChanged() {
-        if (this.showDialog) this.resetValues()
-    }
+    closeDialog()
 }
+
+function resetValues() {
+    name.value = ''
+    note.value = ''
+    reminder.value = null
+    reminderFilament.value = false
+    reminderFilamentValue.value = 0
+    reminderPrinttime.value = false
+    reminderPrinttimeValue.value = 0
+    reminderDate.value = false
+    reminderDateValue.value = 0
+}
+
+watch(showDialog, () => {
+    if (showDialog.value) resetValues()
+})
 </script>

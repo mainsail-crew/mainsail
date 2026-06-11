@@ -30,54 +30,55 @@
     </v-card-text>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useBase } from '@/composables/useBase'
 import type { RPCResult } from '@/types/moonraker'
 import type { LibcameraDevice, V4l2Device } from '@/types/moonraker/MachineRPC'
 
-@Component
-export default class DevicesDialogVideo extends Mixins(BaseMixin) {
-    v4l2Devices: V4l2Device[] = []
-    libcameraDevices: LibcameraDevice[] = []
-    loading = false
-    loaded = false
+const { apiUrl } = useBase()
 
-    @Prop({ type: Boolean, default: false }) hideSystemEntries!: boolean
+const props = defineProps({
+    hideSystemEntries: { type: Boolean, default: false },
+})
 
-    get filteredLibcameraDevices() {
-        if (this.hideSystemEntries) {
-            return this.libcameraDevices.filter((device) => !device.libcamera_id.includes('usb@'))
+const v4l2Devices = ref<V4l2Device[]>([])
+const libcameraDevices = ref<LibcameraDevice[]>([])
+const loading = ref(false)
+const loaded = ref(false)
+
+const filteredLibcameraDevices = computed(() => {
+    if (props.hideSystemEntries) {
+        return libcameraDevices.value.filter((device) => !device.libcamera_id.includes('usb@'))
+    }
+
+    return libcameraDevices.value
+})
+
+const filteredV4l2Devices = computed(() => {
+    return v4l2Devices.value.filter((device) => {
+        if (props.hideSystemEntries) {
+            if (libcameraDevices.value.length === 0 && device.hardware_bus.endsWith('csi')) return true
+
+            return !device.hardware_bus.startsWith('platform:')
         }
 
-        return this.libcameraDevices
-    }
+        return true
+    })
+})
 
-    get filteredV4l2Devices() {
-        return this.v4l2Devices.filter((device) => {
-            if (this.hideSystemEntries) {
-                if (this.libcameraDevices.length === 0 && device.hardware_bus.endsWith('csi')) return true
+async function refresh() {
+    loading.value = true
 
-                return !device.hardware_bus.startsWith('platform:')
-            }
+    const result = await fetch(apiUrl.value + '/machine/peripherals/video')
+        .then((res) => res.json())
+        .then((res: { result?: RPCResult<'machine.peripherals.video'> }) => res.result)
 
-            return true
-        })
-    }
+    v4l2Devices.value = result?.v4l2_devices ?? []
+    libcameraDevices.value = result?.libcamera_devices ?? []
 
-    async refresh() {
-        this.loading = true
-
-        const result = await fetch(this.apiUrl + '/machine/peripherals/video')
-            .then((res) => res.json())
-            .then((res: { result?: RPCResult<'machine.peripherals.video'> }) => res.result)
-
-        this.v4l2Devices = result?.v4l2_devices ?? []
-        this.libcameraDevices = result?.libcamera_devices ?? []
-
-        this.loading = false
-        this.loaded = true
-    }
+    loading.value = false
+    loaded.value = true
 }
 </script>
 

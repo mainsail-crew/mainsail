@@ -8,58 +8,45 @@
         <v-chip v-else label small>{{ $t('ScrewsTiltAdjust.Base') }}</v-chip>
     </settings-row>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import Panel from '@/components/ui/Panel.vue'
-import Responsive from '@/components/ui/Responsive.vue'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { mdiRotateLeft, mdiRotateRight, mdiCloseThick } from '@mdi/js'
-import ControlMixin from '@/components/mixins/control'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { mdiRotateLeft, mdiRotateRight } from '@mdi/js'
+
 interface ScrewsTiltAdjustResult {
     z: number
     sign?: string
     adjust?: string
     is_base: boolean
 }
-@Component({
-    components: { Panel, Responsive, SettingsRow },
+
+const store = useStore()
+
+const mdiRotateLeft = mdiRotateLeft
+const mdiRotateRight = mdiRotateRight
+
+const props = defineProps({
+    name: { type: String, required: true },
+    result: { type: Object as () => ScrewsTiltAdjustResult, required: true },
 })
-export default class TheScrewsTiltAdjustDialogEntry extends Mixins(BaseMixin, ControlMixin) {
-    mdiRotateLeft = mdiRotateLeft
-    mdiCloseThick = mdiCloseThick
-    mdiRotateRight = mdiRotateRight
-    @Prop({ required: true }) declare readonly name: string
-    @Prop({ required: true }) declare readonly result: ScrewsTiltAdjustResult
-    get settings() {
-        return this.$store.state.printer.configfile?.settings?.screws_tilt_adjust ?? {}
-    }
-    get outputName() {
-        return this.settings[this.name + '_name'] ?? 'Unknown'
-    }
-    get coordinates() {
-        return this.settings[this.name] ?? [0, 0]
-    }
-    get x() {
-        return this.coordinates[0] ?? 0
-    }
-    get y() {
-        return this.coordinates[1] ?? 0
-    }
-    get z() {
-        return this.result.z.toFixed(3)
-    }
-    get subTitle() {
-        return `(X: ${this.x}, Y: ${this.y}, Z: ${this.z})`
-    }
-    get sign() {
-        return this.result.sign ?? ''
-    }
-    get adjust() {
-        return this.result.adjust ?? '00:00'
-    }
-    get is_base() {
-        return this.result.is_base ?? false
-    }
-}
+
+const settings = computed(() => store.state.printer.configfile?.settings?.screws_tilt_adjust ?? {})
+
+const outputName = computed(() => settings.value[props.name + '_name'] ?? 'Unknown')
+
+const coordinates = computed(() => settings.value[props.name] ?? [0, 0])
+
+const x = computed(() => coordinates.value[0] ?? 0)
+
+const y = computed(() => coordinates.value[1] ?? 0)
+
+const z = computed(() => props.result.z.toFixed(3))
+
+const subTitle = computed(() => `(X: ${x.value}, Y: ${y.value}, Z: ${z.value})`)
+
+const sign = computed(() => props.result.sign ?? '')
+
+const adjust = computed(() => props.result.adjust ?? '00:00')
+
+const is_base = computed(() => props.result.is_base ?? false)
 </script>

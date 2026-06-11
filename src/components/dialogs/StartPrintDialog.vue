@@ -29,42 +29,44 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import { FileStateGcodefile } from '@/store/files/types'
-import { mdiPrinter3d } from '@mdi/js'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
+import type { FileStateGcodefile } from '@/store/files/types'
 
-@Component({
-    components: {},
+const { t } = useI18n()
+const socket = useSocket()
+const { klipperReadyForGui, printerIsPrinting, moonrakerComponents } = useBase()
+
+const props = defineProps({
+    modelValue: { type: Boolean },
+    currentPath: { type: String, default: '' },
+    file: { type: Object as () => FileStateGcodefile, required: true },
 })
-export default class StartPrintDialog extends Mixins(BaseMixin) {
-    mdiPrinter3d = mdiPrinter3d
+const emit = defineEmits(['update:modelValue'])
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ required: true, default: '' }) readonly currentPath!: string
-    @Prop({ required: true }) readonly file!: FileStateGcodefile
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    get existsTimelapse() {
-        return this.moonrakerComponents.includes('timelapse')
-    }
+const existsTimelapse = computed(() => moonrakerComponents.value.includes('timelapse'))
 
-    get showDivider() {
-        return this.existsTimelapse
-    }
+const showDivider = computed(() => existsTimelapse.value)
 
-    get question() {
-        return this.$t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: this.file?.filename ?? 'unknown' })
-    }
+const question = computed(() =>
+    t('Dialogs.StartPrint.DoYouWantToStartFilename', { filename: props.file?.filename ?? 'unknown' })
+)
 
-    startPrint(filename = '') {
-        filename = (this.currentPath + '/' + filename).substring(1)
-        this.closeDialog()
-        this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
-    }
+function startPrint(filename = '') {
+    filename = (props.currentPath + '/' + filename).substring(1)
+    closeDialog()
+    socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
+}
 
-    closeDialog() {
-        this.showDialog = false
-    }
+function closeDialog() {
+    showDialog.value = false
 }
 </script>

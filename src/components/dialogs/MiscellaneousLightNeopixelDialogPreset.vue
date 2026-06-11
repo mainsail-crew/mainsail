@@ -6,40 +6,37 @@
         <span>{{ name }}</span>
     </v-tooltip>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import { GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 
-@Component
-export default class MiscellaneousLightNeopixelDialogPreset extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) preset!: GuiMiscellaneousStateEntryPreset
+const props = defineProps({
+    preset: { type: Object as () => GuiMiscellaneousStateEntryPreset, required: true },
+})
+const emit = defineEmits(['update-color'])
 
-    get name() {
-        return this.preset.name
+const name = computed(() => props.preset.name)
+
+const presetStyle = computed(() => {
+    const red = props.preset.red ?? 0
+    const green = props.preset.green ?? 0
+    const blue = props.preset.blue ?? 0
+    const white = props.preset.white ?? 0
+    const RGBSum = red + green + blue
+
+    if (RGBSum && white > 0) {
+        return { backgroundColor: `rgb(${white}%, ${white}%, ${white}%)` }
     }
 
-    get presetStyle() {
-        const red = this.preset.red ?? 0
-        const green = this.preset.green ?? 0
-        const blue = this.preset.blue ?? 0
-        const white = this.preset.white ?? 0
-        const RGBSum = red + green + blue
+    return { backgroundColor: `rgb(${red}%, ${green}%, ${blue}%)` }
+})
 
-        if (RGBSum && white > 0) {
-            return { backgroundColor: `rgb(${white}%, ${white}%, ${white}%)` }
-        }
+function usePreset() {
+    const red = props.preset.red ?? 0
+    const green = props.preset.green ?? 0
+    const blue = props.preset.blue ?? 0
+    const white = props.preset.white ?? 0
 
-        return { backgroundColor: `rgb(${red}%, ${green}%, ${blue}%)` }
-    }
-
-    usePreset() {
-        const red = this.preset.red ?? 0
-        const green = this.preset.green ?? 0
-        const blue = this.preset.blue ?? 0
-        const white = this.preset.white ?? 0
-
-        this.$emit('update-color', { red, green, blue, white })
-    }
+    emit('update-color', { red, green, blue, white })
 }
 </script>

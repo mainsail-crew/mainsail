@@ -34,61 +34,71 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSocket } from '@/composables/useSocket'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
 import type { FocusableRef } from '@/types/vuetify'
-import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick } from '@mdi/js'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
-import { FileStateGcodefile } from '@/store/files/types'
+import type { FileStateGcodefile } from '@/store/files/types'
 
-@Component
-export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiCloseThick = mdiCloseThick
+const { t } = useI18n()
+const socket = useSocket()
+const { currentPath, existsFilename } = useGcodeFiles()
 
-    name = ''
-    isInvalidName = true
+const mdiCloseThick = mdiCloseThick
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, required: true }) item!: FileStateGcodefile
-    @Ref() readonly inputField!: FocusableRef
+const name = ref('')
+const isInvalidName = ref(true)
 
-    nameInputRules = [
-        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
-    ]
+const props = defineProps({
+    modelValue: { type: Boolean },
+    item: { type: Object as () => FileStateGcodefile, required: true },
+})
+const emit = defineEmits(['update:modelValue'])
 
-    updateIsInvalidName(value: boolean) {
-        this.isInvalidName = value
-    }
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    renameDirectoryAction() {
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: 'gcodes' + this.currentPath + '/' + this.item.filename,
-                dest: 'gcodes' + this.currentPath + '/' + this.name,
-            },
-            { action: 'files/getMove' }
-        )
+const inputField = ref<FocusableRef | null>(null)
 
-        this.closePrompt()
-    }
+const nameInputRules = [
+    (value: string) => !!value || t('Files.InvalidNameEmpty'),
+    (value: string) => !existsFilename(value) || t('Files.InvalidNameAlreadyExists'),
+]
 
-    closePrompt() {
-        this.showDialog = false
-    }
-
-    @Watch('showDialog')
-    onShowDialogChanged(newVal: boolean) {
-        if (!newVal) return
-
-        this.name = this.item.filename
-        this.isInvalidName = true
-
-        setTimeout(() => {
-            this.inputField?.focus()
-        })
-    }
+function updateIsInvalidName(value: boolean) {
+    isInvalidName.value = value
 }
+
+function renameDirectoryAction() {
+    socket.emit(
+        'server.files.move',
+        {
+            source: 'gcodes' + currentPath.value + '/' + props.item.filename,
+            dest: 'gcodes' + currentPath.value + '/' + name.value,
+        },
+        { action: 'files/getMove' }
+    )
+
+    closePrompt()
+}
+
+function closePrompt() {
+    showDialog.value = false
+}
+
+watch(showDialog, (newVal: boolean) => {
+    if (!newVal) return
+
+    name.value = props.item.filename
+    isInvalidName.value = true
+
+    setTimeout(() => {
+        inputField.value?.focus()
+    })
+})
 </script>

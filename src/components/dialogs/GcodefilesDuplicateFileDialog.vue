@@ -27,60 +27,68 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSocket } from '@/composables/useSocket'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
 import type { FocusableRef } from '@/types/vuetify'
-import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
-import { FileStateGcodefile } from '@/store/files/types'
+import type { FileStateGcodefile } from '@/store/files/types'
 
-@Component({
-    components: { Panel },
+const { t } = useI18n()
+const socket = useSocket()
+const { currentPath, existsFilename } = useGcodeFiles()
+
+const mdiCloseThick = mdiCloseThick
+
+const name = ref('')
+const isInvalidName = ref(true)
+
+const props = defineProps({
+    modelValue: { type: Boolean },
+    item: { type: Object as () => FileStateGcodefile, required: true },
 })
-export default class GcodefilesDuplicateFileDialog extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiCloseThick = mdiCloseThick
+const emit = defineEmits(['update:modelValue'])
 
-    name = ''
-    isInvalidName = true
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, required: true }) item!: FileStateGcodefile
-    @Ref() readonly inputField!: FocusableRef
+const inputField = ref<FocusableRef | null>(null)
 
-    nameInputRules = [
-        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
-    ]
+const nameInputRules = [
+    (value: string) => !!value || t('Files.InvalidNameEmpty'),
+    (value: string) => !existsFilename(value) || t('Files.InvalidNameAlreadyExists'),
+]
 
-    updateIsInvalidName(value: boolean) {
-        this.isInvalidName = value
-    }
-
-    duplicateFileAction() {
-        this.$socket.emit('server.files.copy', {
-            source: 'gcodes' + this.currentPath + '/' + this.item.filename,
-            dest: 'gcodes' + this.currentPath + '/' + this.name,
-        })
-
-        this.closePrompt()
-    }
-
-    closePrompt() {
-        this.showDialog = false
-    }
-
-    @Watch('showDialog')
-    onShowDialogChanged(newVal: boolean) {
-        if (!newVal) return
-
-        this.name = this.item.filename
-        this.isInvalidName = true
-
-        setTimeout(() => {
-            this.inputField?.focus()
-        })
-    }
+function updateIsInvalidName(value: boolean) {
+    isInvalidName.value = value
 }
+
+function duplicateFileAction() {
+    socket.emit('server.files.copy', {
+        source: 'gcodes' + currentPath.value + '/' + props.item.filename,
+        dest: 'gcodes' + currentPath.value + '/' + name.value,
+    })
+
+    closePrompt()
+}
+
+function closePrompt() {
+    showDialog.value = false
+}
+
+watch(showDialog, (newVal: boolean) => {
+    if (!newVal) return
+
+    name.value = props.item.filename
+    isInvalidName.value = true
+
+    setTimeout(() => {
+        inputField.value?.focus()
+    })
+})
 </script>

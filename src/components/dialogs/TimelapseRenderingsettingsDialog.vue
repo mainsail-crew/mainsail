@@ -98,37 +98,50 @@
         </panel>
     </v-dialog>
 </template>
-<script lang="ts">
-import { Component, Mixins, VModel } from 'vue-property-decorator'
-import Panel from '@/components/ui/Panel.vue'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
-import BaseMixin from '@/components/mixins/base'
-import TimelapseMixin from '@/components/mixins/timelapse'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSocket } from '@/composables/useSocket'
+import { useTimelapse } from '@/composables/useTimelapse'
 import { mdiCloseThick, mdiTextBoxSearchOutline } from '@mdi/js'
 
-@Component({
-    components: { Panel, SettingsRow },
+const { t } = useI18n()
+const socket = useSocket()
+const {
+    variable_fps,
+    variable_fps_min,
+    variable_fps_max,
+    targetlength,
+    output_framerate,
+    duplicatelastframe,
+    variableTargetFps,
+    estimatedVideoLength,
+} = useTimelapse()
+
+const mdiCloseThick = mdiCloseThick
+const mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
+
+const props = defineProps({
+    modelValue: { type: Boolean },
 })
-export default class TimelapseRenderingsettingsDialog extends Mixins(BaseMixin, TimelapseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
+const emit = defineEmits(['update:modelValue'])
 
-    @VModel({ type: Boolean }) showDialog!: boolean
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    get framerateTypeOptions() {
-        return [
-            { value: false, text: this.$t('Timelapse.Fixed') },
-            { value: true, text: this.$t('Timelapse.Variable') },
-        ]
-    }
+const framerateTypeOptions = computed(() => [
+    { value: false, text: t('Timelapse.Fixed') },
+    { value: true, text: t('Timelapse.Variable') },
+])
 
-    startRender() {
-        this.$socket.emit('machine.timelapse.render', {})
-        this.close()
-    }
+function startRender() {
+    socket.emit('machine.timelapse.render', {})
+    close()
+}
 
-    close() {
-        this.showDialog = false
-    }
+function close() {
+    showDialog.value = false
 }
 </script>

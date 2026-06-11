@@ -4,35 +4,30 @@
     </v-btn>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import { ServerStateEventPrompt } from '@/store/server/types'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import type { ServerStateEventPrompt } from '@/store/server/types'
 
-@Component({})
-export default class MacroPromptActionButton extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly event!: ServerStateEventPrompt
+const store = useStore()
+const socket = useSocket()
 
-    get splits() {
-        return this.event.message.split('|')
-    }
+const props = defineProps({
+    event: { type: Object as () => ServerStateEventPrompt, required: true },
+})
 
-    get text() {
-        return this.splits[0]
-    }
+const splits = computed(() => props.event.message.split('|'))
 
-    get command() {
-        return this.splits[1] ?? this.text
-    }
+const text = computed(() => splits.value[0])
 
-    get color() {
-        return this.splits[2] ?? ''
-    }
+const command = computed(() => splits.value[1] ?? text.value)
 
-    clickButton() {
-        this.$store.dispatch('server/addEvent', { message: this.command, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: this.command })
-    }
+const color = computed(() => splits.value[2] ?? '')
+
+function clickButton() {
+    store.dispatch('server/addEvent', { message: command.value, type: 'command' })
+    socket.emit('printer.gcode.script', { script: command.value })
 }
 </script>
 

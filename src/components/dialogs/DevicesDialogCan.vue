@@ -44,37 +44,36 @@
     </overlay-scrollbars>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useBase } from '@/composables/useBase'
 import DevicesDialogCanDevice from '@/components/dialogs/DevicesDialogCanDevice.vue'
 import { mdiInformationVariantCircle } from '@mdi/js'
 import type { RPCResult } from '@/types/moonraker'
 import type { CanDevice } from '@/types/moonraker/MachineRPC'
 
-@Component({
-    components: { DevicesDialogCanDevice },
+const { apiUrl } = useBase()
+
+const mdiInformationVariantCircle = mdiInformationVariantCircle
+
+const props = defineProps({
+    name: { type: String, required: true },
+    hideSystemEntries: { type: Boolean, default: false },
 })
-export default class DevicesDialogCan extends Mixins(BaseMixin) {
-    mdiInformationVariantCircle = mdiInformationVariantCircle
 
-    devices: CanDevice[] = []
-    loading = false
-    loaded = false
+const devices = ref<CanDevice[]>([])
+const loading = ref(false)
+const loaded = ref(false)
 
-    @Prop({ type: String, required: true }) name!: string
-    @Prop({ type: Boolean, default: false }) hideSystemEntries!: boolean
+async function refresh() {
+    loading.value = true
 
-    async refresh() {
-        this.loading = true
+    devices.value = await fetch(`${apiUrl.value}/machine/peripherals/canbus?interface=${props.name}`)
+        .then((res) => res.json())
+        .then((res: { result?: RPCResult<'machine.peripherals.canbus'> }) => res.result?.can_uuids ?? [])
 
-        this.devices = await fetch(`${this.apiUrl}/machine/peripherals/canbus?interface=${this.name}`)
-            .then((res) => res.json())
-            .then((res: { result?: RPCResult<'machine.peripherals.canbus'> }) => res.result?.can_uuids ?? [])
-
-        this.loading = false
-        this.loaded = true
-    }
+    loading.value = false
+    loaded.value = true
 }
 </script>
 

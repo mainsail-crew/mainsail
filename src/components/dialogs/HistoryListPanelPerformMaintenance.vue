@@ -26,52 +26,57 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiNotebook } from '@mdi/js'
-import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
-import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'
+import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
-@Component({
-    components: { Panel, HistoryListPanelDetailMaintenanceHistoryEntry },
+const store = useStore()
+const { t } = useI18n()
+
+const mdiCloseThick = mdiCloseThick
+const mdiNotebook = mdiNotebook
+
+const props = defineProps({
+    modelValue: { type: Boolean },
+    item: { type: Object as () => GuiMaintenanceStateEntry, default: () => ({}) as GuiMaintenanceStateEntry },
 })
-export default class HistoryListPanelPerformMaintenance extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiNotebook = mdiNotebook
+const emit = defineEmits(['update:modelValue', 'close-details-dialog'])
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, default: false }) readonly item!: GuiMaintenanceStateEntry
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    note: string = ''
+const note = ref('')
 
-    get showPerformButton() {
-        if (this.item.end_time) return false
+const showPerformButton = computed(() => {
+    if (props.item.end_time) return false
 
-        return this.item.reminder?.type ?? false
-    }
+    return props.item.reminder?.type ?? false
+})
 
-    get performButtonText() {
-        if (this.item.reminder?.type === 'repeat') return this.$t('History.PerformedAndReschedule')
+const performButtonText = computed(() => {
+    if (props.item.reminder?.type === 'repeat') return t('History.PerformedAndReschedule')
 
-        return this.$t('History.Performed')
-    }
+    return t('History.Performed')
+})
 
-    closeDialog() {
-        this.showDialog = false
-    }
-
-    perform() {
-        this.$store.dispatch('gui/maintenance/perform', { id: this.item.id, note: this.note })
-        this.$emit('close-details-dialog')
-    }
-
-    @Watch('showDialog')
-    onShowDialogChanged(newVal: boolean) {
-        if (!newVal) return
-
-        this.note = ''
-    }
+function closeDialog() {
+    showDialog.value = false
 }
+
+function perform() {
+    store.dispatch('gui/maintenance/perform', { id: props.item.id, note: note.value })
+    emit('close-details-dialog')
+}
+
+watch(showDialog, (newVal: boolean) => {
+    if (!newVal) return
+
+    note.value = ''
+})
 </script>

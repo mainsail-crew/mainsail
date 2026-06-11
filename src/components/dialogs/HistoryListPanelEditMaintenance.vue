@@ -122,121 +122,122 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiAdjust, mdiAlarm, mdiCalendar, mdiCloseThick, mdiNotebook } from '@mdi/js'
-import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
-@Component({
-    components: {
-        Panel,
-        SettingsRow,
-    },
+const store = useStore()
+const { t } = useI18n()
+
+const mdiAdjust = mdiAdjust
+const mdiAlarm = mdiAlarm
+const mdiCalendar = mdiCalendar
+const mdiCloseThick = mdiCloseThick
+const mdiNotebook = mdiNotebook
+
+const props = defineProps({
+    modelValue: { type: Boolean },
+    item: { type: Object as () => GuiMaintenanceStateEntry, required: true },
 })
-export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
-    mdiAdjust = mdiAdjust
-    mdiAlarm = mdiAlarm
-    mdiCalendar = mdiCalendar
-    mdiCloseThick = mdiCloseThick
-    mdiNotebook = mdiNotebook
+const emit = defineEmits(['update:modelValue'])
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, required: true }) readonly item!: GuiMaintenanceStateEntry
+const showDialog = computed({
+    get: () => props.modelValue,
+    set: (val) => emit('update:modelValue', val),
+})
 
-    name: string = ''
-    note: string = ''
-    reminder: 'one-time' | 'repeat' | null = null
+const name = ref('')
+const note = ref('')
+const reminder = ref<'one-time' | 'repeat' | null>(null)
 
-    reminderFilament: boolean = false
-    reminderFilamentValue: number = 0
+const reminderFilament = ref(false)
+const reminderFilamentValue = ref(0)
 
-    reminderPrinttime: boolean = false
-    reminderPrinttimeValue: number = 0
+const reminderPrinttime = ref(false)
+const reminderPrinttimeValue = ref(0)
 
-    reminderDate: boolean = false
-    reminderDateValue: number = 0
+const reminderDate = ref(false)
+const reminderDateValue = ref(0)
 
-    nameInputRules = [(value: string) => !!value || this.$t('History.InvalidNameEmpty')]
+const nameInputRules = [(value: string) => !!value || t('History.InvalidNameEmpty')]
 
-    get reminderItems() {
-        return [
-            {
-                text: this.$t('History.NoReminder').toString(),
-                value: null,
-            },
-            {
-                text: this.$t('History.OneTime').toString(),
-                value: 'one-time',
-            },
-            {
-                text: this.$t('History.Repeat').toString(),
-                value: 'repeat',
-            },
-        ]
+const reminderItems = computed(() => [
+    {
+        text: t('History.NoReminder').toString(),
+        value: null,
+    },
+    {
+        text: t('History.OneTime').toString(),
+        value: 'one-time',
+    },
+    {
+        text: t('History.Repeat').toString(),
+        value: 'repeat',
+    },
+])
+
+const isValid = computed(() => {
+    if (name.value === '') return false
+
+    if (reminder.value !== null) {
+        if (!reminderFilament.value && !reminderPrinttime.value && !reminderDate.value) return false
+
+        if (reminderFilament.value && reminderFilamentValue.value <= 0) return false
+        if (reminderPrinttime.value && reminderPrinttimeValue.value <= 0) return false
+        if (reminderDate.value && reminderDateValue.value <= 0) return false
     }
 
-    get isValid() {
-        if (this.name === '') return false
+    return true
+})
 
-        if (this.reminder !== null) {
-            if (!this.reminderFilament && !this.reminderPrinttime && !this.reminderDate) return false
-
-            if (this.reminderFilament && this.reminderFilamentValue <= 0) return false
-            if (this.reminderPrinttime && this.reminderPrinttimeValue <= 0) return false
-            if (this.reminderDate && this.reminderDateValue <= 0) return false
-        }
-
-        return true
-    }
-
-    closeDialog() {
-        this.showDialog = false
-    }
-
-    save() {
-        // Remove type from item, this is not needed and comes from the history list
-        const item = { ...this.item } as GuiMaintenanceStateEntry & { type?: string }
-        delete item.type
-
-        item.name = this.name
-        item.note = this.note
-        item.reminder = {
-            type: this.reminder,
-            filament: {
-                bool: this.reminderFilament,
-                value: this.reminderFilamentValue,
-            },
-            printtime: {
-                bool: this.reminderPrinttime,
-                value: this.reminderPrinttimeValue,
-            },
-            date: {
-                bool: this.reminderDate,
-                value: this.reminderDateValue,
-            },
-        }
-
-        this.$store.dispatch('gui/maintenance/update', item)
-
-        this.closeDialog()
-    }
-
-    @Watch('showDialog')
-    onShowDialogChanged(newVal: boolean) {
-        if (!newVal || !this.item) return
-
-        this.name = this.item.name
-        this.note = this.item.note
-        this.reminder = this.item.reminder?.type ?? null
-        this.reminderFilament = this.item.reminder?.filament.bool ?? false
-        this.reminderFilamentValue = this.item.reminder?.filament.value ?? 0
-        this.reminderPrinttime = this.item.reminder?.printtime.bool ?? false
-        this.reminderPrinttimeValue = this.item.reminder?.printtime.value ?? 0
-        this.reminderDate = this.item.reminder?.date.bool ?? false
-        this.reminderDateValue = this.item.reminder?.date.value ?? 0
-    }
+function closeDialog() {
+    showDialog.value = false
 }
+
+function save() {
+    // Remove type from item, this is not needed and comes from the history list
+    const item = { ...props.item } as GuiMaintenanceStateEntry & { type?: string }
+    delete (item as GuiMaintenanceStateEntry & { type?: string }).type
+
+    item.name = name.value
+    item.note = note.value
+    item.reminder = {
+        type: reminder.value,
+        filament: {
+            bool: reminderFilament.value,
+            value: reminderFilamentValue.value,
+        },
+        printtime: {
+            bool: reminderPrinttime.value,
+            value: reminderPrinttimeValue.value,
+        },
+        date: {
+            bool: reminderDate.value,
+            value: reminderDateValue.value,
+        },
+    }
+
+    store.dispatch('gui/maintenance/update', item)
+
+    closeDialog()
+}
+
+watch(showDialog, (newVal: boolean) => {
+    if (!newVal || !props.item) return
+
+    name.value = props.item.name
+    note.value = props.item.note
+    reminder.value = props.item.reminder?.type ?? null
+    reminderFilament.value = props.item.reminder?.filament.bool ?? false
+    reminderFilamentValue.value = props.item.reminder?.filament.value ?? 0
+    reminderPrinttime.value = props.item.reminder?.printtime.bool ?? false
+    reminderPrinttimeValue.value = props.item.reminder?.printtime.value ?? 0
+    reminderDate.value = props.item.reminder?.date.bool ?? false
+    reminderDateValue.value = props.item.reminder?.date.value ?? 0
+})
 </script>

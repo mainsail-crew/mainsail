@@ -66,110 +66,91 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
+import { useSocket } from '@/composables/useSocket'
 import Panel from '@/components/ui/Panel.vue'
-import Responsive from '@/components/ui/Responsive.vue'
 
-import { mdiArrowCollapseDown, mdiInformation, mdiCloseThick } from '@mdi/js'
-import ControlMixin from '@/components/mixins/control'
-@Component({
-    components: { Panel, Responsive },
+import { mdiArrowCollapseDown, mdiCloseThick } from '@mdi/js'
+
+const store = useStore()
+const { t } = useI18n()
+const { isMobile, loadings } = useBase()
+const { homedAxes } = useControl()
+const socket = useSocket()
+
+const mdiArrowCollapseDown = mdiArrowCollapseDown
+const mdiCloseThick = mdiCloseThick
+
+const showDialog = computed(() => {
+    if (!boolBedScrewsDialog.value) return false
+
+    const is_active = store.state.printer.bed_screws?.is_active ?? false
+
+    return is_active && homedAxes.value.includes('xyz')
 })
-export default class TheBedScrewsDialog extends Mixins(BaseMixin, ControlMixin) {
-    mdiArrowCollapseDown = mdiArrowCollapseDown
-    mdiInformation = mdiInformation
-    mdiCloseThick = mdiCloseThick
 
-    get showDialog() {
-        if (!this.boolBedScrewsDialog) return false
+const boolBedScrewsDialog = computed(() => store.state.gui.uiSettings.boolBedScrewsDialog ?? true)
 
-        const is_active = this.$store.state.printer.bed_screws?.is_active ?? false
+const config = computed(() => store.state.printer.configfile?.settings?.bed_screws ?? {})
 
-        return is_active && this.homedAxes.includes('xyz')
-    }
+const current_screw = computed(() => store.state.printer.bed_screws?.current_screw)
 
-    get boolBedScrewsDialog() {
-        return this.$store.state.gui.uiSettings.boolBedScrewsDialog ?? true
-    }
+const accepted_screws = computed(() => store.state.printer.bed_screws?.accepted_screws)
 
-    get config() {
-        return this.$store.state.printer.configfile?.settings?.bed_screws ?? {}
-    }
+const loadingAbort = computed(() => loadings.value.includes('bedScrewsAbort'))
 
-    get bed_screws_state() {
-        return this.$store.state.printer.bed_screws?.state
-    }
+const loadingAccept = computed(() => loadings.value.includes('bedScrewsAccept'))
 
-    get current_screw() {
-        return this.$store.state.printer.bed_screws?.current_screw
-    }
+const loadingAdjusted = computed(() => loadings.value.includes('bedScrewsAdjusted'))
 
-    get accepted_screws() {
-        return this.$store.state.printer.bed_screws?.accepted_screws
-    }
+const screwNames = computed(() => {
+    const configKeys = Object.keys(config.value)
+    const screwNameKeys = configKeys.filter((name: string) => name.startsWith('screw') && name.endsWith('_name'))
 
-    get loadingAbort() {
-        return this.loadings.includes('bedScrewsAbort')
-    }
+    const output: string[] = []
+    screwNameKeys?.forEach((fullName: string) => {
+        const index = fullName.indexOf('_')
+        const number = parseInt(fullName.slice(5, index))
 
-    get loadingAccept() {
-        return this.loadings.includes('bedScrewsAccept')
-    }
+        output[number - 1] = config.value[`screw${number}_name`] ?? ''
+    })
 
-    get loadingAdjusted() {
-        return this.loadings.includes('bedScrewsAdjusted')
-    }
+    return output
+})
 
-    get screwNames() {
-        const configKeys = Object.keys(this.config)
-        const screwNameKeys = configKeys.filter((name: string) => name.startsWith('screw') && name.endsWith('_name'))
+const countScrews = computed(() => screwNames.value.length)
 
-        const output: string[] = []
-        screwNameKeys?.forEach((fullName: string) => {
-            const index = fullName.indexOf('_')
-            const number = parseInt(fullName.slice(5, index))
+const currentScrewName = computed(() => screwNames.value[current_screw.value] ?? 'UNKNOWN')
 
-            output[number - 1] = this.config[`screw${number}_name`] ?? ''
-        })
+const currentScrewOutput = computed(() =>
+    t('BedScrews.ScrewOutput', { current: current_screw.value, max: countScrews.value })
+)
 
-        return output
-    }
+const acceptedScrewOutput = computed(() =>
+    t('BedScrews.ScrewOutput', { current: accepted_screws.value, max: countScrews.value })
+)
 
-    get countScrews() {
-        return this.screwNames.length
-    }
+function sendAbort() {
+    const gcode = `ABORT`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAbort' })
+}
 
-    get currentScrewName() {
-        return this.screwNames[this.current_screw] ?? 'UNKNOWN'
-    }
+function sendAccept() {
+    const gcode = `ACCEPT`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
+}
 
-    get currentScrewOutput() {
-        return this.$t('BedScrews.ScrewOutput', { current: this.current_screw, max: this.countScrews })
-    }
-
-    get acceptedScrewOutput() {
-        return this.$t('BedScrews.ScrewOutput', { current: this.accepted_screws, max: this.countScrews })
-    }
-
-    sendAbort() {
-        const gcode = `ABORT`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAbort' })
-    }
-
-    sendAccept() {
-        const gcode = `ACCEPT`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
-    }
-
-    sendAdjusted() {
-        const gcode = `ADJUSTED`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
-    }
+function sendAdjusted() {
+    const gcode = `ADJUSTED`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'manualProbeAccept' })
 }
 </script>
 

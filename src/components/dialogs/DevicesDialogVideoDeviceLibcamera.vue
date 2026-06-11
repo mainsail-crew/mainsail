@@ -32,30 +32,26 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { sortResolutions } from '@/plugins/helpers'
 import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
 import type { LibcameraDevice } from '@/types/moonraker/MachineRPC'
 
-@Component({
-    components: { TextfieldWithCopy },
+const props = defineProps({
+    device: { type: Object as () => LibcameraDevice, required: true },
 })
-export default class DevicesDialogVideoDeviceLibcamera extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) device!: LibcameraDevice
 
-    get identicalResolutions() {
-        const resolutions = this.device.modes.map((mode) => mode.resolutions.sort(sortResolutions).join(','))
-        return resolutions.every((resolution) => resolution === resolutions[0])
-    }
+const identicalResolutions = computed(() => {
+    const resolutions = props.device.modes.map((mode) => mode.resolutions.sort(sortResolutions).join(','))
+    return resolutions.every((resolution) => resolution === resolutions[0])
+})
 
-    get resolutions() {
-        return this.device.modes[0].resolutions.join(', ')
-    }
+const resolutions = computed(() => {
+    return props.device.modes[0].resolutions.join(', ')
+})
 
-    get formats() {
-        return this.device.modes.map((mode) => mode.format).join(', ')
-    }
-}
+const formats = computed(() => {
+    return props.device.modes.map((mode) => mode.format).join(', ')
+})
 </script>
