@@ -113,8 +113,8 @@
                                     top
                                     :close-on-content-click="false"
                                     :title="$t('Files.SetupCurrentList')">
-                                    <template #activator="{ on, attrs }">
-                                        <v-btn class="minwidth-0 px-2 ml-3" v-bind="attrs" v-on="on">
+                                    <template #activator="{ props }">
+                                        <v-btn class="minwidth-0 px-2 ml-3" v-bind="props">
                                             <v-icon>{{ mdiCog }}</v-icon>
                                         </v-btn>
                                     </template>

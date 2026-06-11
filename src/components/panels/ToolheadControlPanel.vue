@@ -7,8 +7,8 @@
         card-class="toolhead-control-panel">
         <template #buttons>
             <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
-                <template #activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on">
+                <template #activator="{ props }">
+                    <v-btn icon tile v-bind="props" :disabled="['printing'].includes(printer_state)">
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
                     </v-btn>
                 </template>
@@ -45,13 +45,12 @@
                                 SCREWS TILT CALCULATE
                             </v-btn>
                             <v-menu offset-y left :close-on-content-click="false">
-                                <template #activator="{ on, attrs }">
+                                <template #activator="{ props }">
                                     <v-btn
                                         small
-                                        v-bind="attrs"
                                         class="px-0"
                                         style="min-width: 32px; border-top-left-radius: 0; border-bottom-left-radius: 0"
-                                        v-on="on">
+                                        v-bind="props">
                                         <v-icon>{{ mdiMenuDown }}</v-icon>
                                     </v-btn>
                                 </template>

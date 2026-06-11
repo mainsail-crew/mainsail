@@ -37,7 +37,7 @@
                 </v-chip>
                 <template v-if="!isValid">
                     <v-menu :offset-y="true">
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-chip
                                 small
                                 label
@@ -45,8 +45,7 @@
                                 :color="btnColor"
                                 :disabled="btnDisabled"
                                 class="minwidth-0 px-2 text-uppercase"
-                                v-bind="attrs"
-                                v-on="on">
+                                v-bind="props">
                                 <v-icon small class="mr-1">{{ btnIcon }}</v-icon>
                                 {{ btnText }}
                                 <v-icon small>{{ mdiMenuDown }}</v-icon>

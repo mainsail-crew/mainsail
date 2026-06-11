@@ -24,8 +24,8 @@
                         <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template #activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" :color="logoColor" class="minwidth-0 px-5" small v-on="on" />
+                        <template #activator="{ props }">
+                            <v-btn v-bind="props" :color="logoColor" class="minwidth-0 px-5" small />
                         </template>
                         <v-color-picker
                             :value="logoColor"
@@ -45,8 +45,8 @@
                         <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template #activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" :color="primaryColor" class="minwidth-0 px-5" small v-on="on" />
+                        <template #activator="{ props }">
+                            <v-btn v-bind="props" :color="primaryColor" class="minwidth-0 px-5" small />
                         </template>
                         <v-color-picker
                             :value="primaryColor"
@@ -95,13 +95,12 @@
                             <v-icon small>{{ mdiRestart }}</v-icon>
                         </v-btn>
                         <v-menu bottom left offset-y :close-on-content-click="false">
-                            <template #activator="{ on, attrs }">
+                            <template #activator="{ props }">
                                 <v-btn
-                                    v-bind="attrs"
+                                    v-bind="props"
                                     :color="bigThumbnailBackground"
                                     class="minwidth-0 px-5"
-                                    small
-                                    v-on="on" />
+                                    small />
                             </template>
                             <v-color-picker
                                 :value="bigThumbnailBackground"

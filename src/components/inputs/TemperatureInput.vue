@@ -15,16 +15,15 @@
                 @focus="$event.target.select()" />
         </form>
         <v-menu v-if="presets" :offset-y="true" left title="Preheat">
-            <template #activator="{ on, attrs }">
+            <template #activator="{ props }">
                 <v-btn
                     :disabled="['printing', 'paused'].includes(printer_state)"
                     tabindex="-1"
                     x-small
                     plain
-                    v-bind="attrs"
                     class="pa-0"
                     style="min-width: 24px"
-                    v-on="on">
+                    v-bind="props">
                     <v-icon>{{ mdiMenuDown }}</v-icon>
                 </v-btn>
             </template>

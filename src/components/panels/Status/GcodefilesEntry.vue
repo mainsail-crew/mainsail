@@ -13,8 +13,8 @@
         </td>
         <td>
             <v-tooltip v-if="item.last_status" top>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
+                <template #activator="{ props }">
+                    <span v-bind="props">
                         <v-icon small :color="statusColor">{{ statusIcon }}</v-icon>
                     </span>
                 </template>

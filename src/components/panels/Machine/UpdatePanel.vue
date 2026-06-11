@@ -8,7 +8,7 @@
             :collapsible="true">
             <template #buttons>
                 <v-tooltip top>
-                    <template #activator="{ on, attrs }">
+                    <template #activator="{ props }">
                         <v-btn
                             icon
                             tile
@@ -16,9 +16,8 @@
                             :ripple="true"
                             :loading="loadings.includes('loadingBtnSyncUpdateManager')"
                             :disabled="['printing', 'paused'].includes(printer_state)"
-                            v-bind="attrs"
-                            @click="btnSync"
-                            v-on="on">
+                            v-bind="props"
+                            @click="btnSync">
                             <v-icon>{{ mdiRefresh }}</v-icon>
                         </v-btn>
                     </template>

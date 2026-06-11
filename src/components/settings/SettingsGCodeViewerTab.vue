@@ -8,13 +8,12 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-btn
                                 :color="backgroundColor"
                                 class="minwidth-0 px-5"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="props"></v-btn>
                         </template>
                         <v-color-picker
                             :value="backgroundColor"
@@ -26,8 +25,8 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.GridColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
-                            <v-btn :color="gridColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+                        <template #activator="{ props }">
+                            <v-btn :color="gridColor" class="minwidth-0 px-5" small v-bind="props"></v-btn>
                         </template>
                         <v-color-picker
                             :value="gridColor"
@@ -39,13 +38,12 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ProgressColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-btn
                                 :color="progressColor"
                                 class="minwidth-0 px-5"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="props"></v-btn>
                         </template>
                         <v-color-picker
                             :value="progressColor"
@@ -57,22 +55,21 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ExtruderColor')">
                     <v-row no-gutters>
-                        <v-menu
-                            v-for="(extruderColor, index) in extruderColors"
-                            :key="index"
-                            :close-on-content-click="false"
-                            bottom
-                            left
-                            offset-y>
-                            <template #activator="{ on, attrs }">
-                                <v-col align="right" class="mt-1" cols="12">
-                                    <span class="mr-2">{{ index }}</span>
-                                    <v-btn
-                                        :color="extruderColors[index]"
-                                        class="minwidth-0 px-5"
-                                        small
-                                        v-bind="attrs"
-                                        v-on="on"></v-btn>
+                            <v-menu
+                                v-for="(extruderColor, index) in extruderColors"
+                                :key="index"
+                                :close-on-content-click="false"
+                                bottom
+                                left
+                                offset-y>
+                                <template #activator="{ props }">
+                                    <v-col align="right" class="mt-1" cols="12">
+                                        <span class="mr-2">{{ index }}</span>
+                                        <v-btn
+                                            :color="extruderColors[index]"
+                                            class="minwidth-0 px-5"
+                                            small
+                                            v-bind="props"></v-btn>
                                 </v-col>
                             </template>
                             <v-color-picker
@@ -86,13 +83,12 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MinFeed')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-btn
                                 :color="minFeedColor"
                                 class="minwidth-0 px-5 mr-3"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="props"></v-btn>
                         </template>
                         <v-color-picker
                             :value="minFeedColor"
@@ -114,13 +110,12 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-btn
                                 :color="maxFeedColor"
                                 class="minwidth-0 px-5 mr-3"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="props"></v-btn>
                         </template>
                         <v-color-picker
                             :value="maxFeedColor"

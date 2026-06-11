@@ -1,7 +1,7 @@
 <template>
     <v-item-group class="d-inline-flex">
         <v-tooltip :disabled="!hasDescription" top>
-            <template #activator="{ on, attrs }">
+            <template #activator="{ props }">
                 <v-btn
                     small
                     :color="color"
@@ -9,8 +9,7 @@
                     :loading="loadings.includes('macro_' + macro.name)"
                     :disabled="disabled"
                     class="flex-grow-1"
-                    v-bind="attrs"
-                    v-on="on"
+                    v-bind="props"
                     @click="doSendMacro(macro.name)">
                     <v-icon v-if="icon" small left>{{ icon }}</v-icon>
                     {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
@@ -20,14 +19,13 @@
         </v-tooltip>
         <template v-if="paramArray.length">
             <v-menu v-if="!isMobile" offset-y :close-on-content-click="false">
-                <template #activator="{ on, attrs }">
+                <template #activator="{ props }">
                     <v-btn
                         :disabled="disabled"
                         :color="color"
-                        v-bind="attrs"
                         class="minwidth-0 px-1 btnMacroMenu"
                         small
-                        v-on="on">
+                        v-bind="props">
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>

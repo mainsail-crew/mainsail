@@ -64,8 +64,8 @@
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
                             <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">
+                            <template #activator="{ props }">
+                                <span v-bind="props">
                                         <b>{{ $t('Timelapse.FreeDisk') }}:</b>
                                         {{ formatFilesize(disk_usage.free) }}
                                     </span>
@@ -150,15 +150,14 @@
                                     v-if="!item.isDirectory && getThumbnail(item)"
                                     top
                                     content-class="tooltip__content-opacity1">
-                                    <template #activator="{ on, attrs }">
+                                    <template #activator="{ props }">
                                         <vue-load-image>
                                             <img
                                                 slot="image"
                                                 :src="getThumbnail(item)"
                                                 :alt="item.filename"
                                                 width="32"
-                                                v-bind="attrs"
-                                                v-on="on" />
+                                                v-bind="props" />
                                             <div slot="preloader">
                                                 <v-progress-circular
                                                     slot="preloader"

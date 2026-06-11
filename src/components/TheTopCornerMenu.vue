@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-menu v-model="showMenu" bottom left :offset-y="true" :close-on-content-click="false">
-            <template #activator="{ on, attrs }">
-                <v-btn icon tile v-bind="attrs" v-on="on">
+            <template #activator="{ props }">
+                <v-btn icon tile v-bind="props">
                     <v-icon>{{ mdiPowerStandby }}</v-icon>
                 </v-btn>
             </template>

@@ -26,8 +26,8 @@
                                     mcu.tempSensor.measured_max_temp !== null
                                 ">
                                 <v-tooltip top>
-                                    <template #activator="{ on, attrs }">
-                                        <span v-bind="attrs" v-on="on">
+                                    <template #activator="{ props }">
+                                        <span v-bind="props">
                                             {{
                                                 $t('Machine.SystemPanel.Values.Temp', {
                                                     temp: mcu.tempSensor.temperature,

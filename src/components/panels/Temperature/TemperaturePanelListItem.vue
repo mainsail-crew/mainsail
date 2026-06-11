@@ -10,16 +10,16 @@
         </td>
         <td v-if="!isResponsiveMobile" class="state">
             <v-tooltip v-if="state !== null" top>
-                <template #activator="{ on, attrs }">
-                    <div v-bind="attrs" v-on="on">{{ formatState }}</div>
+                <template #activator="{ props }">
+                    <div v-bind="props">{{ formatState }}</div>
                 </template>
                 <span>{{ $t('Panels.TemperaturePanel.Avg') }}: {{ avgState }} %</span>
             </v-tooltip>
         </td>
         <td class="current">
             <v-tooltip top :disabled="!(measured_min_temp !== null || measured_max_temp !== null)">
-                <template #activator="{ on, attrs }">
-                    <span style="cursor: default" v-bind="attrs" v-on="on">
+                <template #activator="{ props }">
+                    <span style="cursor: default" v-bind="props">
                         {{ formatTemperature }}
                     </span>
                 </template>

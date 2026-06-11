@@ -14,7 +14,7 @@
             </template>
             <template v-else-if="smallThumbnail && bigThumbnail">
                 <v-tooltip top>
-                    <template #activator="{ on, attrs }">
+                    <template #activator="{ props }">
                         <vue-load-image>
                             <img
                                 slot="image"
@@ -22,8 +22,7 @@
                                 :src="smallThumbnail"
                                 width="32"
                                 height="32"
-                                v-bind="attrs"
-                                v-on="on" />
+                                v-bind="props" />
                             <div slot="preloader">
                                 <v-progress-circular indeterminate color="primary" />
                             </div>
@@ -54,8 +53,8 @@
         <td class="text-right text-no-wrap">
             <template v-if="'note' in item && item.note">
                 <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <v-icon small class="mr-2" v-bind="attrs" v-on="on">
+                    <template #activator="{ props }">
+                        <v-icon small class="mr-2" v-bind="props">
                             {{ mdiNoteTextOutline }}
                         </v-icon>
                     </template>
@@ -63,8 +62,8 @@
                 </v-tooltip>
             </template>
             <v-tooltip top>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
+                <template #activator="{ props }">
+                    <span v-bind="props">
                         <v-icon small :color="statusColor" :disabled="!item.exists">
                             {{ statusIcon }}
                         </v-icon>

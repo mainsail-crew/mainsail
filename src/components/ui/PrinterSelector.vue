@@ -2,8 +2,8 @@
 
 <template>
     <v-menu bottom :offset-x="true">
-        <template #activator="{ on, attrs }">
-            <v-icon class="nav-arrow right" v-bind="attrs" v-on="on">{{ mdiChevronDown }}</v-icon>
+        <template #activator="{ props }">
+            <v-icon class="nav-arrow right" v-bind="props">{{ mdiChevronDown }}</v-icon>
         </template>
 
         <v-list dense>

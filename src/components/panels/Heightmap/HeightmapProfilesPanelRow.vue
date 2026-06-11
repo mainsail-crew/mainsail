@@ -9,8 +9,8 @@
         </v-col>
         <v-col class="col-auto text-center d-flex align-center justify-center pr-6">
             <v-tooltip top color="rgba(0,0,0,0.8)">
-                <template #activator="{ on, attrs }">
-                    <small v-bind="attrs" v-on="on">{{ variance }}</small>
+                <template #activator="{ props }">
+                    <small v-bind="props">{{ variance }}</small>
                 </template>
                 <span>
                     max: {{ max }}

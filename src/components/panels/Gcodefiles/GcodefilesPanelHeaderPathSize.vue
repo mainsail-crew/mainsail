@@ -10,8 +10,8 @@
             </span>
             <v-spacer />
             <v-tooltip v-if="disk_usage !== null" top>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
+                <template #activator="{ props }">
+                    <span v-bind="props">
                         <b>{{ $t('Files.FreeDisk') }}:</b>
                         {{ formatFilesize(disk_usage.free) }}
                     </span>

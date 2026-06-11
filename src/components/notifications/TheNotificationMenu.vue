@@ -9,8 +9,8 @@
         origin="center center"
         transition="slide-y-transition"
         :min-width="isMobile ? '100%' : null">
-        <template #activator="{ on, attrs }">
-            <v-btn icon tile class="minwidth-0" v-bind="attrs" v-on="on">
+        <template #activator="{ props }">
+            <v-btn icon tile class="minwidth-0" v-bind="props">
                 <v-badge
                     :content="notifications.length <= 9 ? notifications.length : '9+'"
                     :value="notifications.length > 0"

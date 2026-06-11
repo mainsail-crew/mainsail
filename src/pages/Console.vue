@@ -15,8 +15,8 @@
                     :top="consoleDirection === 'shell'"
                     :close-on-content-click="false"
                     :title="$t('Console.SetupConsole')">
-                    <template #activator="{ on, attrs }">
-                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on">
+                    <template #activator="{ props }">
+                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="props">
                             <v-icon>{{ mdiCog }}</v-icon>
                         </v-btn>
                     </template>

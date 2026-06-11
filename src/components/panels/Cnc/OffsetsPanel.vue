@@ -8,8 +8,8 @@
                 <v-col cols="12">
                     <v-btn-toggle :value="selectedOffsetIndex" dense small class="w-100" @change="onWcsChange">
                         <v-tooltip v-for="(name, idx) in offsetNames" :key="idx" top content-class="tooltip-opaque" transition="fade-transition" :open-delay="0" :close-delay="0">
-                            <template #activator="{ on, attrs }">
-                                <v-btn :value="idx" x-small v-bind="attrs" v-on="on">
+                            <template #activator="{ props }">
+                                <v-btn :value="idx" x-small v-bind="props">
                                     {{ name }}
                                 </v-btn>
                             </template>

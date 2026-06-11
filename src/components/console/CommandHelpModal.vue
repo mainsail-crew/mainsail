@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" :fullscreen="isMobile">
-        <template #activator="{ on, attrs }">
-            <v-btn v-if="inToolbar" icon tile v-bind="attrs" v-on="on">
+        <template #activator="{ props }">
+            <v-btn v-if="inToolbar" icon tile v-bind="props">
                 <v-icon small>{{ mdiHelp }}</v-icon>
             </v-btn>
             <v-btn
@@ -9,8 +9,7 @@
                 class="gcode-command-btn px-2 minwidth-0"
                 color="lightgray"
                 :small="isMini"
-                v-bind="attrs"
-                v-on="on">
+                v-bind="props">
                 <v-icon>{{ mdiHelp }}</v-icon>
             </v-btn>
         </template>

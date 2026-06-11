@@ -8,14 +8,13 @@
                         <v-col class="d-flex">
                             <v-item-group>
                                 <v-menu v-model="selectIcon" :offset-y="true" title="Icon">
-                                    <template #activator="{ on, attrs }">
+                                    <template #activator="{ props }">
                                         <v-btn
                                             class="px-2 mr-2 _transition _menu-button"
                                             color="transparent"
-                                            v-bind="attrs"
+                                            v-bind="props"
                                             elevation="0"
-                                            :ripple="false"
-                                            v-on="on">
+                                            :ripple="false">
                                             <v-icon>{{ convertWebcamIcon(form.icon) }}</v-icon>
                                             <v-icon :class="classIconButtonArrow" class="pl-1 mr-n2">
                                                 {{ mdiMenuDown }}
@@ -168,13 +167,12 @@
                             </v-col>
                             <v-col v-if="localNozzleCrosshair" class="py-0">
                                 <v-menu bottom left offset-y :close-on-content-click="false">
-                                    <template #activator="{ on, attrs }">
+                                    <template #activator="{ props }">
                                         <v-btn
-                                            v-bind="attrs"
+                                            v-bind="props"
                                             :color="localNozzleCrosshairColor"
                                             class="minwidth-0 px-5"
-                                            small
-                                            v-on="on" />
+                                            small />
                                     </template>
                                     <v-color-picker
                                         :value="localNozzleCrosshairColor"

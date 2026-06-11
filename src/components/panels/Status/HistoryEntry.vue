@@ -10,7 +10,7 @@
                 :disabled="!bigThumbnail"
                 content-class="tooltip__content-opacity1"
                 :color="bigThumbnailTooltipColor">
-                <template #activator="{ on, attrs }">
+                <template #activator="{ props }">
                     <vue-load-image class="text-center width-32">
                         <img
                             slot="image"
@@ -18,8 +18,7 @@
                             :width="32"
                             :height="32"
                             :alt="job.filename"
-                            v-bind="attrs"
-                            v-on="on" />
+                            v-bind="props" />
                         <div slot="preloader">
                             <v-progress-circular indeterminate color="primary" />
                         </div>
@@ -41,8 +40,8 @@
         </v-col>
         <v-col class="col-auto d-flex flex-column justify-center pa-0 pr-3">
             <v-tooltip top>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
+                <template #activator="{ props }">
+                    <span v-bind="props">
                         <v-icon small :color="statusColor" :disabled="!job.exists">
                             {{ statusIcon }}
                         </v-icon>

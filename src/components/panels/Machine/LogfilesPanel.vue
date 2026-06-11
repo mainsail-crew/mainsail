@@ -7,7 +7,7 @@
             :collapsible="true">
             <template #buttons>
                 <v-tooltip top>
-                    <template #activator="{ on, attrs }">
+                    <template #activator="{ props }">
                         <v-btn
                             icon
                             tile
@@ -15,8 +15,7 @@
                             :ripple="true"
                             :loading="loadings.includes('loadingBtnRolloverLogs')"
                             :disabled="['printing', 'paused'].includes(printer_state)"
-                            v-bind="attrs"
-                            v-on="on"
+                            v-bind="props"
                             @click="showRolloverDialog = true">
                             <v-icon>{{ mdiFileSyncOutline }}</v-icon>
                         </v-btn>

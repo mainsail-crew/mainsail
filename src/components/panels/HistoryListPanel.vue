@@ -15,12 +15,11 @@
                 </v-col>
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
                     <v-tooltip v-if="selectedJobsTable.length" top>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-btn
                                 color="error"
                                 class="px-2 minwidth-0 ml-3"
-                                v-bind="attrs"
-                                v-on="on"
+                                v-bind="props"
                                 @click="deleteSelectedDialog = true">
                                 <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
@@ -28,11 +27,10 @@
                         <span>{{ $t('Buttons.Delete') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-btn
                                 class="px-2 minwidth-0 ml-3"
-                                v-bind="attrs"
-                                v-on="on"
+                                v-bind="props"
                                 @click="addMaintenanceDialog = true">
                                 <v-icon>{{ mdiNotebookPlus }}</v-icon>
                             </v-btn>
@@ -40,12 +38,11 @@
                         <span>{{ $t('History.AddMaintenance') }}</span>
                     </v-tooltip>
                     <v-tooltip v-if="!allLoaded" top>
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-btn
                                 :loading="loadings.includes('historyLoadAll')"
                                 class="px-2 minwidth-0 ml-3"
-                                v-bind="attrs"
-                                v-on="on"
+                                v-bind="props"
                                 @click="refreshHistory">
                                 <v-icon>{{ mdiDatabaseArrowDownOutline }}</v-icon>
                             </v-btn>
@@ -53,18 +50,18 @@
                         <span>{{ $t('History.LoadCompleteHistory') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on" @click="exportHistory">
+                        <template #activator="{ props }">
+                            <v-btn class="px-2 minwidth-0 ml-3" v-bind="props" @click="exportHistory">
                                 <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
                             </v-btn>
                         </template>
                         <span>{{ $t('History.TitleExportHistory') }}</span>
                     </v-tooltip>
                     <v-menu :offset-y="true" :close-on-content-click="false">
-                        <template #activator="{ on, attrs }">
+                        <template #activator="{ props }">
                             <v-tooltip top>
-                                <template #activator="{ on: onToolTip }">
-                                    <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="{ ...on, ...onToolTip }">
+                                <template #activator="{ props: tooltipProps }">
+                                    <v-btn class="px-2 minwidth-0 ml-3" v-bind="{ ...props, ...tooltipProps }">
                                         <v-icon>{{ mdiCog }}</v-icon>
                                     </v-btn>
                                 </template>

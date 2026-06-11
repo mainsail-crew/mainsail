@@ -10,8 +10,8 @@
                 :disabled="!klipperReadyForGui"
                 @click="startJobqueue">
                 <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <v-icon v-bind="attrs" v-on="on">{{ mdiPlay }}</v-icon>
+                    <template #activator="{ props }">
+                        <v-icon v-bind="props">{{ mdiPlay }}</v-icon>
                     </template>
                     <span>{{ $t('JobQueue.Start') }}</span>
                 </v-tooltip>
@@ -24,8 +24,8 @@
                 tile
                 @click="pauseJobqueue">
                 <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <v-icon v-bind="attrs" v-on="on">{{ mdiPause }}</v-icon>
+                    <template #activator="{ props }">
+                        <v-icon v-bind="props">{{ mdiPause }}</v-icon>
                     </template>
                     <span>{{ $t('JobQueue.Pause') }}</span>
                 </v-tooltip>

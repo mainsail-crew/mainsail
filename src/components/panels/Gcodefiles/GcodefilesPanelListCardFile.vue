@@ -14,13 +14,12 @@
                 :ripple="false"
                 @click.stop="select(!isSelected)" />
             <v-tooltip v-if="item.last_status" top>
-                <template #activator="{ on, attrs }">
+                <template #activator="{ props }">
                     <v-icon
-                        v-bind="attrs"
+                        v-bind="props"
                         small
                         class="gcode-card__status"
-                        :color="statusIconColor"
-                        v-on="on">
+                        :color="statusIconColor">
                         {{ statusIcon }}
                     </v-icon>
                 </template>

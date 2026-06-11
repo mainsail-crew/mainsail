@@ -6,7 +6,7 @@
         content-class="tooltip__content-opacity1"
         :color="bigThumbnailTooltipColor"
         :disabled="!bigThumbnailUrl">
-        <template #activator="{ on, attrs }">
+        <template #activator="{ props }">
             <vue-load-image>
                 <img
                     slot="image"
@@ -14,8 +14,7 @@
                     width="32"
                     height="32"
                     :alt="item.filename"
-                    v-bind="attrs"
-                    v-on="on" />
+                    v-bind="props" />
                 <div slot="preloader">
                     <v-progress-circular indeterminate color="primary" />
                 </div>

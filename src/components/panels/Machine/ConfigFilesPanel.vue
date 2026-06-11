@@ -29,15 +29,15 @@
                             :loading="button.loadingName !== null && loadings.includes(button.loadingName)"
                             @click="button.click">
                             <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
+                                <template #activator="{ props }">
+                                    <v-icon v-bind="props">{{ button.icon }}</v-icon>
                                 </template>
                                 <span>{{ button.text }}</span>
                             </v-tooltip>
                         </v-btn>
                         <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
-                            <template #activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
+                            <template #activator="{ props }">
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="props">
                                     <v-icon class="machine-configfiles-panel__settings-icon">{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
@@ -74,8 +74,8 @@
                         <v-spacer />
                         <template v-if="disk_usage !== null && !showMissingConfigRootWarning">
                             <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">
+                                <template #activator="{ props }">
+                                    <span v-bind="props">
                                         <b>{{ $t('Machine.ConfigFilesPanel.FreeDisk') }}:</b>
                                         {{ formatFilesize(disk_usage.free) }}
                                     </span>

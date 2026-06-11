@@ -1,15 +1,14 @@
 <template>
     <div>
         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-            <template #activator="{ on, attrs }">
+            <template #activator="{ props }">
                 <v-list-item
                     :router="to !== undefined"
                     :to="to"
                     :href="href"
                     :target="target"
                     :class="itemClass"
-                    v-bind="attrs"
-                    v-on="on">
+                    v-bind="props">
                     <template #prepend>
                         <v-icon class="my-3 mr-3 menu-item-icon">{{ icon }}</v-icon>
                     </template>

@@ -10,8 +10,8 @@
             :height="isMobile ? 0 : 548">
             <template #buttons>
                 <v-menu :left="true" :offset-y="true" :close-on-content-click="false" attach="#devices-dialog">
-                    <template #activator="{ on, attrs }">
-                        <v-btn icon tile v-bind="attrs" v-on="on">
+                    <template #activator="{ props }">
+                        <v-btn icon tile v-bind="props">
                             <v-icon small>{{ mdiCog }}</v-icon>
                         </v-btn>
                     </template>

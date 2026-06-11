@@ -7,14 +7,13 @@
         card-class="led-effects-panel">
         <template #buttons>
             <v-tooltip left>
-                <template #activator="{ on, attrs }">
+                <template #activator="{ props }">
                     <v-btn
-                        v-bind="attrs"
+                        v-bind="props"
                         icon
                         tile
                         :loading="isLoadingAllEffects"
                         :disabled="printerIsPrintingOnly"
-                        v-on="on"
                         @click="stopAllEffects">
                         <v-icon>{{ mdiStop }}</v-icon>
                     </v-btn>

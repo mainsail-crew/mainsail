@@ -1,15 +1,14 @@
 <template>
     <div style="height: 100%">
         <v-menu v-if="presets.length" :offset-y="true" left>
-            <template #activator="{ on, attrs }">
+            <template #activator="{ props }">
                 <v-btn
                     text
                     tile
                     color="primary"
-                    v-bind="attrs"
+                    v-bind="props"
                     :disabled="['printing', 'paused'].includes(printer_state)"
-                    class="pa-1"
-                    v-on="on">
+                    class="pa-1">
                     <span class="d-none ml-1 d-md-block">{{ $t('Panels.TemperaturePanel.Presets') }}</span>
                     <v-icon class="d-md-none">{{ mdiFire }}</v-icon>
                     <v-icon>{{ mdiMenuDown }}</v-icon>

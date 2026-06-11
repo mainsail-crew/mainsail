@@ -1,7 +1,7 @@
 <template>
     <v-tooltip right color="panel">
-        <template #activator="{ on, attrs }">
-            <v-icon v-bind="attrs" v-on="on">
+        <template #activator="{ props }">
+            <v-icon v-bind="props">
                 {{ mdiHelpCircleOutline }}
             </v-icon>
         </template>
