@@ -123,9 +123,9 @@
             class="history-jobs-table"
             :headers="filteredHeaders"
             :custom-sort="sortFiles"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :items-per-page.sync="countPerPage"
+            v-model:sort-by="sortBy"
+            v-model:sort-desc="sortDesc"
+            v-model:items-per-page="countPerPage"
             :footer-props="{
                 itemsPerPageText: $t('History.Jobs'),
                 itemsPerPageAllText: $t('History.AllJobs'),
@@ -212,8 +212,8 @@ const { t } = useI18n()
 const store = useStore()
 
 const search = ref('')
-const sortBy = ref('start_time')
-const sortDesc = ref(true)
+const sortBy = ref(['start_time'])
+const sortDesc = ref([true])
 
 const addMaintenanceDialog = ref(false)
 const deleteSelectedDialog = ref(false)
@@ -235,7 +235,7 @@ const entries = computed<HistoryListPanelRow[]>(() => {
         })
     }
 
-    if (sortBy.value !== 'start_time') return entries
+    if (sortBy.value[0] !== 'start_time') return entries
 
     if (showMaintenanceEntries.value) {
         entries = [

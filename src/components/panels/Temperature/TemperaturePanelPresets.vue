@@ -35,8 +35,8 @@
         </v-menu>
         <v-btn
             v-else
-            :icon="$vuetify.breakpoint.smAndDown"
-            :text="$vuetify.breakpoint.mdAndUp"
+            :icon="displaySmAndDown"
+            :text="displayMdAndUp"
             tile
             color="primary"
             @click="btnCoolDown">
@@ -57,6 +57,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useDisplay } from 'vuetify'
 import { useStore } from 'vuex'
 import { useSocket } from '@/composables/useSocket'
 import { useBase } from '@/composables/useBase'
@@ -67,6 +68,10 @@ import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 const { printer_state } = useBase()
 const store = useStore()
 const socket = useSocket()
+
+const display = useDisplay()
+const displaySmAndDown = computed(() => display.smAndDown.value)
+const displayMdAndUp = computed(() => display.mdAndUp.value)
 
 const showCoolDownDialog = ref(false)
 
