@@ -277,10 +277,9 @@
                     </v-col>
                 </v-row>
                 <template v-if="availableMacros.length">
-                    <template v-for="(macro, index) in availableMacros">
-                        <v-divider v-if="index" :key="'availableMacro_deliver_' + index" class="my-2"></v-divider>
+                    <template v-for="(macro, index) in availableMacros" :key="'availableMacro_macro_' + index">
+                        <v-divider v-if="index" class="my-2"></v-divider>
                         <settings-row
-                            :key="'availableMacro_macro_' + index"
                             :title="macro.name"
                             :sub-title="macro.description"
                             :dynamic-slot-width="true">
@@ -306,15 +305,15 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
-import ThemeMixin from '@/components/mixins/theme'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useTheme } from '@/composables/useTheme'
 import draggable from 'vuedraggable'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { Debounce } from 'vue-debounce-decorator'
-import { PrinterStateMacro } from '@/store/printer/types'
-import { GuiMacrosStateMacrogroup, GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
+import type { PrinterStateMacro } from '@/store/printer/types'
+import type { GuiMacrosStateMacrogroup, GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
 import {
     mdiDelete,
     mdiSleep,
@@ -327,248 +326,242 @@ import {
     mdiMagnify,
 } from '@mdi/js'
 import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
-import { DraggableChangeEvent } from '@/types/vuedraggable'
+import type { DraggableChangeEvent } from '@/types/vuedraggable'
 
-@Component({
-    components: { SettingsRow, draggable },
+const emit = defineEmits<{
+    (e: 'update:showGeneral', value: boolean): void
+    (e: 'scrollToTop'): void
+}>()
+
+const store = useStore()
+const { t } = useI18n()
+const { draggableBgStyle } = useTheme()
+
+const rules = {
+    required: (value: string) => value !== '' || 'required',
+    groupUnique: (value: string) => !existsGroupName(value) || 'Name already exists',
+}
+
+const boolFormEdit = ref(false)
+const editGroupId = ref<string | null>('')
+const searchMacros = ref('')
+
+const groupColors = computed(() => [
+    {
+        text: t('Settings.MacrosTab.Primary'),
+        value: 'primary',
+    },
+    {
+        text: t('Settings.MacrosTab.Secondary'),
+        value: 'secondary',
+    },
+    {
+        text: t('Settings.MacrosTab.Success'),
+        value: 'success',
+    },
+    {
+        text: t('Settings.MacrosTab.Warning'),
+        value: 'warning',
+    },
+    {
+        text: t('Settings.MacrosTab.Error'),
+        value: 'error',
+    },
+    {
+        text: t('Settings.MacrosTab.Custom'),
+        value: 'custom',
+    },
+])
+
+const macroColors = computed(() => {
+    const colors = [...groupColors.value]
+    const indexCustom = colors.findIndex((color) => color.value === 'custom')
+    if (indexCustom !== -1) colors.splice(indexCustom, 1)
+
+    colors.push({
+        text: t('Settings.MacrosTab.Group'),
+        value: 'group',
+    })
+
+    return colors
 })
-export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixin) {
-    /**
-     * Icons
-     */
-    mdiPencil = mdiPencil
-    mdiDelete = mdiDelete
-    mdiSleep = mdiSleep
-    mdiPause = mdiPause
-    mdiPrinter3dNozzle = mdiPrinter3dNozzle
-    mdiPlus = mdiPlus
-    mdiDragVertical = mdiDragVertical
-    mdiPalette = mdiPalette
-    mdiMagnify = mdiMagnify
 
-    private rules = {
-        required: (value: string) => value !== '' || 'required',
-        groupUnique: (value: string) => !this.existsGroupName(value) || 'Name already exists',
-    }
+const allMacros = computed(() => {
+    const macros = store.getters['printer/getMacros'] ?? []
+    return macros.filter((macro: PrinterStateMacro) => {
+        return (
+            macro.name.toLowerCase().includes(searchMacros.value.toLowerCase()) ||
+            macro.description?.toLowerCase().includes(searchMacros.value.toLowerCase())
+        )
+    })
+})
 
-    private boolFormEdit = false
-    private editGroupId: string | null = ''
-    private searchMacros: string = ''
+const availableMacros = computed(() => {
+    return allMacros.value.filter((m: GuiMacrosStateMacrogroupMacro) => !editGroupUsedMacros.value.includes(m.name))
+})
 
-    get groupColors() {
-        return [
-            {
-                text: this.$t('Settings.MacrosTab.Primary'),
-                value: 'primary',
-            },
-            {
-                text: this.$t('Settings.MacrosTab.Secondary'),
-                value: 'secondary',
-            },
-            {
-                text: this.$t('Settings.MacrosTab.Success'),
-                value: 'success',
-            },
-            {
-                text: this.$t('Settings.MacrosTab.Warning'),
-                value: 'warning',
-            },
-            {
-                text: this.$t('Settings.MacrosTab.Error'),
-                value: 'error',
-            },
-            {
-                text: this.$t('Settings.MacrosTab.Custom'),
-                value: 'custom',
-            },
-        ]
-    }
+const groups = computed(() => {
+    return store.getters['gui/macros/getAllMacrogroups'] ?? []
+})
 
-    get macroColors() {
-        const colors = [...this.groupColors]
-        const indexCustom = colors.findIndex((color) => color.value === 'custom')
-        if (indexCustom !== -1) colors.splice(indexCustom, 1)
+const editGroupUsedMacros = computed(() => {
+    return editGroup.value?.macros?.map((m: GuiMacrosStateMacrogroupMacro) => m.name) ?? []
+})
 
-        colors.push({
-            text: this.$t('Settings.MacrosTab.Group'),
-            value: 'group',
-        })
+const editGroup = computed<GuiMacrosStateMacrogroup | null>(() => {
+    return store.getters['gui/macros/getMacrogroup'](editGroupId.value)
+})
 
-        return colors
-    }
-
-    get allMacros() {
-        const macros = this.$store.getters['printer/getMacros'] ?? []
-        return macros.filter((macro: PrinterStateMacro) => {
-            return (
-                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
-                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
-            )
-        })
-    }
-
-    get availableMacros() {
-        return this.allMacros.filter((m: GuiMacrosStateMacrogroupMacro) => !this.editGroupUsedMacros.includes(m.name))
-    }
-
-    get groups() {
-        return this.$store.getters['gui/macros/getAllMacrogroups'] ?? []
-    }
-
-    get editGroupUsedMacros() {
-        return this.editGroup?.macros?.map((m: GuiMacrosStateMacrogroupMacro) => m.name) ?? []
-    }
-
-    get editGroup(): GuiMacrosStateMacrogroup | null {
-        return this.$store.getters['gui/macros/getMacrogroup'](this.editGroupId)
-    }
-
-    get editGroupMacros() {
-        const macros = this.editGroup?.macros ?? []
+const editGroupMacros = computed({
+    get: () => {
+        const macros = editGroup.value?.macros ?? []
         macros.sort((a: GuiMacrosStateMacrogroupMacro, b: GuiMacrosStateMacrogroupMacro) => a.pos - b.pos)
-
         return macros
+    },
+    set: () => {},
+})
+
+function existsGroupName(name: string) {
+    return (
+        groups.value.findIndex(
+            (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != editGroupId.value
+        ) >= 0
+    )
+}
+
+function updateShowGeneral(newVal: boolean) {
+    emit('update:showGeneral', newVal)
+}
+
+async function addGroup() {
+    const values = {
+        name: '',
+        color: 'primary',
+        colorCustom: '#fff',
+        showInStandby: true,
+        showInPause: true,
+        showInPrinting: true,
     }
+    editGroupId.value = await store.dispatch('gui/macros/groupStore', { values })
 
-    set editGroupMacros(newVal) {}
+    boolFormEdit.value = true
+}
 
-    existsGroupName(name: string) {
-        return (
-            this.groups.findIndex(
-                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId
-            ) >= 0
-        )
-    }
+function editMacrogroup(group: GuiMacrosStateMacrogroup) {
+    boolFormEdit.value = true
+    editGroupId.value = group.id
+}
 
-    updateShowGeneral(newVal: boolean) {
-        this.$emit('update:showGeneral', newVal)
-    }
+function deleteMacrogroup(id: string) {
+    store.dispatch('gui/macros/groupDelete', id)
+}
 
-    async addGroup() {
-        const values = {
-            name: '',
-            color: 'primary',
-            colorCustom: '#fff',
-            showInStandby: true,
-            showInPause: true,
-            showInPrinting: true,
-        }
-        this.editGroupId = await this.$store.dispatch('gui/macros/groupStore', { values })
+function addMacroToGroup(macro: PrinterStateMacro) {
+    store.dispatch('gui/macros/addMacroToMacrogroup', {
+        id: editGroupId.value,
+        macro: macro.name,
+    })
+}
 
-        this.boolFormEdit = true
-    }
+function updateMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro, option: string, value: boolean | string | number) {
+    store.dispatch('gui/macros/updateMacroFromMacrogroup', {
+        id: editGroupId.value,
+        macro: macro.name,
+        option: option,
+        value: value,
+    })
+}
 
-    editMacrogroup(group: GuiMacrosStateMacrogroup) {
-        this.boolFormEdit = true
-        this.editGroupId = group.id
-    }
+function updateMacroOrder(output: DraggableChangeEvent<GuiMacrosStateMacrogroupMacro>) {
+    if (!output.moved) return
 
-    deleteMacrogroup(id: string) {
-        this.$store.dispatch('gui/macros/groupDelete', id)
-    }
+    const oldIndex = output.moved.oldIndex
+    const newIndex = output.moved.newIndex
+    const oldPos = editGroupMacros.value[oldIndex].pos
+    const newPos = editGroupMacros.value[newIndex].pos
 
-    addMacroToGroup(macro: PrinterStateMacro) {
-        this.$store.dispatch('gui/macros/addMacroToMacrogroup', {
-            id: this.editGroupId,
-            macro: macro.name,
-        })
-    }
+    updateMacroFromGroup(editGroupMacros.value[oldIndex], 'pos', newPos)
+    updateMacroFromGroup(editGroupMacros.value[newIndex], 'pos', oldPos)
+}
 
-    updateMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro, option: string, value: boolean | string | number) {
-        this.$store.dispatch('gui/macros/updateMacroFromMacrogroup', {
-            id: this.editGroupId,
-            macro: macro.name,
-            option: option,
-            value: value,
-        })
-    }
+function changeColorMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
+    let index = macroColors.value.findIndex((color) => color.value === macro.color) + 1
+    const maxIndex = macroColors.value.length - 1
 
-    updateMacroOrder(output: DraggableChangeEvent<GuiMacrosStateMacrogroupMacro>) {
-        if (!output.moved) return
+    if (index > maxIndex) index = 0
+    const newColor = macroColors.value[index].value
 
-        const oldIndex = output.moved.oldIndex
-        const newIndex = output.moved.newIndex
-        const oldPos = this.editGroupMacros[oldIndex].pos
-        const newPos = this.editGroupMacros[newIndex].pos
+    updateMacroFromGroup(macro, 'color', newColor)
+}
 
-        this.updateMacroFromGroup(this.editGroupMacros[oldIndex], 'pos', newPos)
-        this.updateMacroFromGroup(this.editGroupMacros[newIndex], 'pos', oldPos)
-    }
+function removeMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
+    store.dispatch('gui/macros/removeMacroFromMacrogroup', {
+        id: editGroupId.value,
+        macro: macro.name,
+    })
+}
 
-    changeColorMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
-        let index = this.macroColors.findIndex((color) => color.value === macro.color) + 1
-        const maxIndex = this.macroColors.length - 1
+function existsMacro(macroname: string) {
+    return (
+        allMacros.value.findIndex((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase()) !== -1
+    )
+}
 
-        if (index > maxIndex) index = 0
-        const newColor = this.macroColors[index].value
+function getMacroDescription(macroname: string) {
+    const macro = allMacros.value.find((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase())
+    if (!macro) return t('Settings.MacrosTab.DeletedMacro')
 
-        this.updateMacroFromGroup(macro, 'color', newColor)
-    }
+    return macro?.description ?? null
+}
 
-    removeMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
-        this.$store.dispatch('gui/macros/removeMacroFromMacrogroup', {
-            id: this.editGroupId,
-            macro: macro.name,
-        })
-    }
+function updateMacrogroupOption(option: string, newVal: boolean | string) {
+    const values: Record<string, boolean | string> = {}
+    values[option] = newVal
 
-    existsMacro(macroname: string) {
-        return (
-            this.allMacros.findIndex((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase()) !== -1
-        )
-    }
+    store.dispatch('gui/macros/groupUpdate', {
+        id: editGroupId.value,
+        values,
+    })
+}
 
-    getMacroDescription(macroname: string) {
-        const macro = this.allMacros.find((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase())
-        if (!macro) return this.$t('Settings.MacrosTab.DeletedMacro')
+let updateGroupNameTimer: ReturnType<typeof setTimeout> | null = null
+function updateGroupOptionName(newVal: string) {
+    if (updateGroupNameTimer) clearTimeout(updateGroupNameTimer)
+    updateGroupNameTimer = setTimeout(() => {
+        updateMacrogroupOption('name', newVal)
+    }, 250)
+}
 
-        return macro?.description ?? null
-    }
+function updateGroupOptionColor(newVal: string) {
+    updateMacrogroupOption('color', newVal)
+}
 
-    updateMacrogroupOption(option: string, newVal: boolean | string) {
-        const values: Record<string, boolean | string> = {}
-        values[option] = newVal
+let updateGroupColorTimer: ReturnType<typeof setTimeout> | null = null
+function updateGroupOptionColorCustom(newVal: ColorPickerValue) {
+    if (updateGroupColorTimer) clearTimeout(updateGroupColorTimer)
+    updateGroupColorTimer = setTimeout(() => {
+        updateMacrogroupOption('colorCustom', clearColorObject(newVal))
+    }, 250)
+}
 
-        this.$store.dispatch('gui/macros/groupUpdate', {
-            id: this.editGroupId,
-            values,
-        })
-    }
+function updateGroupOptionShowInStandby(newVal: boolean) {
+    updateMacrogroupOption('showInStandby', newVal)
+}
 
-    @Debounce(250)
-    updateGroupOptionName(newVal: string) {
-        this.updateMacrogroupOption('name', newVal)
-    }
+function updateGroupOptionShowInPause(newVal: boolean) {
+    updateMacrogroupOption('showInPause', newVal)
+}
 
-    updateGroupOptionColor(newVal: string) {
-        this.updateMacrogroupOption('color', newVal)
-    }
+function updateGroupOptionShowInPrinting(newVal: boolean) {
+    updateMacrogroupOption('showInPrinting', newVal)
+}
 
-    @Debounce(250)
-    updateGroupOptionColorCustom(newVal: ColorPickerValue) {
-        this.updateMacrogroupOption('colorCustom', clearColorObject(newVal))
-    }
+watch(boolFormEdit, (newVal) => {
+    updateShowGeneral(!newVal)
+})
 
-    updateGroupOptionShowInStandby(newVal: boolean) {
-        this.updateMacrogroupOption('showInStandby', newVal)
-    }
-
-    updateGroupOptionShowInPause(newVal: boolean) {
-        this.updateMacrogroupOption('showInPause', newVal)
-    }
-
-    updateGroupOptionShowInPrinting(newVal: boolean) {
-        this.updateMacrogroupOption('showInPrinting', newVal)
-    }
-
-    @Watch('boolFormEdit')
-    updatedBoolFormEdit(newVal: boolean) {
-        this.updateShowGeneral(!newVal)
-    }
-
-    cancelEditMacrogroup() {
-        this.boolFormEdit = false
-        this.$emit('scrollToTop')
-    }
+function cancelEditMacrogroup() {
+    boolFormEdit.value = false
+    emit('scrollToTop')
 }
 </script>

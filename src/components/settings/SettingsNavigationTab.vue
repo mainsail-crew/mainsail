@@ -19,27 +19,25 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import NavigationMixin, { NaviPoint } from '@/components/mixins/navigation'
-import ThemeMixin from '@/components/mixins/theme'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useNavigation } from '@/composables/useNavigation'
+import { useTheme } from '@/composables/useTheme'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import draggable from 'vuedraggable'
 import SettingsNavigationTabItem from '@/components/settings/SettingsNavigationTabItem.vue'
+import type { NaviPoint } from '@/components/mixins/navigation'
 
-@Component({
-    components: { SettingsNavigationTabItem, SettingsRow, draggable },
-})
-export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseMixin, ThemeMixin) {
-    get sortableNaviPoints() {
-        return this.naviPoints.filter((naviPoint) => naviPoint.position > 0)
-    }
+const store = useStore()
+const { naviPoints } = useNavigation()
+const { draggableBgStyle } = useTheme()
 
-    set sortableNaviPoints(newVal: NaviPoint[]) {
-        // update store with new positions
+const sortableNaviPoints = computed({
+    get: () => naviPoints.value.filter((naviPoint) => naviPoint.position > 0),
+    set: (newVal: NaviPoint[]) => {
         newVal.forEach((naviPoint, index) => {
-            this.$store.dispatch('gui/navigation/updatePos', {
+            store.dispatch('gui/navigation/updatePos', {
                 type: naviPoint.type,
                 title: naviPoint.orgTitle ?? naviPoint.title,
                 visible: naviPoint.visible,
@@ -47,8 +45,7 @@ export default class SettingsNavigationTab extends Mixins(NavigationMixin, BaseM
             })
         })
 
-        // upload to moonraker db
-        this.$store.dispatch('gui/navigation/upload')
-    }
-}
+        store.dispatch('gui/navigation/upload')
+    },
+})
 </script>

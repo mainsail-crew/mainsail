@@ -22,61 +22,59 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 
-@Component({
-    components: {
-        SettingsRow,
-    },
+const props = defineProps({
+    type: { type: String, required: true },
+    name: { type: String, required: true },
 })
-export default class SettingsMiscellaneousTabLightGroupsList extends Mixins(BaseMixin) {
-    @Prop({ type: String, required: true }) declare type: string
-    @Prop({ type: String, required: true }) declare name: string
 
-    get entry() {
-        const entries = this.$store.state.gui.miscellaneous.entries ?? {}
-        const key =
-            Object.keys(entries).find((key) => {
-                const entry = entries[key]
-                return entry.type === this.type && entry.name === this.name
-            }) ?? ''
+const emit = defineEmits<{
+    (e: 'edit-group', groupId: string): void
+    (e: 'close'): void
+    (e: 'create-group'): void
+}>()
 
-        return entries[key] ?? {}
-    }
+const store = useStore()
 
-    get groups() {
-        if (!this.entry) return []
+const entry = computed(() => {
+    const entries = store.state.gui.miscellaneous.entries ?? {}
+    const key =
+        Object.keys(entries).find((k) => {
+            const entry = entries[k]
+            return entry.type === props.type && entry.name === props.name
+        }) ?? ''
+    return entries[key] ?? {}
+})
 
-        const lightgroups = this.entry.lightgroups ?? {}
-
-        const groups: GuiMiscellaneousStateEntryLightgroup[] = []
-        Object.keys(lightgroups).forEach((key) => {
-            groups.push({
-                name: lightgroups[key].name,
-                start: lightgroups[key].start,
-                end: lightgroups[key].end,
-                id: key,
-            })
+const groups = computed(() => {
+    if (!entry.value) return []
+    const lightgroups = entry.value.lightgroups ?? {}
+    const output: GuiMiscellaneousStateEntryLightgroup[] = []
+    Object.keys(lightgroups).forEach((key) => {
+        output.push({
+            name: lightgroups[key].name,
+            start: lightgroups[key].start,
+            end: lightgroups[key].end,
+            id: key,
         })
+    })
+    return caseInsensitiveSort(output, 'name')
+})
 
-        return caseInsensitiveSort(groups, 'name')
-    }
+function editGroup(groupId: string) {
+    emit('edit-group', groupId)
+}
 
-    editGroup(groupId: string) {
-        this.$emit('edit-group', groupId)
-    }
+function close() {
+    emit('close')
+}
 
-    close() {
-        this.$emit('close')
-    }
-
-    createGroup() {
-        this.$emit('create-group')
-    }
+function createGroup() {
+    emit('create-group')
 }
 </script>

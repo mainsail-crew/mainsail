@@ -334,409 +334,362 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useTheme } from '@/composables/useTheme'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground, themes } from '@/store/variables'
-import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
-import { ServerPowerStateDevice } from '@/store/server/power/types'
-import ThemeMixin from '@/components/mixins/theme'
+import type { ServerPowerStateDevice } from '@/store/server/power/types'
 import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
 
-@Component({
-    components: { SettingsRow },
+const store = useStore()
+const { t } = useI18n()
+const { isMobile } = useBase()
+const { theme } = useTheme()
+
+const mode = computed({
+    get: () => store.state.gui.uiSettings.mode,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.mode', value: newVal })
+    },
 })
-export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin) {
-    mdiRestart = mdiRestart
-    mdiTimerOutline = mdiTimerOutline
 
-    defaultBigThumbnailBackground = defaultBigThumbnailBackground
-
-    get mode() {
-        return this.$store.state.gui.uiSettings.mode
-    }
-
-    set mode(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.mode', value: newVal })
-    }
-
-    get themeName() {
-        return this.$store.getters['gui/theme']
-    }
-
-    set themeName(newVal: string) {
+const themeName = computed({
+    get: () => store.getters['gui/theme'],
+    set: (newVal: string) => {
         const newTheme = themes.find((theme) => theme.name === newVal)
-        if (this.logoColor === this.defaultLogoColor) {
-            this.logoColor = newTheme?.colorLogo ?? defaultLogoColor
+        if (logoColor.value === defaultLogoColor) {
+            logoColor.value = newTheme?.colorLogo ?? defaultLogoColor
         }
-        if (this.primaryColor === this.defaultPrimaryColor) {
-            this.primaryColor = newTheme?.colorPrimary ?? defaultPrimaryColor
+        if (primaryColor.value === defaultPrimaryColor) {
+            primaryColor.value = newTheme?.colorPrimary ?? defaultPrimaryColor
         }
 
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.theme', value: newVal })
-    }
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.theme', value: newVal })
+    },
+})
 
-    get modes() {
-        return [
-            {
-                text: this.$t('Settings.UiSettingsTab.ThemeDark'),
-                value: 'dark',
-            },
-            {
-                text: this.$t('Settings.UiSettingsTab.ThemeLight'),
-                value: 'light',
-            },
-        ]
-    }
+const modes = computed(() => [
+    {
+        text: t('Settings.UiSettingsTab.ThemeDark'),
+        value: 'dark',
+    },
+    {
+        text: t('Settings.UiSettingsTab.ThemeLight'),
+        value: 'light',
+    },
+])
 
-    get themes() {
-        return themes.map((theme) => {
-            return {
-                text: theme.displayName,
-                value: theme.name,
-            }
-        })
-    }
+const themesList = computed(() => {
+    return themes.map((theme) => {
+        return {
+            text: theme.displayName,
+            value: theme.name,
+        }
+    })
+})
 
-    get logoColor() {
-        return this.$store.state.gui.uiSettings.logo
-    }
+const logoColor = computed({
+    get: () => store.state.gui.uiSettings.logo,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.logo', value: newVal })
+    },
+})
 
-    set logoColor(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.logo', value: newVal })
-    }
+const defaultLogoColorValue = computed(() => theme.value?.colorLogo ?? defaultLogoColor)
 
-    get defaultLogoColor() {
-        return this.theme?.colorLogo ?? defaultLogoColor
-    }
+const defaultPrimaryColorValue = computed(() => theme.value?.colorPrimary ?? defaultPrimaryColor)
 
-    get defaultPrimaryColor() {
-        return this.theme?.colorPrimary ?? defaultPrimaryColor
-    }
+const primaryColor = computed({
+    get: () => store.state.gui.uiSettings.primary,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.primary', value: newVal })
+    },
+})
 
-    get primaryColor() {
-        return this.$store.state.gui.uiSettings.primary
-    }
+const boolBigThumbnail = computed({
+    get: () => store.state.gui.uiSettings.boolBigThumbnail,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBigThumbnail', value: newVal })
+    },
+})
 
-    set primaryColor(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.primary', value: newVal })
-    }
+const bigThumbnailBackground = computed({
+    get: () => store.state.gui.uiSettings.bigThumbnailBackground,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.bigThumbnailBackground', value: newVal })
+    },
+})
 
-    get boolBigThumbnail() {
-        return this.$store.state.gui.uiSettings.boolBigThumbnail
-    }
+const displayCancelPrint = computed({
+    get: () => store.state.gui.uiSettings.displayCancelPrint,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.displayCancelPrint', value: newVal })
+    },
+})
 
-    set boolBigThumbnail(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBigThumbnail', value: newVal })
-    }
+const progressAsFavicon = computed({
+    get: () => store.state.gui.uiSettings.progressAsFavicon,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.progressAsFavicon', value: newVal })
+    },
+})
 
-    get bigThumbnailBackground() {
-        return this.$store.state.gui.uiSettings.bigThumbnailBackground
-    }
+const confirmOnEmergencyStop = computed({
+    get: () => store.state.gui.uiSettings.confirmOnEmergencyStop,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnEmergencyStop', value: newVal })
+    },
+})
 
-    set bigThumbnailBackground(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.bigThumbnailBackground', value: newVal })
-    }
+const confirmOnCoolDown = computed({
+    get: () => store.state.gui.uiSettings.confirmOnCoolDown,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnCoolDown', value: newVal })
+    },
+})
 
-    get displayCancelPrint() {
-        return this.$store.state.gui.uiSettings.displayCancelPrint
-    }
+const confirmOnPowerDeviceChange = computed({
+    get: () => store.state.gui.uiSettings.confirmOnPowerDeviceChange,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnPowerDeviceChange', value: newVal })
+    },
+})
 
-    set displayCancelPrint(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayCancelPrint', value: newVal })
-    }
+const confirmOnCancelJob = computed({
+    get: () => store.state.gui.uiSettings.confirmOnCancelJob,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnCancelJob', value: newVal })
+    },
+})
 
-    get progressAsFavicon() {
-        return this.$store.state.gui.uiSettings.progressAsFavicon
-    }
+const lockSliders = computed({
+    get: () => store.state.gui.uiSettings.lockSlidersOnTouchDevices,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersOnTouchDevices', value: newVal })
+    },
+})
 
-    set progressAsFavicon(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.progressAsFavicon', value: newVal })
-    }
-
-    get confirmOnEmergencyStop() {
-        return this.$store.state.gui.uiSettings.confirmOnEmergencyStop
-    }
-
-    set confirmOnEmergencyStop(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnEmergencyStop', value: newVal })
-    }
-
-    get confirmOnCoolDown() {
-        return this.$store.state.gui.uiSettings.confirmOnCoolDown
-    }
-
-    set confirmOnCoolDown(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnCoolDown', value: newVal })
-    }
-
-    get confirmOnPowerDeviceChange() {
-        return this.$store.state.gui.uiSettings.confirmOnPowerDeviceChange
-    }
-
-    set confirmOnPowerDeviceChange(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnPowerDeviceChange', value: newVal })
-    }
-
-    get confirmOnCancelJob() {
-        return this.$store.state.gui.uiSettings.confirmOnCancelJob
-    }
-
-    set confirmOnCancelJob(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnCancelJob', value: newVal })
-    }
-
-    get lockSliders() {
-        return this.$store.state.gui.uiSettings.lockSlidersOnTouchDevices
-    }
-
-    set lockSliders(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersOnTouchDevices', value: newVal })
-    }
-
-    get lockSlidersDelay() {
-        return this.$store.state.gui.uiSettings.lockSlidersDelay
-    }
-
-    set lockSlidersDelay(newVal) {
+const lockSlidersDelay = computed({
+    get: () => store.state.gui.uiSettings.lockSlidersDelay,
+    set: (newVal) => {
         const value = Number(newVal)
         if (!Number.isFinite(value) || value < 0) return
 
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersDelay', value })
-    }
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersDelay', value })
+    },
+})
 
-    get boolWideNavDrawer() {
-        return this.$store.state.gui.uiSettings.boolWideNavDrawer ?? false
-    }
+const navigationStyleSetting = computed({
+    get: () => store.state.gui.uiSettings.navigationStyle,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.navigationStyle', value: newVal })
+    },
+})
 
-    get navigationStyleSetting() {
-        return this.$store.state.gui.uiSettings.navigationStyle
-    }
+const navigationStyles = computed(() => [
+    {
+        text: t('Settings.UiSettingsTab.NavigationStyleIconsOnly'),
+        value: 'iconsOnly',
+    },
+    {
+        text: t('Settings.UiSettingsTab.NavigationStyleIconsAndText'),
+        value: 'iconsAndText',
+    },
+])
 
-    set navigationStyleSetting(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.navigationStyle', value: newVal })
-    }
+const defaultNavigationStateSetting = computed({
+    get: () => store.state.gui.uiSettings.defaultNavigationStateSetting,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.defaultNavigationStateSetting', value: newVal })
+    },
+})
 
-    get navigationStyles() {
-        return [
-            {
-                text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsOnly'),
-                value: 'iconsOnly',
-            },
-            {
-                text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsAndText'),
-                value: 'iconsAndText',
-            },
-        ]
-    }
+const defaultNavigationStateSettings = computed(() => [
+    {
+        text: t('Settings.UiSettingsTab.DefaultNavigationStateAlwaysOpen'),
+        value: 'alwaysOpen',
+    },
+    {
+        text: t('Settings.UiSettingsTab.DefaultNavigationStateAlwaysClosed'),
+        value: 'alwaysClosed',
+    },
+    {
+        text: t('Settings.UiSettingsTab.DefaultNavigationStateLastState'),
+        value: 'lastState',
+    },
+])
 
-    get defaultNavigationStateSetting() {
-        return this.$store.state.gui.uiSettings.defaultNavigationStateSetting
-    }
+const boolHideUploadAndPrintButton = computed({
+    get: () => store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.boolHideUploadAndPrintButton', value: newVal })
+    },
+})
 
-    set defaultNavigationStateSetting(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.defaultNavigationStateSetting', value: newVal })
-    }
+const powerDevices = computed(() => store.getters['server/power/getDevices'] ?? [])
 
-    get defaultNavigationStateSettings() {
-        return [
-            {
-                text: this.$t('Settings.UiSettingsTab.DefaultNavigationStateAlwaysOpen'),
-                value: 'alwaysOpen',
-            },
-            {
-                text: this.$t('Settings.UiSettingsTab.DefaultNavigationStateAlwaysClosed'),
-                value: 'alwaysClosed',
-            },
-            {
-                text: this.$t('Settings.UiSettingsTab.DefaultNavigationStateLastState'),
-                value: 'lastState',
-            },
-        ]
-    }
+const autoPowerDevice = computed(() => {
+    return (
+        powerDevices.value.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')
+            ?.device ?? '--'
+    )
+})
 
-    get boolHideUploadAndPrintButton() {
-        return this.$store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
-    }
+const powerDeviceName = computed({
+    get: () => store.state.gui.uiSettings.powerDeviceName ?? null,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.powerDeviceName', value: newVal })
+    },
+})
 
-    set boolHideUploadAndPrintButton(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolHideUploadAndPrintButton', value: newVal })
-    }
+const powerDeviceOptions = computed(() => {
+    const items: { text: string; value: string | null }[] = [
+        { text: `Auto (${autoPowerDevice.value})`, value: null },
+    ]
 
-    get powerDevices() {
-        return this.$store.getters['server/power/getDevices'] ?? []
-    }
-
-    get autoPowerDevice() {
-        return (
-            this.powerDevices.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')
-                ?.device ?? '--'
-        )
-    }
-
-    get powerDeviceName() {
-        return this.$store.state.gui.uiSettings.powerDeviceName ?? null
-    }
-
-    set powerDeviceName(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.powerDeviceName', value: newVal })
-    }
-
-    get powerDeviceOptions() {
-        const items: { text: string; value: string | null }[] = [
-            { text: `Auto (${this.autoPowerDevice})`, value: null },
-        ]
-
-        this.powerDevices.forEach((device: ServerPowerStateDevice) => {
-            items.push({
-                text: `${device.device} (${device.type})`,
-                value: device.device.toString(),
-            })
+    powerDevices.value.forEach((device: ServerPowerStateDevice) => {
+        items.push({
+            text: `${device.device} (${device.type})`,
+            value: device.device.toString(),
         })
+    })
 
-        return items
-    }
+    return items
+})
 
-    get hideSaveConfigForBedMash() {
-        return this.$store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false
-    }
+const hideSaveConfigForBedMash = computed({
+    get: () => store.state.gui.uiSettings.hideSaveConfigForBedMash ?? false,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.hideSaveConfigForBedMash', value: newVal })
+    },
+})
 
-    set hideSaveConfigForBedMash(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideSaveConfigForBedMash', value: newVal })
-    }
+const disableFanAnimation = computed({
+    get: () => store.state.gui.uiSettings.disableFanAnimation ?? false,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.disableFanAnimation', value: newVal })
+    },
+})
 
-    get disableFanAnimation() {
-        return this.$store.state.gui.uiSettings.disableFanAnimation ?? false
-    }
+const boolManualProbeDialog = computed({
+    get: () => store.state.gui.uiSettings.boolManualProbeDialog ?? true,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.boolManualProbeDialog', value: newVal })
+    },
+})
 
-    set disableFanAnimation(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.disableFanAnimation', value: newVal })
-    }
+const boolBedScrewsDialog = computed({
+    get: () => store.state.gui.uiSettings.boolBedScrewsDialog ?? true,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBedScrewsDialog', value: newVal })
+    },
+})
 
-    get boolManualProbeDialog() {
-        return this.$store.state.gui.uiSettings.boolManualProbeDialog ?? true
-    }
+const boolScrewsTiltAdjustDialog = computed({
+    get: () => store.state.gui.uiSettings.boolScrewsTiltAdjustDialog ?? true,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.boolScrewsTiltAdjustDialog', value: newVal })
+    },
+})
 
-    set boolManualProbeDialog(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolManualProbeDialog', value: newVal })
-    }
+const printstatusThumbnailZoom = computed({
+    get: () => store.state.gui.uiSettings.printstatusThumbnailZoom ?? true,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.printstatusThumbnailZoom', value: newVal })
+    },
+})
 
-    get boolBedScrewsDialog() {
-        return this.$store.state.gui.uiSettings.boolBedScrewsDialog ?? true
-    }
+const tempchartHeight = computed({
+    get: () => store.state.gui.uiSettings.tempchartHeight ?? 250,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.tempchartHeight', value: newVal })
+    },
+})
 
-    set boolBedScrewsDialog(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBedScrewsDialog', value: newVal })
-    }
+const hideUpdateWarnings = computed({
+    get: () => store.state.gui.uiSettings.hideUpdateWarnings ?? false,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.hideUpdateWarnings', value: newVal })
+    },
+})
 
-    get boolScrewsTiltAdjustDialog() {
-        return this.$store.state.gui.uiSettings.boolScrewsTiltAdjustDialog ?? true
-    }
+const dashboardFilesLimit = computed({
+    get: () => store.state.gui.uiSettings.dashboardFilesLimit ?? 5,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardFilesLimit', value: newVal })
+    },
+})
 
-    set boolScrewsTiltAdjustDialog(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolScrewsTiltAdjustDialog', value: newVal })
-    }
+const dashboardFilesFilter = computed({
+    get: () => store.state.gui.uiSettings.dashboardFilesFilter ?? [],
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardFilesFilter', value: newVal })
+    },
+})
 
-    get printstatusThumbnailZoom() {
-        return this.$store.state.gui.uiSettings.printstatusThumbnailZoom ?? true
-    }
+const dashboardFilesFilters = computed(() => [
+    {
+        text: t('Settings.UiSettingsTab.DashboardFilesFilterNew'),
+        value: 'new',
+    },
+    {
+        text: t('Settings.UiSettingsTab.DashboardFilesFilterFailed'),
+        value: 'failed',
+    },
+    {
+        text: t('Settings.UiSettingsTab.DashboardFilesFilterCompleted'),
+        value: 'completed',
+    },
+])
 
-    set printstatusThumbnailZoom(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.printstatusThumbnailZoom', value: newVal })
-    }
+const dashboardHistoryLimit = computed({
+    get: () => store.state.gui.uiSettings.dashboardHistoryLimit ?? 5,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardHistoryLimit', value: newVal })
+    },
+})
 
-    get tempchartHeight() {
-        return this.$store.state.gui.uiSettings.tempchartHeight ?? 250
-    }
+const hideOtherInstances = computed({
+    get: () => store.state.gui.uiSettings.hideOtherInstances ?? false,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
+    },
+})
 
-    set tempchartHeight(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.tempchartHeight', value: newVal })
-    }
-
-    get hideUpdateWarnings() {
-        return this.$store.state.gui.uiSettings.hideUpdateWarnings ?? false
-    }
-
-    set hideUpdateWarnings(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideUpdateWarnings', value: newVal })
-    }
-
-    get dashboardFilesLimit() {
-        return this.$store.state.gui.uiSettings.dashboardFilesLimit ?? 5
-    }
-
-    set dashboardFilesLimit(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardFilesLimit', value: newVal })
-    }
-
-    get dashboardFilesFilter() {
-        return this.$store.state.gui.uiSettings.dashboardFilesFilter ?? []
-    }
-
-    set dashboardFilesFilter(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardFilesFilter', value: newVal })
-    }
-
-    get dashboardFilesFilters() {
-        return [
-            {
-                text: this.$t('Settings.UiSettingsTab.DashboardFilesFilterNew'),
-                value: 'new',
-            },
-            {
-                text: this.$t('Settings.UiSettingsTab.DashboardFilesFilterFailed'),
-                value: 'failed',
-            },
-            {
-                text: this.$t('Settings.UiSettingsTab.DashboardFilesFilterCompleted'),
-                value: 'completed',
-            },
-        ]
-    }
-
-    get dashboardHistoryLimit() {
-        return this.$store.state.gui.uiSettings.dashboardHistoryLimit ?? 5
-    }
-
-    set dashboardHistoryLimit(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.dashboardHistoryLimit', value: newVal })
-    }
-
-    get hideOtherInstances() {
-        return this.$store.state.gui.uiSettings.hideOtherInstances ?? false
-    }
-
-    set hideOtherInstances(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
-    }
-
-    @Debounce(500)
-    updateLogoColor(newVal: ColorPickerValue) {
-        this.logoColor = clearColorObject(newVal)
-    }
-
-    @Debounce(500)
-    updatePrimaryColor(newVal: ColorPickerValue) {
-        this.primaryColor = clearColorObject(newVal)
-    }
-
-    @Debounce(500)
-    updateBigThumbnailBackground(newVal: ColorPickerValue) {
-        this.bigThumbnailBackground = clearColorObject(newVal)
-    }
-
-    @Watch('theme')
-    onThemeChanged(newVal: string) {
-        const theme = themes.find((theme) => theme.name === newVal)
-
-        // stop here when no theme was found with this name
-        if (!theme) return
-
-        // update logo color to theme logo color if the theme has a colorLogo
-        if (theme.colorLogo) this.logoColor = theme.colorLogo
-    }
+let logoColorTimer: ReturnType<typeof setTimeout> | null = null
+function updateLogoColor(newVal: ColorPickerValue) {
+    if (logoColorTimer) clearTimeout(logoColorTimer)
+    logoColorTimer = setTimeout(() => {
+        logoColor.value = clearColorObject(newVal)
+    }, 500)
 }
+
+let primaryColorTimer: ReturnType<typeof setTimeout> | null = null
+function updatePrimaryColor(newVal: ColorPickerValue) {
+    if (primaryColorTimer) clearTimeout(primaryColorTimer)
+    primaryColorTimer = setTimeout(() => {
+        primaryColor.value = clearColorObject(newVal)
+    }, 500)
+}
+
+let bigThumbnailTimer: ReturnType<typeof setTimeout> | null = null
+function updateBigThumbnailBackground(newVal: ColorPickerValue) {
+    if (bigThumbnailTimer) clearTimeout(bigThumbnailTimer)
+    bigThumbnailTimer = setTimeout(() => {
+        bigThumbnailBackground.value = clearColorObject(newVal)
+    }, 500)
+}
+
+watch(themeName, (newVal: string) => {
+    const themeObj = themes.find((themeData) => themeData.name === newVal)
+
+    if (!themeObj) return
+
+    if (themeObj.colorLogo) logoColor.value = themeObj.colorLogo
+})
 </script>

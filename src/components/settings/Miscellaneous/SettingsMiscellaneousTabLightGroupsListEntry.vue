@@ -10,42 +10,43 @@
     </settings-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { mdiDelete, mdiPencil } from '@mdi/js'
 import { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    type: { type: String, required: true },
+    name: { type: String, required: true },
+    group: { type: Object, required: true },
 })
-export default class SettingsMiscellaneousTabLightGroupsListEntry extends Mixins(BaseMixin) {
-    mdiDelete = mdiDelete
-    mdiPencil = mdiPencil
 
-    @Prop({ type: String, required: true }) declare type: string
-    @Prop({ type: String, required: true }) declare name: string
-    @Prop({ type: Object, required: true }) declare group: GuiMiscellaneousStateEntryLightgroup
+const emit = defineEmits<{
+    (e: 'edit-group', groupId: string): void
+}>()
 
-    get subTitle() {
-        return this.$t('Settings.MiscellaneousTab.GroupSubTitle', {
-            start: this.group.start,
-            end: this.group.end,
-        })
-    }
+const store = useStore()
+const { t } = useI18n()
 
-    editGroup() {
-        this.$emit('edit-group', this.group.id)
-    }
+const subTitle = computed(() =>
+    t('Settings.MiscellaneousTab.GroupSubTitle', {
+        start: (props.group as GuiMiscellaneousStateEntryLightgroup).start,
+        end: (props.group as GuiMiscellaneousStateEntryLightgroup).end,
+    })
+)
 
-    deleteGroup() {
-        this.$store.dispatch('gui/miscellaneous/deleteLightgroup', {
-            type: this.type,
-            name: this.name,
-            lightgroupId: this.group.id,
-        })
-    }
+function editGroup() {
+    emit('edit-group', (props.group as GuiMiscellaneousStateEntryLightgroup).id)
+}
+
+function deleteGroup() {
+    store.dispatch('gui/miscellaneous/deleteLightgroup', {
+        type: props.type,
+        name: props.name,
+        lightgroupId: (props.group as GuiMiscellaneousStateEntryLightgroup).id,
+    })
 }
 </script>
 

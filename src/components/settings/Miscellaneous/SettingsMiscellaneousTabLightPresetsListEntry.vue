@@ -10,71 +10,64 @@
     </settings-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { mdiDelete, mdiPencil } from '@mdi/js'
 import { GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    type: { type: String, required: true },
+    name: { type: String, required: true },
+    preset: { type: Object, required: true },
 })
-export default class SettingsMiscellaneousTabLightPresetsListEntry extends Mixins(BaseMixin) {
-    mdiDelete = mdiDelete
-    mdiPencil = mdiPencil
 
-    @Prop({ type: String, required: true }) declare type: string
-    @Prop({ type: String, required: true }) declare name: string
-    @Prop({ type: Object, required: true }) declare preset: GuiMiscellaneousStateEntryPreset
+const emit = defineEmits<{
+    (e: 'edit-preset', presetId: string): void
+}>()
 
-    get settings() {
-        if (!this.type || !this.name) return null
+const store = useStore()
 
-        const key = `${this.type.toLowerCase()} ${this.name.toLowerCase()}`
-        return this.$store.state.printer?.configfile?.settings[key] ?? {}
+const settings = computed(() => {
+    if (!props.type || !props.name) return null
+    const key = `${props.type.toLowerCase()} ${props.name.toLowerCase()}`
+    return store.state.printer?.configfile?.settings[key] ?? {}
+})
+
+const colorOrder = computed(() => {
+    if (props.type?.toLowerCase() === 'led') {
+        let order = ''
+        if ('red_pin' in settings.value) order += 'R'
+        if ('green_pin' in settings.value) order += 'G'
+        if ('blue_pin' in settings.value) order += 'B'
+        if ('white_pin' in settings.value) order += 'W'
+        return order
     }
-
-    get colorOrder() {
-        if (this.type?.toLowerCase() === 'led') {
-            let colorOrder = ''
-            if ('red_pin' in this.settings) colorOrder += 'R'
-            if ('green_pin' in this.settings) colorOrder += 'G'
-            if ('blue_pin' in this.settings) colorOrder += 'B'
-            if ('white_pin' in this.settings) colorOrder += 'W'
-
-            return colorOrder
-        }
-
-        // is array
-        if (Array.isArray(this.settings.color_order)) {
-            return this.settings.color_order[0] ?? ''
-        }
-
-        return this.settings.color_order ?? ''
+    if (Array.isArray(settings.value.color_order)) {
+        return settings.value.color_order[0] ?? ''
     }
+    return settings.value.color_order ?? ''
+})
 
-    get subTitle() {
-        const output: string[] = []
+const subTitle = computed(() => {
+    const output: string[] = []
+    const p = props.preset as GuiMiscellaneousStateEntryPreset
+    if (colorOrder.value.includes('R')) output.push(`R: ${p.red}`)
+    if (colorOrder.value.includes('G')) output.push(`G: ${p.green}`)
+    if (colorOrder.value.includes('B')) output.push(`B: ${p.blue}`)
+    if (colorOrder.value.includes('W')) output.push(`W: ${p.white}`)
+    return output.join(', ')
+})
 
-        if (this.colorOrder.includes('R')) output.push(`R: ${this.preset.red}`)
-        if (this.colorOrder.includes('G')) output.push(`G: ${this.preset.green}`)
-        if (this.colorOrder.includes('B')) output.push(`B: ${this.preset.blue}`)
-        if (this.colorOrder.includes('W')) output.push(`W: ${this.preset.white}`)
+function editPreset() {
+    emit('edit-preset', (props.preset as GuiMiscellaneousStateEntryPreset).id)
+}
 
-        return output.join(', ')
-    }
-
-    editPreset() {
-        this.$emit('edit-preset', this.preset.id)
-    }
-
-    deletePreset() {
-        this.$store.dispatch('gui/miscellaneous/deletePreset', {
-            type: this.type,
-            name: this.name,
-            presetId: this.preset.id,
-        })
-    }
+function deletePreset() {
+    store.dispatch('gui/miscellaneous/deletePreset', {
+        type: props.type,
+        name: props.name,
+        presetId: (props.preset as GuiMiscellaneousStateEntryPreset).id,
+    })
 }
 </script>

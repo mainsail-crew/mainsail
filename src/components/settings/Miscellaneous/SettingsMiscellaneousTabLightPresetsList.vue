@@ -22,59 +22,55 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    type: { type: String, required: true },
+    name: { type: String, required: true },
 })
-export default class SettingsMiscellaneousTabLightPresetsList extends Mixins(BaseMixin) {
-    @Prop({ type: String, required: true }) declare type: string
-    @Prop({ type: String, required: true }) declare name: string
 
-    get entry() {
-        const entries = this.$store.state.gui.miscellaneous.entries ?? {}
-        const key =
-            Object.keys(entries).find((key) => {
-                const entry = entries[key]
-                return entry.type === this.type && entry.name === this.name
-            }) ?? ''
+const emit = defineEmits<{
+    (e: 'edit-preset', presetId: string): void
+    (e: 'close'): void
+    (e: 'create-preset'): void
+}>()
 
-        return entries[key] ?? {}
-    }
+const store = useStore()
 
-    get presets() {
-        if (!this.entry) return []
+const entry = computed(() => {
+    const entries = store.state.gui.miscellaneous.entries ?? {}
+    const key =
+        Object.keys(entries).find((k) => {
+            const entry = entries[k]
+            return entry.type === props.type && entry.name === props.name
+        }) ?? ''
+    return entries[key] ?? {}
+})
 
-        const presets = this.entry.presets ?? {}
+const presets = computed(() => {
+    if (!entry.value) return []
+    const presets = entry.value.presets ?? {}
+    const output: GuiMiscellaneousStateEntryPreset[] = []
+    Object.keys(presets).forEach((key) => {
+        const preset = presets[key]
+        output.push({ ...preset, id: key })
+    })
+    return caseInsensitiveSort(output, 'name')
+})
 
-        const output: GuiMiscellaneousStateEntryPreset[] = []
-        Object.keys(presets).forEach((key) => {
-            const preset = presets[key]
+function editPreset(presetId: string) {
+    emit('edit-preset', presetId)
+}
 
-            output.push({
-                ...preset,
-                id: key,
-            })
-        })
+function close() {
+    emit('close')
+}
 
-        return caseInsensitiveSort(output, 'name')
-    }
-
-    editPreset(presetId: string) {
-        this.$emit('edit-preset', presetId)
-    }
-
-    close() {
-        this.$emit('close')
-    }
-
-    createPreset() {
-        this.$emit('create-preset')
-    }
+function createPreset() {
+    emit('create-preset')
 }
 </script>

@@ -14,30 +14,22 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref } from 'vue'
 import SettingsMiscellaneousTabList from '@/components/settings/Miscellaneous/SettingsMiscellaneousTabList.vue'
 import SettingsMiscellaneousTabLightGroups from '@/components/settings/Miscellaneous/SettingsMiscellaneousTabLightGroups.vue'
 import SettingsMiscellaneousTabLightPresets from '@/components/settings/Miscellaneous/SettingsMiscellaneousTabLightPresets.vue'
-import MiscellaneousMixin from '@/components/mixins/miscellaneous'
+import { useMiscellaneous } from '@/composables/useMiscellaneous'
 
-@Component({
-    components: {
-        SettingsMiscellaneousTabList,
-        SettingsMiscellaneousTabLightGroups,
-        SettingsMiscellaneousTabLightPresets,
-    },
-})
-export default class SettingsMiscellaneousTab extends Mixins(BaseMixin, MiscellaneousMixin) {
-    page = ''
-    pageType = ''
-    pageName = ''
+const {  } = useMiscellaneous()
 
-    openPage(payload: { page: string; type: string; name: string } = { page: '', type: '', name: '' }) {
-        this.page = payload.page
-        this.pageType = payload.type
-        this.pageName = payload.name
-    }
+const page = ref('')
+const pageType = ref('')
+const pageName = ref('')
+
+function openPage(payload: { page: string; type: string; name: string } = { page: '', type: '', name: '' }) {
+    page.value = payload.page
+    pageType.value = payload.type
+    pageName.value = payload.name
 }
 </script>

@@ -40,94 +40,88 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Ref } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { getCurrentInstance } from 'vue'
+import { useSettingsDatabase } from '@/composables/useSettingsDatabase'
+import { useI18n } from 'vue-i18n'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
 import CheckboxList from '@/components/inputs/CheckboxList.vue'
 import { TranslateResult } from 'vue-i18n'
-import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase'
-import SettingsGeneralTabBackupDatabase from '@/components/settings/General/GeneralBackup.vue'
-import Vue from 'vue'
 
-@Component({
-    components: { SettingsGeneralTabBackupDatabase, Panel, SettingsRow, CheckboxList },
-})
-export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin, SettingsGeneralDatabase) {
-    mdiHelpCircle = mdiHelpCircle
-    mdiCloseThick = mdiCloseThick
+const store = useStore()
+const { t } = useI18n()
+const { loadings, loadBackupableNamespaces, availableKeys, sortNamespaces } = useSettingsDatabase()
+const { proxy } = getCurrentInstance()!
 
-    @Ref() readonly uploadBackupFile!: HTMLInputElement
+const uploadBackupFile = ref<HTMLInputElement | null>(null)
+const showDialog = ref(false)
+const restoreableNamespaces = ref<{ value: string; label: string | TranslateResult }[]>([])
+const restoreCheckboxes = ref<string[]>([])
+const restoreObjects = ref<Record<string, unknown>>({})
 
-    showDialog = false
-    restoreableNamespaces: { value: string; label: string | TranslateResult }[] = []
-    restoreCheckboxes: string[] = []
-    restoreObjects: Record<string, unknown> = {}
+function onSelectRestoreCheckboxes(selected: string[]) {
+    restoreCheckboxes.value = selected
+}
 
-    onSelectRestoreCheckboxes(backupCheckboxes: string[]) {
-        this.restoreCheckboxes = backupCheckboxes
+function restoreDb() {
+    uploadBackupFile.value?.click()
+}
+
+function uploadRestore() {
+    const backup = uploadBackupFile.value?.files?.[0]
+    if (!backup) {
+        window.console.error('No json uploaded')
+        return
     }
 
-    async restoreDb() {
-        this.uploadBackupFile.click()
-    }
+    const reader = new FileReader()
+    reader.readAsText(backup, 'UTF-8')
+    reader.onload = (evt) => {
+        restoreableNamespaces.value = []
+        try {
+            restoreObjects.value = JSON.parse(evt?.target?.result + '')
 
-    uploadRestore() {
-        const backup = this.uploadBackupFile?.files?.[0]
-        if (!backup) {
-            window.console.error('No json uploaded')
-            return
+            const keys = Object.keys(restoreObjects.value)
+            restoreableNamespaces.value = keys.map((key) => {
+                const namespace = availableKeys.value.find((ns) => ns.value === key)
+                if (namespace) return namespace
+
+                return { value: key, label: key }
+            })
+
+            restoreableNamespaces.value = restoreableNamespaces.value.sort(sortNamespaces)
+
+            openDialog()
+        } catch {
+            proxy!.$toast.error(t('Settings.GeneralTab.CannotReadJson').toString())
         }
-
-        const reader = new FileReader()
-        reader.readAsText(backup, 'UTF-8')
-        reader.onload = (evt) => {
-            this.restoreableNamespaces = []
-            try {
-                this.restoreObjects = JSON.parse(evt?.target?.result + '')
-
-                const keys = Object.keys(this.restoreObjects)
-                this.restoreableNamespaces = keys.map((key) => {
-                    const namespace = this.availableKeys.find((namespace) => namespace.value === key)
-                    if (namespace) return namespace
-
-                    return { value: key, label: key }
-                })
-
-                // sort restoreableNamespaces
-                this.restoreableNamespaces = this.restoreableNamespaces.sort(this.sortNamespaces)
-
-                this.openDialog()
-            } catch {
-                Vue.$toast.error(this.$t('Settings.GeneralTab.CannotReadJson').toString())
-            }
-        }
-        reader.onerror = (evt) => {
-            window.console.error(evt)
-        }
-
-        // empty input file field
-        this.uploadBackupFile.value = ''
+    }
+    reader.onerror = (evt) => {
+        window.console.error(evt)
     }
 
-    openDialog() {
-        this.showDialog = true
+    if (uploadBackupFile.value) {
+        uploadBackupFile.value.value = ''
     }
+}
 
-    closeDialog() {
-        this.showDialog = false
-    }
+function openDialog() {
+    showDialog.value = true
+}
 
-    restoreDbAction() {
-        this.$store.dispatch('socket/addLoading', 'restoreDbAction')
+function closeDialog() {
+    showDialog.value = false
+}
 
-        this.$store.dispatch('gui/restoreMoonrakerDB', {
-            dbCheckboxes: this.restoreCheckboxes,
-            restoreObjects: this.restoreObjects,
-        })
-    }
+function restoreDbAction() {
+    store.dispatch('socket/addLoading', 'restoreDbAction')
+
+    store.dispatch('gui/restoreMoonrakerDB', {
+        dbCheckboxes: restoreCheckboxes.value,
+        restoreObjects: restoreObjects.value,
+    })
 }
 </script>

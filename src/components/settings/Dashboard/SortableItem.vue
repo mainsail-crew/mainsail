@@ -18,46 +18,27 @@
     </v-list-item>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import draggable from 'vuedraggable'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { mdiCheckboxBlankOutline, mdiCheckboxMarked, mdiDragVertical, mdiInformation } from '@mdi/js'
-import DashboardMixin from '@/components/mixins/dashboard'
+import { useDashboard } from '@/composables/useDashboard'
 
-@Component({
-    components: { draggable },
+const props = defineProps({
+    name: { type: String, required: true },
+    visible: { type: Boolean, required: true },
 })
-export default class SettingsDashboardSortableItem extends Mixins(DashboardMixin) {
-    /**
-     * Icons
-     */
-    mdiInformation = mdiInformation
-    mdiDragVertical = mdiDragVertical
 
-    @Prop({ type: String, required: true }) declare readonly name: string
-    @Prop({ type: Boolean, required: true }) declare readonly visible: boolean
+defineEmits<{
+    (e: 'change-visible', name: string, visible: boolean): void
+}>()
 
-    get panelname() {
-        return this.getPanelName(this.name)
-    }
+const { getPanelName, convertPanelnameToIcon } = useDashboard()
 
-    get icon() {
-        return this.convertPanelnameToIcon(this.name)
-    }
+const panelname = computed(() => getPanelName(props.name))
+const icon = computed(() => convertPanelnameToIcon(props.name))
 
-    get checkboxColor() {
-        if (this.visible) return 'primary'
-
-        return 'grey lighten-1'
-    }
-
-    get checkboxIcon() {
-        if (this.visible) return mdiCheckboxMarked
-
-        return mdiCheckboxBlankOutline
-    }
-}
+const checkboxColor = computed(() => props.visible ? 'primary' : 'grey lighten-1')
+const checkboxIcon = computed(() => props.visible ? mdiCheckboxMarked : mdiCheckboxBlankOutline)
 </script>
 
 <style scoped>

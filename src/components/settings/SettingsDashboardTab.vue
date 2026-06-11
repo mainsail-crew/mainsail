@@ -45,42 +45,26 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useBase } from '@/composables/useBase'
 import SettingsDashboardTabMobile from '@/components/settings/Dashboard/Mobile.vue'
 import SettingsDashboardTabTablet from '@/components/settings/Dashboard/Tablet.vue'
 import SettingsDashboardTabDesktop from '@/components/settings/Dashboard/Desktop.vue'
 import SettingsDashboardTabWidescreen from '@/components/settings/Dashboard/Widescreen.vue'
 import { mdiCellphone, mdiMonitorScreenshot, mdiMonitorDashboard, mdiTablet } from '@mdi/js'
 
-@Component({
-    components: {
-        SettingsDashboardTabMobile,
-        SettingsDashboardTabTablet,
-        SettingsDashboardTabDesktop,
-        SettingsDashboardTabWidescreen,
-    },
+const { isMobile, isTablet, isDesktop, isWidescreen } = useBase()
+
+const currentViewport = ref('desktop')
+
+onMounted(() => {
+    if (isMobile.value) currentViewport.value = 'mobile'
+    else if (isTablet.value) currentViewport.value = 'tablet'
+    else if (isDesktop.value) currentViewport.value = 'desktop'
+    else if (isWidescreen.value) currentViewport.value = 'widescreen'
+    else currentViewport.value = 'desktop'
 })
-export default class SettingsDashboardTab extends Mixins(BaseMixin) {
-    mdiCellphone = mdiCellphone
-    mdiTablet = mdiTablet
-    mdiMonitorDashboard = mdiMonitorDashboard
-    mdiMonitorScreenshot = mdiMonitorScreenshot
 
-    private currentViewport = 'desktop'
-
-    mounted() {
-        if (this.isMobile) this.currentViewport = 'mobile'
-        else if (this.isTablet) this.currentViewport = 'tablet'
-        else if (this.isDesktop) this.currentViewport = 'desktop'
-        else if (this.isWidescreen) this.currentViewport = 'widescreen'
-        else this.currentViewport = 'desktop'
-    }
-
-    get currentTab() {
-        return 'settings-dashboard-tab-' + this.currentViewport
-    }
-}
+const currentTab = computed(() => 'settings-dashboard-tab-' + currentViewport.value)
 </script>

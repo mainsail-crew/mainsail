@@ -42,65 +42,59 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useSettingsDatabase } from '@/composables/useSettingsDatabase'
+import { useI18n } from 'vue-i18n'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
 import CheckboxList from '@/components/inputs/CheckboxList.vue'
 import { TranslateResult } from 'vue-i18n'
-import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase'
 
-@Component({
-    components: { Panel, SettingsRow, CheckboxList },
+const store = useStore()
+const { t } = useI18n()
+const { loadings, loadBackupableNamespaces, moonrakerComponents } = useSettingsDatabase()
+
+const showDialog = ref(false)
+const resetableNamespaces = ref<{ value: string; label: string | TranslateResult }[]>([])
+const resetCheckboxes = ref<string[]>([])
+
+onMounted(async () => {
+    await loadResetableNamespaces()
 })
-export default class SettingsGeneralTabResetDatabase extends Mixins(BaseMixin, SettingsGeneralDatabase) {
-    mdiHelpCircle = mdiHelpCircle
-    mdiCloseThick = mdiCloseThick
 
-    showDialog = false
-    resetableNamespaces: { value: string; label: string | TranslateResult }[] = []
-    resetCheckboxes: string[] = []
+function onSelectResetCheckboxes(selected: string[]) {
+    resetCheckboxes.value = selected
+}
 
-    async mounted() {
-        await this.loadResetableNamespaces()
-    }
+function resetMainsailAction() {
+    store.dispatch('socket/addLoading', 'resetMainsail')
+    store.dispatch('gui/resetMoonrakerDB', resetCheckboxes.value)
+}
 
-    onSelectResetCheckboxes(resetCheckboxes: string[]) {
-        this.resetCheckboxes = resetCheckboxes
-    }
+async function openDialog() {
+    await loadResetableNamespaces()
+    showDialog.value = true
+}
 
-    resetMainsailAction() {
-        this.$store.dispatch('socket/addLoading', 'resetMainsail')
-        this.$store.dispatch('gui/resetMoonrakerDB', this.resetCheckboxes)
-    }
+async function loadResetableNamespaces() {
+    resetableNamespaces.value = await loadBackupableNamespaces()
 
-    async openDialog() {
-        await this.loadResetableNamespaces()
-        this.showDialog = true
-    }
+    if (!moonrakerComponents.value.includes('history')) return
 
-    async loadResetableNamespaces() {
-        this.resetableNamespaces = await this.loadBackupableNamespaces()
+    resetableNamespaces.value.push({
+        value: 'history_jobs',
+        label: t('Settings.GeneralTab.DbHistoryJobs'),
+    })
 
-        // stop if history is not enabled
-        if (!this.moonrakerComponents.includes('history')) return
+    resetableNamespaces.value.push({
+        value: 'history_totals',
+        label: t('Settings.GeneralTab.DbHistoryTotals'),
+    })
+}
 
-        this.resetableNamespaces.push({
-            value: 'history_jobs',
-            label: this.$t('Settings.GeneralTab.DbHistoryJobs'),
-        })
-
-        this.resetableNamespaces.push({
-            value: 'history_totals',
-            label: this.$t('Settings.GeneralTab.DbHistoryTotals'),
-        })
-    }
-
-    closeDialog() {
-        this.showDialog = false
-    }
+function closeDialog() {
+    showDialog.value = false
 }
 </script>

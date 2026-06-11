@@ -19,34 +19,31 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { mdiDelete, mdiPencil } from '@mdi/js'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    inputGcode: { type: String, required: true },
 })
-export default class PresetsFormCooldown extends Mixins(BaseMixin) {
-    mdiPencil = mdiPencil
-    mdiDelete = mdiDelete
 
-    @Prop({ required: true }) readonly inputGcode!: string
+const emit = defineEmits<{
+    (e: 'close'): void
+}>()
 
-    gcode = ''
+const store = useStore()
+const gcode = ref('')
 
-    mounted() {
-        this.gcode = this.inputGcode
-    }
+onMounted(() => {
+    gcode.value = props.inputGcode
+})
 
-    closeForm() {
-        this.$emit('close')
-    }
+function closeForm() {
+    emit('close')
+}
 
-    saveCooldown() {
-        this.$store.dispatch('gui/presets/saveSetting', { name: 'cooldownGcode', value: this.gcode })
-        this.closeForm()
-    }
+function saveCooldown() {
+    store.dispatch('gui/presets/saveSetting', { name: 'cooldownGcode', value: gcode.value })
+    closeForm()
 }
 </script>

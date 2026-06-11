@@ -11,47 +11,39 @@
     </settings-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiPalette, mdiPencil } from '@mdi/js'
 import { convertName } from '@/plugins/helpers'
-import MiscellaneousMixin from '@/components/mixins/miscellaneous'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    type: { type: String, required: true },
+    name: { type: String, required: true },
 })
-export default class SettingsMiscellaneousTabListLight extends Mixins(BaseMixin, MiscellaneousMixin) {
-    mdiPalette = mdiPalette
-    mdiPencil = mdiPencil
 
-    convertName = convertName
+const emit = defineEmits<{
+    (e: 'open-page', payload: { page: string; type: string; name: string }): void
+}>()
 
-    @Prop({ type: String, required: true }) readonly type!: string
-    @Prop({ type: String, required: true }) readonly name!: string
+const store = useStore()
 
-    get outputName() {
-        return this.convertName(this.name)
-    }
+const outputName = computed(() => convertName(props.name))
 
-    get settings() {
-        const key = `${this.type.toLowerCase()} ${this.name.toLowerCase()}`
-        const settings = this.$store.state.printer.configfile?.settings ?? {}
+const settings = computed(() => {
+    const key = `${props.type.toLowerCase()} ${props.name.toLowerCase()}`
+    const printerSettings = store.state.printer.configfile?.settings ?? {}
+    return printerSettings[key] ?? {}
+})
 
-        return settings[key] ?? {}
-    }
+const chainCount = computed(() => settings.value.chain_count ?? 1)
 
-    get chainCount() {
-        return this.settings.chain_count ?? 1
-    }
+function openGroups() {
+    emit('open-page', { page: 'groups', type: props.type, name: props.name })
+}
 
-    openGroups() {
-        this.$emit('open-page', { page: 'groups', type: this.type, name: this.name })
-    }
-
-    openPresets() {
-        this.$emit('open-page', { page: 'presets', type: this.type, name: this.name })
-    }
+function openPresets() {
+    emit('open-page', { page: 'presets', type: props.type, name: props.name })
 }
 </script>

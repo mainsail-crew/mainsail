@@ -7,20 +7,14 @@
     </settings-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
 import { mdiPencil } from '@mdi/js'
 
-@Component({
-    components: { SettingsRow },
-})
-export default class PresetsEntryCooldown extends Mixins(BaseMixin) {
-    mdiPencil = mdiPencil
+const emit = defineEmits<{
+    (e: 'edit'): void
+}>()
 
-    editCooldown() {
-        this.$emit('edit')
-    }
+function editCooldown() {
+    emit('edit')
 }
 </script>

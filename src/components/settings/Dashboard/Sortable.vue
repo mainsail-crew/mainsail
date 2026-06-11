@@ -34,59 +34,48 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 import { mdiInformation, mdiLock } from '@mdi/js'
-import DashboardMixin from '@/components/mixins/dashboard'
+import { useDashboard } from '@/composables/useDashboard'
 import SettingsDashboardSortableItem from '@/components/settings/Dashboard/SortableItem.vue'
 import { GuiStateLayoutoption } from '@/store/gui/types'
 
-@Component({
-    components: { SettingsDashboardSortableItem, draggable },
+const props = defineProps({
+    viewportName: { type: String, required: true },
+    column: { type: Number, required: false, default: 1 },
 })
-export default class SettingsDashboardSortable extends Mixins(DashboardMixin) {
-    /**
-     * Icons
-     */
-    mdiInformation = mdiInformation
-    mdiLock = mdiLock
 
-    @Prop({ type: String, required: true }) declare readonly viewportName: string
-    @Prop({ type: Number, required: false, default: 1 }) declare readonly column: number
+const store = useStore()
+const { getPanelName, convertPanelnameToIcon } = useDashboard()
 
-    get layoutname() {
-        if (this.column) return `${this.viewportName}Layout${this.column}`
+const layoutname = computed(() => {
+    if (props.column) return `${props.viewportName}Layout${props.column}`
+    return `${props.viewportName}Layout`
+})
 
-        return `${this.viewportName}Layout`
-    }
+const groupname = computed(() => `${props.viewportName}Viewport`)
 
-    get groupname() {
-        return `${this.viewportName}Viewport`
-    }
-
-    get layout(): GuiStateLayoutoption[] {
-        return this.$store.getters['gui/getPanels'](this.viewportName, this.column) as GuiStateLayoutoption[]
-    }
-
-    set layout(newVal: Array<GuiStateLayoutoption | undefined>) {
+const layout = computed({
+    get: (): GuiStateLayoutoption[] => store.getters['gui/getPanels'](props.viewportName, props.column) as GuiStateLayoutoption[],
+    set: (newVal: Array<GuiStateLayoutoption | undefined>) => {
         const filteredLayout = newVal.filter((element) => element !== undefined)
+        store.dispatch('gui/saveSetting', { name: `dashboard.${layoutname.value}`, value: filteredLayout })
+    },
+})
 
-        this.$store.dispatch('gui/saveSetting', { name: `dashboard.${this.layoutname}`, value: filteredLayout })
-    }
+function changeVisible(name: string, newVal: boolean) {
+    const index = layout.value.findIndex((element) => element.name === name)
+    if (index === -1) return
 
-    changeVisible(name: string, newVal: boolean) {
-        const index = this.layout.findIndex((element) => element.name === name)
-        if (index === -1) return
-
-        const newLayout = [...this.layout]
-        newLayout[index] = { ...newLayout[index], visible: newVal }
-        this.$store.dispatch('gui/saveSetting', {
-            name: `dashboard.${this.layoutname}`,
-            value: newLayout,
-        })
-    }
+    const newLayout = [...layout.value]
+    newLayout[index] = { ...newLayout[index], visible: newVal }
+    store.dispatch('gui/saveSetting', {
+        name: `dashboard.${layoutname.value}`,
+        value: newLayout,
+    })
 }
 </script>
 

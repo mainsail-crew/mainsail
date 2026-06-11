@@ -17,10 +17,9 @@
             </v-col>
         </v-row>
         <template v-if="macros.length">
-            <template v-for="(macro, index) in macros">
-                <v-divider v-if="index" :key="index + '_divider'" class="my-2" />
+            <template v-for="(macro, index) in macros" :key="index">
+                <v-divider v-if="index" class="my-2" />
                 <settings-row
-                    :key="index"
                     :title="macro.name"
                     :sub-title="macro.description"
                     :dynamic-slot-width="true">
@@ -28,7 +27,7 @@
                         :input-value="getMacroStatus(macro.name)"
                         hide-details
                         class="mt-0"
-                        @change="changeMacroStatus(macro.name)" />
+                        @change="toggleMacroStatus(macro.name)"></v-switch>
                 </settings-row>
             </template>
         </template>
@@ -40,46 +39,40 @@
     </v-card-text>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { mdiMagnify } from '@mdi/js'
-import { PrinterStateMacro } from '@/store/printer/types'
+import type { PrinterStateMacro } from '@/store/printer/types'
 
-@Component({
-    components: { SettingsRow },
+const store = useStore()
+
+const searchMacros = ref('')
+
+const macros = computed(() => {
+    const macrosList = store.getters['printer/getMacros'] ?? []
+    return macrosList.filter((macro: PrinterStateMacro) => {
+        return (
+            macro.name.toLowerCase().includes(searchMacros.value.toLowerCase()) ||
+            macro.description?.toLowerCase().includes(searchMacros.value.toLowerCase())
+        )
+    })
 })
-export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
-    mdiMagnify = mdiMagnify
-    searchMacros: string = ''
 
-    get macros() {
-        const macros = this.$store.getters['printer/getMacros'] ?? []
-        return macros.filter((macro: PrinterStateMacro) => {
-            return (
-                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
-                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
-            )
-        })
-    }
+const hiddenMacros = computed(() => store.state.gui.macros.hiddenMacros ?? [])
 
-    get hiddenMacros() {
-        return this.$store.state.gui.macros.hiddenMacros ?? []
-    }
+function getMacroStatus(name: string) {
+    return !hiddenMacros.value.includes(name.toUpperCase())
+}
 
-    getMacroStatus(name: string) {
-        return !this.hiddenMacros.includes(name.toUpperCase())
-    }
+function changeMacroStatus(name: string) {
+    const newHiddenMacros = [...hiddenMacros.value]
 
-    changeMacroStatus(name: string) {
-        const hiddenMacros = [...this.hiddenMacros]
+    if (newHiddenMacros.includes(name.toUpperCase()))
+        newHiddenMacros.splice(newHiddenMacros.indexOf(name.toUpperCase()), 1)
+    else newHiddenMacros.push(name.toUpperCase())
 
-        if (this.hiddenMacros.includes(name.toUpperCase()))
-            hiddenMacros.splice(hiddenMacros.indexOf(name.toUpperCase()), 1)
-        else hiddenMacros.push(name.toUpperCase())
-
-        this.$store.dispatch('gui/macros/saveSetting', { name: 'hiddenMacros', value: hiddenMacros })
-    }
+    store.dispatch('gui/macros/saveSetting', { name: 'hiddenMacros', value: newHiddenMacros })
 }
 </script>

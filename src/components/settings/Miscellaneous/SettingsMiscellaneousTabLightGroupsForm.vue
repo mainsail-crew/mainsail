@@ -52,152 +52,138 @@
     </v-form>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch, nextTick } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    type: { type: String, default: null },
+    name: { type: String, default: null },
+    groupId: { type: String, default: null },
 })
-export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(BaseMixin) {
-    formValid = false
-    groupname = ''
-    start = 1
-    end = 1
 
-    @Prop({ type: String, default: null }) declare type: string | null
-    @Prop({ type: String, default: null }) declare name: string | null
-    @Prop({ type: String, default: null }) declare groupId: string | null
+const emit = defineEmits<{
+    (e: 'close'): void
+}>()
 
-    @Ref('form') declare form: HTMLFormElement
+const store = useStore()
+const { t } = useI18n()
+const form = ref<any>(null)
+const formValid = ref(false)
+const groupname = ref('')
+const start = ref(1)
+const end = ref(1)
 
-    get rules() {
-        return {
-            required: (value: string) => value !== '' || this.$t('Settings.MiscellaneousTab.Required'),
-            groupUnique: (value: string) =>
-                !this.existsGroupName(value) || this.$t('Settings.MiscellaneousTab.NameExists'),
-            minStart: (value: string) => parseInt(value) > 0 || this.$t('Settings.MiscellaneousTab.GreaterThanZero'),
-            minEnd: (value: string) =>
-                parseInt(value) >= this.start || this.$t('Settings.MiscellaneousTab.HigherThanStart'),
-            max: (value: string) =>
-                parseInt(value) <= this.chainCount ||
-                this.$t('Settings.MiscellaneousTab.LessThanChainCount', { count: this.chainCount }),
-        }
-    }
+const rules = computed(() => ({
+    required: (value: string) => value !== '' || t('Settings.MiscellaneousTab.Required'),
+    groupUnique: (value: string) =>
+        !existsGroupName(value) || t('Settings.MiscellaneousTab.NameExists'),
+    minStart: (value: string) => parseInt(value) > 0 || t('Settings.MiscellaneousTab.GreaterThanZero'),
+    minEnd: (value: string) =>
+        parseInt(value) >= start.value || t('Settings.MiscellaneousTab.HigherThanStart'),
+    max: (value: string) =>
+        parseInt(value) <= chainCount.value ||
+        t('Settings.MiscellaneousTab.LessThanChainCount', { count: chainCount.value }),
+}))
 
-    get title() {
-        if (this.groupId) return this.$t('Settings.MiscellaneousTab.EditGroup')
+const title = computed(() => {
+    if (props.groupId) return t('Settings.MiscellaneousTab.EditGroup')
+    return t('Settings.MiscellaneousTab.CreateGroup')
+})
 
-        return this.$t('Settings.MiscellaneousTab.CreateGroup')
-    }
+const settings = computed(() => {
+    if (!props.type || !props.name) return null
+    const key = `${props.type.toLowerCase()} ${props.name.toLowerCase()}`
+    return store.state.printer?.configfile?.settings[key] ?? {}
+})
 
-    get settings() {
-        if (!this.type || !this.name) return null
+const chainCount = computed(() => settings.value?.chain_count ?? 1)
 
-        const key = `${this.type.toLowerCase()} ${this.name.toLowerCase()}`
-        return this.$store.state.printer?.configfile?.settings[key] ?? {}
-    }
+const light = computed(() => {
+    if (!props.type || !props.name) return null
+    const key = `${props.type} ${props.name}`
+    return store.state.printer[key] ?? {}
+})
 
-    get chainCount() {
-        return this.settings?.chain_count ?? 1
-    }
+const entry = computed(() => {
+    const entries = store.state.gui.miscellaneous.entries ?? {}
+    const key = Object.keys(entries).find((k) => {
+        const entry = entries[k]
+        return entry.type === props.type && entry.name === props.name
+    })
+    return entries[key ?? ''] ?? {}
+})
 
-    get light() {
-        if (!this.type || !this.name) return null
+const groups = computed(() => {
+    if (!entry.value?.lightgroups) return []
+    const output: GuiMiscellaneousStateEntryLightgroup[] = []
+    Object.keys(entry.value.lightgroups).forEach((id) => {
+        const lightgroup = entry.value.lightgroups[id]
+        lightgroup.id = id
+        output.push(lightgroup)
+    })
+    return caseInsensitiveSort(output, 'name')
+})
 
-        const key = `${this.type} ${this.name}`
-        return this.$store.state.printer[key] ?? {}
-    }
+const group = computed(() => {
+    if (!props.groupId) return null
+    return groups.value.find((g) => g.id === props.groupId) ?? null
+})
 
-    get entry(): GuiMiscellaneousStateEntry {
-        const entries = this.$store.state.gui.miscellaneous.entries ?? {}
+watch(group, (newGroup) => {
+    groupname.value = newGroup?.name ?? ''
+    start.value = newGroup?.start ?? 1
+    end.value = newGroup?.end ?? 1
+}, { immediate: true })
 
-        const key = Object.keys(entries).find((key) => {
-            const entry = entries[key]
-            return entry.type === this.type && entry.name === this.name
-        })
+function close() {
+    emit('close')
+}
 
-        return entries[key ?? ''] ?? {}
-    }
+function revalidateForm() {
+    nextTick(() => {
+        form.value?.validate()
+    })
+}
 
-    get groups() {
-        if (!this.entry?.lightgroups) return []
+function storeGroup() {
+    store.dispatch('gui/miscellaneous/storeLightgroup', {
+        type: props.type,
+        name: props.name,
+        lightgroup: {
+            name: groupname.value,
+            start: parseInt(start.value.toString(), 10),
+            end: parseInt(end.value.toString(), 10),
+        },
+    })
+    close()
+}
 
-        const groups: GuiMiscellaneousStateEntryLightgroup[] = []
-        Object.keys(this.entry.lightgroups).forEach((id) => {
-            const lightgroup = this.entry.lightgroups[id]
-            lightgroup.id = id
+function updateGroup() {
+    store.dispatch('gui/miscellaneous/updateLightgroup', {
+        type: props.type,
+        name: props.name,
+        lightgroupId: props.groupId,
+        lightgroup: {
+            name: groupname.value,
+            start: parseInt(start.value.toString(), 10),
+            end: parseInt(end.value.toString(), 10),
+        },
+    })
+    close()
+}
 
-            groups.push(lightgroup)
-        })
-
-        return caseInsensitiveSort(groups, 'name')
-    }
-
-    get group() {
-        if (!this.groupId) return null
-
-        return this.groups.find((group) => group.id === this.groupId) ?? null
-    }
-
-    @Watch('group', { immediate: true })
-    onGroupChanged() {
-        this.groupname = this.group?.name ?? ''
-        this.start = this.group?.start ?? 1
-        this.end = this.group?.end ?? 1
-    }
-
-    close() {
-        this.$emit('close')
-    }
-
-    revalidateForm() {
-        this.$nextTick(() => {
-            this.form?.validate()
-        })
-    }
-
-    storeGroup() {
-        this.$store.dispatch('gui/miscellaneous/storeLightgroup', {
-            type: this.type,
-            name: this.name,
-            lightgroup: {
-                name: this.groupname,
-                // parseInt & toString is just to force a integer
-                start: parseInt(this.start.toString(), 10),
-                end: parseInt(this.end.toString(), 10),
-            },
-        })
-
-        this.close()
-    }
-
-    updateGroup() {
-        this.$store.dispatch('gui/miscellaneous/updateLightgroup', {
-            type: this.type,
-            name: this.name,
-            lightgroupId: this.groupId,
-            lightgroup: {
-                name: this.groupname,
-                // parseInt & toString is just to force a integer
-                start: parseInt(this.start.toString(), 10),
-                end: parseInt(this.end.toString(), 10),
-            },
-        })
-
-        this.close()
-    }
-
-    existsGroupName(name: string) {
-        return (
-            this.groups.findIndex(
-                (group: GuiMacrosStateMacrogroup) => group.name === name && group.id !== this.groupId
-            ) >= 0
-        )
-    }
+function existsGroupName(name: string) {
+    return (
+        groups.value.findIndex(
+            (g: GuiMacrosStateMacrogroup) => g.name === name && g.id !== props.groupId
+        ) >= 0
+    )
 }
 </script>

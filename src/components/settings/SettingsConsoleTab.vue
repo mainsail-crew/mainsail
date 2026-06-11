@@ -130,13 +130,15 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { ref, computed, watch, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useConsole } from '@/composables/useConsole'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { Debounce } from 'vue-debounce-decorator'
 import { mdiFilter, mdiPencil, mdiFilterOff, mdiDelete, mdiConsoleLine } from '@mdi/js'
-import { GuiConsoleStateFilter } from '@/store/gui/console/types'
+import type { GuiConsoleStateFilter } from '@/store/gui/console/types'
 
 interface consoleForm {
     bool: boolean
@@ -148,166 +150,157 @@ interface consoleForm {
 
 type ConsoleFilter = Omit<GuiConsoleStateFilter, 'id'> & { id: string }
 
-@Component({
-    components: { SettingsRow },
+const store = useStore()
+const { t } = useI18n()
+const { klipperReadyForGui, moonrakerComponents } = useBase()
+const {  } = useConsole()
+
+const form = ref<consoleForm>({
+    bool: false,
+    valid: false,
+    name: '',
+    regex: '',
+    id: null,
 })
-export default class SettingsConsoleTab extends Mixins(BaseMixin) {
-    mdiFilter = mdiFilter
-    mdiFilterOff = mdiFilterOff
-    mdiPencil = mdiPencil
-    mdiDelete = mdiDelete
-    mdiConsoleLine = mdiConsoleLine
 
-    private form: consoleForm = {
-        bool: false,
-        valid: false,
-        name: '',
-        regex: '',
-        id: null,
+const rules = {
+    required: (value: string) => value !== '' || 'required',
+    unique: (value: string) => !existsPresetName(value) || 'Name already exists',
+}
+
+const consoleHeightTmp = ref(300)
+
+onMounted(() => {
+    consoleHeightTmp.value = consoleHeight.value
+})
+
+const consoleFilters = computed(() => {
+    return (store.getters['gui/console/getConsolefilters'] ?? []) as ConsoleFilter[]
+})
+
+const availableDirections = computed(() => [
+    {
+        text: t('Settings.ConsoleTab.DirectionTable'),
+        value: 'table',
+    },
+    {
+        text: t('Settings.ConsoleTab.DirectionShell'),
+        value: 'shell',
+    },
+])
+
+const consoleDirection = computed({
+    get: () => store.state.gui.console.direction ?? 'table',
+    set: (newVal) => {
+        store.dispatch('gui/console/saveSetting', { name: 'direction', value: newVal })
+    },
+})
+
+const availableEntryStyles = computed(() => [
+    {
+        text: t('Settings.ConsoleTab.EntryStyleDefault'),
+        value: 'default',
+    },
+    {
+        text: t('Settings.ConsoleTab.EntryStyleCompact'),
+        value: 'compact',
+    },
+])
+
+const entryStyle = computed({
+    get: () => store.state.gui.console.entryStyle ?? 'default',
+    set: (newVal) => {
+        store.dispatch('gui/console/saveSetting', { name: 'entryStyle', value: newVal })
+    },
+})
+
+const consoleHeight = computed({
+    get: () => store.state.gui.console.height ?? 300,
+    set: (newVal) => {
+        store.dispatch('gui/console/saveSetting', { name: 'height', value: newVal })
+    },
+})
+
+watch(consoleHeight, (newVal) => {
+    consoleHeightTmp.value = newVal
+})
+
+function debounceConsoleHeight(newVal: number) {
+    updateConsoleHeight(newVal)
+}
+
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
+function updateConsoleHeight(newVal: number) {
+    if (debounceTimer) clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+        consoleHeight.value = newVal
+    }, 500)
+}
+
+const hideWaitTemperatures = computed({
+    get: () => store.state.gui.console.hideWaitTemperatures,
+    set: (newVal) => {
+        store.dispatch('gui/console/saveSetting', { name: 'hideWaitTemperatures', value: newVal })
+    },
+})
+
+const hideTimelapse = computed({
+    get: () => store.state.gui.console.hideTlCommands,
+    set: (newVal) => {
+        store.dispatch('gui/console/saveSetting', { name: 'hideTlCommands', value: newVal })
+    },
+})
+
+function existsPresetName(name: string) {
+    return consoleFilters.value.some((filter) => filter.name === name && filter.id !== form.value.id)
+}
+
+function clearForm() {
+    form.value.bool = false
+    form.value.id = null
+    form.value.name = ''
+    form.value.regex = ''
+}
+
+function toggleFilter(filter: ConsoleFilter) {
+    const values = {
+        name: filter.name,
+        bool: !filter.bool,
+        regex: filter.regex,
     }
 
-    private rules = {
-        required: (value: string) => value !== '' || 'required',
-        unique: (value: string) => !this.existsPresetName(value) || 'Name already exists',
-    }
+    store.dispatch('gui/console/filterUpdate', { id: filter.id, values })
+}
 
-    private consoleHeightTmp = 300
+function createFilter() {
+    clearForm()
+    form.value.bool = true
+}
 
-    mounted() {
-        this.consoleHeightTmp = this.consoleHeight
-    }
+function editFilter(filter: ConsoleFilter) {
+    form.value.name = filter.name
+    form.value.id = filter.id
+    form.value.regex = filter.regex
 
-    get consoleFilters() {
-        return (this.$store.getters['gui/console/getConsolefilters'] ?? []) as ConsoleFilter[]
-    }
+    form.value.bool = true
+}
 
-    get availableDirections() {
-        return [
-            {
-                text: this.$t('Settings.ConsoleTab.DirectionTable'),
-                value: 'table',
-            },
-            {
-                text: this.$t('Settings.ConsoleTab.DirectionShell'),
-                value: 'shell',
-            },
-        ]
-    }
-
-    get consoleDirection() {
-        return this.$store.state.gui.console.direction ?? 'table'
-    }
-
-    set consoleDirection(newVal) {
-        this.$store.dispatch('gui/console/saveSetting', { name: 'direction', value: newVal })
-    }
-
-    get availableEntryStyles() {
-        return [
-            {
-                text: this.$t('Settings.ConsoleTab.EntryStyleDefault'),
-                value: 'default',
-            },
-            {
-                text: this.$t('Settings.ConsoleTab.EntryStyleCompact'),
-                value: 'compact',
-            },
-        ]
-    }
-
-    get entryStyle() {
-        return this.$store.state.gui.console.entryStyle ?? 'default'
-    }
-
-    set entryStyle(newVal) {
-        this.$store.dispatch('gui/console/saveSetting', { name: 'entryStyle', value: newVal })
-    }
-
-    get consoleHeight() {
-        return this.$store.state.gui.console.height ?? 300
-    }
-
-    set consoleHeight(newVal) {
-        this.$store.dispatch('gui/console/saveSetting', { name: 'height', value: newVal })
-    }
-
-    @Watch('consoleHeight')
-    consoleHeightChanged(newVal: number) {
-        this.consoleHeightTmp = newVal
-    }
-
-    @Debounce(500)
-    updateConsoleHeight(newVal: number) {
-        this.consoleHeight = newVal
-    }
-
-    get hideWaitTemperatures() {
-        return this.$store.state.gui.console.hideWaitTemperatures
-    }
-
-    set hideWaitTemperatures(newVal) {
-        this.$store.dispatch('gui/console/saveSetting', { name: 'hideWaitTemperatures', value: newVal })
-    }
-
-    get hideTimelapse() {
-        return this.$store.state.gui.console.hideTlCommands
-    }
-
-    set hideTimelapse(newVal) {
-        this.$store.dispatch('gui/console/saveSetting', { name: 'hideTlCommands', value: newVal })
-    }
-
-    existsPresetName(name: string) {
-        return this.consoleFilters.some((filter) => filter.name === name && filter.id !== this.form.id)
-    }
-
-    clearForm() {
-        this.form.bool = false
-        this.form.id = null
-        this.form.name = ''
-        this.form.regex = ''
-    }
-
-    toggleFilter(filter: ConsoleFilter) {
-        const values = {
-            name: filter.name,
-            bool: !filter.bool,
-            regex: filter.regex,
+function saveFilter() {
+    if (form.value.valid) {
+        const filter = {
+            name: form.value.name,
+            bool: form.value.bool,
+            regex: form.value.regex,
         }
 
-        this.$store.dispatch('gui/console/filterUpdate', { id: filter.id, values })
+        if (form.value.id) store.dispatch('gui/console/filterUpdate', { id: form.value.id, values: filter })
+        else store.dispatch('gui/console/filterStore', { values: filter })
+
+        clearForm()
     }
+}
 
-    createFilter() {
-        this.clearForm()
-        this.form.bool = true
-    }
-
-    editFilter(filter: ConsoleFilter) {
-        this.form.name = filter.name
-        this.form.id = filter.id
-        this.form.regex = filter.regex
-
-        this.form.bool = true
-    }
-
-    saveFilter() {
-        if (this.form.valid) {
-            const filter = {
-                name: this.form.name,
-                bool: this.form.bool,
-                regex: this.form.regex,
-            }
-
-            if (this.form.id) this.$store.dispatch('gui/console/filterUpdate', { id: this.form.id, values: filter })
-            else this.$store.dispatch('gui/console/filterStore', { values: filter })
-
-            this.clearForm()
-        }
-    }
-
-    deleteFilter(id: string) {
-        this.$store.dispatch('gui/console/filterDelete', id)
-    }
+function deleteFilter(id: string) {
+    store.dispatch('gui/console/filterDelete', id)
 }
 </script>

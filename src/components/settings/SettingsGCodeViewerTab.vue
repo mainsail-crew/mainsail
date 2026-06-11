@@ -144,101 +144,93 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { Debounce } from 'vue-debounce-decorator'
-import Vue from 'vue'
 import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
 
-@Component({
-    components: { SettingsRow },
+const store = useStore()
+
+const showAxes = computed({
+    get: () => store.state.gui.gcodeViewer.showAxes,
+    set: (newVal: boolean) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.showAxes', value: newVal })
+    },
 })
-export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
-    get showAxes(): boolean {
-        return this.$store.state.gui.gcodeViewer.showAxes
-    }
 
-    set showAxes(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.showAxes', value: newVal })
-    }
+const extruderColors = computed(() => store.state.gui.gcodeViewer.extruderColors)
 
-    get extruderColors(): Array<string> {
-        return this.$store.state.gui.gcodeViewer.extruderColors
-    }
-
-    @Debounce(500)
-    colorsUpdated(value: ColorPickerValue, index: number): void {
-        const colors = [...this.extruderColors]
+let colorsDebounceTimer: ReturnType<typeof setTimeout> | null = null
+function colorsUpdated(value: ColorPickerValue, index: number): void {
+    if (colorsDebounceTimer) clearTimeout(colorsDebounceTimer)
+    colorsDebounceTimer = setTimeout(() => {
+        const colors = [...extruderColors.value]
         colors[index] = clearColorObject(value)
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.extruderColors', value: colors })
-    }
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.extruderColors', value: colors })
+    }, 500)
+}
 
-    get backgroundColor(): string {
-        return this.$store.state.gui.gcodeViewer.backgroundColor
-    }
+const backgroundColor = computed({
+    get: () => store.state.gui.gcodeViewer.backgroundColor,
+    set: (newVal: string) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.backgroundColor', value: newVal })
+    },
+})
 
-    set backgroundColor(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.backgroundColor', value: newVal })
-    }
+const gridColor = computed({
+    get: () => store.state.gui.gcodeViewer.gridColor,
+    set: (newVal: string) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.gridColor', value: newVal })
+    },
+})
 
-    get gridColor(): string {
-        return this.$store.state.gui.gcodeViewer.gridColor
-    }
+const progressColor = computed({
+    get: () => store.state.gui.gcodeViewer.progressColor,
+    set: (newVal: string) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.progressColor', value: newVal })
+    },
+})
 
-    set gridColor(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.gridColor', value: newVal })
-    }
+let updateColorDebounceTimer: ReturnType<typeof setTimeout> | null = null
 
-    get progressColor(): string {
-        return this.$store.state.gui.gcodeViewer.progressColor
-    }
+function updateColorValue(colorElement: string, newVal: ColorPickerValue): void {
+    if (updateColorDebounceTimer) clearTimeout(updateColorDebounceTimer)
+    updateColorDebounceTimer = setTimeout(() => {
+        store.dispatch('gui/saveSetting', { name: `gcodeViewer.${colorElement}`, value: clearColorObject(newVal) })
+    }, 500)
+}
 
-    set progressColor(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.progressColor', value: newVal })
-    }
+const minFeed = computed({
+    get: () => store.state.gui.gcodeViewer.minFeed,
+    set: (newVal: number) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.minFeed', value: newVal })
+    },
+})
 
-    @Debounce(500)
-    updateColorValue(colorElement: string, newVal: ColorPickerValue): void {
-        Vue.set(this, colorElement, clearColorObject(newVal))
-    }
+const maxFeed = computed({
+    get: () => store.state.gui.gcodeViewer.maxFeed,
+    set: (newVal: number) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.maxFeed', value: newVal })
+    },
+})
 
-    get minFeed(): number {
-        return this.$store.state.gui.gcodeViewer.minFeed
-    }
+const minFeedColor = computed({
+    get: () => store.state.gui.gcodeViewer.minFeedColor,
+    set: (newVal: string) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.minFeedColor', value: newVal })
+    },
+})
 
-    set minFeed(newVal: number) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.minFeed', value: newVal })
-    }
+const maxFeedColor = computed({
+    get: () => store.state.gui.gcodeViewer.maxFeedColor,
+    set: (newVal: string) => {
+        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.maxFeedColor', value: newVal })
+    },
+})
 
-    get maxFeed(): number {
-        return this.$store.state.gui.gcodeViewer.maxFeed
-    }
-
-    set maxFeed(newVal: number) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.maxFeed', value: newVal })
-    }
-
-    get minFeedColor(): string {
-        return this.$store.state.gui.gcodeViewer.minFeedColor
-    }
-
-    set minFeedColor(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.minFeedColor', value: newVal })
-    }
-
-    get maxFeedColor(): string {
-        return this.$store.state.gui.gcodeViewer.maxFeedColor
-    }
-
-    set maxFeedColor(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.maxFeedColor', value: newVal })
-    }
-
-    feedBlur(): void {
-        if (this.minFeed < 1) this.minFeed = 1
-        if (this.maxFeed < this.minFeed) this.maxFeed = this.minFeed + 1
-    }
+function feedBlur(): void {
+    if (minFeed.value < 1) minFeed.value = 1
+    if (maxFeed.value < minFeed.value) maxFeed.value = minFeed.value + 1
 }
 </script>

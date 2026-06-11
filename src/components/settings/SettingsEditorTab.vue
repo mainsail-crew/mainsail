@@ -39,64 +39,59 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-@Component({
-    components: { SettingsRow },
+
+const store = useStore()
+const { t } = useI18n()
+
+const klipperRestartMethods = [
+    {
+        text: 'FIRMWARE_RESTART',
+        value: 'FIRMWARE_RESTART',
+    },
+    {
+        text: 'RESTART',
+        value: 'RESTART',
+    },
+]
+
+const tabSizes = computed(() => {
+    const spaces = [2, 4, 6, 8]
+    return spaces.map((space) => ({
+        text: t('Settings.EditorTab.Spaces', { count: space }),
+        value: space,
+    }))
 })
-export default class SettingsEditorTab extends Mixins(BaseMixin) {
-    private klipperRestartMethods = [
-        {
-            text: 'FIRMWARE_RESTART',
-            value: 'FIRMWARE_RESTART',
-        },
-        {
-            text: 'RESTART',
-            value: 'RESTART',
-        },
-    ]
 
-    get tabSizes() {
-        const spaces = [2, 4, 6, 8]
-        return spaces.map((space) => ({
-            text: this.$t('Settings.EditorTab.Spaces', { count: space }),
-            value: space,
-        }))
-    }
+const escToClose = computed({
+    get: () => store.state.gui.editor.escToClose,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'editor.escToClose', value: newVal })
+    },
+})
 
-    get escToClose() {
-        return this.$store.state.gui.editor.escToClose
-    }
+const confirmUnsavedChanges = computed({
+    get: () => store.state.gui.editor.confirmUnsavedChanges,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'editor.confirmUnsavedChanges', value: newVal })
+    },
+})
 
-    set escToClose(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'editor.escToClose', value: newVal })
-    }
+const tabSize = computed({
+    get: () => store.state.gui.editor.tabSize || 2,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'editor.tabSize', value: newVal })
+    },
+})
 
-    get confirmUnsavedChanges() {
-        return this.$store.state.gui.editor.confirmUnsavedChanges
-    }
-
-    set confirmUnsavedChanges(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'editor.confirmUnsavedChanges', value: newVal })
-    }
-
-    get tabSize() {
-        return this.$store.state.gui.editor.tabSize || 2
-    }
-
-    set tabSize(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'editor.tabSize', value: newVal })
-    }
-
-    get klipperRestartMethod() {
-        return this.$store.state.gui.editor.klipperRestartMethod
-    }
-
-    set klipperRestartMethod(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'editor.klipperRestartMethod', value: newVal })
-    }
-}
+const klipperRestartMethod = computed({
+    get: () => store.state.gui.editor.klipperRestartMethod,
+    set: (newVal) => {
+        store.dispatch('gui/saveSetting', { name: 'editor.klipperRestartMethod', value: newVal })
+    },
+})
 </script>

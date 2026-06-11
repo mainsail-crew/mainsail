@@ -21,22 +21,16 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import DashboardMixin from '@/components/mixins/dashboard'
+<script setup lang="ts">
+import { useStore } from 'vuex'
 import SettingsDashboardSortable from '@/components/settings/Dashboard/Sortable.vue'
-@Component({
-    components: {
-        SettingsDashboardSortable,
-    },
-})
-export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixin) {
-    resetLayout() {
-        this.$store.dispatch('gui/resetLayout', 'widescreenLayout1')
-        this.$store.dispatch('gui/resetLayout', 'widescreenLayout2')
-        this.$store.dispatch('gui/resetLayout', 'widescreenLayout3')
-    }
+
+const store = useStore()
+
+function resetLayout() {
+    store.dispatch('gui/resetLayout', 'widescreenLayout1')
+    store.dispatch('gui/resetLayout', 'widescreenLayout2')
+    store.dispatch('gui/resetLayout', 'widescreenLayout3')
 }
 </script>
 

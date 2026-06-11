@@ -10,47 +10,46 @@
     </settings-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import SettingsRow from '@/components/settings/SettingsRow.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { convertName } from '@/plugins/helpers'
 import { mdiDelete, mdiPencil } from '@mdi/js'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    preset: { type: Object, required: true },
 })
-export default class PresetsEntry extends Mixins(BaseMixin) {
-    mdiPencil = mdiPencil
-    mdiDelete = mdiDelete
 
-    @Prop({ required: true }) readonly preset!: GuiPresetsStatePreset
+const emit = defineEmits<{
+    (e: 'edit', preset: GuiPresetsStatePreset): void
+}>()
 
-    get subTitle() {
-        const output: string[] = []
+const store = useStore()
+const { t } = useI18n()
 
-        Object.keys(this.preset.values).forEach((key: string) => {
-            const values = this.preset.values[key]
+const subTitle = computed(() => {
+    const output: string[] = []
+    const p = props.preset as GuiPresetsStatePreset
 
-            if (values.bool) {
-                const name = key.indexOf(' ') ? key.slice(key.indexOf(' ') + 1) : key
+    Object.keys(p.values).forEach((key: string) => {
+        const values = p.values[key]
+        if (values.bool) {
+            const name = key.indexOf(' ') ? key.slice(key.indexOf(' ') + 1) : key
+            output.push(convertName(name) + ': ' + values.value + '°C')
+        }
+    })
 
-                output.push(convertName(name) + ': ' + values.value + '°C')
-            }
-        })
+    if (p.gcode) output.push(t('Settings.PresetsTab.CustomGCode').toString())
+    return output.join(', ')
+})
 
-        if (this.preset.gcode) output.push(this.$t('Settings.PresetsTab.CustomGCode').toString())
+function editPreset() {
+    emit('edit', props.preset as GuiPresetsStatePreset)
+}
 
-        return output.join(', ')
-    }
-
-    editPreset() {
-        this.$emit('edit', this.preset)
-    }
-
-    deletePreset() {
-        this.$store.dispatch('gui/presets/delete', this.preset.id)
-    }
+function deletePreset() {
+    store.dispatch('gui/presets/delete', (props.preset as GuiPresetsStatePreset).id)
 }
 </script>

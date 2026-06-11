@@ -10,14 +10,14 @@
                 </v-row>
                 <settings-row :title="$t('Settings.PresetsTab.Name')">
                     <v-text-field
-                        v-model="preset.name"
+                        v-model="form.name"
                         :placeholder="$t('Settings.PresetsTab.PresetNamePlaceholder')"
                         hide-details="auto"
                         :rules="[rules.required, rules.unique]"
                         dense
                         outlined />
                 </settings-row>
-                <div v-for="(value, key) of preset.values" :key="key">
+                <div v-for="(value, key) of form.values" :key="key">
                     <v-divider class="my-2" />
                     <settings-row :title="converNameObject(key)">
                         <v-checkbox v-model="value.bool" hide-details class="shrink mt-0" />
@@ -35,7 +35,7 @@
                 </div>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.PresetsTab.CustomGCode')">
-                    <v-textarea v-model="preset.gcode" outlined hide-details />
+                    <v-textarea v-model="form.gcode" outlined hide-details />
                 </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
@@ -50,133 +50,129 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { convertName } from '@/plugins/helpers'
-import { mdiDelete, mdiPencil } from '@mdi/js'
 
-@Component({
-    components: { SettingsRow },
+const props = defineProps({
+    preset: { type: Object, required: true },
 })
-export default class PresetsForm extends Mixins(BaseMixin) {
-    mdiPencil = mdiPencil
-    mdiDelete = mdiDelete
 
-    @Prop({ required: true }) readonly preset!: GuiPresetsStatePreset
+const emit = defineEmits<{
+    (e: 'close'): void
+}>()
 
-    valid = false
-    boolInvalidMin = false
+const store = useStore()
+const { t } = useI18n()
 
-    private rules = {
-        required: (value: string) => value !== '' || this.$t('Settings.PresetsTab.ErrorNameRequired'),
-        unique: (value: string) => !this.existsPresetName(value) || this.$t('Settings.PresetsTab.ErrorNameNotUnique'),
-        invalid: (value: string) => parseFloat(value) >= 0 || this.$t('Settings.PresetsTab.ErrorInvalidValue'),
-    }
+const valid = ref(false)
+const boolInvalidMin = ref(false)
 
-    get title() {
-        if (this.preset.id === null) return this.$t('Settings.PresetsTab.CreateHeadline')
+const form = reactive({
+    name: (props.preset as GuiPresetsStatePreset).name,
+    gcode: (props.preset as GuiPresetsStatePreset).gcode,
+    values: { ...(props.preset as GuiPresetsStatePreset).values },
+})
 
-        return this.$t('Settings.PresetsTab.EditHeadline')
-    }
+const rules = {
+    required: (value: string) => value !== '' || t('Settings.PresetsTab.ErrorNameRequired'),
+    unique: (value: string) => !existsPresetName(value) || t('Settings.PresetsTab.ErrorNameNotUnique'),
+    invalid: (value: string) => parseFloat(value) >= 0 || t('Settings.PresetsTab.ErrorInvalidValue'),
+}
 
-    get storeButtonText() {
-        if (this.preset.id === null) return this.$t('Settings.PresetsTab.StoreButton')
+const title = computed(() => {
+    if ((props.preset as GuiPresetsStatePreset).id === null) return t('Settings.PresetsTab.CreateHeadline')
+    return t('Settings.PresetsTab.EditHeadline')
+})
 
-        return this.$t('Settings.PresetsTab.UpdateButton')
-    }
+const storeButtonText = computed(() => {
+    if ((props.preset as GuiPresetsStatePreset).id === null) return t('Settings.PresetsTab.StoreButton')
+    return t('Settings.PresetsTab.UpdateButton')
+})
 
-    get presets() {
-        return this.$store.getters['gui/presets/getPresets'] ?? []
-    }
+const presets = computed(() => store.getters['gui/presets/getPresets'] ?? [])
 
-    get available_heaters() {
-        return (this.$store.state.printer?.heaters?.available_heaters ?? []).sort()
-    }
+const available_heaters = computed(() =>
+    (store.state.printer?.heaters?.available_heaters ?? []).sort()
+)
 
-    get available_temperature_fans() {
-        return (this.$store.state.printer?.heaters?.available_sensors ?? [])
-            .filter((name: string) => name.startsWith('temperature_fan '))
-            .sort()
-    }
+const available_temperature_fans = computed(() =>
+    (store.state.printer?.heaters?.available_sensors ?? [])
+        .filter((name: string) => name.startsWith('temperature_fan '))
+        .sort()
+)
 
-    mounted() {
-        const presetValues = Object.keys(this.preset.values)
+onMounted(() => {
+    const presetValues = Object.keys(form.values)
 
-        // add missing heaters to preset
-        this.available_heaters
-            .filter((name: string) => !presetValues.includes(name))
-            .forEach((name: string) => {
-                this.preset.values[name] = {
-                    bool: false,
-                    type: 'heater',
-                    value: 0,
-                }
-            })
+    available_heaters.value
+        .filter((name: string) => !presetValues.includes(name))
+        .forEach((name: string) => {
+            form.values[name] = { bool: false, type: 'heater', value: 0 }
+        })
 
-        // add missing temperature_fans to preset
-        this.available_temperature_fans
-            .filter((name: string) => !presetValues.includes(name))
-            .forEach((name: string) => {
-                this.preset.values[name] = {
-                    bool: false,
-                    type: 'temperature_fan',
-                    value: 0,
-                }
-            })
+    available_temperature_fans.value
+        .filter((name: string) => !presetValues.includes(name))
+        .forEach((name: string) => {
+            form.values[name] = { bool: false, type: 'temperature_fan', value: 0 }
+        })
 
-        // remove unused values from preset
-        presetValues
-            .filter(
-                (name: string) =>
-                    !this.available_heaters.includes(name) && !this.available_temperature_fans.includes(name)
-            )
-            .forEach((name) => {
-                delete this.preset.values[name]
-            })
-    }
-
-    existsPresetName(name: string) {
-        return (
-            this.presets.findIndex(
-                (preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== this.preset.id
-            ) !== -1
+    presetValues
+        .filter(
+            (name: string) =>
+                !available_heaters.value.includes(name) && !available_temperature_fans.value.includes(name)
         )
+        .forEach((name) => {
+            delete form.values[name]
+        })
+})
+
+function existsPresetName(name: string) {
+    return (
+        presets.value.findIndex(
+            (preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== (props.preset as GuiPresetsStatePreset).id
+        ) !== -1
+    )
+}
+
+function converNameObject(name: string) {
+    return convertName(name.replace('temperature_fan ', ''))
+}
+
+function closeForm() {
+    emit('close')
+}
+
+function savePreset() {
+    let setValues = 0
+    for (const key of Object.keys(form.values)) {
+        if (form.values[key].bool) setValues++
+    }
+    if (form.gcode.length) setValues++
+
+    if (setValues === 0) {
+        boolInvalidMin.value = true
+        return
     }
 
-    converNameObject(name: string) {
-        return convertName(name.replace('temperature_fan ', ''))
+    const presetData: GuiPresetsStatePreset = {
+        name: form.name,
+        gcode: form.gcode,
+        values: form.values,
     }
 
-    closeForm() {
-        this.$emit('close')
+    if ((props.preset as GuiPresetsStatePreset).id === null) {
+        store.dispatch('gui/presets/store', { values: presetData })
+        closeForm()
+        return
     }
 
-    savePreset() {
-        let setValues = 0
-        for (const key of Object.keys(this.preset.values)) {
-            if (this.preset.values[key].bool) setValues++
-        }
-        if (this.preset.gcode.length) setValues++
-
-        // stop here, when no values are set
-        if (setValues === 0) {
-            this.boolInvalidMin = true
-            return
-        }
-
-        // create new preset, if id === null
-        if (this.preset.id === null) {
-            this.$store.dispatch('gui/presets/store', { values: this.preset })
-            this.closeForm()
-            return
-        }
-
-        // update existing preset
-        this.$store.dispatch('gui/presets/update', { id: this.preset.id, values: this.preset })
-        this.closeForm()
-    }
+    presetData.id = (props.preset as GuiPresetsStatePreset).id
+    store.dispatch('gui/presets/update', { id: (props.preset as GuiPresetsStatePreset).id, values: presetData })
+    closeForm()
 }
 </script>
