@@ -9,14 +9,10 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
+<script setup lang="ts">
+import Panel from '@/components/ui/Panel.vue'
+import GcodefilesPanelHeader from '@/components/panels/Gcodefiles/GcodefilesPanelHeader.vue'
+import GcodefilesPanelHeaderPathSize from '@/components/panels/Gcodefiles/GcodefilesPanelHeaderPathSize.vue'
+import GcodefilesPanelList from '@/components/panels/Gcodefiles/GcodefilesPanelList.vue'
 import { mdiFileDocumentMultipleOutline } from '@mdi/js'
-
-@Component
-export default class GcodefilesPanel extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
-}
 </script>

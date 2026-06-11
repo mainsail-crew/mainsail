@@ -122,12 +122,14 @@
     </responsive>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useZOffset } from '@/composables/useZOffset'
+import { useSocket } from '@/composables/useSocket'
 import Panel from '@/components/ui/Panel.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-
 import {
     mdiBroom,
     mdiContentSave,
@@ -136,65 +138,61 @@ import {
     mdiArrowExpandUp,
     mdiLayersOutline,
 } from '@mdi/js'
-import ZoffsetMixin from '@/components/mixins/zoffset'
-@Component({
-    components: { Panel, Responsive },
-})
-export default class ZoffsetControl extends Mixins(BaseMixin, ZoffsetMixin) {
-    mdiBroom = mdiBroom
-    mdiContentSave = mdiContentSave
-    mdiArrowCollapseDown = mdiArrowCollapseDown
-    mdiInformation = mdiInformation
-    mdiArrowExpandUp = mdiArrowExpandUp
-    mdiLayersOutline = mdiLayersOutline
 
-    saveOffsetDialog = false
+const { loadings, printerIsPrinting } = useBase()
+const {
+    zOffset, z_gcode_offset, showSaveButton, autoSaveZOffsetOption,
+} = useZOffset()
+const store = useStore()
+const socket = useSocket()
 
-    get offsetsZ() {
-        return this.$store.state.gui.control.offsetsZ
-    }
+const mdiBroom = mdiBroom
+const mdiContentSave = mdiContentSave
+const mdiArrowCollapseDown = mdiArrowCollapseDown
+const mdiInformation = mdiInformation
+const mdiArrowExpandUp = mdiArrowExpandUp
+const mdiLayersOutline = mdiLayersOutline
 
-    get homed_axis() {
-        return this.$store.state.printer.toolhead?.homed_axes ?? ''
-    }
+const saveOffsetDialog = ref(false)
 
-    get offsetZSaveOption() {
-        return this.$store.state.gui.control.offsetZSaveOption ?? null
-    }
+const offsetsZ = computed(() => store.state.gui.control.offsetsZ)
 
-    sendBabyStepDown(offset: number): void {
-        const gcode = `SET_GCODE_OFFSET Z_ADJUST=-${offset} ${this.homed_axis === 'xyz' ? 'MOVE=1' : ''}`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babyStepDown' })
-    }
+const homed_axis = computed(() => store.state.printer.toolhead?.homed_axes ?? '')
 
-    sendBabyStepUp(offset: number): void {
-        const gcode = `SET_GCODE_OFFSET Z_ADJUST=+${offset} ${this.homed_axis === 'xyz' ? 'MOVE=1' : ''}`
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babyStepUp' })
-    }
+const offsetZSaveOption = computed(() => store.state.gui.control.offsetZSaveOption ?? null)
 
-    clearZOffset(): void {
-        const gcode = 'SET_GCODE_OFFSET Z=0' + (this.homed_axis === 'xyz' ? ' MOVE=1' : '')
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingClear' })
-    }
+function sendBabyStepDown(offset: number): void {
+    const gcode = `SET_GCODE_OFFSET Z_ADJUST=-${offset} ${homed_axis.value === 'xyz' ? 'MOVE=1' : ''}`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babyStepDown' })
+}
 
-    saveZOffset(): void {
-        let gcode = this.offsetZSaveOption
-        if (gcode === null) gcode = this.autoSaveZOffsetOption
+function sendBabyStepUp(offset: number): void {
+    const gcode = `SET_GCODE_OFFSET Z_ADJUST=+${offset} ${homed_axis.value === 'xyz' ? 'MOVE=1' : ''}`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babyStepUp' })
+}
 
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
-        this.saveOffsetDialog = true
-    }
+function clearZOffset(): void {
+    const gcode = 'SET_GCODE_OFFSET Z=0' + (homed_axis.value === 'xyz' ? ' MOVE=1' : '')
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingClear' })
+}
 
-    saveConfig(): void {
-        const gcode = 'SAVE_CONFIG'
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'topbarSaveConfig' })
-        this.saveOffsetDialog = false
-    }
+function saveZOffset(): void {
+    let gcode = offsetZSaveOption.value
+    if (gcode === null) gcode = autoSaveZOffsetOption.value
+
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode })
+    saveOffsetDialog.value = true
+}
+
+function saveConfig(): void {
+    const gcode = 'SAVE_CONFIG'
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'topbarSaveConfig' })
+    saveOffsetDialog.value = false
 }
 </script>
 

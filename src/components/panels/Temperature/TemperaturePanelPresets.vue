@@ -55,82 +55,74 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { mdiFire, mdiMenuDown, mdiSnowflake } from '@mdi/js'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
-@Component({
-    components: { ConfirmationDialog },
-})
-export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
-    mdiFire = mdiFire
-    mdiMenuDown = mdiMenuDown
-    mdiSnowflake = mdiSnowflake
+const { printer_state } = useBase()
+const store = useStore()
+const socket = useSocket()
 
-    showCoolDownDialog = false
+const mdiFire = mdiFire
+const mdiMenuDown = mdiMenuDown
+const mdiSnowflake = mdiSnowflake
 
-    get presets(): GuiPresetsStatePreset[] {
-        return this.$store.getters['gui/presets/getPresets'] ?? []
-    }
+const showCoolDownDialog = ref(false)
 
-    get cooldownGcode(): string {
-        return this.$store.getters['gui/presets/getCooldownGcode']
-    }
+const presets = computed<GuiPresetsStatePreset[]>(() =>
+    store.getters['gui/presets/getPresets'] ?? []
+)
 
-    get confirmOnCoolDown(): boolean {
-        return this.$store.state.gui.uiSettings.confirmOnCoolDown
-    }
+const cooldownGcode = computed(() => store.getters['gui/presets/getCooldownGcode'])
 
-    preheat(preset: GuiPresetsStatePreset): void {
-        for (const [name, attributes] of Object.entries(preset.values)) {
-            if (attributes.bool) {
-                const splits = name.split(' ')
-                const printerObject = splits[0]
-                const printerObjectName = splits[1] ?? splits[0]
+const confirmOnCoolDown = computed(() => store.state.gui.uiSettings.confirmOnCoolDown)
 
-                // set default heater command
-                let command = 'SET_HEATER_TEMPERATURE'
-                let commandAttribute = 'HEATER'
+function preheat(preset: GuiPresetsStatePreset): void {
+    for (const [name, attributes] of Object.entries(preset.values)) {
+        if (attributes.bool) {
+            const splits = name.split(' ')
+            const printerObject = splits[0]
+            const printerObjectName = splits[1] ?? splits[0]
 
-                // override command for temperature_fan
-                if (printerObject === 'temperature_fan') {
-                    command = 'SET_TEMPERATURE_FAN_TARGET'
-                    commandAttribute = 'TEMPERATURE_FAN'
-                }
+            let command = 'SET_HEATER_TEMPERATURE'
+            let commandAttribute = 'HEATER'
 
-                // build gcode
-                const gcode = `${command} ${commandAttribute}=${printerObjectName} TARGET=${attributes.value}`
-
-                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: gcode })
+            if (printerObject === 'temperature_fan') {
+                command = 'SET_TEMPERATURE_FAN_TARGET'
+                commandAttribute = 'TEMPERATURE_FAN'
             }
-        }
 
-        if (preset.gcode !== '') {
-            setTimeout(() => {
-                this.$store.dispatch('server/addEvent', { message: preset.gcode, type: 'command' })
-                this.$socket.emit('printer.gcode.script', { script: preset.gcode })
-            }, 100)
+            const gcode = `${command} ${commandAttribute}=${printerObjectName} TARGET=${attributes.value}`
+
+            store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+            socket.emit('printer.gcode.script', { script: gcode })
         }
     }
 
-    btnCoolDown(): void {
-        if (this.confirmOnCoolDown) {
-            this.showCoolDownDialog = true
-            return
-        }
-
-        this.cooldown()
+    if (preset.gcode !== '') {
+        setTimeout(() => {
+            store.dispatch('server/addEvent', { message: preset.gcode, type: 'command' })
+            socket.emit('printer.gcode.script', { script: preset.gcode })
+        }, 100)
     }
+}
 
-    cooldown(): void {
-        this.$store.dispatch('server/addEvent', { message: this.cooldownGcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: this.cooldownGcode })
+function btnCoolDown(): void {
+    if (confirmOnCoolDown.value) {
+        showCoolDownDialog.value = true
+        return
     }
+    cooldown()
+}
+
+function cooldown(): void {
+    store.dispatch('server/addEvent', { message: cooldownGcode.value, type: 'command' })
+    socket.emit('printer.gcode.script', { script: cooldownGcode.value })
 }
 </script>
 
@@ -140,10 +132,6 @@ export default class TemperaturePanelPresets extends Mixins(BaseMixin) {
     font-weight: 500;
 }
 
-/*
-workaround for fixing a transparency issue
-which is assumingly a vuetify bug
-*/
 ._fix_transparency {
     background-color: #1e1e1e;
 }

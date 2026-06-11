@@ -34,22 +34,18 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiFileDocumentEdit, mdiFileSyncOutline } from '@mdi/js'
 import { genericLogfiles } from '@/store/variables'
 import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/LogfilesPanelGenericLog.vue'
-@Component({
-    components: { LogfilesPanelGenericLog, Panel },
-})
-export default class LogfilesPanel extends Mixins(BaseMixin) {
-    mdiFileDocumentEdit = mdiFileDocumentEdit
-    mdiFileSyncOutline = mdiFileSyncOutline
 
-    genericLogfiles = genericLogfiles
+const { loadings, printer_state } = useBase()
 
-    showRolloverDialog = false
-}
+const mdiFileDocumentEdit = mdiFileDocumentEdit
+const mdiFileSyncOutline = mdiFileSyncOutline
+
+const showRolloverDialog = ref(false)
 </script>

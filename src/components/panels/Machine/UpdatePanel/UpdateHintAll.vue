@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="showDialog" persistent max-width="600">
+    <v-dialog :model-value="showDialog" @update:model-value="emitValue" persistent max-width="600">
         <panel
             :title="$t('Machine.UpdatePanel.AreYouSure')"
             :icon="mdiProgressQuestion"
@@ -37,66 +37,71 @@
                 </v-btn>
             </v-card-actions>
         </panel>
-        <git-commits-list v-model="boolShowCommitHistory" :repo="showCommitsRepo" />
+        <git-commits-list :model-value="boolShowCommitHistory" @update:model-value="boolShowCommitHistory = $event" :repo="showCommitsRepo" />
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
 import { ServerUpdateManagerStateGitRepo, ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
 import { mdiProgressQuestion, mdiCloseThick } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
-import GitCommitsListDay from '@/components/panels/Machine/UpdatePanel/GitCommitsListDay.vue'
 import UpdateHintAlert from '@/components/panels/Machine/UpdatePanel/UpdateHintAlert.vue'
 import semver from 'semver'
 
-@Component({
-    components: { GitCommitsListDay, Panel, UpdateHintAlert },
-})
-export default class UpdateHintAll extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiProgressQuestion = mdiProgressQuestion
+const props = defineProps<{
+    'model-value': boolean
+}>()
 
-    checkboxUpdateQuestion = false
-    boolShowCommitHistory = false
-    showCommitsRepo: ServerUpdateManagerStateGitRepo | null = null
+const emit = defineEmits<{
+    'update:model-value': [value: boolean]
+    'update-all': []
+}>()
 
-    @VModel({ type: Boolean }) showDialog!: boolean
+const store = useStore()
 
-    get modules() {
-        return this.$store.getters['server/updateManager/getUpdateManagerList'] ?? []
-    }
+const mdiCloseThick = mdiCloseThick
+const mdiProgressQuestion = mdiProgressQuestion
 
-    get filteredModules() {
-        return this.modules.filter((module: ServerUpdateManagerStateGuiList) => {
-            // check git repos for updates
-            if (module.type === 'git' && module.data?.commits_behind?.length) return true
+const checkboxUpdateQuestion = ref(false)
+const boolShowCommitHistory = ref(false)
+const showCommitsRepo = ref<ServerUpdateManagerStateGitRepo | null>(null)
 
-            // check client web for updates
-            if (
-                module.type === 'web' &&
-                semver.valid(module.data?.remote_version, { loose: true }) &&
-                semver.valid(module.data?.version, { loose: true }) &&
-                semver.gt(module.data?.remote_version, module.data?.version, { loose: true })
-            )
-                return true
+const showDialog = computed(() => props['model-value'])
 
-            return false
-        })
-    }
+function emitValue(val: boolean) {
+    emit('update:model-value', val)
+}
 
-    openCommitHistory(repo: ServerUpdateManagerStateGitRepo) {
-        this.showCommitsRepo = repo
-        this.boolShowCommitHistory = true
-    }
+const modules = computed(() =>
+    store.getters['server/updateManager/getUpdateManagerList'] ?? []
+)
 
-    closeDialog() {
-        this.showDialog = false
-    }
+const filteredModules = computed(() =>
+    modules.value.filter((module: ServerUpdateManagerStateGuiList) => {
+        if (module.type === 'git' && module.data?.commits_behind?.length) return true
+        if (
+            module.type === 'web' &&
+            semver.valid(module.data?.remote_version, { loose: true }) &&
+            semver.valid(module.data?.version, { loose: true }) &&
+            semver.gt(module.data?.remote_version, module.data?.version, { loose: true })
+        )
+            return true
+        return false
+    })
+)
 
-    updateAll() {
-        this.$emit('update-all')
-    }
+function openCommitHistory(repo: ServerUpdateManagerStateGitRepo) {
+    showCommitsRepo.value = repo
+    boolShowCommitHistory.value = true
+}
+
+function closeDialog() {
+    emit('update:model-value', false)
+}
+
+function updateAll() {
+    emit('update-all')
 }
 </script>

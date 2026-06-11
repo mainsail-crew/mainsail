@@ -35,78 +35,61 @@
     </tr>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
 import { convertName } from '@/plugins/helpers'
 import { mdiFan } from '@mdi/js'
 import { opacityHeaterActive, opacityHeaterInactive } from '@/store/variables'
 
-@Component
-export default class TemperaturePanelListItemNevermore extends Mixins(BaseMixin) {
-    mdiFan = mdiFan
+const props = defineProps<{
+    objectName: string
+    isResponsiveMobile: boolean
+}>()
 
-    @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: Boolean, required: true }) readonly isResponsiveMobile!: boolean
+const store = useStore()
+const mdiFan = mdiFan
 
-    showEditDialog = false
-    nevermoreValues = ['temperature', 'pressure', 'humidity']
+const showEditDialog = ref(false)
+const nevermoreValues = ['temperature', 'pressure', 'humidity']
 
-    get printerObject() {
-        return this.$store.state.printer[this.objectName] ?? {}
-    }
+const printerObject = computed(() => store.state.printer[props.objectName] ?? {})
 
-    get name() {
-        const splits = this.objectName.split(' ')
-        return splits.length === 1 ? splits[0] : splits[1]
-    }
+const name = computed(() => {
+    const splits = props.objectName.split(' ')
+    return splits.length === 1 ? splits[0] : splits[1]
+})
 
-    get formatName() {
-        return convertName(this.name)
-    }
+const formatName = computed(() => convertName(name.value))
 
-    get color() {
-        return this.$store.state.gui?.view?.tempchart?.datasetSettings?.[this.objectName]?.color ?? '#ffffff'
-    }
+const color = computed(() =>
+    store.state.gui?.view?.tempchart?.datasetSettings?.[props.objectName]?.color ?? '#ffffff'
+)
 
-    get iconColor() {
-        // set icon color to active, if no target exists (temperature_sensors) or a heater is active
-        if (this.state === null || this.state > 0) return `${this.color}${opacityHeaterActive}`
+const iconColor = computed(() => {
+    if (state.value === null || state.value > 0) return `${color.value}${opacityHeaterActive}`
+    return `${color.value}${opacityHeaterInactive}`
+})
 
-        return `${this.color}${opacityHeaterInactive}`
-    }
+const iconClass = computed(() => {
+    const classes: string[] = ['_no-focus-style', 'cursor-pointer']
+    const disableFanAnimation = store.state.gui?.uiSettings.disableFanAnimation ?? false
+    if (!disableFanAnimation && (state.value ?? 0) > 0) classes.push('icon-rotate')
+    return classes
+})
 
-    get iconClass() {
-        const classes = ['_no-focus-style', 'cursor-pointer']
+const state = computed<number | null>(() => printerObject.value.speed ?? null)
 
-        // add icon animation, when it is a fan and state > 0
-        const disableFanAnimation = this.$store.state.gui?.uiSettings.disableFanAnimation ?? false
+const rpm = computed(() => {
+    const rpmVal = printerObject.value.rpm ?? null
+    if (rpmVal === null) return null
+    return parseInt(printerObject.value.rpm)
+})
 
-        if (!disableFanAnimation && (this.state ?? 0) > 0) classes.push('icon-rotate')
-
-        return classes
-    }
-
-    get state(): number | null {
-        return this.printerObject.speed ?? null
-    }
-
-    get rpm() {
-        const rpm = this.printerObject.rpm ?? null
-
-        // return null when rpm doesn't exist
-        if (rpm === null) return null
-
-        return parseInt(this.printerObject.rpm)
-    }
-
-    get rpmClass() {
-        if (this.rpm === 0 && (this.printerObject.speed ?? 0) > 0) return 'red--text'
-
-        return ''
-    }
-}
+const rpmClass = computed(() => {
+    if (rpm.value === 0 && (printerObject.value.speed ?? 0) > 0) return 'red--text'
+    return ''
+})
 </script>
 
 <style scoped>

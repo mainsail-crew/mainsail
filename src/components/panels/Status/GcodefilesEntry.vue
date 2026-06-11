@@ -76,12 +76,14 @@
     </tr>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import type { LongpressEvent } from '@/directives/longpress'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
+import { useSocket } from '@/composables/useSocket'
 import { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
@@ -97,148 +99,120 @@ import {
 import Panel from '@/components/ui/Panel.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import GcodefilesRenameFileDialog from '@/components/dialogs/GcodefilesRenameFileDialog.vue'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatPrintTime } from '@/plugins/helpers'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
-@Component({
-    components: {
-        GcodefilesThumbnail,
-        Panel,
-        StartPrintDialog,
-        AddBatchToQueueDialog,
-        ConfirmationDialog,
-    },
+const props = defineProps<{
+    item: FileStateGcodefile
+    contentTdWidth: number
+}>()
+
+const { printerIsPrinting, klipperReadyForGui, moonrakerComponents, printer_state, apiUrl } = useBase()
+const { doSend } = useControl()
+const socket = useSocket()
+const store = useStore()
+const router = useRouter()
+
+const contextMenuShow = ref(false)
+const contextMenuX = ref(0)
+const contextMenuY = ref(0)
+
+const showPrintDialog = ref(false)
+const showAddBatchToQueueDialog = ref(false)
+const showRenameFileDialog = ref(false)
+const showDeleteDialog = ref(false)
+
+const styleContentTdWidth = computed(() => `width: ${props.contentTdWidth}px;`)
+
+const existsMetadata = computed(() => props.item?.metadataPulled ?? false)
+
+const description = computed(() => {
+    const output = []
+
+    let filament = '--'
+    if (props.item.filament_total || props.item.filament_weight_total) {
+        filament = ''
+        if (props.item.filament_total && props.item.filament_total > 1000)
+            filament += `${(props.item.filament_total / 1000).toFixed(2)} m`
+        else if (props.item.filament_total) filament += `${props.item.filament_total.toFixed(0)} mm`
+
+        if (props.item.filament_total && props.item.filament_weight_total) filament += ' / '
+
+        if (props.item.filament_weight_total) filament += props.item.filament_weight_total.toFixed(0) + ' g'
+    }
+    output.push(`Filament: ${filament}`)
+
+    const printTime = props.item.estimated_time ? formatPrintTime(props.item.estimated_time) : '--'
+    output.push(`Print Time: ${printTime}`)
+
+    return output.join(', ')
 })
-export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, ControlMixin) {
-    mdiPlay = mdiPlay
-    mdiPlaylistPlus = mdiPlaylistPlus
-    mdiFire = mdiFire
-    mdiVideo3d = mdiVideo3d
-    mdiCloudDownload = mdiCloudDownload
-    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
-    mdiRenameBox = mdiRenameBox
-    mdiDelete = mdiDelete
 
-    @Prop({ type: Object, required: true }) item!: FileStateGcodefile
-    @Prop({ type: Number, required: true }) contentTdWidth!: number
+const statusIcon = computed(() => convertPrintStatusIcon(props.item.last_status ?? ''))
+const statusColor = computed(() => convertPrintStatusIconColor(props.item.last_status ?? ''))
 
-    currentPath = ''
+const filename = computed(() =>
+    props.item.filename.slice(props.item.filename.lastIndexOf('/') + 1)
+)
 
-    contextMenuShow = false
-    contextMenuX = 0
-    contextMenuY = 0
-
-    showPrintDialog = false
-    showAddBatchToQueueDialog = false
-    showRenameFileDialog = false
-    renameFileNewName = ''
-
-    showDeleteDialog = false
-
-    get styleContentTdWidth() {
-        return `width: ${this.contentTdWidth}px;`
-    }
-
-    get existsMetadata() {
-        return this.item?.metadataPulled ?? false
-    }
-
-    get description() {
-        const output = []
-
-        let filament = '--'
-        if (this.item.filament_total || this.item.filament_weight_total) {
-            filament = ''
-            if (this.item.filament_total && this.item.filament_total > 1000)
-                filament += `${(this.item.filament_total / 1000).toFixed(2)} m`
-            else if (this.item.filament_total) filament += `${this.item.filament_total.toFixed(0)} mm`
-
-            if (this.item.filament_total && this.item.filament_weight_total) filament += ' / '
-
-            if (this.item.filament_weight_total) filament += this.item.filament_weight_total.toFixed(0) + ' g'
-        }
-        output.push(`${this.$t('Panels.StatusPanel.Filament')}: ${filament}`)
-
-        const printTime = this.item.estimated_time ? formatPrintTime(this.item.estimated_time) : '--'
-        output.push(`${this.$t('Panels.StatusPanel.PrintTime')}: ${printTime}`)
-
-        return output.join(', ')
-    }
-
-    get statusIcon() {
-        return convertPrintStatusIcon(this.item.last_status ?? '')
-    }
-
-    get statusColor() {
-        return convertPrintStatusIconColor(this.item.last_status ?? '')
-    }
-
-    get filename() {
-        return this.item.filename.slice(this.item.filename.lastIndexOf('/') + 1)
-    }
-
-    showContextMenu(e: MouseEvent | LongpressEvent) {
-        e?.preventDefault()
-        EventBus.$emit(CLOSE_CONTEXT_MENU)
-
-        this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
-        this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
-
-        this.contextMenuShow = true
-    }
-
-    closeContextMenu() {
-        this.contextMenuShow = false
-    }
-
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.item.filename])
-    }
-
-    view3D() {
-        this.$router.push({ path: '/viewer', query: { filename: 'gcodes/' + this.item.filename } })
-    }
-
-    downloadFile() {
-        const href = this.apiUrl + '/server/files/gcodes/' + escapePath(this.item.filename)
-
-        window.open(href)
-    }
-
-    openRenameFileDialog() {
-        this.renameFileNewName = this.filename
-        this.showRenameFileDialog = true
-    }
-
-    editFile() {
-        const pos = this.item.filename.lastIndexOf('/')
-        const path = pos > 0 ? this.item.filename.slice(0, pos + 1) : ''
-        const filename = pos > 0 ? this.item.filename.slice(pos + 1) : this.item.filename
-
-        this.$store.dispatch('editor/openFile', {
-            root: 'gcodes',
-            path,
-            filename,
-            size: this.item.size,
-            permissions: this.item.permissions,
-        })
-    }
-
-    removeFile() {
-        this.$socket.emit(
-            'server.files.delete_file',
-            { path: 'gcodes/' + this.item.filename },
-            { action: 'files/getDeleteFile' }
-        )
-    }
-
-    mounted() {
-        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
-
-    beforeDestroy() {
-        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
+function showContextMenu(e: MouseEvent | LongpressEvent) {
+    e?.preventDefault()
+    EventBus.$emit(CLOSE_CONTEXT_MENU)
+    contextMenuX.value = e?.clientX || e?.pageX || window.screenX / 2
+    contextMenuY.value = e?.clientY || e?.pageY || window.screenY / 2
+    contextMenuShow.value = true
 }
+
+function closeContextMenu() {
+    contextMenuShow.value = false
+}
+
+function addToQueue() {
+    store.dispatch('server/jobQueue/addToQueue', [props.item.filename])
+}
+
+function view3D() {
+    router.push({ path: '/viewer', query: { filename: 'gcodes/' + props.item.filename } })
+}
+
+function downloadFile() {
+    const href = apiUrl.value + '/server/files/gcodes/' + escapePath(props.item.filename)
+    window.open(href)
+}
+
+function openRenameFileDialog() {
+    showRenameFileDialog.value = true
+}
+
+function editFile() {
+    const pos = props.item.filename.lastIndexOf('/')
+    const path = pos > 0 ? props.item.filename.slice(0, pos + 1) : ''
+    const fn = pos > 0 ? props.item.filename.slice(pos + 1) : props.item.filename
+
+    store.dispatch('editor/openFile', {
+        root: 'gcodes',
+        path,
+        filename: fn,
+        size: props.item.size,
+        permissions: props.item.permissions,
+    })
+}
+
+function removeFile() {
+    socket.emit(
+        'server.files.delete_file',
+        { path: 'gcodes/' + props.item.filename },
+        { action: 'files/getDeleteFile' }
+    )
+}
+
+onMounted(() => {
+    EventBus.$on(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
+
+onBeforeUnmount(() => {
+    EventBus.$off(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
 </script>

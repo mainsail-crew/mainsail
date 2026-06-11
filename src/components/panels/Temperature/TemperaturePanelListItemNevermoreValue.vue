@@ -13,129 +13,106 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-@Component
-export default class TemperaturePanelListItemNevermoreValue extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly printerObject!: { [key: string]: number }
-    @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: String, required: true }) readonly keyName!: string
-    @Prop({ type: Boolean, required: false, default: true }) readonly small!: boolean
+const props = defineProps<{
+    printerObject: { [key: string]: number }
+    objectName: string
+    keyName: string
+    small?: boolean
+}>()
 
-    get cssStyle() {
-        const style = { cursor: 'default', fontSize: '1em' }
-        if (this.small) style.fontSize = '0.8em'
+const store = useStore()
 
-        return style
+const cssStyle = computed(() => {
+    const style: Record<string, string> = { cursor: 'default', fontSize: '1em' }
+    if (props.small !== false) style.fontSize = '0.8em'
+    return style
+})
+
+const value = computed(() => {
+    const val = props.printerObject[props.keyName] ?? null
+    if (isNaN(val)) return null
+    return val
+})
+
+const intake_value = computed(() => {
+    const name = `intake_${props.keyName}`
+    return props.printerObject[name] ?? null
+})
+
+const intake_value_min = computed(() => {
+    const name = `intake_${props.keyName}_min`
+    return props.printerObject[name] ?? null
+})
+
+const intake_value_max = computed(() => {
+    const name = `intake_${props.keyName}_max`
+    return props.printerObject[name] ?? null
+})
+
+const exhaust_value = computed(() => {
+    const name = `exhaust_${props.keyName}`
+    return props.printerObject[name] ?? null
+})
+
+const exhaust_value_min = computed(() => {
+    const name = `exhaust_${props.keyName}_min`
+    return props.printerObject[name] ?? null
+})
+
+const exhaust_value_max = computed(() => {
+    const name = `exhaust_${props.keyName}_max`
+    return props.printerObject[name] ?? null
+})
+
+const unit = computed(() => {
+    switch (props.keyName) {
+        case 'temperature':
+            return '°C'
+        case 'pressure':
+            return 'hPa'
+        case 'humidity':
+            return '%'
     }
+    return null
+})
 
-    get value() {
-        const value = this.printerObject[this.keyName] ?? null
-        if (isNaN(value)) return null
+const digits = computed(() => ['gas', 'pressure'].includes(props.keyName) ? 0 : 1)
 
-        return value
-    }
+const formatValue = computed(() => getFormatedValue(intake_value.value, exhaust_value.value))
 
-    get intake_value(): number | null {
-        const name = `intake_${this.keyName}`
+const formatValue_min = computed(() => getFormatedValue(intake_value_min.value, exhaust_value_min.value))
 
-        return this.printerObject[name] ?? null
-    }
+const formatValue_max = computed(() => getFormatedValue(intake_value_max.value, exhaust_value_max.value))
 
-    get intake_value_min(): number | null {
-        const name = `intake_${this.keyName}_min`
-
-        return this.printerObject[name] ?? null
-    }
-
-    get intake_value_max(): number | null {
-        const name = `intake_${this.keyName}_max`
-
-        return this.printerObject[name] ?? null
-    }
-
-    get exhaust_value(): number | null {
-        const name = `exhaust_${this.keyName}`
-
-        return this.printerObject[name] ?? null
-    }
-
-    get exhaust_value_min(): number | null {
-        const name = `exhaust_${this.keyName}_min`
-
-        return this.printerObject[name] ?? null
-    }
-
-    get exhaust_value_max(): number | null {
-        const name = `exhaust_${this.keyName}_max`
-
-        return this.printerObject[name] ?? null
-    }
-
-    get unit(): string | null {
-        switch (this.keyName) {
-            case 'temperature':
-                return '°C'
-            case 'pressure':
-                return 'hPa'
-            case 'humidity':
-                return '%'
-        }
-
-        return null
-    }
-
-    get digits() {
-        return ['gas', 'pressure'].includes(this.keyName) ? 0 : 1
-    }
-
-    get formatValue() {
-        return this.getFormatedValue(this.intake_value, this.exhaust_value)
-    }
-
-    get formatValue_min() {
-        return this.getFormatedValue(this.intake_value_min, this.exhaust_value_min)
-    }
-
-    get formatValue_max() {
-        return this.getFormatedValue(this.intake_value_max, this.exhaust_value_max)
-    }
-
-    getFormatedValue(intake: number | null, exhaust: number | null): string {
-        let intake_value = intake?.toFixed(this.digits)
-        let exhaust_value = exhaust?.toFixed(this.digits)
-        if (this.intake_value === null) intake_value = '--'
-        if (this.exhaust_value === null) exhaust_value = '--'
-
-        // return only the value, if unit is null
-        if (this.unit === null) return `${intake_value} > ${exhaust_value}`
-
-        return `${intake_value} ${this.unit} > ${exhaust_value} ${this.unit}`
-    }
-
-    get disableTooltip() {
-        return (
-            this.intake_value_min === null ||
-            this.exhaust_value_min === null ||
-            this.intake_value_max === null ||
-            this.exhaust_value_max === null
-        )
-    }
-
-    get guiSetting() {
-        return this.$store.getters['gui/getDatasetAdditionalSensorValue']({
-            name: this.objectName,
-            sensor: this.keyName,
-        })
-    }
-
-    get isVisible() {
-        if (this.intake_value === null && this.exhaust_value === null) return false
-
-        return this.guiSetting
-    }
+function getFormatedValue(intake: number | null, exhaust: number | null): string {
+    let intake_value_str = intake?.toFixed(digits.value)
+    let exhaust_value_str = exhaust?.toFixed(digits.value)
+    if (intake_value.value === null) intake_value_str = '--'
+    if (exhaust_value.value === null) exhaust_value_str = '--'
+    if (unit.value === null) return `${intake_value_str} > ${exhaust_value_str}`
+    return `${intake_value_str} ${unit.value} > ${exhaust_value_str} ${unit.value}`
 }
+
+const disableTooltip = computed(() =>
+    intake_value_min.value === null ||
+    exhaust_value_min.value === null ||
+    intake_value_max.value === null ||
+    exhaust_value_max.value === null
+)
+
+const guiSetting = computed(() =>
+    store.getters['gui/getDatasetAdditionalSensorValue']({
+        name: props.objectName,
+        sensor: props.keyName,
+    })
+)
+
+const isVisible = computed(() => {
+    if (intake_value.value === null && exhaust_value.value === null) return false
+    return guiSetting.value
+})
 </script>

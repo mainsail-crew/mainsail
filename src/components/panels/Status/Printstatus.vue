@@ -11,18 +11,10 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { useBase } from '@/composables/useBase'
 import StatusPanelPrintstatusPrinting from '@/components/panels/Status/PrintstatusPrinting.vue'
 import StatusPanelPrintstatusComplete from '@/components/panels/Status/PrintstatusComplete.vue'
 
-@Component({
-    components: {
-        StatusPanelPrintstatusPrinting,
-        StatusPanelPrintstatusComplete,
-    },
-})
-export default class StatusPanelPrintstatus extends Mixins(BaseMixin) {}
+const { printer_state } = useBase()
 </script>

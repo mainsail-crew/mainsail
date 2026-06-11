@@ -199,11 +199,15 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import type { LongpressEvent } from '@/directives/longpress'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
+import { useSocket } from '@/composables/useSocket'
 import { FileStateGcodefile } from '@/store/files/types'
 import { validGcodeExtensions } from '@/store/variables'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
@@ -219,174 +223,158 @@ import {
     mdiRenameBox,
     mdiVideo3d,
 } from '@mdi/js'
-import ControlMixin from '@/components/mixins/control'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import { buildCncMetadataViewModel, loadCncMetadata, type CncMetadataViewModel } from '@/store/files/cncMetadata'
 import GcodefilesRenameFileDialog from '@/components/dialogs/GcodefilesRenameFileDialog.vue'
 import GcodefilesDuplicateFileDialog from '@/components/dialogs/GcodefilesDuplicateFileDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
+import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
-@Component({
-    components: {
-        ConfirmationDialog,
-        GcodefilesDuplicateFileDialog,
-        GcodefilesRenameFileDialog,
-        GcodefilesThumbnail,
-    },
+const props = defineProps<{
+    item: FileStateGcodefile
+    isSelected: boolean
+    select: (value: boolean) => void
+}>()
+
+const { apiUrl, klipperReadyForGui, printer_state, moonrakerComponents, formatDateTime } = useBase()
+const { doSend } = useControl()
+const { currentPath, setCurrentPath, selectedFiles, setSelectedFiles } = useGcodeFiles()
+const socket = useSocket()
+const store = useStore()
+const router = useRouter()
+
+const cncMetadataViewModel = ref<CncMetadataViewModel | null>(null)
+const cncMetadataLoading = ref(false)
+const cncMetadataRequestId = ref(0)
+
+const showContextMenu = ref(false)
+const showContextMenuX = ref(0)
+const showContextMenuY = ref(0)
+
+const showStartPrintDialog = ref(false)
+const showAddBatchToQueueDialog = ref(false)
+const showRenameFileDialog = ref(false)
+const showDuplicateFileDialog = ref(false)
+const showDeleteFileDialog = ref(false)
+
+const isGcodeFile = computed(() => {
+    const format = props.item.filename.slice(props.item.filename.lastIndexOf('.'))
+    return validGcodeExtensions.includes(format)
 })
-export default class GcodefilesPanelListCardFile extends Mixins(BaseMixin, ControlMixin, GcodefilesMixin) {
-    mdiCloudDownload = mdiCloudDownload
-    mdiContentCopy = mdiContentCopy
-    mdiDelete = mdiDelete
-    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
-    mdiFire = mdiFire
-    mdiMagnify = mdiMagnify
-    mdiPlay = mdiPlay
-    mdiPlaylistPlus = mdiPlaylistPlus
-    mdiRenameBox = mdiRenameBox
-    mdiVideo3d = mdiVideo3d
 
-    formatPrintTime = formatPrintTime
-    formatFilesize = formatFilesize
+const canStart = computed(() =>
+    klipperReadyForGui.value && !['error', 'printing', 'paused'].includes(printer_state.value)
+)
 
-    cncMetadataViewModel: CncMetadataViewModel | null = null
-    cncMetadataLoading = false
-    private cncMetadataRequestId = 0
+const canPreheat = computed(() =>
+    klipperReadyForGui.value && !['error', 'printing', 'paused'].includes(printer_state.value)
+)
 
-    dateOrDash(value: Date | null | undefined): string {
-        if (value === null || value === undefined) return '--'
-        return this.formatDateTime(value)
-    }
+const formattedSize = computed(() =>
+    props.item.size !== undefined ? formatFilesize(props.item.size) : '--'
+)
 
-    secondsOrDash(value: number | null | undefined): string {
-        if (value === null || value === undefined) return '--'
-        return this.formatPrintTime(value)
-    }
+const statusIcon = computed(() =>
+    convertPrintStatusIcon(props.item.last_status ?? '')
+)
 
-    showContextMenu = false
-    showContextMenuX = 0
-    showContextMenuY = 0
+const statusIconColor = computed(() =>
+    convertPrintStatusIconColor(props.item.last_status ?? '')
+)
 
-    showStartPrintDialog = false
-    showAddBatchToQueueDialog = false
-    showRenameFileDialog = false
-    showDuplicateFileDialog = false
-    showDeleteFileDialog = false
-
-    @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
-    @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
-    @Prop({ type: Function, required: true }) readonly select!: (value: boolean) => void
-
-    get isGcodeFile() {
-        const format = this.item.filename.slice(this.item.filename.lastIndexOf('.'))
-
-        return validGcodeExtensions.includes(format)
-    }
-
-    get canStart() {
-        return this.klipperReadyForGui && !['error', 'printing', 'paused'].includes(this.printer_state)
-    }
-
-    get canPreheat() {
-        return this.klipperReadyForGui && !['error', 'printing', 'paused'].includes(this.printer_state)
-    }
-
-    get formattedSize() {
-        return this.item.size !== undefined ? formatFilesize(this.item.size) : '--'
-    }
-
-    get statusIcon() {
-        return convertPrintStatusIcon(this.item.last_status ?? '')
-    }
-
-    get statusIconColor() {
-        return convertPrintStatusIconColor(this.item.last_status ?? '')
-    }
-
-    async refreshCncMetadata() {
-        if (!this.isGcodeFile) return
-        const requestId = ++this.cncMetadataRequestId
-        const filename = this.item.full_filename
-
-        this.cncMetadataLoading = true
-        const apiUrl = this.$store.getters['socket/getUrl']
-        const metadata = await loadCncMetadata(apiUrl, filename)
-
-        if (requestId !== this.cncMetadataRequestId) return
-
-        this.cncMetadataViewModel = buildCncMetadataViewModel(metadata)
-        this.cncMetadataLoading = false
-    }
-
-    showContextMenuAction(e: MouseEvent | LongpressEvent) {
-        e?.preventDefault()
-        EventBus.$emit(CLOSE_CONTEXT_MENU)
-
-        this.showContextMenuX = e?.clientX || e?.pageX || window.screenX / 2
-        this.showContextMenuY = e?.clientY || e?.pageY || window.screenY / 2
-
-        this.showContextMenu = true
-    }
-
-    closeContextMenu() {
-        this.showContextMenu = false
-    }
-
-    addToQueue() {
-        let filename = [this.currentPath, this.item.filename].join('/')
-        if (filename.startsWith('/')) filename = filename.slice(1)
-
-        this.$store.dispatch('server/jobQueue/addToQueue', [filename])
-    }
-
-    view3D() {
-        this.$router.push({
-            path: '/viewer',
-            query: { filename: 'gcodes' + this.currentPath + '/' + this.item.filename },
-        })
-    }
-
-    scanMeta() {
-        this.$store.dispatch('files/scanMetadata', {
-            filename: 'gcodes' + this.currentPath + '/' + this.item.filename,
-        })
-    }
-
-    downloadFile() {
-        const filename = this.currentPath + '/' + this.item.filename
-        const href = this.apiUrl + '/server/files/gcodes' + escapePath(filename)
-
-        window.open(href)
-    }
-
-    editFile() {
-        this.$store.dispatch('editor/openFile', {
-            root: 'gcodes',
-            path: this.currentPath,
-            filename: this.item.filename,
-            size: this.item.size,
-            permissions: this.item.permissions,
-        })
-    }
-
-    deleteFile() {
-        this.$socket.emit(
-            'server.files.delete_file',
-            { path: 'gcodes' + this.currentPath + '/' + this.item.filename },
-            { action: 'files/getDeleteFile' }
-        )
-    }
-
-    mounted() {
-        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-        void this.refreshCncMetadata()
-    }
-
-    beforeDestroy() {
-        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
+function dateOrDash(value: Date | null | undefined): string {
+    if (value === null || value === undefined) return '--'
+    return formatDateTime(value)
 }
+
+function secondsOrDash(value: number | null | undefined): string {
+    if (value === null || value === undefined) return '--'
+    return formatPrintTime(value)
+}
+
+async function refreshCncMetadata() {
+    if (!isGcodeFile.value) return
+    const requestId = ++cncMetadataRequestId.value
+    const filename = props.item.full_filename
+
+    cncMetadataLoading.value = true
+    const apiUrlValue = store.getters['socket/getUrl']
+    const metadata = await loadCncMetadata(apiUrlValue, filename)
+
+    if (requestId !== cncMetadataRequestId.value) return
+
+    cncMetadataViewModel.value = buildCncMetadataViewModel(metadata)
+    cncMetadataLoading.value = false
+}
+
+function showContextMenuAction(e: MouseEvent | LongpressEvent) {
+    e?.preventDefault()
+    EventBus.$emit(CLOSE_CONTEXT_MENU)
+
+    showContextMenuX.value = e?.clientX || e?.pageX || window.screenX / 2
+    showContextMenuY.value = e?.clientY || e?.pageY || window.screenY / 2
+
+    showContextMenu.value = true
+}
+
+function closeContextMenu() {
+    showContextMenu.value = false
+}
+
+function addToQueue() {
+    let filename = [currentPath.value, props.item.filename].join('/')
+    if (filename.startsWith('/')) filename = filename.slice(1)
+
+    store.dispatch('server/jobQueue/addToQueue', [filename])
+}
+
+function view3D() {
+    router.push({
+        path: '/viewer',
+        query: { filename: 'gcodes' + currentPath.value + '/' + props.item.filename },
+    })
+}
+
+function scanMeta() {
+    store.dispatch('files/scanMetadata', {
+        filename: 'gcodes' + currentPath.value + '/' + props.item.filename,
+    })
+}
+
+function downloadFile() {
+    const filename = currentPath.value + '/' + props.item.filename
+    const href = apiUrl.value + '/server/files/gcodes' + escapePath(filename)
+    window.open(href)
+}
+
+function editFile() {
+    store.dispatch('editor/openFile', {
+        root: 'gcodes',
+        path: currentPath.value,
+        filename: props.item.filename,
+        size: props.item.size,
+        permissions: props.item.permissions,
+    })
+}
+
+function deleteFile() {
+    socket.emit(
+        'server.files.delete_file',
+        { path: 'gcodes' + currentPath.value + '/' + props.item.filename },
+        { action: 'files/getDeleteFile' }
+    )
+}
+
+onMounted(() => {
+    EventBus.$on(CLOSE_CONTEXT_MENU, closeContextMenu)
+    void refreshCncMetadata()
+})
+
+onBeforeUnmount(() => {
+    EventBus.$off(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
 </script>
 
 <style scoped>

@@ -30,59 +30,53 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
+import { useI18n } from 'vue-i18n'
 import { mdiCheck, mdiInformation, mdiProgressUpload } from '@mdi/js'
-@Component
-export default class UpdatePanelEntrySystem extends Mixins(BaseMixin) {
-    mdiInformation = mdiInformation
 
-    // to display the dialog for packages
-    boolShowPackageList = false
+const { printer_state } = useBase()
+const store = useStore()
+const socket = useSocket()
+const { t } = useI18n()
 
-    get package_count() {
-        return this.$store.state.server.updateManager?.system?.package_count ?? 0
-    }
+const mdiInformation = mdiInformation
 
-    get package_list() {
-        return this.$store.state.server.updateManager?.system?.package_list ?? []
-    }
+const boolShowPackageList = ref(false)
 
-    get btnDisabled() {
-        // disable button if the printer is printing
-        if (['printing', 'paused'].includes(this.printer_state)) return true
+const package_count = computed(() =>
+    store.state.server.updateManager?.system?.package_count ?? 0
+)
 
-        // disable button if no package is available to update
-        return this.package_count === 0
-    }
+const package_list = computed(() =>
+    store.state.server.updateManager?.system?.package_list ?? []
+)
 
-    get btnIcon() {
-        if (this.package_count) return mdiProgressUpload
+const btnDisabled = computed(() => {
+    if (['printing', 'paused'].includes(printer_state.value)) return true
+    return package_count.value === 0
+})
 
-        return mdiCheck
-    }
+const btnIcon = computed(() => {
+    if (package_count.value) return mdiProgressUpload
+    return mdiCheck
+})
 
-    get btnColor() {
-        // set button to primary, if updates are available
-        if (this.package_count) return 'primary'
+const btnColor = computed(() => {
+    if (package_count.value) return 'primary'
+    return 'green'
+})
 
-        return 'green'
-    }
+const btnText = computed(() => {
+    if (package_count.value) return t('Machine.UpdatePanel.Upgrade')
+    return t('Machine.UpdatePanel.UpToDate')
+})
 
-    get btnText() {
-        if (this.package_count) return this.$t('Machine.UpdatePanel.Upgrade')
-
-        return this.$t('Machine.UpdatePanel.UpToDate')
-    }
-
-    doUpdate() {
-        this.$socket.emit('machine.update.system', {})
-    }
-
-    closePackagesList() {
-        this.boolShowPackageList = false
-    }
+function doUpdate() {
+    socket.emit('machine.update.system', {})
 }
 </script>
 

@@ -8,28 +8,32 @@
         <v-list>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="boolTempchart"
+                    :model-value="boolTempchart"
+                    @update:model-value="toggleBoolTempchart"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.TemperaturePanel.ShowChart')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="hideMcuHostSensors"
+                    :model-value="hideMcuHostSensors"
+                    @update:model-value="toggleHideMcuHostSensors"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.TemperaturePanel.HideMcuHostSensors')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="hideMonitors"
+                    :model-value="hideMonitors"
+                    @update:model-value="toggleHideMonitors"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.TemperaturePanel.HideMonitors')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="autoscaleTempchart"
+                    :model-value="autoscaleTempchart"
+                    @update:model-value="toggleAutoscaleTempchart"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.TemperaturePanel.AutoscaleChart')" />
@@ -38,46 +42,31 @@
     </v-menu>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { mdiCog } from '@mdi/js'
 
-@Component
-export default class TemperaturePanelSettings extends Mixins(BaseMixin) {
-    mdiCog = mdiCog
+const store = useStore()
+const mdiCog = mdiCog
 
-    get boolTempchart(): boolean {
-        return this.$store.state.gui.view.tempchart.boolTempchart ?? false
-    }
+const boolTempchart = computed(() => store.state.gui.view.tempchart.boolTempchart ?? false)
+function toggleBoolTempchart(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.tempchart.boolTempchart', value: val })
+}
 
-    set boolTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.boolTempchart', value: newVal })
-    }
+const autoscaleTempchart = computed(() => store.state.gui.view.tempchart.autoscale ?? false)
+function toggleAutoscaleTempchart(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.tempchart.autoscale', value: val })
+}
 
-    get autoscaleTempchart(): boolean {
-        return this.$store.state.gui.view.tempchart.autoscale ?? false
-    }
+const hideMcuHostSensors = computed(() => store.state.gui.view.tempchart.hideMcuHostSensors ?? false)
+function toggleHideMcuHostSensors(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.tempchart.hideMcuHostSensors', value: val })
+}
 
-    set autoscaleTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.autoscale', value: newVal })
-    }
-
-    get hideMcuHostSensors(): boolean {
-        return this.$store.state.gui.view.tempchart.hideMcuHostSensors ?? false
-    }
-
-    set hideMcuHostSensors(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.hideMcuHostSensors', value: newVal })
-    }
-
-    get hideMonitors(): boolean {
-        return this.$store.state.gui.view.tempchart.hideMonitors ?? false
-    }
-
-    set hideMonitors(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.hideMonitors', value: newVal })
-    }
+const hideMonitors = computed(() => store.state.gui.view.tempchart.hideMonitors ?? false)
+function toggleHideMonitors(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.tempchart.hideMonitors', value: val })
 }
 </script>

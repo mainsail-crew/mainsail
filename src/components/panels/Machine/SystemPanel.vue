@@ -25,40 +25,34 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { mdiCloseThick, mdiMemory, mdiUsb } from '@mdi/js'
 import SystemPanelHost from '@/components/panels/Machine/SystemPanelHost.vue'
 import SystemPanelMcu from '@/components/panels/Machine/SystemPanelMcu.vue'
-@Component({
-    components: { SystemPanelMcu, SystemPanelHost, Panel },
+
+const { klipperReadyForGui } = useBase()
+const store = useStore()
+
+const mdiCloseThick = mdiCloseThick
+const mdiMemory = mdiMemory
+const mdiUsb = mdiUsb
+
+const dialogDevices = ref(false)
+
+const mcus = computed(() => {
+    if (!klipperReadyForGui.value) return []
+    const mcusList = store.getters['printer/getMcus'] ?? []
+    return caseInsensitiveSort(mcusList, 'name')
 })
-export default class SystemPanel extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiMemory = mdiMemory
-    mdiUsb = mdiUsb
 
-    dialogDevices = false
+const hostStats = computed(() => store.getters['server/getHostStats'] ?? null)
 
-    get mcus() {
-        if (!this.klipperReadyForGui) return []
-
-        const mcus = this.$store.getters['printer/getMcus'] ?? []
-
-        return caseInsensitiveSort(mcus, 'name')
-    }
-
-    get hostStats() {
-        return this.$store.getters['server/getHostStats'] ?? null
-    }
-
-    get showPanel() {
-        return this.mcus.length > 0 || this.hostStats
-    }
-}
+const showPanel = computed(() => mcus.value.length > 0 || hostStats.value)
 </script>
 
 <style scoped>

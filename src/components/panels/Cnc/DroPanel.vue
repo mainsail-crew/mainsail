@@ -43,126 +43,103 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import Panel from '@/components/ui/Panel.vue'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
 import { mdiCrosshairsGps } from '@mdi/js'
 
-@Component({
-    components: {
-        Panel,
-    },
+const { klipperReadyForGui } = useBase()
+const { absolute_coordinates, xAxisHomed, yAxisHomed, zAxisHomed } = useControl()
+
+const store = useStore()
+
+const machinePosition = computed(() => {
+    const p = store.state.printer?.motion_report?.live_position ?? [0, 0, 0, 0]
+    return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
 })
-export default class DroPanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiCrosshairsGps = mdiCrosshairsGps
 
-    get machinePosition() {
-        const p = this.$store.state.printer?.motion_report?.live_position ?? [0, 0, 0, 0]
-        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
-    }
+const workPosition = computed(() => {
+    const p = store.state.printer?.gcode_move?.gcode_position ?? [0, 0, 0, 0]
+    return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
+})
 
-    get workPosition() {
-        const p = this.$store.state.printer?.gcode_move?.gcode_position ?? [0, 0, 0, 0]
-        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
-    }
+const workOffset = computed(() => ({
+    x: machinePosition.value.x - workPosition.value.x,
+    y: machinePosition.value.y - workPosition.value.y,
+    z: machinePosition.value.z - workPosition.value.z,
+}))
 
-    get workOffset() {
-        return {
-            x: this.machinePosition.x - this.workPosition.x,
-            y: this.machinePosition.y - this.workPosition.y,
-            z: this.machinePosition.z - this.workPosition.z,
-        }
-    }
+const axisMinimum = computed(() => {
+    const p = store.state.printer?.toolhead?.axis_minimum ?? [0, 0, 0, 0]
+    return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
+})
 
-    get axisMinimum() {
-        const p = this.$store.state.printer?.toolhead?.axis_minimum ?? [0, 0, 0, 0]
-        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
-    }
+const axisMaximum = computed(() => {
+    const p = store.state.printer?.toolhead?.axis_maximum ?? [0, 0, 0, 0]
+    return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
+})
 
-    get axisMaximum() {
-        const p = this.$store.state.printer?.toolhead?.axis_maximum ?? [0, 0, 0, 0]
-        return { x: p[0] ?? 0, y: p[1] ?? 0, z: p[2] ?? 0 }
-    }
+const coordinateModeLabel = computed(() =>
+    absolute_coordinates.value ? 'Absolute (G90)' : 'Relative (G91)'
+)
 
-    get coordinateModeLabel() {
-        return this.absolute_coordinates ? 'Absolute (G90)' : 'Relative (G91)'
-    }
+const liveVelocity = computed(() => {
+    const v = store.state.printer?.motion_report?.live_velocity ?? 0
+    return `${Number(v).toFixed(2)} mm/s`
+})
 
-    get liveVelocity() {
-        const v = this.$store.state.printer?.motion_report?.live_velocity ?? 0
-        return `${Number(v).toFixed(2)} mm/s`
-    }
+const allAxesHomed = computed(() =>
+    xAxisHomed.value && yAxisHomed.value && zAxisHomed.value
+)
 
-    get allAxesHomed() {
-        return this.xAxisHomed && this.yAxisHomed && this.zAxisHomed
-    }
+function formatAxis(value: number, digits: number) {
+    return Number(value ?? 0).toFixed(digits)
+}
 
-    formatAxis(value: number, digits: number) {
-        return Number(value ?? 0).toFixed(digits)
-    }
+const machineX = computed(() => formatAxis(machinePosition.value.x, 2))
+const machineY = computed(() => formatAxis(machinePosition.value.y, 2))
+const machineZ = computed(() => formatAxis(machinePosition.value.z, 3))
 
-    get machineX() {
-        return this.formatAxis(this.machinePosition.x, 2)
-    }
+const workX = computed(() => formatAxis(workPosition.value.x, 2))
+const workY = computed(() => formatAxis(workPosition.value.y, 2))
+const workZ = computed(() => formatAxis(workPosition.value.z, 3))
 
-    get machineY() {
-        return this.formatAxis(this.machinePosition.y, 2)
-    }
+const axes = computed(() => [
+    {
+        id: 'X',
+        homed: xAxisHomed.value,
+        machine: machineX.value,
+        work: workX.value,
+        offset: formatSigned(workOffset.value.x, 2),
+        min: formatAxis(axisMinimum.value.x, 2),
+        max: formatAxis(axisMaximum.value.x, 2),
+    },
+    {
+        id: 'Y',
+        homed: yAxisHomed.value,
+        machine: machineY.value,
+        work: workY.value,
+        offset: formatSigned(workOffset.value.y, 2),
+        min: formatAxis(axisMinimum.value.y, 2),
+        max: formatAxis(axisMaximum.value.y, 2),
+    },
+    {
+        id: 'Z',
+        homed: zAxisHomed.value,
+        machine: machineZ.value,
+        work: workZ.value,
+        offset: formatSigned(workOffset.value.z, 3),
+        min: formatAxis(axisMinimum.value.z, 3),
+        max: formatAxis(axisMaximum.value.z, 3),
+    },
+])
 
-    get machineZ() {
-        return this.formatAxis(this.machinePosition.z, 3)
-    }
-
-    get workX() {
-        return this.formatAxis(this.workPosition.x, 2)
-    }
-
-    get workY() {
-        return this.formatAxis(this.workPosition.y, 2)
-    }
-
-    get workZ() {
-        return this.formatAxis(this.workPosition.z, 3)
-    }
-
-    get axes() {
-        return [
-            {
-                id: 'X',
-                homed: this.xAxisHomed,
-                machine: this.machineX,
-                work: this.workX,
-                offset: this.formatSigned(this.workOffset.x, 2),
-                min: this.formatAxis(this.axisMinimum.x, 2),
-                max: this.formatAxis(this.axisMaximum.x, 2),
-            },
-            {
-                id: 'Y',
-                homed: this.yAxisHomed,
-                machine: this.machineY,
-                work: this.workY,
-                offset: this.formatSigned(this.workOffset.y, 2),
-                min: this.formatAxis(this.axisMinimum.y, 2),
-                max: this.formatAxis(this.axisMaximum.y, 2),
-            },
-            {
-                id: 'Z',
-                homed: this.zAxisHomed,
-                machine: this.machineZ,
-                work: this.workZ,
-                offset: this.formatSigned(this.workOffset.z, 3),
-                min: this.formatAxis(this.axisMinimum.z, 3),
-                max: this.formatAxis(this.axisMaximum.z, 3),
-            },
-        ]
-    }
-
-    formatSigned(value: number, digits: number) {
-        const output = Number(value ?? 0).toFixed(digits)
-        return value > 0 ? `+${output}` : output
-    }
+function formatSigned(value: number, digits: number) {
+    const output = Number(value ?? 0).toFixed(digits)
+    return value > 0 ? `+${output}` : output
 }
 </script>
 

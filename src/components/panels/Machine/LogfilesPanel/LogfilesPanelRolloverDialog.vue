@@ -21,7 +21,8 @@
                         <v-checkbox
                             v-for="log in rolloverLogfiles"
                             :key="log"
-                            v-model="selectedRolloverLogs"
+                            :model-value="selectedRolloverLogs"
+                            @update:model-value="setSelectedRolloverLogs"
                             :label="capitalize(log)"
                             :value="log"
                             hide-details
@@ -42,53 +43,71 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, VModel, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiFileSyncOutline } from '@mdi/js'
 import { rolloverLogfiles } from '@/store/variables'
 import { capitalize } from '@/plugins/helpers'
-import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/LogfilesPanelGenericLog.vue'
-@Component({
-    components: { LogfilesPanelGenericLog, Panel },
+
+const emit = defineEmits<{
+    'update:model-value': [value: boolean]
+}>()
+
+const props = defineProps<{
+    'model-value': boolean
+}>()
+
+const { loadings } = useBase()
+const socket = useSocket()
+
+const mdiCloseThick = mdiCloseThick
+const mdiFileSyncOutline = mdiFileSyncOutline
+
+const showDialog = ref(props['model-value'])
+const selectedRolloverLogs = ref<string[]>([])
+
+watch(() => props['model-value'], (val) => {
+    showDialog.value = val
 })
-export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiFileSyncOutline = mdiFileSyncOutline
 
-    rolloverLogfiles = rolloverLogfiles
-    capitalize = capitalize
+watch(showDialog, (val) => {
+    emit('update:model-value', val)
+})
 
-    @VModel({ type: Boolean }) showDialog!: boolean
+function setSelectedRolloverLogs(val: string[]) {
+    selectedRolloverLogs.value = val
+}
 
-    selectedRolloverLogs: string[] = []
+const loadingRolloverLogs = ref(false)
 
-    get loadingRolloverLogs() {
-        return this.loadings.filter((log) => log?.startsWith('rolloverLog_')).length > 0
-    }
+const checkLoadingRolloverLogs = () => {
+    loadingRolloverLogs.value = loadings.value.filter((log: string) => log?.startsWith('rolloverLog_')).length > 0
+}
 
-    @Watch('loadingRolloverLogs')
-    loadingRolloverLogsChanged(newVal: boolean) {
-        if (newVal) this.closeDialog()
-    }
+watch(loadings, () => {
+    checkLoadingRolloverLogs()
+}, { immediate: true })
 
-    btnRolloverLogs() {
-        if (this.selectedRolloverLogs.length === 0) return
+watch(loadingRolloverLogs, (newVal) => {
+    if (newVal) closeDialog()
+})
 
-        this.selectedRolloverLogs.forEach((name) => {
-            this.$socket.emit(
-                'server.logs.rollover',
-                { application: name },
-                { loading: 'rolloverLog_' + name, action: 'files/rolloverLog' }
-            )
-        })
+function btnRolloverLogs() {
+    if (selectedRolloverLogs.value.length === 0) return
+    selectedRolloverLogs.value.forEach((name) => {
+        socket.emit(
+            'server.logs.rollover',
+            { application: name },
+            { loading: 'rolloverLog_' + name, action: 'files/rolloverLog' }
+        )
+    })
+    selectedRolloverLogs.value = []
+}
 
-        this.selectedRolloverLogs = []
-    }
-
-    closeDialog() {
-        this.showDialog = false
-    }
+function closeDialog() {
+    showDialog.value = false
 }
 </script>

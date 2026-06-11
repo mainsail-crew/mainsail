@@ -17,92 +17,88 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Ref } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import { FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import StatusPanelGcodefilesEntry from '@/components/panels/Status/GcodefilesEntry.vue'
-import Vue from 'vue'
-import { Debounce } from 'vue-debounce-decorator'
 
-@Component({
-    components: { Panel, StatusPanelGcodefilesEntry },
-})
-export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixin) {
-    contentTdWidth = 100
-    resizeObserver: ResizeObserver | null = null
+const { loadings } = useBase()
+const store = useStore()
 
-    @Ref() readonly filesGcodeCard!: Vue
+const filesGcodeCard = ref<HTMLElement | null>(null)
+const contentTdWidth = ref(100)
+let resizeObserver: ResizeObserver | null = null
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-    get filesLimit() {
-        return this.$store.state.gui.uiSettings.dashboardFilesLimit ?? 5
-    }
+const filesLimit = computed(() => store.state.gui.uiSettings.dashboardFilesLimit ?? 5)
+const filesFilter = computed(() => store.state.gui.uiSettings.dashboardFilesFilter ?? [])
 
-    get filesFilter() {
-        return this.$store.state.gui.uiSettings.dashboardFilesFilter ?? []
-    }
+const gcodeFiles = computed(() => {
+    let gcodes = store.getters['files/getAllGcodes'] ?? []
 
-    get gcodeFiles() {
-        let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
-
-        if (this.filesFilter.length > 0 && this.filesFilter.length < 3) {
-            gcodes = gcodes.filter((file: FileStateGcodefile) => {
-                if (this.filesFilter.includes('new') && file.last_status === null) return true
-                if (this.filesFilter.includes('completed') && file.last_status === 'completed') return true
-                if (
-                    this.filesFilter.includes('failed') &&
-                    file.last_status !== null &&
-                    file.last_status !== 'completed'
-                )
-                    return true
-
-                return false
-            })
-        }
-
-        gcodes = gcodes
-            .sort((a: FileStateGcodefile, b: FileStateGcodefile) => {
-                return b.modified.getTime() - a.modified.getTime()
-            })
-            .slice(0, this.filesLimit)
-
-        const requestItems = gcodes.filter(
-            (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
-        )
-        this.$store.dispatch(
-            'files/requestMetadata',
-            requestItems.map((file: FileStateGcodefile) => ({
-                filename: 'gcodes/' + file.filename,
-            }))
-        )
-        return gcodes
-    }
-
-    mounted() {
-        this.resizeObserver = new ResizeObserver(() => this.handleResize())
-        this.resizeObserver.observe(this.filesGcodeCard.$el)
-
-        this.calcContentTdWidth()
-    }
-
-    beforeDestroy() {
-        this.resizeObserver?.disconnect()
-    }
-
-    calcContentTdWidth() {
-        this.contentTdWidth = this.filesGcodeCard?.$el.clientWidth - 48 - 48 - 32
-    }
-
-    @Debounce(200)
-    handleResize() {
-        this.$nextTick(() => {
-            this.calcContentTdWidth()
+    if (filesFilter.value.length > 0 && filesFilter.value.length < 3) {
+        gcodes = gcodes.filter((file: FileStateGcodefile) => {
+            if (filesFilter.value.includes('new') && file.last_status === null) return true
+            if (filesFilter.value.includes('completed') && file.last_status === 'completed') return true
+            if (
+                filesFilter.value.includes('failed') &&
+                file.last_status !== null &&
+                file.last_status !== 'completed'
+            )
+                return true
+            return false
         })
     }
+
+    gcodes = gcodes
+        .sort((a: FileStateGcodefile, b: FileStateGcodefile) => {
+            return b.modified.getTime() - a.modified.getTime()
+        })
+        .slice(0, filesLimit.value)
+
+    const requestItems = gcodes.filter(
+        (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
+    )
+    store.dispatch(
+        'files/requestMetadata',
+        requestItems.map((file: FileStateGcodefile) => ({
+            filename: 'gcodes/' + file.filename,
+        }))
+    )
+    return gcodes
+})
+
+function calcContentTdWidth() {
+    if (filesGcodeCard.value) {
+        contentTdWidth.value = filesGcodeCard.value.clientWidth - 48 - 48 - 32
+    }
 }
+
+function handleResize() {
+    if (debounceTimer) clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+        nextTick(() => {
+            calcContentTdWidth()
+        })
+    }, 200)
+}
+
+onMounted(() => {
+    resizeObserver = new ResizeObserver(() => handleResize())
+    if (filesGcodeCard.value) {
+        resizeObserver.observe(filesGcodeCard.value)
+    }
+    calcContentTdWidth()
+})
+
+onBeforeUnmount(() => {
+    resizeObserver?.disconnect()
+    if (debounceTimer) clearTimeout(debounceTimer)
+})
 </script>
 
 <style scoped>

@@ -38,38 +38,10 @@
     </panel>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiInformation, mdiAlertCircle } from '@mdi/js'
-@Component({
-    components: { Panel },
-})
-export default class MinSettingsPanel extends Mixins(BaseMixin) {
-    mdiAlertCircle = mdiAlertCircle
-    mdiInformation = mdiInformation
 
-    get existsPrinterConfig() {
-        return this.$store.getters['printer/existPrinterConfig'] ?? false
-    }
-
-    get missingConfigs() {
-        return this.$store.getters['printer/checkNecessaryConfig'] ?? []
-    }
-
-    get mainsailCfgExists() {
-        return this.$store.getters['files/checkConfigFile']('mainsail.cfg') ?? false
-    }
-}
+const { klipperState, existsPrinterConfig, missingConfigs, mainsailCfgExists } = useBase()
 </script>
-
-<style scoped>
-.content span,
-.content strong {
-    padding-left: 8px;
-    padding-right: 8px;
-    white-space: pre-wrap;
-}
-</style>

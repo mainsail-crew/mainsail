@@ -4,67 +4,61 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-@Component
-export default class TemperaturePanelListItemAdditionalSensorValue extends Mixins(BaseMixin) {
-    @Prop({ type: Object, required: true }) readonly printerObject!: { [key: string]: number }
-    @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: String, required: true }) readonly keyName!: string
+const props = defineProps<{
+    printerObject: { [key: string]: number }
+    objectName: string
+    keyName: string
+}>()
 
-    get value() {
-        const value = this.printerObject[this.keyName] ?? null
-        if (isNaN(value)) return null
+const store = useStore()
 
-        return value
+const value = computed(() => {
+    const val = props.printerObject[props.keyName] ?? null
+    if (isNaN(val)) return null
+    return val
+})
+
+const formatValue = computed(() => {
+    let val = value.value?.toFixed(1)
+    if (value.value === null) val = '--'
+
+    let unit: string | null = null
+    switch (props.keyName) {
+        case 'pressure':
+            unit = 'hPa'
+            break
+        case 'humidity':
+            unit = '%'
+            break
+        case 'current_z_adjust':
+            unit = 'mm'
+            break
     }
 
-    get formatValue() {
-        let value = this.value?.toFixed(1)
-        if (this.value === null) value = '--'
-
-        // get unit
-        let unit: string | null = null
-        switch (this.keyName) {
-            case 'pressure':
-                unit = 'hPa'
-                break
-            case 'humidity':
-                unit = '%'
-                break
-            case 'current_z_adjust':
-                unit = 'mm'
-                break
+    if (props.keyName === 'current_z_adjust' && value.value) {
+        val = value.value.toFixed(3)
+        if (Math.abs(value.value) < 0.1) {
+            val = Math.round(value.value * 1000).toString()
+            unit = 'μm'
         }
-
-        // format value for current_z_adjust
-        if (this.keyName === 'current_z_adjust' && this.value) {
-            value = this.value.toFixed(3)
-
-            // convert z_adjust value if it is smaller than 0.1 to μm
-            if (Math.abs(this.value) < 0.1) {
-                value = Math.round(this.value * 1000).toString()
-                unit = 'μm'
-            }
-        }
-
-        return unit ? `${value} ${unit}` : value
     }
 
-    get guiSetting() {
-        return this.$store.getters['gui/getDatasetAdditionalSensorValue']({
-            name: this.objectName,
-            sensor: this.keyName,
-        })
-    }
+    return unit ? `${val} ${unit}` : val
+})
 
-    get isVisible() {
-        if (this.value === null) return false
+const guiSetting = computed(() =>
+    store.getters['gui/getDatasetAdditionalSensorValue']({
+        name: props.objectName,
+        sensor: props.keyName,
+    })
+)
 
-        return this.guiSetting
-    }
-}
+const isVisible = computed(() => {
+    if (value.value === null) return false
+    return guiSetting.value
+})
 </script>

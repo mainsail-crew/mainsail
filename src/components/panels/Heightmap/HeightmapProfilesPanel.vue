@@ -6,9 +6,9 @@
         :collapsible="true"
         class="mt-6 mt-md-0">
         <v-card-text v-if="Object.keys(profiles).length" class="px-0 py-3">
-            <template v-for="(profile, name, index) in profiles">
-                <v-divider v-if="index" :key="`deliver_${name}`" class="my-3" />
-                <heightmap-profiles-panel-row :key="`profile_${name}`" :profile="profile" :name="name" />
+            <template v-for="(profile, name, index) in profiles" :key="`profile_${name}`">
+                <v-divider v-if="index" class="my-3" />
+                <heightmap-profiles-panel-row :profile="profile" :name="name" />
             </template>
         </v-card-text>
         <v-card-text v-else>
@@ -16,20 +16,13 @@
         </v-card-text>
     </panel>
 </template>
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { mdiStackOverflow } from '@mdi/js'
 import HeightmapProfilesPanelRow from '@/components/panels/Heightmap/HeightmapProfilesPanelRow.vue'
 
-@Component({
-    components: { HeightmapProfilesPanelRow },
-})
-export default class HeightmapProfilesPanel extends Mixins(BaseMixin) {
-    mdiStackOverflow = mdiStackOverflow
+const store = useStore()
 
-    get profiles() {
-        return this.$store.state.printer.bed_mesh?.profiles ?? {}
-    }
-}
+const profiles = computed(() => store.state.printer.bed_mesh?.profiles ?? {})
 </script>

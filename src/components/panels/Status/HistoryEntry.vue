@@ -83,202 +83,183 @@
     </v-row>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toast-notification'
 import type { LongpressEvent } from '@/directives/longpress'
-import BaseMixin from '@/components/mixins/base'
-import { FileStateGcodefile } from '@/store/files/types'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
+import { FileStateGcodefile, FileStateFileThumbnail } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import { mdiCloseThick, mdiDelete, mdiFile, mdiPlaylistPlus, mdiPrinter } from '@mdi/js'
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { ServerHistoryStateJobWithCount } from '@/store/server/history/types'
-import { FileStateFileThumbnail } from '@/store/files/types'
 import { convertPrintStatusIcon, escapePath, formatPrintTime } from '@/plugins/helpers'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
-@Component({
-    components: { StartPrintDialog },
+const props = defineProps<{
+    job: ServerHistoryStateJobWithCount
+}>()
+
+const { printerIsPrinting, klipperReadyForGui, moonrakerComponents, apiUrl } = useBase()
+const socket = useSocket()
+const store = useStore()
+const { t } = useI18n()
+const toast = useToast()
+
+const showContextMenu = ref(false)
+const contextMenuX = ref(0)
+const contextMenuY = ref(0)
+
+const addBatchToQueueDialogBool = ref(false)
+const startPrintDialogBool = ref(false)
+
+const file = computed<FileStateGcodefile | undefined>(
+    () => store.getters['files/getFile']('gcodes/' + props.job.filename) ?? undefined
+)
+
+const currentPath = computed(() => {
+    const lastSlash = props.job.filename.lastIndexOf('/')
+    return lastSlash > 0 ? '/' + props.job.filename.slice(0, lastSlash) : ''
 })
-export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiDelete = mdiDelete
-    mdiFile = mdiFile
-    mdiPlaylistPlus = mdiPlaylistPlus
-    mdiPrinter = mdiPrinter
 
-    @Prop({ type: Object, required: true }) job!: ServerHistoryStateJobWithCount
+const smallThumbnail = computed(() => {
+    if ((props.job.metadata?.thumbnails?.length ?? 0) < 1) return false
 
-    showContextMenu = false
-    contextMenuX = 0
-    contextMenuY = 0
+    const thumbnail = props.job.metadata?.thumbnails?.find(
+        (thumb) =>
+            thumb.width >= thumbnailSmallMin &&
+            thumb.width <= thumbnailSmallMax &&
+            thumb.height >= thumbnailSmallMin &&
+            thumb.height <= thumbnailSmallMax
+    )
 
-    addBatchToQueueDialogBool = false
-    startPrintDialogBool = false
+    return thumbnail ? createThumbnailUrl(thumbnail) : false
+})
 
-    get file(): FileStateGcodefile | undefined {
-        return this.$store.getters['files/getFile']('gcodes/' + this.job.filename) ?? undefined
+const bigThumbnail = computed(() => {
+    if ((props.job.metadata?.thumbnails?.length ?? 0) < 1) return false
+
+    const thumbnail = props.job.metadata?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
+
+    return thumbnail ? createThumbnailUrl(thumbnail) : false
+})
+
+const statusIcon = computed(() => convertPrintStatusIcon(props.job.status))
+
+const statusColor = computed(() => convertPrintStatusIcon(props.job.status))
+
+const statusName = computed(() => {
+    const key = `History.StatusValues.${props.job.status}`
+    if (!t(key, 'en')) return props.job.status.replace(/_/g, ' ')
+    return t(key)
+})
+
+const description = computed(() => {
+    const outputArray = []
+
+    const filamentArray = []
+    let filament = '--'
+    if (filamentLength.value) filamentArray.push(filamentLength.value)
+    if (filamentWeight.value) filamentArray.push(filamentWeight.value)
+    if (filamentArray.length) filament = filamentArray.join(' / ')
+    outputArray.push(`Filament: ${filament}`)
+
+    if (estimatedTime.value !== '--')
+        outputArray.push(`Print Time: ${estimatedTime.value}`)
+    else if (totalTime.value) outputArray.push(`Total Time: ${totalTime.value}`)
+
+    return outputArray.join(', ')
+})
+
+const filamentLength = computed(() => {
+    const length = props.job.filament_used
+    if (length === 0) return null
+    if (length >= 1000) return (length / 1000).toFixed(1) + ' m'
+    return length.toFixed(0) + ' mm'
+})
+
+const filamentWeight = computed(() => {
+    const metadataFilamentLength = props.job.metadata?.filament_total ?? 0
+    const metadataFilamentWeight = props.job.metadata?.filament_weight_total ?? 0
+    if (metadataFilamentLength === 0 || metadataFilamentWeight === 0) return null
+
+    const specificWeight = metadataFilamentWeight / metadataFilamentLength
+    const weight = props.job.filament_used * specificWeight
+    if (weight === 0) return null
+    if (weight >= 1000) return (weight / 1000).toFixed(1) + ' kg'
+    return weight.toFixed(0) + ' g'
+})
+
+const estimatedTime = computed(() => {
+    const totalSeconds = props.job.print_duration ?? 0
+    if (totalSeconds == 0) return '--'
+    return formatPrintTime(totalSeconds)
+})
+
+const totalTime = computed(() => {
+    const totalSeconds = props.job.total_duration ?? 0
+    if (totalSeconds === 0) return null
+    return formatPrintTime(totalSeconds)
+})
+
+const bigThumbnailBackground = computed(() =>
+    store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+)
+
+const bigThumbnailTooltipColor = computed(() => {
+    if (defaultBigThumbnailBackground.toLowerCase() === bigThumbnailBackground.value.toLowerCase()) {
+        return undefined
     }
+    return bigThumbnailBackground.value
+})
 
-    get currentPath(): string {
-        const lastSlash = this.job.filename.lastIndexOf('/')
-        return lastSlash > 0 ? '/' + this.job.filename.slice(0, lastSlash) : ''
-    }
+const isJobQueueAvailable = computed(() => moonrakerComponents.value.includes('job_queue'))
 
-    get smallThumbnail() {
-        if ((this.job.metadata?.thumbnails?.length ?? 0) < 1) return false
-
-        const thumbnail = this.job.metadata?.thumbnails?.find(
-            (thumb) =>
-                thumb.width >= thumbnailSmallMin &&
-                thumb.width <= thumbnailSmallMax &&
-                thumb.height >= thumbnailSmallMin &&
-                thumb.height <= thumbnailSmallMax
-        )
-
-        return thumbnail ? this.createThumbnailUrl(thumbnail) : false
-    }
-
-    get bigThumbnail() {
-        if ((this.job.metadata?.thumbnails?.length ?? 0) < 1) return false
-
-        const thumbnail = this.job.metadata?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
-
-        return thumbnail ? this.createThumbnailUrl(thumbnail) : false
-    }
-
-    get statusIcon() {
-        return convertPrintStatusIcon(this.job.status)
-    }
-
-    get statusColor() {
-        return convertPrintStatusIcon(this.job.status)
-    }
-
-    get statusName() {
-        // check if translation exists
-        if (!this.$t(`History.StatusValues.${this.job.status}`, 'en')) return this.job.status.replace(/_/g, ' ')
-
-        return this.$t(`History.StatusValues.${this.job.status}`)
-    }
-
-    get description() {
-        const outputArray = []
-
-        const filamentArray = []
-        let filament = '--'
-        if (this.filamentLength) filamentArray.push(this.filamentLength)
-        if (this.filamentWeight) filamentArray.push(this.filamentWeight)
-        if (filamentArray.length) filament = filamentArray.join(' / ')
-        outputArray.push(`${this.$t('Panels.StatusPanel.Filament')}: ${filament}`)
-
-        if (this.estimatedTime !== '--')
-            outputArray.push(`${this.$t('Panels.StatusPanel.PrintTime')}: ${this.estimatedTime}`)
-        else if (this.totalTime) outputArray.push(`${this.$t('Panels.StatusPanel.TotalTime')}: ${this.totalTime}`)
-
-        return outputArray.join(', ')
-    }
-
-    get filamentLength() {
-        const length = this.job.filament_used
-        if (length === 0) return null
-
-        if (length >= 1000) return (length / 1000).toFixed(1) + ' m'
-
-        return length.toFixed(0) + ' mm'
-    }
-
-    get filamentWeight() {
-        const metadataFilamentLength = this.job.metadata?.filament_total ?? 0
-        const metadataFilamentWeight = this.job.metadata?.filament_weight_total ?? 0
-        if (metadataFilamentLength === 0 || metadataFilamentWeight === 0) return null
-
-        const specificWeight = metadataFilamentWeight / metadataFilamentLength
-
-        const weight = this.job.filament_used * specificWeight
-        if (weight === 0) return null
-
-        if (weight >= 1000) return (length / 1000).toFixed(1) + ' kg'
-
-        return weight.toFixed(0) + ' g'
-    }
-
-    get estimatedTime() {
-        const totalSeconds = this.job.print_duration ?? 0
-        if (totalSeconds == 0) return '--'
-
-        return formatPrintTime(totalSeconds)
-    }
-
-    get totalTime() {
-        const totalSeconds: number = this.job.total_duration ?? 0
-        if (totalSeconds === 0) return null
-
-        return formatPrintTime(totalSeconds)
-    }
-
-    get bigThumbnailBackground() {
-        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
-    }
-
-    get bigThumbnailTooltipColor() {
-        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
-            return undefined
-        }
-
-        return this.bigThumbnailBackground
-    }
-
-    get isJobQueueAvailable() {
-        return this.moonrakerComponents.includes('job_queue')
-    }
-
-    openContextMenu(e: MouseEvent | LongpressEvent) {
-        e?.preventDefault()
-        EventBus.$emit(CLOSE_CONTEXT_MENU)
-
-        this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
-        this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
-
-        this.showContextMenu = true
-    }
-
-    closeContextMenu() {
-        this.showContextMenu = false
-    }
-
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.job.filename])
-        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.job.filename }).toString())
-    }
-
-    deleteJob() {
-        this.$socket.emit(
-            'server.history.delete_job',
-            { uid: this.job.job_id },
-            { action: 'server/history/getDeletedJobs' }
-        )
-    }
-
-    createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
-        let relative_url = ''
-        if (this.job.filename.lastIndexOf('/') !== -1) {
-            relative_url = this.job.filename.substring(0, this.job.filename.lastIndexOf('/') + 1)
-        }
-
-        return `${this.apiUrl}/server/files/gcodes/${escapePath(relative_url + thumbnail.relative_path)}?timestamp=${
-            this.job.metadata.modified
-        }`
-    }
-
-    mounted() {
-        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
-
-    beforeDestroy() {
-        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
+function openContextMenu(e: MouseEvent | LongpressEvent) {
+    e?.preventDefault()
+    EventBus.$emit(CLOSE_CONTEXT_MENU)
+    contextMenuX.value = e?.clientX || e?.pageX || window.screenX / 2
+    contextMenuY.value = e?.clientY || e?.pageY || window.screenY / 2
+    showContextMenu.value = true
 }
+
+function closeContextMenu() {
+    showContextMenu.value = false
+}
+
+function addToQueue() {
+    store.dispatch('server/jobQueue/addToQueue', [props.job.filename])
+    toast.info(t('History.AddToQueueSuccessful', { filename: props.job.filename }).toString())
+}
+
+function deleteJob() {
+    socket.emit(
+        'server.history.delete_job',
+        { uid: props.job.job_id },
+        { action: 'server/history/getDeletedJobs' }
+    )
+}
+
+function createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
+    let relative_url = ''
+    if (props.job.filename.lastIndexOf('/') !== -1) {
+        relative_url = props.job.filename.substring(0, props.job.filename.lastIndexOf('/') + 1)
+    }
+    return `${apiUrl.value}/server/files/gcodes/${escapePath(relative_url + thumbnail.relative_path)}?timestamp=${
+        props.job.metadata.modified
+    }`
+}
+
+onMounted(() => {
+    EventBus.$on(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
+
+onBeforeUnmount(() => {
+    EventBus.$off(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
 </script>
 
 <style scoped>

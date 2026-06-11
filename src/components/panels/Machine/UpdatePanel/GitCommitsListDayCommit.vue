@@ -29,74 +29,63 @@
     </li>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useBase } from '@/composables/useBase'
+import { useI18n } from 'vue-i18n'
 import { mdiDotsHorizontal } from '@mdi/js'
 import {
     ServerUpdateManagerStateGitRepo,
     ServerUpdateManagerStateGitRepoCommit,
 } from '@/store/server/updateManager/types'
-import Panel from '@/components/ui/Panel.vue'
 
-@Component({
-    components: { Panel },
+const props = defineProps<{
+    commit: ServerUpdateManagerStateGitRepoCommit
+    repo: ServerUpdateManagerStateGitRepo
+}>()
+
+const { browserLocale } = useBase()
+const { t } = useI18n()
+
+const mdiDotsHorizontal = mdiDotsHorizontal
+
+const showDetails = ref(false)
+
+const title = computed(() => props.commit.subject)
+
+const message = computed(() => props.commit.message)
+
+const author = computed(() => props.commit.author)
+
+const commitFormatDate = computed(() => {
+    const commitDay = new Date(props.commit.date * 1000)
+    commitDay.setHours(0, 0, 0, 0)
+    const todayDay = new Date()
+    todayDay.setHours(0, 0, 0, 0)
+    const diff = Math.floor((todayDay.getTime() - commitDay.getTime()) / (1000 * 60 * 60 * 24))
+
+    if (diff === 0) {
+        const diffHours = Math.floor((new Date().getTime() - props.commit.date * 1000) / (1000 * 60 * 60))
+        return t('Machine.UpdatePanel.CommittedHoursAgo', { hours: diffHours })
+    } else if (diff === 1) return t('Machine.UpdatePanel.CommittedYesterday')
+    else if (diff < 29) return t('Machine.UpdatePanel.CommittedDaysAgo', { days: diff })
+    else
+        return t('Machine.UpdatePanel.CommittedOnDate', {
+            date: commitDay.toLocaleDateString(browserLocale.value, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+            }),
+        })
 })
-export default class GitCommitsListDayCommit extends Mixins(BaseMixin) {
-    mdiDotsHorizontal = mdiDotsHorizontal
 
-    @Prop({ required: true }) readonly commit!: ServerUpdateManagerStateGitRepoCommit
-    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
+const repo_name = computed(() => props.repo.repo_name ?? props.repo.name ?? '')
 
-    showDetails = false
+const commitHref = computed(() =>
+    `https://github.com/${props.repo.owner}/${repo_name.value}/commit/${props.commit.sha}`
+)
 
-    get title() {
-        return this.commit.subject
-    }
-
-    get message() {
-        return this.commit.message
-    }
-
-    get author() {
-        return this.commit.author
-    }
-
-    get commitFormatDate() {
-        const commitDay = new Date(this.commit.date * 1000)
-        commitDay.setHours(0, 0, 0, 0)
-        const todayDay = new Date()
-        todayDay.setHours(0, 0, 0, 0)
-        const diff = Math.floor((todayDay.getTime() - commitDay.getTime()) / (1000 * 60 * 60 * 24))
-
-        if (diff === 0) {
-            const diffHours = Math.floor((new Date().getTime() - this.commit.date * 1000) / (1000 * 60 * 60))
-
-            return this.$t('Machine.UpdatePanel.CommittedHoursAgo', { hours: diffHours })
-        } else if (diff === 1) return this.$t('Machine.UpdatePanel.CommittedYesterday')
-        else if (diff < 29) return this.$t('Machine.UpdatePanel.CommittedDaysAgo', { days: diff })
-        else
-            return this.$t('Machine.UpdatePanel.CommittedOnDate', {
-                date: commitDay.toLocaleDateString(this.browserLocale, {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                }),
-            })
-    }
-
-    get repo_name() {
-        return this.repo.repo_name ?? this.repo.name ?? ''
-    }
-
-    get commitHref() {
-        return `https://github.com/${this.repo.owner}/${this.repo_name}/commit/${this.commit.sha}`
-    }
-
-    get commitShortSha() {
-        return this.commit.sha.substring(0, 6)
-    }
-}
+const commitShortSha = computed(() => props.commit.sha.substring(0, 6))
 </script>
 
 <style scoped>

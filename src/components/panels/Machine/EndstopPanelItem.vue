@@ -10,32 +10,28 @@
     </v-row>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import Panel from '@/components/ui/Panel.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { convertName } from '@/plugins/helpers'
 import type { EndstopItem } from '@/store/printer/types'
-@Component({
-    components: { Panel },
+
+const props = defineProps<{
+    item: EndstopItem
+}>()
+
+const { t } = useI18n()
+
+const name = computed(() => {
+    if (props.item.type === 'endstop') return props.item.name.toUpperCase()
+    return convertName(props.item.name)
 })
-export default class EndstopPanelItem extends Mixins(BaseMixin) {
-    @Prop({ type: Object }) declare readonly item: EndstopItem
 
-    get name() {
-        if (this.item.type === 'endstop') return this.item.name.toUpperCase()
+const chipColor = computed(() => props.item.value === 'open' ? 'green' : 'red')
 
-        return convertName(this.item.name)
-    }
-
-    get chipColor() {
-        return this.item.value === 'open' ? 'green' : 'red'
-    }
-
-    get value() {
-        return this.item.value === 'open'
-            ? this.$t('Machine.EndstopPanel.open')
-            : this.$t('Machine.EndstopPanel.TRIGGERED')
-    }
-}
+const value = computed(() =>
+    props.item.value === 'open'
+        ? t('Machine.EndstopPanel.open')
+        : t('Machine.EndstopPanel.TRIGGERED')
+)
 </script>

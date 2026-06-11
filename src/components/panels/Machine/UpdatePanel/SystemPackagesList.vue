@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="showDialog" persistent max-width="800">
+    <v-dialog :model-value="showDialog" @update:model-value="emitValue" persistent max-width="800">
         <panel
             :title="$t('Machine.UpdatePanel.UpgradeableSystemPackages')"
             :icon="mdiPackageVariantClosed"
@@ -26,25 +26,31 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { mdiCloseThick, mdiPackageVariantClosed } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 
-@Component({
-    components: { Panel },
-})
-export default class SystemPackagesList extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiPackageVariantClosed = mdiPackageVariantClosed
+const props = defineProps<{
+    'model-value': boolean
+    packagesList: string[]
+}>()
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ required: true }) readonly packagesList!: string[]
+const emit = defineEmits<{
+    'update:model-value': [value: boolean]
+}>()
 
-    closeDialog() {
-        this.showDialog = false
-    }
+const mdiCloseThick = mdiCloseThick
+const mdiPackageVariantClosed = mdiPackageVariantClosed
+
+const showDialog = computed(() => props['model-value'])
+
+function emitValue(val: boolean) {
+    emit('update:model-value', val)
+}
+
+function closeDialog() {
+    emit('update:model-value', false)
 }
 </script>
 

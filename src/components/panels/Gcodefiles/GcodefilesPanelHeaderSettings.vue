@@ -12,7 +12,7 @@
                     <v-col class="col-auto pl-0">
                         <v-icon
                             :color="showHiddenFiles ? 'primary' : 'grey lighten-1'"
-                            @click.stop="showHiddenFiles = !showHiddenFiles">
+                            @click.stop="toggleHiddenFiles">
                             {{ showHiddenFiles ? mdiCheckboxMarked : mdiCheckboxBlankOutline }}
                         </v-icon>
                     </v-col>
@@ -24,7 +24,7 @@
                     <v-col class="col-auto pl-0">
                         <v-icon
                             :color="showCompletedFiles ? 'primary' : 'grey lighten-1'"
-                            @click.stop="showCompletedFiles = !showCompletedFiles">
+                            @click.stop="toggleCompletedFiles">
                             {{ showCompletedFiles ? mdiCheckboxMarked : mdiCheckboxBlankOutline }}
                         </v-icon>
                     </v-col>
@@ -34,16 +34,17 @@
     </v-menu>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
+<script setup lang="ts">
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
 import { mdiCheckboxBlankOutline, mdiCheckboxMarked, mdiCog } from '@mdi/js'
 
-@Component
-export default class GcodefilesPanelHeaderSettings extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
-    mdiCheckboxMarked = mdiCheckboxMarked
-    mdiCog = mdiCog
+const { showHiddenFiles, setShowHiddenFiles, showCompletedFiles, setShowCompletedFiles } = useGcodeFiles()
+
+function toggleHiddenFiles() {
+    setShowHiddenFiles(!showHiddenFiles.value)
+}
+
+function toggleCompletedFiles() {
+    setShowCompletedFiles(!showCompletedFiles.value)
 }
 </script>

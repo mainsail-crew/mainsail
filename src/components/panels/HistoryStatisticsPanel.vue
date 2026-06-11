@@ -64,9 +64,14 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
+import { useHistory } from '@/composables/useHistory'
+import { useHistoryStats } from '@/composables/useHistoryStats'
 import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
@@ -78,233 +83,173 @@ import {
 } from '@/store/server/history/types'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
 import { formatPrintTime } from '@/plugins/helpers'
-import HistoryMixin from '@/components/mixins/history'
 import { TranslateResult } from 'vue-i18n'
 
-@Component({
-    components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatusChart },
+const { loadings } = useBase()
+const history = useHistory()
+const { printStatusArray } = useHistoryStats('jobs')
+const { t } = useI18n()
+const store = useStore()
+
+const toggleValue = ref<HistoryStatsValueNames>('jobs')
+
+const toggleValueOptions = computed<{ text: TranslateResult; value: HistoryStatsValueNames }[]>(() => [
+    { text: t('History.Jobs'), value: 'jobs' },
+    { text: t('History.Filament'), value: 'filament' },
+    { text: t('History.Time'), value: 'time' },
+])
+
+const existsSelectedJobs = computed(() => history.selectedJobs.value.length > 0)
+
+const totalPrintTime = computed(() =>
+    store.state.server.history.job_totals?.total_print_time ?? 0
+)
+
+const selectedPrintTime = computed(() => {
+    let printtime = 0
+    history.selectedJobs.value.forEach((job: ServerHistoryStateJob) => {
+        printtime += job.print_duration
+    })
+    return printtime
 })
-export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMixin) {
-    mdiChartAreaspline = mdiChartAreaspline
-    mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
-    formatPrintTime = formatPrintTime
 
-    toggleValue = 'jobs'
+const longestPrintTime = computed(() =>
+    store.state.server.history.job_totals?.longest_print ?? 0
+)
 
-    get toggleValueOptions(): { text: TranslateResult; value: HistoryStatsValueNames }[] {
-        return [
-            { text: this.$t('History.Jobs'), value: 'jobs' },
-            { text: this.$t('History.Filament'), value: 'filament' },
-            { text: this.$t('History.Time'), value: 'time' },
-        ]
+const selectedLongestPrintTime = computed(() => {
+    let printtime = 0
+    history.selectedJobs.value.forEach((job: ServerHistoryStateJob) => {
+        if (job.print_duration > printtime) printtime = job.print_duration
+    })
+    return printtime
+})
+
+const avgPrintTime = computed(() => {
+    if (totalJobsCount.value > 0 && totalPrintTime.value > 0)
+        return Math.round(totalPrintTime.value / totalJobsCount.value)
+    return 0
+})
+
+const selectedAvgPrintTime = computed(() => {
+    if (history.selectedJobs.value.length > 0 && selectedPrintTime.value > 0)
+        return Math.round(selectedPrintTime.value / history.selectedJobs.value.length)
+    return 0
+})
+
+const totalFilamentUsed = computed(() =>
+    store.state.server.history.job_totals?.total_filament_used ?? 0
+)
+
+const totalFilamentUsedFormat = computed(() => {
+    const value = Math.round(totalFilamentUsed.value / 100) / 10
+    return `${value} m`
+})
+
+const selectedFilamentUsed = computed(() => {
+    let filamentUsed = 0
+    history.selectedJobs.value.forEach((job: ServerHistoryStateJob) => {
+        filamentUsed += job.filament_used
+    })
+    return filamentUsed
+})
+
+const selectedFilamentUsedFormat = computed(() => {
+    const value = Math.round(selectedFilamentUsed.value / 100) / 10
+    return `${value} m`
+})
+
+const totalJobsCount = computed(() =>
+    store.state.server.history.job_totals?.total_jobs ?? 0
+)
+
+const toggleChart = computed({
+    get: () => store.state.gui.view.history.toggleChartCol3,
+    set: (newVal: string) => {
+        store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol3', value: newVal })
     }
+})
 
-    get existsSelectedJobs() {
-        return this.selectedJobs.length > 0
+const togglePrintStatus = computed({
+    get: () => store.state.gui.view.history.toggleChartCol2,
+    set: (newVal: string) => {
+        store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol2', value: newVal })
     }
+})
 
-    get totalPrintTime() {
-        return this.$store.state.server.history.job_totals?.total_print_time ?? 0
-    }
+const allLoaded = computed(() =>
+    store.state.server.history.all_loaded ?? false
+)
 
-    get selectedPrintTime() {
-        let printtime = 0
+const selectedTotals = computed(() => {
+    const output: { title: string; value: string }[] = [
+        { title: t('History.SelectedPrinttime').toString(), value: formatPrintTime(selectedPrintTime.value, false) },
+        { title: t('History.LongestPrinttime').toString(), value: formatPrintTime(selectedLongestPrintTime.value, false) },
+        { title: t('History.AvgPrinttime').toString(), value: formatPrintTime(selectedAvgPrintTime.value, false) },
+        { title: t('History.SelectedFilamentUsed').toString(), value: selectedFilamentUsedFormat.value },
+        { title: t('History.SelectedJobs').toString(), value: history.selectedJobs.value.length.toString() },
+    ]
+    output.push(...auxiliarySelectedTotals.value)
+    return output
+})
 
-        this.selectedJobs.forEach((job: ServerHistoryStateJob) => {
-            printtime += job.print_duration
-        })
-
-        return printtime
-    }
-
-    get longestPrintTime() {
-        return this.$store.state.server.history.job_totals?.longest_print ?? 0
-    }
-
-    get selectedLongestPrintTime() {
-        let printtime = 0
-
-        this.selectedJobs.forEach((job: ServerHistoryStateJob) => {
-            if (job.print_duration > printtime) printtime = job.print_duration
-        })
-
-        return printtime
-    }
-
-    get avgPrintTime() {
-        if (this.totalJobsCount > 0 && this.totalPrintTime > 0)
-            return Math.round(this.totalPrintTime / this.totalJobsCount)
-
-        return 0
-    }
-
-    get selectedAvgPrintTime() {
-        if (this.selectedJobs.length > 0 && this.selectedPrintTime > 0)
-            return Math.round(this.selectedPrintTime / this.selectedJobs.length)
-
-        return 0
-    }
-
-    get totalFilamentUsed() {
-        return this.$store.state.server.history.job_totals?.total_filament_used ?? 0
-    }
-
-    get totalFilamentUsedFormat() {
-        const value = Math.round(this.totalFilamentUsed / 100) / 10
-
-        return `${value} m`
-    }
-
-    get selectedFilamentUsed() {
-        let filamentUsed = 0
-
-        this.selectedJobs.forEach((job: ServerHistoryStateJob) => {
-            filamentUsed += job.filament_used
-        })
-
-        return filamentUsed
-    }
-
-    get selectedFilamentUsedFormat() {
-        const value = Math.round(this.selectedFilamentUsed / 100) / 10
-
-        return `${value} m`
-    }
-
-    get totalJobsCount() {
-        return this.$store.state.server.history.job_totals?.total_jobs ?? 0
-    }
-
-    get toggleChart() {
-        return this.$store.state.gui.view.history.toggleChartCol3
-    }
-
-    set toggleChart(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol3', value: newVal })
-    }
-
-    get togglePrintStatus() {
-        return this.$store.state.gui.view.history.toggleChartCol2
-    }
-
-    set togglePrintStatus(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol2', value: newVal })
-    }
-
-    get allLoaded() {
-        return this.$store.state.server.history.all_loaded ?? false
-    }
-
-    get selectedTotals() {
-        const output: { title: string; value: string }[] = [
-            {
-                title: this.$t('History.SelectedPrinttime') as string,
-                value: this.formatPrintTime(this.selectedPrintTime, false),
-            },
-            {
-                title: this.$t('History.LongestPrinttime') as string,
-                value: this.formatPrintTime(this.selectedLongestPrintTime, false),
-            },
-            {
-                title: this.$t('History.AvgPrinttime') as string,
-                value: this.formatPrintTime(this.selectedAvgPrintTime, false),
-            },
-            {
-                title: this.$t('History.SelectedFilamentUsed') as string,
-                value: this.selectedFilamentUsedFormat,
-            },
-            {
-                title: this.$t('History.SelectedJobs') as string,
-                value: this.selectedJobs.length.toString(),
-            },
-        ]
-
-        output.push(...this.auxiliarySelectedTotals)
-
-        return output
-    }
-
-    get auxiliarySelectedTotals() {
-        const output: { title: string; value: string }[] = []
-        this.moonrakerHistoryFields.forEach((historyField) => {
-            const value = this.selectedJobs.reduce((acc: number, job: ServerHistoryStateJob) => {
-                const historyFieldName = historyField.name.replace('history_field_', '')
-                const auxiliary_data = job.auxiliary_data?.find(
-                    (auxiliary) => auxiliary.provider === historyField.provider && auxiliary.name === historyFieldName
-                )
-
-                if (!auxiliary_data || typeof auxiliary_data.value !== 'number') return acc
-
-                return acc + auxiliary_data.value
-            }, 0)
-
-            output.push({
-                title: historyField.desc,
-                value: `${Math.round(value * 1000) / 1000} ${historyField.unit}`,
-            })
-        })
-
-        return output
-    }
-
-    get genericTotals() {
-        const output: { title: string; value: string }[] = [
-            {
-                title: this.$t('History.TotalPrinttime') as string,
-                value: this.formatPrintTime(this.totalPrintTime, false),
-            },
-            {
-                title: this.$t('History.LongestPrinttime') as string,
-                value: this.formatPrintTime(this.longestPrintTime, false),
-            },
-            {
-                title: this.$t('History.AvgPrinttime') as string,
-                value: this.formatPrintTime(this.avgPrintTime, false),
-            },
-            {
-                title: this.$t('History.TotalFilamentUsed') as string,
-                value: this.totalFilamentUsedFormat,
-            },
-            {
-                title: this.$t('History.TotalJobs') as string,
-                value: this.totalJobsCount.toString(),
-            },
-        ]
-
-        // Add auxiliary totals
-        output.push(...this.auxiliaryTotals)
-
-        return output
-    }
-
-    get auxiliaryTotals() {
-        const auxiliaries = this.$store.state.server.history.auxiliary_totals ?? []
-        const output: { title: string; value: string }[] = []
-
-        auxiliaries.forEach((auxiliary: ServerHistoryStateJobAuxiliaryTotal) => {
-            const historyFieldName = `history_field_${auxiliary.field}`
-            const historyField = this.moonrakerHistoryFields.find(
-                (historyField) => historyField.provider === auxiliary.provider && historyField.name === historyFieldName
+const auxiliarySelectedTotals = computed(() => {
+    const output: { title: string; value: string }[] = []
+    history.moonrakerHistoryFields.value.forEach((historyField) => {
+        const value = history.selectedJobs.value.reduce((acc: number, job: ServerHistoryStateJob) => {
+            const historyFieldName = historyField.name.replace('history_field_', '')
+            const auxiliary_data = job.auxiliary_data?.find(
+                (auxiliary) => auxiliary.provider === historyField.provider && auxiliary.name === historyFieldName
             )
-            const value = Math.round((auxiliary.total ?? 0) * 1000) / 1000
-
-            output.push({
-                title: historyField?.desc ?? auxiliary.field,
-                value: `${value} ${historyField?.unit}`,
-            })
+            if (!auxiliary_data || typeof auxiliary_data.value !== 'number') return acc
+            return acc + auxiliary_data.value
+        }, 0)
+        output.push({
+            title: historyField.desc,
+            value: `${Math.round(value * 1000) / 1000} ${historyField.unit}`,
         })
+    })
+    return output
+})
 
-        return output
-    }
+const genericTotals = computed(() => {
+    const output: { title: string; value: string }[] = [
+        { title: t('History.TotalPrinttime').toString(), value: formatPrintTime(totalPrintTime.value, false) },
+        { title: t('History.LongestPrinttime').toString(), value: formatPrintTime(longestPrintTime.value, false) },
+        { title: t('History.AvgPrinttime').toString(), value: formatPrintTime(avgPrintTime.value, false) },
+        { title: t('History.TotalFilamentUsed').toString(), value: totalFilamentUsedFormat.value },
+        { title: t('History.TotalJobs').toString(), value: totalJobsCount.value.toString() },
+    ]
+    output.push(...auxiliaryTotals.value)
+    return output
+})
 
-    get totals() {
-        return this.existsSelectedJobs ? this.selectedTotals : this.genericTotals
-    }
+const auxiliaryTotals = computed(() => {
+    const auxiliaries = store.state.server.history.auxiliary_totals ?? []
+    const output: { title: string; value: string }[] = []
 
-    refreshHistory() {
-        this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+    auxiliaries.forEach((auxiliary: ServerHistoryStateJobAuxiliaryTotal) => {
+        const historyFieldName = `history_field_${auxiliary.field}`
+        const historyField = history.moonrakerHistoryFields.value.find(
+            (hf) => hf.provider === auxiliary.provider && hf.name === historyFieldName
+        )
+        const value = Math.round((auxiliary.total ?? 0) * 1000) / 1000
 
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
-    }
+        output.push({
+            title: historyField?.desc ?? auxiliary.field,
+            value: `${value} ${historyField?.unit}`,
+        })
+    })
+
+    return output
+})
+
+const totals = computed(() =>
+    existsSelectedJobs.value ? selectedTotals.value : genericTotals.value
+)
+
+function refreshHistory() {
+    store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+    useSocket().emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
 }
 </script>

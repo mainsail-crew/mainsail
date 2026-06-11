@@ -120,12 +120,16 @@
             :current-path="currentPath" />
     </tr>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toast-notification'
 import type { LongpressEvent } from '@/directives/longpress'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
-import BaseMixin from '@/components/mixins/base'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import { FileStateFileThumbnail, FileStateGcodefile } from '@/store/files/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
@@ -154,205 +158,172 @@ import { HistoryListPanelCol } from '@/store/server/history/types'
 import HistoryListPanelNoteDialog from '@/components/dialogs/HistoryListPanelNoteDialog.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
 
-@Component({
-    components: {
-        AddBatchToQueueDialog,
-        HistoryListPanelNoteDialog,
-        HistoryListPanelDetailsDialog,
-        Panel,
-        StartPrintDialog,
-    },
+const emit = defineEmits<{
+    select: [value: boolean]
+}>()
+
+const props = defineProps<{
+    item: ServerHistoryStateJob
+    tableFields: HistoryListPanelCol[]
+    isSelected: boolean
+}>()
+
+const { printerIsPrinting, klipperReadyForGui, moonrakerComponents, apiUrl, formatDateTime } = useBase()
+const socket = useSocket()
+const store = useStore()
+const { t } = useI18n()
+const toast = useToast()
+
+const detailsDialogBool = ref(false)
+const contextMenuBool = ref(false)
+const contextMenuX = ref(0)
+const contextMenuY = ref(0)
+const noteDialogBool = ref(false)
+const noteDialogType = ref<'create' | 'edit'>('create')
+const addBatchToQueueDialogBool = ref(false)
+const startPrintDialogBool = ref(false)
+
+const file = computed<FileStateGcodefile | undefined>(
+    () => store.getters['files/getFile']('gcodes/' + props.item.filename) ?? undefined
+)
+
+const currentPath = computed(() => {
+    const lastSlash = props.item.filename.lastIndexOf('/')
+    return lastSlash > 0 ? '/' + props.item.filename.slice(0, lastSlash) : ''
 })
-export default class HistoryListPanel extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiDelete = mdiDelete
-    mdiFile = mdiFile
-    mdiFileCancel = mdiFileCancel
-    mdiNoteEditOutline = mdiNoteEditOutline
-    mdiNotePlusOutline = mdiNotePlusOutline
-    mdiNoteTextOutline = mdiNoteTextOutline
-    mdiPrinter = mdiPrinter
-    mdiTextBoxSearch = mdiTextBoxSearch
-    mdiPlaylistPlus = mdiPlaylistPlus
 
-    detailsDialogBool = false
+const smallThumbnail = computed(() => {
+    if ((props.item.metadata?.thumbnails?.length ?? 0) < 1) return false
 
-    contextMenuBool = false
-    contextMenuX = 0
-    contextMenuY = 0
+    const thumbnail = props.item.metadata?.thumbnails?.find(
+        (thumb) =>
+            thumb.width >= thumbnailSmallMin &&
+            thumb.width <= thumbnailSmallMax &&
+            thumb.height >= thumbnailSmallMin &&
+            thumb.height <= thumbnailSmallMax
+    )
 
-    noteDialogBool = false
-    noteDialogType: 'create' | 'edit' = 'create'
+    return thumbnail ? createThumbnailUrl(thumbnail) : false
+})
 
-    addBatchToQueueDialogBool = false
-    startPrintDialogBool = false
+const bigThumbnail = computed(() => {
+    if ((props.item.metadata?.thumbnails?.length ?? 0) < 1) return false
 
-    @Prop({ type: Object, required: true }) readonly item!: ServerHistoryStateJob
-    @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
-    @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
+    const thumbnail = props.item.metadata?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
 
-    get file(): FileStateGcodefile | undefined {
-        return this.$store.getters['files/getFile']('gcodes/' + this.item.filename) ?? undefined
+    return thumbnail ? createThumbnailUrl(thumbnail) : false
+})
+
+const statusIcon = computed(() => convertPrintStatusIcon(props.item.status))
+const statusColor = computed(() => convertPrintStatusIconColor(props.item.status))
+const statusName = computed(() => {
+    const key = `History.StatusValues.${props.item.status}`
+    if (!t(key, 'en')) return props.item.status.replace(/_/g, ' ')
+    return t(key)
+})
+
+const cssClasses = computed(() => {
+    const output = ['file-list-cursor', 'user-select-none']
+    if (!props.item.exists) output.push('text--disabled')
+    return output
+})
+
+const isJobQueueAvailable = computed(() => moonrakerComponents.value.includes('job_queue'))
+
+function select(newVal: boolean) {
+    emit('select', newVal)
+}
+
+function showContextMenu(e: MouseEvent | LongpressEvent) {
+    e?.preventDefault()
+    EventBus.$emit(CLOSE_CONTEXT_MENU)
+    contextMenuX.value = e?.clientX || e?.pageX || window.screenX / 2
+    contextMenuY.value = e?.clientY || e?.pageY || window.screenY / 2
+    contextMenuBool.value = true
+}
+
+function closeContextMenu() {
+    contextMenuBool.value = false
+}
+
+function createNote() {
+    noteDialogType.value = 'create'
+    noteDialogBool.value = true
+}
+
+function editNote() {
+    noteDialogType.value = 'edit'
+    noteDialogBool.value = true
+}
+
+function addToQueue() {
+    store.dispatch('server/jobQueue/addToQueue', [props.item.filename])
+    toast.info(t('History.AddToQueueSuccessful', { filename: props.item.filename }).toString())
+}
+
+function deleteJob() {
+    socket.emit(
+        'server.history.delete_job',
+        { uid: props.item.job_id },
+        { action: 'server/history/getDeletedJobs' }
+    )
+}
+
+function outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
+    const key = col.value
+    let value: string | number | null = null
+    if (key in item) {
+        const raw = item[key as keyof ServerHistoryStateJob]
+        if (typeof raw === 'string' || typeof raw === 'number') value = raw
+    } else if (key in item.metadata) {
+        const raw = item.metadata[key]
+        if (typeof raw === 'string' || typeof raw === 'number') value = raw
     }
 
-    get currentPath(): string {
-        const lastSlash = this.item.filename.lastIndexOf('/')
-        return lastSlash > 0 ? '/' + this.item.filename.slice(0, lastSlash) : ''
+    if (key.startsWith('history_field_')) {
+        const fieldName = key.replace('history_field_', '')
+        const field = item.auxiliary_data?.find((field) => field.name === fieldName)
+        if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
     }
 
-    get smallThumbnail() {
-        if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
+    if (value === null) return '--'
 
-        const thumbnail = this.item.metadata?.thumbnails?.find(
-            (thumb) =>
-                thumb.width >= thumbnailSmallMin &&
-                thumb.width <= thumbnailSmallMax &&
-                thumb.height >= thumbnailSmallMin &&
-                thumb.height <= thumbnailSmallMax
-        )
+    if (key === 'slicer') return `${value}<br />${item.metadata.slicer_version}`
 
-        return thumbnail ? this.createThumbnailUrl(thumbnail) : false
-    }
+    if (typeof value !== 'number') return value
 
-    get bigThumbnail() {
-        if ((this.item.metadata?.thumbnails?.length ?? 0) < 1) return false
-
-        const thumbnail = this.item.metadata?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
-
-        return thumbnail ? this.createThumbnailUrl(thumbnail) : false
-    }
-
-    get statusIcon() {
-        return convertPrintStatusIcon(this.item.status)
-    }
-
-    get statusColor() {
-        return convertPrintStatusIconColor(this.item.status)
-    }
-
-    get statusName() {
-        // check if translation exists
-        if (!this.$t(`History.StatusValues.${this.item.status}`, 'en')) return this.item.status.replace(/_/g, ' ')
-
-        return this.$t(`History.StatusValues.${this.item.status}`)
-    }
-
-    get cssClasses() {
-        const output = ['file-list-cursor', 'user-select-none']
-
-        if (!this.item.exists) output.push('text--disabled')
-
-        return output
-    }
-
-    get isJobQueueAvailable() {
-        return this.moonrakerComponents.includes('job_queue')
-    }
-
-    select(newVal: boolean) {
-        this.$emit('select', newVal)
-    }
-
-    showContextMenu(e: MouseEvent | LongpressEvent) {
-        e?.preventDefault()
-        EventBus.$emit(CLOSE_CONTEXT_MENU)
-
-        this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
-        this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
-
-        this.contextMenuBool = true
-    }
-
-    closeContextMenu() {
-        this.contextMenuBool = false
-    }
-
-    createNote() {
-        this.noteDialogType = 'create'
-        this.noteDialogBool = true
-    }
-
-    editNote() {
-        this.noteDialogType = 'edit'
-        this.noteDialogBool = true
-    }
-
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.item.filename])
-        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.item.filename }).toString())
-    }
-
-    deleteJob() {
-        this.$socket.emit(
-            'server.history.delete_job',
-            { uid: this.item.job_id },
-            { action: 'server/history/getDeletedJobs' }
-        )
-    }
-
-    outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
-        const key = col.value
-        let value: string | number | null = null
-        if (key in item) {
-            const raw = item[key as keyof ServerHistoryStateJob]
-            if (typeof raw === 'string' || typeof raw === 'number') value = raw
-        } else if (key in item.metadata) {
-            const raw = item.metadata[key]
-            if (typeof raw === 'string' || typeof raw === 'number') value = raw
-        }
-
-        if (key.startsWith('history_field_')) {
-            const fieldName = key.replace('history_field_', '')
-            const field = item.auxiliary_data?.find((field) => field.name === fieldName)
-            if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
-        }
-
-        if (value === null) return '--'
-
-        if (key === 'slicer') return `${value}<br />${item.metadata.slicer_version}`
-
-        if (typeof value !== 'number') return value
-
-        switch (col.outputType) {
-            case 'filesize':
-                return formatFilesize(value)
-
-            case 'date':
-                return this.formatDateTime(value * 1000)
-
-            case 'time':
-                return formatPrintTime(value, false)
-
-            case 'temp':
-                return value.toFixed() + ' °C'
-
-            case 'length':
-                if (value > 1000) return (value / 1000).toFixed(2) + ' m'
-
-                return value.toFixed(2) + ' mm'
-
-            default:
-                return value
-        }
-    }
-
-    createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
-        let relative_url = ''
-        if (this.item.filename.lastIndexOf('/') !== -1) {
-            relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/') + 1)
-        }
-
-        return `${this.apiUrl}/server/files/gcodes/${escapePath(relative_url + thumbnail.relative_path)}?timestamp=${
-            this.item.metadata.modified
-        }`
-    }
-
-    mounted() {
-        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
-
-    beforeDestroy() {
-        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
+    switch (col.outputType) {
+        case 'filesize':
+            return formatFilesize(value)
+        case 'date':
+            return formatDateTime(value * 1000)
+        case 'time':
+            return formatPrintTime(value, false)
+        case 'temp':
+            return value.toFixed() + ' °C'
+        case 'length':
+            if (value > 1000) return (value / 1000).toFixed(2) + ' m'
+            return value.toFixed(2) + ' mm'
+        default:
+            return value
     }
 }
+
+function createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
+    let relative_url = ''
+    if (props.item.filename.lastIndexOf('/') !== -1) {
+        relative_url = props.item.filename.substring(0, props.item.filename.lastIndexOf('/') + 1)
+    }
+    return `${apiUrl.value}/server/files/gcodes/${escapePath(relative_url + thumbnail.relative_path)}?timestamp=${
+        props.item.metadata.modified
+    }`
+}
+
+onMounted(() => {
+    EventBus.$on(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
+
+onBeforeUnmount(() => {
+    EventBus.$off(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
 </script>

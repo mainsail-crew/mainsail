@@ -168,9 +168,14 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
+import { useHistory } from '@/composables/useHistory'
+import { useHistoryStats } from '@/composables/useHistoryStats'
 import {
     HistoryListPanelCol,
     HistoryListRowJob,
@@ -180,7 +185,6 @@ import {
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
-    mdiCloseThick,
     mdiCog,
     mdiDatabaseArrowDownOutline,
     mdiDatabaseExportOutline,
@@ -195,538 +199,382 @@ import HistoryListPanelAddMaintenance from '@/components/dialogs/HistoryListPane
 import { GuiMaintenanceStateEntry, HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
 import HistoryListEntryMaintenance from '@/components/panels/History/HistoryListEntryMaintenance.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
-import HistoryMixin from '@/components/mixins/history'
-import HistoryStatsMixin from '@/components/mixins/historyStats'
 
 export type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance
 
-@Component({
-    components: {
-        ConfirmationDialog,
-        HistoryListEntryMaintenance,
-        HistoryListPanelAddMaintenance,
-        HistoryListEntryJob,
-        HistoryListPanelDetailsDialog,
-        Panel,
-    },
-})
-export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, HistoryStatsMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiCog = mdiCog
-    mdiDatabaseArrowDownOutline = mdiDatabaseArrowDownOutline
-    mdiDatabaseExportOutline = mdiDatabaseExportOutline
-    mdiDelete = mdiDelete
-    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
-    mdiMagnify = mdiMagnify
-    mdiNotebookPlus = mdiNotebookPlus
+const { loadings } = useBase()
+const socket = useSocket()
+const { jobs, selectedJobs, moonrakerHistoryFields } = useHistory()
+const { printStatusArray } = useHistoryStats('jobs')
 
-    formatFilesize = formatFilesize
+const { t } = useI18n()
 
-    search = ''
-    sortBy = 'start_time'
-    sortDesc = true
+const store = useStore()
 
-    addMaintenanceDialog = false
-    deleteSelectedDialog = false
+const search = ref('')
+const sortBy = ref('start_time')
+const sortDesc = ref(true)
 
-    get allLoaded() {
-        return this.$store.state.server.history.all_loaded ?? false
+const addMaintenanceDialog = ref(false)
+const deleteSelectedDialog = ref(false)
+
+const allLoaded = computed(() =>
+    store.state.server.history.all_loaded ?? false
+)
+
+const maintenanceEntries = computed(() =>
+    store.getters['gui/maintenance/getEntries'] ?? []
+)
+
+const entries = computed<HistoryListPanelRow[]>(() => {
+    let entries: HistoryListPanelRow[] = []
+
+    if (showPrintJobs.value) {
+        entries = [...jobs.value].map((job) => {
+            return { ...job, type: 'job', select_id: `job_${job.job_id}` }
+        })
     }
 
-    get maintenanceEntries() {
-        return this.$store.getters['gui/maintenance/getEntries'] ?? []
-    }
+    if (sortBy.value !== 'start_time') return entries
 
-    get entries() {
-        let entries: HistoryListPanelRow[] = []
-
-        if (this.showPrintJobs) {
-            entries = [...this.jobs].map((job) => {
-                return { ...job, type: 'job', select_id: `job_${job.job_id}` }
-            })
-        }
-
-        if (this.sortBy !== 'start_time') return entries
-
-        if (this.showMaintenanceEntries) {
-            entries = [
-                ...entries,
-                ...this.maintenanceEntries.map((entry: GuiMaintenanceStateEntry) => {
-                    return { ...entry, type: 'maintenance', select_id: `maintenance_${entry.id}` }
-                }),
-            ]
-        }
-
-        return entries
-    }
-
-    get headers() {
-        const headers: HistoryListPanelCol[] = [
-            {
-                text: '',
-                value: '',
-                align: 'left',
-                configable: false,
-                visible: true,
-                filterable: false,
-            },
-            {
-                text: this.$t('History.Filename').toString() as string,
-                value: 'filename',
-                align: 'left',
-                configable: false,
-                visible: true,
-            },
-            {
-                text: '',
-                value: 'status',
-                align: 'left',
-                configable: false,
-                visible: true,
-                filterable: false,
-            },
-            {
-                text: this.$t('History.Filesize').toString() as string,
-                value: 'size',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'filesize',
-            },
-            {
-                text: this.$t('History.LastModified').toString() as string,
-                value: 'modified',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'date',
-            },
-            {
-                text: this.$t('History.StartTime').toString() as string,
-                value: 'start_time',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'date',
-            },
-            {
-                text: this.$t('History.EndTime').toString() as string,
-                value: 'end_time',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'date',
-            },
-            {
-                text: this.$t('History.EstimatedTime').toString() as string,
-                value: 'estimated_time',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'time',
-            },
-            {
-                text: this.$t('History.PrintTime').toString() as string,
-                value: 'print_duration',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'time',
-            },
-            {
-                text: this.$t('History.TotalTime').toString() as string,
-                value: 'total_duration',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'time',
-            },
-            {
-                text: this.$t('History.FilamentCalc').toString() as string,
-                value: 'filament_total',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length',
-            },
-            {
-                text: this.$t('History.FilamentUsed').toString() as string,
-                value: 'filament_used',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length',
-            },
-            {
-                text: this.$t('History.FirstLayerExtTemp').toString() as string,
-                value: 'first_layer_extr_temp',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'temp',
-            },
-            {
-                text: this.$t('History.FirstLayerBedTemp').toString() as string,
-                value: 'first_layer_bed_temp',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'temp',
-            },
-            {
-                text: this.$t('History.FirstLayerHeight').toString() as string,
-                value: 'first_layer_height',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length',
-            },
-            {
-                text: this.$t('History.LayerHeight').toString() as string,
-                value: 'layer_height',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length',
-            },
-            {
-                text: this.$t('History.ObjectHeight').toString() as string,
-                value: 'object_height',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length',
-            },
-            {
-                text: this.$t('History.Slicer').toString() as string,
-                value: 'slicer',
-                align: 'left',
-                configable: true,
-                visible: true,
-            },
+    if (showMaintenanceEntries.value) {
+        entries = [
+            ...entries,
+            ...maintenanceEntries.value.map((entry: GuiMaintenanceStateEntry) => {
+                return { ...entry, type: 'maintenance', select_id: `maintenance_${entry.id}` }
+            }),
         ]
+    }
 
-        this.moonrakerHistoryFields.forEach((sensor) => {
-            headers.push({
-                text: sensor.desc,
-                value: sensor.name,
-                align: 'left',
-                configable: true,
-                visible: false,
-            })
+    return entries
+})
+
+const headers = computed<HistoryListPanelCol[]>(() => {
+    const result: HistoryListPanelCol[] = [
+        { text: '', value: '', align: 'left', configable: false, visible: true, filterable: false },
+        { text: t('History.Filename').toString(), value: 'filename', align: 'left', configable: false, visible: true },
+        { text: '', value: 'status', align: 'left', configable: false, visible: true, filterable: false },
+        { text: t('History.Filesize').toString(), value: 'size', align: 'left', configable: true, visible: true, outputType: 'filesize' },
+        { text: t('History.LastModified').toString(), value: 'modified', align: 'left', configable: true, visible: true, outputType: 'date' },
+        { text: t('History.StartTime').toString(), value: 'start_time', align: 'left', configable: true, visible: true, outputType: 'date' },
+        { text: t('History.EndTime').toString(), value: 'end_time', align: 'left', configable: true, visible: true, outputType: 'date' },
+        { text: t('History.EstimatedTime').toString(), value: 'estimated_time', align: 'left', configable: true, visible: true, outputType: 'time' },
+        { text: t('History.PrintTime').toString(), value: 'print_duration', align: 'left', configable: true, visible: true, outputType: 'time' },
+        { text: t('History.TotalTime').toString(), value: 'total_duration', align: 'left', configable: true, visible: true, outputType: 'time' },
+        { text: t('History.FilamentCalc').toString(), value: 'filament_total', align: 'left', configable: true, visible: true, outputType: 'length' },
+        { text: t('History.FilamentUsed').toString(), value: 'filament_used', align: 'left', configable: true, visible: true, outputType: 'length' },
+        { text: t('History.FirstLayerExtTemp').toString(), value: 'first_layer_extr_temp', align: 'left', configable: true, visible: true, outputType: 'temp' },
+        { text: t('History.FirstLayerBedTemp').toString(), value: 'first_layer_bed_temp', align: 'left', configable: true, visible: true, outputType: 'temp' },
+        { text: t('History.FirstLayerHeight').toString(), value: 'first_layer_height', align: 'left', configable: true, visible: true, outputType: 'length' },
+        { text: t('History.LayerHeight').toString(), value: 'layer_height', align: 'left', configable: true, visible: true, outputType: 'length' },
+        { text: t('History.ObjectHeight').toString(), value: 'object_height', align: 'left', configable: true, visible: true, outputType: 'length' },
+        { text: t('History.Slicer').toString(), value: 'slicer', align: 'left', configable: true, visible: true },
+    ]
+
+    moonrakerHistoryFields.value.forEach((sensor) => {
+        result.push({
+            text: sensor.desc,
+            value: sensor.name,
+            align: 'left',
+            configable: true,
+            visible: false,
         })
+    })
 
-        headers.forEach((header) => {
-            if (header.visible && this.hideColums.includes(header.value)) {
-                header.visible = false
-            } else if (!header.visible && !this.hideColums.includes(header.value)) {
-                header.visible = true
-            }
-        })
-
-        return headers
-    }
-
-    get tableFields(): HistoryListPanelCol[] {
-        return this.filteredHeaders.filter(
-            (col: HistoryListPanelCol) => !['filename', 'status'].includes(col.value) && col.value !== ''
-        )
-    }
-
-    get configHeaders(): HistoryListPanelCol[] {
-        return this.headers.filter((header: HistoryListPanelCol) => header.configable)
-    }
-
-    get filteredHeaders(): HistoryListPanelCol[] {
-        return this.headers.filter((header: HistoryListPanelCol) => header.visible)
-    }
-
-    get allPrintStatusArray(): ServerHistoryStateAllPrintStatusEntry[] {
-        const statuses = this.$store.getters['server/history/getAllPrintStatusArray'] ?? []
-
-        return caseInsensitiveSort(statuses as ServerHistoryStateAllPrintStatusEntry[], 'name')
-    }
-
-    get countPerPage() {
-        return this.$store.state.gui.view.history.countPerPage ?? 10
-    }
-
-    set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.countPerPage', value: newVal })
-    }
-
-    get hideColums() {
-        return this.$store.state.gui.view.history.hideColums ?? []
-    }
-
-    set hideColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
-    }
-
-    get showMaintenanceEntries() {
-        return this.$store.state.gui.view.history.showMaintenanceEntries
-    }
-
-    set showMaintenanceEntries(newVal) {
-        this.$store.dispatch('gui/saveSetting', {
-            name: 'view.history.showMaintenanceEntries',
-            value: newVal,
-        })
-    }
-
-    get showPrintJobs() {
-        return this.$store.state.gui.view.history.showPrintJobs
-    }
-
-    set showPrintJobs(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.showPrintJobs', value: newVal })
-    }
-
-    get selectedJobsTable(): HistoryListPanelRow[] {
-        return this.$store.state.gui.view.history.selectedJobs ?? []
-    }
-
-    set selectedJobsTable(newVal: HistoryListPanelRow[]) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.history.selectedJobs', value: newVal })
-    }
-
-    refreshHistory() {
-        this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
-
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
-    }
-
-    sortFiles(items: HistoryListPanelRow[], sortBy: string[], sortDesc: boolean[]) {
-        const sortByClean = (sortBy.length ? sortBy[0] : 'filename') as keyof HistoryListPanelRow
-        const sortDescClean = sortDesc[0]
-
-        if (items === undefined) return []
-
-        // Sort by index
-        items.sort((a: HistoryListPanelRow, b: HistoryListPanelRow) => {
-            const valueA = a[sortByClean]
-            const valueB = b[sortByClean]
-
-            if (valueA === valueB) return 0
-            if (valueA === null || valueA === undefined) return -1
-            if (valueB === null || valueB === undefined) return 1
-
-            if (typeof valueA === 'string' && typeof valueB === 'string') {
-                return valueA.localeCompare(valueB, undefined, { sensitivity: 'base' })
-            }
-
-            if (Array.isArray(valueA) && Array.isArray(valueB)) {
-                const reducedA = valueA.reduce((sum: number, current: number) => sum + current, 0)
-                const reducedB = valueB.reduce((sum: number, current: number) => sum + current, 0)
-                return reducedA - reducedB
-            }
-
-            if (typeof valueA === 'number' && typeof valueB === 'number') return valueA - valueB
-
-            return 0
-        })
-
-        // Deal with descending order
-        if (sortDescClean) items.reverse()
-
-        return items
-    }
-
-    advancedSearch(value: string, search: string) {
-        return value != null && search != null && value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-    }
-
-    changeColumnVisible(name: string) {
-        if (this.headers.filter((header) => header.value === name).length) {
-            const value = this.headers.filter((header) => header.value === name)[0].visible
-
-            this.$store.dispatch('gui/setHistoryColumns', { name: name, value: value })
+    result.forEach((header) => {
+        if (header.visible && hideColums.value.includes(header.value)) {
+            header.visible = false
+        } else if (!header.visible && !hideColums.value.includes(header.value)) {
+            header.visible = true
         }
+    })
+
+    return result
+})
+
+const tableFields = computed<HistoryListPanelCol[]>(() =>
+    filteredHeaders.value.filter(
+        (col: HistoryListPanelCol) => !['filename', 'status'].includes(col.value) && col.value !== ''
+    )
+)
+
+const configHeaders = computed<HistoryListPanelCol[]>(() =>
+    headers.value.filter((header: HistoryListPanelCol) => header.configable)
+)
+
+const filteredHeaders = computed<HistoryListPanelCol[]>(() =>
+    headers.value.filter((header: HistoryListPanelCol) => header.visible)
+)
+
+const allPrintStatusArray = computed<ServerHistoryStateAllPrintStatusEntry[]>(() => {
+    const statuses = store.getters['server/history/getAllPrintStatusArray'] ?? []
+    return caseInsensitiveSort(statuses as ServerHistoryStateAllPrintStatusEntry[], 'name')
+})
+
+const countPerPage = computed({
+    get: () => store.state.gui.view.history.countPerPage ?? 10,
+    set: (newVal: number) => {
+        store.dispatch('gui/saveSetting', { name: 'view.history.countPerPage', value: newVal })
     }
+})
 
-    changeStatusVisible(status: ServerHistoryStateAllPrintStatusEntry) {
-        this.$store.dispatch('gui/toggleStatusInHistoryList', status.name)
+const hideColums = computed({
+    get: () => store.state.gui.view.history.hideColums ?? [],
+    set: (newVal: string[]) => {
+        store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
     }
+})
 
-    exportHistory() {
-        const checkString = parseFloat('1.23').toLocaleString(this.browserLocale)
-        const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
-        const csvSeperator = decimalSeparator === ',' ? ';' : ','
+const showMaintenanceEntries = computed({
+    get: () => store.state.gui.view.history.showMaintenanceEntries,
+    set: (newVal: boolean) => {
+        store.dispatch('gui/saveSetting', { name: 'view.history.showMaintenanceEntries', value: newVal })
+    }
+})
 
-        const content: string[][] = []
-        const row: string[] = []
+const showPrintJobs = computed({
+    get: () => store.state.gui.view.history.showPrintJobs,
+    set: (newVal: boolean) => {
+        store.dispatch('gui/saveSetting', { name: 'view.history.showPrintJobs', value: newVal })
+    }
+})
 
-        row.push('filename')
-        row.push('type')
-        row.push('status')
+const selectedJobsTable = computed<HistoryListPanelRow[]>({
+    get: () => store.state.gui.view.history.selectedJobs ?? [],
+    set: (newVal: HistoryListPanelRow[]) => {
+        store.dispatch('gui/saveSetting', { name: 'view.history.selectedJobs', value: newVal })
+    }
+})
 
-        this.tableFields.forEach((col) => {
-            if (col.value.startsWith('history_field_')) {
-                const sensorName = col.value.replace('history_field_', '')
-                row.push(sensorName)
-                return
-            }
+function refreshHistory() {
+    store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+    socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
+}
 
-            row.push(col.value)
-        })
+function sortFiles(items: HistoryListPanelRow[], sortBy: string[], sortDesc: boolean[]) {
+    const sortByClean = (sortBy.length ? sortBy[0] : 'filename') as keyof HistoryListPanelRow
+    const sortDescClean = sortDesc[0]
 
-        content.push(row)
+    if (items === undefined) return []
 
-        let jobs = [...this.entries]
-        if (this.selectedJobsTable.length) {
-            jobs = [...this.selectedJobsTable]
+    items.sort((a: HistoryListPanelRow, b: HistoryListPanelRow) => {
+        const valueA = a[sortByClean]
+        const valueB = b[sortByClean]
+
+        if (valueA === valueB) return 0
+        if (valueA === null || valueA === undefined) return -1
+        if (valueB === null || valueB === undefined) return 1
+
+        if (typeof valueA === 'string' && typeof valueB === 'string') {
+            return valueA.localeCompare(valueB, undefined, { sensitivity: 'base' })
         }
 
-        if (jobs.length) {
-            jobs.sort((a, b) => {
-                return b.start_time - a.start_time
-            }).forEach((entry: HistoryListPanelRow) => {
-                const row: string[] = []
-                const type = entry.type ?? 'job'
+        if (Array.isArray(valueA) && Array.isArray(valueB)) {
+            const reducedA = valueA.reduce((sum: number, current: number) => sum + current, 0)
+            const reducedB = valueB.reduce((sum: number, current: number) => sum + current, 0)
+            return reducedA - reducedB
+        }
 
-                if (type === 'maintenance') {
-                    const maintenance = entry as HistoryListRowMaintenance
-                    row.push(maintenance.name)
-                    row.push('maintenance')
-                    row.push(maintenance.end_time !== null ? 'performed' : 'open') // status
+        if (typeof valueA === 'number' && typeof valueB === 'number') return valueA - valueB
 
-                    // add empty fields for the tableFields
-                    this.tableFields
-                        .filter((header) => header.value !== 'slicer')
-                        .forEach((header) => {
-                            if (header.value === 'start_time') {
-                                row.push(this.formatDateTime(maintenance.start_time * 1000))
-                                return
-                            }
+        return 0
+    })
 
-                            if (header.value === 'end_time' && maintenance.end_time !== null) {
-                                row.push(this.formatDateTime(maintenance.end_time * 1000))
-                                return
-                            }
+    if (sortDescClean) items.reverse()
 
-                            if (header.value === 'print_duration' && maintenance.end_printtime !== null) {
-                                const value = maintenance.end_printtime - maintenance.start_printtime
-                                row.push(value.toLocaleString(this.browserLocale, { useGrouping: false }))
-                                return
-                            }
+    return items
+}
 
-                            if (header.value === 'filament_used' && maintenance.end_filament !== null) {
-                                const value = maintenance.end_filament - maintenance.start_filament
-                                row.push(value.toLocaleString(this.browserLocale, { useGrouping: false }))
-                                return
-                            }
+function advancedSearch(value: string, search: string) {
+    return value != null && search != null && value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+}
 
-                            row.push('')
-                        })
+function changeColumnVisible(name: string) {
+    if (headers.value.filter((header) => header.value === name).length) {
+        const value = headers.value.filter((header) => header.value === name)[0].visible
 
-                    // add empty slicer field
-                    if (this.tableFields.find((header) => header.value === 'slicer')?.visible) {
+        store.dispatch('gui/setHistoryColumns', { name: name, value: value })
+    }
+}
+
+function changeStatusVisible(status: ServerHistoryStateAllPrintStatusEntry) {
+    store.dispatch('gui/toggleStatusInHistoryList', status.name)
+}
+
+function exportHistory() {
+    const checkString = parseFloat('1.23').toLocaleString(navigator.language)
+    const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
+    const csvSeperator = decimalSeparator === ',' ? ';' : ','
+
+    const content: string[][] = []
+    const row: string[] = []
+
+    row.push('filename')
+    row.push('type')
+    row.push('status')
+
+    tableFields.value.forEach((col) => {
+        if (col.value.startsWith('history_field_')) {
+            const sensorName = col.value.replace('history_field_', '')
+            row.push(sensorName)
+            return
+        }
+
+        row.push(col.value)
+    })
+
+    content.push(row)
+
+    let jobs = [...entries.value]
+    if (selectedJobsTable.value.length) {
+        jobs = [...selectedJobsTable.value]
+    }
+
+    if (jobs.length) {
+        jobs.sort((a, b) => {
+            return b.start_time - a.start_time
+        }).forEach((entry: HistoryListPanelRow) => {
+            const row: string[] = []
+            const type = entry.type ?? 'job'
+
+            if (type === 'maintenance') {
+                const maintenance = entry as HistoryListRowMaintenance
+                row.push(maintenance.name)
+                row.push('maintenance')
+                row.push(maintenance.end_time !== null ? 'performed' : 'open')
+
+                tableFields.value
+                    .filter((header) => header.value !== 'slicer')
+                    .forEach((header) => {
+                        if (header.value === 'start_time') {
+                            row.push(formatDateTime(maintenance.start_time * 1000))
+                            return
+                        }
+
+                        if (header.value === 'end_time' && maintenance.end_time !== null) {
+                            row.push(formatDateTime(maintenance.end_time * 1000))
+                            return
+                        }
+
+                        if (header.value === 'print_duration' && maintenance.end_printtime !== null) {
+                            const value = maintenance.end_printtime - maintenance.start_printtime
+                            row.push(value.toLocaleString(navigator.language, { useGrouping: false }))
+                            return
+                        }
+
+                        if (header.value === 'filament_used' && maintenance.end_filament !== null) {
+                            const value = maintenance.end_filament - maintenance.start_filament
+                            row.push(value.toLocaleString(navigator.language, { useGrouping: false }))
+                            return
+                        }
+
                         row.push('')
-                    }
+                    })
 
-                    content.push(row)
-                    return
+                if (tableFields.value.find((header) => header.value === 'slicer')?.visible) {
+                    row.push('')
                 }
 
-                const job = entry as ServerHistoryStateJob
-                let filename = job.filename
-                if (filename.includes(csvSeperator)) filename = '"' + filename + '"'
-                row.push(filename)
-                row.push('job')
-                row.push(job.status)
-
-                this.tableFields.forEach((col) => {
-                    row.push(this.outputValue(col, job, csvSeperator))
-                })
-
                 content.push(row)
-            })
-        }
-
-        // escape fields with the csvSeperator in the content
-        // prettier-ignore
-        const csvContent =
-            'data:text/csv;charset=utf-8,' +
-            content.map((entry) =>
-                entry.map((field) => (field?.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
-            ).join('\n')
-
-        const link = document.createElement('a')
-        link.setAttribute('href', encodeURI(csvContent))
-        link.setAttribute('download', 'print_history.csv')
-        document.body.appendChild(link)
-
-        link.click()
-        link.remove()
-    }
-
-    outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
-        const key = col.value
-        let value: string | number | null = null
-        if (key in job) {
-            const raw = job[key as keyof ServerHistoryStateJob]
-            if (typeof raw === 'string' || typeof raw === 'number') value = raw
-        } else if (key in job.metadata) {
-            const raw = job.metadata[key]
-            if (typeof raw === 'string' || typeof raw === 'number') value = raw
-        }
-        if (key === 'slicer' && 'slicer_version' in job.metadata) value += ` ${job.metadata.slicer_version}`
-
-        if (key.startsWith('history_field_')) {
-            const sensorName = key.replace('history_field_', '')
-            const sensor = job.auxiliary_data?.find((sensor) => sensor.name === sensorName)
-
-            value = sensor?.value?.toString() ?? null
-            if (sensor && !Array.isArray(sensor.value)) {
-                value = sensor.value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
-            }
-        }
-
-        if (value === null) return '--'
-
-        if (typeof value === 'string') {
-            if (csvSeperator !== null && value?.includes(csvSeperator)) value = `"${value}"`
-
-            return value
-        }
-
-        switch (col.outputType) {
-            case 'date':
-                return this.formatDateTime(value * 1000)
-
-            case 'time':
-                return value?.toFixed() ?? ''
-
-            default:
-                return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
-        }
-    }
-
-    get deleteSelectedQuestion(): string {
-        if (this.selectedJobsTable.length === 1) return this.$t('History.DeleteSingleJobQuestion').toString()
-
-        return this.$t('History.DeleteSelectedQuestion', { count: this.selectedJobsTable.length }).toString()
-    }
-
-    deleteSelectedJobs() {
-        this.selectedJobsTable.forEach((item: HistoryListPanelRow) => {
-            if (item.type === 'maintenance') {
-                this.$store.dispatch('gui/maintenance/delete', item.id)
                 return
             }
 
-            // break if job_id is not present
-            if (!('job_id' in item)) return
+            const job = entry as ServerHistoryStateJob
+            let filename = job.filename
+            if (filename.includes(csvSeperator)) filename = '"' + filename + '"'
+            row.push(filename)
+            row.push('job')
+            row.push(job.status)
 
-            this.$socket.emit(
-                'server.history.delete_job',
-                { uid: item.job_id },
-                { action: 'server/history/getDeletedJobs' }
-            )
+            tableFields.value.forEach((col) => {
+                row.push(outputValue(col, job, csvSeperator))
+            })
+
+            content.push(row)
         })
-
-        this.selectedJobsTable = []
     }
+
+    const csvContent =
+        'data:text/csv;charset=utf-8,' +
+        content.map((entry) =>
+            entry.map((field) => (field?.indexOf(csvSeperator) === -1 ? field : `"${field}"`)).join(csvSeperator)
+        ).join('\n')
+
+    const link = document.createElement('a')
+    link.setAttribute('href', encodeURI(csvContent))
+    link.setAttribute('download', 'print_history.csv')
+    document.body.appendChild(link)
+
+    link.click()
+    link.remove()
+}
+
+function outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
+    const key = col.value
+    let value: string | number | null = null
+    if (key in job) {
+        const raw = job[key as keyof ServerHistoryStateJob]
+        if (typeof raw === 'string' || typeof raw === 'number') value = raw
+    } else if (key in job.metadata) {
+        const raw = job.metadata[key]
+        if (typeof raw === 'string' || typeof raw === 'number') value = raw
+    }
+    if (key === 'slicer' && 'slicer_version' in job.metadata) value += ` ${job.metadata.slicer_version}`
+
+    if (key.startsWith('history_field_')) {
+        const sensorName = key.replace('history_field_', '')
+        const sensor = job.auxiliary_data?.find((sensor) => sensor.name === sensorName)
+
+        value = sensor?.value?.toString() ?? null
+        if (sensor && !Array.isArray(sensor.value)) {
+            value = sensor.value?.toLocaleString(navigator.language, { useGrouping: false }) ?? 0
+        }
+    }
+
+    if (value === null) return '--'
+
+    if (typeof value === 'string') {
+        if (csvSeperator !== null && value?.includes(csvSeperator)) value = `"${value}"`
+        return value
+    }
+
+    switch (col.outputType) {
+        case 'date':
+            return formatDateTime(value * 1000)
+        case 'time':
+            return value?.toFixed() ?? ''
+        default:
+            return value?.toLocaleString(navigator.language, { useGrouping: false }) ?? 0
+    }
+}
+
+const deleteSelectedQuestion = computed<string>(() => {
+    if (selectedJobsTable.value.length === 1) return t('History.DeleteSingleJobQuestion').toString()
+    return t('History.DeleteSelectedQuestion', { count: selectedJobsTable.value.length }).toString()
+})
+
+function deleteSelectedJobs() {
+    selectedJobsTable.value.forEach((item: HistoryListPanelRow) => {
+        if (item.type === 'maintenance') {
+            store.dispatch('gui/maintenance/delete', item.id)
+            return
+        }
+
+        if (!('job_id' in item)) return
+
+        socket.emit(
+            'server.history.delete_job',
+            { uid: item.job_id },
+            { action: 'server/history/getDeletedJobs' }
+        )
+    })
+
+    selectedJobsTable.value = []
+}
+
+function formatDateTime(value: number): string {
+    const date = new Date(value)
+    return date.toLocaleString(navigator.language)
 }
 </script>
 

@@ -75,116 +75,113 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
+<script setup lang="ts">
+import { ref, computed, watch, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiAxisArrow } from '@mdi/js'
 import { buildCncMetadataViewModel, loadCncMetadata, type CncMetadataViewModel } from '@/store/files/cncMetadata'
 
-@Component({
-    components: {
-        Panel,
-    },
+const { klipperReadyForGui, printer_state } = useBase()
+const { absolute_coordinates, homedAxes } = useControl()
+
+const store = useStore()
+
+const cncMetadataViewModel = ref<CncMetadataViewModel | null>(null)
+const cncMetadataLoading = ref(false)
+let cncMetadataRequestId = 0
+
+const stateColor = computed(() => {
+    switch (printer_state.value) {
+        case 'printing':
+            return 'success'
+        case 'paused':
+            return 'warning'
+        case 'complete':
+            return 'info'
+        case 'error':
+        case 'shutdown':
+            return 'error'
+        default:
+            return 'primary'
+    }
 })
-export default class CncStatusPanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiAxisArrow = mdiAxisArrow
-    cncMetadataViewModel: CncMetadataViewModel | null = null
-    cncMetadataLoading = false
-    private cncMetadataRequestId = 0
 
-    mounted() {
-        void this.refreshCncMetadata()
+const printerStateLabel = computed(() =>
+    printer_state.value ? printer_state.value.toUpperCase() : 'UNKNOWN'
+)
+
+const coordinateModeLabel = computed(() =>
+    absolute_coordinates.value ? 'Absolute (G90)' : 'Relative (G91)'
+)
+
+const homedAxesLabel = computed(() => {
+    const axes = homedAxes.value.toUpperCase()
+    return axes ? `Homed: ${axes}` : 'Homed: none'
+})
+
+const activeGcodeFilename = computed(() =>
+    store.state.printer.print_stats?.filename ?? ''
+)
+
+const activeFile = computed(() =>
+    activeGcodeFilename.value || 'No active file'
+)
+
+const feedOverride = computed(() => {
+    const factor = store.state.printer.gcode_move?.speed_factor ?? 1
+    return `${Math.round(factor * 100)}%`
+})
+
+const requestedFeed = computed(() => {
+    const speed = store.state.printer.gcode_move?.speed ?? 0
+    return `${(speed / 60).toFixed(1)} mm/s`
+})
+
+const maxVelocity = computed(() => {
+    const max = store.state.printer.toolhead?.max_velocity ?? 0
+    return `${Number(max).toFixed(1)} mm/s`
+})
+
+const hostLoad = computed(() => {
+    const load = store.state.printer.system_stats?.sysload ?? 0
+    return load.toFixed(2)
+})
+
+const freeRam = computed(() => {
+    const memAvail = store.state.printer.system_stats?.memavail ?? 0
+    return `${Math.round(memAvail / 1024)} MB`
+})
+
+async function refreshCncMetadata() {
+    const filename = activeGcodeFilename.value
+    const requestId = ++cncMetadataRequestId
+
+    if (!filename) {
+        cncMetadataViewModel.value = null
+        cncMetadataLoading.value = false
+        return
     }
 
-    @Watch('activeGcodeFilename')
-    onActiveGcodeFilenameChanged() {
-        void this.refreshCncMetadata()
-    }
+    cncMetadataLoading.value = true
+    const apiUrl = store.getters['socket/getUrl']
+    const metadata = await loadCncMetadata(apiUrl, filename)
 
-    get stateColor() {
-        switch (this.printer_state) {
-            case 'printing':
-                return 'success'
-            case 'paused':
-                return 'warning'
-            case 'complete':
-                return 'info'
-            case 'error':
-            case 'shutdown':
-                return 'error'
-            default:
-                return 'primary'
-        }
-    }
+    if (requestId !== cncMetadataRequestId) return
 
-    get printerStateLabel() {
-        return this.printer_state ? this.printer_state.toUpperCase() : 'UNKNOWN'
-    }
-
-    get coordinateModeLabel() {
-        return this.absolute_coordinates ? 'Absolute (G90)' : 'Relative (G91)'
-    }
-
-    get homedAxesLabel() {
-        const axes = this.homedAxes.toUpperCase()
-        return axes ? `Homed: ${axes}` : 'Homed: none'
-    }
-
-    get activeGcodeFilename() {
-        return this.$store.state.printer.print_stats?.filename ?? ''
-    }
-
-    get activeFile() {
-        return this.activeGcodeFilename || 'No active file'
-    }
-
-    get feedOverride() {
-        const factor = this.$store.state.printer.gcode_move?.speed_factor ?? 1
-        return `${Math.round(factor * 100)}%`
-    }
-
-    get requestedFeed() {
-        const speed = this.$store.state.printer.gcode_move?.speed ?? 0
-        return `${(speed / 60).toFixed(1)} mm/s`
-    }
-
-    get maxVelocity() {
-        const max = this.$store.state.printer.toolhead?.max_velocity ?? 0
-        return `${Number(max).toFixed(1)} mm/s`
-    }
-
-    get hostLoad() {
-        const load = this.$store.state.printer.system_stats?.sysload ?? 0
-        return load.toFixed(2)
-    }
-
-    get freeRam() {
-        const memAvail = this.$store.state.printer.system_stats?.memavail ?? 0
-        return `${Math.round(memAvail / 1024)} MB`
-    }
-
-    async refreshCncMetadata() {
-        const filename = this.activeGcodeFilename
-        const requestId = ++this.cncMetadataRequestId
-
-        if (!filename) {
-            this.cncMetadataViewModel = null
-            this.cncMetadataLoading = false
-            return
-        }
-
-        this.cncMetadataLoading = true
-        const apiUrl = this.$store.getters['socket/getUrl']
-        const metadata = await loadCncMetadata(apiUrl, filename)
-
-        if (requestId !== this.cncMetadataRequestId) return
-
-        this.cncMetadataViewModel = buildCncMetadataViewModel(metadata)
-        this.cncMetadataLoading = false
-    }
+    cncMetadataViewModel.value = buildCncMetadataViewModel(metadata)
+    cncMetadataLoading.value = false
 }
+
+onMounted(() => {
+    void refreshCncMetadata()
+})
+
+watch(activeGcodeFilename, () => {
+    void refreshCncMetadata()
+})
 </script>
 
 <style scoped>

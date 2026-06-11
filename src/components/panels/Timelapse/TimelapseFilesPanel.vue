@@ -89,9 +89,12 @@
                 class="files-table"
                 :headers="headers"
                 :custom-sort="sortFiles"
-                :sort-by.sync="sortBy"
-                :sort-desc.sync="sortDesc"
-                :items-per-page.sync="countPerPage"
+                :sort-by="sortBy"
+                @update:sort-by="setSortBy"
+                :sort-desc="sortDesc"
+                @update:sort-desc="setSortDesc"
+                :items-per-page="countPerPage"
+                @update:items-per-page="setCountPerPage"
                 :footer-props="{
                     itemsPerPageText: $t('Timelapse.Files'),
                     itemsPerPageAllText: $t('Timelapse.AllFiles'),
@@ -369,11 +372,14 @@
             @action="deleteSelectedFiles" />
     </div>
 </template>
-<script lang="ts">
-import { Component, Mixins, Ref } from 'vue-property-decorator'
+
+<script setup lang="ts">
+import { computed, ref, reactive, nextTick } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
 import type { LongpressEvent } from '@/directives/longpress'
-import BaseMixin from '@/components/mixins/base'
-import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
+import { escapePath, formatFilesize, formatDateTime, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
@@ -401,490 +407,425 @@ interface dialogRenameObject {
     item: FileStateFile
 }
 
-@Component({
-    components: { ConfirmationDialog, Panel, PathNavigation },
+const { loadings, apiUrl } = useBase()
+const store = useStore()
+const socket = useSocket()
+
+const mdiFileVideo = mdiFileVideo
+const mdiCloseThick = mdiCloseThick
+const mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
+const mdiMagnify = mdiMagnify
+const mdiFolderPlus = mdiFolderPlus
+const mdiRefresh = mdiRefresh
+const mdiFolderUpload = mdiFolderUpload
+const mdiFolder = mdiFolder
+const mdiFolderZipOutline = mdiFolderZipOutline
+const mdiFile = mdiFile
+const mdiCloudDownload = mdiCloudDownload
+const mdiRenameBox = mdiRenameBox
+const mdiDelete = mdiDelete
+
+const inputFieldRenameFile = ref<FocusableRef | undefined>()
+const inputFieldCreateDirectory = ref<FocusableRef | undefined>()
+const inputFieldRenameDirectory = ref<FocusableRef | undefined>()
+
+const search = ref('')
+const boolVideoDialog = ref(false)
+const videoDialogFilename = ref('')
+
+const dialogCreateDirectory = reactive({
+    show: false,
+    name: '',
 })
-export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
-    formatFilesize = formatFilesize
-    sortFiles = sortFiles
 
-    mdiFileVideo = mdiFileVideo
-    mdiCloseThick = mdiCloseThick
-    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
-    mdiMagnify = mdiMagnify
-    mdiFolderPlus = mdiFolderPlus
-    mdiRefresh = mdiRefresh
-    mdiFolderUpload = mdiFolderUpload
-    mdiFolder = mdiFolder
-    mdiFolderZipOutline = mdiFolderZipOutline
-    mdiFile = mdiFile
-    mdiCloudDownload = mdiCloudDownload
-    mdiRenameBox = mdiRenameBox
-    mdiDelete = mdiDelete
-
-    @Ref() readonly inputFieldRenameFile!: FocusableRef | undefined
-    @Ref() readonly inputFieldCreateDirectory!: FocusableRef | undefined
-    @Ref() readonly inputFieldRenameDirectory!: FocusableRef | undefined
-
-    private search = ''
-    private boolVideoDialog = false
-    private videoDialogFilename = ''
-
-    private dialogCreateDirectory = {
-        show: false,
-        name: '',
-    }
-
-    private contextMenu = {
-        shown: false,
+const contextMenu = reactive({
+    shown: false,
+    isDirectory: false,
+    x: 0,
+    y: 0,
+    item: {
         isDirectory: false,
-        touchTimer: undefined,
-        x: 0,
-        y: 0,
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
+        filename: '',
+        permissions: '',
+        modified: new Date(),
+    },
+})
+
+const dialogRenameFile = reactive<dialogRenameObject>({
+    show: false,
+    newName: '',
+    item: {
+        isDirectory: false,
+        filename: '',
+        permissions: '',
+        modified: new Date(),
+    },
+})
+
+const dialogRenameDirectory = reactive<dialogRenameObject>({
+    show: false,
+    newName: '',
+    item: {
+        isDirectory: false,
+        filename: '',
+        permissions: '',
+        modified: new Date(),
+    },
+})
+
+const dialogDeleteDirectory = reactive<dialogRenameObject>({
+    show: false,
+    newName: '',
+    item: {
+        isDirectory: false,
+        filename: '',
+        permissions: '',
+        modified: new Date(),
+    },
+})
+
+const deleteDialog = ref(false)
+const deleteSelectedDialog = ref(false)
+
+const isInvalidName = ref(true)
+const nameInputRules = [
+    (value: string) => !!value || 'Invalid name - cannot be empty',
+    (value: string) => !existsFilename(value) || 'Invalid name - already exists',
+]
+
+const rootDirectory = 'timelapse'
+
+function existsFilename(name: string) {
+    return files.value.findIndex((file) => file.filename === name) >= 0
+}
+
+const headers = computed(() => [
+    { text: '', value: '', align: 'left', configable: false, visible: true, sortable: false },
+    { text: 'Name', value: 'filename', align: 'left', configable: false, visible: true },
+    { text: 'Filesize', value: 'size', align: 'right', configable: true, visible: true },
+    {
+        text: 'Last Modified',
+        value: 'modified',
+        align: 'right',
+        configable: true,
+        visible: true,
+    },
+])
+
+const directory = computed(() => store.getters['files/getDirectory'](currentPath.value))
+
+const disk_usage = computed(() => directory.value?.disk_usage ?? { used: 0, free: 0, total: 0 })
+
+const directoryPermissions = computed(() => directory.value?.permissions ?? 'r')
+
+const files = computed(() => [...(directory.value?.childrens ?? [])])
+
+const sortBy = computed(() => store.state.gui.view.timelapse.sortBy ?? 'modified')
+
+function setSortBy(newVal: string) {
+    if (newVal === undefined) newVal = 'modified'
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortBy', value: newVal })
+}
+
+const sortDesc = computed(() => store.state.gui.view.timelapse.sortDesc ?? true)
+
+function setSortDesc(newVal: boolean) {
+    if (newVal === undefined) newVal = false
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortDesc', value: newVal })
+}
+
+const countPerPage = computed(() => store.state.gui.view.timelapse?.countPerPage ?? 10)
+
+function setCountPerPage(newVal: number) {
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.countPerPage', value: newVal })
+}
+
+const displayFiles = computed(() =>
+    files.value?.filter((file) => {
+        if (file.isDirectory) return true
+        return file.filename.endsWith('mp4') || file.filename.endsWith('zip')
+    }) ?? []
+)
+
+const currentPath = computed(() => store.state.gui.view.timelapse.currentPath)
+
+const currentPathForNavigation = computed(() => {
+    if (currentPath.value === rootDirectory) return ''
+    return currentPath.value.substring(rootDirectory.length)
+})
+
+function setCurrentPath(newVal: string) {
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newVal })
+}
+
+const selectedFiles = computed(() => store.state.gui.view.timelapse.selectedFiles ?? [])
+
+const deleteSelectedDialogText = computed(() => {
+    if (selectedFiles.value.length === 1) {
+        return `Delete single file: ${selectedFiles.value[0].filename}`
+    }
+    return `Delete ${selectedFiles.value.length} selected files?`
+})
+
+function createDirectory() {
+    dialogCreateDirectory.name = ''
+    dialogCreateDirectory.show = true
+    setTimeout(() => {
+        inputFieldCreateDirectory.value?.focus()
+    }, 200)
+}
+
+function createDirectoryAction() {
+    dialogCreateDirectory.show = false
+    socket.emit(
+        'server.files.post_directory',
+        {
+            path: currentPath.value + '/' + dialogCreateDirectory.name,
         },
+        { action: 'files/getCreateDir' }
+    )
+}
+
+function refreshFileList() {
+    socket.emit('server.files.get_directory', { path: currentPath.value }, { action: 'files/getDirectory' })
+}
+
+function advancedSearch(value: string | number, searchText: string) {
+    return (
+        value != null &&
+        searchText != null &&
+        typeof value === 'string' &&
+        value.toString().toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+    )
+}
+
+function getThumbnail(item: FileStateFile) {
+    const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
+    const preview = files.value?.find((file) => file.filename === filename + '.jpg')
+    if (preview) {
+        return `${apiUrl.value}/server/files/${escapePath(currentPath.value)}/${escapePath(
+            preview.filename
+        )}?timestamp=${preview.modified.getTime()}`
     }
+    return ''
+}
 
-    private dialogRenameFile: dialogRenameObject = {
-        show: false,
-        newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-        },
-    }
-
-    private dialogRenameDirectory: dialogRenameObject = {
-        show: false,
-        newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-        },
-    }
-
-    private dialogDeleteDirectory: dialogRenameObject = {
-        show: false,
-        newName: '',
-        item: {
-            isDirectory: false,
-            filename: '',
-            permissions: '',
-            modified: new Date(),
-        },
-    }
-
-    private deleteDialog = false
-    private deleteSelectedDialog = false
-
-    private isInvalidName = true
-    private nameInputRules = [
-        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
-    ]
-
-    private rootDirectory = 'timelapse'
-
-    existsFilename(name: string) {
-        return this.files.findIndex((file) => file.filename === name) >= 0
-    }
-
-    get headers() {
-        return [
-            { text: '', value: '', align: 'left', configable: false, visible: true, sortable: false },
-            { text: this.$t('Timelapse.Name'), value: 'filename', align: 'left', configable: false, visible: true },
-            { text: this.$t('Timelapse.Filesize'), value: 'size', align: 'right', configable: true, visible: true },
-            {
-                text: this.$t('Timelapse.LastModified'),
-                value: 'modified',
-                align: 'right',
-                configable: true,
-                visible: true,
-            },
-        ]
-    }
-
-    get directory() {
-        return this.$store.getters['files/getDirectory'](this.currentPath)
-    }
-
-    get disk_usage() {
-        return this.directory?.disk_usage ?? { used: 0, free: 0, total: 0 }
-    }
-
-    get directoryPermissions() {
-        return this.directory?.permissions ?? 'r'
-    }
-
-    get files() {
-        return [...(this.directory?.childrens ?? [])]
-    }
-
-    get sortBy() {
-        return this.$store.state.gui.view.gcodefiles.sortBy ?? 'modified'
-    }
-
-    set sortBy(newVal) {
-        if (newVal === undefined) newVal = 'modified'
-
-        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortBy', value: newVal })
-    }
-
-    get sortDesc() {
-        return this.$store.state.gui.view.gcodefiles.sortDesc ?? true
-    }
-
-    set sortDesc(newVal) {
-        if (newVal === undefined) newVal = false
-
-        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortDesc', value: newVal })
-    }
-
-    get countPerPage() {
-        return this.$store.state.gui.view.timelapse?.countPerPage ?? 10
-    }
-
-    set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.countPerPage', value: newVal })
-    }
-
-    get displayFiles() {
-        return (
-            this.files?.filter((file) => {
-                if (file.isDirectory) return true
-
-                return file.filename.endsWith('mp4') || file.filename.endsWith('zip')
-            }) ?? []
-        )
-    }
-
-    get currentPath() {
-        return this.$store.state.gui.view.timelapse.currentPath
-    }
-
-    get currentPathForNavigation() {
-        if (this.currentPath === this.rootDirectory) {
-            return ''
+function clickRow(item: FileStateFile, force = false) {
+    if (!contextMenu.shown || force) {
+        if (force) contextMenu.shown = false
+        if (item.isDirectory) {
+            const newPath = currentPath.value + '/' + item.filename
+            setCurrentPath(newPath)
+            store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newPath })
+        } else if (item.filename.endsWith('zip')) {
+            downloadFile(item.filename)
+        } else if (item.filename.endsWith('mp4')) {
+            videoDialogFilename.value = escapePath(`${currentPath.value}/${item.filename}`)
+            boolVideoDialog.value = true
         }
-
-        return this.currentPath.substring(this.rootDirectory.length)
     }
+}
 
-    set currentPath(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newVal })
+function clickRowGoBack() {
+    const newPath = currentPath.value.slice(0, currentPath.value.lastIndexOf('/'))
+    setCurrentPath(newPath)
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newPath })
+}
+
+function clickPathNavGoToDirectory(segment: { location: string }) {
+    const newPath = `${rootDirectory}${segment.location}`
+    setCurrentPath(newPath)
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newPath })
+}
+
+function showContextMenu(e: MouseEvent | LongpressEvent, item: FileStateFile) {
+    if (!contextMenu.shown) {
+        e?.preventDefault()
+        contextMenu.shown = true
+        contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
+        contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
+        contextMenu.item = item
+        nextTick(() => {
+            contextMenu.shown = true
+        })
     }
+}
 
-    get selectedFiles() {
-        return this.$store.state.gui.view.timelapse.selectedFiles ?? []
-    }
+function existsFramesZip(item: FileStateFile) {
+    const posLastPoint = item.filename.lastIndexOf('.')
+    const zipFilename = item.filename.slice(0, posLastPoint) + '.zip'
+    return files.value.findIndex((file) => file.filename === zipFilename) !== -1
+}
 
-    set selectedFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.selectedFiles', value: newVal })
-    }
+function downloadFile(filename: string) {
+    const path = currentPath.value + '/' + filename
+    const href = apiUrl.value + '/server/files/' + escapePath(path)
+    window.open(href)
+}
 
-    get deleteSelectedDialogText(): string {
-        if (this.selectedFiles.length === 1) {
-            return this.$t('Timelapse.DeleteSingleFileQuestion', {
-                name: this.selectedFiles[0].filename,
-            }).toString()
-        }
+async function downloadSelectedFiles() {
+    const items: string[] = []
 
-        return this.$t('Timelapse.DeleteSelectedQuestion', {
-            count: this.selectedFiles.length,
-        }).toString()
-    }
-
-    createDirectory() {
-        this.dialogCreateDirectory.name = ''
-        this.dialogCreateDirectory.show = true
-
-        setTimeout(() => {
-            this.inputFieldCreateDirectory?.focus()
-        }, 200)
-    }
-
-    createDirectoryAction() {
-        this.dialogCreateDirectory.show = false
-
-        this.$socket.emit(
-            'server.files.post_directory',
-            {
-                path: this.currentPath + '/' + this.dialogCreateDirectory.name,
-            },
-            { action: 'files/getCreateDir' }
-        )
-    }
-
-    refreshFileList() {
-        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
-    }
-
-    advancedSearch(value: string | number, search: string) {
-        return (
-            value != null &&
-            search != null &&
-            typeof value === 'string' &&
-            value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-        )
-    }
-
-    getThumbnail(item: FileStateFile) {
-        const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
-        const preview = this.files?.find((file) => file.filename === filename + '.jpg')
-        if (preview) {
-            return `${this.apiUrl}/server/files/${escapePath(this.currentPath)}/${escapePath(
-                preview.filename
-            )}?timestamp=${preview.modified.getTime()}`
-        }
-
-        return ''
-    }
-
-    clickRow(item: FileStateFile, force = false) {
-        if (!this.contextMenu.shown || force) {
-            if (force) this.contextMenu.shown = false
-
-            if (item.isDirectory) this.currentPath += '/' + item.filename
-            else if (item.filename.endsWith('zip')) {
-                this.downloadFile(item.filename)
-            } else if (item.filename.endsWith('mp4')) {
-                this.videoDialogFilename = escapePath(`${this.currentPath}/${item.filename}`)
-                this.boolVideoDialog = true
+    const addElementToItems = async (absolutPath: string, directoryArr: FileStateFile[]) => {
+        for (const file of directoryArr) {
+            const filePath = `${absolutPath}/${file.filename}`
+            if (file.isDirectory && file.childrens) {
+                await addElementToItems(filePath, file.childrens)
+                continue
             }
-        }
-    }
-
-    clickRowGoBack() {
-        this.currentPath = this.currentPath.slice(0, this.currentPath.lastIndexOf('/'))
-    }
-
-    clickPathNavGoToDirectory(segment: { location: string }) {
-        this.currentPath = `${this.rootDirectory}${segment.location}`
-    }
-
-    showContextMenu(e: MouseEvent | LongpressEvent, item: FileStateFile) {
-        if (!this.contextMenu.shown) {
-            e?.preventDefault()
-            this.contextMenu.shown = true
-            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
-            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
-            this.contextMenu.item = item
-            this.$nextTick(() => {
-                this.contextMenu.shown = true
-            })
-        }
-    }
-
-    existsFramesZip(item: FileStateFile) {
-        const posLastPoint = item.filename.lastIndexOf('.')
-        const zipFilename = item.filename.slice(0, posLastPoint) + '.zip'
-
-        return this.files.findIndex((file) => file.filename === zipFilename) !== -1
-    }
-
-    downloadFile(filename: string) {
-        const path = this.currentPath + '/' + filename
-        const href = this.apiUrl + '/server/files/' + escapePath(path)
-
-        window.open(href)
-    }
-
-    async downloadSelectedFiles() {
-        const items: string[] = []
-
-        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
-            for (const file of directory) {
-                const filePath = `${absolutPath}/${file.filename}`
-
-                if (file.isDirectory && file.childrens) {
-                    await addElementToItems(filePath, file.childrens)
-
-                    continue
-                }
-
-                items.push(filePath)
-
-                if (file.filename.endsWith('.mp4')) {
-                    const indexLastPoint = file.filename.lastIndexOf('.')
-                    const filenameWithoutExtension = file.filename.slice(0, indexLastPoint)
-                    const filenameJpg = `${filenameWithoutExtension}.jpg`
-
-                    if (this.files.some((f: FileStateFile) => f.filename === filenameJpg)) {
-                        items.push(`${absolutPath}/${filenameJpg}`)
-                    }
+            items.push(filePath)
+            if (file.filename.endsWith('.mp4')) {
+                const indexLastPoint = file.filename.lastIndexOf('.')
+                const filenameWithoutExtension = file.filename.slice(0, indexLastPoint)
+                const filenameJpg = `${filenameWithoutExtension}.jpg`
+                if (files.value.some((f: FileStateFile) => f.filename === filenameJpg)) {
+                    items.push(`${absolutPath}/${filenameJpg}`)
                 }
             }
         }
-
-        await addElementToItems(this.currentPath, this.selectedFiles)
-        const date = new Date()
-        const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
-
-        this.$socket.emit(
-            'server.files.zip',
-            { items, dest: `timelapse/timelapse-${timestamp}.zip` },
-            { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
-        )
-
-        this.selectedFiles = []
     }
 
-    renameFile(item: FileStateFile) {
-        const posLastPoint = item.filename.lastIndexOf('.')
-        this.dialogRenameFile.newName = item.filename.slice(0, posLastPoint)
+    await addElementToItems(currentPath.value, selectedFiles.value)
+    const date = new Date()
+    const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
-        this.dialogRenameFile.item = item
-        this.dialogRenameFile.show = true
+    socket.emit(
+        'server.files.zip',
+        { items, dest: `timelapse/timelapse-${timestamp}.zip` },
+        { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
+    )
 
-        setTimeout(() => {
-            this.inputFieldRenameFile?.focus()
-        }, 200)
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.selectedFiles', value: [] })
+}
+
+function renameFile(item: FileStateFile) {
+    const posLastPoint = item.filename.lastIndexOf('.')
+    dialogRenameFile.newName = item.filename.slice(0, posLastPoint)
+    dialogRenameFile.item = item
+    dialogRenameFile.show = true
+    setTimeout(() => {
+        inputFieldRenameFile.value?.focus()
+    }, 200)
+}
+
+function renameFileAction() {
+    const posLastPoint = dialogRenameFile.item.filename.lastIndexOf('.')
+    const oldNameWithoutExtension = dialogRenameFile.item.filename.slice(0, posLastPoint)
+    const fileExtension = dialogRenameFile.item.filename.split('.').pop()
+
+    dialogRenameFile.show = false
+
+    socket.emit(
+        'server.files.move',
+        {
+            source: `${currentPath.value}/${dialogRenameFile.item.filename}`,
+            dest: `${currentPath.value}/${dialogRenameFile.newName}.${fileExtension}`,
+        },
+        { action: 'files/getMove' }
+    )
+
+    if (fileExtension !== 'mp4') return
+
+    const fileJpg = files.value.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
+
+    if (fileJpg) {
+        socket.emit('server.files.move', {
+            source: `${currentPath.value}/${oldNameWithoutExtension}.jpg`,
+            dest: `${currentPath.value}/${dialogRenameFile.newName}.jpg`,
+        })
     }
+}
 
-    renameFileAction() {
-        const posLastPoint = this.dialogRenameFile.item.filename.lastIndexOf('.')
-        const oldNameWithoutExtension = this.dialogRenameFile.item.filename.slice(0, posLastPoint)
-        const fileExtension = this.dialogRenameFile.item.filename.split('.').pop()
+function renameDirectory(item: FileStateFile) {
+    dialogRenameDirectory.item = item
+    dialogRenameDirectory.newName = item.filename
+    dialogRenameDirectory.show = true
+    setTimeout(() => {
+        inputFieldRenameDirectory.value?.focus()
+    }, 200)
+}
 
-        this.dialogRenameFile.show = false
+function renameDirectoryAction() {
+    dialogRenameDirectory.show = false
+    socket.emit(
+        'server.files.move',
+        {
+            source: currentPath.value + '/' + dialogRenameDirectory.item.filename,
+            dest: currentPath.value + '/' + dialogRenameDirectory.newName,
+        },
+        { action: 'files/getMove' }
+    )
+}
 
-        /**
-         * rename the file regardless of its file-extension
-         */
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: `${this.currentPath}/${this.dialogRenameFile.item.filename}`,
-                dest: `${this.currentPath}/${this.dialogRenameFile.newName}.${fileExtension}`,
-            },
-            { action: 'files/getMove' }
-        )
+function removeFile() {
+    const filename = contextMenu.item.filename.slice(0, contextMenu.item.filename.lastIndexOf('.'))
+    const fileExtension = contextMenu.item.filename.split('.').pop()
 
-        if (fileExtension !== 'mp4') return
+    socket.emit(
+        'server.files.delete_file',
+        { path: currentPath.value + '/' + contextMenu.item.filename },
+        { action: 'files/getDeleteFile' }
+    )
 
-        /**
-         * mp4 and jpg always require to have the same name as the
-         * jpg is used as a mp4-thumbnail in the timelapse file-browser
-         */
-        const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
+    if (fileExtension !== 'mp4') return
 
-        if (fileJpg) {
-            this.$socket.emit('server.files.move', {
-                source: `${this.currentPath}/${oldNameWithoutExtension}.jpg`,
-                dest: `${this.currentPath}/${this.dialogRenameFile.newName}.jpg`,
-            })
-        }
-    }
+    const previewFilename = filename + '.jpg'
+    const previewExists = files.value.findIndex((file) => file.filename === previewFilename) !== -1
 
-    renameDirectory(item: FileStateFile) {
-        this.dialogRenameDirectory.item = item
-        this.dialogRenameDirectory.newName = item.filename
-        this.dialogRenameDirectory.show = true
-
-        setTimeout(() => {
-            this.inputFieldRenameDirectory?.focus()
-        }, 200)
-    }
-
-    renameDirectoryAction() {
-        this.dialogRenameDirectory.show = false
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: this.currentPath + '/' + this.dialogRenameDirectory.item.filename,
-                dest: this.currentPath + '/' + this.dialogRenameDirectory.newName,
-            },
-            { action: 'files/getMove' }
-        )
-    }
-
-    removeFile() {
-        const filename = this.contextMenu.item.filename.slice(0, this.contextMenu.item.filename.lastIndexOf('.'))
-        const fileExtension = this.contextMenu.item.filename.split('.').pop()
-
-        /**
-         * delete the file regardless of its file-extension
-         */
-        this.$socket.emit(
+    if (previewExists)
+        socket.emit(
             'server.files.delete_file',
-            { path: this.currentPath + '/' + this.contextMenu.item.filename },
+            { path: currentPath.value + '/' + previewFilename },
             { action: 'files/getDeleteFile' }
         )
+}
 
-        if (fileExtension !== 'mp4') return
+function deleteDirectory(item: FileStateFile) {
+    dialogDeleteDirectory.item = item
+    dialogDeleteDirectory.show = true
+}
 
-        /**
-         * if file-extension is mp4, also delete its corresponding thumbnail jpg
-         */
-        const previewFilename = filename + '.jpg'
-        const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
+function deleteDirectoryAction() {
+    socket.emit(
+        'server.files.delete_directory',
+        { path: currentPath.value + '/' + contextMenu.item.filename, force: true },
+        { action: 'files/getDeleteDir' }
+    )
+}
 
-        if (previewExists)
-            this.$socket.emit(
+function deleteSelectedFiles() {
+    selectedFiles.value.forEach((item: FileStateGcodefile) => {
+        if (item.isDirectory) {
+            socket.emit(
+                'server.files.delete_directory',
+                { path: currentPath.value + '/' + item.filename, force: true },
+                { action: 'files/getDeleteDir' }
+            )
+        } else {
+            const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
+            const fileExtension = item.filename.split('.').pop()
+
+            socket.emit(
                 'server.files.delete_file',
-                { path: this.currentPath + '/' + previewFilename },
+                { path: currentPath.value + '/' + item.filename },
                 { action: 'files/getDeleteFile' }
             )
-    }
 
-    deleteDirectory(item: FileStateFile) {
-        this.dialogDeleteDirectory.item = item
-        this.dialogDeleteDirectory.show = true
-    }
+            if (fileExtension !== 'mp4') return
 
-    deleteDirectoryAction() {
-        this.$socket.emit(
-            'server.files.delete_directory',
-            { path: this.currentPath + '/' + this.contextMenu.item.filename, force: true },
-            { action: 'files/getDeleteDir' }
-        )
-    }
+            const previewFilename = filename + '.jpg'
+            const previewExists = files.value.findIndex((file) => file.filename === previewFilename) !== -1
 
-    deleteSelectedFiles() {
-        this.selectedFiles.forEach((item: FileStateGcodefile) => {
-            if (item.isDirectory) {
-                this.$socket.emit(
-                    'server.files.delete_directory',
-                    { path: this.currentPath + '/' + item.filename, force: true },
-                    { action: 'files/getDeleteDir' }
-                )
-            } else {
-                const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
-                const fileExtension = item.filename.split('.').pop()
-
-                this.$socket.emit(
+            if (previewExists)
+                socket.emit(
                     'server.files.delete_file',
-                    { path: this.currentPath + '/' + item.filename },
+                    { path: currentPath.value + '/' + previewFilename },
                     { action: 'files/getDeleteFile' }
                 )
+        }
+    })
 
-                if (fileExtension !== 'mp4') return
-
-                /**
-                 * if file-extension is mp4, also delete its corresponding thumbnail jpg
-                 */
-                const previewFilename = filename + '.jpg'
-                const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
-
-                if (previewExists)
-                    this.$socket.emit(
-                        'server.files.delete_file',
-                        { path: this.currentPath + '/' + previewFilename },
-                        { action: 'files/getDeleteFile' }
-                    )
-            }
-        })
-
-        this.selectedFiles = []
-    }
+    store.dispatch('gui/saveSetting', { name: 'view.timelapse.selectedFiles', value: [] })
 }
 </script>
 

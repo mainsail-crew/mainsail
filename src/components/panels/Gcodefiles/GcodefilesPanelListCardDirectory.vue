@@ -41,71 +41,64 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import type { LongpressEvent } from '@/directives/longpress'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
+import { useSocket } from '@/composables/useSocket'
 import { FileStateGcodefile } from '@/store/files/types'
 import { mdiDelete, mdiFolder, mdiRenameBox } from '@mdi/js'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 import GcodefilesRenameDirectoryDialog from '@/components/dialogs/GcodefilesRenameDirectoryDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
-@Component({
-    components: {
-        ConfirmationDialog,
-        GcodefilesRenameDirectoryDialog,
-    },
-})
-export default class GcodefilesPanelListCardDirectory extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiDelete = mdiDelete
-    mdiFolder = mdiFolder
-    mdiRenameBox = mdiRenameBox
+const props = defineProps<{
+    item: FileStateGcodefile
+}>()
 
-    showContextMenu = false
-    showContextMenuX = 0
-    showContextMenuY = 0
+const { currentPath, setCurrentPath } = useGcodeFiles()
+const socket = useSocket()
 
-    showRenameDirectoryDialog = false
-    showDeleteDirectoryDialog = false
+const showContextMenu = ref(false)
+const showContextMenuX = ref(0)
+const showContextMenuY = ref(0)
 
-    @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
+const showRenameDirectoryDialog = ref(false)
+const showDeleteDirectoryDialog = ref(false)
 
-    goToDirectory() {
-        this.currentPath += '/' + this.item.filename
-    }
-
-    deleteDirectory() {
-        this.$socket.emit(
-            'server.files.delete_directory',
-            { path: 'gcodes' + this.currentPath + '/' + this.item.filename, force: true },
-            { action: 'files/getDeleteDir' }
-        )
-    }
-
-    showContextMenuAction(e: MouseEvent | LongpressEvent) {
-        e?.preventDefault()
-        EventBus.$emit(CLOSE_CONTEXT_MENU)
-
-        this.showContextMenuX = e?.clientX || e?.pageX || window.screenX / 2
-        this.showContextMenuY = e?.clientY || e?.pageY || window.screenY / 2
-
-        this.showContextMenu = true
-    }
-
-    closeContextMenu() {
-        this.showContextMenu = false
-    }
-
-    mounted() {
-        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
-
-    beforeDestroy() {
-        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
+function goToDirectory() {
+    setCurrentPath(currentPath.value + '/' + props.item.filename)
 }
+
+function deleteDirectory() {
+    socket.emit(
+        'server.files.delete_directory',
+        { path: 'gcodes' + currentPath.value + '/' + props.item.filename, force: true },
+        { action: 'files/getDeleteDir' }
+    )
+}
+
+function showContextMenuAction(e: MouseEvent | LongpressEvent) {
+    e?.preventDefault()
+    EventBus.$emit(CLOSE_CONTEXT_MENU)
+
+    showContextMenuX.value = e?.clientX || e?.pageX || window.screenX / 2
+    showContextMenuY.value = e?.clientY || e?.pageY || window.screenY / 2
+
+    showContextMenu.value = true
+}
+
+function closeContextMenu() {
+    showContextMenu.value = false
+}
+
+onMounted(() => {
+    EventBus.$on(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
+
+onBeforeUnmount(() => {
+    EventBus.$off(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
 </script>
 
 <style scoped>

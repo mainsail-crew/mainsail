@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="showDialog" persistent max-width="600">
+    <v-dialog :model-value="showDialog" @update:model-value="emitValue" persistent max-width="600">
         <panel
             :title="$t('Machine.UpdatePanel.AreYouSure')"
             :icon="mdiProgressQuestion"
@@ -35,37 +35,44 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
 import { mdiProgressQuestion, mdiCloseThick } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
-import GitCommitsListDay from '@/components/panels/Machine/UpdatePanel/GitCommitsListDay.vue'
 import UpdateHintAlert from '@/components/panels/Machine/UpdatePanel/UpdateHintAlert.vue'
 
-@Component({
-    components: { GitCommitsListDay, Panel, UpdateHintAlert },
-})
-export default class UpdateHint extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
-    mdiProgressQuestion = mdiProgressQuestion
+const props = defineProps<{
+    'model-value': boolean
+    repo: ServerUpdateManagerStateGitRepo
+}>()
 
-    checkboxUpdateQuestion = false
+const emit = defineEmits<{
+    'update:model-value': [value: boolean]
+    'do-update': []
+    'open-commit-history': []
+}>()
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo
+const mdiCloseThick = mdiCloseThick
+const mdiProgressQuestion = mdiProgressQuestion
 
-    doUpdate() {
-        this.$emit('do-update')
-    }
+const checkboxUpdateQuestion = ref(false)
 
-    openCommitHistory() {
-        this.$emit('open-commit-history')
-    }
+const showDialog = computed(() => props['model-value'])
 
-    closeDialog() {
-        this.showDialog = false
-    }
+function emitValue(val: boolean) {
+    emit('update:model-value', val)
+}
+
+function doUpdate() {
+    emit('do-update')
+}
+
+function openCommitHistory() {
+    emit('open-commit-history')
+}
+
+function closeDialog() {
+    emit('update:model-value', false)
 }
 </script>

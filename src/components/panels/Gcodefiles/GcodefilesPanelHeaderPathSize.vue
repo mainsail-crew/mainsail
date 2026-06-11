@@ -27,27 +27,27 @@
         </v-col>
     </v-row>
 </template>
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
 import { formatFilesize } from '@/plugins/helpers'
 
-@Component
-export default class GcodefilesPanelHeaderPathSize extends Mixins(BaseMixin, GcodefilesMixin) {
-    formatFilesize = formatFilesize
+const { currentPath, setCurrentPath } = useGcodeFiles()
 
-    get directory() {
-        return this.$store.getters['files/getDirectory']('gcodes' + this.currentPath)
-    }
+const store = useStore()
 
-    get disk_usage() {
-        return this.directory?.disk_usage ?? { used: 0, free: 0, total: 0 }
-    }
+const directory = computed(() =>
+    store.getters['files/getDirectory']('gcodes' + currentPath.value)
+)
 
-    clickPathNavGoToDirectory(segment: { location: string }) {
-        this.currentPath = segment.location
-    }
+const disk_usage = computed(() =>
+    directory.value?.disk_usage ?? { used: 0, free: 0, total: 0 }
+)
+
+function clickPathNavGoToDirectory(segment: { location: string }) {
+    setCurrentPath(segment.location)
 }
 </script>
 

@@ -112,160 +112,142 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, Ref, Vue } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useStore } from 'vuex'
+import { useWebcam } from '@/composables/useWebcam'
+import { useTheme } from '@/composables/useTheme'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
-import { Debounce } from 'vue-debounce-decorator'
-import WebcamMixin from '@/components/mixins/webcam'
 import WebcamWrapper from '@/components/webcams/WebcamWrapper.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
-import ThemeMixin from '@/components/mixins/theme'
 
-@Component({
-    components: {
-        Panel,
-        'webcam-wrapper': WebcamWrapper,
-        'mainsail-logo': MainsailLogo,
-    },
+const props = defineProps<{
+    printer: FarmPrinterState
+}>()
+
+const { convertWebcamIcon, sidebarBgImage } = useWebcam()
+
+const store = useStore()
+
+const imageHeight = ref(200)
+let resizeObserver: ResizeObserver | null = null
+
+const imageDiv = ref<{ $el: HTMLElement } | null>(null)
+const panel = ref<{ $el: HTMLElement } | null>(null)
+
+const printerUrl = computed(() => {
+    const thisUrl = window.location.href.split('/')
+    const protocol = thisUrl[0]
+
+    let url = protocol + '//' + props.printer.socket.hostname
+    if (80 !== props.printer.socket.webPort) url += ':' + props.printer.socket.webPort
+
+    return url
 })
-export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, WebcamMixin) {
-    mdiPrinter3d = mdiPrinter3d
-    mdiWebcam = mdiWebcam
-    mdiMenuDown = mdiMenuDown
-    mdiWebcamOff = mdiWebcamOff
-    mdiFileOutline = mdiFileOutline
 
-    imageHeight = 200
-    resizeObserver: ResizeObserver | null = null
+const isCurrentPrinter = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/isCurrentPrinter']
+)
 
-    @Prop({ type: Object, required: true }) declare printer: FarmPrinterState
-    @Ref() readonly imageDiv!: Vue
-    @Ref() readonly panel!: Vue
+const currentCamName = computed({
+    get: () => store.getters['farm/' + props.printer._namespace + '/getSetting']('currentCamName', 'off'),
+    set: (newVal: string) => {
+        store.dispatch('farm/' + props.printer._namespace + '/setSettings', { currentCamName: newVal })
+    }
+})
 
-    get printerUrl() {
-        const thisUrl = window.location.href.split('/')
-        const protocol = thisUrl[0]
+const printer_name = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/getPrinterName']
+)
 
-        let url = protocol + '//' + this.printer.socket.hostname
-        if (80 !== this.printer.socket.webPort) url += ':' + this.printer.socket.webPort
+const printer_status = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/getStatus']
+)
 
-        return url
+const printer_current_filename = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/getCurrentFilename']
+)
+
+const printer_image = computed(() => {
+    if (currentWebcam.value) return sidebarBgImage.value
+    return store.getters['farm/' + props.printer._namespace + '/getImage'] ?? sidebarBgImage.value
+})
+
+const printer_logo = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/getLogo']
+)
+
+const printerLogoColor = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/getLogoColor']
+)
+
+const printer_position = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/getPosition']
+)
+
+const printer_preview = computed(() =>
+    store.getters['farm/' + props.printer._namespace + '/getPrinterPreview']
+)
+
+const showWebcamSwitch = computed(() => {
+    if (printer_webcams.value.length == 0) return false
+    return props.printer.socket.isConnected
+})
+
+const printer_webcams = computed<GuiWebcamStateWebcam[]>(() =>
+    store.getters['farm/' + props.printer._namespace + '/getPrinterWebcams']
+)
+
+const currentWebcam = computed<GuiWebcamStateWebcam | null>(() => {
+    const currentCam = printer_webcams.value?.find(
+        (webcam: GuiWebcamStateWebcam) => webcam.name === currentCamName.value
+    )
+    if (currentCam) return currentCam
+    return null
+})
+
+const panelClass = computed<string[]>(() => {
+    const output: string[] = []
+    if (!props.printer.socket.isConnected && !props.printer.socket.isConnecting) output.push('disabledPrinter')
+    return output
+})
+
+function clickPrinter() {
+    if (props.printer.socket.isConnected) {
+        store.dispatch('changePrinter', { printer: props.printer._namespace })
+        return
     }
 
-    get isCurrentPrinter() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/isCurrentPrinter']
+    store.dispatch('farm/' + props.printer._namespace + '/reconnect')
+}
+
+onMounted(() => {
+    calcImageHeight()
+
+    resizeObserver = new ResizeObserver(() => handleResize())
+    if (panel.value) resizeObserver.observe(panel.value.$el)
+})
+
+onBeforeUnmount(() => {
+    resizeObserver?.disconnect()
+})
+
+function calcImageHeight() {
+    if (imageDiv.value?.$el?.clientWidth) {
+        imageHeight.value = Math.round((imageDiv.value.$el.clientWidth / 3) * 2)
+        return
     }
 
-    get currentCamName() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getSetting']('currentCamName', 'off')
-    }
+    imageHeight.value = 200
+}
 
-    set currentCamName(newVal) {
-        this.$store.dispatch('farm/' + this.printer._namespace + '/setSettings', { currentCamName: newVal })
-    }
-
-    get printer_name() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterName']
-    }
-
-    get printer_status() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getStatus']
-    }
-
-    get printer_current_filename() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getCurrentFilename']
-    }
-
-    get printer_image() {
-        if (this.currentWebcam) return this.sidebarBgImage
-
-        return this.$store.getters['farm/' + this.printer._namespace + '/getImage'] ?? this.sidebarBgImage
-    }
-
-    get printer_logo() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getLogo']
-    }
-
-    get printerLogoColor() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getLogoColor']
-    }
-
-    get printer_position() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPosition']
-    }
-
-    get printer_preview() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterPreview']
-    }
-
-    get showWebcamSwitch() {
-        if (this.printer_webcams.length == 0) return false
-
-        return this.printer.socket.isConnected
-    }
-
-    get printer_webcams(): GuiWebcamStateWebcam[] {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterWebcams']
-    }
-
-    get currentWebcam(): GuiWebcamStateWebcam | null {
-        const currentCam = this.printer_webcams?.find(
-            (webcam: GuiWebcamStateWebcam) => webcam.name === this.currentCamName
-        )
-        if (currentCam) return currentCam
-
-        return null
-    }
-
-    get panelClass(): string[] {
-        const output = []
-
-        if (!this.printer.socket.isConnected && !this.printer.socket.isConnecting) output.push('disabledPrinter')
-
-        return output
-    }
-
-    clickPrinter() {
-        // If the printer is already connected, just switch to it
-        if (this.printer.socket.isConnected) {
-            this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
-            return
-        }
-
-        // Otherwise, reconnect to the printer
-        this.$store.dispatch('farm/' + this.printer._namespace + '/reconnect')
-    }
-
-    mounted() {
-        this.calcImageHeight()
-
-        this.resizeObserver = new ResizeObserver(() => this.handleResize())
-        this.resizeObserver.observe(this.panel.$el)
-    }
-
-    beforeDestroy() {
-        this.resizeObserver?.disconnect()
-    }
-
-    calcImageHeight() {
-        if (this.imageDiv?.$el?.clientWidth) {
-            this.imageHeight = Math.round((this.imageDiv.$el.clientWidth / 3) * 2)
-            return
-        }
-
-        this.imageHeight = 200
-    }
-
-    @Debounce(200)
-    handleResize() {
-        this.$nextTick(() => {
-            this.calcImageHeight()
-        })
-    }
+function handleResize() {
+    nextTick(() => {
+        calcImageHeight()
+    })
 }
 </script>
 

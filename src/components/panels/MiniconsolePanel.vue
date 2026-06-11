@@ -85,80 +85,91 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed, ref, watch, onMounted, nextTick } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useConsole } from '@/composables/useConsole'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCog, mdiConsoleLine, mdiTrashCan } from '@mdi/js'
 import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
-import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
-@Component({
-    components: {
-        Panel,
-        ConsoleTable,
-        CommandHelpModal,
-    },
+const { socketIsConnected, klipperState, moonrakerComponents } = useBase()
+
+const _console = useConsole()
+const consoleDirection = _console.consoleDirection
+const hideWaitTemperatures = computed({
+    get: () => _console.hideWaitTemperatures.value,
+    set: (val) => _console.setHideWaitTemperatures(val)
 })
-export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
-    mdiTrashCan = mdiTrashCan
-    mdiConsoleLine = mdiConsoleLine
-    mdiCog = mdiCog
+const hideTlCommands = computed({
+    get: () => _console.hideTlCommands.value,
+    set: (val) => _console.setHideTlCommands(val)
+})
+const customFilters = _console.customFilters
+const autoscroll = computed({
+    get: () => _console.autoscroll.value,
+    set: (val) => _console.setAutoscroll(val)
+})
+const rawOutput = computed({
+    get: () => _console.rawOutput.value,
+    set: (val) => _console.setRawOutput(val)
+})
+const { toggleFilter, clearConsole } = _console
 
-    @Ref() readonly miniConsoleScroll?: OverlayScrollbarsComponent
-    @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
+const store = useStore()
 
-    get consoleHeight() {
-        return this.$store.state.gui.console.height ?? 300
+const miniConsoleScroll = ref<OverlayScrollbarsComponent | null>(null)
+const gcodeCommandField = ref<typeof ConsoleTextarea | null>(null)
+
+const consoleHeight = computed(() =>
+    store.state.gui.console.height ?? 300
+)
+
+const events = computed(() =>
+    store.getters['server/getConsoleEvents'](consoleDirection.value === 'table', 250)
+)
+
+watch(events, () => {
+    if (consoleDirection.value === 'shell' && autoscroll.value) {
+        setTimeout(() => {
+            scrollToBottom()
+        }, 50)
     }
+})
 
-    get events() {
-        return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table', 250)
-    }
+watch(autoscroll, (newVal: boolean) => {
+    if (newVal) scrollToBottom()
+})
 
-    @Watch('events')
-    eventsChanged() {
-        if (this.consoleDirection === 'shell' && this.autoscroll) {
-            setTimeout(() => {
-                this.scrollToBottom()
-            }, 50)
-        }
-    }
+function commandClick(msg: string): void {
+    gcodeCommandField.value?.setGcode(msg)
+}
 
-    @Watch('autoscroll')
-    autoscrollChanged(newVal: boolean) {
-        if (newVal) this.scrollToBottom()
-    }
+onMounted(() => {
+    if (consoleDirection.value === 'shell') scrollToBottom()
+})
 
-    commandClick(msg: string): void {
-        this.gcodeCommandField.setGcode(msg)
-    }
+function scrollToBottom() {
+    nextTick(() => {
+        scrollTo(100)
+    })
+}
 
-    mounted() {
-        if (this.consoleDirection === 'shell') this.scrollToBottom()
-    }
+function scrollToTop() {
+    nextTick(() => {
+        scrollTo(0)
+    })
+}
 
-    scrollToBottom() {
-        this.$nextTick(() => {
-            this.scrollTo(100)
-        })
-    }
+function scrollTo(position: number) {
+    if (!miniConsoleScroll.value) return
 
-    scrollToTop() {
-        this.$nextTick(() => {
-            this.scrollTo(0)
-        })
-    }
-
-    scrollTo(position: number) {
-        if (!this.miniConsoleScroll) return
-
-        const instance = this.miniConsoleScroll.osInstance()
-        instance?.scroll({ y: `${position}%` })
-    }
+    const instance = miniConsoleScroll.value.osInstance()
+    instance?.scroll({ y: `${position}%` })
 }
 </script>
 

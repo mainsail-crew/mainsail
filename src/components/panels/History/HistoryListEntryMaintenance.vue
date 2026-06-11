@@ -54,11 +54,12 @@
         <history-list-panel-detail-maintenance v-model="detailsDialogBool" :item="item" />
     </tr>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import type { LongpressEvent } from '@/directives/longpress'
 import Panel from '@/components/ui/Panel.vue'
-import BaseMixin from '@/components/mixins/base'
 import {
     mdiAdjust,
     mdiAlarm,
@@ -74,139 +75,100 @@ import { HistoryListPanelCol } from '@/store/server/history/types'
 import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenance from '@/components/dialogs/HistoryListPanelDetailMaintenance.vue'
 
-@Component({
-    components: { HistoryListPanelDetailMaintenance, Panel },
+const emit = defineEmits<{
+    select: [value: boolean]
+}>()
+
+const props = defineProps<{
+    item: GuiMaintenanceStateEntry
+    tableFields: HistoryListPanelCol[]
+    isSelected: boolean
+}>()
+
+const { formatDateTime } = useBase()
+const store = useStore()
+
+const detailsDialogBool = ref(false)
+const contextMenuBool = ref(false)
+const contextMenuX = ref(0)
+const contextMenuY = ref(0)
+
+const restFilament = computed(() => {
+    const start = props.item?.start_filament ?? 0
+    const end = props.item.end_filament ?? 0
+    const current = store.state.server.history.job_totals?.total_filament_used ?? 0
+    let used = current - start
+    if (end) used = end - start
+    used /= 1000
+    return used
 })
-export default class HistoryListPanel extends Mixins(BaseMixin) {
-    mdiAdjust = mdiAdjust
-    mdiAlarm = mdiAlarm
-    mdiCalendar = mdiCalendar
-    mdiDelete = mdiDelete
-    mdiTextBoxSearch = mdiTextBoxSearch
 
-    detailsDialogBool = false
+const restTextFilament = computed(() => {
+    if (!props.item.reminder.filament.bool) return false
+    const value = props.item.reminder.filament?.value ?? 0
+    return `${restFilament.value.toFixed(0)} / ${value} m`
+})
 
-    contextMenuBool = false
-    contextMenuX = 0
-    contextMenuY = 0
+const restPrinttime = computed(() => {
+    const start = props.item.start_printtime ?? 0
+    const end = props.item.end_printtime ?? 0
+    const current = store.state.server.history.job_totals?.total_print_time ?? 0
+    let used = current - start
+    if (end) used = end - start
+    used /= 3600
+    return used
+})
 
-    @Prop({ type: Object, required: true }) readonly item!: GuiMaintenanceStateEntry
-    @Prop({ type: Array, required: true }) readonly tableFields!: HistoryListPanelCol[]
-    @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
+const restTextPrinttime = computed(() => {
+    if (!props.item.reminder.printtime.bool) return false
+    const value = props.item.reminder.printtime?.value ?? 0
+    return `${restPrinttime.value.toFixed(1)} / ${value} h`
+})
 
-    get restFilament() {
-        const start = this.item?.start_filament ?? 0
-        const end = this.item.end_filament ?? 0
-        const current = this.$store.state.server.history.job_totals?.total_filament_used ?? 0
+const restDays = computed(() => {
+    const start = props.item.start_time ?? 0
+    const end = props.item.end_time ?? 0
+    const current = new Date().getTime() / 1000
+    let used = current - start
+    if (end) used = end - start
+    return used / (60 * 60 * 24)
+})
 
-        // calc filament since start
-        // if end is not null, calc used filament until end
-        let used = current - start
-        if (end) used = end - start
+const restTextDays = computed(() => {
+    if (!props.item.reminder.date.bool) return false
+    const value = props.item.reminder.date?.value ?? 0
+    return `${restDays.value.toFixed(0)} / ${value} days`
+})
 
-        // convert to m
-        used /= 1000
+const reminder = computed(() => props.item.reminder?.type ?? null)
+const alarmIcon = computed(() => reminder.value === 'repeat' ? mdiAlarmMultiple : mdiAlarm)
+const icon = computed(() => props.item.end_time !== null ? mdiNotebookCheck : mdiNotebook)
 
-        return used
-    }
-
-    get restTextFilament() {
-        if (!this.item.reminder.filament.bool) return false
-
-        const value = this.item.reminder.filament?.value ?? 0
-
-        return `${this.restFilament.toFixed(0)} / ${value} m`
-    }
-
-    get restPrinttime() {
-        const start = this.item.start_printtime ?? 0
-        const end = this.item.end_printtime ?? 0
-        const current = this.$store.state.server.history.job_totals?.total_print_time ?? 0
-
-        // calc filament since start
-        // if end is not null, calc used filament until end
-        let used = current - start
-        if (end) used = end - start
-
-        // convert to h
-        used /= 3600
-
-        return used
-    }
-
-    get restTextPrinttime() {
-        if (!this.item.reminder.printtime.bool) return false
-
-        const value = this.item.reminder.printtime?.value ?? 0
-
-        return `${this.restPrinttime.toFixed(1)} / ${value} h`
-    }
-
-    get restDays() {
-        const start = this.item.start_time ?? 0
-        const end = this.item.end_time ?? 0
-        const current = new Date().getTime() / 1000
-
-        // calc days since start
-        // if end is not null, calc used days until end
-        let used = current - start
-        if (end) used = end - start
-
-        return used / (60 * 60 * 24)
-    }
-
-    get restTextDays() {
-        if (!this.item.reminder.date.bool) return false
-
-        const value = this.item.reminder.date?.value ?? 0
-
-        return `${this.restDays.toFixed(0)} / ${value} days`
-    }
-
-    get reminder() {
-        return this.item.reminder?.type ?? null
-    }
-
-    get alarmIcon() {
-        if (this.reminder === 'repeat') return mdiAlarmMultiple
-
-        return mdiAlarm
-    }
-
-    get icon() {
-        if (this.item.end_time !== null) return mdiNotebookCheck
-
-        return mdiNotebook
-    }
-
-    select(newVal: boolean) {
-        this.$emit('select', newVal)
-    }
-
-    showContextMenu(e: MouseEvent | LongpressEvent) {
-        e?.preventDefault()
-        EventBus.$emit(CLOSE_CONTEXT_MENU)
-
-        this.contextMenuX = e?.clientX || e?.pageX || window.screenX / 2
-        this.contextMenuY = e?.clientY || e?.pageY || window.screenY / 2
-
-        this.contextMenuBool = true
-    }
-
-    closeContextMenu() {
-        this.contextMenuBool = false
-    }
-
-    deleteEntry() {
-        this.$store.dispatch('gui/maintenance/delete', this.item.id)
-    }
-
-    mounted() {
-        EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
-
-    beforeDestroy() {
-        EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
-    }
+function select(newVal: boolean) {
+    emit('select', newVal)
 }
+
+function showContextMenu(e: MouseEvent | LongpressEvent) {
+    e?.preventDefault()
+    EventBus.$emit(CLOSE_CONTEXT_MENU)
+    contextMenuX.value = e?.clientX || e?.pageX || window.screenX / 2
+    contextMenuY.value = e?.clientY || e?.pageY || window.screenY / 2
+    contextMenuBool.value = true
+}
+
+function closeContextMenu() {
+    contextMenuBool.value = false
+}
+
+function deleteEntry() {
+    store.dispatch('gui/maintenance/delete', props.item.id)
+}
+
+onMounted(() => {
+    EventBus.$on(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
+
+onBeforeUnmount(() => {
+    EventBus.$off(CLOSE_CONTEXT_MENU, closeContextMenu)
+})
 </script>

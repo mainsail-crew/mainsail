@@ -1,7 +1,6 @@
 <template>
     <panel v-if="klipperReadyForGui" :icon="mdiFan" title="Spindle & Coolant" :collapsible="true" card-class="spindle-coolant-panel">
         <v-container class="py-2">
-            <!-- Spindle Control -->
             <v-row dense class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Spindle Control:</span>
@@ -48,7 +47,6 @@
 
             <v-divider class="my-3"></v-divider>
 
-            <!-- Coolant Control -->
             <v-row dense class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Coolant Control:</span>
@@ -84,102 +82,92 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import Panel from '@/components/ui/Panel.vue'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
 import { mdiFan, mdiPlay, mdiStop, mdiRotate3dVariant, mdiWater, mdiSpray } from '@mdi/js'
 import { setCncCoolant, setCncSpindle } from '@/store/files/cncApi'
 
-@Component({
-    components: {
-        Panel,
-    },
-})
-export default class SpindleCoolantPanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiFan = mdiFan
-    mdiPlay = mdiPlay
-    mdiStop = mdiStop
-    mdiRotate3dVariant = mdiRotate3dVariant
-    mdiWater = mdiWater
-    mdiSpray = mdiSpray
+const { klipperReadyForGui } = useBase()
+useControl()
 
-    spindleSpeedInput: number | null = null
+const store = useStore()
 
-    async setSpindleOn() {
-        await this.sendSpindle('cw')
+const spindleSpeedInput = ref<number | null>(null)
+
+async function setSpindleOn() {
+    await sendSpindle('cw')
+}
+
+async function setSpindleOff() {
+    await sendSpindle('off')
+}
+
+async function setSpindleCwl() {
+    await sendSpindle('cw')
+}
+
+async function setSpindleCcwl() {
+    await sendSpindle('ccw')
+}
+
+async function setSpindleSpeed() {
+    if (spindleSpeedInput.value !== null) {
+        await sendSpindle(spindleSpeedInput.value > 0 ? 'cw' : 'off')
     }
+}
 
-    async setSpindleOff() {
-        await this.sendSpindle('off')
+async function sendSpindle(state: 'off' | 'cw' | 'ccw') {
+    const rpm = spindleSpeedInput.value ?? 0
+
+    try {
+        await setCncSpindle(store.getters['socket/getUrl'], {
+            state,
+            rpm,
+        })
+        store.dispatch('server/addEvent', {
+            message: `CNC spindle ${state}${state === 'off' ? '' : ` ${rpm}`}`,
+            type: 'command',
+        })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to update spindle'
+        useToast().error(message)
     }
+}
 
-    async setSpindleCwl() {
-        await this.sendSpindle('cw')
-    }
+async function setCoolantFloodOn() {
+    await sendCoolant({ flood: true, mist: false })
+}
 
-    async setSpindleCcwl() {
-        await this.sendSpindle('ccw')
-    }
+async function setCoolantFloodOff() {
+    await sendCoolant({ flood: false, mist: false })
+}
 
-    async setSpindleSpeed() {
-        if (this.spindleSpeedInput !== null) {
-            await this.sendSpindle(this.spindleSpeedInput > 0 ? 'cw' : 'off')
-        }
-    }
+async function setCoolantMistOn() {
+    await sendCoolant({ flood: false, mist: true })
+}
 
-    async sendSpindle(state: 'off' | 'cw' | 'ccw') {
-        const rpm = this.spindleSpeedInput ?? 0
+async function setCoolantMistOff() {
+    await sendCoolant({ flood: false, mist: false })
+}
 
-        try {
-            await setCncSpindle(this.$store.getters['socket/getUrl'], {
-                state,
-                rpm,
-            })
-            this.$store.dispatch('server/addEvent', {
-                message: `CNC spindle ${state}${state === 'off' ? '' : ` ${rpm}`}`,
-                type: 'command',
-            })
-        } catch (error) {
-            const message = error instanceof Error ? error.message : 'Failed to update spindle'
-            this.$toast.error(message)
-        }
-    }
-
-    // Coolant control methods
-    async setCoolantFloodOn() {
-        await this.sendCoolant({ flood: true, mist: false })
-    }
-
-    async setCoolantFloodOff() {
-        await this.sendCoolant({ flood: false, mist: false })
-    }
-
-    async setCoolantMistOn() {
-        await this.sendCoolant({ flood: false, mist: true })
-    }
-
-    async setCoolantMistOff() {
-        await this.sendCoolant({ flood: false, mist: false })
-    }
-
-    async sendCoolant(payload: { flood?: boolean; mist?: boolean }) {
-        try {
-            await setCncCoolant(this.$store.getters['socket/getUrl'], payload)
-            const active = payload.flood ? 'flood on' : payload.mist ? 'mist on' : 'off'
-            this.$store.dispatch('server/addEvent', {
-                message: `CNC coolant ${active}`,
-                type: 'command',
-            })
-        } catch (error) {
-            const message = error instanceof Error ? error.message : 'Failed to update coolant'
-            this.$toast.error(message)
-        }
+async function sendCoolant(payload: { flood?: boolean; mist?: boolean }) {
+    try {
+        await setCncCoolant(store.getters['socket/getUrl'], payload)
+        const active = payload.flood ? 'flood on' : payload.mist ? 'mist on' : 'off'
+        store.dispatch('server/addEvent', {
+            message: `CNC coolant ${active}`,
+            type: 'command',
+        })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to update coolant'
+        useToast().error(message)
     }
 }
 </script>
 
 <style scoped>
-/* Add any specific styles for the SpindleCoolant Panel here */
 </style>

@@ -101,93 +101,64 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiEngine } from '@mdi/js'
-import { Debounce } from 'vue-debounce-decorator'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import Responsive from '@/components/ui/Responsive.vue'
 
-@Component({
-    components: {
-        NumberInput,
-        Panel,
-        Responsive,
-    },
+const { klipperReadyForGui } = useBase()
+const { doSend } = useControl()
+
+const store = useStore()
+
+const toolhead = computed(() => store.state.printer?.toolhead ?? {})
+
+const configPrinter = computed(() => store.state.printer?.configfile?.settings?.printer ?? {})
+
+const velocity = computed(() => Math.trunc(toolhead.value.max_velocity ?? 300))
+
+const accel = computed(() => Math.trunc(toolhead.value.max_accel ?? 3000))
+
+const accelToDecel = computed(() => Math.trunc(toolhead.value.max_accel_to_decel ?? accel.value / 2))
+
+const minimumCruiseRatio = computed<number | null>(() => {
+    const value = toolhead.value.minimum_cruise_ratio ?? null
+    if (value === null) return null
+    return Math.round(value * 100)
 })
-export default class MachineSettingsPanel extends Mixins(BaseMixin) {
-    mdiEngine = mdiEngine
 
-    get toolhead() {
-        return this.$store.state.printer?.toolhead ?? {}
-    }
+const squareCornerVelocity = computed(() =>
+    Math.floor((toolhead.value.square_corner_velocity ?? 8) * 10) / 10
+)
 
-    get configPrinter() {
-        return this.$store.state.printer?.configfile?.settings?.printer ?? {}
-    }
+const defaultVelocity = computed(() => Math.trunc(configPrinter.value.max_velocity ?? 300))
 
-    get velocity(): number {
-        return Math.trunc(this.toolhead.max_velocity ?? 300)
-    }
+const defaultAccel = computed(() => Math.trunc(configPrinter.value.max_accel ?? 3000))
 
-    get accel(): number {
-        return Math.trunc(this.toolhead.max_accel ?? 3000)
-    }
+const defaultAccelToDecel = computed(() => Math.trunc(configPrinter.value.max_accel_to_decel ?? 1500))
 
-    get accelToDecel(): number {
-        return Math.trunc(this.toolhead.max_accel_to_decel ?? this.accel / 2)
-    }
+const defaultMinimumCruiseRatio = computed(() => {
+    const value = configPrinter.value.minimum_cruise_ratio ?? 0.5
+    return Math.round(value * 100)
+})
 
-    get minimumCruiseRatio(): number | null {
-        const value = this.toolhead.minimum_cruise_ratio ?? null
+const defaultSquareCornerVelocity = computed(() => {
+    const value = configPrinter.value.square_corner_velocity ?? 8
+    return Math.floor(value * 10) / 10
+})
 
-        if (value === null) return null
+function sendCruiseRatioCmd(params: { name: string; value: number }): void {
+    params.value = params.value / 100
+    sendCmd(params)
+}
 
-        return Math.round(value * 100)
-    }
-
-    get squareCornerVelocity(): number {
-        return Math.floor((this.toolhead.square_corner_velocity ?? 8) * 10) / 10
-    }
-
-    get defaultVelocity(): number {
-        return Math.trunc(this.configPrinter.max_velocity ?? 300)
-    }
-
-    get defaultAccel(): number {
-        return Math.trunc(this.configPrinter.max_accel ?? 3000)
-    }
-
-    get defaultAccelToDecel(): number {
-        return Math.trunc(this.configPrinter.max_accel_to_decel ?? 1500)
-    }
-
-    get defaultMinimumCruiseRatio(): number {
-        const value = this.configPrinter.minimum_cruise_ratio ?? 0.5
-
-        return Math.round(value * 100)
-    }
-
-    get defaultSquareCornerVelocity(): number {
-        const value = this.configPrinter.square_corner_velocity ?? 8
-
-        return Math.floor(value * 10) / 10
-    }
-
-    sendCruiseRatioCmd(params: { name: string; value: number }): void {
-        params.value = params.value / 100
-
-        this.sendCmd(params)
-    }
-
-    @Debounce(500)
-    sendCmd(params: { name: string; value: number }): void {
-        const gcode = `SET_VELOCITY_LIMIT ${params.name}=${params.value}`
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode })
-    }
+function sendCmd(params: { name: string; value: number }): void {
+    const gcode = `SET_VELOCITY_LIMIT ${params.name}=${params.value}`
+    doSend(gcode)
 }
 </script>

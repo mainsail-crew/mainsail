@@ -1,17 +1,14 @@
 <template>
     <div v-if="klipperState !== 'ready' && socketIsConnected">
         <v-alert v-if="klippyIsConnected" :color="messageType.color" dense text border="left" class="mb-0 mb-6">
-            <!-- KLIPPER MESSAGE TITLE -->
             <p class="font-weight-medium d-flex align-center">
                 <v-icon :color="messageType.color" class="pr-2">{{ messageType.icon }}</v-icon>
                 {{ serviceReportsKlipper }}
             </p>
-            <!-- KLIPPER MESSAGE -->
             <div v-if="klippy_message !== null">
                 <pre style="white-space: pre-wrap">{{ klippy_message.trim() }}</pre>
                 <v-divider class="mt-2 pb-3" />
                 <v-row>
-                    <!-- RESTART BUTTONS -->
                     <v-col>
                         <v-btn small outlined text :class="buttonClasses" @click="restart">
                             <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
@@ -22,7 +19,6 @@
                             {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
                         </v-btn>
                     </v-col>
-                    <!-- LOG DOWNLOAD BUTTONS -->
                     <v-col>
                         <v-btn
                             :href="apiUrl + '/server/files/klippy.log'"
@@ -47,12 +43,10 @@
                     </v-col>
                 </v-row>
             </div>
-            <!-- LOADER -->
             <v-card-text v-else class="text-center py-3">
                 <v-progress-circular indeterminate :color="messageType.color" />
             </v-card-text>
         </v-alert>
-        <!-- Power OFF panel -->
         <v-alert v-else-if="isPrinterPowerOff" dense text border="left" class="mb-6">
             <p class="font-weight-medium d-flex align-center">
                 <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
@@ -68,7 +62,6 @@
                 </v-col>
             </v-row>
         </v-alert>
-        <!-- DISCONNECTED INFOGRAPHIC -->
         <v-alert v-else-if="klipperState === 'disconnected'" dense text border="left" class="mb-6">
             <p class="font-weight-medium d-flex align-center">
                 <v-icon class="pr-2">{{ messageType.icon }}</v-icon>
@@ -81,10 +74,12 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -98,75 +93,70 @@ import {
     mdiPower,
 } from '@mdi/js'
 
-@Component({
-    components: { Panel, ConnectionStatus },
+const { klipperState, socketIsConnected, klippyIsConnected, isPrinterPowerOff, printerPowerDevice, apiUrl } = useBase()
+
+const store = useStore()
+const socket = useSocket()
+
+const klippy_message = computed<string | null>(() =>
+    store.state.server.klippy_message ?? null
+)
+
+const messageType = computed<{ color: string; icon: string }>(() => {
+    switch (klipperState.value) {
+        case 'startup':
+            return { color: 'info', icon: mdiRocketLaunch }
+        case 'shutdown':
+            return { color: 'warning', icon: mdiAlertOutline }
+        case 'error':
+            return { color: 'error', icon: mdiAlertOutline }
+        case 'disconnected':
+            return { color: '', icon: mdiConnection }
+        default:
+            return { color: '', icon: mdiMessageOutline }
+    }
 })
-export default class KlippyStatePanel extends Mixins(BaseMixin) {
-    mdiPrinter3d = mdiPrinter3d
-    mdiRestart = mdiRestart
-    mdiDownload = mdiDownload
-    mdiPower = mdiPower
 
-    get klippy_message(): string | null {
-        return this.$store.state.server.klippy_message ?? null
-    }
+const buttonClasses = computed(() =>
+    [messageType.value.color + '--text', 'my-1', 'w-100']
+)
 
-    get messageType(): { color: string; icon: string } {
-        switch (this.klipperState) {
-            case 'startup':
-                return { color: 'info', icon: mdiRocketLaunch }
-            case 'shutdown':
-                return { color: 'warning', icon: mdiAlertOutline }
-            case 'error':
-                return { color: 'error', icon: mdiAlertOutline }
-            case 'disconnected':
-                return { color: '', icon: mdiConnection }
-            default:
-                return { color: '', icon: mdiMessageOutline }
-        }
-    }
+const serviceReportsKlipper = computed(() =>
+    `${useI18n().t('Panels.KlippyStatePanel.ServiceReports', {
+        service: 'Klipper',
+    })}: ${klipperState.value.toUpperCase()}`
+)
 
-    get buttonClasses() {
-        return [this.messageType.color + '--text', 'my-1', 'w-100']
-    }
+const serviceReportsMoonraker = computed(() =>
+    `${useI18n().t('Panels.KlippyStatePanel.ServiceReports', {
+        service: 'Moonraker',
+    })}: ${klipperState.value.toUpperCase()}`
+)
 
-    get serviceReportsKlipper() {
-        return `${this.$t('Panels.KlippyStatePanel.ServiceReports', {
-            service: 'Klipper',
-        })}: ${this.klipperState.toUpperCase()}`
-    }
+function restart() {
+    socket.emit('printer.restart', {}, { loading: 'restart' })
+}
 
-    get serviceReportsMoonraker() {
-        return `${this.$t('Panels.KlippyStatePanel.ServiceReports', {
-            service: 'Moonraker',
-        })}: ${this.klipperState.toUpperCase()}`
-    }
+function firmwareRestart() {
+    socket.emit('printer.firmware_restart', {}, { loading: 'firmwareRestart' })
+}
 
-    restart() {
-        this.$socket.emit('printer.restart', {}, { loading: 'restart' })
-    }
+function downloadLog(event: MouseEvent) {
+    event.preventDefault()
 
-    firmwareRestart() {
-        this.$socket.emit('printer.firmware_restart', {}, { loading: 'firmwareRestart' })
-    }
+    const target = event.target as HTMLElement | null
+    const href = target?.closest('a')?.href ?? ''
+    if (href) window.open(href)
+}
 
-    downloadLog(event: MouseEvent) {
-        event.preventDefault()
-
-        const target = event.target as HTMLElement | null
-        const href = target?.closest('a')?.href ?? ''
-        if (href) window.open(href)
-    }
-
-    powerOn() {
-        this.$socket.emit(
-            'machine.device_power.post_device',
-            {
-                device: this.printerPowerDevice,
-                action: 'on',
-            },
-            { action: 'server/power/responseToggle' }
-        )
-    }
+function powerOn() {
+    socket.emit(
+        'machine.device_power.post_device',
+        {
+            device: printerPowerDevice.value,
+            action: 'on',
+        },
+        { action: 'server/power/responseToggle' }
+    )
 }
 </script>

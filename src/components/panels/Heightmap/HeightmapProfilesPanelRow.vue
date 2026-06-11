@@ -62,97 +62,70 @@
         <heightmap-rename-profile-dialog v-model="showRename" :name="name" />
     </v-row>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { mdiDelete, mdiGrid, mdiPencil, mdiProgressUpload } from '@mdi/js'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
 import { PrinterStateBedMeshProfile } from '@/store/printer/types'
+import { mdiDelete, mdiGrid, mdiPencil, mdiProgressUpload } from '@mdi/js'
 import HeightmapRenameProfileDialog from '@/components/dialogs/HeightmapRenameProfileDialog.vue'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 
-@Component({
-    components: { HeightmapRenameProfileDialog, ConfirmationDialog },
+const props = defineProps<{
+    name: string
+    profile: PrinterStateBedMeshProfile
+}>()
+
+const { loadings } = useBase()
+const socket = useSocket()
+const store = useStore()
+
+const showRemove = ref(false)
+const showRename = ref(false)
+
+const points = computed(() => {
+    const result: number[] = []
+    for (let i = 0; i < props.profile.points.length; i++) {
+        for (let j = 0; j < props.profile.points[i].length; j++) {
+            result.push(props.profile.points[i][j])
+        }
+    }
+    return result
 })
-export default class HeightmapProfilesPanelRow extends Mixins(BaseMixin) {
-    mdiDelete = mdiDelete
-    mdiGrid = mdiGrid
-    mdiPencil = mdiPencil
-    mdiProgressUpload = mdiProgressUpload
 
-    @Prop({ type: String, required: true }) name!: string
-    @Prop({ type: Object, required: true }) profile!: PrinterStateBedMeshProfile
+const min = computed(() => Math.round(Math.min(...points.value) * 1000) / 1000)
+const max = computed(() => Math.round(Math.max(...points.value) * 1000) / 1000)
+const variance = computed(() => Math.abs(min.value - max.value).toFixed(3))
 
-    showRemove = false
-    showRename = false
+const is_active = computed(() => {
+    const currentProfile = store.state.printer.bed_mesh?.profile_name ?? ''
+    return currentProfile === props.name
+})
 
-    get points() {
-        const points: number[] = []
+const loadingNameLoad = computed(() => `bedMeshLoad_${props.name}`)
+const loadingNameRemove = computed(() => `bedMeshRemove_${props.name}`)
+const isLoadingLoad = computed(() => loadings.value.includes(loadingNameLoad.value))
+const isLoadingRemove = computed(() => loadings.value.includes(loadingNameRemove.value))
 
-        for (let i = 0; i < this.profile.points.length; i++) {
-            for (let j = 0; j < this.profile.points[i].length; j++) {
-                points.push(this.profile.points[i][j])
-            }
-        }
-
-        return points
+function clickOnName() {
+    if (is_active.value) {
+        showRename.value = true
+        return
     }
+    loadProfile()
+}
 
-    get min() {
-        return Math.round(Math.min(...this.points) * 1000) / 1000
-    }
+function loadProfile() {
+    const gcode = `BED_MESH_PROFILE LOAD="${props.name}"`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: loadingNameLoad.value })
+}
 
-    get max() {
-        return Math.round(Math.max(...this.points) * 1000) / 1000
-    }
-
-    get variance() {
-        return Math.abs(this.min - this.max).toFixed(3)
-    }
-
-    get is_active() {
-        const currentProfile = this.$store.state.printer.bed_mesh?.profile_name ?? ''
-
-        return currentProfile === this.name
-    }
-
-    get loadingNameLoad() {
-        return `bedMeshLoad_${this.name}`
-    }
-
-    get loadingNameRemove() {
-        return `bedMeshRemove_${this.name}`
-    }
-
-    get isLoadingLoad() {
-        return this.loadings.includes(this.loadingNameLoad)
-    }
-
-    get isLoadingRemove() {
-        return this.loadings.includes(this.loadingNameRemove)
-    }
-
-    clickOnName() {
-        if (this.is_active) {
-            this.showRename = true
-            return
-        }
-
-        this.loadProfile()
-    }
-
-    loadProfile(): void {
-        const gcode = `BED_MESH_PROFILE LOAD="${this.name}"`
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: this.loadingNameLoad })
-    }
-
-    removeProfile(): void {
-        const gcode = `BED_MESH_PROFILE REMOVE="${this.name}"`
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: this.loadingNameRemove })
-    }
+function removeProfile() {
+    const gcode = `BED_MESH_PROFILE REMOVE="${props.name}"`
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: loadingNameRemove.value })
 }
 </script>
 

@@ -1,40 +1,47 @@
 <template>
     <v-row>
         <v-col class="col-12 py-1">
-            <v-checkbox v-model="value" :label="label" hide-details class="mt-0" />
+            <v-checkbox
+                :model-value="value"
+                @update:model-value="setValue"
+                :label="label"
+                hide-details
+                class="mt-0" />
         </v-col>
     </v-row>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 
-@Component
-export default class TemperaturePanelListItemEditAdditionalSensor extends Mixins(BaseMixin) {
-    @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: String, required: true }) readonly additionalSensor!: string
+const props = defineProps<{
+    objectName: string
+    additionalSensor: string
+}>()
 
-    get value() {
-        return this.$store.getters['gui/getDatasetAdditionalSensorValue']({
-            name: this.objectName,
-            type: this.additionalSensor,
-        })
-    }
+const store = useStore()
+const { t } = useI18n()
 
-    set value(newVal) {
-        this.$store.dispatch('gui/setDatasetAdditionalSensorStatus', {
-            objectName: this.objectName,
-            dataset: this.additionalSensor,
-            value: newVal,
-        })
-    }
+const value = computed(() =>
+    store.getters['gui/getDatasetAdditionalSensorValue']({
+        name: props.objectName,
+        type: props.additionalSensor,
+    })
+)
 
-    get label() {
-        return this.$t('Panels.TemperaturePanel.ShowNameInList', {
-            name: this.additionalSensor,
-        })
-    }
+function setValue(newVal: any) {
+    store.dispatch('gui/setDatasetAdditionalSensorStatus', {
+        objectName: props.objectName,
+        dataset: props.additionalSensor,
+        value: newVal,
+    })
 }
+
+const label = computed(() =>
+    t('Panels.TemperaturePanel.ShowNameInList', {
+        name: props.additionalSensor,
+    })
+)
 </script>

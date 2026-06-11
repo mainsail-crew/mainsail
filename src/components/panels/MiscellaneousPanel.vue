@@ -51,9 +51,11 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useMiscellaneous } from '@/composables/useMiscellaneous'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
 import MiscellaneousLight from '@/components/panels/Miscellaneous/MiscellaneousLight.vue'
@@ -61,40 +63,33 @@ import MiscellaneousSensor from '@/components/panels/Miscellaneous/Miscellaneous
 import MoonrakerSensor from '@/components/panels/Miscellaneous/MoonrakerSensor.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiDipSwitch } from '@mdi/js'
-import MiscellaneousMixin from '@/components/mixins/miscellaneous'
-@Component({
-    components: {
-        Panel,
-        FilamentSensor,
-        MiscellaneousSlider,
-        MiscellaneousLight,
-        MiscellaneousSensor,
-        MoonrakerSensor,
-    },
-})
-export default class MiscellaneousPanel extends Mixins(BaseMixin, MiscellaneousMixin) {
-    mdiDipSwitch = mdiDipSwitch
 
-    get filamentSensors() {
-        return this.$store.getters['printer/getFilamentSensors'] ?? []
-    }
+const { klipperReadyForGui } = useBase()
+const { lights } = useMiscellaneous()
 
-    get miscellaneous() {
-        return this.$store.getters['printer/getMiscellaneous'] ?? []
-    }
+const store = useStore()
 
-    get miscellaneousSensors() {
-        return this.$store.getters['printer/getMiscellaneousSensors'] ?? []
-    }
+const filamentSensors = computed(() =>
+    store.getters['printer/getFilamentSensors'] ?? []
+)
 
-    get moonrakerSensors() {
-        return this.$store.getters['server/sensor/getSensors'] ?? []
-    }
+const miscellaneous = computed(() =>
+    store.getters['printer/getMiscellaneous'] ?? []
+)
 
-    get showMiscellaneousPanel() {
-        return (
-            this.klipperReadyForGui && (this.miscellaneous.length || this.filamentSensors.length || this.lights.length)
-        )
-    }
-}
+const miscellaneousSensors = computed(() =>
+    store.getters['printer/getMiscellaneousSensors'] ?? []
+)
+
+const moonrakerSensors = computed(() =>
+    store.getters['server/sensor/getSensors'] ?? []
+)
+
+const showMiscellaneousPanel = computed(() =>
+    klipperReadyForGui.value && (
+        miscellaneous.value.length ||
+        filamentSensors.value.length ||
+        lights.value.length
+    )
+)
 </script>

@@ -1,42 +1,47 @@
 <template>
     <v-row>
         <v-col class="py-1">
-            <v-checkbox v-model="value" :label="label" hide-details class="mt-0" />
+            <v-checkbox
+                :model-value="value"
+                @update:model-value="setValue"
+                :label="label"
+                hide-details
+                class="mt-0" />
         </v-col>
     </v-row>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import { capitalize } from '@/plugins/helpers'
 
-@Component
-export default class TemperaturePanelListItemEditChartSerie extends Mixins(BaseMixin) {
-    @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: String, required: true }) readonly serieName!: string
+const props = defineProps<{
+    objectName: string
+    serieName: string
+}>()
 
-    get value() {
-        return this.$store.getters['gui/getDatasetValue']({ name: this.objectName, type: this.serieName })
-    }
+const store = useStore()
+const { t } = useI18n()
 
-    get label() {
-        return this.$t('Panels.TemperaturePanel.ShowNameInChart', {
-            name: this.formatSerieName,
-        })
-    }
+const value = computed(() =>
+    store.getters['gui/getDatasetValue']({ name: props.objectName, type: props.serieName })
+)
 
-    set value(newVal) {
-        this.$store.dispatch('gui/setChartDatasetStatus', {
-            objectName: this.objectName,
-            dataset: this.serieName,
-            value: newVal,
-        })
-    }
-
-    get formatSerieName() {
-        return capitalize(this.serieName)
-    }
+function setValue(newVal: any) {
+    store.dispatch('gui/setChartDatasetStatus', {
+        objectName: props.objectName,
+        dataset: props.serieName,
+        value: newVal,
+    })
 }
+
+const formatSerieName = computed(() => capitalize(props.serieName))
+
+const label = computed(() =>
+    t('Panels.TemperaturePanel.ShowNameInChart', {
+        name: formatSerieName.value,
+    })
+)
 </script>

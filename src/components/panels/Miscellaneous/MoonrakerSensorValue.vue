@@ -6,61 +6,51 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { convertName, unitToSymbol } from '@/plugins/helpers'
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
 
-@Component
-export default class MoonrakerSensorValue extends Mixins(BaseMixin) {
-    convertName = convertName
-    unitToSymbol = unitToSymbol
+const props = defineProps<{
+    sensor: string
+    valueName: string
+}>()
 
-    @Prop({ type: String, required: true }) declare readonly sensor: string
-    @Prop({ type: String, required: true }) declare readonly valueName: string
+const store = useStore()
 
-    get sensorData() {
-        const sensors = this.$store.state.server.sensor.sensors
-        if (!(this.sensor in sensors)) return {}
+const sensorData = computed(() => {
+    const sensors = store.state.server.sensor.sensors
+    if (!(props.sensor in sensors)) return {}
+    return sensors[props.sensor].values
+})
 
-        return sensors[this.sensor].values
-    }
+const sensorConfig = computed(() => {
+    const name = `sensor ${props.sensor}`
+    const serverConfig = store.state.server.config?.config ?? {}
+    if (!(name in serverConfig)) return {}
+    return serverConfig[name]
+})
 
-    get sensorConfig() {
-        const name = `sensor ${this.sensor}`
-        const serverConfig = this.$store.state.server.config?.config ?? {}
-        if (!(name in serverConfig)) return {}
+const parameterConfig = computed(() => {
+    const name = `parameter_${props.valueName}`
+    if (!(name in sensorConfig.value)) return {}
+    return sensorConfig.value[name]
+})
 
-        return serverConfig[name]
-    }
+const unit = computed(() => {
+    if (!('units' in parameterConfig.value)) return null
+    return parameterConfig.value.units
+})
 
-    get parameterConfig() {
-        const name = `parameter_${this.valueName}`
-        if (!(name in this.sensorConfig)) return {}
+const value = computed(() => {
+    if (!(props.valueName in sensorData.value)) return '--'
+    return Math.round(sensorData.value[props.valueName] * 1000) / 1000
+})
 
-        return this.sensorConfig[name]
-    }
+const output = computed(() => {
+    if (unit.value === null) return value.value
+    return `${value.value} ${unit.value}`
+})
 
-    get unit() {
-        if (!('units' in this.parameterConfig)) return null
-
-        return this.parameterConfig.units
-    }
-
-    get value() {
-        if (!(this.valueName in this.sensorData)) return '--'
-
-        return Math.round(this.sensorData[this.valueName] * 1000) / 1000
-    }
-
-    get output() {
-        if (this.unit === null) return this.value
-
-        return `${this.value} ${this.unit}`
-    }
-
-    get name() {
-        return this.convertName(this.valueName)
-    }
-}
+const name = computed(() => convertName(props.valueName))
 </script>

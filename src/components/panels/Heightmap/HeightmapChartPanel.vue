@@ -131,90 +131,69 @@
         <heightmap-calibrate-mesh-dialog v-model="calibrateDialog" />
     </panel>
 </template>
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
+import { useBedMesh } from '@/composables/useBedMesh'
+import { useSocket } from '@/composables/useSocket'
 import { mdiGrid, mdiHome } from '@mdi/js'
-import ControlMixin from '@/components/mixins/control'
-import BedmeshMixin from '@/components/mixins/bedmesh'
 import HeightmapCalibrateMeshDialog from '@/components/dialogs/HeightmapCalibrateMeshDialog.vue'
 
-@Component({
-    components: { HeightmapCalibrateMeshDialog },
+const { printerIsPrinting, loadings } = useBase()
+const { homedAxes } = useControl()
+const { is_active, bed_mesh, min, max } = useBedMesh()
+const socket = useSocket()
+const store = useStore()
+
+const calibrateDialog = ref(false)
+
+const showProbed = computed({
+    get: () => store.state.gui.view.heightmap.probed ?? true,
+    set: (val) => store.dispatch('gui/saveSetting', { name: 'view.heightmap.probed', value: val }),
 })
-export default class HeightmapChartPanel extends Mixins(BaseMixin, ControlMixin, BedmeshMixin) {
-    mdiGrid = mdiGrid
-    mdiHome = mdiHome
 
-    calibrateDialog = false
+const showMesh = computed({
+    get: () => store.state.gui.view.heightmap.mesh ?? true,
+    set: (val) => store.dispatch('gui/saveSetting', { name: 'view.heightmap.mesh', value: val }),
+})
 
-    get showProbed(): boolean {
-        return this.$store.state.gui.view.heightmap.probed ?? true
-    }
+const showFlat = computed({
+    get: () => store.state.gui.view.heightmap.flat ?? true,
+    set: (val) => store.dispatch('gui/saveSetting', { name: 'view.heightmap.flat', value: val }),
+})
 
-    set showProbed(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.probed', value: newVal })
-    }
+const wireframe = computed({
+    get: () => store.state.gui.view.heightmap.wireframe ?? true,
+    set: (val) => store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: val }),
+})
 
-    get showMesh(): boolean {
-        return this.$store.state.gui.view.heightmap.mesh ?? true
-    }
+const scaleGradient = computed({
+    get: () => store.state.gui.view.heightmap.scaleGradient ?? false,
+    set: (val) => store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleGradient', value: val }),
+})
 
-    set showMesh(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.mesh', value: newVal })
-    }
+const scaleZMax = computed({
+    get: () => store.state.gui.view.heightmap.scaleZMax ?? 0.5,
+    set: (val) => store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleZMax', value: val }),
+})
 
-    get showFlat(): boolean {
-        return this.$store.state.gui.view.heightmap.flat ?? true
-    }
+const heightmapRangeLimit = computed(() => {
+    const minRange = Math.round(Math.max(Math.abs(min.value), Math.abs(max.value)) * 10) / 10
+    const maxRange = Math.max(minRange, 1)
+    return [minRange, maxRange]
+})
 
-    set showFlat(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.flat', value: newVal })
-    }
+function homePrinter() {
+    const gcode = 'G28'
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'homeAll' })
+}
 
-    get wireframe(): boolean {
-        return this.$store.state.gui.view.heightmap.wireframe ?? true
-    }
-
-    set wireframe(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: newVal })
-    }
-
-    get scaleGradient(): boolean {
-        return this.$store.state.gui.view.heightmap.scaleGradient ?? false
-    }
-
-    set scaleGradient(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleGradient', value: newVal })
-    }
-
-    get scaleZMax(): number {
-        return this.$store.state.gui.view.heightmap.scaleZMax ?? 0.5
-    }
-
-    set scaleZMax(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleZMax', value: newVal })
-    }
-
-    get heightmapRangeLimit(): number[] {
-        const minRange = Math.round(Math.max(Math.abs(this.min), Math.abs(this.max)) * 10) / 10
-        const maxRange = Math.max(minRange, 1)
-
-        return [minRange, maxRange]
-    }
-
-    homePrinter(): void {
-        const gcode = 'G28'
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'homeAll' })
-    }
-
-    clearBedMesh(): void {
-        const gcode = 'BED_MESH_CLEAR'
-
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshClear' })
-    }
+function clearBedMesh() {
+    const gcode = 'BED_MESH_CLEAR'
+    store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+    socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshClear' })
 }
 </script>

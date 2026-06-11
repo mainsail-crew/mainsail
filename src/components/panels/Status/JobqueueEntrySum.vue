@@ -10,137 +10,121 @@
     </v-row>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-@Component
-export default class StatusPanelJobqueueEntrySum extends Mixins(BaseMixin) {
-    @Prop({ type: Array, required: true }) jobs!: ServerJobQueueStateJob[]
 
-    get sums() {
-        const sums = {
-            filamentLength: 0,
-            filamentWeight: 0,
-            estimatedTime: 0,
-        }
+const props = defineProps<{
+    jobs: ServerJobQueueStateJob[]
+}>()
 
-        this.jobs.forEach((job: ServerJobQueueStateJob) => {
-            const count = (job.combinedIds?.length ?? 0) + 1
+const store = useStore()
+const { printerIsPrinting } = useBase()
 
-            sums.filamentLength += (job.metadata?.filament_total ?? 0) * count
-            sums.filamentWeight += (job.metadata?.filament_weight_total ?? 0) * count
-            sums.estimatedTime += (job.metadata?.estimated_time ?? 0) * count
-        })
+const sums = computed(() => {
+    const result = { filamentLength: 0, filamentWeight: 0, estimatedTime: 0 }
+    props.jobs.forEach((job) => {
+        const count = (job.combinedIds?.length ?? 0) + 1
+        result.filamentLength += (job.metadata?.filament_total ?? 0) * count
+        result.filamentWeight += (job.metadata?.filament_weight_total ?? 0) * count
+        result.estimatedTime += (job.metadata?.estimated_time ?? 0) * count
+    })
+    return result
+})
 
-        return sums
+const count = computed(() => {
+    let total = 0
+    props.jobs.forEach((item) => {
+        total += (item.combinedIds?.length ?? 0) + 1
+    })
+    return total
+})
+
+const filamentLength = computed(() => {
+    const length = sums.value.filamentLength
+    if (length === 0) return null
+    if (length >= 1000) return (length / 1000).toFixed(1) + ' m'
+    return length.toFixed(0) + ' mm'
+})
+
+const filamentWeight = computed(() => {
+    const weight = sums.value.filamentWeight
+    if (weight === 0) return null
+    if (weight >= 1000) return (weight / 1000).toFixed(1) + ' kg'
+    return weight.toFixed(0) + ' g'
+})
+
+const filamentOutput = computed(() => {
+    const filamentArray: string[] = []
+    if (filamentLength.value) filamentArray.push(filamentLength.value)
+    if (filamentWeight.value) filamentArray.push(filamentWeight.value)
+    if (filamentArray.length) return filamentArray.join(' / ')
+    return '--'
+})
+
+const estimatedTime = computed(() => {
+    let totalSeconds = sums.value.estimatedTime
+    if (totalSeconds == 0) return '--'
+
+    const output: string[] = []
+
+    const days = Math.floor(totalSeconds / (3600 * 24))
+    if (days) {
+        totalSeconds %= 3600 * 24
+        output.push(days + 'd')
     }
 
-    get count() {
-        let count = 0
+    const hours = Math.floor(totalSeconds / 3600)
+    totalSeconds %= 3600
+    if (hours) output.push(hours + 'h')
 
-        this.jobs.forEach((item: ServerJobQueueStateJob) => {
-            count += (item.combinedIds?.length ?? 0) + 1
-        })
+    const minutes = Math.floor(totalSeconds / 60)
+    if (minutes) output.push(minutes + 'm')
 
-        return count
+    if (hours > 0) return output.join(' ')
+
+    const seconds = totalSeconds % 60
+    if (seconds) output.push(seconds.toFixed(0) + 's')
+
+    return output.join(' ')
+})
+
+const currentPrintEta = computed(() => {
+    const eta = store.getters['printer/getEstimatedTimeETA']
+    if (eta) return eta
+
+    if (printerIsPrinting.value && store.state.printer.print_stats?.print_duration === 0) {
+        return Date.now() + (store.state.printer.current_file?.estimated_time ?? 0) * 1000
     }
 
-    get filamentLength() {
-        const length = this.sums.filamentLength
-        if (length === 0) return null
+    return Date.now()
+})
 
-        if (length >= 1000) return (length / 1000).toFixed(1) + ' m'
+const eta = computed(() => {
+    if (sums.value.estimatedTime === 0) return '--'
 
-        return length.toFixed(0) + ' mm'
-    }
+    const etaTime = currentPrintEta.value + sums.value.estimatedTime * 1000
+    const hours12Format = store.getters['gui/getHours12Format'] ?? false
+    const date = new Date(etaTime)
+    let am = true
+    let h: string | number = date.getHours()
 
-    get filamentWeight() {
-        const weight = this.sums.filamentWeight
-        if (weight === 0) return null
+    if (hours12Format && h > 11) am = false
+    if (hours12Format && h > 12) h -= 12
+    if (hours12Format && h == 0) h += 12
+    if (h < 10) h = '0' + h
 
-        if (weight >= 1000) return (weight / 1000).toFixed(1) + ' kg'
+    const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
 
-        return weight.toFixed(0) + ' g'
-    }
+    const diff = etaTime - new Date().getTime()
+    let output = h + ':' + m
+    if (hours12Format) output += ` ${am ? 'AM' : 'PM'}`
+    if (diff > 60 * 60 * 24 * 1000) output += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
 
-    get filamentOutput() {
-        const filamentArray = []
-        if (this.filamentLength) filamentArray.push(this.filamentLength)
-        if (this.filamentWeight) filamentArray.push(this.filamentWeight)
-        if (filamentArray.length) return filamentArray.join(' / ')
-
-        return '--'
-    }
-
-    get estimatedTime() {
-        let totalSeconds = this.sums.estimatedTime
-        if (totalSeconds == 0) return '--'
-
-        const output = []
-
-        const days = Math.floor(totalSeconds / (3600 * 24))
-        if (days) {
-            totalSeconds %= 3600 * 24
-            output.push(days + 'd')
-        }
-
-        const hours = Math.floor(totalSeconds / 3600)
-        totalSeconds %= 3600
-        if (hours) output.push(hours + 'h')
-
-        const minutes = Math.floor(totalSeconds / 60)
-        if (minutes) output.push(minutes + 'm')
-
-        // skip seconds if there are hours
-        if (hours > 0) return output.join(' ')
-
-        const seconds = totalSeconds % 60
-        if (seconds) output.push(seconds.toFixed(0) + 's')
-
-        return output.join(' ')
-    }
-
-    get currentPrintEta() {
-        const eta = this.$store.getters['printer/getEstimatedTimeETA']
-        if (eta) return eta
-
-        // if no eta and printer is printing, use the estimated time from the current file + now.
-        // this is a fallback for the case when the printer is in the preheating time, and the
-        // estimated time is not yet available
-        if (this.printerIsPrinting && this.$store.state.printer.print_stats?.print_duration === 0) {
-            return Date.now() + (this.$store.state.printer.current_file?.estimated_time ?? 0) * 1000
-        }
-
-        // fallback current time
-        return Date.now()
-    }
-
-    get eta() {
-        if (this.sums.estimatedTime === 0) return '--'
-
-        const eta = this.currentPrintEta + this.sums.estimatedTime * 1000
-        const hours12Format = this.$store.getters['gui/getHours12Format'] ?? false
-        const date = new Date(eta)
-        let am = true
-        let h: string | number = date.getHours()
-
-        if (hours12Format && h > 11) am = false
-        if (hours12Format && h > 12) h -= 12
-        if (hours12Format && h == 0) h += 12
-        if (h < 10) h = '0' + h
-
-        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
-
-        const diff = eta - new Date().getTime()
-        let output = h + ':' + m
-        if (hours12Format) output += ` ${am ? 'AM' : 'PM'}`
-        if (diff > 60 * 60 * 24 * 1000) output += `+${Math.trunc(diff / (60 * 60 * 24 * 1000))}`
-
-        return output
-    }
-}
+    return output
+})
 </script>
 
 <style scoped>

@@ -36,44 +36,42 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useSocket } from '@/composables/useSocket'
 import Panel from '@/components/ui/Panel.vue'
 import LedEffectButton from '@/components/inputs/LedEffectButton.vue'
 import { mdiLedStrip, mdiStop } from '@mdi/js'
 
+const { klipperReadyForGui, printerIsPrintingOnly, loadings } = useBase()
+const store = useStore()
+const socket = useSocket()
+
 const STOP_LED_EFFECTS_COMMAND = 'STOP_LED_EFFECTS'
 
-@Component({
-    components: { LedEffectButton, Panel },
+const ledEffects = computed(() => {
+    const prefix = 'led_effect '
+    const prefixLength = prefix.length
+
+    return Object.keys(store.state.printer)
+        .filter((prop) => prop.toLowerCase().startsWith(prefix))
+        .map((prop) => prop.slice(prefixLength))
+        .filter((name) => !name.startsWith('_'))
+        .sort((a, b) => a.localeCompare(b))
 })
-export default class LedEffectsPanel extends Mixins(BaseMixin) {
-    mdiLedStrip = mdiLedStrip
-    mdiStop = mdiStop
 
-    get ledEffects() {
-        const prefix = 'led_effect '
-        const prefixLength = prefix.length
+const isLoadingAllEffects = computed(() =>
+    loadings.value.includes(STOP_LED_EFFECTS_COMMAND)
+)
 
-        return Object.keys(this.$store.state.printer)
-            .filter((prop) => prop.toLowerCase().startsWith(prefix))
-            .map((prop) => prop.slice(prefixLength))
-            .filter((name) => !name.startsWith('_'))
-            .sort((a, b) => a.localeCompare(b))
-    }
-
-    get isLoadingAllEffects() {
-        return this.loadings.includes(STOP_LED_EFFECTS_COMMAND)
-    }
-
-    stopAllEffects() {
-        this.$store.dispatch('server/addEvent', { message: STOP_LED_EFFECTS_COMMAND, type: 'command' })
-        this.$socket.emit(
-            'printer.gcode.script',
-            { script: STOP_LED_EFFECTS_COMMAND },
-            { loading: STOP_LED_EFFECTS_COMMAND }
-        )
-    }
+function stopAllEffects() {
+    store.dispatch('server/addEvent', { message: STOP_LED_EFFECTS_COMMAND, type: 'command' })
+    socket.emit(
+        'printer.gcode.script',
+        { script: STOP_LED_EFFECTS_COMMAND },
+        { loading: STOP_LED_EFFECTS_COMMAND }
+    )
 }
 </script>

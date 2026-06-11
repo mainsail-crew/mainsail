@@ -19,36 +19,24 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
-@Component({
-    components: { JobqueueEntry },
-})
-export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
-    get jobs() {
-        return this.$store.getters['server/jobQueue/getJobs'] ?? []
-    }
+import JobqueueEntryRest from '@/components/panels/Status/JobqueueEntryRest.vue'
 
-    get maxLength() {
-        if (this.jobs.length > 5) return 4
+const store = useStore()
 
-        return 5
-    }
+const jobs = computed(() => store.getters['server/jobQueue/getJobs'] ?? [])
 
-    get jobsTable() {
-        return this.jobs.slice(0, this.maxLength)
-    }
+const maxLength = computed(() => jobs.value.length > 5 ? 4 : 5)
 
-    get jobsRest() {
-        return this.jobs.slice(this.maxLength)
-    }
+const jobsTable = computed(() => jobs.value.slice(0, maxLength.value))
 
-    startJobqueue() {
-        this.$store.dispatch('server/jobQueue/start')
-    }
+const jobsRest = computed(() => jobs.value.slice(maxLength.value))
+
+function startJobqueue() {
+    store.dispatch('server/jobQueue/start')
 }
 </script>
 

@@ -21,67 +21,56 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiArrowExpandVertical, mdiSync } from '@mdi/js'
 import type { EndstopItem } from '@/store/printer/types'
 
-@Component({
-    components: { Panel },
-})
-export default class EndstopPanel extends Mixins(BaseMixin) {
-    mdiArrowExpandVertical = mdiArrowExpandVertical
-    mdiSync = mdiSync
+const { loadings } = useBase()
+const store = useStore()
+const socket = useSocket()
 
-    get items() {
-        let output: EndstopItem[] = []
+const mdiArrowExpandVertical = mdiArrowExpandVertical
+const mdiSync = mdiSync
 
-        const endstops = this.$store.state.printer.endstops ?? {}
-        Object.keys(endstops).forEach((key) => {
-            output.push({ type: 'endstop', name: key, value: endstops[key] })
+const items = computed(() => {
+    let output: EndstopItem[] = []
+    const endstops = store.state.printer.endstops ?? {}
+    Object.keys(endstops).forEach((key) => {
+        output.push({ type: 'endstop', name: key, value: endstops[key] })
+    })
+    if (output.length === 0) return []
+    output = output.sort((a, b) => a.name.localeCompare(b.name))
+    if ('probe' in store.state.printer && 'last_query' in store.state.printer.probe) {
+        const value = store.state.printer.probe.last_query ? 'TRIGGERED' : 'open'
+        output.push({
+            type: 'probe',
+            name: store.state.printer.probe.name ?? 'probe',
+            value,
         })
-
-        // dont show probe values if there are no endstop values
-        if (output.length === 0) return []
-
-        output = output.sort((a, b) => a.name.localeCompare(b.name))
-
-        if ('probe' in this.$store.state.printer && 'last_query' in this.$store.state.printer.probe) {
-            const value = this.$store.state.printer.probe.last_query ? 'TRIGGERED' : 'open'
-
-            output.push({
-                type: 'probe',
-                name: this.$store.state.printer.probe.name ?? 'probe',
-                value,
-            })
-        }
-
-        return output
     }
+    return output
+})
 
-    get existsQueryProbe() {
-        const commands = this.$store.state.printer.gcode?.commands ?? null
-        if (commands) {
-            return 'QUERY_PROBE' in commands
-        }
+const existsQueryProbe = computed(() => {
+    const commands = store.state.printer.gcode?.commands ?? null
+    if (commands) return 'QUERY_PROBE' in commands
+    return 'probe' in store.state.printer
+})
 
-        // fallback for older Klipper versions
-        return 'probe' in this.$store.state.printer
-    }
-
-    syncEndstops() {
-        this.$socket.emit(
-            'printer.query_endstops.status',
-            {},
-            { action: 'printer/getEndstopStatus', loading: 'queryEndstops' }
-        )
-
-        if (this.existsQueryProbe) {
-            this.$store.dispatch('server/addEvent', { message: 'QUERY_PROBE', type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: 'QUERY_PROBE' })
-        }
+function syncEndstops() {
+    socket.emit(
+        'printer.query_endstops.status',
+        {},
+        { action: 'printer/getEndstopStatus', loading: 'queryEndstops' }
+    )
+    if (existsQueryProbe.value) {
+        store.dispatch('server/addEvent', { message: 'QUERY_PROBE', type: 'command' })
+        socket.emit('printer.gcode.script', { script: 'QUERY_PROBE' })
     }
 }
 </script>

@@ -197,87 +197,65 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import { formatFilesize } from '@/plugins/helpers'
 import { mdiTextBoxSearchOutline, mdiCloseThick } from '@mdi/js'
-@Component({
-    components: { Panel },
+
+const { klipperReadyForGui } = useBase()
+const store = useStore()
+
+const mdiCloseThick = mdiCloseThick
+const mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
+
+const hostDetailsDialog = ref(false)
+
+const hostStats = computed(() => store.getters['server/getHostStats'] ?? null)
+
+const systemInfo = computed(() => store.state.server?.system_info ?? {})
+
+const releaseName = computed(() => {
+    const stats = hostStats.value
+    if (!stats) return null
+    const name = stats.release_info?.name ?? ''
+    if (name.startsWith('#')) return stats.release_info?.id ?? null
+    if (name.startsWith('0.')) return null
+    return name
 })
-export default class SystemPanelHost extends Mixins(BaseMixin) {
-    formatFilesize = formatFilesize
-    mdiCloseThick = mdiCloseThick
-    mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
 
-    private hostDetailsDialog = false
+const directory = computed(() => store.getters['files/getDirectory']('gcodes'))
 
-    get hostStats() {
-        return this.$store.getters['server/getHostStats'] ?? null
-    }
+const disk_usage = computed(() => directory.value?.disk_usage ?? { used: 0, free: 0, total: 0 })
 
-    get systemInfo() {
-        return this.$store.state.server?.system_info ?? {}
-    }
+const cpuUsage = computed(() => store.getters['server/getCpuUsage'] ?? null)
 
-    get releaseName() {
-        const name = this.hostStats.release_info?.name ?? ''
+const cpuUsageColor = computed(() => {
+    let color = 'primary'
+    if (cpuUsage.value > 95) color = 'error'
+    else if (cpuUsage.value > 80) color = 'warning'
+    return color
+})
 
-        if (name.startsWith('#')) return this.hostStats.release_info?.id ?? null
-        if (name.startsWith('0.')) return null
+const networkInterfaces = computed(() => store.getters['server/getNetworkInterfaces'] ?? null)
 
-        return name
-    }
-
-    get directory() {
-        return this.$store.getters['files/getDirectory']('gcodes')
-    }
-
-    get disk_usage() {
-        return this.directory?.disk_usage ?? { used: 0, free: 0, total: 0 }
-    }
-
-    get cpuUsage() {
-        return this.$store.getters['server/getCpuUsage'] ?? null
-    }
-
-    get cpuUsageColor() {
-        let color = 'primary'
-        if (this.cpuUsage > 95) color = 'error'
-        else if (this.cpuUsage > 80) color = 'warning'
-
-        return color
-    }
-
-    get networkInterfaces() {
-        return this.$store.getters['server/getNetworkInterfaces'] ?? null
-    }
-
-    getIpAddress(ip_addresses: { family: string; address: string }[]) {
-        const ipv4 = ip_addresses.find((address) => address.family === 'ipv4')
-        if (ipv4) return ` (${ipv4.address})`
-
-        const ipv6 = ip_addresses.find((address) => address.family === 'ipv6')
-        if (ipv6) return ` (${ipv6.address})`
-
-        return null
-    }
-
-    get cpuDesc() {
-        const output = this.hostStats.cpuDesc
-
-        return output
-    }
-
-    get cpuName() {
-        let output = this.hostStats.cpuName
-
-        if (this.hostStats.bits) {
-            output += `, ${this.hostStats.bits}`
-        }
-
-        return output
-    }
+function getIpAddress(ip_addresses: { family: string; address: string }[]) {
+    const ipv4 = ip_addresses.find((address) => address.family === 'ipv4')
+    if (ipv4) return ` (${ipv4.address})`
+    const ipv6 = ip_addresses.find((address) => address.family === 'ipv6')
+    if (ipv6) return ` (${ipv6.address})`
+    return null
 }
+
+const cpuDesc = computed(() => hostStats.value?.cpuDesc ?? '')
+
+const cpuName = computed(() => {
+    const stats = hostStats.value
+    if (!stats) return ''
+    let output = stats.cpuName
+    if (stats.bits) output += `, ${stats.bits}`
+    return output
+})
 </script>

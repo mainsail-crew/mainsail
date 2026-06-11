@@ -1,6 +1,5 @@
 <template>
     <panel v-if="klipperReadyForGui" :icon="mdiGamepad" title="Jog" :collapsible="true" card-class="jog-panel">
-        <!-- Homing and utility buttons -->
         <v-container class="py-2">
             <v-row dense class="mb-3">
                 <v-col cols="12">
@@ -15,7 +14,7 @@
                         Home All
                     </v-btn>
                 </v-col>
-                <v-col v-if="enableXYHoming" cols="6">
+                <v-col cols="6">
                     <v-btn
                         small
                         block
@@ -56,7 +55,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Jog step size selector -->
             <v-row dense class="mb-3">
                 <v-col cols="12" class="d-flex align-center">
                     <span class="text-caption mr-2">Jog Step:</span>
@@ -68,7 +66,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Feedrate controls -->
             <v-row dense class="mb-3">
                 <v-col cols="6">
                     <v-text-field
@@ -96,15 +93,12 @@
                 </v-col>
             </v-row>
 
-            <!-- XY and Z Jog Controls Container -->
             <v-row dense class="mb-2 justify-center">
-                <!-- XY Jog Controls -->
                 <v-col cols="12" md="6" class="d-flex flex-column align-center">
                     <div class="text-center mb-3 w-100">
                         <span class="text-caption font-weight-bold">XY Jog ({{ currentStep }} mm)</span>
                     </div>
                     <div class="jog-panel__xy-pad">
-                        <!-- Up -->
                         <v-btn
                             class="jog-panel__xy-btn"
                             large
@@ -112,7 +106,6 @@
                             @click="jog('Y', currentStep)">
                             <v-icon>{{ mdiChevronUp }}</v-icon>
                         </v-btn>
-                        <!-- Left -->
                         <v-btn
                             class="jog-panel__xy-btn"
                             large
@@ -120,7 +113,6 @@
                             @click="jog('X', -currentStep)">
                             <v-icon>{{ mdiChevronLeft }}</v-icon>
                         </v-btn>
-                        <!-- Center (Stop) -->
                         <v-btn
                             class="jog-panel__xy-btn jog-panel__xy-center"
                             large
@@ -129,7 +121,6 @@
                             @click="jogStop">
                             <v-icon>{{ mdiStop }}</v-icon>
                         </v-btn>
-                        <!-- Right -->
                         <v-btn
                             class="jog-panel__xy-btn"
                             large
@@ -137,7 +128,6 @@
                             @click="jog('X', currentStep)">
                             <v-icon>{{ mdiChevronRight }}</v-icon>
                         </v-btn>
-                        <!-- Down -->
                         <v-btn
                             class="jog-panel__xy-btn"
                             large
@@ -148,7 +138,6 @@
                     </div>
                 </v-col>
 
-                <!-- Z Jog Controls -->
                 <v-col cols="12" md="6" class="d-flex flex-column justify-center">
                     <div class="text-center mb-3">
                         <span class="text-caption font-weight-bold">Z Jog</span>
@@ -174,7 +163,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Keyboard navigation toggle -->
             <v-row dense class="my-2">
                 <v-col cols="12">
                     <v-btn
@@ -189,7 +177,6 @@
                 </v-col>
             </v-row>
 
-            <!-- Status indicators -->
             <v-divider class="my-3" />
             <v-row dense>
                 <v-col cols="6">
@@ -209,11 +196,13 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
+import { useSocket } from '@/composables/useSocket'
 import Panel from '@/components/ui/Panel.vue'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
 import {
     mdiGamepad,
     mdiHome,
@@ -226,184 +215,142 @@ import {
 } from '@mdi/js'
 import { updateCncSettings } from '@/store/files/cncApi'
 
-@Component({
-    components: {
-        Panel,
-    },
+const { printer_state } = useBase()
+const { homedAxes, doHome, doHomeXY, doHomeZ, doSend } = useControl()
+
+const store = useStore()
+const socket = useSocket()
+
+const keyboardNavEnabled = ref(false)
+const jogSteps = [1.0, 5.0, 10.0, 25.0, 100.0]
+const lastJogTimestamps: Record<string, number> = {}
+const jogRateLimitMs = 50
+
+let keyboardJogHandler: ((event: KeyboardEvent) => void) | null = null
+
+const currentStep = computed(() => jogSteps[selectedStepIndex.value])
+
+const selectedStepIndex = computed({
+    get: () => store.state.gui.control.selectedCncStepIndex ?? 2,
+    set: (value: number) => {
+        store.dispatch('gui/saveSetting', { name: 'control.selectedCncStepIndex', value })
+    }
 })
-export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
-    continuousJog = false
-    keyboardNavEnabled = false
-    mdiGamepad = mdiGamepad
-    mdiHome = mdiHome
-    mdiChevronUp = mdiChevronUp
-    mdiChevronDown = mdiChevronDown
-    mdiChevronLeft = mdiChevronLeft
-    mdiChevronRight = mdiChevronRight
-    mdiStop = mdiStop
-    mdiKeyboard = mdiKeyboard
 
-    // Jog step presets (in mm)
-    jogSteps = [1.0, 5.0, 10.0, 25.0, 100.0]
+const homedAxesDisplay = computed(() => {
+    if (homedAxes.value === 'xyz') return 'All'
+    return homedAxes.value || 'None'
+})
 
-    // Per-axis rate limiting: last jog timestamp per axis+dir key (e.g. "X+" / "X-")
-    lastJogTimestamps: Record<string, number> = {}
-    jogRateLimitMs = 50
+const allAxesHomed = computed(() =>
+    homedAxes.value.includes('x') && homedAxes.value.includes('y') && homedAxes.value.includes('z')
+)
 
-    mounted() {
-        this.keyboardJogHandler = this.handleKeyboardJog.bind(this)
-        document.addEventListener('keydown', this.keyboardJogHandler, true)
+const loadings = computed(() => store.state.server.loadings ?? [])
+
+const feedrateXY = computed({
+    get: () => store.state.gui.control.cncFeedrateXY ?? 500,
+    set: (value: number) => {
+        store.dispatch('gui/saveSetting', { name: 'control.cncFeedrateXY', value })
+    }
+})
+
+const feedrateZ = computed({
+    get: () => store.state.gui.control.cncFeedrateZ ?? 100,
+    set: (value: number) => {
+        store.dispatch('gui/saveSetting', { name: 'control.cncFeedrateZ', value })
+    }
+})
+
+function saveFeedrates() {
+    void updateCncSettings(store.getters['socket/getUrl'], {
+        feedrateXY: feedrateXY.value,
+        feedrateZ: feedrateZ.value,
+    }).catch((error: unknown) => {
+        const message = error instanceof Error ? error.message : 'Failed to persist CNC feedrates'
+        useToast().error(message)
+    })
+}
+
+function formatStep(step: number): string {
+    if (step < 1) return `${(step * 1000).toFixed(0)}µm`
+    return `${step}mm`
+}
+
+function jog(axis: string, distance: number) {
+    if (!useBase().socketIsConnected.value) {
+        useToast().error('Cannot jog — not connected to printer')
+        return
     }
 
-    beforeDestroy() {
-        if (this.keyboardJogHandler) {
-            document.removeEventListener('keydown', this.keyboardJogHandler, true)
-        }
+    const key = `${axis}${distance >= 0 ? '+' : '-'}`
+    const now = Date.now()
+    const last = lastJogTimestamps[key] ?? 0
+    if (now - last < jogRateLimitMs) return
+    lastJogTimestamps[key] = now
+
+    const feedrate = getAxisFeedrate(axis)
+    const script = `SAVE_GCODE_STATE NAME=_ui_movement\nG91\nG1 ${axis}${distance} F${feedrate * 60}\nRESTORE_GCODE_STATE NAME=_ui_movement`
+    socket.emit('printer.gcode.script', { script })
+}
+
+function toggleKeyboardNav() {
+    keyboardNavEnabled.value = !keyboardNavEnabled.value
+}
+
+function disableSteppers() {
+    doSend('M18')
+}
+
+function jogStop() {
+    doSend('M112')
+}
+
+function getAxisFeedrate(axis: string): number {
+    if (axis === 'Z') return feedrateZ.value
+    return feedrateXY.value
+}
+
+function handleKeyboardJog(event: KeyboardEvent) {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        event.preventDefault()
     }
 
-    handleKeyboardJog(event: KeyboardEvent) {
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-            event.preventDefault()
-        }
+    if (!keyboardNavEnabled.value || ['printing'].includes(printer_state.value)) return
 
-        if (!this.keyboardNavEnabled || ['printing'].includes(this.printer_state)) {
-            return
-        }
+    const target = event.target as HTMLElement
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') return
 
-        const target = event.target as HTMLElement
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') return
-
-        const step = this.currentStep
-        switch (event.key) {
-            case 'ArrowUp':
-                void this.jog('Y', step)
-                break
-            case 'ArrowDown':
-                void this.jog('Y', -step)
-                break
-            case 'ArrowLeft':
-                void this.jog('X', -step)
-                break
-            case 'ArrowRight':
-                void this.jog('X', step)
-                break
-        }
-    }
-
-    get currentStep(): number {
-        return this.jogSteps[this.selectedStepIndex]
-    }
-
-    get selectedStepIndex(): number {
-        return this.$store.state.gui.control.selectedCncStepIndex ?? 2
-    }
-
-    set selectedStepIndex(value: number) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.selectedCncStepIndex', value })
-    }
-
-    get homedAxesDisplay(): string {
-        if (this.homedAxes === 'xyz') {
-            return 'All'
-        }
-        return this.homedAxes || 'None'
-    }
-
-    get allAxesHomed(): boolean {
-        return this.homedAxes.includes('x') && this.homedAxes.includes('y') && this.homedAxes.includes('z')
-    }
-
-    get enableXYHoming(): boolean {
-        return this.$store.state.gui.control.enableXYHoming
-    }
-
-    get loadings(): string[] {
-        return this.$store.state.server.loadings ?? []
-    }
-
-    get printer_state(): string {
-        return this.$store.state.printer?.print_stats?.state ?? 'unknown'
-    }
-
-    get feedrateXY(): number {
-        return this.$store.state.gui.control.cncFeedrateXY ?? 500
-    }
-
-    set feedrateXY(value: number) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.cncFeedrateXY', value })
-    }
-
-    get feedrateZ(): number {
-        return this.$store.state.gui.control.cncFeedrateZ ?? 100
-    }
-
-    set feedrateZ(value: number) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.cncFeedrateZ', value })
-    }
-
-    saveFeedrates() {
-        void updateCncSettings(this.$store.getters['socket/getUrl'], {
-            feedrateXY: this.feedrateXY,
-            feedrateZ: this.feedrateZ,
-        }).catch((error) => {
-            const message = error instanceof Error ? error.message : 'Failed to persist CNC feedrates'
-            this.$toast.error(message)
-        })
-    }
-
-    formatStep(step: number): string {
-        if (step < 1) {
-            return `${(step * 1000).toFixed(0)}µm`
-        }
-        return `${step}mm`
-    }
-
-    jog(axis: string, distance: number) {
-        if (!this.socketIsConnected) {
-            this.$toast.error('Cannot jog — not connected to printer')
-            return
-        }
-
-        const key = `${axis}${distance >= 0 ? '+' : '-'}`
-        const now = Date.now()
-        const last = this.lastJogTimestamps[key] ?? 0
-        if (now - last < this.jogRateLimitMs) return
-        this.lastJogTimestamps[key] = now
-
-        const feedrate = this.getAxisFeedrate(axis)
-        const script = `SAVE_GCODE_STATE NAME=_ui_movement\nG91\nG1 ${axis}${distance} F${feedrate * 60}\nRESTORE_GCODE_STATE NAME=_ui_movement`
-        this.$socket.emit('printer.gcode.script', { script })
-    }
-
-    toggleKeyboardNav() {
-        this.keyboardNavEnabled = !this.keyboardNavEnabled
-        console.log('Keyboard nav toggled:', this.keyboardNavEnabled)
-    }
-
-    disableSteppers() {
-        this.doSend('M18')
-    }
-
-    jogStop() {
-        this.doSend('M112')
-    }
-
-    getAxisFeedrate(axis: string): number {
-        if (axis === 'Z') {
-            return this.feedrateZ
-        }
-        return this.feedrateXY
+    const step = currentStep.value
+    switch (event.key) {
+        case 'ArrowUp':
+            void jog('Y', step)
+            break
+        case 'ArrowDown':
+            void jog('Y', -step)
+            break
+        case 'ArrowLeft':
+            void jog('X', -step)
+            break
+        case 'ArrowRight':
+            void jog('X', step)
+            break
     }
 }
+
+onMounted(() => {
+    keyboardJogHandler = handleKeyboardJog
+    document.addEventListener('keydown', keyboardJogHandler, true)
+})
+
+onBeforeUnmount(() => {
+    if (keyboardJogHandler) {
+        document.removeEventListener('keydown', keyboardJogHandler, true)
+    }
+})
 </script>
 
 <style scoped>
-.jog-panel__xy-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-}
-
 .jog-panel__xy-pad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -422,7 +369,6 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
     grid-row: 2;
 }
 
-/* Position buttons in proper numpad layout */
 .jog-panel__xy-pad .v-btn:nth-child(1) {
     grid-column: 2;
     grid-row: 1;
@@ -446,9 +392,5 @@ export default class JogPanel extends Mixins(BaseMixin, ControlMixin) {
 .jog-panel__xy-pad .v-btn:nth-child(5) {
     grid-column: 2;
     grid-row: 3;
-}
-
-.jog-panel__z-row {
-    gap: 8px;
 }
 </style>

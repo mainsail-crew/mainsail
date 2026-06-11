@@ -22,67 +22,68 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import MacroButton from '@/components/inputs/MacroButton.vue'
 import { PrinterStateMacro } from '@/store/printer/types'
 import { GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
 import { mdiCodeTags } from '@mdi/js'
-@Component({
-    components: { MacroButton, Panel },
-})
-export default class MacrogroupPanel extends Mixins(BaseMixin) {
-    mdiCodeTags = mdiCodeTags
 
-    @Prop({ required: true }) declare panelId: string
+const props = defineProps<{
+    panelId: string
+}>()
 
-    get macrogroup() {
-        return this.$store.getters['gui/macros/getMacrogroup'](this.panelId)
-    }
+const { klipperReadyForGui, printer_state } = useBase()
 
-    get allMacros() {
-        return this.$store.getters['printer/getMacros'] ?? []
-    }
+const store = useStore()
 
-    get macros() {
-        let macros = this.macrogroup?.macros ?? []
+const macrogroup = computed(() =>
+    store.getters['gui/macros/getMacrogroup'](props.panelId)
+)
 
-        macros = macros.filter((macro: GuiMacrosStateMacrogroupMacro) => {
-            if (
-                !this.allMacros.find(
-                    (existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase()
-                )
+const allMacros = computed(() =>
+    store.getters['printer/getMacros'] ?? []
+)
+
+const macros = computed(() => {
+    let result = macrogroup.value?.macros ?? []
+
+    result = result.filter((macro: GuiMacrosStateMacrogroupMacro) => {
+        if (
+            !allMacros.value.find(
+                (existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase()
             )
-                return false
-
-            return (
-                (macro.showInStandby && ['standby', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
-                (macro.showInPause && this.printer_state === 'paused') ||
-                (macro.showInPrinting && this.printer_state === 'printing')
-            )
-        })
-
-        return macros.sort((a: GuiMacrosStateMacrogroupMacro, b: GuiMacrosStateMacrogroupMacro) => a.pos - b.pos)
-    }
-
-    get macrogroupStatus() {
-        return (
-            (this.macrogroup.showInStandby &&
-                ['standby', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
-            (this.macrogroup.showInPause && this.printer_state === 'paused') ||
-            (this.macrogroup.showInPrinting && this.printer_state === 'printing')
         )
+            return false
+
+        return (
+            (macro.showInStandby && ['standby', 'cancelled', 'complete', 'error'].includes(printer_state.value)) ||
+            (macro.showInPause && printer_state.value === 'paused') ||
+            (macro.showInPrinting && printer_state.value === 'printing')
+        )
+    })
+
+    return result.sort((a: GuiMacrosStateMacrogroupMacro, b: GuiMacrosStateMacrogroupMacro) => a.pos - b.pos)
+})
+
+const macrogroupStatus = computed(() =>
+    (
+        (macrogroup.value.showInStandby &&
+            ['standby', 'cancelled', 'complete', 'error'].includes(printer_state.value)) ||
+        (macrogroup.value.showInPause && printer_state.value === 'paused') ||
+        (macrogroup.value.showInPrinting && printer_state.value === 'printing')
+    )
+)
+
+function getColor(macro: GuiMacrosStateMacrogroupMacro) {
+    if (macro.color === 'group') {
+        if (macrogroup.value.color === 'custom') return macrogroup.value.colorCustom
+        else return macrogroup.value.color
     }
 
-    getColor(macro: GuiMacrosStateMacrogroupMacro) {
-        if (macro.color === 'group') {
-            if (this.macrogroup.color === 'custom') return this.macrogroup.colorCustom
-            else return this.macrogroup.color
-        }
-
-        return macro.color
-    }
+    return macro.color
 }
 </script>

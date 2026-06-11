@@ -5,7 +5,6 @@
         :title="$t('Panels.ToolheadControlPanel.Headline')"
         :collapsible="true"
         card-class="toolhead-control-panel">
-        <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
             <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
@@ -26,7 +25,6 @@
                     <v-list-item v-if="controlStyle !== 'bars' && existsQGL && actionButton !== 'qgl'">
                         <v-btn small style="width: 100%" @click="doQGL">Quad Gantry Level</v-btn>
                     </v-list-item>
-                    <!-- SPECIAL BUTTONS ALWAYS INSIDE 3-DOT MENU -->
                     <v-list-item v-if="existsBedTilt">
                         <v-btn small style="width: 100%" @click="doSend('BED_TILT_CALIBRATE')">
                             BED TILT CALIBRATE
@@ -84,18 +82,14 @@
             </v-menu>
             <toolhead-panel-settings />
         </template>
-        <!-- MOVE TO CONTROL -->
         <move-to-control />
-        <!-- AXIS CONTROL -->
         <v-container v-if="axisControlVisible">
             <component :is="`${controlStyle}-control`" />
         </v-container>
-        <!-- Z-OFFSET CONTROL -->
         <v-divider v-if="showZOffset" />
         <v-container v-if="showZOffset">
             <zoffset-control />
         </v-container>
-        <!-- SPEED FACTOR -->
         <v-divider v-if="showSpeedFactor" />
         <v-container v-if="showSpeedFactor">
             <tool-slider
@@ -114,12 +108,13 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import BarsControl from '@/components/panels/ToolheadControls/BarsControl.vue'
-import BaseMixin from '../mixins/base'
 import CircleControl from '@/components/panels/ToolheadControls/CircleControl.vue'
-import ControlMixin from '@/components/mixins/control'
 import CrossControl from '@/components/panels/ToolheadControls/CrossControl.vue'
 import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -127,63 +122,46 @@ import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
 
-@Component({
-    components: {
-        BarsControl,
-        CircleControl,
-        CrossControl,
-        MoveToControl,
-        Panel,
-        ToolSlider,
-        ZoffsetControl,
-    },
+const { klipperReadyForGui, printer_state } = useBase()
+const { doSend, doZtilt, doQGL, existsZtilt, existsQGL, existsBedTilt, existsBedScrews, existsDeltaCalibrate, existsScrewsTilt } = useControl()
+
+const store = useStore()
+
+const controlStyle = computed(() =>
+    store.state.gui.control.style ?? 'bars'
+)
+
+const actionButton = computed(() =>
+    store.state.gui.control.actionButton ?? store.getters['gui/getDefaultControlActionButton']
+)
+
+const speedFactor = computed(() =>
+    store.state.printer?.gcode_move?.speed_factor ?? 1
+)
+
+const isPrinting = computed(() =>
+    ['printing'].includes(printer_state.value)
+)
+
+const axisControlVisible = computed(() => {
+    if (!showControl.value) return false
+    return !(isPrinting.value && (store.state.gui.control.hideDuringPrint ?? false))
 })
-export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin) {
-    mdiDotsVertical = mdiDotsVertical
-    mdiEngineOff = mdiEngineOff
-    mdiGamepad = mdiGamepad
-    mdiSpeedometer = mdiSpeedometer
-    mdiRestore = mdiRestore
-    mdiMenuDown = mdiMenuDown
 
-    get controlStyle(): string {
-        return this.$store.state.gui.control.style ?? 'bars'
-    }
+const showButtons = computed(() => {
+    if (controlStyle.value !== 'bars' && (existsZtilt.value || existsQGL.value)) return true
+    return existsBedScrews.value || existsBedTilt.value || existsDeltaCalibrate.value || existsScrewsTilt.value
+})
 
-    get actionButton(): string {
-        return this.$store.state.gui.control.actionButton ?? this.defaultActionButton
-    }
+const showControl = computed(() =>
+    store.state.gui.view.toolhead.showControl ?? true
+)
 
-    get speedFactor(): number {
-        return this.$store.state.printer?.gcode_move?.speed_factor ?? 1
-    }
+const showZOffset = computed(() =>
+    store.state.gui.view.toolhead.showZOffset ?? true
+)
 
-    get isPrinting() {
-        return ['printing'].includes(this.printer_state)
-    }
-
-    get axisControlVisible() {
-        if (!this.showControl) return false
-
-        return !(this.isPrinting && (this.$store.state.gui.control.hideDuringPrint ?? false))
-    }
-
-    get showButtons() {
-        if (this.controlStyle !== 'bars' && (this.existsZtilt || this.existsQGL)) return true
-
-        return this.existsBedScrews || this.existsBedTilt || this.existsDeltaCalibrate || this.existsScrewsTilt
-    }
-
-    get showControl(): boolean {
-        return this.$store.state.gui.view.toolhead.showControl ?? true
-    }
-
-    get showZOffset(): boolean {
-        return this.$store.state.gui.view.toolhead.showZOffset ?? true
-    }
-
-    get showSpeedFactor(): boolean {
-        return this.$store.state.gui.view.toolhead.showSpeedFactor ?? true
-    }
-}
+const showSpeedFactor = computed(() =>
+    store.state.gui.view.toolhead.showSpeedFactor ?? true
+)
 </script>

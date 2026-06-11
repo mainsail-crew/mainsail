@@ -30,85 +30,77 @@
     </v-tooltip>
     <v-icon v-else>{{ mdiFile }}</v-icon>
 </template>
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import { FileStateGcodefile } from '@/store/files/types'
 import { mdiFile, mdiFolder } from '@mdi/js'
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { escapePath } from '@/plugins/helpers'
 
-@Component
-export default class GcodefilesThumbnail extends Mixins(BaseMixin) {
-    mdiFile = mdiFile
-    mdiFolder = mdiFolder
+const props = defineProps<{
+    item: FileStateGcodefile
+}>()
 
-    @Prop({ type: Object }) declare readonly item: FileStateGcodefile
+const store = useStore()
+const { apiUrl } = useBase()
 
-    get bigThumbnailBackground() {
-        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+const bigThumbnailBackground = computed(() =>
+    store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
+)
+
+const bigThumbnailTooltipColor = computed(() => {
+    if (defaultBigThumbnailBackground.toLowerCase() === bigThumbnailBackground.value.toLowerCase()) {
+        return undefined
     }
+    return bigThumbnailBackground.value
+})
 
-    get bigThumbnailTooltipColor() {
-        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
-            return undefined
-        }
+const fileTimestamp = computed(() =>
+    typeof props.item.modified.getTime === 'function' ? props.item.modified.getTime() : 0
+)
 
-        return this.bigThumbnailBackground
+const thumbnails = computed(() => props.item.thumbnails ?? [])
+
+const subdirectory = computed(() => {
+    if (!props.item.full_filename.includes('/')) return null
+    return escapePath(props.item.full_filename.substring(0, props.item.full_filename.lastIndexOf('/')))
+})
+
+const smallThumbnail = computed(() =>
+    thumbnails.value.find(
+        (thumbnail) =>
+            thumbnail.width >= thumbnailSmallMin &&
+            thumbnail.width <= thumbnailSmallMax &&
+            thumbnail.height >= thumbnailSmallMin &&
+            thumbnail.height <= thumbnailSmallMax
+    )
+)
+
+const smallThumbnailUrl = computed(() => {
+    if (smallThumbnail.value === undefined || !('relative_path' in smallThumbnail.value)) return null
+    return buildUrl(smallThumbnail.value.relative_path)
+})
+
+const bigThumbnail = computed(() =>
+    thumbnails.value.find((thumbnail) => thumbnail.width >= thumbnailBigMin)
+)
+
+const bigThumbnailUrl = computed(() => {
+    if (bigThumbnail.value === undefined || !('relative_path' in bigThumbnail.value)) return null
+    return buildUrl(bigThumbnail.value.relative_path)
+})
+
+function buildUrl(relativePath: string) {
+    const baseArray = [apiUrl.value, 'server/files/gcodes']
+    if (subdirectory.value !== null) {
+        let sub = subdirectory.value
+        if (sub.startsWith('/')) sub = sub.substring(1)
+        baseArray.push(sub)
     }
-
-    get fileTimestamp() {
-        return typeof this.item.modified.getTime === 'function' ? this.item.modified.getTime() : 0
-    }
-
-    get thumbnails() {
-        return this.item.thumbnails ?? []
-    }
-
-    get subdirectory() {
-        if (!this.item.full_filename.includes('/')) return null
-
-        return escapePath(this.item.full_filename.substring(0, this.item.full_filename.lastIndexOf('/')))
-    }
-
-    get smallThumbnail() {
-        return this.thumbnails.find(
-            (thumbnail) =>
-                thumbnail.width >= thumbnailSmallMin &&
-                thumbnail.width <= thumbnailSmallMax &&
-                thumbnail.height >= thumbnailSmallMin &&
-                thumbnail.height <= thumbnailSmallMax
-        )
-    }
-
-    get smallThumbnailUrl() {
-        if (this.smallThumbnail === undefined || !('relative_path' in this.smallThumbnail)) return null
-
-        return this.buildUrl(this.smallThumbnail.relative_path)
-    }
-
-    get bigThumbnail() {
-        return this.thumbnails.find((thumbnail) => thumbnail.width >= thumbnailBigMin)
-    }
-
-    get bigThumbnailUrl() {
-        if (this.bigThumbnail === undefined || !('relative_path' in this.bigThumbnail)) return null
-
-        return this.buildUrl(this.bigThumbnail.relative_path)
-    }
-
-    buildUrl(relativePath: string) {
-        const baseArray = [this.apiUrl, 'server/files/gcodes']
-        if (this.subdirectory !== null) {
-            let subdirectory = this.subdirectory
-            if (subdirectory.startsWith('/')) subdirectory = subdirectory.substring(1)
-
-            baseArray.push(subdirectory)
-        }
-        baseArray.push(escapePath(relativePath))
-        const baseUrl = baseArray.join('/')
-
-        return `${baseUrl}?timestamp=${this.fileTimestamp}`
-    }
+    baseArray.push(escapePath(relativePath))
+    const baseUrl = baseArray.join('/')
+    return `${baseUrl}?timestamp=${fileTimestamp.value}`
 }
 </script>

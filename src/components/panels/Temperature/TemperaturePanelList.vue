@@ -50,123 +50,88 @@
     </responsive>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import TemperaturePanelListItemNevermore from '@/components/panels/Temperature/TemperaturePanelListItemNevermore.vue'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import Responsive from '@/components/ui/Responsive.vue'
 
-@Component({
-    components: { TemperaturePanelListItemNevermore },
+const store = useStore()
+
+const available_heaters = computed(() => store.state.printer?.heaters?.available_heaters ?? [])
+const available_sensors = computed(() => store.state.printer?.heaters?.available_sensors ?? [])
+const available_monitors = computed(() => store.state.printer?.heaters?.available_monitors ?? [])
+
+const settings = computed(() => store.state.printer?.configfile?.settings ?? {})
+
+const hideMcuHostSensors = computed(() => store.state.gui.view.tempchart.hideMcuHostSensors ?? false)
+const hideMonitors = computed(() => store.state.gui.view.tempchart.hideMonitors ?? false)
+
+const temperature_fans = computed(() =>
+    available_sensors.value
+        .filter((name: string) => name.startsWith('temperature_fan') && !name.startsWith('temperature_fan _'))
+        .sort(sortObjectName)
+)
+
+const monitors = computed(() => available_monitors.value.sort(sortObjectName))
+
+const filteredHeaters = computed(() => filterNamesAndSort(available_heaters.value))
+
+const available_nevermores = computed(() =>
+    Object.keys(store.state.printer).filter((name) => name.startsWith('nevermore'))
+)
+
+const nevermoreObjects = computed(() => filterNamesAndSort(available_nevermores.value))
+
+const temperature_sensors = computed(() =>
+    filterNamesAndSort(available_sensors.value).filter((fullName: string) => {
+        if (available_heaters.value.includes(fullName)) return false
+        if (temperature_fans.value.includes(fullName)) return false
+        if (hideMcuHostSensors.value && checkMcuHostSensor(fullName)) return false
+        return true
+    })
+)
+
+const heaterObjects = computed(() => [...filteredHeaters.value, ...temperature_fans.value])
+
+const maxTemperatureSetting = computed(() =>
+    heaterObjects.value.reduce((maxTemp, heaterObject) => {
+        const settingObject = settings.value[heaterObject.toLowerCase()] ?? {}
+        const maxTempSetting = Number(settingObject.max_temp ?? 0)
+        return Math.max(maxTemp, maxTempSetting)
+    }, 0)
+)
+
+const inputFieldDigits = computed(() => {
+    const MIN_INPUT_DIGITS = 3
+    const digits = maxTemperatureSetting.value.toString().length
+    return Math.max(MIN_INPUT_DIGITS, digits)
 })
-export default class TemperaturePanelList extends Mixins(BaseMixin) {
-    get available_heaters() {
-        return this.$store.state.printer?.heaters?.available_heaters ?? []
-    }
 
-    get filteredHeaters() {
-        return this.filterNamesAndSort(this.available_heaters)
-    }
+function checkMcuHostSensor(fullName: string) {
+    const settingsObject = settings.value[fullName.toLowerCase()] ?? {}
+    const sensor_type = settingsObject.sensor_type ?? ''
+    return ['temperature_mcu', 'temperature_host'].includes(sensor_type)
+}
 
-    get available_sensors() {
-        return this.$store.state.printer?.heaters?.available_sensors ?? []
-    }
+function filterNamesAndSort(fullNames: string[]) {
+    return fullNames.filter(isVisibleName).sort(sortObjectName)
+}
 
-    get available_monitors() {
-        return this.$store.state.printer?.heaters?.available_monitors ?? []
-    }
+function isVisibleName(fullName: string) {
+    return !shortName(fullName).startsWith('_')
+}
 
-    get available_nevermores() {
-        return Object.keys(this.$store.state.printer).filter((name) => name.startsWith('nevermore'))
-    }
+function sortObjectName(a: string, b: string) {
+    const nameA = shortName(a).toUpperCase()
+    const nameB = shortName(b).toUpperCase()
+    if (nameA < nameB) return -1
+    if (nameA > nameB) return 1
+    return 0
+}
 
-    get monitors() {
-        return this.available_monitors.sort(this.sortObjectName)
-    }
-
-    get temperature_fans() {
-        return this.available_sensors
-            .filter((name: string) => name.startsWith('temperature_fan') && !name.startsWith('temperature_fan _'))
-            .sort(this.sortObjectName)
-    }
-
-    get hideMcuHostSensors(): boolean {
-        return this.$store.state.gui.view.tempchart.hideMcuHostSensors ?? false
-    }
-
-    get hideMonitors(): boolean {
-        return this.$store.state.gui.view.tempchart.hideMonitors ?? false
-    }
-
-    get temperature_sensors() {
-        return this.filterNamesAndSort(this.available_sensors).filter((fullName: string) => {
-            if (this.available_heaters.includes(fullName)) return false
-            if (this.temperature_fans.includes(fullName)) return false
-
-            // hide MCU & Host sensors, if the function is enabled
-            if (this.hideMcuHostSensors && this.checkMcuHostSensor(fullName)) return false
-
-            return true
-        })
-    }
-
-    get heaterObjects() {
-        return [...this.filteredHeaters, ...this.temperature_fans]
-    }
-
-    get nevermoreObjects() {
-        return this.filterNamesAndSort(this.available_nevermores)
-    }
-
-    get settings() {
-        return this.$store.state.printer?.configfile?.settings ?? {}
-    }
-
-    get maxTemperatureSetting() {
-        return this.heaterObjects.reduce((maxTemp, heaterObject) => {
-            const settingObject = this.settings[heaterObject.toLowerCase()] ?? {}
-            const maxTempSetting = Number(settingObject.max_temp ?? 0)
-
-            return Math.max(maxTemp, maxTempSetting)
-        }, 0)
-    }
-
-    get inputFieldDigits() {
-        const MIN_INPUT_DIGITS = 3
-        const digits = this.maxTemperatureSetting.toString().length
-
-        return Math.max(MIN_INPUT_DIGITS, digits)
-    }
-
-    checkMcuHostSensor(fullName: string) {
-        const settingsObject = this.settings[fullName.toLowerCase()] ?? {}
-        const sensor_type = settingsObject.sensor_type ?? ''
-
-        return ['temperature_mcu', 'temperature_host'].includes(sensor_type)
-    }
-
-    filterNamesAndSort(fullNames: string[]) {
-        return fullNames.filter(this.isVisibleName).sort(this.sortObjectName)
-    }
-
-    isVisibleName(fullName: string) {
-        return !this.shortName(fullName).startsWith('_')
-    }
-
-    sortObjectName(a: string, b: string) {
-        const nameA = this.shortName(a).toUpperCase()
-        const nameB = this.shortName(b).toUpperCase()
-
-        if (nameA < nameB) return -1
-        if (nameA > nameB) return 1
-
-        return 0
-    }
-
-    shortName(fullName: string) {
-        const splits = fullName.split(' ')
-        return splits.length == 1 ? splits[0] : splits[1]
-    }
+function shortName(fullName: string) {
+    const splits = fullName.split(' ')
+    return splits.length == 1 ? splits[0] : splits[1]
 }
 </script>
 

@@ -149,45 +149,38 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import { mdiEngineOff, mdiHome } from '@mdi/js'
 
-@Component
-export default class BarsControl extends Mixins(BaseMixin, ControlMixin) {
-    mdiEngineOff = mdiEngineOff
-    mdiHome = mdiHome
+const { printer_state, loadings } = useBase()
+const {
+    homedAxes, feedrateXY, feedrateZ,
+    enableXYHoming, existsQGL, existsZtilt,
+    colorQuadGantryLevel, colorZTilt,
+    doHome, doHomeX, doHomeY, doHomeZ, doHomeXY,
+    doQGL, doZtilt, doSend, doSendMove,
+} = useControl()
+const store = useStore()
 
-    get enableXYHoming(): boolean {
-        return this.$store.state.gui.control.enableXYHoming
-    }
+const stepsXYsorted = computed(() =>
+    [...store.state.gui.control.stepsXY].sort((a, b) => b - a)
+)
 
-    get stepsXYsorted() {
-        return [...this.$store.state.gui.control.stepsXY].sort(function (a, b) {
-            return b - a
-        })
-    }
+const stepsXYsortedReverse = computed(() =>
+    [...store.state.gui.control.stepsXY].sort((a, b) => a - b)
+)
 
-    get stepsXYsortedReverse() {
-        return [...this.$store.state.gui.control.stepsXY].sort(function (a, b) {
-            return a - b
-        })
-    }
+const stepsZsorted = computed(() =>
+    [...store.state.gui.control.stepsZ].sort((a, b) => b - a)
+)
 
-    get stepsZsorted() {
-        return [...this.$store.state.gui.control.stepsZ].sort(function (a, b) {
-            return b - a
-        })
-    }
-
-    get stepsZsortedReverse() {
-        return [...this.$store.state.gui.control.stepsZ].sort(function (a, b) {
-            return a - b
-        })
-    }
-}
+const stepsZsortedReverse = computed(() =>
+    [...store.state.gui.control.stepsZ].sort((a, b) => a - b)
+)
 </script>
 
 <style scoped>

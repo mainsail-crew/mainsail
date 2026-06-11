@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="showDialog" persistent :max-width="800" :fullscreen="isMobile">
+    <v-dialog :model-value="showDialog" @update:model-value="emitValue" persistent :max-width="800" :fullscreen="isMobile">
         <panel
             :title="$t('Machine.UpdatePanel.Commits')"
             :icon="mdiUpdate"
@@ -42,9 +42,9 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useBase } from '@/composables/useBase'
 import {
     ServerUpdateManagerStateGitRepo,
     ServerUpdateManagerStateGitRepoCommit,
@@ -54,79 +54,74 @@ import { mdiUpdate, mdiCloseThick } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import GitCommitsListDay from '@/components/panels/Machine/UpdatePanel/GitCommitsListDay.vue'
 
-@Component({
-    components: { GitCommitsListDay, Panel },
+const props = defineProps<{
+    'model-value': boolean
+    repo: ServerUpdateManagerStateGitRepo | null
+}>()
+
+const emit = defineEmits<{
+    'update:model-value': [value: boolean]
+}>()
+
+const { isMobile } = useBase()
+
+const mdiUpdate = mdiUpdate
+const mdiCloseThick = mdiCloseThick
+
+function emitValue(val: boolean) {
+    emit('update:model-value', val)
+}
+
+const showDialog = computed(() => props['model-value'])
+
+const commitsBehind = computed<ServerUpdateManagerStateGitRepoCommit[]>(() =>
+    props.repo?.commits_behind ?? []
+)
+
+const groupedCommits = computed(() => {
+    const output: ServerUpdateManagerStateGitRepoGroupedCommits[] = []
+    let lastCommit: ServerUpdateManagerStateGitRepoCommit | null = null
+    commitsBehind.value.forEach((commit: ServerUpdateManagerStateGitRepoCommit) => {
+        const lastCommitDate = new Date((lastCommit?.date ?? 0) * 1000)
+        const commitDate = new Date(commit.date * 1000)
+        if (
+            commitDate.getFullYear() !== lastCommitDate.getFullYear() ||
+            commitDate.getMonth() !== lastCommitDate.getMonth() ||
+            commitDate.getDate() !== lastCommitDate.getDate()
+        ) {
+            output.push({
+                date: commitDate,
+                commits: [],
+            })
+        }
+        output[output.length - 1].commits.push(commit)
+        lastCommit = commit
+    })
+    return output
 })
-export default class GitCommitsList extends Mixins(BaseMixin) {
-    mdiUpdate = mdiUpdate
-    mdiCloseThick = mdiCloseThick
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ required: true }) readonly repo!: ServerUpdateManagerStateGitRepo | null
+const displayFullHistoryWaring = computed(() => commitsBehind.value.length >= 30)
 
-    get commitsBehind(): ServerUpdateManagerStateGitRepoCommit[] {
-        return this.repo?.commits_behind ?? []
+const lastCommit = computed(() => commitsBehind.value.slice(-1)[0])
+
+const linkToGithub = computed(() =>
+    `https://github.com/${props.repo?.owner}/${props.repo?.repo_name}/commits/${props.repo?.branch}/?after=${lastCommit.value?.sha}+0`
+)
+
+const overlayScrollbarsStyle = computed(() => {
+    if (isMobile.value) {
+        return { height: 'calc(100vh - 48px)' }
     }
+    return { height: '400px' }
+})
 
-    get groupedCommits() {
-        const output: ServerUpdateManagerStateGitRepoGroupedCommits[] = []
-        let lastCommit: ServerUpdateManagerStateGitRepoCommit | null = null
+const timelineClassName = computed(() => {
+    if (isMobile.value) return ['groupedCommits', 'mobile']
+    return ['groupedCommits']
+})
 
-        this.commitsBehind.forEach((commit: ServerUpdateManagerStateGitRepoCommit) => {
-            const lastCommitDate = new Date((lastCommit?.date ?? 0) * 1000)
-            const commitDate = new Date(commit.date * 1000)
-
-            if (
-                commitDate.getFullYear() !== lastCommitDate.getFullYear() ||
-                commitDate.getMonth() !== lastCommitDate.getMonth() ||
-                commitDate.getDate() !== lastCommitDate.getDate()
-            ) {
-                output.push({
-                    date: commitDate,
-                    commits: [],
-                })
-            }
-
-            output[output.length - 1].commits.push(commit)
-            lastCommit = commit
-        })
-
-        return output
-    }
-
-    get displayFullHistoryWaring() {
-        return this.commitsBehind.length >= 30
-    }
-
-    get lastCommit() {
-        return this.commitsBehind.slice(-1)[0]
-    }
-
-    get linkToGithub() {
-        return `https://github.com/${this.repo?.owner}/${this.repo?.repo_name}/commits/${this.repo?.branch}/?after=${this.lastCommit?.sha}+0`
-    }
-
-    get overlayScrollbarsStyle() {
-        if (this.isMobile) {
-            return {
-                height: 'calc(100vh - 48px)',
-            }
-        }
-
-        return {
-            height: '400px',
-        }
-    }
-
-    get timelineClassName() {
-        if (this.isMobile) return ['groupedCommits', 'mobile']
-
-        return ['groupedCommits']
-    }
-
-    closeDialog() {
-        this.showDialog = false
-    }
+function closeDialog() {
+    emit('update:model-value', false)
 }
 </script>
 

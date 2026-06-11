@@ -8,35 +8,40 @@
         <v-list>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="showPosition"
+                    :model-value="showPosition"
+                    @update:model-value="toggleShowPosition"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.ToolheadControlPanel.PositionOutput')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="showCoordinates"
+                    :model-value="showCoordinates"
+                    @update:model-value="toggleShowCoordinates"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.ToolheadControlPanel.CoordinateFields')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="showControl"
+                    :model-value="showControl"
+                    @update:model-value="toggleShowControl"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.ToolheadControlPanel.ControlButtons')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="showZOffset"
+                    :model-value="showZOffset"
+                    @update:model-value="toggleShowZOffset"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.ToolheadControlPanel.ZOffset')" />
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
-                    v-model="showSpeedFactor"
+                    :model-value="showSpeedFactor"
+                    @update:model-value="toggleShowSpeedFactor"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.ToolheadControlPanel.SpeedFactor')" />
@@ -45,54 +50,36 @@
     </v-menu>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { mdiCog } from '@mdi/js'
 
-@Component
-export default class ToolheadPanelSettings extends Mixins(BaseMixin) {
-    mdiCog = mdiCog
+const store = useStore()
+const mdiCog = mdiCog
 
-    get showPosition(): boolean {
-        return this.$store.state.gui.view.toolhead.showPosition ?? true
-    }
+const showPosition = computed(() => store.state.gui.view.toolhead.showPosition ?? true)
+function toggleShowPosition(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.toolhead.showPosition', value: val })
+}
 
-    set showPosition(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showPosition', value: newVal })
-    }
+const showCoordinates = computed(() => store.state.gui.view.toolhead.showCoordinates ?? true)
+function toggleShowCoordinates(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.toolhead.showCoordinates', value: val })
+}
 
-    get showCoordinates(): boolean {
-        return this.$store.state.gui.view.toolhead.showCoordinates ?? true
-    }
+const showControl = computed(() => store.state.gui.view.toolhead.showControl ?? true)
+function toggleShowControl(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.toolhead.showControl', value: val })
+}
 
-    set showCoordinates(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showCoordinates', value: newVal })
-    }
+const showZOffset = computed(() => store.state.gui.view.toolhead.showZOffset ?? true)
+function toggleShowZOffset(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.toolhead.showZOffset', value: val })
+}
 
-    get showControl(): boolean {
-        return this.$store.state.gui.view.toolhead.showControl ?? true
-    }
-
-    set showControl(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showControl', value: newVal })
-    }
-
-    get showZOffset(): boolean {
-        return this.$store.state.gui.view.toolhead.showZOffset ?? true
-    }
-
-    set showZOffset(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showZOffset', value: newVal })
-    }
-
-    get showSpeedFactor(): boolean {
-        return this.$store.state.gui.view.toolhead.showSpeedFactor ?? true
-    }
-
-    set showSpeedFactor(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'view.toolhead.showSpeedFactor', value: newVal })
-    }
+const showSpeedFactor = computed(() => store.state.gui.view.toolhead.showSpeedFactor ?? true)
+function toggleShowSpeedFactor(val: boolean) {
+    store.dispatch('gui/saveSetting', { name: 'view.toolhead.showSpeedFactor', value: val })
 }
 </script>

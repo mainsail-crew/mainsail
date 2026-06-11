@@ -120,21 +120,17 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../../mixins/base'
-import { formatFilesize } from '@/plugins/helpers'
-import { PrinterStateMcu } from '@/store/printer/types'
+<script setup lang="ts">
+import { ref } from 'vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
-@Component({
-    components: { Panel },
-})
-export default class SystemPanelMcu extends Mixins(BaseMixin) {
-    formatFilesize = formatFilesize
-    mdiCloseThick = mdiCloseThick
+import type { PrinterStateMcu } from '@/store/printer/types'
 
-    @Prop({ required: true }) readonly mcu!: PrinterStateMcu
-    private mcuDetailsDialog = false
-}
+defineProps<{
+    mcu: PrinterStateMcu
+}>()
+
+const mdiCloseThick = mdiCloseThick
+
+const mcuDetailsDialog = ref(false)
 </script>

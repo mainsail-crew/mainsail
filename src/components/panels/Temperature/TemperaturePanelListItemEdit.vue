@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="showDialog" persistent :width="400">
+    <v-dialog :model-value="showDialog" @update:model-value="$emit('update:model-value', $event)" persistent :width="400">
         <panel :title="formatName" :icon="icon" card-class="temperature-edit-heater-dialog" :margin-bottom="false">
             <template #buttons>
                 <v-btn icon tile @click="closeDialog">
@@ -22,7 +22,7 @@
                         <v-color-picker
                             hide-mode-switch
                             mode="hexa"
-                            :value="color"
+                            :model-value="color"
                             class="mx-auto"
                             @update:color="setChartColor" />
                     </v-col>
@@ -32,60 +32,59 @@
     </v-dialog>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop, VModel } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { mdiCloseThick } from '@mdi/js'
-import TemperaturePanelListItemEditChartSerie from '@/components/panels/Temperature/TemperaturePanelListItemEditChartSerie.vue'
-import TemperaturePanelListItemEditAdditionalSensor from '@/components/panels/Temperature/TemperaturePanelListItemEditAdditionalSensor.vue'
-import { Debounce } from 'vue-debounce-decorator'
+import Panel from '@/components/ui/Panel.vue'
 
-@Component({
-    components: { TemperaturePanelListItemEditAdditionalSensor, TemperaturePanelListItemEditChartSerie },
+const props = defineProps<{
+    showDialog: boolean
+    objectName: string
+    name: string
+    additionalSensorName: string | null
+    formatName: string
+    icon: string
+    color: string
+}>()
+
+const emit = defineEmits<{
+    'update:model-value': [value: boolean]
+}>()
+
+const store = useStore()
+const mdiCloseThick = mdiCloseThick
+
+const chartSeries = computed(() =>
+    store.getters['printer/tempHistory/getSerieNames'](props.objectName) ?? []
+)
+
+const printerObjectAdditionalSensor = computed(() => {
+    if (props.additionalSensorName === null || !(props.additionalSensorName in store.state.printer)) return {}
+    return store.state.printer[props.additionalSensorName]
 })
-export default class TemperaturePanelListItemEdit extends Mixins(BaseMixin) {
-    mdiCloseThick = mdiCloseThick
 
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: String, required: true }) readonly name!: string
-    @Prop({ required: true }) readonly additionalSensorName!: string | null
-    @Prop({ type: String, required: true }) readonly formatName!: string
-    @Prop({ type: String, required: true }) readonly icon!: string
-    @Prop({ type: String, required: true }) readonly color!: string
+const additionalValues = computed(() => {
+    if (props.objectName === 'z_thermal_adjust') return ['current_z_adjust']
+    if (props.objectName.startsWith('nevermore')) return ['temperature', 'pressure', 'humidity', 'rpm']
+    return Object.keys(printerObjectAdditionalSensor.value).filter((key) => key !== 'temperature')
+})
 
-    get chartSeries() {
-        return this.$store.getters['printer/tempHistory/getSerieNames'](this.objectName) ?? []
-    }
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-    get printerObjectAdditionalSensor() {
-        if (this.additionalSensorName === null || !(this.additionalSensorName in this.$store.state.printer)) return {}
-
-        return this.$store.state.printer[this.additionalSensorName]
-    }
-
-    get additionalValues() {
-        if (this.objectName === 'z_thermal_adjust') return ['current_z_adjust']
-        if (this.objectName.startsWith('nevermore')) return ['temperature', 'pressure', 'humidity', 'rpm']
-
-        return Object.keys(this.printerObjectAdditionalSensor).filter((key) => key !== 'temperature')
-    }
-
-    @Debounce(500)
-    setChartColor(value: string | { hex: string }): void {
-        if (typeof value === 'object' && 'hex' in value) value = value.hex
-
-        this.$store.dispatch('gui/setChartColor', {
-            objectName: this.objectName,
+function setChartColor(value: string | { hex: string }): void {
+    if (typeof value === 'object' && 'hex' in value) value = value.hex
+    if (debounceTimer) clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+        store.dispatch('gui/setChartColor', {
+            objectName: props.objectName,
             value,
         })
+        store.dispatch('printer/tempHistory/setColor', { name: props.objectName, value })
+    }, 500)
+}
 
-        this.$store.dispatch('printer/tempHistory/setColor', { name: this.objectName, value })
-    }
-
-    closeDialog() {
-        this.showDialog = false
-    }
+function closeDialog() {
+    emit('update:model-value', false)
 }
 </script>

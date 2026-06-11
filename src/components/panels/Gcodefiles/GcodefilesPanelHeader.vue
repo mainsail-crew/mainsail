@@ -63,142 +63,138 @@
         </v-col>
     </v-row>
 </template>
-<script lang="ts">
-import { Component, Mixins, Ref } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useBase } from '@/composables/useBase'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
+import { useSocket } from '@/composables/useSocket'
+import { useToast } from 'vue-toast-notification'
 import { mdiCloudDownload, mdiDelete, mdiFolderPlus, mdiMagnify, mdiRefresh, mdiUpload } from '@mdi/js'
 import { FileStateFile } from '@/store/files/types'
 import { escapePath, generateTimestamp } from '@/plugins/helpers'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import GcodefilesCreateDirectoryDialog from '@/components/dialogs/GcodefilesCreateDirectoryDialog.vue'
+import GcodefilesPanelHeaderSettings from '@/components/panels/Gcodefiles/GcodefilesPanelHeaderSettings.vue'
 import { validGcodeExtensions } from '@/store/variables'
 
-@Component({
-    components: { ConfirmationDialog },
+const { apiUrl, isIOS, loadings } = useBase()
+const { search, setSearch, currentPath, setCurrentPath, selectedFiles, setSelectedFiles } = useGcodeFiles()
+const socket = useSocket()
+const store = useStore()
+const { t } = useI18n()
+const toast = useToast()
+
+const fileUpload = ref<HTMLInputElement | null>(null)
+
+const showCreateDirectoryDialog = ref(false)
+const showDeleteSelectedDialog = ref(false)
+
+const gcodeInputFileAccept = computed(() => {
+    if (isIOS.value) return []
+    return validGcodeExtensions
 })
-export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiCloudDownload = mdiCloudDownload
-    mdiDelete = mdiDelete
-    mdiFolderPlus = mdiFolderPlus
-    mdiMagnify = mdiMagnify
-    mdiRefresh = mdiRefresh
-    mdiUpload = mdiUpload
 
-    showCreateDirectoryDialog = false
-    showDeleteSelectedDialog = false
+const deleteSelectedText = computed(() => {
+    if (selectedFiles.value.length === 1) {
+        return t('Files.DeleteSingleFileQuestion', { name: selectedFiles.value[0].filename }).toString()
+    }
+    return t('Files.DeleteSelectedQuestion', { count: selectedFiles.value.length }).toString()
+})
 
-    @Ref('fileUpload') fileUpload!: HTMLInputElement
-
-    get gcodeInputFileAccept() {
-        if (this.isIOS) return []
-
-        return validGcodeExtensions
+function downloadSelectedFiles() {
+    if (selectedFiles.value.length === 1) {
+        const filepath = `${currentPath.value}/${selectedFiles.value[0].filename}`
+        const href = `${apiUrl.value}/server/files/gcodes${escapePath(filepath)}`
+        window.open(href)
+        setSelectedFiles([])
+        return
     }
 
-    get deleteSelectedText(): string {
-        if (this.selectedFiles.length === 1) {
-            return this.$t('Files.DeleteSingleFileQuestion', { name: this.selectedFiles[0].filename }).toString()
+    const items: string[] = []
+
+    const addElementToItems = (absolutPath: string, directory: FileStateFile[]) => {
+        for (const file of directory) {
+            const filePath = `${absolutPath}/${escapePath(file.filename)}`
+
+            if (file.isDirectory && file.childrens) {
+                addElementToItems(filePath, file.childrens)
+                continue
+            }
+
+            items.push(filePath)
         }
-
-        return this.$t('Files.DeleteSelectedQuestion', { count: this.selectedFiles.length }).toString()
     }
 
-    downloadSelectedFiles() {
-        if (this.selectedFiles.length === 1) {
-            const filepath = `${this.currentPath}/${this.selectedFiles[0].filename}`
-            const href = `${this.apiUrl}/server/files/gcodes${escapePath(filepath)}`
-            window.open(href)
+    addElementToItems('gcodes/' + currentPath.value, selectedFiles.value)
 
-            this.selectedFiles = []
+    socket.emit(
+        'server.files.zip',
+        { items, dest: `config/gcodes-${generateTimestamp()}.zip` },
+        { action: 'files/downloadZip', loading: 'gcodeDownloadZip' }
+    )
+
+    setSelectedFiles([])
+}
+
+async function uploadFile() {
+    if (fileUpload.value?.files === null || fileUpload.value?.files.length === 0) return
+
+    const files = [...fileUpload.value.files]
+    fileUpload.value.value = ''
+
+    store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
+    store.dispatch('files/uploadSetCurrentNumber', 0)
+    store.dispatch('files/uploadSetMaxNumber', fileUpload.value.files.length)
+
+    for (const file of files) {
+        store.dispatch('files/uploadIncrementCurrentNumber')
+        const path = currentPath.value.slice(0, 1) === '/' ? currentPath.value.slice(1) : currentPath.value
+        const result = await store.dispatch('files/uploadFile', {
+            file,
+            path,
+            root: 'gcodes',
+        })
+
+        if (result !== false)
+            toast.success(t('Files.SuccessfullyUploaded', { filename: result }).toString())
+    }
+
+    store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
+}
+
+function clickUploadButton() {
+    fileUpload.value?.click()
+}
+
+function refreshFileList() {
+    socket.emit(
+        'server.files.get_directory',
+        { path: 'gcodes' + currentPath.value },
+        { action: 'files/getDirectory' }
+    )
+}
+
+function deleteSelectedFiles(): void {
+    selectedFiles.value.forEach((item) => {
+        if (item.isDirectory) {
+            socket.emit(
+                'server.files.delete_directory',
+                { path: 'gcodes' + currentPath.value + '/' + item.filename, force: true },
+                { action: 'files/getDeleteDir' }
+            )
             return
         }
 
-        const items: string[] = []
-
-        const addElementToItems = (absolutPath: string, directory: FileStateFile[]) => {
-            for (const file of directory) {
-                const filePath = `${absolutPath}/${escapePath(file.filename)}`
-
-                if (file.isDirectory && file.childrens) {
-                    addElementToItems(filePath, file.childrens)
-
-                    continue
-                }
-
-                items.push(filePath)
-            }
-        }
-
-        addElementToItems('gcodes/' + this.currentPath, this.selectedFiles)
-
-        this.$socket.emit(
-            'server.files.zip',
-            { items, dest: `config/gcodes-${generateTimestamp()}.zip` },
-            { action: 'files/downloadZip', loading: 'gcodeDownloadZip' }
+        socket.emit(
+            'server.files.delete_file',
+            { path: 'gcodes' + currentPath.value + '/' + item.filename },
+            { action: 'files/getDeleteFile' }
         )
+    })
 
-        this.selectedFiles = []
-    }
-
-    async uploadFile() {
-        if (this.fileUpload.files === null || this.fileUpload.files.length === 0) return
-
-        const files = [...this.fileUpload.files]
-        this.fileUpload.value = ''
-
-        this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-        this.$store.dispatch('files/uploadSetCurrentNumber', 0)
-        this.$store.dispatch('files/uploadSetMaxNumber', this.fileUpload.files.length)
-
-        for (const file of files) {
-            this.$store.dispatch('files/uploadIncrementCurrentNumber')
-            const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
-            const result = await this.$store.dispatch('files/uploadFile', {
-                file,
-                path,
-                root: 'gcodes',
-            })
-
-            if (result !== false)
-                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
-        }
-
-        this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-    }
-
-    clickUploadButton() {
-        this.fileUpload.click()
-    }
-
-    refreshFileList() {
-        this.$socket.emit(
-            'server.files.get_directory',
-            { path: 'gcodes' + this.currentPath },
-            { action: 'files/getDirectory' }
-        )
-    }
-
-    deleteSelectedFiles(): void {
-        this.selectedFiles.forEach((item) => {
-            if (item.isDirectory) {
-                this.$socket.emit(
-                    'server.files.delete_directory',
-                    { path: 'gcodes' + this.currentPath + '/' + item.filename, force: true },
-                    { action: 'files/getDeleteDir' }
-                )
-
-                return
-            }
-
-            this.$socket.emit(
-                'server.files.delete_file',
-                { path: 'gcodes' + this.currentPath + '/' + item.filename },
-                { action: 'files/getDeleteFile' }
-            )
-        })
-
-        this.selectedFiles = []
-    }
+    setSelectedFiles([])
 }
 </script>
 

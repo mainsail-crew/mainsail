@@ -17,35 +17,34 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { useSocket } from '@/composables/useSocket'
+import { useBase } from '@/composables/useBase'
 import { mdiProgressUpload } from '@mdi/js'
 import UpdateHintAll from '@/components/panels/Machine/UpdatePanel/UpdateHintAll.vue'
-@Component({
-    components: { UpdateHintAll },
-})
-export default class UpdatePanelEntryAll extends Mixins(BaseMixin) {
-    mdiProgressUpload = mdiProgressUpload
 
-    boolShowDialog = false
+const { printer_state } = useBase()
+const store = useStore()
+const socket = useSocket()
 
-    get hideUpdateWarning() {
-        return this.$store.state.gui.uiSettings.hideUpdateWarnings ?? false
+const mdiProgressUpload = mdiProgressUpload
+
+const boolShowDialog = ref(false)
+
+const hideUpdateWarning = ref(store.state.gui.uiSettings.hideUpdateWarnings ?? false)
+
+function clickUpdate() {
+    if (hideUpdateWarning.value) {
+        updateAll()
+        return
     }
+    boolShowDialog.value = true
+}
 
-    clickUpdate() {
-        if (this.hideUpdateWarning) {
-            this.updateAll()
-            return
-        }
-
-        this.boolShowDialog = true
-    }
-
-    updateAll() {
-        this.$socket.emit('machine.update.full', {})
-    }
+function updateAll() {
+    socket.emit('machine.update.full', {})
 }
 </script>
 

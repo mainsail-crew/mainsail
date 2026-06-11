@@ -8,28 +8,24 @@
     </v-card>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
 import { mdiArrowLeft } from '@mdi/js'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
 
-@Component
-export default class GcodefilesPanelListCardBack extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiArrowLeft = mdiArrowLeft
+const { currentPath, setCurrentPath } = useGcodeFiles()
 
-    get parentName() {
-        if (!this.currentPath) return ''
-        const parts = this.currentPath.split('/').filter(Boolean)
-        if (parts.length === 0) return ''
-        return parts[parts.length - 1]
-    }
+const parentName = computed(() => {
+    if (!currentPath.value) return ''
+    const parts = currentPath.value.split('/').filter(Boolean)
+    if (parts.length === 0) return ''
+    return parts[parts.length - 1]
+})
 
-    goBack() {
-        const parts = this.currentPath.split('/').filter(Boolean)
-        parts.pop()
-        this.currentPath = parts.length ? '/' + parts.join('/') : ''
-    }
+function goBack() {
+    const parts = currentPath.value.split('/').filter(Boolean)
+    parts.pop()
+    setCurrentPath(parts.length ? '/' + parts.join('/') : '')
 }
 </script>
 

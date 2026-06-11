@@ -20,27 +20,25 @@
     </panel>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
 import MacroButton from '@/components/inputs/MacroButton.vue'
 import { mdiCodeTags } from '@mdi/js'
 import { PrinterStateMacro } from '@/store/printer/types'
-@Component({
-    components: { MacroButton, Panel },
+
+const { klipperReadyForGui } = useBase()
+
+const store = useStore()
+
+const hiddenMacros = computed(() =>
+    (store.state.gui?.macros?.hiddenMacros ?? []).map((name: string) => name.toLowerCase())
+)
+
+const macros = computed(() => {
+    const allMacros = store.getters['printer/getMacros']
+    return allMacros.filter((macro: PrinterStateMacro) => !hiddenMacros.value.includes(macro.name.toLowerCase()))
 })
-export default class MacrosPanel extends Mixins(BaseMixin) {
-    mdiCodeTags = mdiCodeTags
-
-    get hiddenMacros() {
-        return (this.$store.state.gui?.macros?.hiddenMacros ?? []).map((name: string) => name.toLowerCase())
-    }
-
-    get macros() {
-        const macros = this.$store.getters['printer/getMacros']
-
-        return macros.filter((macro: PrinterStateMacro) => !this.hiddenMacros.includes(macro.name.toLowerCase()))
-    }
-}
 </script>

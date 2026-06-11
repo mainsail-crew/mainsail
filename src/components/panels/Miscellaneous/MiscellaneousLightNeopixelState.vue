@@ -2,55 +2,54 @@
     <span class="_currentState" :style="currentStateStyle" @click="clickButton"></span>
 </template>
 
-<script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-@Component
-export default class MiscellaneousLightNeopixelState extends Mixins(BaseMixin) {
-    @Prop({ type: String, required: true }) declare readonly type: string
-    @Prop({ type: String, required: true }) declare readonly name: string
-    @Prop({ type: Number, required: true }) declare readonly index: number
+const props = defineProps<{
+    type: string
+    name: string
+    index: number
+}>()
 
-    get printerObject() {
-        const printer = this.$store.state.printer ?? {}
+const emit = defineEmits<{
+    'click-button': []
+}>()
 
-        return printer[`${this.type} ${this.name}`] ?? {}
+const store = useStore()
+
+const printerObject = computed(() => {
+    const printer = store.state.printer ?? {}
+    return printer[`${props.type} ${props.name}`] ?? {}
+})
+
+const colorData = computed(() => printerObject.value.color_data ?? [])
+
+const current = computed(() => {
+    const data = colorData.value[props.index - 1] ?? []
+    return {
+        red: data[0] ?? null,
+        green: data[1] ?? null,
+        blue: data[2] ?? null,
+        white: data[3] ?? null,
     }
+})
 
-    get colorData() {
-        return this.printerObject.color_data ?? []
+const currentStateStyle = computed(() => {
+    const red = Math.round((current.value.red ?? 0) * 255)
+    const green = Math.round((current.value.green ?? 0) * 255)
+    const blue = Math.round((current.value.blue ?? 0) * 255)
+    const white = Math.round((current.value.white ?? 0) * 255)
+
+    let output = `rgba(${red}, ${green}, ${blue})`
+    if (red === 0 && green === 0 && blue === 0 && white > 0) {
+        output = `rgb(${white}, ${white}, ${white})`
     }
+    return { 'background-color': output }
+})
 
-    get current() {
-        const data = this.colorData[this.index - 1] ?? []
-
-        return {
-            red: data[0] ?? null,
-            green: data[1] ?? null,
-            blue: data[2] ?? null,
-            white: data[3] ?? null,
-        }
-    }
-
-    get currentStateStyle() {
-        const red = Math.round((this.current.red ?? 0) * 255)
-        const green = Math.round((this.current.green ?? 0) * 255)
-        const blue = Math.round((this.current.blue ?? 0) * 255)
-        const white = Math.round((this.current.white ?? 0) * 255)
-
-        let output = `rgba(${red}, ${green}, ${blue})`
-
-        if (red === 0 && green === 0 && blue === 0 && white > 0) {
-            output = `rgb(${white}, ${white}, ${white})`
-        }
-
-        return { 'background-color': output }
-    }
-
-    clickButton() {
-        this.$emit('click-button')
-    }
+function clickButton() {
+    emit('click-button')
 }
 </script>
 

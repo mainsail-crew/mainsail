@@ -330,7 +330,8 @@
                         <v-btn-toggle
                             v-if="stepsReversed.length > 0"
                             :key="`all-steps-${stepsReversed.join('_')}`"
-                            v-model="selectedCrossStep"
+                            :model-value="selectedCrossStep"
+                            @update:model-value="updateSelectedCrossStep"
                             dense
                             mandatory
                             style="flex-wrap: nowrap; width: 100%">
@@ -358,60 +359,47 @@
     </responsive>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import ControlMixin from '@/components/mixins/control'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useBase } from '@/composables/useBase'
+import { useControl } from '@/composables/useControl'
 import Responsive from '@/components/ui/Responsive.vue'
 import { mdiChevronUp, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiEngineOff, mdiHome } from '@mdi/js'
 
-@Component({
-    components: { Responsive },
-})
-export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
-    mdiChevronUp = mdiChevronUp
-    mdiChevronLeft = mdiChevronLeft
-    mdiChevronRight = mdiChevronRight
-    mdiChevronDown = mdiChevronDown
-    mdiEngineOff = mdiEngineOff
-    mdiHome = mdiHome
+const { printer_state, loadings } = useBase()
+const {
+    homedAxes, xAxisHomed, yAxisHomed, zAxisHomed,
+    feedrateXY, feedrateZ,
+    enableXYHoming, existsQGL, existsZtilt,
+    colorQuadGantryLevel, colorZTilt, actionButton,
+    doHome, doHomeX, doHomeY, doHomeZ, doHomeXY,
+    doQGL, doZtilt, doSend, doSendMove,
+} = useControl()
+const store = useStore()
 
-    /**
-     * Step size selection
-     */
-    get selectedCrossStep() {
-        return this.$store.state.gui.control.selectedCrossStep
-    }
+const mdiChevronUp = mdiChevronUp
+const mdiChevronLeft = mdiChevronLeft
+const mdiChevronRight = mdiChevronRight
+const mdiChevronDown = mdiChevronDown
+const mdiEngineOff = mdiEngineOff
+const mdiHome = mdiHome
 
-    set selectedCrossStep(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.selectedCrossStep', value: newVal })
-    }
+const selectedCrossStep = computed(() => store.state.gui.control.selectedCrossStep)
 
-    get stepSize(): number {
-        return this.stepsReversed[this.selectedCrossStep]
-    }
-
-    /**
-     * Axes reverse states
-     */
-    get reverseX() {
-        return this.$store.state.gui.control.reverseX
-    }
-
-    get reverseY() {
-        return this.$store.state.gui.control.reverseY
-    }
-
-    get reverseZ() {
-        return this.$store.state.gui.control.reverseZ
-    }
-
-    get stepsAll() {
-        return this.$store.state.gui.control?.stepsAll ?? []
-    }
-
-    get stepsReversed() {
-        return Array.from(new Set([...(this.stepsAll ?? [])])).sort((a, b) => a - b)
-    }
+function updateSelectedCrossStep(newVal: any) {
+    store.dispatch('gui/saveSetting', { name: 'control.selectedCrossStep', value: newVal })
 }
+
+const stepSize = computed(() => stepsReversed.value[selectedCrossStep.value])
+
+const reverseX = computed(() => store.state.gui.control.reverseX)
+const reverseY = computed(() => store.state.gui.control.reverseY)
+const reverseZ = computed(() => store.state.gui.control.reverseZ)
+
+const stepsAll = computed(() => store.state.gui.control?.stepsAll ?? [])
+
+const stepsReversed = computed(() =>
+    Array.from(new Set([...(stepsAll.value ?? [])])).sort((a, b) => a - b)
+)
 </script>

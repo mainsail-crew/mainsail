@@ -52,61 +52,58 @@
     </panel>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
+import { useWebcam } from '@/composables/useWebcam'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { mdiMenuDown, mdiViewGrid, mdiWebcam } from '@mdi/js'
-import WebcamMixin from '@/components/mixins/webcam'
 
-@Component({
-    components: {
-        Panel,
-    },
-})
-export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
-    @Prop({ default: 'dashboard' }) declare currentPage?: string
+const props = defineProps<{
+    currentPage?: string
+}>()
 
-    mdiWebcam = mdiWebcam
-    mdiMenuDown = mdiMenuDown
-    mdiViewGrid = mdiViewGrid
+const { socketIsConnected, convertWebcamIcon } = useWebcam()
 
-    get webcams(): GuiWebcamStateWebcam[] {
-        return this.$store.getters['gui/webcams/getWebcams']
-    }
+const { t } = useI18n()
 
-    get showSwitch() {
-        return this.webcams.length > 1
-    }
+const store = useStore()
 
-    // id changed to name with the refactoring of using moonraker webcam API
-    get currentCamId(): string {
-        if (this.webcams.length === 1) return this.webcams[0].name ?? 'all'
+const webcams = computed<GuiWebcamStateWebcam[]>(() =>
+    store.getters['gui/webcams/getWebcams']
+)
 
-        const currentCamId = this.$store.state.gui.view.webcam.currentCam[this.currentPage ?? ''] ?? 'all'
-        if (this.webcams.findIndex((webcam: GuiWebcamStateWebcam) => webcam.name === currentCamId) !== -1)
+const showSwitch = computed(() =>
+    webcams.value.length > 1
+)
+
+const currentCamId = computed({
+    get: () => {
+        if (webcams.value.length === 1) return webcams.value[0].name ?? 'all'
+
+        const currentCamId = store.state.gui.view.webcam.currentCam[props.currentPage ?? ''] ?? 'all'
+        if (webcams.value.findIndex((webcam: GuiWebcamStateWebcam) => webcam.name === currentCamId) !== -1)
             return currentCamId
-        else if (currentCamId !== undefined && this.webcams.length === 1) return this.webcams[0].name ?? ''
+        else if (currentCamId !== undefined && webcams.value.length === 1) return webcams.value[0].name ?? ''
         else return 'all'
+    },
+    set: (newVal: string) => {
+        store.dispatch('gui/setCurrentWebcam', { page: props.currentPage, value: newVal })
     }
+})
 
-    set currentCamId(newVal: string) {
-        this.$store.dispatch('gui/setCurrentWebcam', { page: this.currentPage, value: newVal })
-    }
+const currentCam = computed<GuiWebcamStateWebcam>(() => {
+    const cam = webcams.value.find((cam: GuiWebcamStateWebcam) => cam.name === currentCamId.value)
 
-    get currentCam(): GuiWebcamStateWebcam {
-        const cam = this.webcams.find((cam: GuiWebcamStateWebcam) => cam.name === this.currentCamId)
-
-        return (
-            cam ??
-            ({
-                name: this.$t('Panels.WebcamPanel.All').toString(),
-                service: 'grid',
-                icon: mdiViewGrid,
-            } as GuiWebcamStateWebcam)
-        )
-    }
-}
+    return (
+        cam ??
+        ({
+            name: t('Panels.WebcamPanel.All'),
+            service: 'grid',
+            icon: mdiViewGrid,
+        } as GuiWebcamStateWebcam)
+    )
+})
 </script>

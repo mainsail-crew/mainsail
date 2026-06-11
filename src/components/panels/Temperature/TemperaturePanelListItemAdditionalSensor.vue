@@ -9,26 +9,24 @@
     </div>
 </template>
 
-<script lang="ts">
-import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-@Component
-export default class TemperaturePanelListItemAdditionalSensor extends Mixins(BaseMixin) {
-    @Prop({ type: String, required: true }) readonly objectName!: string
-    @Prop({ type: String, required: true }) readonly additionalObjectName!: string
+const props = defineProps<{
+    objectName: string
+    additionalObjectName: string
+}>()
 
-    get printerObject() {
-        if (!(this.additionalObjectName in this.$store.state.printer)) return {}
+const store = useStore()
 
-        return this.$store.state.printer[this.additionalObjectName]
-    }
+const printerObject = computed(() => {
+    if (!(props.additionalObjectName in store.state.printer)) return {}
+    return store.state.printer[props.additionalObjectName]
+})
 
-    get additionalValues() {
-        if (this.objectName === 'z_thermal_adjust') return ['current_z_adjust']
-
-        return Object.keys(this.printerObject).filter((key) => key !== 'temperature')
-    }
-}
+const additionalValues = computed(() => {
+    if (props.objectName === 'z_thermal_adjust') return ['current_z_adjust']
+    return Object.keys(printerObject.value).filter((key) => key !== 'temperature')
+})
 </script>

@@ -23,48 +23,37 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useGcodeFiles } from '@/composables/useGcodeFiles'
 import GcodefilesPanelListCardBack from '@/components/panels/Gcodefiles/GcodefilesPanelListCardBack.vue'
 import GcodefilesPanelListCardDirectory from '@/components/panels/Gcodefiles/GcodefilesPanelListCardDirectory.vue'
 import GcodefilesPanelListCardFile from '@/components/panels/Gcodefiles/GcodefilesPanelListCardFile.vue'
 import { mdiFolderOpen } from '@mdi/js'
 
-@Component({
-    components: {
-        GcodefilesPanelListCardBack,
-        GcodefilesPanelListCardDirectory,
-        GcodefilesPanelListCardFile,
-    },
-})
-export default class GcodefilesPanelList extends Mixins(BaseMixin, GcodefilesMixin) {
-    mdiFolderOpen = mdiFolderOpen
+const { currentPath, files, selectedFiles, setSelectedFiles } = useGcodeFiles()
 
-    get directories() {
-        return this.files.filter((file) => file.isDirectory)
-    }
+const directories = computed(() =>
+    files.value.filter((file) => file.isDirectory)
+)
 
-    get filesOnly() {
-        return this.files.filter((file) => !file.isDirectory)
-    }
+const filesOnly = computed(() =>
+    files.value.filter((file) => !file.isDirectory)
+)
 
-    get hasContent() {
-        return this.directories.length > 0 || this.filesOnly.length > 0
-    }
+const hasContent = computed(() =>
+    directories.value.length > 0 || filesOnly.value.length > 0
+)
 
-    isItemSelected(item: { filename: string }) {
-        return this.selectedFiles.includes('gcodes' + this.currentPath + '/' + item.filename)
-    }
+function isItemSelected(item: { filename: string }) {
+    return selectedFiles.value.includes('gcodes' + currentPath.value + '/' + item.filename)
+}
 
-    selectItem(item: { filename: string }, value: boolean) {
-        const fullName = 'gcodes' + this.currentPath + '/' + item.filename
-        const current = this.selectedFiles ?? []
-        const next = value ? [...new Set([...current, fullName])] : current.filter((f) => f !== fullName)
-
-        this.selectedFiles = next
-    }
+function selectItem(item: { filename: string }, value: boolean) {
+    const fullName = 'gcodes' + currentPath.value + '/' + item.filename
+    const current = selectedFiles.value ?? []
+    const next = value ? [...new Set([...current, fullName])] : current.filter((f) => f !== fullName)
+    setSelectedFiles(next)
 }
 </script>
 
