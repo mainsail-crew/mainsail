@@ -60,9 +60,9 @@
                                     ]"
                                     :label="$t('SelectPrinterDialog.HostnameIp')"
                                     required
-                                    outlined
+                                    variant="outlined"
                                     hide-details="auto"
-                                    dense />
+                                    density="compact" />
                             </v-col>
                             <v-col class="col-4">
                                 <v-text-field
@@ -71,8 +71,8 @@
                                     :label="$t('SelectPrinterDialog.Port')"
                                     hide-details="auto"
                                     required
-                                    outlined
-                                    dense />
+                                    variant="outlined"
+                                    density="compact" />
                             </v-col>
                         </v-row>
                         <v-row v-if="showOptionalSettings">
@@ -82,16 +82,16 @@
                                     :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                     :label="$t('SelectPrinterDialog.Path')"
                                     hide-details="auto"
-                                    outlined
-                                    dense />
+                                    variant="outlined"
+                                    density="compact" />
                             </v-col>
                             <v-col :cols="6">
                                 <v-text-field
                                     v-model="dialogAddPrinter.name"
                                     :label="$t('SelectPrinterDialog.Name')"
-                                    outlined
+                                    variant="outlined"
                                     hide-details="auto"
-                                    dense />
+                                    density="compact" />
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -124,8 +124,8 @@
                                     ]"
                                     :label="$t('SelectPrinterDialog.HostnameIp')"
                                     required
-                                    outlined
-                                    dense
+                                    variant="outlined"
+                                    density="compact"
                                     hide-details="auto" />
                             </v-col>
                             <v-col class="col-4">
@@ -134,8 +134,8 @@
                                     :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                     :label="$t('SelectPrinterDialog.Port')"
                                     required
-                                    outlined
-                                    dense
+                                    variant="outlined"
+                                    density="compact"
                                     hide-details="auto" />
                             </v-col>
                         </v-row>
@@ -146,16 +146,16 @@
                                     :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                                     :label="$t('SelectPrinterDialog.Path')"
                                     hide-details="auto"
-                                    outlined
-                                    dense />
+                                    variant="outlined"
+                                    density="compact" />
                             </v-col>
                             <v-col :cols="6">
                                 <v-text-field
                                     v-model="dialogEditPrinter.name"
                                     :label="$t('SelectPrinterDialog.Name')"
-                                    outlined
+                                    variant="outlined"
                                     hide-details="auto"
-                                    dense />
+                                    density="compact" />
                             </v-col>
                         </v-row>
                     </v-card-text>

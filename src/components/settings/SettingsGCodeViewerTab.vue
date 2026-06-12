@@ -97,9 +97,9 @@
                     <v-text-field
                         v-model="minFeed"
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
-                        dense
+                        density="compact"
                         hide-details="auto"
-                        outlined
+                        variant="outlined"
                         suffix="mm/s"
                         type="number"
                         hide-spin-buttons
@@ -124,9 +124,9 @@
                     <v-text-field
                         v-model="maxFeed"
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
-                        dense
+                        density="compact"
                         hide-details="auto"
-                        outlined
+                        variant="outlined"
                         suffix="mm/s"
                         type="number"
                         hide-spin-buttons

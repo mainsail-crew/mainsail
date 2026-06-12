@@ -49,8 +49,8 @@
                         suffix="mm/s"
                         hide-details="auto"
                         :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
-                        outlined
-                        dense
+                        variant="outlined"
+                        density="compact"
                         hide-spin-buttons
                         @blur="blurFeedrateXY" />
                 </settings-row>
@@ -62,8 +62,8 @@
                         suffix="mm/s"
                         hide-details="auto"
                         :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
-                        outlined
-                        dense
+                        variant="outlined"
+                        density="compact"
                         hide-spin-buttons
                         @blur="blurFeedrateZ" />
                 </settings-row>
@@ -76,8 +76,8 @@
                             hide-selected
                             hide-details="auto"
                             multiple
-                            small-chips
-                            :deletable-chips="true"
+                            chips
+                            closable-chips
                             append-icon=""
                             type="number"
                             :rules="[
@@ -86,8 +86,8 @@
                                     v.length <= 9 ||
                                     $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '9' }),
                             ]"
-                            dense
-                            outlined
+                            density="compact"
+                            variant="outlined"
                             hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2" />
@@ -100,16 +100,16 @@
                             hide-selected
                             hide-details="auto"
                             multiple
-                            small-chips
-                            :deletable-chips="true"
+                            chips
+                            closable-chips
                             append-icon=""
                             type="number"
                             :rules="[
                                 (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                                 (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', { maximum: '4' }),
                             ]"
-                            dense
-                            outlined
+                            density="compact"
+                            variant="outlined"
                             hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2" />
@@ -119,16 +119,16 @@
                             hide-selected
                             hide-details="auto"
                             multiple
-                            small-chips
-                            :deletable-chips="true"
+                            chips
+                            closable-chips
                             append-icon=""
                             type="number"
                             :rules="[
                                 (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                                 (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', { maximum: '4' }),
                             ]"
-                            dense
-                            outlined
+                            density="compact"
+                            variant="outlined"
                             hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2" />
@@ -141,8 +141,8 @@
                             hide-selected
                             hide-details="auto"
                             multiple
-                            small-chips
-                            :deletable-chips="true"
+                            chips
+                            closable-chips
                             append-icon=""
                             type="number"
                             :rules="[
@@ -151,8 +151,8 @@
                                     v.length <= 3 ||
                                     $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '3' }),
                             ]"
-                            dense
-                            outlined
+                            density="compact"
+                            variant="outlined"
                             hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2" />
@@ -162,8 +162,8 @@
                             hide-selected
                             hide-details="auto"
                             multiple
-                            small-chips
-                            :deletable-chips="true"
+                            chips
+                            closable-chips
                             append-icon=""
                             type="number"
                             :rules="[
@@ -172,8 +172,8 @@
                                     v.length <= 3 ||
                                     $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '3' }),
                             ]"
-                            dense
-                            outlined
+                            density="compact"
+                            variant="outlined"
                             hide-spin-buttons />
                     </settings-row>
                     <v-divider class="my-2" />
@@ -189,8 +189,8 @@
                             item-value="value"
                             class="mt-0"
                             hide-details
-                            outlined
-                            dense />
+                            variant="outlined"
+                            density="compact" />
                     </settings-row>
                     <v-divider class="my-2" />
                 </template>
@@ -200,16 +200,16 @@
                         hide-selected
                         hide-details="auto"
                         multiple
-                        small-chips
-                        :deletable-chips="true"
+                        chips
+                        closable-chips
                         append-icon=""
                         type="number"
                         :rules="[
                             (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                             (v) => v.length <= 4 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '4' }),
                         ]"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         hide-spin-buttons />
                 </settings-row>
                 <!-- EXTRUDER CONTROL SETTINGS -->
@@ -226,16 +226,16 @@
                         hide-selected
                         hide-details="auto"
                         multiple
-                        small-chips
-                        :deletable-chips="true"
+                        chips
+                        closable-chips
                         append-icon=""
                         type="number"
                         :rules="[
                             (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                             (v) => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
                         ]"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         hide-spin-buttons />
                 </settings-row>
                 <v-divider class="my-2" />
@@ -245,16 +245,16 @@
                         hide-selected
                         hide-details="auto"
                         multiple
-                        small-chips
-                        :deletable-chips="true"
+                        chips
+                        closable-chips
                         append-icon=""
                         type="number"
                         :rules="[
                             (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
                             (v) => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
                         ]"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         hide-spin-buttons />
                 </settings-row>
                 <v-divider class="my-2" />
