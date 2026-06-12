@@ -61,6 +61,12 @@ function commandClick(event: Event) {
 </script>
 
 <style scoped>
+.console-time {
+    flex: 0 0 auto;
+    width: auto;
+    white-space: nowrap;
+}
+
 .consoleTableRow {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.95em;
