@@ -18,8 +18,8 @@
                     <v-row>
                         <v-col>
                             <div>{{ date }}</div>
-                            <p class="text-h4 text--primary">{{ item.name }}</p>
-                            <div v-if="note" class="text--primary" v-html="note" />
+                            <p class="text-h4 text-primary">{{ item.name }}</p>
+                            <div v-if="note" class="text-primary" v-html="note" />
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -41,8 +41,8 @@
             <v-divider class="mt-0" />
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn v-if="showPerformButton" text color="primary" @click="showPerformDialog = true">
+                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn v-if="showPerformButton" variant="text" color="primary" @click="showPerformDialog = true">
                     {{ $t('History.Perform') }}
                 </v-btn>
             </v-card-actions>

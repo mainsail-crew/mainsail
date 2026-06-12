@@ -44,7 +44,7 @@
                 @change="uploadFile" />
             <v-btn
                 :title="$t('Files.UploadNewGcode')"
-                class="primary--text px-2 minwidth-0 ml-3"
+                class="text-primary px-2 minwidth-0 ml-3"
                 :loading="loadings.includes('gcodeUpload')"
                 @click="clickUploadButton">
                 <v-icon>{{ mdiUpload }}</v-icon>

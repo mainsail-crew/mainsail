@@ -68,7 +68,7 @@
                     <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
                     {{ $t('Files.AddBatchToQueue') }}
                 </v-list-item>
-                <v-list-item class="red--text" @click="deleteJob">
+                <v-list-item class="text-error" @click="deleteJob">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Buttons.Delete') }}
                 </v-list-item>

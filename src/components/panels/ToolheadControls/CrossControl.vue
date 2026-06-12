@@ -14,7 +14,7 @@
                 <v-row>
                     <!-- DIRECTION BUTTONS -->
                     <v-col>
-                        <v-row dense class="mb-1">
+                        <v-row density="compact" class="mb-1">
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
                                 <v-btn
@@ -44,7 +44,7 @@
                                 </v-btn>
                             </v-col>
                         </v-row>
-                        <v-row dense>
+                        <v-row density="compact">
                             <v-col cols="3" class="position-relative">
                                 <v-btn
                                     class="btnMinWidthAuto fill-width position-absolute"
@@ -104,7 +104,7 @@
                     <!-- HOME / 5th ACTION BUTTONS -->
                     <v-col v-if="!el.is.small" class="d-flex align-center">
                         <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden">
-                            <v-row dense style="margin-bottom: -2px !important">
+                            <v-row density="compact" style="margin-bottom: -2px !important">
                                 <v-col cols="6">
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
@@ -159,7 +159,7 @@
                                 </v-col>
                             </v-row>
                             <!-- X/Y/Z HOME BUTTONS -->
-                            <v-row dense>
+                            <v-row density="compact">
                                 <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
@@ -216,7 +216,7 @@
                     <!-- HOME / 5th ACTION BUTTONS -->
                     <v-col class="d-flex align-center">
                         <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden">
-                            <v-row dense style="margin-bottom: -2px !important">
+                            <v-row density="compact" style="margin-bottom: -2px !important">
                                 <v-col cols="6">
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
@@ -271,7 +271,7 @@
                                 </v-col>
                             </v-row>
                             <!-- X/Y/Z HOME BUTTONS -->
-                            <v-row dense>
+                            <v-row density="compact">
                                 <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"

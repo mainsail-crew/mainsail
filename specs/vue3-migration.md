@@ -1,6 +1,6 @@
 # Vue 2 → Vue 3 + Composition API — Migration Plan
 
-> **Status:** Proposed.
+> **Status:** In progress.
 
 ## Problem
 
@@ -217,6 +217,23 @@ onMounted(() => { ... })
 
 Vuetify 2 → 3 is the single highest-effort upgrade due to pervasive API
 changes. Every template must be reviewed.
+
+Completed in this workspace:
+
+- Replaced remaining Vue 2 utility classes in `src/` (`primary--text`,
+  `error--text`, `text--disabled`, `text--secondary`, `text--primary`,
+  `red--text`, etc.) with Vuetify 3 text color classes.
+- Replaced the explicit layout leftovers found by search:
+  `v-row dense`, `v-list dense`, `v-col col-12`, and `v-subheader` wrappers.
+- Converted a large batch of Vuetify 2 `v-btn text` usages to
+  `variant="text"` in dialogs, settings, topbar, editor, and file-management
+  flows.
+- Verified the codebase build passes after those replacements.
+
+Still pending:
+
+- Remaining Vuetify 2 button API cleanup, mostly `v-btn text` and a few
+  related button variations in panels and utility components.
 
 **Major template changes:**
 

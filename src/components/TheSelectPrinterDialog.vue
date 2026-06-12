@@ -45,10 +45,10 @@
                         }}
                     </p>
                     <div class="text-center">
-                        <v-btn text color="white" class="mr-3" @click="switchToChangePrinter">
+                        <v-btn variant="text" color="white" class="mr-3" @click="switchToChangePrinter">
                             {{ $t('SelectPrinterDialog.ChangePrinter') }}
                         </v-btn>
-                        <v-btn text color="primary" @click="reconnect">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
+                        <v-btn variant="text" color="primary" @click="reconnect">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
                     </div>
                 </v-card-text>
             </template>
@@ -110,7 +110,7 @@
                             :true-value="false"
                             :false-value="true" />
                         <v-spacer />
-                        <v-btn color="primary" text class="middle" type="submit" :disabled="!addPrinterValid">
+                        <v-btn color="primary" variant="text" class="middle" type="submit" :disabled="!addPrinterValid">
                             {{ $t('SelectPrinterDialog.AddPrinter') }}
                         </v-btn>
                     </v-card-actions>
@@ -177,7 +177,7 @@
                             :true-value="false"
                             :false-value="true" />
                         <v-spacer />
-                        <v-btn color="primary" text type="submit" :disabled="!editPrinterValid">
+                        <v-btn color="primary" variant="text" type="submit" :disabled="!editPrinterValid">
                             {{ $t('SelectPrinterDialog.UpdatePrinter') }}
                         </v-btn>
                     </v-card-actions>
@@ -244,7 +244,7 @@
                         </v-row>
                         <v-row>
                             <v-col class="text-center mt-0">
-                                <v-btn text color="primary" @click="createPrinter">
+                                <v-btn variant="text" color="primary" @click="createPrinter">
                                     {{ $t('SelectPrinterDialog.AddPrinter') }}
                                 </v-btn>
                             </v-col>

@@ -45,7 +45,7 @@
                     <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
                     {{ $t('History.Details') }}
                 </v-list-item>
-                <v-list-item class="red--text" @click="deleteEntry">
+                <v-list-item class="text-error" @click="deleteEntry">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Buttons.Delete') }}
                 </v-list-item>

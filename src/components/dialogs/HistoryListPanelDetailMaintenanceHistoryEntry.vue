@@ -85,7 +85,7 @@ const restFilamentClass = computed(() => {
     if (!showGoals.value || !props.item.reminder.filament.bool) return output
 
     const value = props.item.reminder.filament?.value ?? 0
-    if (restFilament.value > value) return [...output, 'error--text', 'font-weight-bold']
+    if (restFilament.value > value) return [...output, 'text-error', 'font-weight-bold']
 
     return output
 })
@@ -120,7 +120,7 @@ const restPrinttimeClass = computed(() => {
     if (!showGoals.value || !props.item.reminder.printtime.bool) return output
 
     const value = props.item.reminder.printtime?.value ?? 0
-    if (restPrinttime.value > value) return [...output, 'error--text', 'font-weight-bold']
+    if (restPrinttime.value > value) return [...output, 'text-error', 'font-weight-bold']
 
     return output
 })
@@ -153,7 +153,7 @@ const restDaysClass = computed(() => {
     if (!showGoals.value || !props.item.reminder.date.bool) return output
 
     const value = props.item.reminder.date?.value ?? 0
-    if (restDays.value > value) return [...output, 'error--text', 'font-weight-bold']
+    if (restDays.value > value) return [...output, 'text-error', 'font-weight-bold']
 
     return output
 })

@@ -10,12 +10,12 @@
         <template #buttons>
             <v-menu v-if="showWebcamSwitch" :offset-y="true" title="Webcam">
                 <template #activator="{ on, attrs }">
-                    <v-btn text v-bind="attrs" v-on="on">
+                    <v-btn variant="text" v-bind="attrs" v-on="on">
                         <v-icon small>{{ mdiWebcam }}</v-icon>
                         <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
-                <v-list dense class="py-0">
+                <v-list density="compact" class="py-0">
                     <v-list-item link @click="currentCamName = 'off'">
                         <template #prepend>
                             <v-icon small class="mt-1 mr-2">{{ mdiWebcamOff }}</v-icon>
@@ -70,7 +70,7 @@
                                     <h3 class="font-weight-regular">{{ printer_status }}</h3>
                                     <span
                                         v-if="printer_current_filename !== ''"
-                                        class="subtitle-2 text-truncate px-0 text--disabled d-block">
+                                        class="text-subtitle-2 text-truncate px-0 text-disabled d-block">
                                         <v-icon small class="mr-1">{{ mdiFileOutline }}</v-icon>
                                         {{ printer_current_filename }}
                                     </span>

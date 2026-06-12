@@ -15,7 +15,7 @@
                             'col-4': el.is.xsmall || el.is.medium,
                             'col-3': el.is.large,
                         }"
-                        class="v-subheader text--secondary mr-2">
+                        class="text-subtitle-2 text-secondary mr-2 d-flex align-center">
                         <v-icon small class="mr-1">{{ mdiCrosshairsGps }}</v-icon>
                         <span v-if="!el.is.xsmall" class="text-no-wrap">
                             {{ $t('Panels.ToolheadControlPanel.Position') }}:&nbsp;
@@ -24,12 +24,12 @@
                     </v-col>
                     <v-col
                         v-if="currentProfileName"
-                        class="v-subheader text--secondary pl-2 justify-end text-no-wrap text-truncate">
+                        class="text-subtitle-2 text-secondary pl-2 justify-end text-no-wrap text-truncate d-flex align-center">
                         <v-icon small class="mr-1">{{ mdiGrid }}</v-icon>
                         <span class="text-no-wrap text-truncate">{{ currentProfileName }}</span>
                     </v-col>
                 </v-row>
-                <v-row v-if="showCoordinates" dense>
+                <v-row v-if="showCoordinates" density="compact">
                     <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
                         <move-to-input
                             :model-value="input.x.pos"

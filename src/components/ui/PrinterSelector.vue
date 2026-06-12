@@ -6,7 +6,7 @@
             <v-icon class="nav-arrow right" v-bind="attrs" v-on="on">{{ mdiChevronDown }}</v-icon>
         </template>
 
-        <v-list dense>
+        <v-list density="compact">
             <v-list-item
                 v-for="printer in printers"
                 :key="printer._namespace"

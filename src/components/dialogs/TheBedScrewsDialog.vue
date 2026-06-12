@@ -52,13 +52,13 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn text :loading="loadingAbort" @click="sendAbort">
+                <v-btn variant="text" :loading="loadingAbort" @click="sendAbort">
                     {{ $t('BedScrews.Abort') }}
                 </v-btn>
-                <v-btn color="primary" text :loading="loadingAdjusted" @click="sendAdjusted">
+                <v-btn color="primary" variant="text" :loading="loadingAdjusted" @click="sendAdjusted">
                     {{ $t('BedScrews.Adjusted') }}
                 </v-btn>
-                <v-btn color="primary" text :loading="loadingAccept" @click="sendAccept">
+                <v-btn color="primary" variant="text" :loading="loadingAccept" @click="sendAccept">
                     {{ $t('BedScrews.Accept') }}
                 </v-btn>
             </v-card-actions>

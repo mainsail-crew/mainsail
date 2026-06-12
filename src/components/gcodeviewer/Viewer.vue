@@ -216,7 +216,7 @@
             </div>
             <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
             <template #action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelRendering()">
+                <v-btn color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelRendering()">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
@@ -240,7 +240,7 @@
                 <v-progress-linear class="mt-2" indeterminate />
             </template>
             <template #action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelDownload">
+                <v-btn color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelDownload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>

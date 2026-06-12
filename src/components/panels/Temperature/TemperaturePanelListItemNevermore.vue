@@ -86,7 +86,7 @@ const rpm = computed(() => {
 })
 
 const rpmClass = computed(() => {
-    if (rpm.value === 0 && (printerObject.value.speed ?? 0) > 0) return 'red--text'
+    if (rpm.value === 0 && (printerObject.value.speed ?? 0) > 0) return 'text-error'
     return ''
 })
 </script>

@@ -10,7 +10,7 @@
                 </h4>
                 <p
                     v-if="showDetails"
-                    class="caption text--secondary mb-2"
+                    class="text-caption text-secondary mb-2"
                     style="white-space: pre-line"
                     v-html="message"></p>
                 <p class="caption mb-0">

@@ -1,5 +1,5 @@
 <template>
-    <v-row dense>
+    <v-row density="compact">
         <v-col class="pa-0">
             <v-list-subheader class="_tool-slider-subheader px-1">
                 <v-icon small class="mr-2">

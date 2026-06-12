@@ -1,5 +1,5 @@
 <template>
-    <v-btn :color="color" text @click="clickButton">
+    <v-btn :color="color" variant="text" @click="clickButton">
         {{ text }}
     </v-btn>
 </template>

@@ -91,7 +91,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" @click="createFilter">{{ $t('Settings.ConsoleTab.AddFilter') }}</v-btn>
+                <v-btn variant="text" color="primary" @click="createFilter">{{ $t('Settings.ConsoleTab.AddFilter') }}</v-btn>
             </v-card-actions>
         </v-card>
         <v-card v-else flat>
@@ -118,10 +118,10 @@
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
-                    <v-btn text @click="form.bool = false">
+                    <v-btn variant="text" @click="form.bool = false">
                         {{ $t('Buttons.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" text type="submit">
+                    <v-btn color="primary" variant="text" type="submit">
                         {{
                             form.id === null
                                 ? $t('Settings.ConsoleTab.StoreButton')

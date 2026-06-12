@@ -11,11 +11,11 @@
                     @edit-webcam="editWebcam" />
             </v-card-text>
             <v-card-actions>
-                <v-btn v-if="existCrowsnestConf" text color="primary" @click="openCrowsnestConf">
+                <v-btn v-if="existCrowsnestConf" variant="text" color="primary" @click="openCrowsnestConf">
                     {{ $t('Settings.WebcamsTab.EditCrowsnestConf') }}
                 </v-btn>
                 <v-spacer />
-                <v-btn text color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
+                <v-btn variant="text" color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
             </v-card-actions>
         </v-card>
         <v-card v-else flat>

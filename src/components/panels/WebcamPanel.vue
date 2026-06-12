@@ -11,7 +11,7 @@
         <template #buttons>
             <v-menu v-if="showSwitch" :offset-y="true">
                 <template #activator="{ on, attrs }">
-                    <v-btn text tile v-bind="attrs" v-on="on">
+                    <v-btn variant="text" tile v-bind="attrs" v-on="on">
                         <v-icon v-if="'icon' in currentCam" small class="mr-2">
                             {{ convertWebcamIcon(currentCam.icon) }}
                         </v-icon>
@@ -19,7 +19,7 @@
                         <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
-                <v-list dense class="py-0">
+                <v-list density="compact" class="py-0">
                     <v-list-item link @click="currentCamId = 'all'">
                         <template #prepend>
                             <v-icon small class="mt-1 mr-2">{{ mdiViewGrid }}</v-icon>
@@ -43,7 +43,7 @@
             </v-row>
         </v-card-text>
         <v-card-text v-else>
-            <p class="text-center mb-0 text--disabled">{{ $t('Panels.WebcamPanel.NoWebcam') }}</p>
+            <p class="text-center mb-0 text-disabled">{{ $t('Panels.WebcamPanel.NoWebcam') }}</p>
         </v-card-text>
     </panel>
 </template>

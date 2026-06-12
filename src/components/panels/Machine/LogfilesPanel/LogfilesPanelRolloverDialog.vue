@@ -32,10 +32,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closeDialog">
+                <v-btn variant="text" @click="closeDialog">
                     {{ $t('Buttons.Cancel') }}
                 </v-btn>
-                <v-btn color="primary" text @click="btnRolloverLogs">
+                <v-btn color="primary" variant="text" @click="btnRolloverLogs">
                     {{ $t('Machine.LogfilesPanel.Accept') }}
                 </v-btn>
             </v-card-actions>

@@ -9,8 +9,8 @@
             <v-card-text>{{ text }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="close">{{ cancelButtonComputed }}</v-btn>
-                <v-btn text :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
+                <v-btn variant="text" @click="close">{{ cancelButtonComputed }}</v-btn>
+                <v-btn variant="text" :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

@@ -1,7 +1,7 @@
 <template>
     <panel v-if="klipperReadyForGui" :icon="mdiTable" title="Offsets" :collapsible="true" card-class="offsets-panel">
         <v-container class="py-2">
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Coordinate System:</span>
                 </v-col>
@@ -19,43 +19,43 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-1">
+            <v-row density="compact" class="mb-1">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Work Position:</span>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <div class="text-caption text--secondary">X</div>
+                    <div class="text-caption text-secondary">X</div>
                     <div class="font-weight-bold">{{ currentWorkX.toFixed(3) }}</div>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <div class="text-caption text--secondary">Y</div>
+                    <div class="text-caption text-secondary">Y</div>
                     <div class="font-weight-bold">{{ currentWorkY.toFixed(3) }}</div>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <div class="text-caption text--secondary">Z</div>
+                    <div class="text-caption text-secondary">Z</div>
                     <div class="font-weight-bold">{{ currentWorkZ.toFixed(3) }}</div>
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Origin Offset (machine):</span>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <div class="text-caption text--secondary">X</div>
+                    <div class="text-caption text-secondary">X</div>
                     <div class="font-weight-medium">{{ wcsOriginOffsetX.toFixed(3) }}</div>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <div class="text-caption text--secondary">Y</div>
+                    <div class="text-caption text-secondary">Y</div>
                     <div class="font-weight-medium">{{ wcsOriginOffsetY.toFixed(3) }}</div>
                 </v-col>
                 <v-col cols="4" class="text-center">
-                    <div class="text-caption text--secondary">Z</div>
+                    <div class="text-caption text-secondary">Z</div>
                     <div class="font-weight-medium">{{ wcsOriginOffsetZ.toFixed(3) }}</div>
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Set Work Zero:</span>
                 </v-col>
@@ -73,7 +73,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Manual Offset:</span>
                 </v-col>
@@ -106,7 +106,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-2">
+            <v-row density="compact" class="mb-2">
                 <v-col cols="6">
                     <v-btn small block color="primary" @click="applyOffsets">
                         <v-icon small left>{{ mdiCheck }}</v-icon>

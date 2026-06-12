@@ -51,7 +51,7 @@
                                 <v-icon small>{{ mdiMenuDown }}</v-icon>
                             </v-chip>
                         </template>
-                        <v-list dense class="py-0">
+                        <v-list density="compact" class="py-0">
                             <v-list-item v-if="!isCorrupt" @click="doRecovery(false)">
                                 <template #prepend>
                                     <v-icon small class="mr-0 pt-1">{{ mdiReload }}</v-icon>
@@ -91,7 +91,7 @@
                     color="orange"
                     border="start"
                     :icon="mdiCloseCircle">
-                    <p class="text--disabled mb-0">{{ message }}</p>
+                    <p class="text-disabled mb-0">{{ message }}</p>
                 </v-alert>
             </v-col>
         </v-row>

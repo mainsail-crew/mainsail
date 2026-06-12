@@ -28,7 +28,7 @@
                     <v-icon>{{ mdiMenuDown }}</v-icon>
                 </v-btn>
             </template>
-            <v-list dense class="py-0">
+            <v-list density="compact" class="py-0">
                 <v-list-item
                     v-for="preset of presets"
                     :key="preset.index"

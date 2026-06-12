@@ -15,7 +15,7 @@
                     <v-icon>{{ mdiMenuDown }}</v-icon>
                 </v-btn>
             </template>
-            <v-list dense class="py-0">
+            <v-list density="compact" class="py-0">
                 <v-list-item v-for="(preset, index) of presets" :key="index" link @click="preheat(preset)">
                     <div class="d-flex align-center _preset-title">
                         <v-icon small class="mr-1">{{ mdiFire }}</v-icon>
@@ -24,11 +24,11 @@
                 </v-list-item>
             </v-list>
             <v-divider class="_fix_transparency" />
-            <v-list dense class="py-0">
+            <v-list density="compact" class="py-0">
                 <v-list-item link @click="btnCoolDown">
                     <div class="d-flex align-center _preset-title">
                         <v-icon small color="primary" class="mr-1">{{ mdiSnowflake }}</v-icon>
-                        <span class="primary--text">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
+                        <span class="text-primary">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
                     </div>
                 </v-list-item>
             </v-list>

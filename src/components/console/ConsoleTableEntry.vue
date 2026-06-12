@@ -1,6 +1,6 @@
 <template>
     <v-row :class="entryStyle">
-        <v-col class="col-auto pr-0 text--disabled console-time">{{ entryFormatTime }}</v-col>
+        <v-col class="col-auto pr-0 text-disabled console-time">{{ entryFormatTime }}</v-col>
         <v-col
             v-if="!rawOutput"
             :class="messageClass"
@@ -31,7 +31,7 @@ const { formatTime } = useBase()
 const entryStyle = computed(() => {
     const classes = ['ma-0', 'flex-nowrap']
     classes.push(store.state.gui.console.entryStyle ?? 'default')
-    if (['action', 'debug'].includes(props.event.type)) classes.push('text--disabled')
+    if (['action', 'debug'].includes(props.event.type)) classes.push('text-disabled')
 
     return classes
 })
@@ -41,9 +41,9 @@ const entryFormatTime = computed(() => formatTime(props.event.date.getTime(), tr
 const messageClass = computed(() => {
     const classes = ['console-message']
 
-    if (['action', 'debug'].includes(props.event.type)) classes.push('text--disabled')
-    else if (props.event.message.startsWith('!! ')) classes.push('error--text')
-    else classes.push('text--primary')
+    if (['action', 'debug'].includes(props.event.type)) classes.push('text-disabled')
+    else if (props.event.message.startsWith('!! ')) classes.push('text-error')
+    else classes.push('text-primary')
 
     return classes
 })

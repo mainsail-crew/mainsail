@@ -60,7 +60,7 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn text :disabled="!complete" color="primary" @click="close">
+                        <v-btn variant="text" :disabled="!complete" color="primary" @click="close">
                             {{ $t('Buttons.Close') }}
                         </v-btn>
                     </v-col>

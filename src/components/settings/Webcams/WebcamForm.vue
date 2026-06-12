@@ -21,7 +21,7 @@
                                             </v-icon>
                                         </v-btn>
                                     </template>
-                                    <v-list dense class="py-0">
+                                    <v-list density="compact" class="py-0">
                                         <v-list-item
                                             v-for="icon of iconItems"
                                             :key="icon.value"
@@ -210,8 +210,8 @@
             </v-row>
         </v-card-text>
         <v-card-actions class="d-flex justify-end">
-            <v-btn text @click="closeForm">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn color="primary" text type="submit" :disabled="!valid">{{ actionButtonText }}</v-btn>
+            <v-btn variant="text" @click="closeForm">{{ $t('Buttons.Cancel') }}</v-btn>
+            <v-btn color="primary" variant="text" type="submit" :disabled="!valid">{{ actionButtonText }}</v-btn>
         </v-card-actions>
     </v-form>
 </template>

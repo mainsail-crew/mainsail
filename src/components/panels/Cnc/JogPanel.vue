@@ -1,7 +1,7 @@
 <template>
     <panel v-if="klipperReadyForGui" :icon="mdiGamepad" title="Jog" :collapsible="true" card-class="jog-panel">
         <v-container class="py-2">
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <v-btn
                         small
@@ -40,7 +40,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <v-btn
                         small
@@ -55,7 +55,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12" class="d-flex align-center">
                     <span class="text-caption mr-2">Jog Step:</span>
                     <v-btn-toggle v-model="selectedStepIndex" dense small class="flex-grow-1">
@@ -66,7 +66,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="6">
                     <v-text-field
                         v-model.number="feedrateXY"
@@ -93,7 +93,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-2 justify-center">
+            <v-row density="compact" class="mb-2 justify-center">
                 <v-col cols="12" md="6" class="d-flex flex-column align-center">
                     <div class="text-center mb-3 w-100">
                         <span class="text-caption font-weight-bold">XY Jog ({{ currentStep }} mm)</span>
@@ -163,7 +163,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="my-2">
+            <v-row density="compact" class="my-2">
                 <v-col cols="12">
                     <v-btn
                         small
@@ -178,15 +178,15 @@
             </v-row>
 
             <v-divider class="my-3" />
-            <v-row dense>
+            <v-row density="compact">
                 <v-col cols="6">
-                    <span class="text-caption text--secondary">Status:</span>
+                    <span class="text-caption text-secondary">Status:</span>
                     <v-chip small :color="['printing'].includes(printer_state) ? 'warning' : 'primary'" class="mx-2">
                         {{ printer_state }}
                     </v-chip>
                 </v-col>
                 <v-col cols="6" class="text-right">
-                    <span class="text-caption text--secondary">Homed:</span>
+                    <span class="text-caption text-secondary">Homed:</span>
                     <v-chip small :color="allAxesHomed ? 'primary' : 'warning'" class="mx-2">
                         {{ homedAxesDisplay }}
                     </v-chip>

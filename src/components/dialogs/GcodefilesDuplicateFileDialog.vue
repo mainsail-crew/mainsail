@@ -18,8 +18,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn :disabled="isInvalidName || name.length === 0" color="primary" text @click="duplicateFileAction">
+                <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn :disabled="isInvalidName || name.length === 0" color="primary" variant="text" @click="duplicateFileAction">
                     {{ $t('Files.Duplicate') }}
                 </v-btn>
             </v-card-actions>

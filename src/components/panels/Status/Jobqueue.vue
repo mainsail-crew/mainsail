@@ -14,7 +14,7 @@
             </v-row>
         </template>
         <div v-else>
-            <p class="body-2 my-3 text-center text--disabled">{{ $t('Panels.StatusPanel.EmptyJobqueue') }}</p>
+            <p class="body-2 my-3 text-center text-disabled">{{ $t('Panels.StatusPanel.EmptyJobqueue') }}</p>
         </div>
     </v-card>
 </template>

@@ -29,10 +29,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="retryScrewsTiltAdjust">
+                <v-btn variant="text" @click="retryScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Retry') }}
                 </v-btn>
-                <v-btn color="primary" text @click="clearScrewsTiltAdjust">
+                <v-btn color="primary" variant="text" @click="clearScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Accept') }}
                 </v-btn>
             </v-card-actions>

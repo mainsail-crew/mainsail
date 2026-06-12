@@ -14,8 +14,8 @@
             <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('Buttons.No') }}</v-btn>
-                <v-btn color="error" text @click="emergencyStop">{{ $t('Buttons.Yes') }}</v-btn>
+                <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.No') }}</v-btn>
+                <v-btn color="error" variant="text" @click="emergencyStop">{{ $t('Buttons.Yes') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

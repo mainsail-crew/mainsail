@@ -6,7 +6,7 @@
                     <v-icon>{{ mdiPowerStandby }}</v-icon>
                 </v-btn>
             </template>
-            <v-list dense>
+            <v-list density="compact">
                 <template v-if="klipperState !== 'disconnected'">
                     <v-list-subheader class="" style="height: auto">
                         {{ $t('App.TopCornerMenu.KlipperControl') }}

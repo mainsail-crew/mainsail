@@ -5,18 +5,18 @@
                 <div class="notification-menu-entry__headline mb-1 text-subtitle-1">
                     <a
                         v-if="'url' in entry"
-                        :class="`text-decoration-none ${alertColor}--text `"
+                        :class="`text-decoration-none text-${alertColor} `"
                         :href="entry.url"
                         target="_blank">
-                        <v-icon small :class="`${alertColor}--text pb-1`">
+                        <v-icon small :class="`text-${alertColor} pb-1`">
                             {{ mdiLinkVariant }}
                         </v-icon>
                         {{ entry.title }}
                     </a>
-                    <span v-else :class="`${alertColor}--text`">{{ entry.title }}</span>
+                    <span v-else :class="`text-${alertColor}`">{{ entry.title }}</span>
                 </div>
                 <p
-                    class="notification-menu-entry__description text-body-2 mb-0 text--disabled font-weight-light"
+                    class="notification-menu-entry__description text-body-2 mb-0 text-disabled font-weight-light"
                     v-html="formatedText" />
                 <v-btn
                     v-if="entryType === 'maintenance'"
@@ -51,7 +51,7 @@
                 <div v-show="expand" class="pt-1 w-100">
                     <v-divider class="pb-1 ml-2" />
                     <div class="text-right py-1" style="font-size: 0.875rem">
-                        <span class="text--disabled text-caption font-weight-light">
+                        <span class="text-disabled text-caption font-weight-light">
                             {{ $t('App.Notifications.Remind') }}
                         </span>
                         <v-btn

@@ -181,7 +181,7 @@
                     <v-icon class="mr-1">{{ mdiContentCopy }}</v-icon>
                     {{ $t('Files.Duplicate') }}
                 </v-list-item>
-                <v-list-item class="red--text" @click="showDeleteFileDialog = true">
+                <v-list-item class="text-error" @click="showDeleteFileDialog = true">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>

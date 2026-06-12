@@ -3,7 +3,7 @@
 <template>
     <div>
         <v-row>
-            <v-col col-12>
+            <v-col cols="12">
                 <webcam-panel current-page="page" />
             </v-col>
         </v-row>

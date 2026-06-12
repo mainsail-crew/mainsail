@@ -2,7 +2,7 @@
     <span>
         <span v-for="({ directoryName, location }, index) in pathSegments" :key="location" class="navigation-container">
             <template v-if="index !== 0">
-                <span class="navigation-divider text--disabled">{{ segmentSeparator }}</span>
+                <span class="navigation-divider text-disabled">{{ segmentSeparator }}</span>
             </template>
             <template v-if="index !== pathSegments.length - 1">
                 <span

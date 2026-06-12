@@ -38,7 +38,7 @@
                 </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" @click="addGroup">{{ $t('Settings.MacrosTab.AddGroup') }}</v-btn>
+                <v-btn variant="text" color="primary" @click="addGroup">{{ $t('Settings.MacrosTab.AddGroup') }}</v-btn>
             </v-card-actions>
         </template>
         <template v-else-if="boolFormEdit">
@@ -46,7 +46,7 @@
                 <div class="macrogroup-edit-shell">
                     <div class="macrogroup-edit-header">
                         <h3 class="text-h5 mb-0">{{ $t('Settings.MacrosTab.EditGroup') }}</h3>
-                        <v-btn text color="primary" class="macrogroup-edit-back" @click="cancelEditMacrogroup">
+                        <v-btn variant="text" color="primary" class="macrogroup-edit-back" @click="cancelEditMacrogroup">
                             <v-icon left>{{ mdiChevronLeft }}</v-icon>
                             {{ $t('Buttons.Close') }}
                         </v-btn>

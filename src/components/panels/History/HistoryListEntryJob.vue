@@ -10,7 +10,7 @@
         </td>
         <td class="px-0 text-center" style="width: 32px">
             <template v-if="!item.exists">
-                <v-icon class="text--disabled">{{ mdiFileCancel }}</v-icon>
+                <v-icon class="text-disabled">{{ mdiFileCancel }}</v-icon>
             </template>
             <template v-else-if="smallThumbnail && bigThumbnail">
                 <v-tooltip location="top">
@@ -103,7 +103,7 @@
                     <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
                     {{ $t('Files.AddBatchToQueue') }}
                 </v-list-item>
-                <v-list-item class="red--text" @click="deleteJob">
+                <v-list-item class="text-error" @click="deleteJob">
                     <v-icon class="mr-1" color="error">{{ mdiDelete }}</v-icon>
                     {{ $t('Buttons.Delete') }}
                 </v-list-item>
@@ -223,7 +223,7 @@ const statusName = computed(() => {
 
 const cssClasses = computed(() => {
     const output = ['file-list-cursor', 'user-select-none']
-    if (!props.item.exists) output.push('text--disabled')
+    if (!props.item.exists) output.push('text-disabled')
     return output
 })
 

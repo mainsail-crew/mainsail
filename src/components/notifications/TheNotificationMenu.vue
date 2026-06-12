@@ -36,7 +36,7 @@
                     <v-divider />
                     <v-card-actions>
                         <v-spacer />
-                        <v-btn text color="primary" class="mr-2" @click="dismissAll">
+                        <v-btn variant="text" color="primary" class="mr-2" @click="dismissAll">
                             <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
                             {{ $t('App.Notifications.DismissAll') }}
                         </v-btn>

@@ -64,7 +64,6 @@ const itemClass = computed(() => ({
 }
 
 .menu-item-icon {
-    margin-inline-end: 12px;
     opacity: 0.92;
 }
 

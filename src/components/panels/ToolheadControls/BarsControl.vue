@@ -54,7 +54,7 @@
             </v-col>
         </v-row>
         <!-- X MOVEMENT BUTTONGROUPS -->
-        <v-row dense>
+        <v-row density="compact">
             <v-col class="text-center">
                 <v-item-group class="_btn-group row no-gutters">
                     <v-btn
@@ -85,7 +85,7 @@
             </v-col>
         </v-row>
         <!-- Y MOVEMENT BUTTONGROUPS -->
-        <v-row dense>
+        <v-row density="compact">
             <v-col class="text-center">
                 <v-item-group class="_btn-group row no-gutters">
                     <v-btn
@@ -116,7 +116,7 @@
             </v-col>
         </v-row>
         <!-- Z MOVEMENT BUTTONGROUPS -->
-        <v-row dense>
+        <v-row density="compact">
             <v-col class="text-center">
                 <v-item-group class="_btn-group row no-gutters">
                     <v-btn

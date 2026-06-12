@@ -12,7 +12,7 @@
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
                     </v-btn>
                 </template>
-                <v-list dense>
+                <v-list density="compact">
                     <v-list-item v-if="controlStyle !== 'bars' && actionButton !== 'm84'">
                         <v-btn small style="width: 100%" @click="doSend('M84')">
                             <v-icon left small>{{ mdiEngineOff }}</v-icon>
@@ -55,7 +55,7 @@
                                         <v-icon>{{ mdiMenuDown }}</v-icon>
                                     </v-btn>
                                 </template>
-                                <v-list dense>
+                                <v-list density="compact">
                                     <v-list-item>
                                         <v-btn
                                             small

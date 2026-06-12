@@ -6,7 +6,7 @@
         card-class="machine-systemload-panel"
         :collapsible="true">
         <template #buttons>
-            <v-btn text tile class="d-none d-md-flex" @click="dialogDevices = true">
+            <v-btn variant="text" tile class="d-none d-md-flex" @click="dialogDevices = true">
                 <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
                 {{ $t('Editor.DeviceDialog') }}
             </v-btn>

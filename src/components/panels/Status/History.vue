@@ -8,7 +8,7 @@
             </v-row>
         </template>
         <div v-else>
-            <p class="body-2 my-3 text-center text--disabled">{{ $t('Panels.StatusPanel.EmptyHistory') }}</p>
+            <p class="body-2 my-3 text-center text-disabled">{{ $t('Panels.StatusPanel.EmptyHistory') }}</p>
         </div>
     </v-card>
 </template>

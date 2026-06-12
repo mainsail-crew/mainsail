@@ -35,8 +35,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                    <v-btn color="primary" text type="submit" :disabled="!isValid">
+                    <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                    <v-btn color="primary" variant="text" type="submit" :disabled="!isValid">
                         {{ $t('Files.AddToQueue') }}
                     </v-btn>
                 </v-card-actions>

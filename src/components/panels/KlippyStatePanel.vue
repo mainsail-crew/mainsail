@@ -10,11 +10,11 @@
                 <v-divider class="mt-2 pb-3" />
                 <v-row>
                     <v-col>
-                        <v-btn small outlined text :class="buttonClasses" @click="restart">
+                        <v-btn small outlined variant="text" :class="buttonClasses" @click="restart">
                             <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                             {{ $t('Panels.KlippyStatePanel.Restart') }}
                         </v-btn>
-                        <v-btn small outlined text :class="buttonClasses" @click="firmwareRestart">
+                        <v-btn small outlined variant="text" :class="buttonClasses" @click="firmwareRestart">
                             <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                             {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
                         </v-btn>
@@ -55,7 +55,7 @@
             <p>{{ $t('Panels.KlippyStatePanel.PrinterSwitchedOffDescription') }}</p>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn small outlined text :class="`${messageType.color}--text my-1`" @click="powerOn">
+                    <v-btn small outlined variant="text" :class="`text-${messageType.color} my-1`" @click="powerOn">
                         <v-icon class="mr-sm-2">{{ mdiPower }}</v-icon>
                         {{ $t('Panels.KlippyStatePanel.PowerOn') }}
                     </v-btn>

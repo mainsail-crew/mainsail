@@ -249,7 +249,7 @@ const rpmClasses = computed(() => {
     const output: (string | string[])[] = []
     if (!props.controllable) output.push(['mr-3', 'mt-1'])
     else output.push(['mt-2'])
-    if (props.rpm === 0 && value.value > 0) output.push('red--text')
+    if (props.rpm === 0 && value.value > 0) output.push('text-error')
 
     return output
 })

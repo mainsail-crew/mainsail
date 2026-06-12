@@ -1,7 +1,7 @@
 <template>
     <panel v-if="klipperReadyForGui" :icon="mdiFan" title="Spindle & Coolant" :collapsible="true" card-class="spindle-coolant-panel">
         <v-container class="py-2">
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Spindle Control:</span>
                 </v-col>
@@ -25,7 +25,7 @@
                 </v-col>
             </v-row>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="8">
                     <v-text-field
                         v-model.number="spindleSpeedInput"
@@ -47,7 +47,7 @@
 
             <v-divider class="my-3"></v-divider>
 
-            <v-row dense class="mb-3">
+            <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Coolant Control:</span>
                 </v-col>
@@ -64,7 +64,7 @@
                     </v-btn>
                 </v-col>
             </v-row>
-             <v-row dense class="mb-3">
+             <v-row density="compact" class="mb-3">
                 <v-col cols="6">
                     <v-btn small block color="success" @click="setCoolantMistOn">
                         <v-icon left>{{ mdiSpray }}</v-icon>

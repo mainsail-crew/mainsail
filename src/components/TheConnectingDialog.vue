@@ -6,7 +6,7 @@
                 <p class="text-center mt-3 mb-0">
                     {{ $t('ConnectionDialog.CannotConnectTo', { host: formatHostname }) }}
                 </p>
-                <p v-if="connectionFailedMessage" class="text-center mt-1 red--text">
+                <p v-if="connectionFailedMessage" class="text-center mt-1 text-error">
                     {{ $t('ConnectionDialog.ErrorMessage', { message: connectionFailedMessage }) }}
                 </p>
                 <template v-if="counter > 2">
@@ -18,11 +18,11 @@
                     <v-divider class="mt-4 mb-5" />
                 </template>
                 <div class="text-center mt-3">
-                    <v-btn v-if="helpButtonUrl" class="text--disabled mr-3" :href="helpButtonUrl" target="_blank">
+                    <v-btn v-if="helpButtonUrl" class="text-disabled mr-3" :href="helpButtonUrl" target="_blank">
                         <v-icon left>{{ mdiHelp }}</v-icon>
                         {{ $t('ConnectionDialog.Help') }}
                     </v-btn>
-                    <v-btn class="primary--text" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
+                    <v-btn class="text-primary" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
                 </div>
             </v-card-text>
             <v-card-text v-else class="pt-5">
