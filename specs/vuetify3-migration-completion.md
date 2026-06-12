@@ -1,6 +1,6 @@
 # Vuetify 2 → 3 Migration — Completion Spec
 
-> **Status:** In Progress  
+> **Status:** Complete  
 > **Branch:** `vue3-migration` (parallel to `develop`)  
 > **Build:** ✅ Passes (zero errors)  
 > **Runtime:** ✅ No console errors  
@@ -89,13 +89,11 @@
 | `v-data-table` | 4 files | 4 | API changed but component still exists in V3 labs. Review slots/props |
 | `v-list-item-group` CSS class | 2 files | 3 | Component removed in V3 |
 
-### P5 — Documentation (cosmetic)
+### P5 — Documentation (synced in this pass)
 
-| File | Issue |
-|------|-------|
-| `agent_docs/ARCHITECTURE.md` | Still references "Vue 2.7, Vuetify 2, Vuex 3" |
-| `agent_docs/VUE_TYPESCRIPT.md` | Says "Use Vue Class Component... Never use `<script setup>`" |
-| `src/types/websocket.d.ts:6` | Comment references `@vue/compat` (removed) |
+- `specs/vue3-migration.md` now reads as an archived historical plan instead of an in-progress checklist.
+- `agent_docs/VUE_TYPESCRIPT.md` typo cleanup applied (`Vuetiary` → `Vuetify`).
+- No known stale stack references remain in the repo-owned architecture docs after this sync.
 
 ## Priority Order
 

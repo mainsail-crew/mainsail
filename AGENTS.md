@@ -68,7 +68,7 @@ d5e768fc phase2: global infrastructure for Vue 3
 ## Gemini CLI Agent
 
 - **Purpose**: Interactive CLI agent specializing in software engineering tasks for this project.
-- **Current Role**: Frontend migration (Mainsail fork: Vue 2 → 3, Vuetify 2 → 3)
+- **Current Role**: Frontend maintenance and docs sync for the Mainsail fork (Vue 3.5, Vuetify 3)
 - **Access**: shell commands, file system, Chrome DevTools
 - **Package Manager**: Bun (not npm). Use `bun install`, `bun run`, `bunx`.
 - **Dev Server**: Run within `tmux`; check for existing sessions first. HMR is active.

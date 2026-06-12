@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-timeline-item small class="git-commit-list-day">
+        <v-timeline-item size="small" class="git-commit-list-day">
             <v-row class="pt-0">
                 <v-col class="pr-12">
                     <h3 class="caption">

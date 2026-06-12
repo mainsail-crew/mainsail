@@ -1,6 +1,6 @@
 <template>
     <v-card class="mx-auto fill-height w-100" tile>
-        <v-list class="fill-height" dense>
+        <v-list class="fill-height" density="compact">
             <v-list-item v-if="column < 2">
                 <v-row>
                     <v-col class="col-auto pr-0 pl-8">
@@ -17,7 +17,7 @@
             <draggable
                 v-model="layout"
                 handle=".handle"
-                class="v-list-item-group fill-height"
+                class="dashboard-sortable-list fill-height"
                 ghost-class="ghost"
                 item-key="name"
                 :group="groupname"
@@ -84,7 +84,7 @@ function changeVisible(name: string, newVal: boolean) {
     background: #c8ebfb;
 }
 
-.v-list-item-group > span {
+.dashboard-sortable-list > span {
     display: block;
     height: 100%;
 }

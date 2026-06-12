@@ -5,7 +5,7 @@
             <v-card-text>
                 <v-row v-if="boolInvalidMin" class="mt-3">
                     <v-col class="py-0">
-                        <v-alert dense text type="error">{{ $t('Settings.PresetsTab.PresetInfo') }}</v-alert>
+                        <v-alert density="compact" variant="text" color="error">{{ $t('Settings.PresetsTab.PresetInfo') }}</v-alert>
                     </v-col>
                 </v-row>
                 <settings-row :title="$t('Settings.PresetsTab.Name')">

@@ -7,7 +7,7 @@
         </v-row>
         <v-row v-if="filteredDevices.length" class="mt-0">
             <v-col>
-                <v-expansion-panels accordion>
+                <v-expansion-panels>
                     <devices-dialog-serial-device
                         v-for="device in filteredDevices"
                         :key="device.path_by_hardware ?? device.device_path"

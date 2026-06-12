@@ -24,10 +24,10 @@
                     :sub-title="macro.description"
                     :dynamic-slot-width="true">
                     <v-switch
-                        :input-value="getMacroStatus(macro.name)"
+                        :model-value="getMacroStatus(macro.name)"
                         hide-details
                         class="mt-0"
-                        @change="toggleMacroStatus(macro.name)"></v-switch>
+                        @update:model-value="changeMacroStatus(macro.name)" />
                 </settings-row>
             </template>
         </template>

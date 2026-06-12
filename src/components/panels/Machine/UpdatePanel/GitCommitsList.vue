@@ -22,7 +22,7 @@
                             class="git-commit-list-day git-commit-list-warning">
                             <v-row class="pt-0">
                                 <v-col class="pr-12">
-                                    <v-alert dense text type="info">
+                                    <v-alert density="compact" variant="text" color="info">
                                         <p>{{ $t('Machine.UpdatePanel.MoreCommitsInfo') }}</p>
                                         <div class="text-center mb-3">
                                             <v-btn :href="linkToGithub" target="_blank">

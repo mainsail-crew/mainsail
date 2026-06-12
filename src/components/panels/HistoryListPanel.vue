@@ -72,17 +72,17 @@
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
-                                    :input-value="showMaintenanceEntries"
+                                    v-model="showMaintenanceEntries"
                                     :label="$t('History.MaintenanceEntries')"
-                                    @change="showMaintenanceEntries = !showMaintenanceEntries" />
+                                     />
                             </v-list-item>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
-                                    :input-value="showPrintJobs"
+                                    v-model="showPrintJobs"
                                     :label="$t('History.PrintJobs')"
-                                    @change="showPrintJobs = !showPrintJobs" />
+                                     />
                             </v-list-item>
                             <v-divider />
                             <template v-if="printStatusArray.length">
@@ -90,7 +90,7 @@
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
-                                        :input-value="status.showInTable"
+                                        v-model="status.showInTable"
                                         :label="`${status.displayName} (${status.value})`"
                                         @change="changeStatusVisible(status)" />
                                 </v-list-item>

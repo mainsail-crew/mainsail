@@ -4,16 +4,21 @@
             <v-row v-if="frameUrl">
                 <v-col class="pb-0">
                     <vue-load-image class="d-flex align-center justify-center">
-                        <img
-                            ref="timelapsePreview"
-                            slot="image"
-                            :src="frameUrl"
-                            style="max-width: 100%; max-height: 200px; cursor: pointer"
-                            alt="Timelapse Preview"
-                            @load="calcRatio"
-                            @click="boolDialogRendersettings = true" />
-                        <v-progress-circular slot="preloader" indeterminate :size="24" class="ma-4" />
-                        <v-icon slot="error" :size="24" class="ma-4">{{ mdiCloseThick }}</v-icon>
+                        <template #image>
+                            <img
+                                ref="timelapsePreview"
+                                :src="frameUrl"
+                                style="max-width: 100%; max-height: 200px; cursor: pointer"
+                                alt="Timelapse Preview"
+                                @load="calcRatio"
+                                @click="boolDialogRendersettings = true" />
+                        </template>
+                        <template #preloader>
+                            <v-progress-circular :size="24" class="ma-4" indeterminate />
+                        </template>
+                        <template #error>
+                            <v-icon :size="24" class="ma-4">{{ mdiCloseThick }}</v-icon>
+                        </template>
                     </vue-load-image>
                 </v-col>
             </v-row>
@@ -28,12 +33,12 @@
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row :title="$t('Timelapse.Enabled')" :dynamic-slot-width="true">
-                        <v-switch :input-value="enabled" hide-details class="mt-0" @change="toggleEnabled"></v-switch>
+                        <v-switch v-model="enabled" hide-details class="mt-0" @change="toggleEnabled"></v-switch>
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row :title="$t('Timelapse.Autorender')" :dynamic-slot-width="true">
                         <v-switch
-                            :input-value="autorender"
+                            v-model="autorender"
                             hide-details
                             class="mt-0"
                             @change="toggleAutorender"></v-switch>
@@ -43,7 +48,7 @@
                         v-if="!disableRenderButton"
                         :title="$t('Timelapse.Render')"
                         :dynamic-slot-width="true">
-                        <v-btn x-small @click="saveFrames">
+                        <v-btn size="x-small" @click="saveFrames">
                             {{ $t('Timelapse.SaveFrames') }}
                         </v-btn>
                     </settings-row>

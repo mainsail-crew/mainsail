@@ -41,7 +41,7 @@ Always clean up resources:
 - ECharts instances
 - WebSocket/WebRTC connections
 
-## Vuetiary 3 Component API
+## Vuetify 3 Component API
 
 | Vuetify 2 | Vuetify 3 |
 |-----------|-----------|

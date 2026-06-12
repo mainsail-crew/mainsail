@@ -16,19 +16,20 @@
                 <v-tooltip location="top">
                     <template #activator="{ props: activatorProps }">
                         <vue-load-image>
-                            <img
-                                slot="image"
+                            <template #image>
+                                <img
                                 :alt="item.filename"
                                 :src="smallThumbnail"
                                 width="32"
                                 height="32"
                                 v-bind="activatorProps" />
-                            <div slot="preloader">
+                            </template>
+                            <template #preloader>
                                 <v-progress-circular indeterminate color="primary" />
-                            </div>
-                            <div slot="error">
+                            </template>
+                            <template #error>
                                 <v-icon>{{ mdiFile }}</v-icon>
-                            </div>
+                            </template>
                         </vue-load-image>
                     </template>
                     <span><img :alt="item.filename" :src="bigThumbnail" width="250" /></span>
@@ -36,13 +37,15 @@
             </template>
             <template v-else-if="smallThumbnail">
                 <vue-load-image>
-                    <img slot="image" :alt="item.filename" :src="smallThumbnail" width="32" height="32" />
-                    <div slot="preloader">
+                    <template #image>
+                        <img :alt="item.filename" :src="smallThumbnail" width="32" height="32" />
+                    </template>
+                    <template #preloader>
                         <v-progress-circular indeterminate color="primary" />
-                    </div>
-                    <div slot="error">
+                    </template>
+                    <template #error>
                         <v-icon>{{ mdiFile }}</v-icon>
-                    </div>
+                    </template>
                 </vue-load-image>
             </template>
             <template v-else>

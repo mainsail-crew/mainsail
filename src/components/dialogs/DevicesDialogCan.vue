@@ -23,7 +23,7 @@
             </v-row>
             <v-row v-if="devices.length === 0">
                 <v-col>
-                    <v-alert dense outlined type="info" :icon="mdiInformationVariantCircle">
+                    <v-alert density="compact" variant="outlined" color="info" :icon="mdiInformationVariantCircle">
                         {{ $t('DevicesDialog.CanBusInfo') }}
                         <v-row class="my-0">
                             <v-col class="text-center">

@@ -64,7 +64,7 @@
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
                             <v-tooltip top>
-                                <template #activator="{ on, attrs }">
+                                <template #activator="{ props }">
                                     <span v-bind="attrs" v-on="on">
                                         <b>{{ $t('Timelapse.FreeDisk') }}:</b>
                                         {{ formatFilesize(disk_usage.free) }}
@@ -105,7 +105,7 @@
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
                 show-select>
-                <template slot="items">
+                <template #items>
                     <td v-for="header in headers" :key="header.value">{{ header.text }}</td>
                 </template>
 
@@ -113,7 +113,7 @@
                     <div class="text-center font-italic">{{ $t('Timelapse.Empty') }}</div>
                 </template>
 
-                <template v-if="currentPath !== rootDirectory" slot="body.prepend">
+                <template v-if="currentPath !== rootDirectory" #body.prepend>
                     <tr class="file-list-cursor" @click="clickRowGoBack">
                         <td class="pr-0 text-center" style="width: 32px">
                             <v-icon>{{ mdiFolderUpload }}</v-icon>
@@ -148,26 +148,23 @@
                             <template v-else-if="getThumbnail(item)">
                                 <v-tooltip
                                     v-if="!item.isDirectory && getThumbnail(item)"
-                                    top
+                                    location="top"
                                     content-class="tooltip__content-opacity1">
-                                    <template #activator="{ on, attrs }">
+                                    <template #activator="{ props }">
                                         <vue-load-image>
-                                            <img
-                                                slot="image"
-                                                :src="getThumbnail(item)"
-                                                :alt="item.filename"
-                                                width="32"
-                                                v-bind="attrs"
-                                                v-on="on" />
-                                            <div slot="preloader">
-                                                <v-progress-circular
-                                                    slot="preloader"
-                                                    indeterminate
-                                                    color="primary"></v-progress-circular>
-                                            </div>
-                                            <div slot="error">
+                                            <template #image>
+                                                <img
+                                                    :src="getThumbnail(item)"
+                                                    :alt="item.filename"
+                                                    width="32"
+                                                    v-bind="props" />
+                                            </template>
+                                            <template #preloader>
+                                                <v-progress-circular indeterminate color="primary" />
+                                            </template>
+                                            <template #error>
                                                 <v-icon>{{ mdiFile }}</v-icon>
-                                            </div>
+                                            </template>
                                         </vue-load-image>
                                     </template>
                                     <span><img :src="getThumbnail(item)" :alt="item.filename" width="250" /></span>

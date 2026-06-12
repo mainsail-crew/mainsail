@@ -2,26 +2,26 @@
     <v-icon v-if="item.isDirectory">{{ mdiFolder }}</v-icon>
     <v-tooltip
         v-else-if="smallThumbnailUrl"
-        top
+        location="top"
         content-class="tooltip__content-opacity1"
         :color="bigThumbnailTooltipColor"
         :disabled="!bigThumbnailUrl">
-        <template #activator="{ on, attrs }">
+        <template #activator="{ props }">
             <vue-load-image>
-                <img
-                    slot="image"
-                    :src="smallThumbnailUrl"
-                    width="32"
-                    height="32"
-                    :alt="item.filename"
-                    v-bind="attrs"
-                    v-on="on" />
-                <div slot="preloader">
+                <template #image>
+                    <img
+                        :src="smallThumbnailUrl"
+                        width="32"
+                        height="32"
+                        :alt="item.filename"
+                        v-bind="props" />
+                </template>
+                <template #preloader>
                     <v-progress-circular indeterminate color="primary" />
-                </div>
-                <div slot="error">
+                </template>
+                <template #error>
                     <v-icon>{{ mdiFile }}</v-icon>
-                </div>
+                </template>
             </vue-load-image>
         </template>
         <span>

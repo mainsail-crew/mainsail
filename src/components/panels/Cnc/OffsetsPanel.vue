@@ -6,10 +6,10 @@
                     <span class="text-caption font-weight-bold">Coordinate System:</span>
                 </v-col>
                 <v-col cols="12">
-                    <v-btn-toggle :value="selectedOffsetIndex" dense small class="w-100" @change="onWcsChange">
-                        <v-tooltip v-for="(name, idx) in offsetNames" :key="idx" top content-class="tooltip-opaque" transition="fade-transition" :open-delay="0" :close-delay="0">
-                            <template #activator="{ on, attrs }">
-                                <v-btn :value="idx" x-small v-bind="attrs" v-on="on">
+                    <v-btn-toggle v-model="selectedOffsetIndex" density="compact" class="w-100" @update:model-value="onWcsChange">
+                        <v-tooltip v-for="(name, idx) in offsetNames" :key="idx" location="top" content-class="tooltip-opaque" transition="fade-transition" :open-delay="0" :close-delay="0">
+                            <template #activator="{ props }">
+                                <v-btn :value="idx" size="x-small" v-bind="props">
                                     {{ name }}
                                 </v-btn>
                             </template>
@@ -60,14 +60,14 @@
                     <span class="text-caption font-weight-bold">Set Work Zero:</span>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block outlined @click="setWorkZeroXY">
-                        <v-icon small left>{{ mdiTarget }}</v-icon>
+                    <v-btn size="small" block variant="outlined" @click="setWorkZeroXY">
+                        <v-icon size="small" start>{{ mdiTarget }}</v-icon>
                         Set XY Zero
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block outlined @click="setWorkZeroZ">
-                        <v-icon small left>{{ mdiAxisZArrow }}</v-icon>
+                    <v-btn size="small" block variant="outlined" @click="setWorkZeroZ">
+                        <v-icon size="small" start>{{ mdiAxisZArrow }}</v-icon>
                         Set Z Zero
                     </v-btn>
                 </v-col>
@@ -82,8 +82,8 @@
                         v-model.number="offsetInputX"
                         label="X"
                         type="number"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         step="0.001" />
                 </v-col>
                 <v-col cols="4">
@@ -91,8 +91,8 @@
                         v-model.number="offsetInputY"
                         label="Y"
                         type="number"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         step="0.001" />
                 </v-col>
                 <v-col cols="4">
@@ -100,22 +100,22 @@
                         v-model.number="offsetInputZ"
                         label="Z"
                         type="number"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         step="0.001" />
                 </v-col>
             </v-row>
 
             <v-row density="compact" class="mb-2">
                 <v-col cols="6">
-                    <v-btn small block color="primary" @click="applyOffsets">
-                        <v-icon small left>{{ mdiCheck }}</v-icon>
+                    <v-btn size="small" block color="primary" @click="applyOffsets">
+                        <v-icon size="small" start>{{ mdiCheck }}</v-icon>
                         Apply
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block outlined @click="resetOffsets">
-                        <v-icon small left>{{ mdiRestart }}</v-icon>
+                    <v-btn size="small" block variant="outlined" @click="resetOffsets">
+                        <v-icon size="small" start>{{ mdiRestart }}</v-icon>
                         Reset
                     </v-btn>
                 </v-col>

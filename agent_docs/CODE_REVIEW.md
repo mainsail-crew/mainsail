@@ -19,8 +19,8 @@
 
 ### Vue Components ([VUE_TYPESCRIPT.md](VUE_TYPESCRIPT.md))
 
-- [ ] Uses Vue Class Component syntax
-- [ ] Class member order correct (`@Prop` → Data → Getters → `@Watch` → Lifecycle → Methods
+- [ ] Uses Vue 3 `<script setup>` syntax
+- [ ] Props/emits/composables are declared in a sensible order
 - [ ] `beforeDestroy` cleans up all resources
 - [ ] Complex template logic extracted to computed properties
 

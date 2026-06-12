@@ -33,5 +33,5 @@ This directory contains CNC-focused dashboard panels for the Mainsail fork.
 files in this directory are imported from `src/pages/Dashboard.vue` and
 listed in the layout definitions under `src/store/gui/` like any other
 Mainsail panel. To add a new panel, follow the same pattern as the existing
-files (Vue Class Component, `klipperReadyForGui` gate, mixins from
-`@/components/mixins/base` and `@/components/mixins/control`).
+files (Vue 3 `<script setup>`, `klipperReadyForGui` gate, composables from
+`@/composables/useBase` and `@/composables/useControl`).

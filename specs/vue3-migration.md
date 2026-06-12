@@ -1,6 +1,10 @@
 # Vue 2 → Vue 3 + Composition API — Migration Plan
 
-> **Status:** In progress.
+> **Status:** Archived / complete.
+>
+> This is the original migration plan kept as a historical record.
+> The codebase is now on Vue 3.5 + Vuetify 3 + Vuex 4 + vue-router 4 + vue-i18n 11 + TypeScript 5.7 + Vite 7.
+> See `specs/vuetify3-migration-completion.md` for the completion snapshot.
 
 ## Problem
 
@@ -34,7 +38,9 @@ Staying on Vue 2 blocks:
 | `Vue.directive` registrations | 2 |
 | Global component registrations | 2 |
 
-## Current Dependency Versions
+## Historical Dependency Baseline
+
+This table reflects the pre-migration stack and intended targets from the original plan.
 
 | Package | Current | Target |
 |---------|---------|--------|

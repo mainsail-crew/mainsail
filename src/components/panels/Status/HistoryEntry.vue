@@ -6,26 +6,26 @@
         <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
             <v-tooltip
                 v-if="smallThumbnail"
-                top
+                location="top"
                 :disabled="!bigThumbnail"
                 content-class="tooltip__content-opacity1"
                 :color="bigThumbnailTooltipColor">
-                <template #activator="{ on, attrs }">
+                <template #activator="{ props }">
                     <vue-load-image class="text-center width-32">
-                        <img
-                            slot="image"
-                            :src="smallThumbnail"
-                            :width="32"
-                            :height="32"
-                            :alt="job.filename"
-                            v-bind="attrs"
-                            v-on="on" />
-                        <div slot="preloader">
+                        <template #image>
+                            <img
+                                :src="smallThumbnail"
+                                :width="32"
+                                :height="32"
+                                :alt="job.filename"
+                                v-bind="props" />
+                        </template>
+                        <template #preloader>
                             <v-progress-circular indeterminate color="primary" />
-                        </div>
-                        <div slot="error">
+                        </template>
+                        <template #error>
                             <v-icon>{{ mdiFile }}</v-icon>
-                        </div>
+                        </template>
                     </vue-load-image>
                 </template>
                 <span><img :src="bigThumbnail" :width="250" :alt="job.filename" /></span>
@@ -40,10 +40,10 @@
             <small v-if="description" class="text-truncate">{{ description }}</small>
         </v-col>
         <v-col class="col-auto d-flex flex-column justify-center pa-0 pr-3">
-            <v-tooltip top>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
-                        <v-icon small :color="statusColor" :disabled="!job.exists">
+            <v-tooltip location="top">
+                <template #activator="{ props }">
+                    <span v-bind="props">
+                        <v-icon size="small" :color="statusColor" :disabled="!job.exists">
                             {{ statusIcon }}
                         </v-icon>
                     </span>

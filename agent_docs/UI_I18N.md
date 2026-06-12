@@ -2,9 +2,10 @@
 
 ## Vuetify
 
-Use Vuetify 2 utility classes instead of custom CSS.
+Use Vuetify 3 utility classes when they keep markup simple; otherwise prefer
+small scoped CSS over recreating the old Vuetify 2 utility-class patterns.
 
-Documentation: [Vuetify 2 Spacing](https://v2.vuetifyjs.com/en/styles/spacing/) | [Flex](https://v2.vuetifyjs.com/en/styles/flex/) | [Typography](https://v2.vuetifyjs.com/en/styles/text-and-typography/)
+Documentation: [Vuetify 3 Spacing](https://vuetifyjs.com/en/styles/spacing/) | [Flex](https://vuetifyjs.com/en/styles/flex/) | [Typography](https://vuetifyjs.com/en/styles/text-and-typography/)
 
 ## Icons
 
@@ -18,7 +19,7 @@ Icon search: [Material Design Icons](https://pictogrammers.com/library/mdi/)
 All UI text must use `$t()` for localization.
 No hardcoded user-facing strings.
 
-Documentation: [vue-i18n](https://kazupon.github.io/vue-i18n/)
+Documentation: [vue-i18n v11](https://vue-i18n.intlify.dev/)
 
 ### Locale Files
 
