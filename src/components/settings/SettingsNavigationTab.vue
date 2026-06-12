@@ -7,13 +7,14 @@
                 handle=".handle"
                 ghost-class="ghost"
                 group="navigation-points"
+                item-key="title"
                 :force-fallback="true">
-                <settings-navigation-tab-item
-                    v-for="(naviPoint, index) in sortableNaviPoints"
-                    :key="index"
-                    class="my-2 mx-0"
-                    :style="draggableBgStyle"
-                    :navi-point="naviPoint" />
+                <template #item="{ element: naviPoint }">
+                    <settings-navigation-tab-item
+                        class="my-2 mx-0"
+                        :style="draggableBgStyle"
+                        :navi-point="naviPoint" />
+                </template>
             </draggable>
         </v-card-text>
     </div>
