@@ -6,7 +6,7 @@
             card-class="history-add-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
             </template>
             <v-card-text class="pb-0">
                 <v-row>
