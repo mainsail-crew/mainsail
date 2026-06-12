@@ -29,6 +29,17 @@
                 </v-row>
                 <v-row>
                     <v-col>
+                        <v-text-field
+                            v-model="selectedDateTime"
+                            type="datetime-local"
+                            :label="$t('History.StartTime')"
+                            outlined
+                            dense
+                            hide-details="auto" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
                         <settings-row :title="$t('History.Reminder')">
                             <v-select
                                 v-model="reminder"
@@ -130,6 +141,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
 
     name: string = ''
     note: string = ''
+    selectedDateTime: string = ''
     reminder: 'one-time' | 'repeat' | null = null
 
     reminderFilament: boolean = false
@@ -187,13 +199,17 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     }
 
     save() {
-        const date = new Date()
+        let startTime = Math.floor(Date.now() / 1000)
+        if (this.selectedDateTime) {
+            const parsed = Date.parse(this.selectedDateTime)
+            if (Number.isFinite(parsed)) startTime = Math.floor(parsed / 1000)
+        }
         this.$store.dispatch('gui/maintenance/store', {
             entry: {
                 name: this.name,
                 note: this.note,
                 // divided by 1000 to get seconds, because history entries are also in seconds
-                start_time: date.getTime() / 1000,
+                start_time: startTime,
                 end_time: null,
                 start_filament: this.totalFilamentUsed,
                 end_filament: null,
@@ -227,6 +243,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
     resetValues() {
         this.name = ''
         this.note = ''
+        this.selectedDateTime = this.toDatetimeLocalString(Math.floor(Date.now() / 1000))
         this.reminder = null
         this.reminderFilament = false
         this.reminderFilamentValue = 0
@@ -234,6 +251,12 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         this.reminderPrinttimeValue = 0
         this.reminderDate = false
         this.reminderDateValue = 0
+    }
+
+    toDatetimeLocalString(timestamp: number): string {
+        const d = new Date(timestamp * 1000)
+        const pad = (n: number) => String(n).padStart(2, '0')
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
     }
 
     @Watch('showDialog')
