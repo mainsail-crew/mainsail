@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-app-bar app elevate-on-scroll :height="topbarHeight" class="topbar pa-0" clipped-left>
-            <v-app-bar-nav-icon tile @click.stop="naviDrawer = !naviDrawer" />
+            <v-app-bar-nav-icon rounded="0" @click.stop="naviDrawer = !naviDrawer" />
             <router-link to="/">
                 <inline-svg v-if="sidebarLogo && isSvgLogo" :src="sidebarLogo" :class="logoClasses" />
                 <img v-else-if="sidebarLogo" :src="sidebarLogo" :class="logoClasses" alt="Logo" />
@@ -35,7 +35,7 @@
                 @change="uploadAndStart" />
             <v-btn
                 v-if="showSaveConfigButton"
-                tile
+                rounded="0"
                 :icon="displaySmAndDown"
                 :text="displayMdAndUp"
                 color="primary"
@@ -48,7 +48,7 @@
             </v-btn>
             <v-btn
                 v-if="boolShowUploadAndPrint"
-                tile
+                rounded="0"
                 :icon="displaySmAndDown"
                 :text="displayMdAndUp"
                 color="primary"
@@ -60,7 +60,7 @@
             </v-btn>
             <v-btn
                 v-if="klippyIsConnected"
-                tile
+                rounded="0"
                 :icon="displaySmAndDown"
                 :text="displayMdAndUp"
                 color="error"
