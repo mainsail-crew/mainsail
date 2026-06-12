@@ -111,10 +111,22 @@ const cardStyle = computed(() => {
 }
 
 .panel-content {
-    display: flex;
+    display: block;
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
+    width: 100%;
+}
+
+.panel-content > * {
+    min-width: 0;
+    width: 100%;
+}
+
+.panel-content > .v-card-text {
+    align-self: stretch;
+    max-width: none;
+    width: 100% !important;
 }
 
 :deep(.panel-toolbar) .v-btn {

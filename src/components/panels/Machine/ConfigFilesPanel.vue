@@ -63,8 +63,8 @@
             </v-card-text>
             <v-card-text>
                 <v-row>
-                    <v-col class="col-12 py-2 d-flex align-center">
-                        <span>
+                    <v-col class="col-12 py-2 d-flex align-center flex-wrap">
+                        <span class="d-flex align-center flex-wrap">
                             <b class="mr-1">{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
                             <path-navigation
                                 :path="currentPath"
