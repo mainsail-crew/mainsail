@@ -17,7 +17,7 @@ import { useI18n } from 'vue-i18n'
 import { useTheme } from '@/composables/useTheme'
 import { useHistory } from '@/composables/useHistory'
 import { useBase } from '@/composables/useBase'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { ServerHistoryStateJob } from '@/store/server/history/types'
 
 const { t } = useI18n()
 const { fgColorHi, fgColorMid, fgColorLow } = useTheme()

@@ -54,7 +54,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useWebcam } from '@/composables/useWebcam'
 import Panel from '@/components/ui/Panel.vue'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { mdiMenuDown, mdiViewGrid, mdiWebcam } from '@mdi/js'
 
 const props = defineProps<{

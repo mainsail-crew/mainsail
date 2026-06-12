@@ -420,7 +420,8 @@ import {
     mdiMagnify,
     mdiChevronLeft,
 } from '@mdi/js'
-import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
+import { clearColorObject } from '@/plugins/helpers'
+import type { ColorPickerValue } from '@/plugins/helpers'
 import type { DraggableChangeEvent } from '@/types/vuedraggable'
 
 const emit = defineEmits<{

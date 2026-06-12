@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { useI18n, TranslateResult } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
+import type { TranslateResult } from 'vue-i18n'
 import { useBase } from '@/composables/useBase'
 
 export function useSettingsDatabase() {

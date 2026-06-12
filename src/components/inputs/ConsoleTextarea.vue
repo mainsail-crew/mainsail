@@ -29,7 +29,7 @@ import { useBase } from '@/composables/useBase'
 import { useConsole } from '@/composables/useConsole'
 import { useSocket } from '@/composables/useSocket'
 import { mdiSend, mdiChevronDoubleRight } from '@mdi/js'
-import { VTextareaType } from '@/store/printer/types'
+import type { VTextareaType } from '@/store/printer/types'
 import { strLongestEqual } from '@/plugins/helpers'
 
 const store = useStore()

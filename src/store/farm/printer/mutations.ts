@@ -1,6 +1,6 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import type { FarmPrinterState } from '@/store/farm/printer/types'
 import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<FarmPrinterState> = {

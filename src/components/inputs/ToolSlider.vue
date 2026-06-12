@@ -87,7 +87,7 @@ import { useSocket } from '@/composables/useSocket'
 import { useBase } from '@/composables/useBase'
 import debounce from 'lodash.debounce'
 import { mdiLockOpenVariantOutline, mdiLockOutline, mdiMinus, mdiPlus, mdiRestart } from '@mdi/js'
-import { TranslateResult } from 'vue-i18n'
+import type { TranslateResult } from 'vue-i18n'
 
 const { t } = useI18n()
 const store = useStore()

@@ -1,4 +1,4 @@
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import type { FarmPrinterState } from '@/store/farm/printer/types'
 import { getDefaultState as getGuiDefaultState } from '@/store/gui/index'
 import { actions } from '@/store/farm/printer/actions'
 import { mutations } from '@/store/farm/printer/mutations'

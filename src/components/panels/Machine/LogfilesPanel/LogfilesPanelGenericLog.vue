@@ -11,7 +11,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useBase } from '@/composables/useBase'
-import { FileStateFile } from '@/store/files/types'
+import type { FileStateFile } from '@/store/files/types'
 import { mdiDownload } from '@mdi/js'
 
 const props = defineProps<{

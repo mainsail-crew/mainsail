@@ -141,7 +141,8 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
+import { clearColorObject } from '@/plugins/helpers'
+import type { ColorPickerValue } from '@/plugins/helpers'
 
 const store = useStore()
 

@@ -222,7 +222,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { mdiMenuDown } from '@mdi/js'
 import { useWebcam } from '@/composables/useWebcam'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 const props = defineProps({
     webcam: { type: Object, required: true },

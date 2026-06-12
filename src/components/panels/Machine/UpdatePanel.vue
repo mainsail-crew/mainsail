@@ -11,7 +11,7 @@
                     <template #activator="{ props: activatorProps }">
                         <v-btn
                             icon
-                            tile
+                            rounded="0"
                             color="primary"
                             :ripple="true"
                             :loading="loadings.includes('loadingBtnSyncUpdateManager')"
@@ -63,7 +63,7 @@ import UpdatePanelEntry from '@/components/panels/Machine/UpdatePanel/Entry.vue'
 import UpdatePanelEntryAll from '@/components/panels/Machine/UpdatePanel/EntryAll.vue'
 import UpdatePanelEntrySystem from '@/components/panels/Machine/UpdatePanel/EntrySystem.vue'
 import { mdiRefresh, mdiInformation, mdiCloseThick, mdiUpdate } from '@mdi/js'
-import { ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
+import type { ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
 import semver from 'semver'
 
 const { loadings, printer_state } = useBase()

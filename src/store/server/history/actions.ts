@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex'
 import { getSocket, $toast } from '@/store/runtime'
-import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
+import type { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
 import { RootState } from '@/store/types'
 
 export const actions: ActionTree<ServerHistoryState, RootState> = {

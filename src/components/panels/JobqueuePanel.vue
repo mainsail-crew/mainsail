@@ -61,7 +61,7 @@ import { mdiPlay, mdiPause, mdiTrayFull } from '@mdi/js'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
 import draggable from 'vuedraggable'
 import JobqueueEntrySum from '@/components/panels/Status/JobqueueEntrySum.vue'
-import { DraggableEndEvent } from '@/types/vuedraggable'
+import type { DraggableEndEvent } from '@/types/vuedraggable'
 
 const { klipperReadyForGui, loadings } = useBase()
 

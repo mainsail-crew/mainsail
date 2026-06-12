@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import {
+import type {
     HistoryStatsValueNames,
     ServerHistoryStateAllPrintStatusEntry,
     ServerHistoryStateJob,

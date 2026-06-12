@@ -17,7 +17,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import StatusPanelHistoryEntry from '@/components/panels/Status/HistoryEntry.vue'
-import { ServerHistoryStateJob, ServerHistoryStateJobWithCount } from '@/store/server/history/types'
+import type { ServerHistoryStateJob, ServerHistoryStateJobWithCount } from '@/store/server/history/types'
 
 const store = useStore()
 

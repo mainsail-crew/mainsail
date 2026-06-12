@@ -27,7 +27,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { NaviPoint } from '@/composables/useNavigation'
+import type { NaviPoint } from '@/composables/useNavigation'
 
 const props = defineProps({
     item: { type: Object, required: true },

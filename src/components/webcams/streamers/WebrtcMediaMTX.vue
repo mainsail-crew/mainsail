@@ -22,7 +22,7 @@
 import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useWebcam } from '@/composables/useWebcam'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { capitalize } from '@/plugins/helpers'
 
 interface OfferData {

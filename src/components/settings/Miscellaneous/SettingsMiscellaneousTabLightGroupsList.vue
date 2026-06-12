@@ -26,7 +26,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { caseInsensitiveSort } from '@/plugins/helpers'
-import { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
+import type { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 
 const props = defineProps({
     type: { type: String, required: true },

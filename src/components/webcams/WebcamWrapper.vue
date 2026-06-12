@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import WebcamWrapperItem from '@/components/webcams/WebcamWrapperItem.vue'
 
 const props = defineProps({

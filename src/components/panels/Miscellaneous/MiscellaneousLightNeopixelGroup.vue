@@ -24,7 +24,7 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useSocket } from '@/composables/useSocket'
 import { mdiLightbulbOutline, mdiLightbulbOnOutline } from '@mdi/js'
-import { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
+import type { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 import MiscellaneousLightNeopixelDialog from '@/components/dialogs/MiscellaneousLightNeopixelDialog.vue'
 
 const props = defineProps<{

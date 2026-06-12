@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useWebcam } from '@/composables/useWebcam'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 const props = defineProps({
     camSettings: { type: Object, required: true },

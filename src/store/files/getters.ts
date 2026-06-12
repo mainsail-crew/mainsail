@@ -6,8 +6,8 @@ import {
     validGcodeExtensions,
 } from '@/store/variables'
 import { GetterTree } from 'vuex'
-import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import type { ServerHistoryStateJob } from '@/store/server/history/types'
 import { escapePath } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 

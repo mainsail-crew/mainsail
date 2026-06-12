@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" :max-width="600" persistent @keydown.esc="closeDialog">
         <panel :title="panelTitle" :icon="icon" card-class="history-note-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
             </template>
             <v-card-text class="pb-0">
                 <v-row>

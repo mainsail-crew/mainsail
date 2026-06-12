@@ -210,7 +210,7 @@ import { useBase } from '@/composables/useBase'
 import { useControl } from '@/composables/useControl'
 import { useGcodeFiles } from '@/composables/useGcodeFiles'
 import { useSocket } from '@/composables/useSocket'
-import { FileStateGcodefile } from '@/store/files/types'
+import type { FileStateGcodefile } from '@/store/files/types'
 import { validGcodeExtensions } from '@/store/variables'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
 import {

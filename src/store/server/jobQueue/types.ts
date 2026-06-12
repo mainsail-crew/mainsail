@@ -1,4 +1,4 @@
-import { FileStateFile } from '@/store/files/types'
+import type { FileStateFile } from '@/store/files/types'
 
 export interface ServerJobQueueState {
     queued_jobs: ServerJobQueueStateJob[]

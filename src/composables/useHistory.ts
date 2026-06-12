@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
+import type { HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
 import { HistoryListRowMaintenance } from '@/store/gui/maintenance/types'
 
 type HistoryListPanelRow = HistoryListRowJob | HistoryListRowMaintenance

@@ -15,7 +15,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { mdiDelete, mdiPencil } from '@mdi/js'
-import { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
+import type { GuiMiscellaneousStateEntryLightgroup } from '@/store/gui/miscellaneous/types'
 
 const props = defineProps({
     type: { type: String, required: true },

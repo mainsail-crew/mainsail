@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import type { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { RootState } from '@/store/types'
 import { getSocket, $toast } from '@/store/runtime'
 

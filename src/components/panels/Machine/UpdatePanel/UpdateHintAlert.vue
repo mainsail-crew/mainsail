@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
+import type { ServerUpdateManagerStateGitRepo } from '@/store/server/updateManager/types'
 import { mdiAlertCircle, mdiEye, mdiOpenInNew } from '@mdi/js'
 import { capitalize } from '@/plugins/helpers'
 

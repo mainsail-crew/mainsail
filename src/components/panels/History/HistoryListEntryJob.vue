@@ -133,8 +133,8 @@ import Panel from '@/components/ui/Panel.vue'
 import { useBase } from '@/composables/useBase'
 import { useSocket } from '@/composables/useSocket'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
-import { FileStateFileThumbnail, FileStateGcodefile } from '@/store/files/types'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { FileStateFileThumbnail, FileStateGcodefile } from '@/store/files/types'
+import type { ServerHistoryStateJob } from '@/store/server/history/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import {
     mdiCloseThick,

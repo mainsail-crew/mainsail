@@ -14,7 +14,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useBase } from '@/composables/useBase'
-import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import type { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
 const props = defineProps<{
     jobs: ServerJobQueueStateJob[]

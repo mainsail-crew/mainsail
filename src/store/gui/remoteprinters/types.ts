@@ -1,4 +1,4 @@
-import { FarmPrinterStateSocket } from '@/store/farm/printer/types'
+import type { FarmPrinterStateSocket } from '@/store/farm/printer/types'
 
 export interface GuiRemoteprintersState {
     printers: {

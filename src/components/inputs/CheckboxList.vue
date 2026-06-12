@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useBase } from '@/composables/useBase'
-import { TranslateResult } from 'vue-i18n'
+import type { TranslateResult } from 'vue-i18n'
 
 const props = defineProps<{
     options: { label: string | TranslateResult; value: string }[]

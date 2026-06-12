@@ -14,7 +14,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { mdiDelete, mdiPencil } from '@mdi/js'
-import { GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
+import type { GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
 
 const props = defineProps({
     type: { type: String, required: true },

@@ -1,8 +1,8 @@
 import { defaultLogoColor, themeDir, thumbnailBigMin } from '@/store/variables'
 import { convertName, escapePath } from '@/plugins/helpers'
 import { GetterTree } from 'vuex'
-import { FarmPrinterState } from '@/store/farm/printer/types'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { FarmPrinterState } from '@/store/farm/printer/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<FarmPrinterState, RootState> = {

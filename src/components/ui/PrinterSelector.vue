@@ -27,7 +27,7 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { useBase } from '@/composables/useBase'
 import router from '@/plugins/router'
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import type { FarmPrinterState } from '@/store/farm/printer/types'
 import { mdiChevronDown } from '@mdi/js'
 
 const store = useStore()

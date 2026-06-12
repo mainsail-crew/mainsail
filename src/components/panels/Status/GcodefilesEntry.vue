@@ -84,7 +84,7 @@ import type { LongpressEvent } from '@/directives/longpress'
 import { useBase } from '@/composables/useBase'
 import { useControl } from '@/composables/useControl'
 import { useSocket } from '@/composables/useSocket'
-import { FileStateGcodefile } from '@/store/files/types'
+import type { FileStateGcodefile } from '@/store/files/types'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import {
     mdiPlay,

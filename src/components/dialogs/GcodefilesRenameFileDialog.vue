@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.RenameFile')" card-class="gcodefiles-rename-file-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="showDialog = false" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="showDialog = false" />
             </template>
             <v-card-text>
                 <v-text-field

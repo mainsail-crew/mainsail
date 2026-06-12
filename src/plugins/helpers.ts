@@ -1,4 +1,4 @@
-import { FileStateFile } from '@/store/files/types'
+import type { FileStateFile } from '@/store/files/types'
 import { PrinterStateMacroParams } from '@/store/printer/types'
 import {
     mdiAlertOutline,

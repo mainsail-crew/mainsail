@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useBase } from '@/composables/useBase'
-import {
+import type {
     ServerUpdateManagerStateGitRepo,
     ServerUpdateManagerStateGitRepoCommit,
     ServerUpdateManagerStateGitRepoGroupedCommits,

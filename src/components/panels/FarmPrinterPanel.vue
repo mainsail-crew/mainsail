@@ -113,12 +113,12 @@ import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import { useWebcam } from '@/composables/useWebcam'
 import { useTheme } from '@/composables/useTheme'
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import type { FarmPrinterState } from '@/store/farm/printer/types'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
 import WebcamWrapper from '@/components/webcams/WebcamWrapper.vue'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 const props = defineProps<{
     printer: FarmPrinterState

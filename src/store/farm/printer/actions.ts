@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex'
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import type { FarmPrinterState } from '@/store/farm/printer/types'
 import { RootState } from '@/store/types'
 
 export const actions: ActionTree<FarmPrinterState, RootState> = {

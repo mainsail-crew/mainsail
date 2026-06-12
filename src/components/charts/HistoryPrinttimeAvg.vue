@@ -16,7 +16,7 @@ import type { EChartRef } from '@/types/echarts'
 import { useTheme } from '@/composables/useTheme'
 import { useBase } from '@/composables/useBase'
 import { useHistory } from '@/composables/useHistory'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { ServerHistoryStateJob } from '@/store/server/history/types'
 
 const { t } = useI18n()
 const { fgColorHi, fgColorMid, fgColorLow, fgColorFaint } = useTheme()

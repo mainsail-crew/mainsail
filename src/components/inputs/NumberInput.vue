@@ -53,7 +53,7 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useBase } from '@/composables/useBase'
 import { mdiChevronDown, mdiChevronUp, mdiRestart } from '@mdi/js'
-import { TranslateResult } from 'vue-i18n'
+import type { TranslateResult } from 'vue-i18n'
 
 const { t } = useI18n()
 useBase()

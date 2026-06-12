@@ -108,7 +108,7 @@ import { useSocket } from '@/composables/useSocket'
 import { useBase } from '@/composables/useBase'
 import { GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
 import { mdiCloseThick, mdiMenuDown, mdiRefresh } from '@mdi/js'
-import { TranslateResult } from 'vue-i18n'
+import type { TranslateResult } from 'vue-i18n'
 import { PrinterStateMacro } from '@/store/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 

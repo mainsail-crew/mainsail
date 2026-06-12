@@ -40,7 +40,7 @@ import draggable from 'vuedraggable'
 import { mdiInformation, mdiLock } from '@mdi/js'
 import { useDashboard } from '@/composables/useDashboard'
 import SettingsDashboardSortableItem from '@/components/settings/Dashboard/SortableItem.vue'
-import { GuiStateLayoutoption } from '@/store/gui/types'
+import type { GuiStateLayoutoption } from '@/store/gui/types'
 
 const props = defineProps({
     viewportName: { type: String, required: true },

@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400" :fullscreen="isMobile">
         <panel card-class="confirm-top-corner-menu-dialog" :icon="iconToUse" :title="title" :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="close" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="close" />
             </template>
             <v-card-text>{{ text }}</v-card-text>
             <v-card-actions>

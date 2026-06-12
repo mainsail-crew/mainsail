@@ -79,8 +79,8 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
 import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
-import { TranslateResult } from 'vue-i18n'
-import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import type { TranslateResult } from 'vue-i18n'
+import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
 interface ReminderOption {
     text: string | TranslateResult

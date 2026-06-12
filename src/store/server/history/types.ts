@@ -1,4 +1,4 @@
-import { FileStateFileThumbnail } from '@/store/files/types'
+import type { FileStateFileThumbnail } from '@/store/files/types'
 
 export interface ServerHistoryState {
     jobs: ServerHistoryStateJob[]

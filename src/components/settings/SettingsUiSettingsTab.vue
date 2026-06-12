@@ -351,7 +351,8 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground, themes } from '@/store/variables'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 import type { ServerPowerStateDevice } from '@/store/server/power/types'
-import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
+import { clearColorObject } from '@/plugins/helpers'
+import type { ColorPickerValue } from '@/plugins/helpers'
 
 const store = useStore()
 const { t } = useI18n()

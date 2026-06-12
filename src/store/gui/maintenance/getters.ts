@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { GuiMaintenanceState, GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
+import type { GuiMaintenanceState, GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiMaintenanceState, RootState> = {

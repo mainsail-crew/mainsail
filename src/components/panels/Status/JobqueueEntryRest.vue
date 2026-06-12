@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import type { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiFileMultiple } from '@mdi/js'
 
 const props = defineProps<{

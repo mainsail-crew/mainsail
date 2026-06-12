@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex'
 import { getSocket, $toast } from '@/store/runtime'
 import { RootState } from '@/store/types'
-import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import type { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
 export const actions: ActionTree<ServerJobQueueState, RootState> = {
     reset({ commit }) {

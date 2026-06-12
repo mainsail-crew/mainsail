@@ -34,7 +34,7 @@ import { computed, ref } from 'vue'
 import { useBase } from '@/composables/useBase'
 import { useI18n } from 'vue-i18n'
 import { mdiDotsHorizontal } from '@mdi/js'
-import {
+import type {
     ServerUpdateManagerStateGitRepo,
     ServerUpdateManagerStateGitRepoCommit,
 } from '@/store/server/updateManager/types'

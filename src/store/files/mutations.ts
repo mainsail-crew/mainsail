@@ -2,7 +2,7 @@ import { getDefaultState } from './index'
 import { getSocket, $toast } from '@/store/runtime'
 import { findDirectory } from '@/plugins/helpers'
 import { MutationTree } from 'vuex'
-import { FileState, FileStateFile } from '@/store/files/types'
+import type { FileState, FileStateFile } from '@/store/files/types'
 import { allowedMetadata } from '@/store/variables'
 
 export const mutations: MutationTree<FileState> = {

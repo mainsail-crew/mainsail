@@ -371,7 +371,7 @@ import { useSocket } from '@/composables/useSocket'
 import { useBase } from '@/composables/useBase'
 import type { LongpressEvent } from '@/directives/longpress'
 import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
-import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import type { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
 import {

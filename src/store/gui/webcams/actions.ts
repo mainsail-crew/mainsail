@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import { GuiWebcamState, GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamState, GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { getSocket, $toast } from '@/store/runtime'
 
 export const actions: ActionTree<GuiWebcamState, RootState> = {

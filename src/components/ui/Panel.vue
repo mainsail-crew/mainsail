@@ -42,7 +42,7 @@ import { useStore } from 'vuex'
 import { useBase } from '@/composables/useBase'
 import { panelToolbarHeight } from '@/store/variables'
 import { mdiChevronDown } from '@mdi/js'
-import { TranslateResult } from 'vue-i18n'
+import type { TranslateResult } from 'vue-i18n'
 
 const props = defineProps({
     icon: { type: String, default: null },

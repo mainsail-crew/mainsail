@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
+import type { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<ServerHistoryState, RootState> = {

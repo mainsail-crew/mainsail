@@ -24,7 +24,7 @@ import { JanusJs, JanusSession, JanusStreamingPlugin } from 'typed_janus_js'
 import type { ConstructorOptions } from 'typed_janus_js/dist/interfaces/janus'
 import { useBase } from '@/composables/useBase'
 import { useWebcam } from '@/composables/useWebcam'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 const props = defineProps({
     camSettings: { type: Object, required: true },
