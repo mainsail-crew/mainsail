@@ -45,12 +45,8 @@
                         <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
-                    <v-btn v-if="isWriteable" icon tile @click="save(null)">
-                        <v-icon>{{ mdiContentSave }}</v-icon>
-                    </v-btn>
-                    <v-btn icon tile @click="close">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn v-if="isWriteable" :icon="mdiContentSave" tile @click="save(null)" />
+                    <v-btn :icon="mdiCloseThick" tile @click="close" />
                 </template>
                 <v-card-text class="pa-0 d-flex">
                     <codemirror-async
@@ -83,14 +79,12 @@
                             <template v-if="restartServiceName === 'klipper'" #append="{ item }">
                                 <v-btn
                                     v-if="item.type == 'section'"
-                                    icon
+                                    :icon="mdiHelpCircle"
                                     small
                                     plain
                                     color="grey darken-2"
                                     :href="klipperConfigReference + '#' + item.name.split(' ')[0]"
-                                    target="_blank">
-                                    <v-icon small class="mr-1">{{ mdiHelpCircle }}</v-icon>
-                                </v-btn>
+                                    target="_blank" />
                             </template>
                         </v-treeview>
                     </div>
@@ -129,9 +123,7 @@
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogConfirmChange = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="dialogConfirmChange = false" />
                 </template>
                 <v-card-text class="pt-3">
                     <v-row>

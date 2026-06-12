@@ -6,9 +6,7 @@
             :icon="mdiPlaylistPlus"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
             </template>
 
             <v-form v-model="isValid" @submit.prevent="addBatchToQueueAction">
@@ -23,12 +21,8 @@
                         :rules="rules.count">
                         <template #append-outer>
                             <div class="_spin_button_group">
-                                <v-btn class="mt-n3" icon plain small @click="input++">
-                                    <v-icon>{{ mdiChevronUp }}</v-icon>
-                                </v-btn>
-                                <v-btn :disabled="input <= 1" class="mb-n3" icon plain small @click="input--">
-                                    <v-icon>{{ mdiChevronDown }}</v-icon>
-                                </v-btn>
+                                <v-btn class="mt-n3" :icon="mdiChevronUp" plain small @click="input++" />
+                                <v-btn :disabled="input <= 1" class="mb-n3" :icon="mdiChevronDown" plain small @click="input--" />
                             </div>
                         </template>
                     </v-text-field>

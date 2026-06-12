@@ -2,9 +2,7 @@
     <div>
         <v-menu v-model="showMenu" location="bottom end" :close-on-content-click="false">
             <template #activator="{ props }">
-                <v-btn icon tile v-bind="props">
-                    <v-icon>{{ mdiPowerStandby }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiPowerStandby" tile v-bind="props" />
             </template>
             <v-list density="compact">
                 <template v-if="klipperState !== 'disconnected'">

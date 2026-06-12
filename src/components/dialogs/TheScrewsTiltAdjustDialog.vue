@@ -8,9 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn icon tile @click="clearScrewsTiltAdjust">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="clearScrewsTiltAdjust" />
             </template>
             <v-card-text v-if="error">
                 <v-row>

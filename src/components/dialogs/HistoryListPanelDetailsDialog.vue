@@ -6,9 +6,7 @@
             card-class="history-detail-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
             </template>
             <v-card-text class="pa-0">
                 <OverlayScrollbarsComponent style="height: 350px" class="px-6">

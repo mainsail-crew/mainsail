@@ -1,9 +1,7 @@
 <template>
     <v-menu :offset-y="true" :left="true" :close-on-content-click="false">
         <template #activator="{ on, attrs }">
-            <v-btn icon tile v-bind="attrs" v-on="on">
-                <v-icon small>{{ mdiCog }}</v-icon>
-            </v-btn>
+            <v-btn :icon="mdiCog" tile v-bind="attrs" v-on="on" />
         </template>
         <v-list>
             <v-list-item class="minHeight36">

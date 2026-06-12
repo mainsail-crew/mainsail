@@ -6,9 +6,7 @@
             card-class="timelapse-rendersettings-dialog-panel"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon @click="close">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" @click="close" />
             </template>
             <v-card-text class="">
                 <v-row>

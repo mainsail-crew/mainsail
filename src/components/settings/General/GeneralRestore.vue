@@ -11,9 +11,7 @@
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
                 <template #buttons>
-                    <v-btn icon tile @click="closeDialog">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
                 </template>
                 <v-card-text>
                     <v-row>

@@ -8,9 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn icon tile @click="sendAbort">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="sendAbort" />
             </template>
             <v-container>
                 <v-row>

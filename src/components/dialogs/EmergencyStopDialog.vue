@@ -7,9 +7,7 @@
             :icon="mdiAlertOctagonOutline"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closePrompt" />
             </template>
             <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
             <v-card-actions>

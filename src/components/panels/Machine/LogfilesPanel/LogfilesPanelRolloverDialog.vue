@@ -6,9 +6,7 @@
             :icon="mdiFileSyncOutline"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
             </template>
             <v-card-text>
                 <v-row>

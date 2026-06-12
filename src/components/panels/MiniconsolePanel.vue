@@ -7,18 +7,14 @@
         card-class="miniconsole-panel"
         :hide-buttons-on-collapse="true">
         <template #buttons>
-            <v-btn icon tile @click="clearConsole">
-                <v-icon small>{{ mdiTrashCan }}</v-icon>
-            </v-btn>
+            <v-btn :icon="mdiTrashCan" tile @click="clearConsole" />
             <command-help-modal :in-toolbar="true" @onCommand="commandClick($event)" />
             <v-menu
                 :offset-y="true"
                 :close-on-content-click="false"
                 :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template #activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" v-on="on">
-                        <v-icon small>{{ mdiCog }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCog" tile v-bind="attrs" v-on="on" />
                 </template>
                 <v-list>
                     <v-list-item v-if="consoleDirection === 'shell'" class="minHeight36">

@@ -1,8 +1,6 @@
 <template>
     <div>
-        <v-btn icon tile @click="showSettings = true">
-            <v-icon>{{ mdiCogs }}</v-icon>
-        </v-btn>
+        <v-btn :icon="mdiCogs" tile @click="showSettings = true" />
         <v-dialog
             v-model="showSettings"
             width="900"
@@ -18,9 +16,7 @@
                 style="overflow: hidden"
                 :height="isMobile ? 0 : 548">
                 <template #buttons>
-                    <v-btn icon tile @click="showSettings = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="showSettings = false" />
                 </template>
                 <template v-if="isMobile">
                     <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">

@@ -33,17 +33,13 @@
                 class="shrink pl-0 pb-1 pt-1 pr-2 d-flex flex-column align-self-stretch justify-space-between">
                 <v-btn
                     v-if="entryType !== 'maintenance'"
-                    icon
+                    :icon="mdiClose"
                     plain
                     :color="alertColor"
                     class="mb-2"
-                    @click="xButtonAction">
-                    <v-icon>{{ mdiClose }}</v-icon>
-                </v-btn>
+                    @click="xButtonAction" />
                 <v-spacer />
-                <v-btn icon plain retain-focus-on-click :color="alertColor" @click="expand = !expand">
-                    <v-icon>{{ mdiBellOffOutline }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiBellOffOutline" plain retain-focus-on-click :color="alertColor" @click="expand = !expand" />
             </v-col>
         </v-row>
         <v-row v-if="entry.priority !== 'critical'">

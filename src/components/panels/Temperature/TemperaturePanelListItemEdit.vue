@@ -2,9 +2,7 @@
     <v-dialog :model-value="showDialog" @update:model-value="$emit('update:model-value', $event)" persistent :width="400">
         <panel :title="formatName" :icon="icon" card-class="temperature-edit-heater-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
             </template>
             <v-card-text class="pt-6">
                 <temperature-panel-list-item-edit-chart-serie

@@ -8,9 +8,7 @@
         <template #buttons>
             <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on">
-                        <v-icon>{{ mdiDotsVertical }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiDotsVertical" tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on" />
                 </template>
                 <v-list density="compact">
                     <v-list-item v-if="controlStyle !== 'bars' && actionButton !== 'm84'">

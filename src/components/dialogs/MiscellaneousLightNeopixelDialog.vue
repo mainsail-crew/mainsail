@@ -6,9 +6,7 @@
             card-class="miscellaneous-light-neopixel-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closePrompt" />
             </template>
             <v-card-text>
                 <template v-if="presets.length">

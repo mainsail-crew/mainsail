@@ -10,14 +10,12 @@
         transition="slide-y-transition"
         :min-width="isMobile ? '100%' : null">
         <template #activator="{ props }">
-            <v-btn icon tile class="minwidth-0" v-bind="props">
+            <v-btn :icon="boolMenu ? mdiBell : mdiBellOutline" tile class="minwidth-0" v-bind="props">
                 <v-badge
                     :content="notifications.length <= 9 ? notifications.length : '9+'"
                     :value="notifications.length > 0"
                     :color="colorBadge"
-                    overlap>
-                    <v-icon>{{ boolMenu ? mdiBell : mdiBellOutline }}</v-icon>
-                </v-badge>
+                    overlap />
             </v-btn>
         </template>
         <v-card flat :min-width="300" :max-width="isMobile ? null : 400">

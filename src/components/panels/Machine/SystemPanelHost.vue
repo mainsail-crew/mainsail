@@ -163,9 +163,7 @@
                 card-class="machine-systemload-host-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="hostDetailsDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="hostDetailsDialog = false" />
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <OverlayScrollbarsComponent style="height: 350px" class="px-6">

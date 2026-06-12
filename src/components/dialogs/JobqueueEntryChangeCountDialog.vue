@@ -6,9 +6,7 @@
             card-class="jobqueue-change-count-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closeDialog">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
             </template>
 
             <v-card-text>
@@ -23,12 +21,8 @@
                     @keyup.enter="update">
                     <template #append-outer>
                         <div class="_spin_button_group">
-                            <v-btn class="mt-n3" icon plain small @click="count++">
-                                <v-icon>{{ mdiChevronUp }}</v-icon>
-                            </v-btn>
-                            <v-btn :disabled="count <= 1" class="mb-n3" icon plain small @click="count--">
-                                <v-icon>{{ mdiChevronDown }}</v-icon>
-                            </v-btn>
+                            <v-btn class="mt-n3" :icon="mdiChevronUp" plain small @click="count++" />
+                            <v-btn :disabled="count <= 1" class="mb-n3" :icon="mdiChevronDown" plain small @click="count--" />
                         </div>
                     </template>
                 </v-text-field>

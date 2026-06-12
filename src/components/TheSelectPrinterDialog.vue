@@ -9,24 +9,18 @@
             <template #buttons>
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool">
-                        <v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false">
-                            <v-icon>{{ mdiCloseThick }}</v-icon>
-                        </v-btn>
+                        <v-btn :icon="mdiCloseThick" tile class="minwidth-0" @click="dialogEditPrinter.bool = false" />
                     </template>
                     <template v-else-if="dialogAddPrinter.bool">
                         <v-btn
                             v-if="dialogAddPrinter.bool"
-                            icon
+                            :icon="mdiCloseThick"
                             tile
                             class="minwidth-0"
-                            @click="dialogAddPrinter.bool = false">
-                            <v-icon>{{ mdiCloseThick }}</v-icon>
-                        </v-btn>
+                            @click="dialogAddPrinter.bool = false" />
                     </template>
                     <template v-else-if="printers.length > 0">
-                        <v-btn icon tile class="minwidth-0" color="primary" @click="checkPrinters">
-                            <v-icon>{{ mdiSync }}</v-icon>
-                        </v-btn>
+                        <v-btn :icon="mdiSync" tile class="minwidth-0" color="primary" @click="checkPrinters" />
                     </template>
                 </template>
             </template>
@@ -166,9 +160,7 @@
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
-                            <v-icon small>{{ mdiDelete }}</v-icon>
-                        </v-btn>
+                        <v-btn color="red" :icon="mdiDelete" tile class="minwidth-0 rounded" @click="delPrinter" />
                         <v-checkbox
                             v-model="showOptionalSettings"
                             class="ml-2"
@@ -208,15 +200,7 @@
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
                                         <v-col v-if="canAddPrinters" class="col-auto pa-0">
-                                            <v-btn
-                                                tile
-                                                text
-                                                icon
-                                                large
-                                                class="mr-1"
-                                                @click.stop.prevent="editPrinter(printer)">
-                                                <v-icon small>{{ mdiPencil }}</v-icon>
-                                            </v-btn>
+                                            <v-btn tile large :icon="mdiPencil" class="mr-1" @click.stop.prevent="editPrinter(printer)" />
                                         </v-col>
                                     </v-row>
                                 </v-col>

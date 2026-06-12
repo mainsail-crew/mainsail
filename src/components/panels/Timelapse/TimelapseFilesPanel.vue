@@ -230,9 +230,7 @@
                 card-class="gcode-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogRenameFile.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="dialogRenameFile.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -259,9 +257,7 @@
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogCreateDirectory.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="dialogCreateDirectory.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -290,9 +286,7 @@
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogRenameDirectory.show = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="dialogRenameDirectory.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -328,9 +322,7 @@
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="boolVideoDialog = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                    <v-btn :icon="mdiCloseThick" tile @click="boolVideoDialog = false" />
                 </template>
                 <v-card-text class="">
                     <v-row>
@@ -344,13 +336,13 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <v-btn
-                                text
-                                color="primary"
-                                :href="apiUrl + '/server/files/' + videoDialogFilename"
-                                target="_blank">
-                                {{ $t('Timelapse.Download') }}
-                            </v-btn>
+                                <v-btn
+                                    variant="text"
+                                    color="primary"
+                                    :href="apiUrl + '/server/files/' + videoDialogFilename"
+                                    target="_blank">
+                                    {{ $t('Timelapse.Download') }}
+                                </v-btn>
                         </v-col>
                     </v-row>
                 </v-card-text>

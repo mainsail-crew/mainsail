@@ -13,9 +13,7 @@
                     <span class="d-none d-sm-block">{{ $t('GCodeViewer.ReloadRequired') }}</span>
                     <v-icon class="d-sm-none">{{ mdiReloadAlert }}</v-icon>
                 </v-btn>
-                <v-btn icon tile @click="resetCamera">
-                    <v-icon>{{ mdiCameraRetake }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCameraRetake" tile @click="resetCamera" />
             </template>
             <v-card-text>
                 <v-row :class="showScrubber ? 'withScrubber' : ''">
@@ -216,9 +214,7 @@
             </div>
             <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
             <template #action="{ attrs }">
-                <v-btn color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelRendering()">
-                    <v-icon class="0">{{ mdiClose }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiClose" color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelRendering()" />
             </template>
         </v-snackbar>
         <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" fixed right bottom>
@@ -240,9 +236,7 @@
                 <v-progress-linear class="mt-2" indeterminate />
             </template>
             <template #action="{ attrs }">
-                <v-btn color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelDownload">
-                    <v-icon class="0">{{ mdiClose }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiClose" color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelDownload" />
             </template>
         </v-snackbar>
         <confirmation-dialog

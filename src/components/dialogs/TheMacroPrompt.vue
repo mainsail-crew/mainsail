@@ -8,9 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
-                    <v-icon>{{ mdiCloseThick }}</v-icon>
-                </v-btn>
+                <v-btn :icon="mdiCloseThick" tile @click="closePrompt" />
             </template>
             <v-card-text>
                 <template v-for="(event, index) in activePromptContent" :key="'prompt_' + index">
