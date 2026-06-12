@@ -41,7 +41,7 @@
                     <v-row>
                         <v-col class="py-2">
                             <span class="text-subtitle-2 px-0 text-disabled">
-                                <v-icon class="mr-2 mt-1 float-left" color="warning" small>
+                                <v-icon class="mr-2 mt-1 float-left" color="warning" size="small">
                                     {{ mdiAlertOutline }}
                                 </v-icon>
                                 {{ print_stats_message }}
@@ -56,12 +56,12 @@
                     <v-row class="flex-nowrap">
                         <v-col class="py-2" style="min-width: 0">
                             <span class="text-subtitle-2 px-0 text-disabled">
-                                <v-icon class="mr-2 mt-1 float-left" small>{{ mdiMessageProcessingOutline }}</v-icon>
+                                <v-icon class="mr-2 mt-1 float-left" size="small">{{ mdiMessageProcessingOutline }}</v-icon>
                                 {{ display_message }}
                             </span>
                         </v-col>
                         <v-col class="col-auto py-2">
-                            <v-icon class="text-disabled cursor-pointer" small @click="clearDisplayMessage">
+                            <v-icon class="text-disabled cursor-pointer" size="small" @click="clearDisplayMessage">
                                 {{ mdiCloseCircle }}
                             </v-icon>
                         </v-col>

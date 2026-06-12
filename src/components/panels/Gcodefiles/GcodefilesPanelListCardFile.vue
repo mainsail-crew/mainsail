@@ -17,7 +17,7 @@
                 <template #activator="{ props }">
                     <v-icon
                         v-bind="props"
-                        small
+                        size="small"
                         class="gcode-card__status"
                         :color="statusIconColor"
                         >
@@ -117,7 +117,7 @@
                 class="gcode-card__start"
                 :disabled="!isGcodeFile || !canStart"
                 @click.stop="showStartPrintDialog = true">
-                <v-icon left small>{{ mdiPlay }}</v-icon>
+                <v-icon left size="small">{{ mdiPlay }}</v-icon>
                 {{ $t('Files.PrintStart') }}
             </v-btn>
         </div>

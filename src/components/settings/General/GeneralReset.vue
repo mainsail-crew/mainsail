@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn color="error" small @click="openDialog">
+        <v-btn color="error" size="small" @click="openDialog">
             {{ $t('Settings.GeneralTab.FactoryReset') }}
         </v-btn>
         <v-dialog v-model="showDialog" persistent :width="360">

@@ -4,8 +4,8 @@
             <v-col>
                 <h4 class="subtitle-2 text--white mb-0">
                     {{ title }}
-                    <v-chip outlined label x-small class="ml-2 px-2" @click="showDetails = !showDetails">
-                        <v-icon small>{{ mdiDotsHorizontal }}</v-icon>
+                    <v-chip variant="outlined" label size="x-small" class="ml-2 px-2" @click="showDetails = !showDetails">
+                        <v-icon size="small">{{ mdiDotsHorizontal }}</v-icon>
                     </v-chip>
                 </h4>
                 <p
@@ -21,7 +21,7 @@
                 </p>
             </v-col>
             <v-col class="col-auto pt-0 pt-sm-4">
-                <v-chip outlined label small :href="commitHref" target="_blank">
+                <v-chip variant="outlined" label size="small" :href="commitHref" target="_blank">
                     {{ commitShortSha }}
                 </v-chip>
             </v-col>

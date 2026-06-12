@@ -2,9 +2,9 @@
     <panel v-if="klipperReadyForGui" :icon="mdiCrosshairsGps" title="DRO" :collapsible="true" card-class="dro-panel">
         <v-container class="py-2">
             <div class="dro-panel__meta">
-                <v-chip small label outlined class="mr-2">{{ coordinateModeLabel }}</v-chip>
-                <v-chip small label outlined class="mr-2">Velocity {{ liveVelocity }}</v-chip>
-                <v-chip small label outlined :color="allAxesHomed ? 'primary' : 'warning'">
+                <v-chip size="small" label variant="outlined" class="mr-2">{{ coordinateModeLabel }}</v-chip>
+                <v-chip size="small" label variant="outlined" class="mr-2">Velocity {{ liveVelocity }}</v-chip>
+                <v-chip size="small" label variant="outlined" :color="allAxesHomed ? 'primary' : 'warning'">
                     {{ allAxesHomed ? 'Homed' : 'Not Homed' }}
                 </v-chip>
             </div>
@@ -13,7 +13,7 @@
                 <section v-for="axis in axes" :key="axis.id" class="dro-panel__axis-card">
                     <div class="dro-panel__axis-header">
                         <span class="dro-panel__axis-name">{{ axis.id }}</span>
-                        <v-chip x-small :color="axis.homed ? 'primary' : 'warning'">{{ axis.homed ? 'HOMED' : 'OPEN' }}</v-chip>
+                        <v-chip size="x-small" :color="axis.homed ? 'primary' : 'warning'">{{ axis.homed ? 'HOMED' : 'OPEN' }}</v-chip>
                     </div>
                     <div class="dro-panel__axis-section">
                         <span class="dro-panel__label">Machine</span>
@@ -35,9 +35,9 @@
             </div>
 
             <div class="dro-panel__homed">
-                <v-chip small :color="xAxisHomed ? 'primary' : 'warning'" class="mr-2">X {{ xAxisHomed ? 'OK' : '--' }}</v-chip>
-                <v-chip small :color="yAxisHomed ? 'primary' : 'warning'" class="mr-2">Y {{ yAxisHomed ? 'OK' : '--' }}</v-chip>
-                <v-chip small :color="zAxisHomed ? 'primary' : 'warning'">Z {{ zAxisHomed ? 'OK' : '--' }}</v-chip>
+                <v-chip size="small" :color="xAxisHomed ? 'primary' : 'warning'" class="mr-2">X {{ xAxisHomed ? 'OK' : '--' }}</v-chip>
+                <v-chip size="small" :color="yAxisHomed ? 'primary' : 'warning'" class="mr-2">Y {{ yAxisHomed ? 'OK' : '--' }}</v-chip>
+                <v-chip size="small" :color="zAxisHomed ? 'primary' : 'warning'">Z {{ zAxisHomed ? 'OK' : '--' }}</v-chip>
             </div>
         </v-container>
     </panel>

@@ -6,15 +6,15 @@
                     <v-icon
                         v-if="type === 'led' && target > 0"
                         class="mr-2"
-                        small
+                        size="small"
                         :retain-focus-on-click="true"
                         @click="ledOff">
                         {{ mdiLightbulbOnOutline }}
                     </v-icon>
-                    <v-icon v-else-if="type === 'led'" class="mr-2" small :retain-focus-on-click="true" @click="ledOn">
+                    <v-icon v-else-if="type === 'led'" class="mr-2" size="small" :retain-focus-on-click="true" @click="ledOn">
                         {{ mdiLightbulbOutline }}
                     </v-icon>
-                    <v-icon v-else-if="type.includes('fan')" small :class="fanClasses">{{ mdiFan }}</v-icon>
+                    <v-icon v-else-if="type.includes('fan')" size="small" :class="fanClasses">{{ mdiFan }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer />
                     <small v-if="rpm !== null" :class="rpmClasses">{{ Math.round(rpm ?? 0) }} RPM</small>
@@ -33,8 +33,8 @@
                             type="number"
                             hide-spin-buttons
                             hide-details
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             class="_slider-input pt-1"
                             @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
                             @focus="$event.target.select()"
@@ -50,11 +50,11 @@
                     <v-btn
                         v-if="lockSliders && isTouchDevice && pwm"
                         plain
-                        small
+                        size="small"
                         icon
                         class="_lock-button"
                         @click="isLocked = !isLocked">
-                        <v-icon small :color="isLocked ? 'red' : ''">
+                        <v-icon size="small" :color="isLocked ? 'red' : ''">
                             {{ isLocked ? mdiLockOutline : mdiLockOpenVariantOutline }}
                         </v-icon>
                     </v-btn>

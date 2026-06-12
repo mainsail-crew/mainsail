@@ -1,5 +1,5 @@
 <template>
-    <v-card outlined class="mt-3 w-100">
+    <v-card variant="outlined" class="mt-3 w-100">
         <v-card-text>
             <v-row>
                 <v-col>

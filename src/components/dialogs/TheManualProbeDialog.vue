@@ -23,24 +23,24 @@
                 <v-row>
                     <v-col class="text-left">
                         <v-btn class="" color="primary" @click="sendTestZ('--')">
-                            <v-icon small>{{ mdiMinusThick }}</v-icon>
-                            <v-icon small>{{ mdiMinusThick }}</v-icon>
+                            <v-icon size="small">{{ mdiMinusThick }}</v-icon>
+                            <v-icon size="small">{{ mdiMinusThick }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col class="text-left">
                         <v-btn class="" color="primary" @click="sendTestZ('-')">
-                            <v-icon small>{{ mdiMinusThick }}</v-icon>
+                            <v-icon size="small">{{ mdiMinusThick }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col class="text-right">
                         <v-btn class="" color="primary" @click="sendTestZ('+')">
-                            <v-icon small>{{ mdiPlusThick }}</v-icon>
+                            <v-icon size="small">{{ mdiPlusThick }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col class="text-right">
                         <v-btn class="" color="primary" @click="sendTestZ('++')">
-                            <v-icon small>{{ mdiPlusThick }}</v-icon>
-                            <v-icon small>{{ mdiPlusThick }}</v-icon>
+                            <v-icon size="small">{{ mdiPlusThick }}</v-icon>
+                            <v-icon size="small">{{ mdiPlusThick }}</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -54,7 +54,7 @@
                             small
                             class="_btn-qs flex-grow-1 px-1"
                             @click="sendTestZ(offset.toString())">
-                            <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
+                            <v-icon v-if="index === 0" left size="small" class="mr-1 ml-n1">
                                 {{ mdiArrowExpandUp }}
                             </v-icon>
                             <span>&plus;{{ offset }}</span>
@@ -67,7 +67,7 @@
                             small
                             class="_btn-qs flex-grow-1 px-1"
                             @click="sendTestZ((offset * -1).toString())">
-                            <v-icon v-if="index === 0" left small class="mr-1 ml-n1">
+                            <v-icon v-if="index === 0" left size="small" class="mr-1 ml-n1">
                                 {{ mdiArrowCollapseDown }}
                             </v-icon>
                             <span>&minus;{{ offset }}</span>

@@ -4,7 +4,7 @@
         :loading="isLoading"
         :disabled="printerIsPrintingOnly"
         class="text-uppercase"
-        small
+        size="small"
         @click="toggleEffect">
         {{ name }}
     </v-btn>

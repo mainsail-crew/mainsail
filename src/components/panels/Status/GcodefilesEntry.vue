@@ -15,7 +15,7 @@
             <v-tooltip v-if="item.last_status" location="top">
                 <template #activator="{ props: activatorProps }">
                     <span v-bind="activatorProps">
-                        <v-icon small :color="statusColor">{{ statusIcon }}</v-icon>
+                        <v-icon size="small" :color="statusColor">{{ statusIcon }}</v-icon>
                     </span>
                 </template>
                 <span>{{ item.last_status.replace(/_/g, ' ') }}</span>

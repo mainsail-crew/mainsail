@@ -3,7 +3,7 @@
         <v-card-text v-if="showGeneral">
             <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.General') }}</h3>
             <settings-row :title="$t('Settings.MacrosTab.Management')">
-                <v-select v-model="mode" :items="modes" item-title="text" item-value="value" outlined dense hide-details attach></v-select>
+                <v-select v-model="mode" :items="modes" item-title="text" item-value="value" variant="outlined" density="compact" hide-details attach></v-select>
             </settings-row>
             <v-divider class="my-2"></v-divider>
         </v-card-text>

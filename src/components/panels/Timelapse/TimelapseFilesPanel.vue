@@ -12,10 +12,10 @@
                             :append-icon="mdiMagnify"
                             :label="$t('Timelapse.Search')"
                             single-line
-                            outlined
+                            variant="outlined"
                             clearable
                             hide-details
-                            dense
+                            density="compact"
                             style="max-width: 300px"></v-text-field>
                         <v-spacer></v-spacer>
                         <v-btn

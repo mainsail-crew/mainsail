@@ -11,7 +11,7 @@
             <v-card-text class="pb-0">
                 <v-row>
                     <v-col>
-                        <v-textarea v-model="note" outlined hide-details="auto" :label="$t('History.AddANote')" />
+                        <v-textarea v-model="note" variant="outlined" hide-details="auto" :label="$t('History.AddANote')" />
                     </v-col>
                 </v-row>
             </v-card-text>

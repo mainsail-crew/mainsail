@@ -3,7 +3,7 @@
         <v-row>
             <v-col class="pb-3">
                 <v-list-subheader class="_miscellaneous-sensor-subheader">
-                    <v-icon small class="mr-2">{{ unitToSymbol(unit) }}</v-icon>
+                    <v-icon size="small" class="mr-2">{{ unitToSymbol(unit) }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer />
                     <span>{{ output }}</span>

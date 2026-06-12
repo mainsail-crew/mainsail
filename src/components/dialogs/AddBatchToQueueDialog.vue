@@ -21,8 +21,8 @@
                         :rules="rules.count">
                         <template #append-outer>
                             <div class="_spin_button_group">
-                                <v-btn class="mt-n3" :icon="mdiChevronUp" plain small @click="input++" />
-                                <v-btn :disabled="input <= 1" class="mb-n3" :icon="mdiChevronDown" plain small @click="input--" />
+                                <v-btn class="mt-n3" :icon="mdiChevronUp" plain size="small" @click="input++" />
+                                <v-btn :disabled="input <= 1" class="mb-n3" :icon="mdiChevronDown" plain size="small" @click="input--" />
                             </div>
                         </template>
                     </v-text-field>

@@ -2,13 +2,13 @@
     <v-row density="compact">
         <v-col class="pa-0">
             <v-list-subheader class="_tool-slider-subheader px-1">
-                <v-icon small class="mr-2">
+                <v-icon size="small" class="mr-2">
                     {{ icon }}
                 </v-icon>
                 <span>{{ label }}</span>
                 <v-btn
                     v-if="value !== defaultValue && !hasInputField"
-                    x-small
+                    size="x-small"
                     icon
                     class="ml-2"
                     :disabled="isLocked"
@@ -26,14 +26,14 @@
                         type="number"
                         hide-spin-buttons
                         hide-details
-                        outlined
-                        dense
+                        variant="outlined"
+                        density="compact"
                         class="_slider-input d-flex align-center pt-1"
                         @blur="numInput = value"
                         @focus="$event.target.select()"
                         @keydown="checkInvalidChars">
                         <template v-if="value !== defaultValue || value !== numInput" #append>
-                            <v-icon small @click="resetSlider">{{ mdiRestart }}</v-icon>
+                            <v-icon size="small" @click="resetSlider">{{ mdiRestart }}</v-icon>
                         </template>
                     </v-text-field>
                 </form>
@@ -51,7 +51,7 @@
                     icon
                     class="_lock-button"
                     @click="isLocked = !isLocked">
-                    <v-icon small :color="isLocked ? 'red' : ''">
+                    <v-icon size="small" :color="isLocked ? 'red' : ''">
                         {{ isLocked ? mdiLockOutline : mdiLockOpenVariantOutline }}
                     </v-icon>
                 </v-btn>

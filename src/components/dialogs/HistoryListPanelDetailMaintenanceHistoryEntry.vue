@@ -1,23 +1,23 @@
 <template>
     <div>
-        <v-timeline-item class="pb-2" small hide-dot>
+        <v-timeline-item class="pb-2" size="small" hide-dot>
             <div>
                 <span v-if="restFilamentText" :class="restFilamentClass">
-                    <v-icon small>{{ mdiAdjust }}</v-icon>
+                    <v-icon size="small">{{ mdiAdjust }}</v-icon>
                     {{ restFilamentText }}
                 </span>
                 <span v-if="restPrinttimeText" :class="restPrinttimeClass">
-                    <v-icon small>{{ mdiAlarm }}</v-icon>
+                    <v-icon size="small">{{ mdiAlarm }}</v-icon>
                     {{ restPrinttimeText }}
                 </span>
                 <span v-if="restDaysText" :class="restDaysClass">
-                    <v-icon small>{{ mdiCalendar }}</v-icon>
+                    <v-icon size="small">{{ mdiCalendar }}</v-icon>
                     {{ restDaysText }}
                 </span>
             </div>
             <p v-if="note" class="mt-2 mb-0" v-html="note" />
         </v-timeline-item>
-        <v-timeline-item :class="classDateItem" small>
+        <v-timeline-item :class="classDateItem" size="small">
             <strong>{{ dateText }}</strong>
         </v-timeline-item>
     </div>

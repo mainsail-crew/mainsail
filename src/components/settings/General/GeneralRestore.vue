@@ -1,7 +1,7 @@
 <template>
     <div>
         <input ref="uploadBackupFile" type="file" :accept="['.json']" class="d-none" @change="uploadRestore" />
-        <v-btn small :loading="loadings.includes('restoreUploadButton')" class="ml-3" @click="restoreDb">
+        <v-btn size="small" :loading="loadings.includes('restoreUploadButton')" class="ml-3" @click="restoreDb">
             {{ $t('Settings.GeneralTab.Restore') }}
         </v-btn>
         <v-dialog :value="showDialog" persistent :width="360">

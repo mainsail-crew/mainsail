@@ -127,7 +127,7 @@
                                         :loading="loadings.includes('qgl')"
                                         :color="colorQuadGantryLevel"
                                         height="30"
-                                        dense
+                                        density="compact"
                                         tile
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doQGL">
@@ -139,7 +139,7 @@
                                         :loading="loadings.includes('zTilt')"
                                         :color="colorZTilt"
                                         height="30"
-                                        dense
+                                        density="compact"
                                         tile
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doZtilt">
@@ -150,7 +150,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :color="homedAxes !== '' ? 'primary' : 'warning'"
                                         height="30"
-                                        dense
+                                        density="compact"
                                         tile
                                         class="flex-grow-1 px-0"
                                         @click="doSend('M84')">
@@ -239,7 +239,7 @@
                                         :loading="loadings.includes('qgl')"
                                         :color="colorQuadGantryLevel"
                                         height="30"
-                                        dense
+                                        density="compact"
                                         tile
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doQGL">
@@ -251,7 +251,7 @@
                                         :loading="loadings.includes('zTilt')"
                                         :color="colorZTilt"
                                         height="30"
-                                        dense
+                                        density="compact"
                                         tile
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doZtilt">
@@ -262,7 +262,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :color="homedAxes !== '' ? 'primary' : 'warning'"
                                         height="30"
-                                        dense
+                                        density="compact"
                                         tile
                                         class="flex-grow-1 px-0"
                                         @click="doSend('M84')">
@@ -332,14 +332,14 @@
                             :key="`all-steps-${stepsReversed.join('_')}`"
                             :model-value="selectedCrossStep"
                             @update:model-value="updateSelectedCrossStep"
-                            dense
+                            density="compact"
                             mandatory
                             style="flex-wrap: nowrap; width: 100%">
                             <v-btn
                                 v-for="step of stepsReversed"
                                 :key="`step-${step}`"
                                 :disabled="['printing'].includes(printer_state)"
-                                dense
+                                density="compact"
                                 class="btnMinWidthAuto flex-grow-1 px-0"
                                 style="height: 28px">
                                 <span class="body-2">{{ step }}</span>

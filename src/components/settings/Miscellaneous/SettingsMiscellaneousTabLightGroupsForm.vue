@@ -7,8 +7,8 @@
                     v-model="groupname"
                     hide-details="auto"
                     :rules="[rules.required, rules.groupUnique]"
-                    dense
-                    outlined />
+                    density="compact"
+                    variant="outlined" />
             </settings-row>
             <v-divider class="my-2" />
             <settings-row
@@ -20,8 +20,8 @@
                     type="number"
                     :step="1"
                     :rules="[rules.required, rules.minStart, rules.max]"
-                    dense
-                    outlined
+                    density="compact"
+                    variant="outlined"
                     @keyup="revalidateForm" />
             </settings-row>
             <v-divider class="my-2" />
@@ -34,8 +34,8 @@
                     type="number"
                     :step="1"
                     :rules="[rules.required, rules.minEnd, rules.max]"
-                    dense
-                    outlined
+                    density="compact"
+                    variant="outlined"
                     @keyup="revalidateForm" />
             </settings-row>
         </v-card-text>

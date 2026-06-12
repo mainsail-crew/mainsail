@@ -3,7 +3,7 @@
         <v-tooltip :disabled="!hasDescription" top>
             <template #activator="{ props }">
                 <v-btn
-                    small
+                    size="small"
                     :color="color"
                     :class="paramArray.length ? 'macroWithParameters' : ''"
                     :loading="loadings.includes('macro_' + macro.name)"
@@ -12,7 +12,7 @@
                     v-bind="props"
                     
                     @click="doSendMacro(macro.name)">
-                    <v-icon v-if="icon" small left>{{ icon }}</v-icon>
+                    <v-icon v-if="icon" size="small" left>{{ icon }}</v-icon>
                     {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
                 </v-btn>
             </template>

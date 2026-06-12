@@ -5,7 +5,7 @@
                 <span v-if="item.type === 'endstop'" class="mr-2">{{ $t('Machine.EndstopPanel.Endstop') }}</span>
                 <b>{{ name }}</b>
             </label>
-            <v-chip small label class="float-right" :color="chipColor" text-color="white">{{ value }}</v-chip>
+            <v-chip size="small" label class="float-right" :color="chipColor" text-color="white">{{ value }}</v-chip>
         </v-col>
     </v-row>
 </template>

@@ -9,7 +9,7 @@
             <div><img height="12" src="/img/logo.svg" alt="mainsail-logo" /></div>
             <div>v{{ mainsailVersion }}</div>
             <div>
-                <v-icon small class="moonraker-logo">{{ mdiMoonWaningCrescent }}</v-icon>
+                <v-icon size="small" class="moonraker-logo">{{ mdiMoonWaningCrescent }}</v-icon>
             </div>
             <div>{{ moonrakerVersion }}</div>
             <div><img height="12" src="/img/klipper.svg" class="klipper-logo" alt="klipper-logo" /></div>

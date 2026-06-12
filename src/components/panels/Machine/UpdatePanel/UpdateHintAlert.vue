@@ -1,5 +1,5 @@
 <template>
-    <v-alert text dense border="left" color="orange" :icon="mdiAlertCircle">
+    <v-alert text density="compact" border="left" color="orange" :icon="mdiAlertCircle">
         <template v-if="boolTitle">
             <strong>{{ $t('Machine.UpdatePanel.UpdateWarning', { name: formatName }) }}</strong>
             <br />
@@ -11,11 +11,11 @@
                 v-if="configured_type === 'git_repo' && repo.commits_behind?.length"
                 class="mx-2 mt-3 mt-sm-0"
                 @click="openCommitHistory">
-                <v-icon left small>{{ mdiEye }}</v-icon>
+                <v-icon left size="small">{{ mdiEye }}</v-icon>
                 {{ $t('Machine.UpdatePanel.CommitHistory') }}
             </v-btn>
             <v-btn v-if="externalLink" class="mx-2 mt-3 mt-sm-0" :href="externalLink" target="_blank">
-                <v-icon left small>{{ mdiOpenInNew }}</v-icon>
+                <v-icon left size="small">{{ mdiOpenInNew }}</v-icon>
                 {{ externalLinkText }}
             </v-btn>
         </div>

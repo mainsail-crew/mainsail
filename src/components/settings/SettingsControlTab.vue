@@ -11,12 +11,12 @@
                     <v-divider class="ml-3" />
                 </div>
                 <settings-row :title="$t('Settings.ControlTab.Style')">
-                    <v-select v-model="controlStyle" :items="controlStyles" item-title="text" item-value="value" outlined dense hide-details attach />
+                    <v-select v-model="controlStyle" :items="controlStyles" item-title="text" item-value="value" variant="outlined" density="compact" hide-details attach />
                 </settings-row>
                 <v-divider class="my-2" />
                 <template v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1">
                     <settings-row :title="$t('Settings.ControlTab.OverwriteActionButton')">
-                        <v-select v-model="actionButton" :items="actionOptions" item-title="text" item-value="value" outlined dense hide-details attach />
+                        <v-select v-model="actionButton" :items="actionOptions" item-title="text" item-value="value" variant="outlined" density="compact" hide-details attach />
                     </settings-row>
                     <v-divider class="my-2" />
                 </template>

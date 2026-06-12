@@ -14,8 +14,8 @@
                         :placeholder="$t('Settings.PresetsTab.PresetNamePlaceholder')"
                         hide-details="auto"
                         :rules="[rules.required, rules.unique]"
-                        dense
-                        outlined />
+                        density="compact"
+                        variant="outlined" />
                 </settings-row>
                 <div v-for="(value, key) of form.values" :key="key">
                     <v-divider class="my-2" />
@@ -27,15 +27,15 @@
                             :rules="[rules.invalid]"
                             type="number"
                             suffix="°C"
-                            dense
-                            outlined
+                            density="compact"
+                            variant="outlined"
                             hide-spin-buttons
                             @focus="$event.target.select()" />
                     </settings-row>
                 </div>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.PresetsTab.CustomGCode')">
-                    <v-textarea v-model="form.gcode" outlined hide-details />
+                    <v-textarea v-model="form.gcode" variant="outlined" hide-details />
                 </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">

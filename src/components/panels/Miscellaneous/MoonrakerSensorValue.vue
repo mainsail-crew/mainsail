@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex w-100 flex-row align-center">
-        <v-icon small left>{{ unitToSymbol(unit) }}</v-icon>
+        <v-icon size="small" left>{{ unitToSymbol(unit) }}</v-icon>
         <span class="flex-grow-1">{{ name }}:</span>
         <span>{{ output }}</span>
     </div>

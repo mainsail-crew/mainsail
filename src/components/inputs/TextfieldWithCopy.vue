@@ -1,5 +1,5 @@
 <template>
-    <v-text-field :class="cssClassName" readonly dense outlined hide-details :label="label" :value="value">
+    <v-text-field :class="cssClassName" readonly density="compact" variant="outlined" hide-details :label="label" :value="value">
         <template #append>
             <v-icon @click="copy">{{ mdiContentCopy }}</v-icon>
             <v-tooltip

@@ -57,7 +57,7 @@
             <template v-if="'note' in item && item.note">
                 <v-tooltip location="top">
                     <template #activator="{ props: activatorProps }">
-                        <v-icon small class="mr-2" v-bind="activatorProps">
+                        <v-icon size="small" class="mr-2" v-bind="activatorProps">
                             {{ mdiNoteTextOutline }}
                         </v-icon>
                     </template>
@@ -67,7 +67,7 @@
             <v-tooltip location="top">
                 <template #activator="{ props: activatorProps }">
                     <span v-bind="activatorProps">
-                        <v-icon small :color="statusColor" :disabled="!item.exists">
+                        <v-icon size="small" :color="statusColor" :disabled="!item.exists">
                             {{ statusIcon }}
                         </v-icon>
                     </span>

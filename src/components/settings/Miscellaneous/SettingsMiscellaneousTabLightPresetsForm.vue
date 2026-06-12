@@ -7,8 +7,8 @@
                     v-model="presetname"
                     hide-details="auto"
                     :rules="[rules.required, rules.presetUnique]"
-                    dense
-                    outlined />
+                    density="compact"
+                    variant="outlined" />
             </settings-row>
             <v-divider class="my-2" />
             <settings-row :title="$t('Settings.MiscellaneousTab.Color')">

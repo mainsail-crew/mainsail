@@ -5,7 +5,7 @@
                 <v-btn
                     text
                     color="primary"
-                    small
+                    size="small"
                     :disabled="['printing', 'paused'].includes(printer_state)"
                     @click="clickUpdate">
                     <v-icon left>{{ mdiProgressUpload }}</v-icon>

@@ -1,11 +1,11 @@
 <template>
     <settings-row :title="preset.name" :sub-title="subTitle" :dynamic-slot-width="true">
-        <v-btn small outlined class="ml-3" @click="editPreset">
-            <v-icon left small>{{ mdiPencil }}</v-icon>
+        <v-btn size="small" variant="outlined" class="ml-3" @click="editPreset">
+            <v-icon left size="small">{{ mdiPencil }}</v-icon>
             {{ $t('Settings.Edit') }}
         </v-btn>
-        <v-btn small outlined class="ml-3 minwidth-0 px-2" color="error" @click="deletePreset">
-            <v-icon small>{{ mdiDelete }}</v-icon>
+        <v-btn size="small" variant="outlined" class="ml-3 minwidth-0 px-2" color="error" @click="deletePreset">
+            <v-icon size="small">{{ mdiDelete }}</v-icon>
         </v-btn>
     </settings-row>
 </template>

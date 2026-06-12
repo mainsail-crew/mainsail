@@ -28,7 +28,7 @@
                                             link
                                             @click="form.icon = icon.value">
                                             <template #prepend>
-                                                <v-icon small class="mt-1 mr-2">
+                                                <v-icon size="small" class="mt-1 mr-2">
                                                     {{ convertWebcamIcon(icon.value) }}
                                                 </v-icon>
                                             </template>

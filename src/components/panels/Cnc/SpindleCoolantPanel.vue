@@ -6,19 +6,19 @@
                     <span class="text-caption font-weight-bold">Spindle Control:</span>
                 </v-col>
                 <v-col cols="4">
-                    <v-btn small block color="success" @click="setSpindleOn">
+                    <v-btn size="small" block color="success" @click="setSpindleOn">
                         <v-icon left>{{ mdiPlay }}</v-icon>
                         ON
                     </v-btn>
                 </v-col>
                 <v-col cols="4">
-                    <v-btn small block color="error" @click="setSpindleOff">
+                    <v-btn size="small" block color="error" @click="setSpindleOff">
                         <v-icon left>{{ mdiStop }}</v-icon>
                         OFF
                     </v-btn>
                 </v-col>
                 <v-col cols="4">
-                    <v-btn small block color="info" @click="setSpindleCcwl">
+                    <v-btn size="small" block color="info" @click="setSpindleCcwl">
                         <v-icon left>{{ mdiRotate3dVariant }}</v-icon>
                         CCW
                     </v-btn>
@@ -31,15 +31,15 @@
                         v-model.number="spindleSpeedInput"
                         label="Spindle Speed (RPM)"
                         type="number"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         hide-details
                         :min="0"
                         :max="24000"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="4">
-                    <v-btn small block color="primary" :disabled="!spindleSpeedInput" @click="setSpindleSpeed">
+                    <v-btn size="small" block color="primary" :disabled="!spindleSpeedInput" @click="setSpindleSpeed">
                         SET
                     </v-btn>
                 </v-col>
@@ -52,13 +52,13 @@
                     <span class="text-caption font-weight-bold">Coolant Control:</span>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block color="success" @click="setCoolantFloodOn">
+                    <v-btn size="small" block color="success" @click="setCoolantFloodOn">
                         <v-icon left>{{ mdiWater }}</v-icon>
                         Flood ON
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block color="error" @click="setCoolantFloodOff">
+                    <v-btn size="small" block color="error" @click="setCoolantFloodOff">
                         <v-icon left>{{ mdiStop }}</v-icon>
                         Flood OFF
                     </v-btn>
@@ -66,13 +66,13 @@
             </v-row>
              <v-row density="compact" class="mb-3">
                 <v-col cols="6">
-                    <v-btn small block color="success" @click="setCoolantMistOn">
+                    <v-btn size="small" block color="success" @click="setCoolantMistOn">
                         <v-icon left>{{ mdiSpray }}</v-icon>
                         Mist ON
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn small block color="error" @click="setCoolantMistOff">
+                    <v-btn size="small" block color="error" @click="setCoolantMistOff">
                         <v-icon left>{{ mdiStop }}</v-icon>
                         Mist OFF
                     </v-btn>

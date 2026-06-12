@@ -12,8 +12,8 @@
 <template>
     <div>
         <div class="px-3 d-flex align-center">
-            <v-btn class="px-0 btn-collapsible" plain small :ripple="false" @click="expand = !expand">
-                <v-icon small :class="!expand ? 'icon-rotate-n90' : ''">
+            <v-btn class="px-0 btn-collapsible" plain size="small" :ripple="false" @click="expand = !expand">
+                <v-icon size="small" :class="!expand ? 'icon-rotate-n90' : ''">
                     {{ expand ? iconExpanded : iconCollapsed }}
                 </v-icon>
                 <span class="pl-1">{{ title }}</span>

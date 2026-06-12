@@ -5,27 +5,27 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.Mode')"
                     :sub-title="$t('Settings.UiSettingsTab.ModeDescription')">
-                    <v-select v-model="mode" :items="modes" item-title="text" item-value="value" class="mt-0" hide-details outlined dense />
+                    <v-select v-model="mode" :items="modes" item-title="text" item-value="value" class="mt-0" hide-details variant="outlined" density="compact" />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.Theme')"
                     :sub-title="$t('Settings.UiSettingsTab.ThemeDescription')">
-                    <v-select v-model="themeName" :items="themes" item-title="text" item-value="value" class="mt-0" hide-details outlined dense />
+                    <v-select v-model="themeName" :items="themes" item-title="text" item-value="value" class="mt-0" hide-details variant="outlined" density="compact" />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
                     <v-btn
                         v-if="logoColor.toLowerCase() !== defaultLogoColor.toLowerCase()"
-                        small
+                        size="small"
                         text
                         class="minwidth-0"
                         @click="logoColor = defaultLogoColor">
-                        <v-icon small>{{ mdiRestart }}</v-icon>
+                        <v-icon size="small">{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu location="bottom end" :close-on-content-click="false">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn v-bind="activatorProps" :color="logoColor" class="minwidth-0 px-5" small />
+                            <v-btn v-bind="activatorProps" :color="logoColor" class="minwidth-0 px-5" size="small" />
                         </template>
                         <v-color-picker
                             :value="logoColor"
@@ -42,11 +42,11 @@
                         text
                         class="minwidth-0"
                         @click="primaryColor = defaultPrimaryColor">
-                        <v-icon small>{{ mdiRestart }}</v-icon>
+                        <v-icon size="small">{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu location="bottom end" :close-on-content-click="false">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn v-bind="activatorProps" :color="primaryColor" class="minwidth-0 px-5" small />
+                            <v-btn v-bind="activatorProps" :color="primaryColor" class="minwidth-0 px-5" size="small" />
                         </template>
                         <v-color-picker
                             :value="primaryColor"
@@ -92,7 +92,7 @@
                             text
                             class="minwidth-0"
                             @click="bigThumbnailBackground = defaultBigThumbnailBackground">
-                            <v-icon small>{{ mdiRestart }}</v-icon>
+                            <v-icon size="small">{{ mdiRestart }}</v-icon>
                         </v-btn>
                         <v-menu location="bottom end" :close-on-content-click="false">
                             <template #activator="{ props: activatorProps }">

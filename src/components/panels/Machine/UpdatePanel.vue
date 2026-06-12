@@ -42,7 +42,7 @@
                 <template v-else>
                     <v-row class="mt-0 mb-0">
                         <v-col class="px-6">
-                            <v-alert class="mb-0" text dense type="info" border="left">
+                            <v-alert class="mb-0" text density="compact" type="info" border="left">
                                 {{ $t('Machine.UpdatePanel.InitUpdateManager') }}
                             </v-alert>
                         </v-col>

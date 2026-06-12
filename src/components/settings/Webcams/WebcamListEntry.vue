@@ -5,18 +5,18 @@
             <template v-if="webcam.source === 'database'">
                 <v-btn
                     class="minwidth-0 px-2"
-                    small
-                    outlined
+                    size="small"
+                    variant="outlined"
                     :color="webcam.enabled ? '' : 'secondary'"
                     @click="toogleStatus">
-                    <v-icon small>{{ mdiLightbulbOutline }}</v-icon>
+                    <v-icon size="small">{{ mdiLightbulbOutline }}</v-icon>
                 </v-btn>
-                <v-btn class="ml-3" small outlined @click="edit">
-                    <v-icon small left>{{ mdiPencil }}</v-icon>
+                <v-btn class="ml-3" size="small" variant="outlined" @click="edit">
+                    <v-icon size="small" left>{{ mdiPencil }}</v-icon>
                     {{ $t('Settings.Edit') }}
                 </v-btn>
-                <v-btn small outlined class="ml-3 minwidth-0 px-2" color="error" @click="deleteWebcam">
-                    <v-icon small>{{ mdiDelete }}</v-icon>
+                <v-btn size="small" variant="outlined" class="ml-3 minwidth-0 px-2" color="error" @click="deleteWebcam">
+                    <v-icon size="small">{{ mdiDelete }}</v-icon>
                 </v-btn>
             </template>
         </settings-row>

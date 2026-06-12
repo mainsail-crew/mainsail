@@ -4,7 +4,7 @@
         <v-row no-gutters>
             <v-col class="col-12 pb-0 text-center">
                 <v-btn
-                    small
+                    size="small"
                     :disabled="['printing'].includes(printer_state)"
                     :loading="loadings.includes('homeAll')"
                     :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
@@ -17,7 +17,7 @@
                     :disabled="['printing'].includes(printer_state)"
                     :loading="loadings.includes('homeAll')"
                     :color="homedAxes.includes('xy') ? 'primary' : 'warning'"
-                    small
+                    size="small"
                     class="ml-2"
                     @click="doHomeXY">
                     <v-icon class="mr-1">{{ mdiHome }}</v-icon>
@@ -26,7 +26,7 @@
                 <v-btn
                     v-if="existsQGL"
                     :disabled="['printing'].includes(printer_state)"
-                    small
+                    size="small"
                     :loading="loadings.includes('qgl')"
                     :color="colorQuadGantryLevel"
                     class="ml-2"
@@ -36,7 +36,7 @@
                 <v-btn
                     v-if="existsZtilt"
                     :disabled="['printing'].includes(printer_state)"
-                    small
+                    size="small"
                     :loading="loadings.includes('zTilt')"
                     :color="colorZTilt"
                     class="ml-2"
@@ -44,7 +44,7 @@
                     {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
                 </v-btn>
                 <v-btn
-                    small
+                    size="small"
                     :disabled="['printing'].includes(printer_state)"
                     :color="homedAxes !== '' ? 'primary' : 'warning'"
                     class="ml-2"

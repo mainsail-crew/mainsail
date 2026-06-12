@@ -49,7 +49,7 @@
                         <v-btn class="px-2 minwidth-0 mx-3" color="primary" @click="fastForward">
                             <v-icon>{{ mdiFastForward }}</v-icon>
                         </v-btn>
-                        <v-btn-toggle v-model="scrubSpeed" class="mt-3 mt-sm-0" dense mandatory rounded>
+                        <v-btn-toggle v-model="scrubSpeed" class="mt-3 mt-sm-0" density="compact" mandatory rounded>
                             <v-btn :value="1">1x</v-btn>
                             <v-btn :value="2">2x</v-btn>
                             <v-btn :value="5">5x</v-btn>
@@ -94,7 +94,7 @@
                                     item-text="text"
                                     dense
                                     hide-details
-                                    outlined></v-select>
+                                    variant="outlined"></v-select>
                             </v-col>
                             <v-col order-md="3" class="col-12 col-sm-6 col-md-4 d-flex">
                                 <v-select
@@ -104,7 +104,7 @@
                                     item-text="label"
                                     dense
                                     hide-details
-                                    outlined></v-select>
+                                    variant="outlined"></v-select>
                                 <v-menu
                                     :offset-y="true"
                                     :offset-x="true"

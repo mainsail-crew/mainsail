@@ -11,8 +11,8 @@
         auto-grow
         :rows="rows"
         hide-details
-        outlined
-        dense
+        variant="outlined"
+        density="compact"
         :prepend-icon="isTouchDevice ? mdiChevronDoubleRight : ''"
         :append-icon="mdiSend"
         @keydown.enter.prevent.stop="doSend"

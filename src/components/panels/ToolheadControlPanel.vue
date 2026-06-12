@@ -12,27 +12,27 @@
                 </template>
                 <v-list density="compact">
                     <v-list-item v-if="controlStyle !== 'bars' && actionButton !== 'm84'">
-                        <v-btn small style="width: 100%" @click="doSend('M84')">
-                            <v-icon left small>{{ mdiEngineOff }}</v-icon>
+                        <v-btn size="small" style="width: 100%" @click="doSend('M84')">
+                            <v-icon left size="small">{{ mdiEngineOff }}</v-icon>
                             {{ $t('Settings.ControlTab.MotorsOff', { isDefault: '' }) }}
                         </v-btn>
                     </v-list-item>
                     <v-list-item v-if="controlStyle !== 'bars' && existsZtilt && actionButton !== 'ztilt'">
-                        <v-btn small style="width: 100%" @click="doZtilt">Z-Tilt Adjust</v-btn>
+                        <v-btn size="small" style="width: 100%" @click="doZtilt">Z-Tilt Adjust</v-btn>
                     </v-list-item>
                     <v-list-item v-if="controlStyle !== 'bars' && existsQGL && actionButton !== 'qgl'">
-                        <v-btn small style="width: 100%" @click="doQGL">Quad Gantry Level</v-btn>
+                        <v-btn size="small" style="width: 100%" @click="doQGL">Quad Gantry Level</v-btn>
                     </v-list-item>
                     <v-list-item v-if="existsBedTilt">
-                        <v-btn small style="width: 100%" @click="doSend('BED_TILT_CALIBRATE')">
+                        <v-btn size="small" style="width: 100%" @click="doSend('BED_TILT_CALIBRATE')">
                             BED TILT CALIBRATE
                         </v-btn>
                     </v-list-item>
                     <v-list-item v-if="existsBedScrews">
-                        <v-btn small style="width: 100%" @click="doSend('BED_SCREWS_ADJUST')">BED SCREWS ADJUST</v-btn>
+                        <v-btn size="small" style="width: 100%" @click="doSend('BED_SCREWS_ADJUST')">BED SCREWS ADJUST</v-btn>
                     </v-list-item>
                     <v-list-item v-if="existsDeltaCalibrate">
-                        <v-btn small style="width: 100%" @click="doSend('DELTA_CALIBRATE')">DELTA CALIBRATE</v-btn>
+                        <v-btn size="small" style="width: 100%" @click="doSend('DELTA_CALIBRATE')">DELTA CALIBRATE</v-btn>
                     </v-list-item>
                     <v-list-item v-if="existsScrewsTilt">
                         <div class="d-flex align-center" style="width: 100%">
@@ -59,7 +59,7 @@
                                             small
                                             style="width: 100%"
                                             @click="doSend('SCREWS_TILT_CALCULATE DIRECTION=CW')">
-                                            <v-icon left small style="transform: scaleX(-1)">{{ mdiRestore }}</v-icon>
+                                            <v-icon left size="small" style="transform: scaleX(-1)">{{ mdiRestore }}</v-icon>
                                             <span>CW</span>
                                         </v-btn>
                                     </v-list-item>
@@ -68,7 +68,7 @@
                                             small
                                             style="width: 100%"
                                             @click="doSend('SCREWS_TILT_CALCULATE DIRECTION=CCW')">
-                                            <v-icon left small>{{ mdiRestore }}</v-icon>
+                                            <v-icon left size="small">{{ mdiRestore }}</v-icon>
                                             <span>CCW</span>
                                         </v-btn>
                                     </v-list-item>

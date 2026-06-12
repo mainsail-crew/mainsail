@@ -5,8 +5,8 @@
                 v-model.number="value"
                 suffix="°C"
                 type="number"
-                dense
-                outlined
+                density="compact"
+                variant="outlined"
                 hide-details
                 hide-spin-buttons
                 class="_temp-input"
@@ -19,7 +19,7 @@
                 <v-btn
                     :disabled="['printing', 'paused'].includes(printer_state)"
                     tabindex="-1"
-                    x-small
+                    size="x-small"
                     plain
                     v-bind="props"
                     class="pa-0"
@@ -36,10 +36,10 @@
                     style="min-height: 32px"
                     @click="doSend(`${command} ${attributeName}=${name} TARGET=${preset.value}`)">
                     <div class="_preset">
-                        <v-icon v-if="preset.value === 0" else color="primary" small class="_preset-icon">
+                        <v-icon v-if="preset.value === 0" else color="primary" size="small" class="_preset-icon">
                             {{ mdiSnowflake }}
                         </v-icon>
-                        <v-icon v-else small class="_preset-icon">{{ mdiFire }}</v-icon>
+                        <v-icon v-else size="small" class="_preset-icon">{{ mdiFire }}</v-icon>
                         <span style="padding-top: 2px">{{ preset.value }}°C</span>
                     </div>
                 </v-list-item>

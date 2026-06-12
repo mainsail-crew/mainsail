@@ -18,7 +18,7 @@
             <v-list density="compact" class="py-0">
                 <v-list-item v-for="(preset, index) of presets" :key="index" link @click="preheat(preset)">
                     <div class="d-flex align-center _preset-title">
-                        <v-icon small class="mr-1">{{ mdiFire }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiFire }}</v-icon>
                         <span style="padding-top: 2px">{{ preset.name }}</span>
                     </div>
                 </v-list-item>
@@ -27,7 +27,7 @@
             <v-list density="compact" class="py-0">
                 <v-list-item link @click="btnCoolDown">
                     <div class="d-flex align-center _preset-title">
-                        <v-icon small color="primary" class="mr-1">{{ mdiSnowflake }}</v-icon>
+                        <v-icon size="small" color="primary" class="mr-1">{{ mdiSnowflake }}</v-icon>
                         <span class="text-primary">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
                     </div>
                 </v-list-item>
@@ -40,7 +40,7 @@
             tile
             color="primary"
             @click="btnCoolDown">
-            <v-icon small>{{ mdiSnowflake }}</v-icon>
+            <v-icon size="small">{{ mdiSnowflake }}</v-icon>
             <span class="d-none ml-1 d-md-inline">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
         </v-btn>
         <confirmation-dialog

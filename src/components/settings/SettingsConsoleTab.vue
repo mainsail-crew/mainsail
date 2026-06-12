@@ -18,8 +18,8 @@
                         item-title="text"
                         item-value="value"
                         hide-details
-                        outlined
-                        dense
+                        variant="outlined"
+                        density="compact"
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -30,8 +30,8 @@
                         item-title="text"
                         item-value="value"
                         hide-details
-                        outlined
-                        dense
+                        variant="outlined"
+                        density="compact"
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -73,10 +73,10 @@
                             class="minwidth-0 px-2"
                             :color="filter.bool ? 'white' : 'grey'"
                             @click="toggleFilter(filter)">
-                            <v-icon small>{{ filter.bool ? mdiFilter : mdiFilterOff }}</v-icon>
+                            <v-icon size="small">{{ filter.bool ? mdiFilter : mdiFilterOff }}</v-icon>
                         </v-btn>
-                        <v-btn small outlined class="ml-3" @click="editFilter(filter)">
-                            <v-icon left small>{{ mdiPencil }}</v-icon>
+                        <v-btn size="small" variant="outlined" class="ml-3" @click="editFilter(filter)">
+                            <v-icon left size="small">{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
@@ -85,7 +85,7 @@
                             class="ml-3 minwidth-0 px-2"
                             color="error"
                             @click="deleteFilter(filter.id)">
-                            <v-icon small>{{ mdiDelete }}</v-icon>
+                            <v-icon size="small">{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
                 </div>
@@ -110,11 +110,11 @@
                             hide-details="auto"
                             :rules="[rules.required, rules.unique]"
                             dense
-                            outlined></v-text-field>
+                            variant="outlined"></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.ConsoleTab.Regex').toString()">
-                        <v-textarea v-model="form.regex" outlined hide-details="auto"></v-textarea>
+                        <v-textarea v-model="form.regex" variant="outlined" hide-details="auto"></v-textarea>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">

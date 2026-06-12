@@ -4,7 +4,7 @@
             <v-card-title>{{ $t('Settings.PresetsTab.EditCooldown') }}</v-card-title>
             <v-card-text>
                 <settings-row :title="$t('Settings.PresetsTab.CustomGCode')">
-                    <v-textarea v-model="gcode" outlined hide-details />
+                    <v-textarea v-model="gcode" variant="outlined" hide-details />
                 </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">

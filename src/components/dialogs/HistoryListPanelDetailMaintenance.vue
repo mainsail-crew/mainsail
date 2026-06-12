@@ -21,8 +21,8 @@
                 </v-card-text>
                 <v-divider class="mt-3 mb-0" />
                 <v-card-text class="pt-0 mb-0 pb-0">
-                    <v-timeline align-top dense>
-                        <v-timeline-item class="pb-1" small>
+                    <v-timeline align-top density="compact">
+                        <v-timeline-item class="pb-1" size="small">
                             <strong>{{ outputFirstPointOfHistory }}</strong>
                         </v-timeline-item>
                         <history-list-panel-detail-maintenance-history-entry

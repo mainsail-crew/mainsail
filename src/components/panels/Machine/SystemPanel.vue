@@ -7,7 +7,7 @@
         :collapsible="true">
         <template #buttons>
             <v-btn variant="text" tile class="d-none d-md-flex" @click="dialogDevices = true">
-                <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
+                <v-icon size="small" class="mr-1">{{ mdiUsb }}</v-icon>
                 {{ $t('Editor.DeviceDialog') }}
             </v-btn>
         </template>

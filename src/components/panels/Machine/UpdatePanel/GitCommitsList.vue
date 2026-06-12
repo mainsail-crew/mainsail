@@ -10,7 +10,7 @@
             </template>
             <v-card-text class="py-0 px-0">
                 <OverlayScrollbarsComponent :style="overlayScrollbarsStyle" :options="{ overflowBehavior: { x: 'hidden' } }">
-                    <v-timeline :class="timelineClassName" align-top dense style="min-height: 100%">
+                    <v-timeline :class="timelineClassName" align-top density="compact" style="min-height: 100%">
                         <git-commits-list-day
                             v-for="group of groupedCommits"
                             :key="group.date.getTime()"

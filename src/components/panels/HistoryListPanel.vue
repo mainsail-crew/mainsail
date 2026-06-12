@@ -8,10 +8,10 @@
                         :append-icon="mdiMagnify"
                         :label="$t('History.Search')"
                         single-line
-                        outlined
+                        variant="outlined"
                         clearable
                         hide-details
-                        dense />
+                        density="compact" />
                 </v-col>
                 <v-col class="offset-4 col-4 d-flex align-center justify-end">
                     <v-tooltip v-if="selectedJobsTable.length" top>

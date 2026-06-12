@@ -13,9 +13,9 @@
                             class="machine-configfiles-panel__root-select"
                             :items="registeredDirectoriesSelectItems"
                             :label="$t('Machine.ConfigFilesPanel.Root')"
-                            outlined
+                            variant="outlined"
                             hide-details
-                            dense
+                            density="compact"
                             attach=".machine-configfiles-panel__root-select"
                             @change="changeRoot" />
                     </v-col>

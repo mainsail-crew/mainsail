@@ -11,14 +11,14 @@
             <v-menu v-if="showWebcamSwitch" :offset-y="true" title="Webcam">
                 <template #activator="{ props }">
                     <v-btn variant="text" v-bind="props">
-                        <v-icon small>{{ mdiWebcam }}</v-icon>
-                        <v-icon small>{{ mdiMenuDown }}</v-icon>
+                        <v-icon size="small">{{ mdiWebcam }}</v-icon>
+                        <v-icon size="small">{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list density="compact" class="py-0">
                     <v-list-item link @click="currentCamName = 'off'">
                         <template #prepend>
-                            <v-icon small class="mt-1 mr-2">{{ mdiWebcamOff }}</v-icon>
+                            <v-icon size="small" class="mt-1 mr-2">{{ mdiWebcamOff }}</v-icon>
                         </template>
                         <template #title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</template>
                     </v-list-item>
@@ -28,7 +28,7 @@
                         link
                         @click="currentCamName = webcam.name">
                         <template #prepend>
-                            <v-icon small class="mt-1 mr-2">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
+                            <v-icon size="small" class="mt-1 mr-2">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
                         </template>
                         <template #title v-text="webcam.name" />
                     </v-list-item>
@@ -71,7 +71,7 @@
                                     <span
                                         v-if="printer_current_filename !== ''"
                                         class="text-subtitle-2 text-truncate px-0 text-disabled d-block">
-                                        <v-icon small class="mr-1">{{ mdiFileOutline }}</v-icon>
+                                        <v-icon size="small" class="mr-1">{{ mdiFileOutline }}</v-icon>
                                         {{ printer_current_filename }}
                                     </span>
                                 </v-col>

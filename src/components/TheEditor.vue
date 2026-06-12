@@ -18,7 +18,7 @@
                 :title="title">
                 <template #buttons>
                     <v-btn variant="text" tile class="d-none d-md-flex" @click="dialogDevices = true">
-                        <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiUsb }}</v-icon>
                         {{ $t('Editor.DeviceDialog') }}
                     </v-btn>
                     <v-btn
@@ -28,11 +28,11 @@
                         :href="klipperConfigReference"
                         target="_blank"
                         class="d-none d-md-flex">
-                        <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiHelp }}</v-icon>
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
                     <v-btn v-if="existsFileStructure" variant="text" tile class="d-none d-md-flex" @click="toggleFileStructure">
-                        <v-icon small class="mr-1">{{ mdiFormatListCheckbox }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiFormatListCheckbox }}</v-icon>
                         {{ $t('Editor.FileStructure') }}
                     </v-btn>
                     <v-btn
@@ -42,7 +42,7 @@
                         tile
                         class="d-none d-sm-flex"
                         @click="save(restartServiceName)">
-                        <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
                     <v-btn v-if="isWriteable" :icon="mdiContentSave" tile @click="save(null)" />

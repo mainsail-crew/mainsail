@@ -13,8 +13,8 @@
             :dec="dec"
             hide-spin-buttons
             hide-details="auto"
-            outlined
-            dense
+            variant="outlined"
+            density="compact"
             class="d-flex align-top"
             @blur="value = target.toString()"
             @focus="$event.target.select()"

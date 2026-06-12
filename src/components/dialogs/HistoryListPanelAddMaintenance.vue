@@ -22,7 +22,7 @@
                 </v-row>
                 <v-row>
                     <v-col>
-                        <v-textarea v-model="note" outlined hide-details="auto" :label="$t('History.Note')" />
+                        <v-textarea v-model="note" variant="outlined" hide-details="auto" :label="$t('History.Note')" />
                     </v-col>
                 </v-row>
                 <v-row>

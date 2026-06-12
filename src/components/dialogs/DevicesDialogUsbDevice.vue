@@ -1,5 +1,5 @@
 <template>
-    <v-card outlined class="mt-3">
+    <v-card variant="outlined" class="mt-3">
         <v-list-item lines="three">
             <div class="text-overline mb-2 d-flex flex-row">
                 <span>{{ device.manufacturer ?? 'Unknown' }}</span>

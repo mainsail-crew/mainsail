@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn :loading="loadings.includes('backupDbButton')" small @click="openDialog">
+        <v-btn :loading="loadings.includes('backupDbButton')" size="small" @click="openDialog">
             {{ $t('Settings.GeneralTab.Backup') }}
         </v-btn>
         <v-dialog v-model="showDialog" persistent :width="360">

@@ -6,19 +6,19 @@
                 <br />
                 <template v-if="type === 'git_repo' && commitsBehind.length">
                     <a class="info--text cursor--pointer" @click="boolShowCommitList = true">
-                        <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
+                        <v-icon size="small" color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
                 <template v-else-if="type === 'web' && semverUpdatable">
                     <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
-                        <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
+                        <v-icon size="small" color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
                 <template v-else-if="type === 'python' && semverUpdatable">
                     <a class="info--text text-decoration-none" :href="pythonChangelog" target="_blank">
-                        <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
+                        <v-icon size="small" color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
@@ -33,7 +33,7 @@
                     color="grey"
                     class="minwidth-0 px-1 mr-2"
                     @click="toggleAnomalies = !toggleAnomalies">
-                    <v-icon small>{{ toggleAnomalies ? mdiInformationOutline : mdiInformation }}</v-icon>
+                    <v-icon size="small">{{ toggleAnomalies ? mdiInformationOutline : mdiInformation }}</v-icon>
                 </v-chip>
                 <template v-if="!isValid">
                     <v-menu :offset-y="true">
@@ -46,21 +46,21 @@
                                 :disabled="btnDisabled"
                                 class="minwidth-0 px-2 text-uppercase"
                                 v-bind="activatorProps">
-                                <v-icon small class="mr-1">{{ btnIcon }}</v-icon>
+                                <v-icon size="small" class="mr-1">{{ btnIcon }}</v-icon>
                                 {{ btnText }}
-                                <v-icon small>{{ mdiMenuDown }}</v-icon>
+                                <v-icon size="small">{{ mdiMenuDown }}</v-icon>
                             </v-chip>
                         </template>
                         <v-list density="compact" class="py-0">
                             <v-list-item v-if="!isCorrupt" @click="doRecovery(false)">
                                 <template #prepend>
-                                    <v-icon small class="mr-0 pt-1">{{ mdiReload }}</v-icon>
+                                    <v-icon size="small" class="mr-0 pt-1">{{ mdiReload }}</v-icon>
                                 </template>
                                 <template #title>{{ $t('Machine.UpdatePanel.SoftRecovery') }}</template>
                             </v-list-item>
                             <v-list-item :disabled="!existsRecoveryUrl" @click="doRecovery(true)">
                                 <template #prepend>
-                                    <v-icon small class="mr-0 pt-1">{{ mdiReload }}</v-icon>
+                                    <v-icon size="small" class="mr-0 pt-1">{{ mdiReload }}</v-icon>
                                 </template>
                                 <template #title>{{ $t('Machine.UpdatePanel.HardRecovery') }}</template>
                             </v-list-item>
@@ -76,7 +76,7 @@
                     :disabled="btnDisabled"
                     class="minwidth-0 px-2 text-uppercase"
                     @click="clickUpdate">
-                    <v-icon small class="mr-1">{{ btnIcon }}</v-icon>
+                    <v-icon size="small" class="mr-1">{{ btnIcon }}</v-icon>
                     {{ btnText }}
                 </v-chip>
             </v-col>

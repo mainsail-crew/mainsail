@@ -12,18 +12,18 @@
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
                         :icon="printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel">
-                        <v-btn small outlined :disabled="!canAddPrinters" @click="editPrinter(printer)">
-                            <v-icon left small>{{ mdiPencil }}</v-icon>
+                        <v-btn size="small" variant="outlined" :disabled="!canAddPrinters" @click="editPrinter(printer)">
+                            <v-icon left size="small">{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
-                            small
-                            outlined
+                            size="small"
+                            variant="outlined"
                             class="ml-3 minwidth-0 px-2"
                             color="error"
                             :disabled="!canAddPrinters"
                             @click="delPrinter(printer.id)">
-                            <v-icon small>{{ mdiDelete }}</v-icon>
+                            <v-icon size="small">{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
                 </div>
@@ -53,8 +53,8 @@
                         ]"
                         hide-details="auto"
                         required
-                        dense
-                        outlined />
+                        density="compact"
+                        variant="outlined" />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.RemotePrintersTab.Port')">
@@ -63,8 +63,8 @@
                         :rules="[(v) => !!v || 'Port is required']"
                         hide-details="auto"
                         required
-                        dense
-                        outlined />
+                        density="compact"
+                        variant="outlined" />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.RemotePrintersTab.Path')">
@@ -72,15 +72,15 @@
                         v-model="form.path"
                         :rules="[(v) => !v || v.startsWith('/') || 'Path must start with /']"
                         hide-details="auto"
-                        outlined
-                        dense />
+                        variant="outlined"
+                        density="compact" />
                 </settings-row>
                 <template v-if="instancesDB !== 'moonraker'">
                     <v-divider class="my-2" />
                     <settings-row
                         :title="$t('Settings.RemotePrintersTab.Name')"
                         :sub-title="$t('Settings.RemotePrintersTab.NameDescription')">
-                        <v-text-field v-model="form.name" outlined hide-details="auto" dense />
+                        <v-text-field v-model="form.name" variant="outlined" hide-details="auto" density="compact" />
                     </settings-row>
                 </template>
             </v-card-text>

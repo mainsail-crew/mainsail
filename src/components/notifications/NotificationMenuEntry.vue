@@ -8,7 +8,7 @@
                         :class="`text-decoration-none text-${alertColor} `"
                         :href="entry.url"
                         target="_blank">
-                        <v-icon small :class="`text-${alertColor} pb-1`">
+                        <v-icon size="small" :class="`text-${alertColor} pb-1`">
                             {{ mdiLinkVariant }}
                         </v-icon>
                         {{ entry.title }}
@@ -20,8 +20,8 @@
                     v-html="formatedText" />
                 <v-btn
                     v-if="entryType === 'maintenance'"
-                    outlined
-                    small
+                    variant="outlined"
+                    size="small"
                     :color="alertColor"
                     class="mt-3 mb-0 w-100"
                     @click="showMaintenanceDetails = true">
@@ -54,10 +54,10 @@
                             v-for="reminder in reminderTimes"
                             :key="reminder.text"
                             :color="alertColor"
-                            x-small
+                            size="x-small"
                             plain
                             text
-                            outlined
+                            variant="outlined"
                             class="mx-1"
                             @click="reminder.clickFunction">
                             {{ reminder.text }}

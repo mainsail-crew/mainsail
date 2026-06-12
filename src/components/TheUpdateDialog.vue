@@ -4,7 +4,7 @@
             <template #progress>
                 <v-progress-linear color="primary" indeterminate></v-progress-linear>
             </template>
-            <v-toolbar flat dense>
+            <v-toolbar flat density="compact">
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon left>{{ mdiUpdate }}</v-icon>

@@ -8,7 +8,7 @@
             <v-container class="pa-0">
                 <v-row>
                     <v-col class="text-subtitle-2 text-secondary pr-0 d-flex align-center">
-                        <v-icon small class="mr-2">
+                        <v-icon size="small" class="mr-2">
                             {{ mdiLayersOutline }}
                         </v-icon>
                         <span>{{ $t('Panels.ZoffsetPanel.Headline') }}: {{ zOffset }}</span>
@@ -19,22 +19,22 @@
                                 v-if="z_gcode_offset !== 0"
                                 :loading="loadings.includes('babySteppingClear')"
                                 text
-                                small
+                                size="small"
                                 plain
                                 class="px-2 mr-1"
                                 @click="clearZOffset()">
-                                <v-icon small>{{ mdiBroom }}</v-icon>
+                                <v-icon size="small">{{ mdiBroom }}</v-icon>
                                 <span v-if="!el.is.xsmall" class="ml-1">{{ $t('Panels.ZoffsetPanel.Clear') }}</span>
                             </v-btn>
                             <v-btn
                                 v-if="showSaveButton"
                                 color="primary"
                                 text
-                                small
+                                size="small"
                                 plain
                                 class="px-2"
                                 @click="saveZOffset">
-                                <v-icon small>{{ mdiContentSave }}</v-icon>
+                                <v-icon size="small">{{ mdiContentSave }}</v-icon>
                                 <span v-if="!el.is.xsmall" class="ml-1">{{ $t('Buttons.Save') }}</span>
                             </v-btn>
                         </div>
@@ -47,10 +47,10 @@
                                 <v-btn
                                     v-for="(offset, index) in offsetsZ"
                                     :key="`offsetsUp-${index}`"
-                                    small
+                                    size="small"
                                     class="_btn-qs flex-grow-1 px-1"
                                     @click="sendBabyStepUp(offset)">
-                                    <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-n1">
+                                    <v-icon v-if="index === 0 && !el.is.xsmall" left size="small" class="mr-1 ml-n1">
                                         {{ mdiArrowExpandUp }}
                                     </v-icon>
                                     <span>&plus;{{ offset }}</span>
@@ -63,14 +63,14 @@
                             <v-btn
                                 v-for="(offset, index) in offsetsZ.slice().reverse()"
                                 :key="`offsetsDown-${index}`"
-                                small
+                                size="small"
                                 class="_btn-qs flex-grow-1 px-1"
                                 @click="sendBabyStepDown(offset)">
                                 <span>&minus;{{ offset }}</span>
                                 <v-icon
                                     v-if="index === offsetsZ.length - 1 && !el.is.xsmall"
                                     left
-                                    small
+                                    size="small"
                                     class="mr-n1 ml-1">
                                     {{ mdiArrowCollapseDown }}
                                 </v-icon>
@@ -80,10 +80,10 @@
                             <v-btn
                                 v-for="(offset, index) in offsetsZ"
                                 :key="`offsetsDown-${index}`"
-                                small
+                                size="small"
                                 class="_btn-qs flex-grow-1 px-1"
                                 @click="sendBabyStepDown(offset)">
-                                <v-icon v-if="index === 0 && !el.is.xsmall" left small class="mr-1 ml-n1">
+                                <v-icon v-if="index === 0 && !el.is.xsmall" left size="small" class="mr-1 ml-n1">
                                     {{ mdiArrowCollapseDown }}
                                 </v-icon>
                                 <span>&minus;{{ offset }}</span>

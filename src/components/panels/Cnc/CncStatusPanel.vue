@@ -7,9 +7,9 @@
         card-class="cnc-status-panel">
         <v-container class="py-2">
             <div class="cnc-status-panel__chips">
-                <v-chip small label :color="stateColor" class="mr-2">{{ printerStateLabel }}</v-chip>
-                <v-chip small label outlined class="mr-2">{{ coordinateModeLabel }}</v-chip>
-                <v-chip small label outlined>{{ homedAxesLabel }}</v-chip>
+                <v-chip size="small" label :color="stateColor" class="mr-2">{{ printerStateLabel }}</v-chip>
+                <v-chip size="small" label variant="outlined" class="mr-2">{{ coordinateModeLabel }}</v-chip>
+                <v-chip size="small" label variant="outlined">{{ homedAxesLabel }}</v-chip>
             </div>
 
             <div class="cnc-status-panel__grid">
@@ -42,7 +42,7 @@
             <div v-if="cncMetadataViewModel" class="cnc-status-panel__metadata">
                 <div class="cnc-status-panel__metadata-header">
                     <span class="cnc-status-panel__metadata-title">CNC Metadata</span>
-                    <v-chip x-small label outlined :loading="cncMetadataLoading">{{ cncMetadataLoading ? 'Loading' : 'Loaded' }}</v-chip>
+                    <v-chip size="x-small" label variant="outlined" :loading="cncMetadataLoading">{{ cncMetadataLoading ? 'Loading' : 'Loaded' }}</v-chip>
                 </div>
 
                 <div class="cnc-status-panel__metadata-grid">

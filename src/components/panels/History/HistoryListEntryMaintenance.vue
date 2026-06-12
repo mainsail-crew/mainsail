@@ -15,21 +15,21 @@
         <td class="text-right text-no-wrap">
             <v-tooltip v-if="reminder !== null" top>
                 <template #activator="{ props: activatorProps }">
-                    <v-icon small color="primary" v-bind="activatorProps">
+                    <v-icon size="small" color="primary" v-bind="activatorProps">
                         {{ alarmIcon }}
                     </v-icon>
                 </template>
                 <div>
                     <div v-if="restTextFilament">
-                        <v-icon small class="mr-1">{{ mdiAdjust }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiAdjust }}</v-icon>
                         {{ restTextFilament }}
                     </div>
                     <div v-if="restTextPrinttime">
-                        <v-icon small class="mr-1">{{ mdiAlarm }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiAlarm }}</v-icon>
                         {{ restTextPrinttime }}
                     </div>
                     <div v-if="restTextDays">
-                        <v-icon small class="mr-1">{{ mdiCalendar }}</v-icon>
+                        <v-icon size="small" class="mr-1">{{ mdiCalendar }}</v-icon>
                         {{ restTextDays }}
                     </div>
                 </div>

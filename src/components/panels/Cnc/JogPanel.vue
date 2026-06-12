@@ -4,7 +4,7 @@
             <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <v-btn
-                        small
+                        size="small"
                         block
                         :disabled="['printing'].includes(printer_state)"
                         :loading="loadings.includes('homeAll')"
@@ -16,25 +16,25 @@
                 </v-col>
                 <v-col cols="6">
                     <v-btn
-                        small
+                        size="small"
                         block
                         :disabled="['printing'].includes(printer_state)"
                         :loading="loadings.includes('homeXY')"
                         :color="homedAxes.includes('xy') ? 'primary' : 'warning'"
                         @click="doHomeXY">
-                        <v-icon left small>{{ mdiHome }}</v-icon>
+                        <v-icon left size="small">{{ mdiHome }}</v-icon>
                         Home XY
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
                     <v-btn
-                        small
+                        size="small"
                         block
                         :disabled="['printing'].includes(printer_state)"
                         :loading="loadings.includes('homeZ')"
                         :color="homedAxes.includes('z') ? 'primary' : 'warning'"
                         @click="doHomeZ">
-                        <v-icon left small>{{ mdiHome }}</v-icon>
+                        <v-icon left size="small">{{ mdiHome }}</v-icon>
                         Home Z
                     </v-btn>
                 </v-col>
@@ -43,13 +43,13 @@
             <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <v-btn
-                        small
+                        size="small"
                         block
                         :disabled="['printing'].includes(printer_state)"
                         color="grey"
-                        outlined
+                        variant="outlined"
                         @click="disableSteppers">
-                        <v-icon left small>mdi-close-circle-outline</v-icon>
+                        <v-icon left size="small">mdi-close-circle-outline</v-icon>
                         Disable Steppers
                     </v-btn>
                 </v-col>
@@ -58,8 +58,8 @@
             <v-row density="compact" class="mb-3">
                 <v-col cols="12" class="d-flex align-center">
                     <span class="text-caption mr-2">Jog Step:</span>
-                    <v-btn-toggle v-model="selectedStepIndex" dense small class="flex-grow-1">
-                        <v-btn v-for="(step, idx) in jogSteps" :key="idx" :value="idx" x-small>
+                    <v-btn-toggle v-model="selectedStepIndex" density="compact" size="small" class="flex-grow-1">
+                        <v-btn v-for="(step, idx) in jogSteps" :key="idx" :value="idx" size="x-small">
                             {{ formatStep(step) }}
                         </v-btn>
                     </v-btn-toggle>
@@ -74,8 +74,8 @@
                         type="number"
                         :min="1"
                         :max="1000"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         suffix="mm/min"
                         @change="saveFeedrates" />
                 </v-col>
@@ -86,8 +86,8 @@
                         type="number"
                         :min="1"
                         :max="500"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         suffix="mm/min"
                         @change="saveFeedrates" />
                 </v-col>
@@ -116,7 +116,7 @@
                         <v-btn
                             class="jog-panel__xy-btn jog-panel__xy-center"
                             large
-                            outlined
+                            variant="outlined"
                             :disabled="['printing'].includes(printer_state)"
                             @click="jogStop">
                             <v-icon>{{ mdiStop }}</v-icon>
@@ -166,12 +166,12 @@
             <v-row density="compact" class="my-2">
                 <v-col cols="12">
                     <v-btn
-                        small
+                        size="small"
                         block
                         :color="keyboardNavEnabled ? 'primary' : ''"
                         :outlined="!keyboardNavEnabled"
                         @click="toggleKeyboardNav">
-                        <v-icon small left>{{ mdiKeyboard }}</v-icon>
+                        <v-icon size="small" left>{{ mdiKeyboard }}</v-icon>
                         Keyboard Nav {{ keyboardNavEnabled ? '(ON)' : '(OFF)' }}
                     </v-btn>
                 </v-col>
@@ -181,13 +181,13 @@
             <v-row density="compact">
                 <v-col cols="6">
                     <span class="text-caption text-secondary">Status:</span>
-                    <v-chip small :color="['printing'].includes(printer_state) ? 'warning' : 'primary'" class="mx-2">
+                    <v-chip size="small" :color="['printing'].includes(printer_state) ? 'warning' : 'primary'" class="mx-2">
                         {{ printer_state }}
                     </v-chip>
                 </v-col>
                 <v-col cols="6" class="text-right">
                     <span class="text-caption text-secondary">Homed:</span>
-                    <v-chip small :color="allAxesHomed ? 'primary' : 'warning'" class="mx-2">
+                    <v-chip size="small" :color="allAxesHomed ? 'primary' : 'warning'" class="mx-2">
                         {{ homedAxesDisplay }}
                     </v-chip>
                 </v-col>

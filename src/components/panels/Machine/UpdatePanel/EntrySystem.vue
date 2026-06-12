@@ -6,7 +6,7 @@
                 <br />
                 <template v-if="package_count">
                     <a class="info--text cursor--pointer" @click="boolShowPackageList = true">
-                        <v-icon small color="info" class="mr-1">{{ mdiInformation }}</v-icon>
+                        <v-icon size="small" color="info" class="mr-1">{{ mdiInformation }}</v-icon>
                         {{ $t('Machine.UpdatePanel.CountPackagesCanBeUpgraded', { count: package_count }) }}
                     </a>
                 </template>
@@ -21,7 +21,7 @@
                     :disabled="btnDisabled"
                     class="minwidth-0 px-2 text-uppercase"
                     @click="doUpdate">
-                    <v-icon small class="mr-1">{{ btnIcon }}</v-icon>
+                    <v-icon size="small" class="mr-1">{{ btnIcon }}</v-icon>
                     {{ btnText }}
                 </v-chip>
             </v-col>

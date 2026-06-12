@@ -12,23 +12,23 @@
             <v-menu v-if="showSwitch" :offset-y="true">
                 <template #activator="{ props }">
                     <v-btn variant="text" tile v-bind="props">
-                        <v-icon v-if="'icon' in currentCam" small class="mr-2">
+                        <v-icon v-if="'icon' in currentCam" size="small" class="mr-2">
                             {{ convertWebcamIcon(currentCam.icon) }}
                         </v-icon>
                         <span class="d-none d-md-block">{{ currentCam.name ?? 'unknown' }}</span>
-                        <v-icon small>{{ mdiMenuDown }}</v-icon>
+                        <v-icon size="small">{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list density="compact" class="py-0">
                     <v-list-item link @click="currentCamId = 'all'">
                         <template #prepend>
-                            <v-icon small class="mt-1 mr-2">{{ mdiViewGrid }}</v-icon>
+                            <v-icon size="small" class="mt-1 mr-2">{{ mdiViewGrid }}</v-icon>
                         </template>
                         <template #title>{{ $t('Panels.WebcamPanel.All') }}</template>
                     </v-list-item>
                     <v-list-item v-for="webcam of webcams" :key="webcam.name" link @click="currentCamId = webcam.name">
                         <template #prepend>
-                            <v-icon small class="mt-1 mr-2">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
+                            <v-icon size="small" class="mt-1 mr-2">{{ convertWebcamIcon(webcam.icon) }}</v-icon>
                         </template>
                         <template #title v-text="webcam.name" />
                     </v-list-item>

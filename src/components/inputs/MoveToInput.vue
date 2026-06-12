@@ -10,9 +10,9 @@
             hide-details="auto"
             type="number"
             hide-spin-buttons
-            outlined
+            variant="outlined"
             reverse
-            dense
+            density="compact"
             @blur="onBlur"
             @focus="!readonly ? $event.target.select() : {}"></v-text-field>
     </form>

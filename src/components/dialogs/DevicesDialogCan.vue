@@ -30,9 +30,9 @@
                                 <v-btn
                                     href="https://docs.mainsail.xyz/overview/features/query-devices#can-devices"
                                     color="info"
-                                    outlined
+                                    variant="outlined"
                                     text
-                                    small>
+                                    size="small">
                                     open guide
                                 </v-btn>
                             </v-col>

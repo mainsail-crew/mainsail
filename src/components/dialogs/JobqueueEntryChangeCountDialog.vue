@@ -21,8 +21,8 @@
                     @keyup.enter="update">
                     <template #append-outer>
                         <div class="_spin_button_group">
-                            <v-btn class="mt-n3" :icon="mdiChevronUp" plain small @click="count++" />
-                            <v-btn :disabled="count <= 1" class="mb-n3" :icon="mdiChevronDown" plain small @click="count--" />
+                            <v-btn class="mt-n3" :icon="mdiChevronUp" plain size="small" @click="count++" />
+                            <v-btn :disabled="count <= 1" class="mb-n3" :icon="mdiChevronDown" plain size="small" @click="count--" />
                         </div>
                     </template>
                 </v-text-field>

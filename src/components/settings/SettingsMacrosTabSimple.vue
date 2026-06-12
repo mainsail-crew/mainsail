@@ -10,10 +10,10 @@
                     :append-icon="mdiMagnify"
                     :label="$t('Settings.MacrosTab.Search')"
                     single-line
-                    outlined
+                    variant="outlined"
                     clearable
                     hide-details
-                    dense />
+                    density="compact" />
             </v-col>
         </v-row>
         <template v-if="macros.length">

@@ -6,10 +6,10 @@
                 :append-icon="mdiMagnify"
                 :label="$t('Files.Search')"
                 single-line
-                outlined
+                variant="outlined"
                 clearable
                 hide-details
-                dense
+                density="compact"
                 class="max-width-300" />
             <v-spacer />
             <v-btn

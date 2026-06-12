@@ -3,7 +3,7 @@
         <v-row>
             <v-col class="pb-3">
                 <v-list-subheader class="_filamentRunout-subheader">
-                    <v-icon small class="mr-2">{{ mdiPrinter3dNozzleAlert }}</v-icon>
+                    <v-icon size="small" class="mr-2">{{ mdiPrinter3dNozzleAlert }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer />
                     <small :class="'mr-3 ' + statusColor + '--text'">{{ statusText }}</small>

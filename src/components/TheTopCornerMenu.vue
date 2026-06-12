@@ -16,7 +16,7 @@
                         <template #title>{{ $t('App.TopCornerMenu.KlipperRestart') }}</template>
                         <template #append>
                             <div class="my-0 d-flex flex-row" style="min-width: auto">
-                                <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
+                                <v-icon class="mr-2" size="small">{{ mdiRestart }}</v-icon>
                             </div>
                         </template>
                     </v-list-item>
@@ -27,7 +27,7 @@
                         <template #title>{{ $t('App.TopCornerMenu.KlipperFirmwareRestart') }}</template>
                         <template #append>
                             <div class="my-0 d-flex flex-row" style="min-width: auto">
-                                <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
+                                <v-icon class="mr-2" size="small">{{ mdiRestart }}</v-icon>
                             </div>
                         </template>
                     </v-list-item>
@@ -73,7 +73,7 @@
                     <template #title>{{ $t('App.TopCornerMenu.Reboot') }}</template>
                     <template #append>
                         <div class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
+                            <v-icon class="mr-2" size="small">{{ mdiPower }}</v-icon>
                         </div>
                     </template>
                 </v-list-item>
@@ -81,7 +81,7 @@
                     <template #title>{{ $t('App.TopCornerMenu.Shutdown') }}</template>
                     <template #append>
                         <div class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
+                            <v-icon class="mr-2" size="small">{{ mdiPower }}</v-icon>
                         </div>
                     </template>
                 </v-list-item>
