@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="settings-macros-tab-expert">
         <template v-if="!boolFormEdit">
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.Macrogroups') }}</h3>
@@ -42,8 +42,16 @@
             </v-card-actions>
         </template>
         <template v-else-if="boolFormEdit">
-            <v-card-text>
-                <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.EditGroup') }}</h3>
+            <v-card-text class="macrogroup-edit-text">
+                <div class="macrogroup-edit-shell">
+                    <div class="macrogroup-edit-header">
+                        <h3 class="text-h5 mb-0">{{ $t('Settings.MacrosTab.EditGroup') }}</h3>
+                        <v-btn text color="primary" class="macrogroup-edit-back" @click="cancelEditMacrogroup">
+                            <v-icon left>{{ mdiChevronLeft }}</v-icon>
+                            {{ $t('Buttons.Close') }}
+                        </v-btn>
+                    </div>
+                    <div class="macrogroup-edit-body">
                 <settings-row :title="$t('Settings.MacrosTab.Name')">
                     <v-text-field
                         v-model="editGroup.name"
@@ -137,23 +145,20 @@
                         v-model="editGroupMacros"
                         handle=".handle"
                         ghost-class="ghost"
+                        item-key="name"
                         group="macros"
                         :force-fallback="true"
                         @change="updateMacroOrder">
-                        <v-row
-                            v-for="(macro, index) in editGroupMacros"
-                            :key="macro.name"
-                            class="my-2 mx-0"
-                            :style="draggableBgStyle">
-                            <v-col class="col-auto pr-0 d-flex py-2">
-                                <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
-                            </v-col>
-                            <v-col class="py-2">
-                                <settings-row
-                                    :key="'groupMacro_macro_' + index"
-                                    :title="macro.name"
-                                    :sub-title="getMacroDescription(macro.name)"
-                                    :dynamic-slot-width="true">
+                        <template #item="{ element: macro }">
+                            <div class="macrogroup-item" :style="draggableBgStyle">
+                                <div class="macrogroup-item__handle">
+                                    <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
+                                </div>
+                                <div class="macrogroup-item__content">
+                                    <div class="macrogroup-item__name">{{ macro.name }}</div>
+                                    <div class="macrogroup-item__description">{{ getMacroDescription(macro.name) }}</div>
+                                </div>
+                                <div class="macrogroup-item__actions">
                                     <template v-if="existsMacro(macro.name)">
                                         <v-tooltip location="top">
                                             <template #activator="{ props: activatorProps }">
@@ -161,11 +166,10 @@
                                                     small
                                                     outlined
                                                     v-bind="activatorProps"
-                                                    class="ml-3 minwidth-0 px-2"
-                                                    :color="macro.color"
+                                                    class="minwidth-0 px-2"
                                                     @click="changeColorMacroFromGroup(macro)">
                                                     <v-icon small left>{{ mdiPalette }}</v-icon>
-                                                    {{ macro.color }}
+                                                    {{ $t('Settings.MacrosTab.Group') }}
                                                 </v-btn>
                                             </template>
                                             <span>{{ $t('Settings.MacrosTab.ChangeMacroColor') }}</span>
@@ -176,7 +180,7 @@
                                                     small
                                                     outlined
                                                     v-bind="activatorProps"
-                                                    class="ml-3 minwidth-0 px-2"
+                                                    class="minwidth-0 px-2"
                                                     :color="macro.showInStandby ? '' : 'secondary'"
                                                     @click="
                                                         updateMacroFromGroup(
@@ -196,11 +200,9 @@
                                                     small
                                                     outlined
                                                     v-bind="activatorProps"
-                                                    class="ml-3 minwidth-0 px-2"
+                                                    class="minwidth-0 px-2"
                                                     :color="macro.showInPause ? '' : 'secondary'"
-                                                    @click="
-                                                        updateMacroFromGroup(macro, 'showInPause', !macro.showInPause)
-                                                    ">
+                                                    @click="updateMacroFromGroup(macro, 'showInPause', !macro.showInPause)">
                                                     <v-icon small>{{ mdiPause }}</v-icon>
                                                 </v-btn>
                                             </template>
@@ -212,7 +214,7 @@
                                                     small
                                                     outlined
                                                     v-bind="activatorProps"
-                                                    class="ml-3 minwidth-0 px-2"
+                                                    class="minwidth-0 px-2"
                                                     :color="macro.showInPrinting ? '' : 'secondary'"
                                                     @click="
                                                         updateMacroFromGroup(
@@ -233,7 +235,7 @@
                                                 small
                                                 outlined
                                                 v-bind="activatorProps"
-                                                class="ml-3 minwidth-0 px-2"
+                                                class="minwidth-0 px-2"
                                                 color="error"
                                                 @click="removeMacroFromGroup(macro)">
                                                 <v-icon small>{{ mdiDelete }}</v-icon>
@@ -241,9 +243,9 @@
                                         </template>
                                         <span>{{ $t('Settings.MacrosTab.DeleteMacroFromGroup') }}</span>
                                     </v-tooltip>
-                                </settings-row>
-                            </v-col>
-                        </v-row>
+                                </div>
+                            </div>
+                        </template>
                     </draggable>
                 </template>
                 <template v-else>
@@ -290,13 +292,112 @@
                         </v-col>
                     </v-row>
                 </template>
+                <div class="macrogroup-edit-spacer" />
+                    </div>
+                </div>
             </v-card-text>
-            <v-card-actions class="d-flex justify-end">
-                <v-btn text @click="cancelEditMacrogroup">{{ $t('Buttons.Close') }}</v-btn>
-            </v-card-actions>
         </template>
     </div>
 </template>
+
+<style scoped>
+.settings-macros-tab-expert {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.macrogroup-item {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-height: 56px;
+    padding: 10px 12px;
+}
+
+.macrogroup-item__handle {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    width: 18px;
+}
+
+.macrogroup-item__content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.macrogroup-item__name {
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.macrogroup-item__description {
+    font-size: 0.8rem;
+    line-height: 1.2;
+    opacity: 0.85;
+    margin-top: 4px;
+}
+
+.macrogroup-item__actions {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.macrogroup-edit-text {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    padding-bottom: 0;
+}
+
+.macrogroup-edit-shell {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    width: 100%;
+}
+
+.macrogroup-edit-header {
+    align-items: center;
+    background-color: rgb(var(--v-theme-surface));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin: -16px -16px 16px;
+    padding: 12px 16px;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10;
+}
+
+.macrogroup-edit-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: 24px;
+}
+
+html.theme--light .macrogroup-edit-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.macrogroup-edit-back {
+    flex: 0 0 auto;
+}
+
+.macrogroup-edit-spacer {
+    height: 8px;
+}
+</style>
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
@@ -317,6 +418,7 @@ import {
     mdiPalette,
     mdiPencil,
     mdiMagnify,
+    mdiChevronLeft,
 } from '@mdi/js'
 import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
 import type { DraggableChangeEvent } from '@/types/vuedraggable'

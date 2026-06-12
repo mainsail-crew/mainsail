@@ -1,7 +1,8 @@
 <template>
     <v-card
         :class="'panel ' + cardClass + ' ' + (marginBottom ? 'mb-3 mb-md-6' : '') + ' ' + (!expand ? 'expanded' : '')"
-        :loading="loading">
+        :loading="loading"
+        :style="cardStyle">
         <v-toolbar
             flat
             dense
@@ -28,7 +29,7 @@
             </v-toolbar-items>
         </v-toolbar>
         <v-expand-transition>
-            <div v-show="expand || !collapsible">
+            <div v-show="expand || !collapsible" class="panel-content">
                 <slot />
             </div>
         </v-expand-transition>
@@ -53,6 +54,7 @@ const props = defineProps({
     loading: { type: Boolean, default: false },
     marginBottom: { type: Boolean, default: true },
     hideButtonsOnCollapse: { type: Boolean, default: false },
+    height: { type: [Number, String], default: null },
 })
 
 const store = useStore()
@@ -76,6 +78,18 @@ const getToolbarClass = computed(() => {
 const additionalStyle = computed(() => {
     return '' // Vue 3/Vuetify 3 handles theme differently
 })
+
+const cardStyle = computed(() => {
+    if (!props.height) return undefined
+
+    const height = typeof props.height === 'number' ? `${props.height}px` : props.height
+    return {
+        height,
+        maxHeight: height,
+        display: 'flex',
+        flexDirection: 'column',
+    }
+})
 </script>
 
 <style scoped>
@@ -94,6 +108,13 @@ const additionalStyle = computed(() => {
 
 .panel-toolbar {
     overflow-y: hidden;
+}
+
+.panel-content {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
 }
 
 :deep(.panel-toolbar) .v-btn {

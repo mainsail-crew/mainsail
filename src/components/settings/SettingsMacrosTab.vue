@@ -1,5 +1,5 @@
 <template>
-    <v-card flat>
+    <v-card flat class="settings-macros-tab">
         <v-card-text v-if="showGeneral">
             <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.General') }}</h3>
             <settings-row :title="$t('Settings.MacrosTab.Management')">
@@ -61,3 +61,12 @@ function scrollToTop() {
     emit('scrollToTop')
 }
 </script>
+
+<style scoped>
+.settings-macros-tab {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+</style>
