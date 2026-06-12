@@ -39,7 +39,7 @@ const subtitle = computed(() => {
 const checkboxColor = computed(() => {
     if (props.naviPoint.visible) return 'primary'
 
-    return 'grey lighten-1'
+    return '#bdbdbd'
 })
 
 const checkboxIcon = computed(() => {

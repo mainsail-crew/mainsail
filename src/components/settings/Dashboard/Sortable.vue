@@ -10,7 +10,7 @@
                         {{ $t('Panels.StatusPanel.Headline') }}
                     </v-col>
                     <v-col class="v-col-auto pl-0">
-                        <v-icon color="grey lighten-1" :icon="mdiLock" />
+                        <v-icon class="text-grey-lighten-1" :icon="mdiLock" />
                     </v-col>
                 </v-row>
             </v-list-item>

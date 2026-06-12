@@ -157,7 +157,7 @@ const jobs = computed(() => store.getters['server/jobQueue/getJobs'])
 const jobsCount = computed(() => store.getters['server/jobQueue/getJobsCount'])
 
 const jobQueueBadgeColor = computed(() =>
-    jobsCount.value > 0 ? 'primary darken-2' : 'grey darken-2'
+    jobsCount.value > 0 ? 'primary darken-2' : '#616161'
 )
 
 const current_filename = computed(() =>

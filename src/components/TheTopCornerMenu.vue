@@ -60,7 +60,7 @@
                         <template #title>{{ device.device }}</template>
                         <template #append>
                             <div class="my-0 d-flex flex-row" style="min-width: auto">
-                                <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">
+                                <v-icon class="mr-2" :color="device.status === 'on' ? '' : '#616161'">
                                     {{ device.status === 'on' ? mdiToggleSwitch : mdiToggleSwitchOff }}
                                 </v-icon>
                             </div>

@@ -82,7 +82,7 @@
                                     :icon="mdiHelpCircle"
                                     small
                                     plain
-                                    color="grey darken-2"
+                                    color="#616161"
                                     :href="klipperConfigReference + '#' + item.name.split(' ')[0]"
                                     target="_blank" />
                             </template>
