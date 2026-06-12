@@ -15,7 +15,10 @@
                     :key="axis.id"
                     class="topbar-dro__axis"
                 >
-                    <span :class="['topbar-dro__label', axis.homed ? 'primary--text' : 'warning--text']">{{ axis.id }}</span>
+                    <span
+                        :class="['topbar-dro__label', axis.homed ? 'topbar-dro__label--homed' : 'topbar-dro__label--unhomed']">
+                        {{ axis.id }}
+                    </span>
                     <span class="topbar-dro__value">{{ axis.machine }}</span>
                 </span>
                 <span class="topbar-dro__sep">|</span>
@@ -354,17 +357,26 @@ function emergencyStop() {
     font-weight: 700;
 }
 
+.topbar-dro__label--homed {
+    color: rgb(var(--v-theme-primary));
+}
+
+.topbar-dro__label--unhomed {
+    color: rgb(var(--v-theme-primary));
+    opacity: 0.9;
+}
+
 .topbar-dro__sep {
-    opacity: 0.4;
+    color: rgba(255, 255, 255, 0.42);
     margin: 0 0.1rem;
 }
 
 .topbar-dro__velocity {
-    opacity: 0.75;
+    color: rgba(255, 255, 255, 0.72);
 }
 
 .topbar-dro__mode {
-    opacity: 0.75;
+    color: rgba(255, 255, 255, 0.72);
     font-size: 0.72rem;
 }
 

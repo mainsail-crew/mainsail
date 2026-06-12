@@ -10,7 +10,7 @@
                     :class="itemClass"
                     v-bind="activatorProps">
                     <template #prepend>
-                        <v-icon class="my-3 mr-3 menu-item-icon">{{ icon }}</v-icon>
+                        <v-icon class="menu-item-icon">{{ icon }}</v-icon>
                     </template>
                     <template #title>
                         <span class="menu-item-title">{{ title }}</span>
@@ -60,18 +60,20 @@ const itemClass = computed(() => ({
 }
 
 .active-nav-item {
-    border-right: 4px solid var(--v-primary-base);
+    background-color: rgba(255, 255, 255, 0.12);
 }
 
 .menu-item-icon {
-    opacity: 0.85;
+    margin-inline-end: 12px;
+    opacity: 0.92;
 }
 
 .menu-item-title {
-    line-height: 30px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1;
     text-transform: uppercase;
-    opacity: 0.85;
+    opacity: 0.88;
 }
 </style>

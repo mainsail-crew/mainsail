@@ -24,8 +24,10 @@
                         <v-btn
                             v-for="button in filteredToolbarButtons"
                             :key="button.loadingName"
-                            class="px-2 minwidth-0 ml-3"
+                            class="machine-configfiles-panel__tool-btn ml-3"
                             :color="button.color"
+                            variant="text"
+                            density="comfortable"
                             :loading="button.loadingName !== null && loadings.includes(button.loadingName)"
                             @click="button.click">
                             <v-tooltip top>
@@ -37,7 +39,7 @@
                         </v-btn>
                         <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
                             <template #activator="{ props: activatorProps }">
-                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="activatorProps">
+                                <v-btn class="machine-configfiles-panel__tool-btn ml-3" variant="text" density="comfortable" v-bind="activatorProps">
                                     <v-icon class="machine-configfiles-panel__settings-icon">{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
@@ -94,23 +96,22 @@
                 </v-row>
             </v-card-text>
             <v-divider />
-            <v-data-table
-                v-if="!showMissingConfigRootWarning"
-                v-model="selectedFiles"
-                :items="sortedFiles"
-                class="files-table"
-                :headers="headers"
-                v-model:page="currentPage"
-                disable-sort
-                v-model:items-per-page="countPerPage"
+                <v-data-table
+                    v-if="!showMissingConfigRootWarning"
+                    v-model="selectedFiles"
+                    :items="sortedFiles"
+                    class="files-table"
+                    :headers="headers"
+                    v-model:page="currentPage"
+                    disable-sort
+                    v-model:items-per-page="countPerPage"
                 :footer-props="{
                     itemsPerPageText: $t('Machine.ConfigFilesPanel.Files'),
                     itemsPerPageAllText: $t('Machine.ConfigFilesPanel.AllFiles'),
                     itemsPerPageOptions: [10, 25, 50, 100, -1],
                 }"
                 mobile-breakpoint="0"
-                item-key="filename"
-                show-select>
+                    item-key="filename">
                 <template #no-data>
                     <div class="text-center">{{ $t('Machine.ConfigFilesPanel.Empty') }}</div>
                 </template>
@@ -122,17 +123,14 @@
                         @dragover="dragOverFilelist($event, { isDirectory: true, filename: '..' })"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, { isDirectory: true, filename: '..' })">
-                        <td class="file-list__select-td pr-0">
-                            <v-checkbox v-ripple disabled density="compact" hide-details class="pa-0 mr-0" />
-                        </td>
                         <td class="px-0 text-center" style="width: 32px">
                             <v-icon>{{ mdiFolderUpload }}</v-icon>
                         </td>
-                        <td class=" " colspan="4">..</td>
+                        <td class=" " colspan="3">..</td>
                     </tr>
                 </template>
 
-                <template #item="{ index, item, isSelected, select }">
+                <template #item="{ index, item }">
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="{ handler: showContextMenu, args: [item] }"
@@ -146,15 +144,6 @@
                         @dragover="dragOverFilelist($event, item)"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, item)">
-                        <td class="file-list__select-td pr-0">
-                            <v-checkbox
-                                v-ripple
-                                :model-value="isSelected"
-                                density="compact"
-                                hide-details
-                                class="pa-0 mr-0"
-                                @click.stop="select(!isSelected)" />
-                        </td>
                         <td class="px-0 text-center" style="width: 32px">
                             <v-icon v-if="item.isDirectory">{{ mdiFolder }}</v-icon>
                             <v-icon v-if="!item.isDirectory">{{ mdiFile }}</v-icon>
@@ -453,6 +442,21 @@
         </v-snackbar>
     </div>
 </template>
+
+<style scoped>
+.machine-configfiles-panel__tool-btn {
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.machine-configfiles-panel__settings-icon {
+    margin: 0;
+}
+</style>
 
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'

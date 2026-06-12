@@ -7,10 +7,9 @@
         :temporary="boolNaviTemp"
         clipped
         app
+        class="sidebar-shell"
         :style="sidebarCssVars">
-        <template #img>
-            <v-img :src="sidebarBackground" height="100%" />
-        </template>
+        <div class="sidebar-background" :style="sidebarBackgroundStyle" aria-hidden="true" />
 
         <OverlayScrollbarsComponent class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
@@ -72,6 +71,10 @@ const sidebarBackground = computed((): string =>
     store.getters['files/getCustomSidebarBackground'] ?? sidebarBgImage.value
 )
 
+const sidebarBackgroundStyle = computed(() => ({
+    backgroundImage: `linear-gradient(rgba(22, 18, 16, 0.5), rgba(22, 18, 16, 0.66)), url(${sidebarBackground.value})`,
+}))
+
 const boolNaviTemp = computed((): boolean =>
     !isMobile.value && display.mdAndDown.value
 )
@@ -105,6 +108,31 @@ const mobileLogoClass = computed(() => ({
 </script>
 
 <style scoped>
+.sidebar-shell {
+    background-color: #1e1b1a;
+}
+
+.sidebar-background {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: saturate(0.8) contrast(1.08) brightness(0.92);
+    opacity: 0.95;
+    pointer-events: none;
+}
+
+.sidebar-shell :deep(.v-navigation-drawer__content) {
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar-shell :deep(.v-navigation-drawer__append) {
+    position: relative;
+    z-index: 1;
+}
+
 .no-text-decoration {
     text-decoration: none;
     background-color: transparent;
@@ -128,5 +156,7 @@ const mobileLogoClass = computed(() => ({
 
 .nav-scrollbar {
     height: 100%;
+    position: relative;
+    z-index: 1;
 }
 </style>
