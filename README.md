@@ -45,10 +45,10 @@ npm run serve
 npm run build
 
 # 2. Copy to Pi
-scp -r dist/* octopi@<printer-ip>:~/mainsail/
+scp -r dist/* <user>@<printer-ip>:~/mainsail/
 
 # 3. Fix permissions + restart services
-ssh -t octopi@<printer-ip> "chmod 755 /home/octopi && chmod -R 755 /home/octopi/mainsail/assets && sudo systemctl restart moonraker && sudo systemctl reload nginx"
+ssh -t <user>@<printer-ip> "chmod 755 /home/<user> && chmod -R 755 /home/<user>/mainsail/assets && sudo systemctl restart moonraker && sudo systemctl reload nginx"
 
 # 4. Open in incognito (bypass PWA cache)
 # → http://<printer-ip>/
