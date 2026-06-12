@@ -15,6 +15,8 @@
                     <v-select
                         v-model="consoleDirection"
                         :items="availableDirections"
+                        item-title="text"
+                        item-value="value"
                         hide-details
                         outlined
                         dense
@@ -25,6 +27,8 @@
                     <v-select
                         v-model="entryStyle"
                         :items="availableEntryStyles"
+                        item-title="text"
+                        item-value="value"
                         hide-details
                         outlined
                         dense

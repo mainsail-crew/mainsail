@@ -5,13 +5,13 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.Mode')"
                     :sub-title="$t('Settings.UiSettingsTab.ModeDescription')">
-                    <v-select v-model="mode" :items="modes" class="mt-0" hide-details outlined dense />
+                    <v-select v-model="mode" :items="modes" item-title="text" item-value="value" class="mt-0" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.Theme')"
                     :sub-title="$t('Settings.UiSettingsTab.ThemeDescription')">
-                    <v-select v-model="themeName" :items="themes" class="mt-0" hide-details outlined dense />
+                    <v-select v-model="themeName" :items="themes" item-title="text" item-value="value" class="mt-0" hide-details outlined dense />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
@@ -23,9 +23,9 @@
                         @click="logoColor = defaultLogoColor">
                         <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
-                    <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template #activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" :color="logoColor" class="minwidth-0 px-5" small v-on="on" />
+                    <v-menu location="bottom end" :close-on-content-click="false">
+                        <template #activator="{ props: activatorProps }">
+                            <v-btn v-bind="activatorProps" :color="logoColor" class="minwidth-0 px-5" small />
                         </template>
                         <v-color-picker
                             :value="logoColor"
@@ -44,9 +44,9 @@
                         @click="primaryColor = defaultPrimaryColor">
                         <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
-                    <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template #activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" :color="primaryColor" class="minwidth-0 px-5" small v-on="on" />
+                    <v-menu location="bottom end" :close-on-content-click="false">
+                        <template #activator="{ props: activatorProps }">
+                            <v-btn v-bind="activatorProps" :color="primaryColor" class="minwidth-0 px-5" small />
                         </template>
                         <v-color-picker
                             :value="primaryColor"
@@ -94,14 +94,13 @@
                             @click="bigThumbnailBackground = defaultBigThumbnailBackground">
                             <v-icon small>{{ mdiRestart }}</v-icon>
                         </v-btn>
-                        <v-menu bottom left offset-y :close-on-content-click="false">
-                            <template #activator="{ on, attrs }">
+                        <v-menu location="bottom end" :close-on-content-click="false">
+                            <template #activator="{ props: activatorProps }">
                                 <v-btn
-                                    v-bind="attrs"
+                                    v-bind="activatorProps"
                                     :color="bigThumbnailBackground"
                                     class="minwidth-0 px-5"
-                                    small
-                                    v-on="on" />
+                                    small />
                             </template>
                             <v-color-picker
                                 :value="bigThumbnailBackground"
@@ -191,6 +190,8 @@
                     <v-select
                         v-model="navigationStyleSetting"
                         :items="navigationStyles"
+                        item-title="text"
+                        item-value="value"
                         class="mt-0"
                         hide-details
                         outlined
@@ -203,6 +204,8 @@
                     <v-select
                         v-model="defaultNavigationStateSetting"
                         :items="defaultNavigationStateSettings"
+                        item-title="text"
+                        item-value="value"
                         class="mt-0"
                         hide-details
                         outlined
@@ -223,6 +226,8 @@
                     <v-select
                         v-model="powerDeviceName"
                         :items="powerDeviceOptions"
+                        item-title="text"
+                        item-value="value"
                         class="mt-0"
                         hide-details
                         outlined
@@ -303,6 +308,8 @@
                     <v-select
                         v-model="dashboardFilesFilter"
                         :items="dashboardFilesFilters"
+                        item-title="text"
+                        item-value="value"
                         multiple
                         hide-details
                         dense

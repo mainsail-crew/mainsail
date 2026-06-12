@@ -27,35 +27,35 @@
                         <v-tab
                             v-for="(tab, index) of tabTitles"
                             :key="index"
-                            :href="'#' + tab.name"
+                            :value="tab.name"
                             class="justify-start">
-                            <v-icon left v-html="tab.icon"></v-icon>
+                            <v-icon start>{{ tab.icon }}</v-icon>
                             {{ tab.title }}
                         </v-tab>
                     </v-tabs>
                 </template>
                 <v-row class="flex-row flex-nowrap">
-                    <v-col v-if="!isMobile" class="col-auto pr-0">
+                    <v-col v-if="!isMobile" cols="auto" class="pr-0">
                         <OverlayScrollbarsComponent ref="settingsTabsScroll" class="settings-tabs-bar height500">
-                            <v-tabs v-model="activeTab" :vertical="true">
+                            <v-tabs v-model="activeTab" direction="vertical">
                                 <v-tab
                                     v-for="(tab, index) of tabTitles"
                                     :key="index"
-                                    :href="'#' + tab.name"
+                                    :value="tab.name"
                                     class="justify-start"
                                     style="width: 200px">
-                                    <v-icon left v-html="tab.icon"></v-icon>
+                                    <v-icon start>{{ tab.icon }}</v-icon>
                                     <span class="text-truncate">{{ tab.title }}</span>
                                 </v-tab>
                             </v-tabs>
                         </OverlayScrollbarsComponent>
                     </v-col>
-                    <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'min-width: 500px;'">
+                    <v-col :class="isMobile ? '' : 'pl-0'" style="min-width: 0;">
                         <OverlayScrollbarsComponent
                             ref="settingsScroll"
                             :class="'settings-tabs ' + (isMobile ? '' : 'height500')"
                             :options="{ overflowBehavior: { x: 'hidden' } }">
-                            <component :is="'settings-' + activeTab + '-tab'" @scrollToTop="scrollToTop" />
+                            <component :is="tabComponents[activeTab]" @scrollToTop="scrollToTop" />
                         </OverlayScrollbarsComponent>
                     </v-col>
                 </v-row>
@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useBase } from '@/composables/useBase'
@@ -109,6 +109,21 @@ const settingsScroll = ref<any>(null)
 const showSettings = ref(false)
 const activeTab = ref('general')
 
+const tabComponents: Record<string, any> = {
+    general: SettingsGeneralTab,
+    'ui-settings': SettingsUiSettingsTab,
+    dashboard: SettingsDashboardTab,
+    webcams: SettingsWebcamsTab,
+    macros: SettingsMacrosTab,
+    control: SettingsControlTab,
+    console: SettingsConsoleTab,
+    'remote-printers': SettingsRemotePrintersTab,
+    'g-code-viewer': SettingsGCodeViewerTab,
+    editor: SettingsEditorTab,
+    miscellaneous: SettingsMiscellaneousTab,
+    navigation: SettingsNavigationTab,
+}
+
 const tabTitles = computed(() => {
     const tabs = [
         { icon: mdiCog, name: 'general', title: t('Settings.GeneralTab.General') },
@@ -139,24 +154,30 @@ const tabTitles = computed(() => {
     })
 })
 
-watch(activeTab, () => {
+watch(activeTab, async () => {
+    await nextTick()
     scrollToTop()
 })
 
 function scrollToTop() {
-    settingsScroll.value?.osInstance()?.scroll({ y: '0%' })
+    const viewport = settingsScroll.value?.osInstance()?.elements().viewport
+
+    if (viewport) viewport.scrollTop = 0
 }
 </script>
 
 <style scoped>
 .settings-tabs {
+    width: 100%;
     min-height: 100%;
     height: calc(var(--app-height) - 96px);
 }
 
 .settings-tabs-bar {
     border-right: 1px solid rgba(255, 255, 255, 0.12);
+    display: inline-block;
     height: 100%;
+    width: fit-content;
 }
 
 html.theme--light .settings-tabs-bar {

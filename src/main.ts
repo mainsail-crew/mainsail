@@ -43,12 +43,13 @@ const vuetify = createVuetify({
     theme: {
         defaultTheme: 'dark',
         themes: {
-            dark: { dark: true, colors: {} },
-            light: { dark: false, colors: {} },
+            dark: { dark: true, colors: { accent: '#ff9800' } },
+            light: { dark: false, colors: { accent: '#ff9800' } },
         },
     },
     defaults: {
         VBtn: { variant: 'text' },
+        VSwitch: { color: 'accent' },
     },
     display: {
         mobileBreakpoint: 768,

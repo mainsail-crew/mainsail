@@ -7,15 +7,14 @@
                     <v-row>
                         <v-col class="d-flex">
                             <v-item-group>
-                                <v-menu v-model="selectIcon" :offset-y="true" title="Icon">
-                                    <template #activator="{ on, attrs }">
+                                <v-menu v-model="selectIcon" location="bottom end" title="Icon">
+                                    <template #activator="{ props: activatorProps }">
                                         <v-btn
                                             class="px-2 mr-2 _transition _menu-button"
                                             color="transparent"
-                                            v-bind="attrs"
+                                            v-bind="activatorProps"
                                             elevation="0"
-                                            :ripple="false"
-                                            v-on="on">
+                                            :ripple="false">
                                             <v-icon>{{ convertWebcamIcon(form.icon) }}</v-icon>
                                             <v-icon :class="classIconButtonArrow" class="pl-1 mr-n2">
                                                 {{ mdiMenuDown }}
@@ -75,6 +74,8 @@
                             <v-select
                                 v-model="form.service"
                                 :items="serviceItems"
+                                item-title="text"
+                                item-value="value"
                                 hide-details
                                 outlined
                                 dense
@@ -103,6 +104,8 @@
                             <v-select
                                 v-model="form.rotation"
                                 :items="rotationItems"
+                                item-title="text"
+                                item-value="value"
                                 outlined
                                 dense
                                 hide-details
@@ -167,14 +170,13 @@
                                     :label="$t('Settings.WebcamsTab.Enable')" />
                             </v-col>
                             <v-col v-if="localNozzleCrosshair" class="py-0">
-                                <v-menu bottom left offset-y :close-on-content-click="false">
-                                    <template #activator="{ on, attrs }">
+                                <v-menu location="bottom end" :close-on-content-click="false">
+                                    <template #activator="{ props: activatorProps }">
                                         <v-btn
-                                            v-bind="attrs"
+                                            v-bind="activatorProps"
                                             :color="localNozzleCrosshairColor"
                                             class="minwidth-0 px-5"
-                                            small
-                                            v-on="on" />
+                                            small />
                                     </template>
                                     <v-color-picker
                                         :value="localNozzleCrosshairColor"

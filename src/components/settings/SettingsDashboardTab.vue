@@ -12,26 +12,26 @@
                     <v-btn-toggle v-model="currentViewport" class="mx-auto" mandatory>
                         <v-btn value="mobile">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Mobile') }}</span>
-                            <v-icon right class="hidden-sm-and-down">{{ mdiCellphone }}</v-icon>
-                            <v-icon class="hidden-md-and-up">{{ mdiCellphone }}</v-icon>
+                            <v-icon class="hidden-sm-and-down ml-2" :icon="mdiCellphone" />
+                            <v-icon class="hidden-md-and-up" :icon="mdiCellphone" />
                         </v-btn>
 
                         <v-btn value="tablet">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Tablet') }}</span>
-                            <v-icon right class="hidden-sm-and-down">{{ mdiTablet }}</v-icon>
-                            <v-icon class="hidden-md-and-up">{{ mdiTablet }}</v-icon>
+                            <v-icon class="hidden-sm-and-down ml-2" :icon="mdiTablet" />
+                            <v-icon class="hidden-md-and-up" :icon="mdiTablet" />
                         </v-btn>
 
                         <v-btn value="desktop">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Desktop') }}</span>
-                            <v-icon right class="hidden-sm-and-down">{{ mdiMonitorDashboard }}</v-icon>
-                            <v-icon class="hidden-md-and-up">{{ mdiMonitorDashboard }}</v-icon>
+                            <v-icon class="hidden-sm-and-down ml-2" :icon="mdiMonitorDashboard" />
+                            <v-icon class="hidden-md-and-up" :icon="mdiMonitorDashboard" />
                         </v-btn>
 
                         <v-btn value="widescreen">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Widescreen') }}</span>
-                            <v-icon right class="hidden-sm-and-down">{{ mdiMonitorScreenshot }}</v-icon>
-                            <v-icon class="hidden-md-and-up">{{ mdiMonitorScreenshot }}</v-icon>
+                            <v-icon class="hidden-sm-and-down ml-2" :icon="mdiMonitorScreenshot" />
+                            <v-icon class="hidden-md-and-up" :icon="mdiMonitorScreenshot" />
                         </v-btn>
                     </v-btn-toggle>
                 </v-col>
@@ -58,6 +58,13 @@ const { isMobile, isTablet, isDesktop, isWidescreen } = useBase()
 
 const currentViewport = ref('desktop')
 
+const viewportComponents: Record<string, any> = {
+    mobile: SettingsDashboardTabMobile,
+    tablet: SettingsDashboardTabTablet,
+    desktop: SettingsDashboardTabDesktop,
+    widescreen: SettingsDashboardTabWidescreen,
+}
+
 onMounted(() => {
     if (isMobile.value) currentViewport.value = 'mobile'
     else if (isTablet.value) currentViewport.value = 'tablet'
@@ -66,5 +73,5 @@ onMounted(() => {
     else currentViewport.value = 'desktop'
 })
 
-const currentTab = computed(() => 'settings-dashboard-tab-' + currentViewport.value)
+const currentTab = computed(() => viewportComponents[currentViewport.value] ?? SettingsDashboardTabDesktop)
 </script>

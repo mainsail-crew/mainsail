@@ -7,14 +7,13 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
-                    <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                    <v-menu :close-on-content-click="false" location="bottom end">
+                        <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="backgroundColor"
                                 class="minwidth-0 px-5"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
                             :value="backgroundColor"
@@ -25,9 +24,9 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.GridColor')">
-                    <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
-                            <v-btn :color="gridColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+                    <v-menu :close-on-content-click="false" location="bottom end">
+                        <template #activator="{ props: activatorProps }">
+                            <v-btn :color="gridColor" class="minwidth-0 px-5" small v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
                             :value="gridColor"
@@ -38,14 +37,13 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ProgressColor')">
-                    <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                    <v-menu :close-on-content-click="false" location="bottom end">
+                        <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="progressColor"
                                 class="minwidth-0 px-5"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
                             :value="progressColor"
@@ -61,18 +59,15 @@
                             v-for="(extruderColor, index) in extruderColors"
                             :key="index"
                             :close-on-content-click="false"
-                            bottom
-                            left
-                            offset-y>
-                            <template #activator="{ on, attrs }">
+                            location="bottom end">
+                            <template #activator="{ props: activatorProps }">
                                 <v-col align="right" class="mt-1" cols="12">
                                     <span class="mr-2">{{ index }}</span>
                                     <v-btn
                                         :color="extruderColors[index]"
                                         class="minwidth-0 px-5"
                                         small
-                                        v-bind="attrs"
-                                        v-on="on"></v-btn>
+                                        v-bind="activatorProps"></v-btn>
                                 </v-col>
                             </template>
                             <v-color-picker
@@ -85,14 +80,13 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MinFeed')">
-                    <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                    <v-menu :close-on-content-click="false" location="bottom end">
+                        <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="minFeedColor"
                                 class="minwidth-0 px-5 mr-3"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
                             :value="minFeedColor"
@@ -113,14 +107,13 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
-                    <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template #activator="{ on, attrs }">
+                    <v-menu :close-on-content-click="false" location="bottom end">
+                        <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="maxFeedColor"
                                 class="minwidth-0 px-5 mr-3"
                                 small
-                                v-bind="attrs"
-                                v-on="on"></v-btn>
+                                v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
                             :value="maxFeedColor"

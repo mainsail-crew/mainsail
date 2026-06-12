@@ -20,7 +20,7 @@
                     :title="$t('Settings.EditorTab.TabSize')"
                     :sub-title="$t('Settings.EditorTab.TabSizeDescription')"
                     :dynamic-slot-width="true">
-                    <v-select v-model="tabSize" :items="tabSizes" hide-details outlined dense attached />
+                    <v-select v-model="tabSize" :items="tabSizes" item-title="text" item-value="value" hide-details outlined dense attached />
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row
@@ -29,6 +29,8 @@
                     <v-select
                         v-model="klipperRestartMethod"
                         :items="klipperRestartMethods"
+                        item-title="text"
+                        item-value="value"
                         hide-details
                         outlined
                         dense

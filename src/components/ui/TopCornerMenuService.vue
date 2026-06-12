@@ -1,9 +1,9 @@
 <template>
     <v-list-item class="minHeight30 pr-2">
         <template #title>
-            <v-tooltip left>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">{{ name }}</span>
+            <v-tooltip location="left">
+                <template #activator="{ props: tooltipProps }">
+                    <span v-bind="tooltipProps">{{ name }}</span>
                 </template>
                 <span>{{ state }} ({{ subState }})</span>
             </v-tooltip>

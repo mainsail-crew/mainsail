@@ -1,16 +1,16 @@
 <template>
-    <v-card class="mx-auto fill-height" max-width="300" tile>
+    <v-card class="mx-auto fill-height w-100" tile>
         <v-list class="fill-height" dense>
             <v-list-item v-if="column < 2">
                 <v-row>
                     <v-col class="col-auto pr-0 pl-8">
-                        <v-icon>{{ mdiInformation }}</v-icon>
+                        <v-icon :icon="mdiInformation" />
                     </v-col>
                     <v-col class="pr-0 text-truncate">
                         {{ $t('Panels.StatusPanel.Headline') }}
                     </v-col>
                     <v-col class="col-auto pl-0">
-                        <v-icon color="grey lighten-1">{{ mdiLock }}</v-icon>
+                        <v-icon color="grey lighten-1" :icon="mdiLock" />
                     </v-col>
                 </v-row>
             </v-list-item>
@@ -19,16 +19,15 @@
                 handle=".handle"
                 class="v-list-item-group fill-height"
                 ghost-class="ghost"
+                item-key="name"
                 :group="groupname"
                 :force-fallback="true">
-                <transition-group>
+                <template #item="{ element }">
                     <settings-dashboard-sortable-item
-                        v-for="element in layout"
-                        :key="`item-${element.name}`"
                         :name="element.name"
                         :visible="element.visible"
                         @change-visible="changeVisible" />
-                </transition-group>
+                </template>
             </draggable>
         </v-list>
     </v-card>
