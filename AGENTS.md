@@ -19,6 +19,10 @@ This file documents the current state and capabilities of AI agents used in this
 - Phase 7d: `tsconfig.json` cleanup (`moduleResolution: "node"`, no `ignoreDeprecations`)
 - Phase 7e: Removed `vite-plugin-checker`
 - Phase 7f: Vuetify 3 slot syntax — all `#activator="{ on, attrs }"` → `#activator="{ props }"`, `v-bind="attrs" v-on="on"` → `v-bind="props"`
+- Phase 7g: Bulk removal of all `const mdiXxx = mdiXxx` TDZ self-assignments (~200 lines across 100+ files)
+- Phase 7h: All remaining `<overlay-scrollbars>` → `<OverlayScrollbarsComponent>` with imports (17 files)
+- Phase 7i: All `$vuetify.breakpoint` → `useDisplay()` (4 files: TheTopbar, Timelapse, TemperaturePanelPresets, GcodefilesEntry)
+- Phase 7j: All `v-data-table` sort model migrations: `.sync` → `v-model:`, string sortBy → array (HistoryListPanel, ConfigFilesPanel)
 - Phase 8 (store migration): Created `src/store/runtime.ts` — socket singleton (`getSocket()`/`setSocket()`) + shared `$toast` via `useToast()`
 - All mutation files: `Vue.set(state, key, val)` → `state[key] = val`, `Vue.delete(state, key)` → `delete state[key]`
 - All action/mutation files: `Vue.$socket.emit/emitAndWait/emitBatch` → `getSocket().emit/emitAndWait/emitBatch`, `Vue.$toast.success/error` → `$toast.success/error`
@@ -27,16 +31,28 @@ This file documents the current state and capabilities of AI agents used in this
 - `src/components/inputs/CodemirrorAsync.ts`: `Vue.component` → `defineAsyncComponent`
 - `src/components/webcams/streamers/DynamicCamLoader.ts`: `Vue.component` → exported `getDynamicCamImport()`
 - **Zero `import Vue from 'vue'` remaining anywhere in `src/`**
-- Fixed pre-existing runtime bugs: `i18n.t` → `i18n.global.t` in 5 files, `$vuetify.breakpoint` → `useDisplay()` in 3 files, `attrs['aria-expanded']` → `boolMenu` in TheNotificationMenu
-- Removed 152 redundant `const mdiXxx = mdiXxx` self-assignments across 55 files (TDZ errors in `<script setup>`)
+- Fixed pre-existing runtime bugs: `i18n.t` → `i18n.global.t` in 5 files, `$vuetify.breakpoint` → `useDisplay()` in 4 files, `attrs['aria-expanded']` → `boolMenu` in TheNotificationMenu
+- Removed ~200 redundant `const mdiXxx = mdiXxx` self-assignments across 100+ files (TDZ errors in `<script setup>`)
+- All 7 routes verified in Chrome DevTools with zero console errors:
+  - `/` Dashboard, `/allPrinters` Farm, `/cam` Webcam, `/console` MDI, `/files` G-Code Files, `/history`, `/timelapse`
+  - `/config` Machine route also verified clean
 - Build passes, dev server runs with zero console errors
 - `@vue/compat` fully removed — app now runs on pure Vue 3.5 + Vuetify 3
 
 ### Pending
 - Visual QA of Vuetify 3 component changes (list-item slots, tabs/window, etc.)
+- `/viewer` route verification (gcode viewer — large dependency, deferred)
 
 ### Key Commits
 ```text
+6c4ebe2c fix: eliminate remaining overlay-scrollbars and activator warnings
+eebb3c50 fix: resolve runtime errors across all routes
+ae77a107 fix: bulk cleanup of Vue 3 migration errors and warnings
+8216fcf2 docs: update stale migration documentation (ARCHITECTURE.md, VUE_TYPESCRIPT.md, websocket.d.ts)
+925839f2 fix: migrate deprecated Vuetify 2 props (small/x-small/tile/block/dense/text/accordion)
+c7b0b9b1 fix: complete Vuetify 2→3 prop migration (text/outlined/input-value/tile/pagination) and fix runtime warnings
+bbd9bfba fix: update v-snackbar slot from #action to #actions for Vuetify 3
+0e83a883 refactor: update Vuetify 3 activator slot syntax across all components
 bd1b78a7 feat: complete Vuetify 3 template migration, remove mixins, fix build
 2b6fc4d5 chore: update bun.lock for Vue 3 ecosystem dependencies
 7cca26d4 refactor: convert remaining components to script setup (phase 5)
@@ -62,4 +78,4 @@ d5e768fc phase2: global infrastructure for Vue 3
 - **Build verification**: Always run `bun run build` after changes. The build must pass before committing.
 - **Store layer**: Store migration is complete — all Vue 2 patterns (`Vue.set`, `Vue.$socket`, `Vue.$toast`, `import Vue`) removed.
 - **`@vue/compat`**: Fully removed — app runs on pure Vue 3.5 + Vuetify 3.
-- **Runtime fixes applied**: `i18n.global.t`, `useDisplay()`, `boolMenu`, removed `const mdiXxx = mdiXxx` TDZ bugs across 55 files.
+- **Runtime fixes applied**: `i18n.global.t`, `useDisplay()`, `boolMenu`, removed `const mdiXxx = mdiXxx` TDZ bugs across 100+ files.
