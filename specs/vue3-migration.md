@@ -9,8 +9,10 @@
 > Recent follow-up work on this branch after the main migration landed:
 > - Dashboard panel resolution now uses an explicit component registry in `src/pages/Dashboard.vue`.
 > - `JogPanel` now uses the shared GUI readiness gate and the imported MDI icon path.
+> - `MoveToControl` now passes the correct `position` prop into `MoveToInput`, clearing the console warning.
+> - The remaining Vuetify shade-string cleanup was tightened in panels, settings, and shared helpers (`grey lighten-*`, `grey darken-*`, `blue accent-*`).
 > - The local Vue 3 dashboard was compared against the remote `http://192.168.0.239/` reference page for layout parity.
-> - `bun run build` still passes after the latest dashboard parity cleanup.
+> - `bun run build` still passes after the latest parity and styling cleanup.
 
 ## Problem
 
