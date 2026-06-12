@@ -1,7 +1,7 @@
 <template>
-    <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
-        <template #activator="{ on, attrs }">
-            <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
+    <v-menu location="bottom end" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
+        <template #activator="{ props: activatorProps }">
+            <v-btn class="px-2 minwidth-0 ml-3" v-bind="activatorProps">
                 <v-icon>{{ mdiCog }}</v-icon>
             </v-btn>
         </template>

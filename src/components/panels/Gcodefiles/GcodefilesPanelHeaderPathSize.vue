@@ -9,9 +9,9 @@
                     :on-segment-click="clickPathNavGoToDirectory" />
             </span>
             <v-spacer />
-            <v-tooltip v-if="disk_usage !== null" top>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
+            <v-tooltip v-if="disk_usage !== null" location="top">
+                <template #activator="{ props: activatorProps }">
+                    <span v-bind="activatorProps">
                         <b>{{ $t('Files.FreeDisk') }}:</b>
                         {{ formatFilesize(disk_usage.free) }}
                     </span>
