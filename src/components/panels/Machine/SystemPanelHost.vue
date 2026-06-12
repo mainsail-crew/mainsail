@@ -6,8 +6,8 @@
 
 <template v-if="hostStats">
     <div>
-        <v-row class="py-0 pr-4">
-            <v-col class="pl-6">
+        <v-row class="system-load-row py-0 pr-4 flex-nowrap" align="center">
+            <v-col class="col system-load-row__info pl-6 pr-4">
                 <strong style="cursor: pointer" @click="hostDetailsDialog = true">Host</strong>
                 <v-tooltip top>
                     <template #activator="{ props: activatorProps }">
@@ -121,35 +121,39 @@
                     </template>
                 </div>
             </v-col>
-            <v-col v-if="cpuUsage !== null" class="px-2 col-auto d-flex flex-column justify-center align-center">
-                <v-progress-circular :rotate="-90" :size="55" :width="7" :value="cpuUsage" :color="cpuUsageColor">
-                    {{ cpuUsage }}
-                </v-progress-circular>
-                <span class="mt-2">{{ $t('Machine.SystemPanel.Cpu') }}</span>
-            </v-col>
-            <v-col v-else class="px-2 col-auto d-flex flex-column justify-center align-center">
-                <v-progress-circular
-                    :rotate="-90"
-                    :size="55"
-                    :width="7"
-                    :value="hostStats.loadPercent"
-                    :color="hostStats.loadProgressColor">
-                    {{ hostStats.loadPercent }}
-                </v-progress-circular>
-                <span class="mt-2">{{ $t('Machine.SystemPanel.Load') }}</span>
-            </v-col>
-            <v-col
-                v-if="hostStats.memUsage !== null"
-                class="px-2 col-auto d-flex flex-column justify-center align-center">
-                <v-progress-circular
-                    :rotate="-90"
-                    :size="55"
-                    :width="7"
-                    :value="hostStats.memUsage"
-                    :color="hostStats.memUsageColor">
-                    {{ hostStats.memUsage }}
-                </v-progress-circular>
-                <span class="mt-2">{{ $t('Machine.SystemPanel.Memory') }}</span>
+            <v-col class="system-load-row__gauges col-auto px-2">
+                <div class="system-load-gauges">
+                    <div v-if="cpuUsage !== null" class="system-load-gauge d-flex flex-column align-center justify-center">
+                        <v-progress-circular :rotate="-90" :size="55" :width="7" :value="cpuUsage" :color="cpuUsageColor">
+                            {{ cpuUsage }}
+                        </v-progress-circular>
+                        <span class="mt-2">{{ $t('Machine.SystemPanel.Cpu') }}</span>
+                    </div>
+                    <div v-else class="system-load-gauge d-flex flex-column align-center justify-center">
+                        <v-progress-circular
+                            :rotate="-90"
+                            :size="55"
+                            :width="7"
+                            :value="hostStats.loadPercent"
+                            :color="hostStats.loadProgressColor">
+                            {{ hostStats.loadPercent }}
+                        </v-progress-circular>
+                        <span class="mt-2">{{ $t('Machine.SystemPanel.Load') }}</span>
+                    </div>
+                    <div
+                        v-if="hostStats.memUsage !== null"
+                        class="system-load-gauge d-flex flex-column align-center justify-center">
+                        <v-progress-circular
+                            :rotate="-90"
+                            :size="55"
+                            :width="7"
+                            :value="hostStats.memUsage"
+                            :color="hostStats.memUsageColor">
+                            {{ hostStats.memUsage }}
+                        </v-progress-circular>
+                        <span class="mt-2">{{ $t('Machine.SystemPanel.Memory') }}</span>
+                    </div>
+                </div>
             </v-col>
         </v-row>
         <v-dialog v-model="hostDetailsDialog" :max-width="600" :max-height="500" scrollable>
@@ -257,3 +261,30 @@ const cpuName = computed(() => {
     return output
 })
 </script>
+
+<style scoped>
+.system-load-row {
+    width: 100%;
+}
+
+.system-load-row__info {
+    min-width: 0;
+}
+
+.system-load-row__gauges {
+    flex: 0 0 auto;
+    width: fit-content;
+}
+
+.system-load-gauges {
+    align-items: center;
+    display: inline-flex;
+    gap: 6px;
+    justify-content: flex-end;
+    width: fit-content;
+}
+
+.system-load-gauge {
+    min-width: 0;
+}
+</style>
