@@ -32,8 +32,8 @@
                 <v-row v-if="showCoordinates" density="compact">
                     <v-col :class="el.is.xsmall ? 'v-col-12' : 'v-col-4'">
                         <move-to-input
-                            :model-value="input.x.pos"
-                            @update:model-value="setInputXPos"
+                            :position="input.x.pos"
+                            @update:position="setInputXPos"
                             :label="livePositions.x"
                             :suffix="'X'"
                             :step="0.01"
@@ -44,8 +44,8 @@
                     </v-col>
                     <v-col :class="el.is.xsmall ? 'v-col-12' : 'v-col-4'">
                         <move-to-input
-                            :model-value="input.y.pos"
-                            @update:model-value="setInputYPos"
+                            :position="input.y.pos"
+                            @update:position="setInputYPos"
                             :label="livePositions.y"
                             :suffix="'Y'"
                             :step="0.01"
@@ -56,8 +56,8 @@
                     </v-col>
                     <v-col :class="el.is.xsmall ? 'v-col-12' : 'v-col-4'">
                         <move-to-input
-                            :model-value="input.z.pos"
-                            @update:model-value="setInputZPos"
+                            :position="input.z.pos"
+                            @update:position="setInputZPos"
                             :label="livePositions.z"
                             :suffix="'Z'"
                             :step="0.001"
