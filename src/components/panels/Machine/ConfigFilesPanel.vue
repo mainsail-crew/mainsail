@@ -424,8 +424,8 @@
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
             <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent" />
-            <template #action="{ attrs }">
-                <v-btn color="red" variant="text" v-bind="activatorProps" style="min-width: auto" @click="cancelUpload">
+            <template #actions="{ props }">
+                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelUpload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>

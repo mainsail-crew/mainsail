@@ -1,7 +1,7 @@
 <template>
     <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.TemperaturePanel.SetupTemperatures')">
-        <template #activator="{ on, attrs }">
-            <v-btn :icon="mdiCog" tile v-bind="attrs" v-on="on" />
+        <template #activator="{ props }">
+            <v-btn :icon="mdiCog" tile v-bind="props" />
         </template>
         <v-list>
             <v-list-item class="minHeight36">

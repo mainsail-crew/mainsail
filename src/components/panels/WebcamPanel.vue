@@ -10,8 +10,8 @@
         :margin-bottom="currentPage !== 'page'">
         <template #buttons>
             <v-menu v-if="showSwitch" :offset-y="true">
-                <template #activator="{ on, attrs }">
-                    <v-btn variant="text" tile v-bind="attrs" v-on="on">
+                <template #activator="{ props }">
+                    <v-btn variant="text" tile v-bind="props">
                         <v-icon v-if="'icon' in currentCam" small class="mr-2">
                             {{ convertWebcamIcon(currentCam.icon) }}
                         </v-icon>

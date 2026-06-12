@@ -1,8 +1,8 @@
 <template>
     <div v-if="isVisible">
         <v-tooltip top :disabled="disableTooltip">
-            <template #activator="{ on, attrs }">
-                <span :style="cssStyle" v-bind="attrs" v-on="on">{{ formatValue }}</span>
+            <template #activator="{ props }">
+                <span :style="cssStyle" v-bind="props">{{ formatValue }}</span>
             </template>
             <span>
                 {{ $t('Panels.TemperaturePanel.Max') }}: {{ formatValue_max }}

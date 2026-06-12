@@ -28,8 +28,8 @@
                     tile
                     @click="button.click">
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
+                        <template #activator="{ props }">
+                            <v-icon v-bind="props">{{ button.icon }}</v-icon>
                         </template>
                         <span>{{ button.text }}</span>
                     </v-tooltip>

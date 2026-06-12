@@ -110,8 +110,8 @@
             <template v-else>
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
             </template>
-            <template #action="{ attrs }">
-                <v-btn color="red" variant="text" v-bind="attrs" style="min-width: auto" tile @click="cancelDownload">
+            <template #actions="{ props }">
+                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" tile @click="cancelDownload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>

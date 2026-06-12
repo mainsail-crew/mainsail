@@ -25,15 +25,15 @@
                             <v-btn small value="table">{{ $t('History.Table') }}</v-btn>
                         </v-btn-toggle>
                         <v-tooltip v-if="!allLoaded" top>
-                            <template #activator="{ on, attrs }">
+                            <template #activator="{ props }">
                                 <v-btn
                                     outlined
                                     small
                                     :loading="loadings.includes('historyLoadAll')"
                                     class="ml-3 minwidth-0 px-2"
                                     color="primary"
-                                    v-bind="attrs"
-                                    v-on="on"
+                                    v-bind="props"
+                                    
                                     @click="refreshHistory">
                                     <v-icon small>{{ mdiDatabaseArrowDownOutline }}</v-icon>
                                 </v-btn>

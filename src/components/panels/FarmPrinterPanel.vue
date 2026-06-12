@@ -9,8 +9,8 @@
         :toolbar-color="isCurrentPrinter ? 'primary' : ''">
         <template #buttons>
             <v-menu v-if="showWebcamSwitch" :offset-y="true" title="Webcam">
-                <template #activator="{ on, attrs }">
-                    <v-btn variant="text" v-bind="attrs" v-on="on">
+                <template #activator="{ props }">
+                    <v-btn variant="text" v-bind="props">
                         <v-icon small>{{ mdiWebcam }}</v-icon>
                         <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>

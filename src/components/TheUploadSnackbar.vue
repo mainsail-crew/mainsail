@@ -6,8 +6,8 @@
         {{ percent }} % @ {{ speed }}/s
         <br />
         <v-progress-linear class="mt-2" :value="percent"></v-progress-linear>
-        <template #action="{ attrs }">
-            <v-btn :icon="mdiClose" color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelUpload" />
+        <template #actions="{ props }">
+            <v-btn :icon="mdiClose" color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelUpload" />
         </template>
     </v-snackbar>
 </template>

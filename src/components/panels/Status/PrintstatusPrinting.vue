@@ -7,8 +7,8 @@
                 <v-col class="col-3 pa-0">
                     <template v-if="live_velocity !== null">
                         <v-tooltip top>
-                            <template #activator="{ on, attrs }">
-                                <div v-bind="attrs" v-on="on">
+                            <template #activator="{ props }">
+                                <div v-bind="props">
                                     <strong>{{ $t('Panels.StatusPanel.Speed') }}</strong>
                                     <br />
                                     <span class="text-no-wrap">{{ live_velocity }} mm/s</span>
@@ -25,8 +25,8 @@
                 </v-col>
                 <v-col class="col-3 pa-0">
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" v-on="on">
+                        <template #activator="{ props }">
+                            <div v-bind="props">
                                 <strong>{{ $t('Panels.StatusPanel.Flow') }}</strong>
                                 <br />
                                 <span class="d-block text-center text-no-wrap">
@@ -39,8 +39,8 @@
                 </v-col>
                 <v-col class="col-3 pa-0">
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" v-on="on">
+                        <template #activator="{ props }">
+                            <div v-bind="props">
                                 <strong>{{ outputFilamentTitle }}</strong>
                                 <br />
                                 <span class="d-block text-center text-no-wrap">
@@ -57,8 +57,8 @@
                 </v-col>
                 <v-col class="col-3 pa-0 text-center">
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" class="text-center" v-on="on">
+                        <template #activator="{ props }">
+                            <div v-bind="props" class="text-center" >
                                 <strong>{{ $t('Panels.StatusPanel.Layer') }}</strong>
                                 <br />
                                 <span class="text-no-wrap">{{ current_layer }} of {{ max_layers }}</span>
@@ -76,8 +76,8 @@
             <v-row class="text-center pt-5 pb-2 mb-0" align="center">
                 <v-col class="col-3 pa-0">
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" class="text-center" v-on="on">
+                        <template #activator="{ props }">
+                            <div v-bind="props" class="text-center" >
                                 <strong>{{ $t('Panels.StatusPanel.Estimate') }}</strong>
                                 <br />
                                 <span class="text-no-wrap">
@@ -103,8 +103,8 @@
                 </v-col>
                 <v-col class="col-3 pa-0">
                     <v-tooltip top>
-                        <template #activator="{ on, attrs }">
-                            <div v-bind="attrs" class="text-center" v-on="on">
+                        <template #activator="{ props }">
+                            <div v-bind="props" class="text-center" >
                                 <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
                                 <br />
                                 <span class="text-no-wrap">

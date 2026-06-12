@@ -111,8 +111,8 @@
                                     top
                                     :close-on-content-click="false"
                                     :title="$t('Files.SetupCurrentList')">
-                                    <template #activator="{ on, attrs }">
-                                        <v-btn class="minwidth-0 px-2 ml-3" v-bind="attrs" v-on="on">
+                                    <template #activator="{ props }">
+                                        <v-btn class="minwidth-0 px-2 ml-3" v-bind="props">
                                             <v-icon>{{ mdiCog }}</v-icon>
                                         </v-btn>
                                     </template>
@@ -213,8 +213,8 @@
                 <strong>{{ loadedFile }}</strong>
             </div>
             <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
-            <template #action="{ attrs }">
-                <v-btn :icon="mdiClose" color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelRendering()" />
+            <template #actions="{ props }">
+                <v-btn :icon="mdiClose" color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelRendering()" />
             </template>
         </v-snackbar>
         <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" fixed right bottom>
@@ -235,8 +235,8 @@
                 </div>
                 <v-progress-linear class="mt-2" indeterminate />
             </template>
-            <template #action="{ attrs }">
-                <v-btn :icon="mdiClose" color="red" variant="text" v-bind="attrs" style="min-width: auto" @click="cancelDownload" />
+            <template #actions="{ props }">
+                <v-btn :icon="mdiClose" color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelDownload" />
             </template>
         </v-snackbar>
         <confirmation-dialog

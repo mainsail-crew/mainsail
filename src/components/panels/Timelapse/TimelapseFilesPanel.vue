@@ -65,7 +65,7 @@
                         <template v-if="disk_usage !== null">
                             <v-tooltip top>
                                 <template #activator="{ props }">
-                                    <span v-bind="attrs" v-on="on">
+                                    <span v-bind="props">
                                         <b>{{ $t('Timelapse.FreeDisk') }}:</b>
                                         {{ formatFilesize(disk_usage.free) }}
                                     </span>

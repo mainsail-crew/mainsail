@@ -7,8 +7,8 @@
         card-class="toolhead-control-panel">
         <template #buttons>
             <v-menu v-if="showButtons" left offset-y :close-on-content-click="false" class="pa-0">
-                <template #activator="{ on, attrs }">
-                    <v-btn :icon="mdiDotsVertical" tile v-bind="attrs" :disabled="['printing'].includes(printer_state)" v-on="on" />
+                <template #activator="{ props }">
+                    <v-btn :icon="mdiDotsVertical" tile v-bind="props" :disabled="['printing'].includes(printer_state)"  />
                 </template>
                 <v-list density="compact">
                     <v-list-item v-if="controlStyle !== 'bars' && actionButton !== 'm84'">
@@ -43,13 +43,13 @@
                                 SCREWS TILT CALCULATE
                             </v-btn>
                             <v-menu offset-y left :close-on-content-click="false">
-                                <template #activator="{ on, attrs }">
+                                <template #activator="{ props }">
                                     <v-btn
                                         small
-                                        v-bind="attrs"
+                                        v-bind="props"
                                         class="px-0"
                                         style="min-width: 32px; border-top-left-radius: 0; border-bottom-left-radius: 0"
-                                        v-on="on">
+                                        >
                                         <v-icon>{{ mdiMenuDown }}</v-icon>
                                     </v-btn>
                                 </template>
