@@ -364,7 +364,7 @@ export const unitToSymbol = (unit: string): string => {
 export const convertPrintStatusIconColor = (status: string): string => {
     switch (status) {
         case 'in_progress':
-            return '#2979ff' //'blue-grey darken-1'
+            return '#2979ff'
         case 'completed':
             return 'green' //'green'
         case 'cancelled':

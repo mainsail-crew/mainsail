@@ -1,12 +1,12 @@
 <template>
     <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" :fullscreen="isMobile">
         <template #activator="{ props: activatorProps }">
-            <v-btn v-if="inToolbar" :icon="mdiHelp" tile v-bind="activatorProps" />
+            <v-btn v-if="inToolbar" :icon="mdiHelp" rounded="0" v-bind="activatorProps" />
             <v-btn
                 v-else
                 class="gcode-command-btn px-2 minwidth-0"
                 color="lightgray"
-                :small="isMini"
+                :size="isMini ? 'small' : undefined"
                 v-bind="activatorProps">
                 <v-icon>{{ mdiHelp }}</v-icon>
             </v-btn>
@@ -18,7 +18,7 @@
                 card-class="command-help-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="isOpen = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="isOpen = false" />
                 </template>
                 <v-card-title>
                     <v-row>
@@ -26,10 +26,10 @@
                             <v-text-field
                                 v-model="cmdListSearch"
                                 :label="$t('Console.Search')"
-                                outlined
+                                variant="outlined"
                                 hide-details
                                 clearable
-                                dense />
+                                density="compact" />
                         </v-col>
                     </v-row>
                 </v-card-title>

@@ -7,7 +7,7 @@
         card-class="miniconsole-panel"
         :hide-buttons-on-collapse="true">
         <template #buttons>
-            <v-btn :icon="mdiTrashCan" tile @click="clearConsole" />
+            <v-btn :icon="mdiTrashCan" rounded="0" @click="clearConsole" />
             <command-help-modal :in-toolbar="true" @onCommand="commandClick($event)" />
             <v-menu
                 :offset-y="true"

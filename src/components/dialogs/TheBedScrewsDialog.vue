@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="showDialog" width="400" persistent :fullscreen="isMobile">
+    <v-dialog :model-value="showDialog" width="400" persistent :fullscreen="isMobile">
         <panel
             :title="$t('BedScrews.Headline').toString()"
             :icon="mdiArrowCollapseDown"
@@ -8,7 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="sendAbort" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="sendAbort" />
             </template>
             <v-card-text>
                 <v-row>
@@ -16,8 +16,8 @@
                         <v-text-field
                             v-model="currentScrewName"
                             :label="$t('BedScrews.ScrewName')"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             clearable
                             hide-details></v-text-field>
                     </v-col>
@@ -27,8 +27,8 @@
                         <v-text-field
                             v-model="currentScrewOutput"
                             :label="$t('BedScrews.ScrewIndex')"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             clearable
                             hide-details></v-text-field>
                     </v-col>
@@ -36,8 +36,8 @@
                         <v-text-field
                             v-model="acceptedScrewOutput"
                             :label="$t('BedScrews.ScrewAccepted')"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             clearable
                             hide-details></v-text-field>
                     </v-col>
