@@ -67,7 +67,8 @@
                     :size="55"
                     :width="7"
                     :value="mcu.loadPercent"
-                    :color="mcu.loadProgressColor">
+                    :color="mcu.loadProgressColor"
+                    :aria-label="`${mcu.name} ${mcu.loadPercent}%`">
                     {{ mcu.loadPercent }}
                 </v-progress-circular>
             </v-col>

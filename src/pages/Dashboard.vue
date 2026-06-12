@@ -107,6 +107,7 @@ import SpindleCoolantPanel from '@/components/panels/Cnc/SpindleCoolantPanel.vue
 import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
+import MdiPanel from '@/components/panels/Cnc/MdiPanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 
 const store = useStore()

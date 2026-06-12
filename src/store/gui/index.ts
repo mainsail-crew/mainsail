@@ -75,6 +75,7 @@ export const getDefaultState = (): GuiState => {
             ],
             tabletLayout1: [
                 { name: 'webcam', visible: true },
+                { name: 'cnc-status', visible: true },
                 { name: 'dro', visible: true },
                 { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
@@ -84,10 +85,14 @@ export const getDefaultState = (): GuiState => {
             ],
             tabletLayout2: [
                 { name: 'temperature', visible: true },
+                { name: 'offsets', visible: true },
+                { name: 'spindle-coolant', visible: true },
+                { name: 'mdi', visible: true },
                 { name: 'miniconsole', visible: true },
             ],
             desktopLayout1: [
                 { name: 'webcam', visible: true },
+                { name: 'cnc-status', visible: true },
                 { name: 'dro', visible: true },
                 { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
@@ -97,9 +102,13 @@ export const getDefaultState = (): GuiState => {
             ],
             desktopLayout2: [
                 { name: 'temperature', visible: true },
+                { name: 'offsets', visible: true },
+                { name: 'spindle-coolant', visible: true },
+                { name: 'mdi', visible: true },
                 { name: 'miniconsole', visible: true },
             ],
             widescreenLayout1: [
+                { name: 'cnc-status', visible: true },
                 { name: 'dro', visible: true },
                 { name: 'jog', visible: true },
                 { name: 'toolhead-control', visible: true },
@@ -108,10 +117,13 @@ export const getDefaultState = (): GuiState => {
             ],
             widescreenLayout2: [
                 { name: 'temperature', visible: true },
+                { name: 'offsets', visible: true },
+                { name: 'spindle-coolant', visible: true },
                 { name: 'machine-settings', visible: true },
             ],
             widescreenLayout3: [
                 { name: 'webcam', visible: true },
+                { name: 'mdi', visible: true },
                 { name: 'miniconsole', visible: true },
             ],
         },

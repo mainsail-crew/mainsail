@@ -124,7 +124,13 @@
             <v-col class="system-load-row__gauges col-auto px-2">
                 <div class="system-load-gauges">
                     <div v-if="cpuUsage !== null" class="system-load-gauge d-flex flex-column align-center justify-center">
-                        <v-progress-circular :rotate="-90" :size="55" :width="7" :value="cpuUsage" :color="cpuUsageColor">
+                        <v-progress-circular
+                            :rotate="-90"
+                            :size="55"
+                            :width="7"
+                            :value="cpuUsage"
+                            :color="cpuUsageColor"
+                            :aria-label="`${$t('Machine.SystemPanel.Cpu')} ${cpuUsage}%`">
                             {{ cpuUsage }}
                         </v-progress-circular>
                         <span class="mt-2">{{ $t('Machine.SystemPanel.Cpu') }}</span>
@@ -135,7 +141,8 @@
                             :size="55"
                             :width="7"
                             :value="hostStats.loadPercent"
-                            :color="hostStats.loadProgressColor">
+                            :color="hostStats.loadProgressColor"
+                            :aria-label="`${$t('Machine.SystemPanel.Load')} ${hostStats.loadPercent}%`">
                             {{ hostStats.loadPercent }}
                         </v-progress-circular>
                         <span class="mt-2">{{ $t('Machine.SystemPanel.Load') }}</span>
@@ -148,7 +155,8 @@
                             :size="55"
                             :width="7"
                             :value="hostStats.memUsage"
-                            :color="hostStats.memUsageColor">
+                            :color="hostStats.memUsageColor"
+                            :aria-label="`${$t('Machine.SystemPanel.Memory')} ${hostStats.memUsage}%`">
                             {{ hostStats.memUsage }}
                         </v-progress-circular>
                         <span class="mt-2">{{ $t('Machine.SystemPanel.Memory') }}</span>

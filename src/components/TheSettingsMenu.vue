@@ -7,6 +7,7 @@
             persistent
             :fullscreen="isMobile"
             scrollable
+            :aria-label="$t('Settings.InterfaceSettings')"
             @keydown.esc="showSettings = false">
             <panel
                 :title="$t('Settings.InterfaceSettings')"
