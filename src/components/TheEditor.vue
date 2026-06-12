@@ -17,21 +17,21 @@
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
                 :title="title">
                 <template #buttons>
-                    <v-btn variant="text" tile class="d-none d-md-flex" @click="dialogDevices = true">
+                    <v-btn variant="text" rounded="0" class="d-none d-md-flex" @click="dialogDevices = true">
                         <v-icon size="small" class="mr-1">{{ mdiUsb }}</v-icon>
                         {{ $t('Editor.DeviceDialog') }}
                     </v-btn>
                     <v-btn
                         v-if="restartServiceName === 'klipper'"
                         variant="text"
-                        tile
+                        rounded="0"
                         :href="klipperConfigReference"
                         target="_blank"
                         class="d-none d-md-flex">
                         <v-icon size="small" class="mr-1">{{ mdiHelp }}</v-icon>
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
-                    <v-btn v-if="existsFileStructure" variant="text" tile class="d-none d-md-flex" @click="toggleFileStructure">
+                    <v-btn v-if="existsFileStructure" variant="text" rounded="0" class="d-none d-md-flex" @click="toggleFileStructure">
                         <v-icon size="small" class="mr-1">{{ mdiFormatListCheckbox }}</v-icon>
                         {{ $t('Editor.FileStructure') }}
                     </v-btn>
@@ -39,14 +39,14 @@
                         v-if="restartServiceNameExists"
                         color="primary"
                         variant="text"
-                        tile
+                        rounded="0"
                         class="d-none d-sm-flex"
                         @click="save(restartServiceName)">
                         <v-icon size="small" class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
-                    <v-btn v-if="isWriteable" :icon="mdiContentSave" tile @click="save(null)" />
-                    <v-btn :icon="mdiCloseThick" tile @click="close" />
+                    <v-btn v-if="isWriteable" :icon="mdiContentSave" rounded="0" @click="save(null)" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="close" />
                 </template>
                 <v-card-text class="pa-0 d-flex">
                     <codemirror-async
@@ -111,7 +111,7 @@
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
             </template>
             <template #actions="{ props }">
-                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" tile @click="cancelDownload">
+                <v-btn color="red" variant="text" v-bind="props" style="min-width: auto" rounded="0" @click="cancelDownload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
@@ -123,7 +123,7 @@
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogConfirmChange = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogConfirmChange = false" />
                 </template>
                 <v-card-text class="pt-3">
                     <v-row>

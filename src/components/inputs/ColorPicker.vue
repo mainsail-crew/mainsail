@@ -9,8 +9,8 @@ import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useBase } from '@/composables/useBase'
 import iro from '@jaames/iro'
-import { IroColor } from '@irojs/iro-core'
-import { ColorPickerProps, IroColorPicker as IroCP } from '@jaames/iro/dist/ColorPicker.d'
+import type { IroColor } from '@irojs/iro-core'
+import type { ColorPickerProps, IroColorPicker as IroCP } from '@jaames/iro/dist/ColorPicker.d'
 
 const props = defineProps<{
     color?: IroColor | string

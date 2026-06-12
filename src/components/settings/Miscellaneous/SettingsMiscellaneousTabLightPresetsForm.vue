@@ -105,9 +105,9 @@ import { useI18n } from 'vue-i18n'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { GuiMiscellaneousStateEntry, GuiMiscellaneousStateEntryPreset } from '@/store/gui/miscellaneous/types'
-import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker'
+import type { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import iro from '@jaames/iro'
-import { IroColor } from '@irojs/iro-core'
+import type { IroColor } from '@irojs/iro-core'
 
 interface ColorData {
     red: number | null

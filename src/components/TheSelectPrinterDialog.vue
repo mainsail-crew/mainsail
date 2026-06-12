@@ -9,18 +9,18 @@
             <template #buttons>
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool">
-                        <v-btn :icon="mdiCloseThick" tile class="minwidth-0" @click="dialogEditPrinter.bool = false" />
+                        <v-btn :icon="mdiCloseThick" rounded="0" class="minwidth-0" @click="dialogEditPrinter.bool = false" />
                     </template>
                     <template v-else-if="dialogAddPrinter.bool">
                         <v-btn
                             v-if="dialogAddPrinter.bool"
                             :icon="mdiCloseThick"
-                            tile
+                            rounded="0"
                             class="minwidth-0"
                             @click="dialogAddPrinter.bool = false" />
                     </template>
                     <template v-else-if="printers.length > 0">
-                        <v-btn :icon="mdiSync" tile class="minwidth-0" color="primary" @click="checkPrinters" />
+                        <v-btn :icon="mdiSync" rounded="0" class="minwidth-0" color="primary" @click="checkPrinters" />
                     </template>
                 </template>
             </template>
@@ -160,7 +160,7 @@
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn color="red" :icon="mdiDelete" tile class="minwidth-0 rounded" @click="delPrinter" />
+                        <v-btn color="red" :icon="mdiDelete" rounded="0" class="minwidth-0 rounded" @click="delPrinter" />
                         <v-checkbox
                             v-model="showOptionalSettings"
                             class="ml-2"
@@ -200,7 +200,7 @@
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
                                         <v-col v-if="canAddPrinters" class="col-auto pa-0">
-                                            <v-btn tile large :icon="mdiPencil" class="mr-1" @click.stop.prevent="editPrinter(printer)" />
+                                            <v-btn rounded="0" large :icon="mdiPencil" class="mr-1" @click.stop.prevent="editPrinter(printer)" />
                                         </v-col>
                                     </v-row>
                                 </v-col>
