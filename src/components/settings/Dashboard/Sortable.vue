@@ -3,13 +3,13 @@
         <v-list class="fill-height" density="compact">
             <v-list-item v-if="column < 2">
                 <v-row>
-                    <v-col class="col-auto pr-0 pl-8">
+                    <v-col class="v-col-auto pr-0 pl-8">
                         <v-icon :icon="mdiInformation" />
                     </v-col>
                     <v-col class="pr-0 text-truncate">
                         {{ $t('Panels.StatusPanel.Headline') }}
                     </v-col>
-                    <v-col class="col-auto pl-0">
+                    <v-col class="v-col-auto pl-0">
                         <v-icon color="grey lighten-1" :icon="mdiLock" />
                     </v-col>
                 </v-row>

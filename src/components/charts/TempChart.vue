@@ -283,8 +283,8 @@ function tooltipFormatter(params: TopLevelFormatterParams): string {
         if (displayName.indexOf(' ') !== -1) displayName = displayName.substring(displayName.indexOf(' ') + 1)
 
         outputRows += '<div class="row">'
-        outputRows += `<div class="col-auto py-0">${entry.marker}<span class='ml-2'>${convertName(displayName)}:</span></div>`
-        outputRows += '<div class="col text-right py-0 font-weight-bold">'
+        outputRows += `<div class="v-col-auto py-0">${entry.marker}<span class='ml-2'>${convertName(displayName)}:</span></div>`
+        outputRows += '<div class="v-col text-right py-0 font-weight-bold">'
 
         const seriesNameTemperature = `${baseSeriesName}-temperature`
         const seriesNameTarget = `${baseSeriesName}-target`
@@ -317,7 +317,7 @@ function tooltipFormatter(params: TopLevelFormatterParams): string {
 
     const header =
         '<div class="row">' +
-        '<div class="col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
+        '<div class="v-col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
         `<span class="v-icon mdi ${theme}" style="margin-right: 5px;">` +
         '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" viewBox="0 0 24 24" class="v-icon__svg" style="font-size: 12px; width: 12px; height: 12px;">' +
         `<path d="${mdiClock}"></path>` +

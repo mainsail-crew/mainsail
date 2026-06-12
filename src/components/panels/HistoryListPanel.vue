@@ -2,7 +2,7 @@
     <panel :icon="mdiFileDocumentMultipleOutline" :title="$t('History.PrintHistory')" card-class="history-list-panel">
         <v-card-text>
             <v-row>
-                <v-col class="col-4 d-flex align-center">
+                <v-col class="v-col-4 d-flex align-center">
                     <v-text-field
                         v-model="search"
                         :append-icon="mdiMagnify"
@@ -13,7 +13,7 @@
                         hide-details
                         density="compact" />
                 </v-col>
-                <v-col class="offset-4 col-4 d-flex align-center justify-end">
+                <v-col class="offset-4 v-col-4 d-flex align-center justify-end">
                     <v-tooltip v-if="selectedJobsTable.length" top>
                         <template #activator="{ props: activatorProps }">
                             <v-btn
@@ -290,7 +290,7 @@ const headers = computed<HistoryListPanelCol[]>(() => {
 
 const tableFields = computed<HistoryListPanelCol[]>(() =>
     filteredHeaders.value.filter(
-        (col: HistoryListPanelCol) => !['filename', 'status'].includes(col.value) && col.value !== ''
+        (vCol: HistoryListPanelCol) => !['filename', 'status'].includes(vCol.value) && vCol.value !== ''
     )
 )
 
@@ -409,14 +409,14 @@ function exportHistory() {
     row.push('type')
     row.push('status')
 
-    tableFields.value.forEach((col) => {
-        if (col.value.startsWith('history_field_')) {
-            const sensorName = col.value.replace('history_field_', '')
+    tableFields.value.forEach((vCol) => {
+        if (vCol.value.startsWith('history_field_')) {
+            const sensorName = vCol.value.replace('history_field_', '')
             row.push(sensorName)
             return
         }
 
-        row.push(col.value)
+        row.push(vCol.value)
     })
 
     content.push(row)
@@ -482,8 +482,8 @@ function exportHistory() {
             row.push('job')
             row.push(job.status)
 
-            tableFields.value.forEach((col) => {
-                row.push(outputValue(col, job, csvSeperator))
+            tableFields.value.forEach((vCol) => {
+                row.push(outputValue(vCol, job, csvSeperator))
             })
 
             content.push(row)
@@ -505,8 +505,8 @@ function exportHistory() {
     link.remove()
 }
 
-function outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
-    const key = col.value
+function outputValue(vCol: HistoryListPanelCol, job: ServerHistoryStateJob, csvSeperator: string | null = null) {
+    const key = vCol.value
     let value: string | number | null = null
     if (key in job) {
         const raw = job[key as keyof ServerHistoryStateJob]
@@ -534,7 +534,7 @@ function outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, csvSe
         return value
     }
 
-    switch (col.outputType) {
+    switch (vCol.outputType) {
         case 'date':
             return formatDateTime(value * 1000)
         case 'time':

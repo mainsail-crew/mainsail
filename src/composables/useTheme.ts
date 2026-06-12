@@ -36,8 +36,8 @@ export function useTheme() {
     )
 
     const draggableBgStyle = computed(() => {
-        const col = isDark.value ? '#282828' : '#e7e7e7'
-        return `background-color: ${col}`
+        const vCol = isDark.value ? '#282828' : '#e7e7e7'
+        return `background-color: ${vCol}`
     })
 
     const progressBarColor = computed(() => (isDark.value ? 'white' : 'primary'))

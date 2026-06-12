@@ -9,7 +9,7 @@
             <v-list-item class="minHeight36">
                 <v-row>
                     <v-col class="pr-0">{{ $t('Files.HiddenFiles') }}</v-col>
-                    <v-col class="col-auto pl-0">
+                    <v-col class="v-col-auto pl-0">
                         <v-icon
                             :color="showHiddenFiles ? 'primary' : 'grey lighten-1'"
                             @click.stop="toggleHiddenFiles">
@@ -21,7 +21,7 @@
             <v-list-item class="minHeight36">
                 <v-row>
                     <v-col class="pr-0">{{ $t('Files.RunFiles') }}</v-col>
-                    <v-col class="col-auto pl-0">
+                    <v-col class="v-col-auto pl-0">
                         <v-icon
                             :color="showCompletedFiles ? 'primary' : 'grey lighten-1'"
                             @click.stop="toggleCompletedFiles">

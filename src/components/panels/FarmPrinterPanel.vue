@@ -50,10 +50,10 @@
                             <webcam-wrapper :webcam="currentWebcam" :printer-url="printerUrl" :show-fps="false" />
                         </div>
                         <v-card-title
-                            class="white--text py-2"
+                            class="text-white py-2"
                             style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)">
                             <v-row>
-                                <v-col class="col-auto pr-0 d-flex align-center" style="width: 58px">
+                                <v-col class="v-col-auto pr-0 d-flex align-center" style="width: 58px">
                                     <img
                                         v-if="printer_logo"
                                         :src="printer_logo"
@@ -66,7 +66,7 @@
                                         style="width: 100%"
                                         class="my-auto" />
                                 </v-col>
-                                <v-col class="col" style="width: 100px">
+                                <v-col class="v-col" style="width: 100px">
                                     <h3 class="font-weight-regular">{{ printer_status }}</h3>
                                     <span
                                         v-if="printer_current_filename !== ''"
@@ -84,7 +84,7 @@
                                 <v-col
                                     v-for="object in printer_preview"
                                     :key="object.name"
-                                    :class="object.name === 'ETA' ? 'col-auto' : 'col' + ' px-2'">
+                                    :class="object.name === 'ETA' ? 'v-col-auto' : 'v-col' + ' px-2'">
                                     <strong class="d-block text-center">{{ object.name }}</strong>
                                     <span class="d-block text-center">{{ object.value }}</span>
                                 </v-col>

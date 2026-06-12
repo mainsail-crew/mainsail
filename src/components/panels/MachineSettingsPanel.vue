@@ -13,7 +13,7 @@
             <template #default="{ el }">
                 <v-card-text class="pt-5">
                     <v-row>
-                        <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <v-col :class="{ 'v-col-12': el.is.small, 'v-col-6': el.is.medium }">
                             <number-input
                                 :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity')"
                                 param="VELOCITY"
@@ -29,7 +29,7 @@
                                 unit="mm/s"
                                 @submit="sendCmd" />
                         </v-col>
-                        <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <v-col :class="{ 'v-col-12': el.is.small, 'v-col-6': el.is.medium }">
                             <number-input
                                 :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity')"
                                 param="SQUARE_CORNER_VELOCITY"
@@ -46,7 +46,7 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <v-col :class="{ 'v-col-12': el.is.small, 'v-col-6': el.is.medium }">
                             <number-input
                                 :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration')"
                                 param="ACCEL"
@@ -62,7 +62,7 @@
                                 unit="mm/s²"
                                 @submit="sendCmd" />
                         </v-col>
-                        <v-col :class="{ 'col-12': el.is.small, 'col-6': el.is.medium }">
+                        <v-col :class="{ 'v-col-12': el.is.small, 'v-col-6': el.is.medium }">
                             <number-input
                                 v-if="minimumCruiseRatio === null"
                                 :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel')"

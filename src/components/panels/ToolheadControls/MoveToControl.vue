@@ -11,9 +11,9 @@
                 <v-row v-if="showPosition" class="flex-nowrap pb-1">
                     <v-col
                         :class="{
-                            'col-5': el.is.small,
-                            'col-4': el.is.xsmall || el.is.medium,
-                            'col-3': el.is.large,
+                            'v-col-5': el.is.small,
+                            'v-col-4': el.is.xsmall || el.is.medium,
+                            'v-col-3': el.is.large,
                         }"
                         class="text-subtitle-2 text-secondary mr-2 d-flex align-center">
                         <v-icon size="small" class="mr-1">{{ mdiCrosshairsGps }}</v-icon>
@@ -30,7 +30,7 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="showCoordinates" density="compact">
-                    <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
+                    <v-col :class="el.is.xsmall ? 'v-col-12' : 'v-col-4'">
                         <move-to-input
                             :model-value="input.x.pos"
                             @update:model-value="setInputXPos"
@@ -42,7 +42,7 @@
                             :disabled="!xAxisHomed"
                             @submit="sendCmd" />
                     </v-col>
-                    <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
+                    <v-col :class="el.is.xsmall ? 'v-col-12' : 'v-col-4'">
                         <move-to-input
                             :model-value="input.y.pos"
                             @update:model-value="setInputYPos"
@@ -54,7 +54,7 @@
                             :disabled="!yAxisHomed"
                             @submit="sendCmd" />
                     </v-col>
-                    <v-col :class="el.is.xsmall ? 'col-12' : 'col-4'">
+                    <v-col :class="el.is.xsmall ? 'v-col-12' : 'v-col-4'">
                         <move-to-input
                             :model-value="input.z.pos"
                             @update:model-value="setInputZPos"

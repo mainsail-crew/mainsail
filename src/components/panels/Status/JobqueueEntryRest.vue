@@ -1,6 +1,6 @@
 <template>
     <v-row class="d-flex flex-row flex-nowrap">
-        <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
+        <v-col class="v-col-auto d-flex flex-column justify-center pr-0 py-0">
             <v-icon style="width: 32px">{{ mdiFileMultiple }}</v-icon>
         </v-col>
         <v-col class="py-2" style="min-width: 0; font-size: 0.875em">

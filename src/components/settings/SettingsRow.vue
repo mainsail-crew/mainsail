@@ -2,13 +2,13 @@
     <v-row :dense="dense">
         <v-col :class="firstColClasses">
             <v-row class="d-flex flex-row">
-                <v-col v-if="loading" class="col-auto d-flex justify-center align-center pr-0">
+                <v-col v-if="loading" class="v-col-auto d-flex justify-center align-center pr-0">
                     <v-progress-circular indeterminate color="primary" :size="24" />
                 </v-col>
-                <v-col v-else-if="icon" class="col-auto d-flex justify-center align-center pr-0">
+                <v-col v-else-if="icon" class="v-col-auto d-flex justify-center align-center pr-0">
                     <v-icon>{{ icon }}</v-icon>
                 </v-col>
-                <v-col class="col d-flex justify-center flex-column">
+                <v-col class="v-col d-flex justify-center flex-column">
                     <span class="settings-row-title">{{ title }}</span>
                     <span v-if="subTitle" class="settings-row-subtitle">{{ subTitle }}</span>
                 </v-col>
@@ -38,20 +38,20 @@ const firstColClasses = computed(() => {
     const dense = props.dense ? ' py-1' : ''
     const defaultClasses = ' d-flex justify-center' + dense
 
-    if (props.dynamicSlotWidth) return 'col' + defaultClasses
-    else if (props.mobileSecondRow) return 'col-12 col-md-6' + defaultClasses
+    if (props.dynamicSlotWidth) return 'v-col' + defaultClasses
+    else if (props.mobileSecondRow) return 'v-col-12 v-col-md-6' + defaultClasses
 
-    return 'col-6' + defaultClasses
+    return 'v-col-6' + defaultClasses
 })
 
 const secondColClasses = computed(() => {
     const dense = props.dense ? ' py-1' : ' settings-row-slot'
     const defaultClasses = ' d-flex justify-end align-center' + dense
 
-    if (props.dynamicSlotWidth) return 'col-auto' + defaultClasses
-    else if (props.mobileSecondRow) return 'col-12 col-md-6 pt-0 pt-md-3' + defaultClasses
+    if (props.dynamicSlotWidth) return 'v-col-auto' + defaultClasses
+    else if (props.mobileSecondRow) return 'v-col-12 v-col-md-6 pt-0 pt-md-3' + defaultClasses
 
-    return 'col-6' + defaultClasses
+    return 'v-col-6' + defaultClasses
 })
 </script>
 

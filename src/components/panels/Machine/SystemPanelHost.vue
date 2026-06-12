@@ -7,7 +7,7 @@
 <template v-if="hostStats">
     <div>
         <v-row class="system-load-row py-0 pr-4 flex-nowrap" align="center">
-            <v-col class="col system-load-row__info pl-6 pr-4">
+            <v-col class="v-col system-load-row__info pl-6 pr-4">
                 <strong style="cursor: pointer" @click="hostDetailsDialog = true">Host</strong>
                 <v-tooltip top>
                     <template #activator="{ props: activatorProps }">
@@ -121,7 +121,7 @@
                     </template>
                 </div>
             </v-col>
-            <v-col class="system-load-row__gauges col-auto px-2">
+            <v-col class="system-load-row__gauges v-col-auto px-2">
                 <div class="system-load-gauges">
                     <div v-if="cpuUsage !== null" class="system-load-gauge d-flex flex-column align-center justify-center">
                         <v-progress-circular

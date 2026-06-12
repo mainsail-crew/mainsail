@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-row class="system-load-row py-0 pr-4 flex-nowrap" align="center">
-            <v-col class="col system-load-row__info pl-6 pr-4">
+            <v-col class="v-col system-load-row__info pl-6 pr-4">
                 <strong style="cursor: pointer" @click="mcuDetailsDialog = true">{{ mcu.name }}</strong>
                 <small v-if="mcu.chip" class="ml-2">({{ mcu.chip }})</small>
                 <br />
@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </v-col>
-            <v-col class="system-load-row__gauge px-2 col-auto d-flex justify-center align-center">
+            <v-col class="system-load-row__gauge px-2 v-col-auto d-flex justify-center align-center">
                 <v-progress-circular
                     :rotate="-90"
                     :size="55"

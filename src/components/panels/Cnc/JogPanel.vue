@@ -49,7 +49,7 @@
                         color="grey"
                         variant="outlined"
                         @click="disableSteppers">
-                        <v-icon left size="small">mdi-close-circle-outline</v-icon>
+                        <v-icon left size="small">{{ mdiCloseCircleOutline }}</v-icon>
                         Disable Steppers
                     </v-btn>
                 </v-col>
@@ -211,11 +211,12 @@ import {
     mdiChevronLeft,
     mdiChevronRight,
     mdiStop,
+    mdiCloseCircleOutline,
     mdiKeyboard,
 } from '@mdi/js'
 import { updateCncSettings } from '@/store/files/cncApi'
 
-const { printer_state } = useBase()
+const { printer_state, klipperReadyForGui } = useBase()
 const { homedAxes, doHome, doHomeXY, doHomeZ, doSend } = useControl()
 
 const store = useStore()

@@ -6,7 +6,7 @@
             card-class="timelapse-files-panel">
             <v-card-text>
                 <v-row>
-                    <v-col class="col-12 d-flex align-center">
+                    <v-col class="v-col-12 d-flex align-center">
                         <v-text-field
                             v-model="search"
                             :append-icon="mdiMagnify"
@@ -53,7 +53,7 @@
             </v-card-text>
             <v-card-text>
                 <v-row>
-                    <v-col class="col-12 py-2 d-flex align-center">
+                    <v-col class="v-col-12 py-2 d-flex align-center">
                         <span>
                             <b class="mr-1">{{ $t('Timelapse.CurrentPath') }}:</b>
                             <path-navigation

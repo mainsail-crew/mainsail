@@ -5,14 +5,14 @@
                 <strong>{{ $t('Machine.UpdatePanel.System') }}</strong>
                 <br />
                 <template v-if="package_count">
-                    <a class="info--text cursor--pointer" @click="boolShowPackageList = true">
+                    <a class="text-info cursor--pointer" @click="boolShowPackageList = true">
                         <v-icon size="small" color="info" class="mr-1">{{ mdiInformation }}</v-icon>
                         {{ $t('Machine.UpdatePanel.CountPackagesCanBeUpgraded', { count: package_count }) }}
                     </a>
                 </template>
                 <span v-else>{{ $t('Machine.UpdatePanel.OSPackages') }}</span>
             </v-col>
-            <v-col class="col-auto pr-6 text-right" align-self="center">
+            <v-col class="v-col-auto pr-6 text-right" align-self="center">
                 <v-chip
                     small
                     label

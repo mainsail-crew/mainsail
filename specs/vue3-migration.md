@@ -5,6 +5,12 @@
 > This is the original migration plan kept as a historical record.
 > The codebase is now on Vue 3.5 + Vuetify 3 + Vuex 4 + vue-router 4 + vue-i18n 11 + TypeScript 5.7 + Vite 7.
 > See `specs/vuetify3-migration-completion.md` for the completion snapshot.
+>
+> Recent follow-up work on this branch after the main migration landed:
+> - Dashboard panel resolution now uses an explicit component registry in `src/pages/Dashboard.vue`.
+> - `JogPanel` now uses the shared GUI readiness gate and the imported MDI icon path.
+> - The local Vue 3 dashboard was compared against the remote `http://192.168.0.239/` reference page for layout parity.
+> - `bun run build` still passes after the latest dashboard parity cleanup.
 
 ## Problem
 

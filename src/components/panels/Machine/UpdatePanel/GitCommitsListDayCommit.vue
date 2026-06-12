@@ -14,13 +14,13 @@
                     style="white-space: pre-line"
                     v-html="message"></p>
                 <p class="caption mb-0">
-                    <span class="font-weight-bold text-decoration-none white--text">
+                    <span class="font-weight-bold text-decoration-none text-white">
                         {{ author }}
                     </span>
                     <span>{{ commitFormatDate }}</span>
                 </p>
             </v-col>
-            <v-col class="col-auto pt-0 pt-sm-4">
+            <v-col class="v-col-auto pt-0 pt-sm-4">
                 <v-chip variant="outlined" label size="small" :href="commitHref" target="_blank">
                     {{ commitShortSha }}
                 </v-chip>

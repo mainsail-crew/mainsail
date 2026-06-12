@@ -3,7 +3,7 @@
         <v-card-title>{{ title }}</v-card-title>
         <v-card-text>
             <v-row>
-                <v-col class="col-12 col-sm-6">
+                <v-col class="v-col-12 v-col-sm-6">
                     <v-row>
                         <v-col class="d-flex">
                             <v-item-group>
@@ -92,7 +92,7 @@
                                 dense
                                 :rules="[rules.required, rules.aspect]" />
                         </v-col>
-                        <v-col v-if="hasTargetFps" class="py-2 col-6">
+                        <v-col v-if="hasTargetFps" class="py-2 v-col-6">
                             <v-text-field
                                 v-model="form.target_fps"
                                 outlined
@@ -100,7 +100,7 @@
                                 hide-details
                                 :label="$t('Settings.WebcamsTab.TargetFPS')" />
                         </v-col>
-                        <v-col v-if="hasRotate" class="py-2 col-6">
+                        <v-col v-if="hasRotate" class="py-2 v-col-6">
                             <v-select
                                 v-model="form.rotation"
                                 :items="rotationItems"
@@ -204,7 +204,7 @@
                         </v-row>
                     </template>
                 </v-col>
-                <v-col class="col-12 col-sm-6 text-center" align-self="center">
+                <v-col class="v-col-12 v-col-sm-6 text-center" align-self="center">
                     <webcam-wrapper :webcam="webcam" page="settings" />
                 </v-col>
             </v-row>

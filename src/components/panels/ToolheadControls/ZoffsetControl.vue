@@ -41,7 +41,7 @@
                     </v-col>
                 </v-row>
                 <v-row density="compact">
-                    <v-col :class="!el.is.medium ? 'order-1 col-6' : 'col-12'">
+                    <v-col :class="!el.is.medium ? 'order-1 v-col-6' : 'v-col-12'">
                         <div class="d-flex align-center">
                             <v-item-group class="_btn-group">
                                 <v-btn
@@ -58,7 +58,7 @@
                             </v-item-group>
                         </div>
                     </v-col>
-                    <v-col :class="!el.is.medium ? 'order-0 col-6' : 'col-12'">
+                    <v-col :class="!el.is.medium ? 'order-0 v-col-6' : 'v-col-12'">
                         <v-item-group v-if="!el.is.medium" class="_btn-group">
                             <v-btn
                                 v-for="(offset, index) in offsetsZ.slice().reverse()"

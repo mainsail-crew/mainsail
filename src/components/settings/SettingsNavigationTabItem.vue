@@ -1,6 +1,6 @@
 <template>
     <v-row class="my-2 mx-0" :style="draggableBgStyle">
-        <v-col class="col-auto pr-0 d-flex py-2">
+        <v-col class="v-col-auto pr-0 d-flex py-2">
             <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
         </v-col>
         <v-col class="py-2">

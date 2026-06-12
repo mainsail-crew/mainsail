@@ -10,7 +10,7 @@
             </template>
             <v-card-text class="">
                 <v-row>
-                    <v-col class="col-4">
+                    <v-col class="v-col-4">
                         <v-select
                             v-model="variable_fps"
                             :label="$t('Timelapse.Type')"
@@ -19,7 +19,7 @@
                             dense
                             hide-details />
                     </v-col>
-                    <v-col class="col-4">
+                    <v-col class="v-col-4">
                         <template v-if="variable_fps">
                             <v-text-field
                                 v-model="variable_fps_min"
@@ -67,7 +67,7 @@
                             hide-spin-buttons
                             class="mt-3" />
                     </v-col>
-                    <v-col class="col-4">
+                    <v-col class="v-col-4">
                         <v-text-field
                             v-if="variable_fps"
                             v-model="variableTargetFps"

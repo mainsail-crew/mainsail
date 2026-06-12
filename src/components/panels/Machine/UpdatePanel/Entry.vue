@@ -5,26 +5,26 @@
                 <strong>{{ name }}</strong>
                 <br />
                 <template v-if="type === 'git_repo' && commitsBehind.length">
-                    <a class="info--text cursor--pointer" @click="boolShowCommitList = true">
+                    <a class="text-info cursor--pointer" @click="boolShowCommitList = true">
                         <v-icon size="small" color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
                 <template v-else-if="type === 'web' && semverUpdatable">
-                    <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
+                    <a class="text-info text-decoration-none" :href="webLinkRelease" target="_blank">
                         <v-icon size="small" color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
                 <template v-else-if="type === 'python' && semverUpdatable">
-                    <a class="info--text text-decoration-none" :href="pythonChangelog" target="_blank">
+                    <a class="text-info text-decoration-none" :href="pythonChangelog" target="_blank">
                         <v-icon size="small" color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
                 <span v-else>{{ versionOutput }}</span>
             </v-col>
-            <v-col class="col-auto pr-6 text-right" align-self="center">
+            <v-col class="v-col-auto pr-6 text-right" align-self="center">
                 <v-chip
                     v-if="anomalies.length > 0"
                     small

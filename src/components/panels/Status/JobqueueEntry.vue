@@ -3,10 +3,10 @@
         v-longpress:600="openContextMenu"
         class="jobqueue-list-entry d-flex flex-row flex-nowrap cursor-pointer"
         @contextmenu="openContextMenu($event)">
-        <v-col v-if="showHandle" class="col-auto d-flex flex-column justify-center pr-0 py-0">
+        <v-col v-if="showHandle" class="v-col-auto d-flex flex-column justify-center pr-0 py-0">
             <v-icon class="handle">{{ mdiDragVertical }}</v-icon>
         </v-col>
-        <v-col class="col-auto d-flex flex-column justify-center pr-0 py-0">
+        <v-col class="v-col-auto d-flex flex-column justify-center pr-0 py-0">
             <gcodefiles-thumbnail :item="job" />
         </v-col>
         <v-col class="py-1" style="min-width: 0; font-size: 0.875em">
@@ -18,7 +18,7 @@
         </v-col>
         <v-col
             v-if="showPrintButton && !printerIsPrinting"
-            class="col-auto d-flex flex-column justify-center pa-0 pr-1">
+            class="v-col-auto d-flex flex-column justify-center pa-0 pr-1">
             <v-btn icon color="success" class="minwidth-0" @click="startJobqueue">
                 <v-icon>{{ mdiPlay }}</v-icon>
             </v-btn>

@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col class="col-12 py-1">
+        <v-col class="v-col-12 py-1">
             <v-checkbox
                 :model-value="value"
                 @update:model-value="setValue"

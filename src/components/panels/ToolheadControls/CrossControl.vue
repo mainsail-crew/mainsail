@@ -196,7 +196,7 @@
                                         XY
                                     </v-btn>
                                 </v-col>
-                                <v-col :class="enableXYHoming ? 'col-6' : 'col-4'" class="flex-grow-1">
+                                <v-col :class="enableXYHoming ? 'v-col-6' : 'v-col-4'" class="flex-grow-1">
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"
@@ -308,7 +308,7 @@
                                         XY
                                     </v-btn>
                                 </v-col>
-                                <v-col :class="enableXYHoming ? 'col-6' : 'col-4'" class="flex-grow-1">
+                                <v-col :class="enableXYHoming ? 'v-col-6' : 'v-col-4'" class="flex-grow-1">
                                     <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"

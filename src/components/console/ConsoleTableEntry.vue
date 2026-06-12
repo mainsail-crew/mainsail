@@ -1,6 +1,6 @@
 <template>
     <v-row :class="entryStyle">
-        <v-col class="col-auto pr-0 text-disabled console-time">{{ entryFormatTime }}</v-col>
+        <v-col class="v-col-auto pr-0 text-disabled console-time">{{ entryFormatTime }}</v-col>
         <v-col
             v-if="!rawOutput"
             :class="messageClass"
@@ -73,25 +73,25 @@ function commandClick(event: Event) {
     white-space: pre-wrap;
 
     &.default {
-        .col {
+        .v-col {
             padding-top: 8px !important;
             padding-bottom: 8px !important;
         }
 
-        & + .consoleTableRow .col {
+        & + .consoleTableRow .v-col {
             border-top: 1px solid rgba(255, 255, 255, 0.12);
         }
     }
 
     &.compact {
-        .col {
+        .v-col {
             padding-top: 2px !important;
             padding-bottom: 2px !important;
         }
     }
 }
 
-html.theme--light .consoleTableRow.default + .consoleTableRow .col {
+html.theme--light .consoleTableRow.default + .consoleTableRow .v-col {
     border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 </style>

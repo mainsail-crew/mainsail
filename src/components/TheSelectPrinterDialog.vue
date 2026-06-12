@@ -50,7 +50,7 @@
                 <v-form v-model="addPrinterValid" @submit.prevent="addPrinter">
                     <v-card-text>
                         <v-row>
-                            <v-col class="col-8">
+                            <v-col class="v-col-8">
                                 <v-text-field
                                     v-model="dialogAddPrinter.hostname"
                                     :rules="[
@@ -64,7 +64,7 @@
                                     hide-details="auto"
                                     density="compact" />
                             </v-col>
-                            <v-col class="col-4">
+                            <v-col class="v-col-4">
                                 <v-text-field
                                     v-model="dialogAddPrinter.port"
                                     :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
@@ -114,7 +114,7 @@
                 <v-form v-model="editPrinterValid" @submit.prevent="updatePrinter">
                     <v-card-text>
                         <v-row>
-                            <v-col class="col-8">
+                            <v-col class="v-col-8">
                                 <v-text-field
                                     v-model="dialogEditPrinter.hostname"
                                     :rules="[
@@ -128,7 +128,7 @@
                                     density="compact"
                                     hide-details="auto" />
                             </v-col>
-                            <v-col class="col-4">
+                            <v-col class="v-col-4">
                                 <v-text-field
                                     v-model="dialogEditPrinter.port"
                                     :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
@@ -185,7 +185,7 @@
                                     style="cursor: pointer"
                                     @click="connect(printer)">
                                     <v-row align="center">
-                                        <v-col class="col-auto pr-0">
+                                        <v-col class="v-col-auto pr-0">
                                             <v-progress-circular
                                                 v-if="printer.socket.isConnecting"
                                                 indeterminate
@@ -199,7 +199,7 @@
                                             </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
-                                        <v-col v-if="canAddPrinters" class="col-auto pa-0">
+                                        <v-col v-if="canAddPrinters" class="v-col-auto pa-0">
                                             <v-btn rounded="0" large :icon="mdiPencil" class="mr-1" @click.stop.prevent="editPrinter(printer)" />
                                         </v-col>
                                     </v-row>

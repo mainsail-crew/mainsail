@@ -41,7 +41,7 @@
                             min="0"
                             persistent-hint />
                     </v-col>
-                    <v-col class="col-auto pt-0 text-center">
+                    <v-col class="v-col-auto pt-0 text-center">
                         <v-btn class="px-2 minwidth-0" color="primary" @click="scrubPlaying = !scrubPlaying">
                             <v-icon v-if="scrubPlaying">{{ mdiPause }}</v-icon>
                             <v-icon v-else>{{ mdiPlay }}</v-icon>
@@ -63,7 +63,7 @@
                         <v-row>
                             <v-col
                                 order-md="2"
-                                class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4">
+                                class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap v-col-12 v-col-md-4">
                                 <template v-if="loadedFile === null">
                                     <v-btn
                                         v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile"
@@ -86,7 +86,7 @@
                                     </v-btn>
                                 </template>
                             </v-col>
-                            <v-col class="col-12 col-sm-6 col-md-4">
+                            <v-col class="v-col-12 v-col-sm-6 v-col-md-4">
                                 <v-select
                                     v-model="colorMode"
                                     :items="colorModes"
@@ -96,7 +96,7 @@
                                     hide-details
                                     variant="outlined"></v-select>
                             </v-col>
-                            <v-col order-md="3" class="col-12 col-sm-6 col-md-4 d-flex">
+                            <v-col order-md="3" class="v-col-12 v-col-sm-6 v-col-md-4 d-flex">
                                 <v-select
                                     v-model="renderQuality"
                                     :items="renderQualities"

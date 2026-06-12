@@ -10,7 +10,7 @@
             <v-row>
                 <v-col>
                     <ul class="">
-                        <li v-for="module in missingConfigs" :key="module" class="orange--text">
+                        <li v-for="module in missingConfigs" :key="module" class="text-orange">
                             <code>{{ module }}</code>
                             {{ $t('Panels.MinSettingsPanel.IsNotDefinedInConfig') }}
                         </li>
@@ -23,7 +23,7 @@
             <v-card-text>
                 <v-row>
                     <v-col>
-                        <p class="orange--text mb-0">{{ $t('Panels.MinSettingsPanel.IncludeMainsailCfg') }}</p>
+                        <p class="text-orange mb-0">{{ $t('Panels.MinSettingsPanel.IncludeMainsailCfg') }}</p>
                     </v-col>
                 </v-row>
             </v-card-text>

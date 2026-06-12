@@ -7,7 +7,7 @@
             :collapsible="true">
             <v-card-text>
                 <v-row>
-                    <v-col class="col-12 col-lg pr-lg-0">
+                    <v-col class="v-col-12 v-col-lg pr-lg-0">
                         <v-select
                             v-model="root"
                             class="machine-configfiles-panel__root-select"
@@ -19,7 +19,7 @@
                             attach=".machine-configfiles-panel__root-select"
                             @change="changeRoot" />
                     </v-col>
-                    <v-col class="col col-lg-auto pl-lg-0 text-right">
+                    <v-col class="v-col v-col-lg-auto pl-lg-0 text-right">
                         <input ref="fileUpload" type="file" style="display: none" multiple @change="uploadFile" />
                         <v-btn
                             v-for="button in filteredToolbarButtons"
@@ -65,7 +65,7 @@
             </v-card-text>
             <v-card-text>
                 <v-row>
-                    <v-col class="col-12 py-2 d-flex align-center flex-wrap">
+                    <v-col class="v-col-12 py-2 d-flex align-center flex-wrap">
                         <span class="d-flex align-center flex-wrap">
                             <b class="mr-1">{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
                             <path-navigation
@@ -158,7 +158,7 @@
             </v-data-table>
             <v-card-text v-else>
                 <v-row>
-                    <v-col class="col-12 col-lg pr-lg-0">
+                    <v-col class="v-col-12 v-col-lg pr-lg-0">
                         <v-alert
                             dense
                             text

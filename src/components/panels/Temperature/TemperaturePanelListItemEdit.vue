@@ -16,7 +16,7 @@
                     :object-name="objectName"
                     :additional-sensor="additionalSensor" />
                 <v-row>
-                    <v-col class="col-12 text-center pb-0">
+                    <v-col class="v-col-12 text-center pb-0">
                         <v-color-picker
                             hide-mode-switch
                             mode="hexa"

@@ -6,79 +6,79 @@
                 <template v-for="component in mobileLayout">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-mobileLayout-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
         </v-row>
         <v-row v-else-if="isTablet">
-            <v-col class="col-6">
+            <v-col class="v-col-6">
                 <status-panel />
                 <template v-for="component in tabletLayout1">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-tabletLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-6">
+            <v-col class="v-col-6">
                 <template v-for="component in tabletLayout2">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-tabletLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
         </v-row>
         <v-row v-else-if="isDesktop">
-            <v-col class="col-5">
+            <v-col class="v-col-5">
                 <status-panel />
                 <template v-for="component in desktopLayout1">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-7">
+            <v-col class="v-col-7">
                 <template v-for="component in desktopLayout2">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
         </v-row>
         <v-row v-else-if="isWidescreen">
-            <v-col class="col-3">
+            <v-col class="v-col-3">
                 <status-panel />
                 <template v-for="component in widescreenLayout1">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-5">
+            <v-col class="v-col-5">
                 <template v-for="component in widescreenLayout2">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
-            <v-col class="col-4">
+            <v-col class="v-col-4">
                 <template v-for="component in widescreenLayout3">
                     <component
                         v-if="isPanelKnown(component.name)"
-                        :is="extractPanelName(component.name)"
+                        :is="getPanelComponent(component.name)"
                         :key="'dashboard-desktopLayout3-' + component.name"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
@@ -122,23 +122,37 @@ const widescreenLayout1 = computed(() => store.getters['gui/getPanels']('widescr
 const widescreenLayout2 = computed(() => store.getters['gui/getPanels']('widescreen', 2, true))
 const widescreenLayout3 = computed(() => store.getters['gui/getPanels']('widescreen', 3, true))
 
-function extractPanelName(name: string) {
-    return name.split('_')[0] + '-panel'
-}
-
 function extractPanelId(name: string) {
     return name.split('_')[1] ?? null
 }
 
-const registeredPanelNames = new Set([
-    'cnc-status', 'dro', 'jog', 'offsets', 'spindle-coolant', 'mdi',
-    'klippystate', 'minsettings', 'status',
-    'ledeffects', 'machinesettings', 'macrogroup', 'macros',
-    'miniconsole', 'miscellaneous', 'toolhead-control', 'temperature', 'webcam',
-])
+const registeredPanels: Record<string, unknown> = {
+    'cnc-status': CncStatusPanel,
+    dro: DroPanel,
+    jog: JogPanel,
+    offsets: OffsetsPanel,
+    'spindle-coolant': SpindleCoolantPanel,
+    mdi: MdiPanel,
+    klippystate: KlippyStatePanel,
+    minsettings: MinSettingsPanel,
+    status: StatusPanel,
+    ledeffects: LedEffectsPanel,
+    machinesettings: MachineSettingsPanel,
+    macrogroup: MacrogroupPanel,
+    macros: MacrosPanel,
+    miniconsole: MiniconsolePanel,
+    miscellaneous: MiscellaneousPanel,
+    'toolhead-control': ToolheadControlPanel,
+    temperature: TemperaturePanel,
+    webcam: WebcamPanel,
+}
+
+function getPanelComponent(name: string) {
+    const prefix = name.split('_')[0]
+    return registeredPanels[prefix] ?? null
+}
 
 function isPanelKnown(name: string): boolean {
-    const prefix = name.split('_')[0]
-    return registeredPanelNames.has(prefix)
+    return getPanelComponent(name) !== null
 }
 </script>

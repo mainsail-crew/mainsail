@@ -16,12 +16,12 @@
             </v-col>
         </v-row>
         <v-row v-else-if="loaded" class="mt-0">
-            <v-col class="col-8 mx-auto">
+            <v-col class="v-col-8 mx-auto">
                 <p class="text-center text-disabled mb-0">{{ $t('DevicesDialog.NoDeviceFound') }}</p>
             </v-col>
         </v-row>
         <v-row v-else class="mt-0">
-            <v-col class="col-8 mx-auto">
+            <v-col class="v-col-8 mx-auto">
                 <p class="text-center text-disabled mb-0">{{ $t('DevicesDialog.ClickRefresh') }}</p>
             </v-col>
         </v-row>

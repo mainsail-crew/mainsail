@@ -95,6 +95,13 @@
 - `agent_docs/VUE_TYPESCRIPT.md` typo cleanup applied (`Vuetiary` → `Vuetify`).
 - No known stale stack references remain in the repo-owned architecture docs after this sync.
 
+### Post-completion follow-up on the branch
+
+- Dashboard panel resolution was tightened in `src/pages/Dashboard.vue` with an explicit component registry so panel keys resolve to actual Vue components.
+- `src/components/panels/Cnc/JogPanel.vue` was updated to use the shared GUI readiness gate and the imported MDI icon path.
+- The local Vue 3 dashboard was compared against the remote `http://192.168.0.239/` reference page to chase remaining layout parity gaps.
+- `bun run build` still passes after the latest dashboard parity cleanup.
+
 ## Priority Order
 
 ```

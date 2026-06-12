@@ -2,7 +2,7 @@
     <div>
         <!-- HOME ALL / ACTION BUTTON -->
         <v-row no-gutters>
-            <v-col class="col-12 pb-0 text-center">
+            <v-col class="v-col-12 pb-0 text-center">
                 <v-btn
                     size="small"
                     :disabled="['printing'].includes(printer_state)"
@@ -61,7 +61,7 @@
                         v-for="steps of stepsXYsorted"
                         :key="'x-' + steps"
                         :disabled="['printing'].includes(printer_state)"
-                        class="btnMinWidthAuto col btnGroup"
+                        class="btnMinWidthAuto v-col btnGroup"
                         @click="doSendMove('X-' + steps, feedrateXY)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
@@ -77,7 +77,7 @@
                         v-for="steps of stepsXYsortedReverse"
                         :key="'x+' + steps"
                         :disabled="['printing'].includes(printer_state)"
-                        class="btnMinWidthAuto col btnGroup"
+                        class="btnMinWidthAuto v-col btnGroup"
                         @click="doSendMove('X+' + steps, feedrateXY)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
@@ -92,7 +92,7 @@
                         v-for="steps of stepsXYsorted"
                         :key="'y-' + steps"
                         :disabled="['printing'].includes(printer_state)"
-                        class="btnMinWidthAuto col btnGroup"
+                        class="btnMinWidthAuto v-col btnGroup"
                         @click="doSendMove('Y-' + steps, feedrateXY)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
@@ -108,7 +108,7 @@
                         v-for="steps of stepsXYsortedReverse"
                         :key="'y+' + steps"
                         :disabled="['printing'].includes(printer_state)"
-                        class="btnMinWidthAuto col btnGroup"
+                        class="btnMinWidthAuto v-col btnGroup"
                         @click="doSendMove('Y+' + steps, feedrateXY)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
@@ -123,7 +123,7 @@
                         v-for="steps of stepsZsorted"
                         :key="'z-' + steps"
                         :disabled="['printing'].includes(printer_state)"
-                        class="btnMinWidthAuto col btnGroup"
+                        class="btnMinWidthAuto v-col btnGroup"
                         @click="doSendMove('Z-' + steps, feedrateZ)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
@@ -139,7 +139,7 @@
                         v-for="steps of stepsZsortedReverse"
                         :key="'z+' + steps"
                         :disabled="['printing'].includes(printer_state)"
-                        class="btnMinWidthAuto col btnGroup"
+                        class="btnMinWidthAuto v-col btnGroup"
                         @click="doSendMove('Z+' + steps, feedrateZ)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>

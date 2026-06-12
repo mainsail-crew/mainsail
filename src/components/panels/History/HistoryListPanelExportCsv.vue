@@ -63,8 +63,8 @@ function createHeaderRow() {
     const row: string[] = []
     row.push('filename')
     row.push('status')
-    props.tableFields.forEach((col) => {
-        row.push(col.value)
+    props.tableFields.forEach((vCol) => {
+        row.push(vCol.value)
     })
     if (existsSlicerCol.value) row.push('slicer')
     return row
@@ -82,8 +82,8 @@ function createContentRows(csvSeperator: string) {
         else row.push(job.filename)
         row.push(job.status)
 
-        props.tableFields.forEach((col) => {
-            row.push(outputValue(col, job, csvSeperator))
+        props.tableFields.forEach((vCol) => {
+            row.push(outputValue(vCol, job, csvSeperator))
         })
 
         if (existsSlicerCol.value) {
@@ -98,8 +98,8 @@ function createContentRows(csvSeperator: string) {
     return rows
 }
 
-function outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, escapeChar: string): string {
-    const key = col.value
+function outputValue(vCol: HistoryListPanelCol, job: ServerHistoryStateJob, escapeChar: string): string {
+    const key = vCol.value
     let value: string | number | null = null
     if (key in job) {
         const raw = job[key as keyof ServerHistoryStateJob]
@@ -122,7 +122,7 @@ function outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, escap
         return value
     }
 
-    switch (col.outputType) {
+    switch (vCol.outputType) {
         case 'date':
             return formatDateTime(value * 1000)
         case 'time':

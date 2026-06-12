@@ -75,7 +75,7 @@
                 <span>{{ statusName }}</span>
             </v-tooltip>
         </td>
-        <td v-for="col in tableFields" :key="col.value" class="text-no-wrap" v-html="outputValue(col, item)" />
+        <td v-for="vCol in tableFields" :key="vCol.value" class="text-no-wrap" v-html="outputValue(vCol, item)" />
         <!-- Context menu -->
         <v-menu v-model="contextMenuBool" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
@@ -271,8 +271,8 @@ function deleteJob() {
     )
 }
 
-function outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
-    const key = col.value
+function outputValue(vCol: HistoryListPanelCol, item: ServerHistoryStateJob) {
+    const key = vCol.value
     let value: string | number | null = null
     if (key in item) {
         const raw = item[key as keyof ServerHistoryStateJob]
@@ -294,7 +294,7 @@ function outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
 
     if (typeof value !== 'number') return value
 
-    switch (col.outputType) {
+    switch (vCol.outputType) {
         case 'filesize':
             return formatFilesize(value)
         case 'date':
