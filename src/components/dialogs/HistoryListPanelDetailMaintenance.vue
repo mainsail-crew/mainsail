@@ -13,7 +13,7 @@
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
-            <overlay-scrollbars style="height: 350px">
+            <OverlayScrollbarsComponent style="height: 350px">
                 <v-card-text class="pb-0">
                     <v-row>
                         <v-col>
@@ -37,7 +37,7 @@
                             :last="entry.id === history[history.length - 1].id" />
                     </v-timeline>
                 </v-card-text>
-            </overlay-scrollbars>
+            </OverlayScrollbarsComponent>
             <v-divider class="mt-0" />
             <v-card-actions>
                 <v-spacer />
@@ -61,6 +61,7 @@ import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import { mdiCloseThick, mdiNotebook, mdiPencil } from '@mdi/js'
 import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 import HistoryListPanelDetailMaintenanceHistoryEntry from '@/components/dialogs/HistoryListPanelDetailMaintenanceHistoryEntry.vue'

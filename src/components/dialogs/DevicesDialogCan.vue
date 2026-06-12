@@ -1,5 +1,5 @@
 <template>
-    <overlay-scrollbars style="max-height: 400px; overflow-x: hidden">
+    <OverlayScrollbarsComponent style="max-height: 400px; overflow-x: hidden">
         <v-card-text>
             <v-row>
                 <v-col class="text-center">
@@ -41,13 +41,14 @@
                 </v-col>
             </v-row>
         </v-card-text>
-    </overlay-scrollbars>
+    </OverlayScrollbarsComponent>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useBase } from '@/composables/useBase'
 import DevicesDialogCanDevice from '@/components/dialogs/DevicesDialogCanDevice.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import { mdiInformationVariantCircle } from '@mdi/js'
 import type { RPCResult } from '@/types/moonraker'
 import type { CanDevice } from '@/types/moonraker/MachineRPC'

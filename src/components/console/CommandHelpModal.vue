@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" :fullscreen="isMobile">
-        <template #activator="{ on, attrs }">
-            <v-btn v-if="inToolbar" icon tile v-bind="attrs" v-on="on">
+        <template #activator="{ props: activatorProps }">
+            <v-btn v-if="inToolbar" icon tile v-bind="activatorProps">
                 <v-icon small>{{ mdiHelp }}</v-icon>
             </v-btn>
             <v-btn
@@ -9,8 +9,7 @@
                 class="gcode-command-btn px-2 minwidth-0"
                 color="lightgray"
                 :small="isMini"
-                v-bind="attrs"
-                v-on="on">
+                v-bind="activatorProps">
                 <v-icon>{{ mdiHelp }}</v-icon>
             </v-btn>
         </template>
@@ -39,7 +38,7 @@
                     </v-row>
                 </v-card-title>
                 <v-divider />
-                <overlay-scrollbars class="command-help-content" :class="isMobile ? 'mobileHeight' : 'height300'">
+                <OverlayScrollbarsComponent class="command-help-content" :class="isMobile ? 'mobileHeight' : 'height300'">
                     <v-card-text class="pt-0">
                         <v-list>
                             <command-help-modal-entry
@@ -49,7 +48,7 @@
                                 @click-on-command="onCommand" />
                         </v-list>
                     </v-card-text>
-                </overlay-scrollbars>
+                </OverlayScrollbarsComponent>
             </panel>
         </template>
     </v-dialog>
@@ -60,6 +59,7 @@ import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import { mdiHelp, mdiCloseThick } from '@mdi/js'
 import CommandHelpModalEntry from '@/components/console/CommandHelpModalEntry.vue'
 

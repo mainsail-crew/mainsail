@@ -67,7 +67,7 @@
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
                     <v-col>
-                        <overlay-scrollbars
+                        <OverlayScrollbarsComponent
                             ref="miniConsoleScroll"
                             :style="'height: ' + consoleHeight + 'px;'"
                             :options="{}">
@@ -77,7 +77,7 @@
                                 :is-mini="true"
                                 @command-click="commandClick" />
                             <v-divider />
-                        </overlay-scrollbars>
+                        </OverlayScrollbarsComponent>
                     </v-col>
                 </v-row>
             </v-card-text>

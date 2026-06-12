@@ -11,7 +11,7 @@
                 </v-btn>
             </template>
             <v-card-text class="pa-0">
-                <overlay-scrollbars style="height: 350px" class="px-6">
+                <OverlayScrollbarsComponent style="height: 350px" class="px-6">
                     <template v-for="(entry, index) in entries" :key="'history_detail_entry_' + index">
                         <v-divider v-if="index > 0" class="my-3" />
                         <v-row>
@@ -19,7 +19,7 @@
                             <v-col class="text-right">{{ entry.value }}</v-col>
                         </v-row>
                     </template>
-                </overlay-scrollbars>
+                </OverlayScrollbarsComponent>
             </v-card-text>
         </panel>
     </v-dialog>
@@ -30,6 +30,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useBase } from '@/composables/useBase'
 import Panel from '@/components/ui/Panel.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import type { ServerHistoryStateJob } from '@/store/server/history/types'
 import { mdiCloseThick, mdiUpdate } from '@mdi/js'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
