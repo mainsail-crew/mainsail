@@ -4,7 +4,7 @@
             <template #activator="{ props }">
                 <v-btn
                     text
-                    tile
+                    rounded="0"
                     color="primary"
                     v-bind="props"
                     :disabled="['printing', 'paused'].includes(printer_state)"
@@ -37,7 +37,7 @@
             v-else
             :icon="displaySmAndDown"
             :text="displayMdAndUp"
-            tile
+            rounded="0"
             color="primary"
             @click="btnCoolDown">
             <v-icon size="small">{{ mdiSnowflake }}</v-icon>

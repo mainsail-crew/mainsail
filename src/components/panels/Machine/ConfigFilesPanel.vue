@@ -232,7 +232,7 @@
                 <template #buttons>
                     <v-btn
                         icon
-                        tile
+                        rounded="0"
                         @click="closeDialogImage">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
@@ -253,7 +253,7 @@
                 card-class="maschine-configfiles-create-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogCreateFile.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogCreateFile.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -282,7 +282,7 @@
                 card-class="maschine-configfiles-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogRenameFile.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameFile.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -311,7 +311,7 @@
                 card-class="maschine-configfiles-duplicate-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogDuplicateFile.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogDuplicateFile.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -340,7 +340,7 @@
                 card-class="maschine-configfiles-create-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogCreateDirectory.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogCreateDirectory.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -369,7 +369,7 @@
                 card-class="maschine-configfiles-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogRenameDirectory.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameDirectory.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field

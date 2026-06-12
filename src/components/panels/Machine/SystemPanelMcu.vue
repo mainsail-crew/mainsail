@@ -80,7 +80,7 @@
                 card-class="machine-systemload-mcu-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="mcuDetailsDialog = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="mcuDetailsDialog = false" />
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <OverlayScrollbarsComponent style="height: 350px" class="px-6">

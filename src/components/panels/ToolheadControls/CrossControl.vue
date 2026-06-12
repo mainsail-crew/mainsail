@@ -111,7 +111,7 @@
                                         :loading="loadings.includes('homeAll')"
                                         :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                                         height="30"
-                                        tile
+                                        rounded="0"
                                         class="w-100"
                                         @click="doHome">
                                         <div class="d-flex align-center">
@@ -128,7 +128,7 @@
                                         :color="colorQuadGantryLevel"
                                         height="30"
                                         density="compact"
-                                        tile
+                                        rounded="0"
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doQGL">
                                         {{ $t('Panels.ToolheadControlPanel.QGL') }}
@@ -140,7 +140,7 @@
                                         :color="colorZTilt"
                                         height="30"
                                         density="compact"
-                                        tile
+                                        rounded="0"
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doZtilt">
                                         {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
@@ -151,7 +151,7 @@
                                         :color="homedAxes !== '' ? 'primary' : 'warning'"
                                         height="30"
                                         density="compact"
-                                        tile
+                                        rounded="0"
                                         class="flex-grow-1 px-0"
                                         @click="doSend('M84')">
                                         <v-icon>{{ mdiEngineOff }}</v-icon>
@@ -165,7 +165,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeX')"
                                         :color="homedAxes.includes('x') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeX">
@@ -177,7 +177,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('y') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeY">
@@ -189,7 +189,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('xy') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeXY">
@@ -201,7 +201,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"
                                         :color="homedAxes.includes('z') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeZ">
@@ -223,7 +223,7 @@
                                         :loading="loadings.includes('homeAll')"
                                         :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                                         height="30"
-                                        tile
+                                        rounded="0"
                                         class="w-100"
                                         @click="doHome">
                                         <div class="d-flex align-center">
@@ -240,7 +240,7 @@
                                         :color="colorQuadGantryLevel"
                                         height="30"
                                         density="compact"
-                                        tile
+                                        rounded="0"
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doQGL">
                                         {{ $t('Panels.ToolheadControlPanel.QGL') }}
@@ -252,7 +252,7 @@
                                         :color="colorZTilt"
                                         height="30"
                                         density="compact"
-                                        tile
+                                        rounded="0"
                                         class="btnMinWidthAuto flex-grow-1 px-0"
                                         @click="doZtilt">
                                         {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
@@ -263,7 +263,7 @@
                                         :color="homedAxes !== '' ? 'primary' : 'warning'"
                                         height="30"
                                         density="compact"
-                                        tile
+                                        rounded="0"
                                         class="flex-grow-1 px-0"
                                         @click="doSend('M84')">
                                         <v-icon>{{ mdiEngineOff }}</v-icon>
@@ -277,7 +277,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeX')"
                                         :color="homedAxes.includes('x') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeX">
@@ -289,7 +289,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('y') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeY">
@@ -301,7 +301,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('xy') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeXY">
@@ -313,7 +313,7 @@
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"
                                         :color="homedAxes.includes('z') ? 'primary' : 'warning'"
-                                        tile
+                                        rounded="0"
                                         height="30"
                                         class="btnMinWidthAuto w-100"
                                         @click="doHomeZ">

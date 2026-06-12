@@ -6,7 +6,7 @@
                 color="success"
                 :loading="loadings.includes('startJobqueue')"
                 icon
-                tile
+                rounded="0"
                 :disabled="!klipperReadyForGui"
                 @click="startJobqueue">
                 <v-tooltip top>
@@ -21,7 +21,7 @@
                 color="warning"
                 :loading="loadings.includes('pauseJobqueue')"
                 icon
-                tile
+                rounded="0"
                 @click="pauseJobqueue">
                 <v-tooltip top>
                     <template #activator="{ props }">

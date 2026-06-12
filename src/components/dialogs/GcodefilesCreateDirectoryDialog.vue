@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.NewDirectory')" card-class="gcodefiles-new-directory-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="closePrompt" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt" />
             </template>
             <v-card-text>
                 <v-text-field

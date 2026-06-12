@@ -6,7 +6,7 @@
             :margin-bottom="false"
             card-class="machine-update-system-packages-list-dialog">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
             </template>
             <v-card-text>
                 <v-row>

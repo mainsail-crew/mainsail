@@ -11,7 +11,7 @@
                     <v-btn
                         v-bind="props"
                         icon
-                        tile
+                        rounded="0"
                         :loading="isLoadingAllEffects"
                         :disabled="printerIsPrintingOnly"
                         

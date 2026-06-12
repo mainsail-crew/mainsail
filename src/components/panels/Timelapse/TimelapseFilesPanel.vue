@@ -227,7 +227,7 @@
                 card-class="gcode-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogRenameFile.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameFile.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -254,7 +254,7 @@
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogCreateDirectory.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogCreateDirectory.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -283,7 +283,7 @@
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="dialogRenameDirectory.show = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameDirectory.show = false" />
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -319,7 +319,7 @@
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" tile @click="boolVideoDialog = false" />
+                    <v-btn :icon="mdiCloseThick" rounded="0" @click="boolVideoDialog = false" />
                 </template>
                 <v-card-text class="">
                     <v-row>

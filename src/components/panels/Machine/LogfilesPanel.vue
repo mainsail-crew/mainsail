@@ -10,7 +10,7 @@
                     <template #activator="{ props: activatorProps }">
                         <v-btn
                             icon
-                            tile
+                            rounded="0"
                             color="primary"
                             :ripple="true"
                             :loading="loadings.includes('loadingBtnRolloverLogs')"

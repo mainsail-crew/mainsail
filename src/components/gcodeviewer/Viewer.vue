@@ -6,14 +6,14 @@
                     v-show="reloadRequired"
                     :icon="display.xs"
                     :text="display.smAndUp"
-                    tile
+                    rounded="0"
                     color="info"
                     class="ml-3"
                     @click="reloadViewer">
                     <span class="d-none d-sm-block">{{ $t('GCodeViewer.ReloadRequired') }}</span>
                     <v-icon class="d-sm-none">{{ mdiReloadAlert }}</v-icon>
                 </v-btn>
-                <v-btn :icon="mdiCameraRetake" tile @click="resetCamera" />
+                <v-btn :icon="mdiCameraRetake" rounded="0" @click="resetCamera" />
             </template>
             <v-card-text>
                 <v-row :class="showScrubber ? 'withScrubber' : ''">

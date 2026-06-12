@@ -6,7 +6,7 @@
             :margin-bottom="false"
             card-class="machine-update-commits-dialog">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
             </template>
             <v-card-text class="py-0 px-0">
                 <OverlayScrollbarsComponent :style="overlayScrollbarsStyle" :options="{ overflowBehavior: { x: 'hidden' } }">

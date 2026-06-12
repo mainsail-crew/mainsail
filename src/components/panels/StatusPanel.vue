@@ -25,7 +25,7 @@
                     :color="button.color"
                     :loading="loadings.includes(button.loadingName)"
                     icon
-                    tile
+                    rounded="0"
                     @click="button.click">
                     <v-tooltip top>
                         <template #activator="{ props }">

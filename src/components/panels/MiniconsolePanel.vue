@@ -14,7 +14,7 @@
                 :close-on-content-click="false"
                 :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template #activator="{ props }">
-                    <v-btn :icon="mdiCog" tile v-bind="props" />
+                    <v-btn :icon="mdiCog" rounded="0" v-bind="props" />
                 </template>
                 <v-list>
                     <v-list-item v-if="consoleDirection === 'shell'" class="minHeight36">

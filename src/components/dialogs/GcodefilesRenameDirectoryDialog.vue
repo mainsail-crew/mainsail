@@ -5,7 +5,7 @@
             card-class="gcodefiles-rename-directory-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" tile @click="closePrompt" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt" />
             </template>
             <v-card-text>
                 <v-text-field

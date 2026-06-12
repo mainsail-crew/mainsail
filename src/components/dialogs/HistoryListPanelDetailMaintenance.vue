@@ -6,8 +6,8 @@
             card-class="history-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiPencil" tile @click="showEditDialog = true" />
-                <v-btn :icon="mdiCloseThick" tile @click="closeDialog" />
+                <v-btn :icon="mdiPencil" rounded="0" @click="showEditDialog = true" />
+                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
             </template>
             <OverlayScrollbarsComponent style="height: 350px">
                 <v-card-text class="pb-0">
