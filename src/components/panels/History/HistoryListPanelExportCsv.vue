@@ -1,7 +1,7 @@
 <template>
     <v-tooltip top>
-        <template #activator="{ on, attrs }">
-            <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on" @click="exportHistory">
+        <template #activator="{ props: activatorProps }">
+            <v-btn class="px-2 minwidth-0 ml-3" v-bind="activatorProps" @click="exportHistory">
                 <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
             </v-btn>
         </template>

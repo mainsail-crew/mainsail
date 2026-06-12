@@ -14,8 +14,8 @@
         <td>{{ item.name }}</td>
         <td class="text-right text-no-wrap">
             <v-tooltip v-if="reminder !== null" top>
-                <template #activator="{ on, attrs }">
-                    <v-icon small color="primary" v-bind="attrs" v-on="on">
+                <template #activator="{ props: activatorProps }">
+                    <v-icon small color="primary" v-bind="activatorProps">
                         {{ alarmIcon }}
                     </v-icon>
                 </template>

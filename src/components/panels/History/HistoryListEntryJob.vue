@@ -13,8 +13,8 @@
                 <v-icon class="text--disabled">{{ mdiFileCancel }}</v-icon>
             </template>
             <template v-else-if="smallThumbnail && bigThumbnail">
-                <v-tooltip top>
-                    <template #activator="{ on, attrs }">
+                <v-tooltip location="top">
+                    <template #activator="{ props: activatorProps }">
                         <vue-load-image>
                             <img
                                 slot="image"
@@ -22,8 +22,7 @@
                                 :src="smallThumbnail"
                                 width="32"
                                 height="32"
-                                v-bind="attrs"
-                                v-on="on" />
+                                v-bind="activatorProps" />
                             <div slot="preloader">
                                 <v-progress-circular indeterminate color="primary" />
                             </div>
@@ -53,18 +52,18 @@
         <td>{{ item.filename }}</td>
         <td class="text-right text-no-wrap">
             <template v-if="'note' in item && item.note">
-                <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <v-icon small class="mr-2" v-bind="attrs" v-on="on">
+                <v-tooltip location="top">
+                    <template #activator="{ props: activatorProps }">
+                        <v-icon small class="mr-2" v-bind="activatorProps">
                             {{ mdiNoteTextOutline }}
                         </v-icon>
                     </template>
                     <span v-html="item.note.replaceAll('\n', '<br />')" />
                 </v-tooltip>
             </template>
-            <v-tooltip top>
-                <template #activator="{ on, attrs }">
-                    <span v-bind="attrs" v-on="on">
+            <v-tooltip location="top">
+                <template #activator="{ props: activatorProps }">
+                    <span v-bind="activatorProps">
                         <v-icon small :color="statusColor" :disabled="!item.exists">
                             {{ statusIcon }}
                         </v-icon>
