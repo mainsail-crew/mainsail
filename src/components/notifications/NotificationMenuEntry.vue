@@ -78,7 +78,7 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
-import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
+import type { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
 import type { TranslateResult } from 'vue-i18n'
 import type { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 

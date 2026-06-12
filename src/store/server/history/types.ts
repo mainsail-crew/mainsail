@@ -77,6 +77,8 @@ export interface ServerHistoryStateAllPrintStatusEntry {
     name: string
     displayName: string
     value: number
+    valueFilament?: number
+    valueTime?: number
     showInTable: boolean
     itemStyle: {
         opacity: number

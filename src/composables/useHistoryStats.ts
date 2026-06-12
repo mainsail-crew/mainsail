@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 import type {
     HistoryStatsValueNames,
     ServerHistoryStateAllPrintStatusEntry,
@@ -7,7 +7,14 @@ import type {
 import i18n from '@/plugins/i18n'
 import { useHistory } from '@/composables/useHistory'
 
-export function useHistoryStats(valueName: HistoryStatsValueNames) {
+export interface UseHistoryStatsResult {
+    allPrintStati: ComputedRef<string[]>
+    printStatusArray: ComputedRef<ServerHistoryStateAllPrintStatusEntry[]>
+    printStatusArrayChart: ComputedRef<ServerHistoryStateAllPrintStatusEntry[]>
+    groupedPrintStatusArray: ComputedRef<ServerHistoryStateAllPrintStatusEntry[]>
+}
+
+export function useHistoryStats(valueName: HistoryStatsValueNames): UseHistoryStatsResult {
     const history = useHistory()
 
     function getStatusColor(status: string) {
@@ -60,7 +67,7 @@ export function useHistoryStats(valueName: HistoryStatsValueNames) {
         return remaining
     }
 
-    const allPrintStati = computed(() => {
+    const allPrintStati = computed<string[]>(() => {
         let array = history.allJobs.value.map((job: ServerHistoryStateJob) => job.status)
 
         array = array.filter((item: string, index: number) => array.indexOf(item) === index)
@@ -90,7 +97,7 @@ export function useHistoryStats(valueName: HistoryStatsValueNames) {
         })
     })
 
-    const printStatusArrayChart = computed(() => {
+    const printStatusArrayChart = computed<ServerHistoryStateAllPrintStatusEntry[]>(() => {
         if (valueName === 'filament') {
             const jobs = history.selectedJobs.value.length
                 ? history.selectedJobs.value
@@ -136,12 +143,11 @@ export function useHistoryStats(valueName: HistoryStatsValueNames) {
         return printStatusArray.value
     })
 
-    const groupedPrintStatusArray = computed(() => {
+    const groupedPrintStatusArray = computed<ServerHistoryStateAllPrintStatusEntry[]>(() => {
         return groupSmallEntries(printStatusArrayChart.value, 0.05)
     })
 
     return {
-        ...history,
         allPrintStati,
         printStatusArray,
         printStatusArrayChart,

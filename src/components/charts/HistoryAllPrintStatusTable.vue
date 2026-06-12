@@ -19,5 +19,5 @@ const props = defineProps<{
     valueName?: HistoryStatsValueNames
 }>()
 
-const aggregated = useHistoryStats(props.valueName ?? 'amount')
+const aggregated = useHistoryStats(props.valueName ?? 'jobs')
 </script>

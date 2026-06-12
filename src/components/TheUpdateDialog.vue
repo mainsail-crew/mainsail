@@ -74,7 +74,7 @@
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useSocket } from '@/composables/useSocket'
-import { ServerUpdateManagerStateMessages } from '@/store/server/updateManager/types'
+import type { ServerUpdateManagerStateMessages } from '@/store/server/updateManager/types'
 import { mdiUpdate } from '@mdi/js'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 

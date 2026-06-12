@@ -80,6 +80,8 @@ export interface ServerStateEventPrompt {
     children?: ServerStateEventPrompt[]
 }
 
+export type ServerStateEventPromptContent = ServerStateEventPrompt
+
 export interface ServerStateCpuInfo {
     bits: string
     cpu_count: number

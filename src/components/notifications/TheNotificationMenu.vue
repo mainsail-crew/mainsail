@@ -55,7 +55,7 @@ import { useBase } from '@/composables/useBase'
 import NotificationMenuEntry from '@/components/notifications/NotificationMenuEntry.vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import { mdiBell, mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
-import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
+import type { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
 
 const store = useStore()
 const { isMobile } = useBase()

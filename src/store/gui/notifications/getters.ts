@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { GuiNotificationState, GuiNotificationStateDismissEntry, GuiNotificationStateEntry } from './types'
+import type { GuiNotificationState, GuiNotificationStateDismissEntry, GuiNotificationStateEntry } from './types'
 import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 import i18n from '@/plugins/i18n.js'
 import { RootState, RootStateDependency } from '@/store/types'

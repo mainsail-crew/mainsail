@@ -49,7 +49,7 @@ import TheBedScrewsDialog from '@/components/dialogs/TheBedScrewsDialog.vue'
 import TheScrewsTiltAdjustDialog from '@/components/dialogs/TheScrewsTiltAdjustDialog.vue'
 import { setAndLoadLocale } from './plugins/i18n'
 import TheMacroPrompt from '@/components/dialogs/TheMacroPrompt.vue'
-import { AppRoute } from '@/routes'
+import type { AppRoute } from '@/routes'
 
 const store = useStore()
 const { t } = useI18n()
