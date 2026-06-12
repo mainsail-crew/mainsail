@@ -11,8 +11,8 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="backgroundColor"
-                                class="minwidth-0 px-5"
-                                small
+                                class="color-swatch"
+                                variant="flat"
                                 v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
@@ -26,7 +26,7 @@
                 <settings-row :title="$t('Settings.GCodeViewerTab.GridColor')">
                     <v-menu :close-on-content-click="false" location="bottom end">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn :color="gridColor" class="minwidth-0 px-5" small v-bind="activatorProps"></v-btn>
+                            <v-btn :color="gridColor" class="color-swatch" variant="flat" v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
                             :value="gridColor"
@@ -41,8 +41,8 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="progressColor"
-                                class="minwidth-0 px-5"
-                                small
+                                class="color-swatch"
+                                variant="flat"
                                 v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
@@ -65,8 +65,8 @@
                                     <span class="mr-2">{{ index }}</span>
                                     <v-btn
                                         :color="extruderColors[index]"
-                                        class="minwidth-0 px-5"
-                                        small
+                                        class="color-swatch"
+                                        variant="flat"
                                         v-bind="activatorProps"></v-btn>
                                 </v-col>
                             </template>
@@ -84,8 +84,8 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="minFeedColor"
-                                class="minwidth-0 px-5 mr-3"
-                                small
+                                class="color-swatch mr-3"
+                                variant="flat"
                                 v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
@@ -111,8 +111,8 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn
                                 :color="maxFeedColor"
-                                class="minwidth-0 px-5 mr-3"
-                                small
+                                class="color-swatch mr-3"
+                                variant="flat"
                                 v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
@@ -227,3 +227,12 @@ function feedBlur(): void {
     if (maxFeed.value < minFeed.value) maxFeed.value = minFeed.value + 1
 }
 </script>
+
+<style scoped>
+.color-swatch {
+    min-width: 42px;
+    width: 42px;
+    height: 28px;
+    padding: 0;
+}
+</style>
