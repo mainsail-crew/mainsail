@@ -1,6 +1,6 @@
 import vue from '@vitejs/plugin-vue2'
 import version from 'vite-plugin-package-version'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
 import Components from 'unplugin-vue-components/vite'
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
@@ -11,6 +11,20 @@ import buildVersion from './src/plugins/build-version'
 import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import postcssNesting from 'postcss-nesting'
+
+function getDevProxy(): Record<string, any> | undefined {
+    const env = loadEnv('development', process.cwd(), '')
+    const target = env.MOONRAKER_TARGET
+    if (!target) return undefined
+
+    return {
+        '/websocket': { target, ws: true },
+        '/server': { target },
+        '/printer': { target },
+        '/access': { target },
+        '/api': { target },
+    }
+}
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
@@ -157,6 +171,7 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 8080,
+        proxy: getDevProxy(),
     },
 
     test: {

@@ -29,6 +29,17 @@
                 </v-row>
                 <v-row>
                     <v-col>
+                        <v-text-field
+                            v-model="selectedDateTime"
+                            type="datetime-local"
+                            :label="$t('History.StartTime')"
+                            outlined
+                            dense
+                            hide-details="auto" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
                         <settings-row :title="$t('History.Reminder')">
                             <v-select
                                 v-model="reminder"
@@ -148,6 +159,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
 
     name: string = ''
     note: string = ''
+    selectedDateTime: string = ''
     reminder: 'one-time' | 'repeat' | null = null
 
     reminderFilament: boolean = false
@@ -203,6 +215,9 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
 
         item.name = this.name
         item.note = this.note
+        item.start_time = this.selectedDateTime
+            ? new Date(this.selectedDateTime).getTime() / 1000
+            : this.item.start_time
         item.reminder = {
             type: this.reminder,
             filament: {
@@ -230,6 +245,7 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
 
         this.name = this.item.name
         this.note = this.item.note
+        this.selectedDateTime = this.toDatetimeLocalString(this.item.start_time)
         this.reminder = this.item.reminder?.type ?? null
         this.reminderFilament = this.item.reminder?.filament.bool ?? false
         this.reminderFilamentValue = this.item.reminder?.filament.value ?? 0
@@ -237,6 +253,12 @@ export default class HistoryListPanelAddMaintenance extends Mixins(BaseMixin) {
         this.reminderPrinttimeValue = this.item.reminder?.printtime.value ?? 0
         this.reminderDate = this.item.reminder?.date.bool ?? false
         this.reminderDateValue = this.item.reminder?.date.value ?? 0
+    }
+
+    toDatetimeLocalString(timestamp: number): string {
+        const d = new Date(timestamp * 1000)
+        const pad = (n: number) => String(n).padStart(2, '0')
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
     }
 }
 </script>
