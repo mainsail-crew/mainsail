@@ -1,6 +1,6 @@
 <template>
-    <v-col v-if="exists" :class="classes">
-        <v-btn :href="href" block class="primary--text" @click="downloadLog">
+    <v-col v-if="exists" cols="12" :class="classes">
+        <v-btn :href="href" block variant="flat" class="machine-logfiles-panel__log-button" @click="downloadLog">
             <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
             {{ name }}
         </v-btn>
@@ -39,14 +39,7 @@ const href = computed(() => {
 })
 
 const classes = computed(() => {
-    const output: string[] = ['col-12', 'pt-0']
-    if (klipperState.value !== 'ready') {
-        output.push('col-md-6')
-        output.push('mt-md-3')
-    } else {
-        output.push('col-md-12')
-    }
-    return output
+    return ['pt-0', 'pb-2']
 })
 
 function downloadLog(event: MouseEvent) {
@@ -56,3 +49,27 @@ function downloadLog(event: MouseEvent) {
     if (hrefVal) window.open(hrefVal)
 }
 </script>
+
+<style scoped>
+.machine-logfiles-panel__log-button {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 4px;
+    color: rgb(var(--v-theme-primary));
+    display: flex;
+    font-weight: 700;
+    justify-content: center;
+    letter-spacing: 0.08em;
+    min-height: 36px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+:deep(.machine-logfiles-panel__log-button .v-btn__content) {
+    gap: 8px;
+}
+
+:deep(.machine-logfiles-panel__log-button .v-icon) {
+    color: rgb(var(--v-theme-primary));
+}
+</style>
