@@ -6,7 +6,7 @@
             :icon="mdiFileSyncOutline"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
             <v-card-text>
                 <v-row>
@@ -30,10 +30,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="closeDialog">
+ <v-btn variant="text" @click="closeDialog">
                     {{ $t('Buttons.Cancel') }}
                 </v-btn>
-                <v-btn color="primary" variant="text" @click="btnRolloverLogs">
+ <v-btn color="primary" variant="text" @click="btnRolloverLogs">
                     {{ $t('Machine.LogfilesPanel.Accept') }}
                 </v-btn>
             </v-card-actions>

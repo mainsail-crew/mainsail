@@ -2,7 +2,7 @@
     <v-card-text>
         <v-row>
             <v-col class="text-center">
-                <v-btn :loading="loading" color="primary" @click="refresh">{{ $t('DevicesDialog.Refresh') }}</v-btn>
+ <v-btn :loading="loading" color="primary" @click="refresh">{{ $t('DevicesDialog.Refresh') }}</v-btn>
             </v-col>
         </v-row>
         <v-row v-if="filteredDevices.length" class="mt-0">

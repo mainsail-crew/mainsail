@@ -3,7 +3,7 @@
         <v-card v-if="!form.bool" flat>
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.RemotePrintersTab.RemotePrinters') }}</h3>
-                <v-alert v-if="!canAddPrinters" :icon="mdiAlertOutline" type="warning" text>
+                <v-alert v-if="!canAddPrinters" :icon="mdiAlertOutline" type="warning" variant="text">
                     {{ $t('Settings.RemotePrintersTab.UseConfigJson') }}
                 </v-alert>
                 <div v-for="(printer, index) in printers" :key="printer.id">
@@ -12,11 +12,11 @@
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
                         :icon="printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel">
-                        <v-btn size="small" variant="outlined" :disabled="!canAddPrinters" @click="editPrinter(printer)">
-                            <v-icon left size="small">{{ mdiPencil }}</v-icon>
+ <v-btn size="small" variant="outlined" :disabled="!canAddPrinters" @click="editPrinter(printer)">
+                            <v-icon start size="small">{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
-                        <v-btn
+ <v-btn
                             size="small"
                             variant="outlined"
                             class="ml-3 minwidth-0 px-2"
@@ -29,7 +29,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn variant="text" color="primary" :disabled="!canAddPrinters" @click="createPrinter">
+ <v-btn variant="text" color="primary" :disabled="!canAddPrinters" @click="createPrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>
             </v-card-actions>
@@ -85,11 +85,11 @@
                 </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn variant="text" @click="form.bool = false">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn v-if="form.id === null" variant="text" color="primary" @click="storePrinter">
+ <v-btn variant="text" @click="form.bool = false">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn v-if="form.id === null" variant="text" color="primary" @click="storePrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>
-                <v-btn v-else variant="text" color="primary" @click="updatePrinter">
+ <v-btn v-else variant="text" color="primary" @click="updatePrinter">
                     {{ $t('Settings.RemotePrintersTab.UpdatePrinter') }}
                 </v-btn>
             </v-card-actions>

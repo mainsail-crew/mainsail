@@ -67,21 +67,21 @@
                 <div v-for="(filter, index) in consoleFilters" :key="index">
                     <v-divider v-if="index" class="my-2"></v-divider>
                     <settings-row :title="filter.name">
-                        <v-btn
-                            small
-                            outlined
+ <v-btn
+                            size="small"
+                            variant="outlined"
                             class="minwidth-0 px-2"
                             :color="filter.bool ? 'white' : 'grey'"
                             @click="toggleFilter(filter)">
                             <v-icon size="small">{{ filter.bool ? mdiFilter : mdiFilterOff }}</v-icon>
                         </v-btn>
-                        <v-btn size="small" variant="outlined" class="ml-3" @click="editFilter(filter)">
-                            <v-icon left size="small">{{ mdiPencil }}</v-icon>
+ <v-btn size="small" variant="outlined" class="ml-3" @click="editFilter(filter)">
+                            <v-icon start size="small">{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
-                        <v-btn
-                            small
-                            outlined
+ <v-btn
+                            size="small"
+                            variant="outlined"
                             class="ml-3 minwidth-0 px-2"
                             color="error"
                             @click="deleteFilter(filter.id)">
@@ -91,7 +91,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn variant="text" color="primary" @click="createFilter">{{ $t('Settings.ConsoleTab.AddFilter') }}</v-btn>
+ <v-btn variant="text" color="primary" @click="createFilter">{{ $t('Settings.ConsoleTab.AddFilter') }}</v-btn>
             </v-card-actions>
         </v-card>
         <v-card v-else flat>
@@ -109,7 +109,7 @@
                             v-model="form.name"
                             hide-details="auto"
                             :rules="[rules.required, rules.unique]"
-                            dense
+                            density="compact"
                             variant="outlined"></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
@@ -118,10 +118,10 @@
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
-                    <v-btn variant="text" @click="form.bool = false">
+ <v-btn variant="text" @click="form.bool = false">
                         {{ $t('Buttons.Cancel') }}
                     </v-btn>
-                    <v-btn color="primary" variant="text" type="submit">
+ <v-btn color="primary" variant="text" type="submit">
                         {{
                             form.id === null
                                 ? $t('Settings.ConsoleTab.StoreButton')

@@ -6,7 +6,7 @@
             card-class="jobqueue-change-count-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
 
             <v-card-text>
@@ -21,16 +21,16 @@
                     @keyup.enter="update">
                     <template #append-outer>
                         <div class="_spin_button_group">
-                            <v-btn class="mt-n3" :icon="mdiChevronUp" plain size="small" @click="count++" />
-                            <v-btn :disabled="count <= 1" class="mb-n3" :icon="mdiChevronDown" plain size="small" @click="count--" />
+ <v-btn class="mt-n3" :icon="mdiChevronUp" variant="plain" size="small" @click="count++"/>
+ <v-btn :disabled="count <= 1" class="mb-n3" :icon="mdiChevronDown" variant="plain" size="small" @click="count--"/>
                         </div>
                     </template>
                 </v-text-field>
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn color="primary" variant="text" @click="update">{{ $t('JobQueue.ChangeCount') }}</v-btn>
+ <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn color="primary" variant="text" @click="update">{{ $t('JobQueue.ChangeCount') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

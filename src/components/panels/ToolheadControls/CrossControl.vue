@@ -17,7 +17,7 @@
                         <v-row density="compact" class="mb-1">
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
-                                <v-btn
+ <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
                                         !yAxisHomed ||
@@ -31,7 +31,7 @@
                             </v-col>
                             <v-col cols="3"></v-col>
                             <v-col cols="3">
-                                <v-btn
+ <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
                                         !zAxisHomed ||
@@ -46,7 +46,7 @@
                         </v-row>
                         <v-row density="compact">
                             <v-col cols="3" class="position-relative">
-                                <v-btn
+ <v-btn
                                     class="btnMinWidthAuto fill-width position-absolute"
                                     style="top: -50%; width: calc(100% - 8px)"
                                     :disabled="
@@ -60,7 +60,7 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="3">
-                                <v-btn
+ <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
                                         !yAxisHomed ||
@@ -73,7 +73,7 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="3" class="position-relative">
-                                <v-btn
+ <v-btn
                                     class="btnMinWidthAuto fill-width position-absolute"
                                     style="top: -50%; width: calc(100% - 8px)"
                                     :disabled="
@@ -87,7 +87,7 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="3">
-                                <v-btn
+ <v-btn
                                     class="btnMinWidthAuto fill-width"
                                     :disabled="
                                         !zAxisHomed ||
@@ -106,7 +106,7 @@
                         <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden">
                             <v-row density="compact" style="margin-bottom: -2px !important">
                                 <v-col cols="6">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeAll')"
                                         :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
@@ -121,7 +121,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="6" class="d-flex">
-                                    <v-btn
+ <v-btn
                                         v-if="actionButton === 'qgl'"
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('qgl')"
@@ -133,7 +133,7 @@
                                         @click="doQGL">
                                         {{ $t('Panels.ToolheadControlPanel.QGL') }}
                                     </v-btn>
-                                    <v-btn
+ <v-btn
                                         v-else-if="actionButton === 'ztilt'"
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('zTilt')"
@@ -145,7 +145,7 @@
                                         @click="doZtilt">
                                         {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
                                     </v-btn>
-                                    <v-btn
+ <v-btn
                                         v-else
                                         :disabled="['printing'].includes(printer_state)"
                                         :color="homedAxes !== '' ? 'primary' : 'warning'"
@@ -161,7 +161,7 @@
                             <!-- X/Y/Z HOME BUTTONS -->
                             <v-row density="compact">
                                 <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeX')"
                                         :color="homedAxes.includes('x') ? 'primary' : 'warning'"
@@ -173,7 +173,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('y') ? 'primary' : 'warning'"
@@ -185,7 +185,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col v-else cols="6" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('xy') ? 'primary' : 'warning'"
@@ -197,7 +197,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col :class="enableXYHoming ? 'v-col-6' : 'v-col-4'" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"
                                         :color="homedAxes.includes('z') ? 'primary' : 'warning'"
@@ -218,7 +218,7 @@
                         <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden">
                             <v-row density="compact" style="margin-bottom: -2px !important">
                                 <v-col cols="6">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeAll')"
                                         :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
@@ -233,7 +233,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="6" class="d-flex">
-                                    <v-btn
+ <v-btn
                                         v-if="actionButton === 'qgl'"
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('qgl')"
@@ -245,7 +245,7 @@
                                         @click="doQGL">
                                         {{ $t('Panels.ToolheadControlPanel.QGL') }}
                                     </v-btn>
-                                    <v-btn
+ <v-btn
                                         v-else-if="actionButton === 'ztilt'"
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('zTilt')"
@@ -257,7 +257,7 @@
                                         @click="doZtilt">
                                         {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
                                     </v-btn>
-                                    <v-btn
+ <v-btn
                                         v-else
                                         :disabled="['printing'].includes(printer_state)"
                                         :color="homedAxes !== '' ? 'primary' : 'warning'"
@@ -273,7 +273,7 @@
                             <!-- X/Y/Z HOME BUTTONS -->
                             <v-row density="compact">
                                 <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeX')"
                                         :color="homedAxes.includes('x') ? 'primary' : 'warning'"
@@ -285,7 +285,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('y') ? 'primary' : 'warning'"
@@ -297,7 +297,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col v-else cols="6" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeY')"
                                         :color="homedAxes.includes('xy') ? 'primary' : 'warning'"
@@ -309,7 +309,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col :class="enableXYHoming ? 'v-col-6' : 'v-col-4'" class="flex-grow-1">
-                                    <v-btn
+ <v-btn
                                         :disabled="['printing'].includes(printer_state)"
                                         :loading="loadings.includes('homeZ')"
                                         :color="homedAxes.includes('z') ? 'primary' : 'warning'"
@@ -327,7 +327,7 @@
                 <!-- STEP SIZE BUTTON GROUP -->
                 <v-row no-gutters class="mt-3">
                     <v-col>
-                        <v-btn-toggle
+ <v-btn-toggle
                             v-if="stepsReversed.length > 0"
                             :key="`all-steps-${stepsReversed.join('_')}`"
                             :model-value="selectedCrossStep"
@@ -335,7 +335,7 @@
                             density="compact"
                             mandatory
                             style="flex-wrap: nowrap; width: 100%">
-                            <v-btn
+ <v-btn
                                 v-for="step of stepsReversed"
                                 :key="`step-${step}`"
                                 :disabled="['printing'].includes(printer_state)"

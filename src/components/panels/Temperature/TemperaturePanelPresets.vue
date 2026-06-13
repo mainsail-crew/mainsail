@@ -2,8 +2,8 @@
     <div style="height: 100%">
         <v-menu v-if="presets.length" :offset-y="true" left>
             <template #activator="{ props }">
-                <v-btn
-                    text
+ <v-btn
+                    variant="text"
                     rounded="0"
                     color="primary"
                     v-bind="props"
@@ -33,10 +33,10 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <v-btn
+ <v-btn
             v-else
             :icon="displaySmAndDown"
-            :text="displayMdAndUp"
+            variant="text"
             rounded="0"
             color="primary"
             @click="btnCoolDown">

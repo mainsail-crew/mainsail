@@ -24,21 +24,21 @@
             </template>
             <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
-                    <v-btn
+ <v-btn
                         :disabled="(value >= max && max !== null) || error || disabled"
                         class="mt-n3"
                         icon
-                        plain
-                        small
+                        variant="plain"
+                        size="small"
                         @click="incrementValue">
                         <v-icon>{{ mdiChevronUp }}</v-icon>
                     </v-btn>
-                    <v-btn
+ <v-btn
                         :disabled="value <= min || error || disabled"
                         class="mb-n3"
                         icon
-                        plain
-                        small
+                        variant="plain"
+                        size="small"
                         @click="decrementValue">
                         <v-icon>{{ mdiChevronDown }}</v-icon>
                     </v-btn>

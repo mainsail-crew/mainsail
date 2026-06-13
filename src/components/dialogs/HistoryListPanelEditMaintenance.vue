@@ -6,7 +6,7 @@
             card-class="history-edit-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
             <v-card-text class="pb-0">
                 <v-row>
@@ -16,7 +16,7 @@
                             :rules="nameInputRules"
                             :label="$t('History.Name')"
                             hide-details="auto"
-                            outlined
+                            variant="outlined"
                             dense />
                     </v-col>
                 </v-row>
@@ -32,8 +32,8 @@
                                 v-model="reminder"
                                 :items="reminderItems"
                                 :disabled="item.end_time !== null"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 hide-details
                                 class="mt-0" />
                         </settings-row>
@@ -57,8 +57,8 @@
                                     hide-details="auto"
                                     type="number"
                                     class="mt-0"
-                                    outlined
-                                    dense
+                                    variant="outlined"
+                                    density="compact"
                                     :suffix="$t('History.Meter')" />
                             </settings-row>
                         </v-col>
@@ -80,8 +80,8 @@
                                     hide-details="auto"
                                     type="number"
                                     class="mt-0"
-                                    outlined
-                                    dense
+                                    variant="outlined"
+                                    density="compact"
                                     :suffix="$t('History.Hours')" />
                             </settings-row>
                         </v-col>
@@ -103,8 +103,8 @@
                                     hide-details="auto"
                                     type="number"
                                     class="mt-0"
-                                    outlined
-                                    dense
+                                    variant="outlined"
+                                    density="compact"
                                     :suffix="$t('History.Days')" />
                             </settings-row>
                         </v-col>
@@ -113,8 +113,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn color="primary" variant="text" :disabled="!isValid" @click="save">{{ $t('Buttons.Save') }}</v-btn>
+ <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn color="primary" variant="text" :disabled="!isValid" @click="save">{{ $t('Buttons.Save') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

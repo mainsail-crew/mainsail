@@ -9,26 +9,26 @@
         <v-card-text>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn-toggle v-model="currentViewport" class="mx-auto" mandatory>
-                        <v-btn value="mobile">
+ <v-btn-toggle v-model="currentViewport" class="mx-auto" mandatory>
+ <v-btn value="mobile">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Mobile') }}</span>
                             <v-icon class="hidden-sm-and-down ml-2" :icon="mdiCellphone" />
                             <v-icon class="hidden-md-and-up" :icon="mdiCellphone" />
                         </v-btn>
 
-                        <v-btn value="tablet">
+ <v-btn value="tablet">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Tablet') }}</span>
                             <v-icon class="hidden-sm-and-down ml-2" :icon="mdiTablet" />
                             <v-icon class="hidden-md-and-up" :icon="mdiTablet" />
                         </v-btn>
 
-                        <v-btn value="desktop">
+ <v-btn value="desktop">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Desktop') }}</span>
                             <v-icon class="hidden-sm-and-down ml-2" :icon="mdiMonitorDashboard" />
                             <v-icon class="hidden-md-and-up" :icon="mdiMonitorDashboard" />
                         </v-btn>
 
-                        <v-btn value="widescreen">
+ <v-btn value="widescreen">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Widescreen') }}</span>
                             <v-icon class="hidden-sm-and-down ml-2" :icon="mdiMonitorScreenshot" />
                             <v-icon class="hidden-md-and-up" :icon="mdiMonitorScreenshot" />

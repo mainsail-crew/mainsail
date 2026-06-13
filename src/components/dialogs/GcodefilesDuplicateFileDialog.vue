@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.DuplicateFile')" card-class="gcodefiles-duplicate-file-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt"/>
             </template>
             <v-card-text>
                 <v-text-field
@@ -16,8 +16,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn :disabled="isInvalidName || name.length === 0" color="primary" variant="text" @click="duplicateFileAction">
+ <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn :disabled="isInvalidName || name.length === 0" color="primary" variant="text" @click="duplicateFileAction">
                     {{ $t('Files.Duplicate') }}
                 </v-btn>
             </v-card-actions>

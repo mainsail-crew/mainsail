@@ -19,7 +19,7 @@
         <v-col
             v-if="showPrintButton && !printerIsPrinting"
             class="v-col-auto d-flex flex-column justify-center pa-0 pr-1">
-            <v-btn icon color="success" class="minwidth-0" @click="startJobqueue">
+ <v-btn icon color="success" class="minwidth-0" @click="startJobqueue">
                 <v-icon>{{ mdiPlay }}</v-icon>
             </v-btn>
         </v-col>

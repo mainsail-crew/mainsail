@@ -596,38 +596,6 @@
         "Headline": "Kézi szintezés"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Megengedett",
-            "CleanNozzle": "Fúvóka tisztítása",
-            "EstimatedExtrusion": "Adagolás:",
-            "Extrude": "Adagolás",
-            "ExtruderControl": "Adagoló vezérlő",
-            "ExtruderTempTooLow": "Extruder hőm. <",
-            "ExtrusionFactor": "Adagolási tényező",
-            "ExtrusionFeedrate": "Extruder Előtolása",
-            "FilamentLength": "Nyomtatószál hossz",
-            "FirmwareRetraction": "Firmware-es visszahúzás",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Visszahúzás hossza",
-                "RetractSpeed": "Visszahúzás sebessége",
-                "UnretractExtraLength": "Eresztés Extra Hossza",
-                "UnretractSpeed": "Eresztés Sebessége"
-            },
-            "Headline": "Extruder",
-            "LoadFilament": "Nyomtatószál betöltése",
-            "PressureAdvance": "Nyomás előtolás",
-            "PressureAdvanceSettings": {
-                "Advance": "Fejlett mód",
-                "Extruder": "Extruder",
-                "SmoothTime": "Simítás ideje"
-            },
-            "PurgeFilament": "Tisztítószál",
-            "Requested": "Kért",
-            "Retract": "Visszahúzás",
-            "TooLargeExtrusion": "A visszahúzás túl nagy!",
-            "Tools": "Eszközök",
-            "UnloadFilament": "Nyomtatószál kiadása"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Újracsatlakozás",
             "SwitchToPrinter": "Váltás a nyomtatóra",
@@ -692,33 +660,6 @@
             "Off": "KI",
             "On": "BE",
             "PowerControl": "Tápellátás vezérlés"
-        },
-        "SpoolmanPanel": {
-            "ActiveSpool": "Aktív tekercs",
-            "ChangeSpool": "Orsó cseréje",
-            "DaysAgo": "{days} nappal ezelőtt",
-            "EjectSpool": "Orsó kiadása",
-            "EjectSpoolQuestion": "Biztos, hogy kiveszed az nyomtatószál orsót?",
-            "Filament": "Nyomtatószál",
-            "FilamentTypeMismatch": "Az aktív orsón lévő anyag ({spoolType}) nem egyezik a G-kódban lévő anyaggal ({fileType}).",
-            "Headline": "Orsó segéd",
-            "LastUsed": "Legutóbb használt",
-            "Location": "Elhelyezkedés",
-            "Material": "Anyag",
-            "Never": "Soha",
-            "NoActiveSpool": "A szálkövetés inaktív. A kezdéshez válassz ki egy orsót.",
-            "NoResults": "Az aktuális keresési feltételeknek megfelelő orsó nem található.",
-            "NoSpool": "Nincs tekercs",
-            "NoSpools": "Nincs elérhető orsó",
-            "NoSpoolSelected": "Nincs kiválasztott orsó. Kérjük, válassz ki egy orsót, különben a nyomtatás nem lesz nyomonkövethető.",
-            "OpenSpoolManager": "Orsókezelő megnyitása",
-            "Refresh": "frissítés",
-            "Search": "Keresés",
-            "SelectSpool": "Válassz orsót",
-            "Today": "Ma",
-            "TooLessFilament": "Lehet, hogy a jelenlegi orsón nincs elég nyomtatószál ehhez a nyomtatáshoz. ({spoolWeight}g - {fileWeight}g)",
-            "Weight": "Súly",
-            "Yesterday": "Tegnap"
         },
         "StatusPanel": {
             "CancelPrint": "Nyomtatás megszakítása",

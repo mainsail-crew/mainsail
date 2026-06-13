@@ -1,15 +1,20 @@
 <template>
-    <panel v-if="klipperReadyForGui" :icon="mdiTable" title="Offsets" :collapsible="true" card-class="offsets-panel">
+    <panel
+        v-if="klipperReadyForGui && showWorkCoords"
+        :icon="mdiTable"
+        title="Offsets"
+        :collapsible="true"
+        card-class="offsets-panel">
         <v-container class="py-2">
             <v-row density="compact" class="mb-3">
                 <v-col cols="12">
                     <span class="text-caption font-weight-bold">Coordinate System:</span>
                 </v-col>
                 <v-col cols="12">
-                    <v-btn-toggle v-model="selectedOffsetIndex" density="compact" class="w-100" @update:model-value="onWcsChange">
+ <v-btn-toggle v-model="selectedOffsetIndex" density="compact" class="w-100" @update:model-value="onWcsChange">
                         <v-tooltip v-for="(name, idx) in offsetNames" :key="idx" location="top" content-class="tooltip-opaque" transition="fade-transition" :open-delay="0" :close-delay="0">
                             <template #activator="{ props }">
-                                <v-btn :value="idx" size="x-small" v-bind="props">
+ <v-btn :value="idx" size="x-small" v-bind="props" :disabled="offsetActionsLocked">
                                     {{ name }}
                                 </v-btn>
                             </template>
@@ -60,13 +65,13 @@
                     <span class="text-caption font-weight-bold">Set Work Zero:</span>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn size="small" block variant="outlined" @click="setWorkZeroXY">
+ <v-btn size="small" block variant="outlined" @click="setWorkZeroXY" :disabled="offsetActionsLocked">
                         <v-icon size="small" start>{{ mdiTarget }}</v-icon>
                         Set XY Zero
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn size="small" block variant="outlined" @click="setWorkZeroZ">
+ <v-btn size="small" block variant="outlined" @click="setWorkZeroZ" :disabled="offsetActionsLocked">
                         <v-icon size="small" start>{{ mdiAxisZArrow }}</v-icon>
                         Set Z Zero
                     </v-btn>
@@ -108,13 +113,13 @@
 
             <v-row density="compact" class="mb-2">
                 <v-col cols="6">
-                    <v-btn size="small" block color="primary" @click="applyOffsets">
+ <v-btn size="small" block color="primary" @click="applyOffsets" :disabled="offsetActionsLocked">
                         <v-icon size="small" start>{{ mdiCheck }}</v-icon>
                         Apply
                     </v-btn>
                 </v-col>
                 <v-col cols="6">
-                    <v-btn size="small" block variant="outlined" @click="resetOffsets">
+ <v-btn size="small" block variant="outlined" @click="resetOffsets" :disabled="offsetActionsLocked">
                         <v-icon size="small" start>{{ mdiRestart }}</v-icon>
                         Reset
                     </v-btn>
@@ -130,6 +135,7 @@ import { useStore } from 'vuex'
 import { useBase } from '@/composables/useBase'
 import { useControl } from '@/composables/useControl'
 import { useSocket } from '@/composables/useSocket'
+import { useCncProfile } from '@/composables/useCncProfile'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiTable,
@@ -142,6 +148,7 @@ import { getCncWcs, selectCncWcs, setCncZero } from '@/store/files/cncApi'
 
 const { klipperReadyForGui } = useBase()
 const { doSend } = useControl()
+const { showWorkCoords, requireConfirmForZeroReset, requireHomingBeforeOffsets } = useCncProfile()
 
 const store = useStore()
 const socket = useSocket()
@@ -169,6 +176,12 @@ const currentWorkPosition = computed(() =>
 const currentWorkX = computed(() => currentWorkPosition.value[0] ?? 0)
 const currentWorkY = computed(() => currentWorkPosition.value[1] ?? 0)
 const currentWorkZ = computed(() => currentWorkPosition.value[2] ?? 0)
+const allAxesHomed = computed(() =>
+    store.state.printer?.toolhead?.homed_axes?.includes('x') &&
+    store.state.printer?.toolhead?.homed_axes?.includes('y') &&
+    store.state.printer?.toolhead?.homed_axes?.includes('z')
+)
+const offsetActionsLocked = computed(() => requireHomingBeforeOffsets.value && !allAxesHomed.value)
 
 const wcsP = computed(() => selectedOffsetIndex.value + 1)
 
@@ -201,6 +214,7 @@ async function onWcsChange(idx: number | null) {
     const wcs = offsetNames[idx]
     if (!wcs) return
 
+    if (!window.confirm('Switch work coordinate system?')) return
     try {
         await selectCncWcs(store.getters['socket/getUrl'], { wcs })
         selectedOffsetIndex.value = idx
@@ -211,6 +225,7 @@ async function onWcsChange(idx: number | null) {
 }
 
 async function setWorkZeroXY() {
+    if (requireConfirmForZeroReset.value && !window.confirm('Set XY zero for the current work coordinate system?')) return
     try {
         await setCncZero(store.getters['socket/getUrl'], { axes: ['X', 'Y'] })
     } catch (error) {
@@ -220,6 +235,7 @@ async function setWorkZeroXY() {
 }
 
 async function setWorkZeroZ() {
+    if (requireConfirmForZeroReset.value && !window.confirm('Set Z zero for the current work coordinate system?')) return
     try {
         await setCncZero(store.getters['socket/getUrl'], { axes: ['Z'] })
     } catch (error) {

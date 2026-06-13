@@ -9,7 +9,7 @@
                             <v-item-group>
                                 <v-menu v-model="selectIcon" location="bottom end" title="Icon">
                                     <template #activator="{ props: activatorProps }">
-                                        <v-btn
+ <v-btn
                                             class="px-2 mr-2 _transition _menu-button"
                                             color="transparent"
                                             v-bind="activatorProps"
@@ -41,7 +41,7 @@
                                 v-model="form.name"
                                 :label="$t('Settings.WebcamsTab.Name')"
                                 hide-details="auto"
-                                outlined
+                                variant="outlined"
                                 :rules="[rules.required, rules.unique]"
                                 class="_webcam-settings-name-field"
                                 dense />
@@ -53,8 +53,8 @@
                                 v-model="form.stream_url"
                                 :label="$t('Settings.WebcamsTab.UrlStream')"
                                 hide-details="auto"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 :rules="rulesStreamUrl" />
                         </v-col>
                     </v-row>
@@ -64,8 +64,8 @@
                                 v-model="form.snapshot_url"
                                 :label="$t('Settings.WebcamsTab.UrlSnapshot')"
                                 hide-details="auto"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 :rules="rulesSnapshotUrl" />
                         </v-col>
                     </v-row>
@@ -77,8 +77,8 @@
                                 item-title="text"
                                 item-value="value"
                                 hide-details
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 :label="$t('Settings.WebcamsTab.Service')" />
                         </v-col>
                     </v-row>
@@ -88,15 +88,15 @@
                                 v-model="form.aspect_ratio"
                                 :label="$t('Settings.WebcamsTab.AspectRatio')"
                                 hide-details="auto"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 :rules="[rules.required, rules.aspect]" />
                         </v-col>
                         <v-col v-if="hasTargetFps" class="py-2 v-col-6">
                             <v-text-field
                                 v-model="form.target_fps"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 hide-details
                                 :label="$t('Settings.WebcamsTab.TargetFPS')" />
                         </v-col>
@@ -106,8 +106,8 @@
                                 :items="rotationItems"
                                 item-title="text"
                                 item-value="value"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 hide-details
                                 :label="$t('Settings.WebcamsTab.Rotate')" />
                         </v-col>
@@ -172,7 +172,7 @@
                             <v-col v-if="localNozzleCrosshair" class="py-0">
                                 <v-menu location="bottom end" :close-on-content-click="false">
                                     <template #activator="{ props: activatorProps }">
-                                        <v-btn
+ <v-btn
                                             v-bind="activatorProps"
                                             :color="localNozzleCrosshairColor"
                                             class="minwidth-0 px-5"
@@ -210,8 +210,8 @@
             </v-row>
         </v-card-text>
         <v-card-actions class="d-flex justify-end">
-            <v-btn variant="text" @click="closeForm">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn color="primary" variant="text" type="submit" :disabled="!valid">{{ actionButtonText }}</v-btn>
+ <v-btn variant="text" @click="closeForm">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn color="primary" variant="text" type="submit" :disabled="!valid">{{ actionButtonText }}</v-btn>
         </v-card-actions>
     </v-form>
 </template>

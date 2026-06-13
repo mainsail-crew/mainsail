@@ -10,13 +10,13 @@
         </template>
         <template #append>
             <div class="my-0 d-flex flex-row" style="min-width: auto">
-                <v-btn v-if="state === 'inactive'" icon size="small" @click="clickStart">
+ <v-btn v-if="state === 'inactive'" icon size="small" @click="clickStart">
                     <v-icon size="small">{{ mdiPlay }}</v-icon>
                 </v-btn>
-                <v-btn v-else icon size="small" @click="clickRestart">
+ <v-btn v-else icon size="small" @click="clickRestart">
                     <v-icon size="small">{{ mdiRestart }}</v-icon>
                 </v-btn>
-                <v-btn icon size="small" :disabled="disableStopButton" :style="styleStopButton" @click="clickStop">
+ <v-btn icon size="small" :disabled="disableStopButton" :style="styleStopButton" @click="clickStop">
                     <v-icon size="small">{{ mdiStop }}</v-icon>
                 </v-btn>
             </div>

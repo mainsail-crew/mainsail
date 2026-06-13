@@ -8,7 +8,7 @@
             <template #buttons>
                 <v-tooltip top>
                     <template #activator="{ props: activatorProps }">
-                        <v-btn
+ <v-btn
                             icon
                             rounded="0"
                             color="primary"

@@ -41,11 +41,11 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn variant="text" @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
-            <v-btn v-if="groupId !== null" variant="text" color="primary" :disabled="!formValid" @click="updateGroup">
+ <v-btn variant="text" @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn v-if="groupId !== null" variant="text" color="primary" :disabled="!formValid" @click="updateGroup">
                 {{ $t('Settings.Update') }}
             </v-btn>
-            <v-btn v-else variant="text" color="primary" :disabled="!formValid" @click="storeGroup">
+ <v-btn v-else variant="text" color="primary" :disabled="!formValid" @click="storeGroup">
                 {{ $t('Settings.Store') }}
             </v-btn>
         </v-card-actions>

@@ -1,5 +1,5 @@
 <template>
-    <v-btn
+ <v-btn
         :color="buttonColor"
         :loading="isLoading"
         :disabled="printerIsPrintingOnly"

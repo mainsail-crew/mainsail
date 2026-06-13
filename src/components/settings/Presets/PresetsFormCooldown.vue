@@ -8,10 +8,10 @@
                 </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn variant="text" @click="closeForm">
+ <v-btn variant="text" @click="closeForm">
                     {{ $t('Buttons.Cancel') }}
                 </v-btn>
-                <v-btn color="primary" variant="text" type="submit">
+ <v-btn color="primary" variant="text" type="submit">
                     {{ $t('Settings.PresetsTab.UpdateCooldown') }}
                 </v-btn>
             </v-card-actions>

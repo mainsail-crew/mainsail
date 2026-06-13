@@ -515,32 +515,6 @@
         "Headline": "Manuel Prob"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "İzin Verildi",
-            "EstimatedExtrusion": "Ekstrüzyon:",
-            "Extrude": "Ekstrüzyon",
-            "ExtruderTempTooLow": "Ekstruder sıc. <",
-            "ExtrusionFactor": "Ekstrüzyon Faktörü",
-            "ExtrusionFeedrate": "Ekstrüzyon Besleme Hızı",
-            "FilamentLength": "Filament Uzunluğu",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Geri Çekme Uzunluğu",
-                "RetractSpeed": "Geri Çekme Hızı",
-                "UnretractExtraLength": "Geri Çekme Sonrası Ekstra Uzunluk",
-                "UnretractSpeed": "Geri Çekme Sonrası Hız"
-            },
-            "Headline": "Ekstruder",
-            "LoadFilament": "Filament Yükle",
-            "PressureAdvanceSettings": {
-                "Advance": "Basınç Artışı",
-                "Extruder": "Ekstruder",
-                "SmoothTime": "Pürüzsüzleştirme Süresi"
-            },
-            "Requested": "Talep Edildi",
-            "Retract": "Geri Çekme",
-            "TooLargeExtrusion": "Ekstrüzyon çok büyük!",
-            "UnloadFilament": "Filamenti Boşalt"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Yazıcıya Yeniden Bağlan",
             "SwitchToPrinter": "Yazıcıya Geç",

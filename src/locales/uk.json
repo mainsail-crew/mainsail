@@ -581,38 +581,6 @@
         "Headline": "Проба вручну"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Допущений",
-            "CleanNozzle": "Очистити сопло",
-            "EstimatedExtrusion": "Розрахункова екструзія:",
-            "Extrude": "Видавити",
-            "ExtruderControl": "Керування екструдером",
-            "ExtruderTempTooLow": " t° екструдера. <",
-            "ExtrusionFactor": "Коефіцієнт ЕКСТРУЗІЇ",
-            "ExtrusionFeedrate": "Екструзійна подача",
-            "FilamentLength": "Довжина філаменту",
-            "FirmwareRetraction": "Програмний ретракт",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Довжина Ретракту",
-                "RetractSpeed": "Швидкість Ретракту",
-                "UnretractExtraLength": "Довжина Деретракту",
-                "UnretractSpeed": "Швидкість Деретракту"
-            },
-            "Headline": "Екструдер",
-            "LoadFilament": "Завантажити Пруток",
-            "PressureAdvance": "Pressure Advance",
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Екструдер",
-                "SmoothTime": "Плавний Час"
-            },
-            "PurgeFilament": "Purge філаменту",
-            "Requested": "Заданий",
-            "Retract": "Ретракт",
-            "TooLargeExtrusion": "Екструзія занадто велика!",
-            "Tools": "Інструменти",
-            "UnloadFilament": "Вивантаження філаменту"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Перепідключення",
             "SwitchToPrinter": "Перемкнутися на Принтер",
@@ -676,31 +644,6 @@
             "Off": "ВИМК",
             "On": "УВІМК",
             "PowerControl": "Управління Живленням"
-        },
-        "SpoolmanPanel": {
-            "ChangeSpool": "Зміна шпулі",
-            "DaysAgo": "{days} днів тому",
-            "EjectSpool": "Прибрати шпулю",
-            "EjectSpoolQuestion": "Ви впевнені, що хочете прибрати шпулю з філаментом?",
-            "Filament": "Філамент",
-            "FilamentTypeMismatch": "Матеріал активної шпулі ({spoolType}) не збігається з матеріалом G-коду ({fileType}).",
-            "Headline": "Spoolman",
-            "LastUsed": "Останнє використання",
-            "Location": "Місцезнаходження",
-            "Material": "Матеріал",
-            "Never": "Ніколи",
-            "NoActiveSpool": "Відстеження філаменту неактивне. Щоб почати, будь ласка, виберіть котушку.",
-            "NoResults": "За поточними критеріями пошуку шпулю не знайдено.",
-            "NoSpools": "Немає шпуль",
-            "NoSpoolSelected": "Шпулю не вибрано. Виберіть шпулю, інакше цей друк не відстежуватиметься.",
-            "OpenSpoolManager": "відкрити менеджер шпуль",
-            "Refresh": "оновити",
-            "Search": "Пошук",
-            "SelectSpool": "Виберіть шпулю",
-            "Today": "Сьогодні",
-            "TooLessFilament": "У поточній котушці може бути недостатньо філаменту для цього друку. ({spoolWeight}г з {fileWeight}г)",
-            "Weight": "Вага",
-            "Yesterday": "Вчора"
         },
         "StatusPanel": {
             "CancelPrint": "Скасувати друк",

@@ -9,10 +9,10 @@
             <template #buttons>
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool">
-                        <v-btn :icon="mdiCloseThick" rounded="0" class="minwidth-0" @click="dialogEditPrinter.bool = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" class="minwidth-0" @click="dialogEditPrinter.bool = false"/>
                     </template>
                     <template v-else-if="dialogAddPrinter.bool">
-                        <v-btn
+ <v-btn
                             v-if="dialogAddPrinter.bool"
                             :icon="mdiCloseThick"
                             rounded="0"
@@ -20,7 +20,7 @@
                             @click="dialogAddPrinter.bool = false" />
                     </template>
                     <template v-else-if="printers.length > 0">
-                        <v-btn :icon="mdiSync" rounded="0" class="minwidth-0" color="primary" @click="checkPrinters" />
+ <v-btn :icon="mdiSync" rounded="0" class="minwidth-0" color="primary" @click="checkPrinters"/>
                     </template>
                 </template>
             </template>
@@ -39,10 +39,10 @@
                         }}
                     </p>
                     <div class="text-center">
-                        <v-btn variant="text" color="white" class="mr-3" @click="switchToChangePrinter">
+ <v-btn variant="text" color="white" class="mr-3" @click="switchToChangePrinter">
                             {{ $t('SelectPrinterDialog.ChangePrinter') }}
                         </v-btn>
-                        <v-btn variant="text" color="primary" @click="reconnect">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
+ <v-btn variant="text" color="primary" @click="reconnect">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
                     </div>
                 </v-card-text>
             </template>
@@ -104,7 +104,7 @@
                             :true-value="false"
                             :false-value="true" />
                         <v-spacer />
-                        <v-btn color="primary" variant="text" class="middle" type="submit" :disabled="!addPrinterValid">
+ <v-btn color="primary" variant="text" class="middle" type="submit" :disabled="!addPrinterValid">
                             {{ $t('SelectPrinterDialog.AddPrinter') }}
                         </v-btn>
                     </v-card-actions>
@@ -160,7 +160,7 @@
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn color="red" :icon="mdiDelete" rounded="0" class="minwidth-0 rounded" @click="delPrinter" />
+ <v-btn color="red" :icon="mdiDelete" rounded="0" class="minwidth-0 rounded" @click="delPrinter"/>
                         <v-checkbox
                             v-model="showOptionalSettings"
                             class="ml-2"
@@ -169,7 +169,7 @@
                             :true-value="false"
                             :false-value="true" />
                         <v-spacer />
-                        <v-btn color="primary" variant="text" type="submit" :disabled="!editPrinterValid">
+ <v-btn color="primary" variant="text" type="submit" :disabled="!editPrinterValid">
                             {{ $t('SelectPrinterDialog.UpdatePrinter') }}
                         </v-btn>
                     </v-card-actions>
@@ -200,7 +200,7 @@
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
                                         <v-col v-if="canAddPrinters" class="v-col-auto pa-0">
-                                            <v-btn rounded="0" large :icon="mdiPencil" class="mr-1" @click.stop.prevent="editPrinter(printer)" />
+ <v-btn rounded="0" large :icon="mdiPencil" class="mr-1" @click.stop.prevent="editPrinter(printer)"/>
                                         </v-col>
                                     </v-row>
                                 </v-col>
@@ -228,7 +228,7 @@
                         </v-row>
                         <v-row>
                             <v-col class="text-center mt-0">
-                                <v-btn variant="text" color="primary" @click="createPrinter">
+ <v-btn variant="text" color="primary" @click="createPrinter">
                                     {{ $t('SelectPrinterDialog.AddPrinter') }}
                                 </v-btn>
                             </v-col>

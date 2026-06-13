@@ -475,32 +475,6 @@
         "Headline": "手動プローブ"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "許可",
-            "EstimatedExtrusion": "推定押し出し量:",
-            "Extrude": "押し出し",
-            "ExtruderTempTooLow": "エクストルーダー温度 <",
-            "ExtrusionFactor": "押し出し係数",
-            "ExtrusionFeedrate": "押し出し速度",
-            "FilamentLength": "フィラメント長",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "引き込み長",
-                "RetractSpeed": "引き込み速度",
-                "UnretractExtraLength": "追加の戻り長",
-                "UnretractSpeed": "戻り速度"
-            },
-            "Headline": "エクストルーダー",
-            "LoadFilament": "フィラメントのロード",
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "エクストルーダー",
-                "SmoothTime": "スムーズ時間"
-            },
-            "Requested": "要求",
-            "Retract": "引き込み",
-            "TooLargeExtrusion": "押し出しが量が大きすぎます!",
-            "UnloadFilament": "フィラメントのアンロード"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "再接続",
             "SwitchToPrinter": "プリンターへ切り替え",

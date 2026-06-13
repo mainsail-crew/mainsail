@@ -529,32 +529,6 @@
         "Headline": "Handmatige Probe"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Toegestaan",
-            "EstimatedExtrusion": "Geschatte extrusie:",
-            "Extrude": "Extrude",
-            "ExtruderTempTooLow": "Extruder temp. <",
-            "ExtrusionFactor": "Extrusie factor",
-            "ExtrusionFeedrate": "Extrusion Feedrate",
-            "FilamentLength": "Filamentlengte",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Retractie lengte",
-                "RetractSpeed": "Retractie snelheid",
-                "UnretractExtraLength": "Extra lengte uitvoer",
-                "UnretractSpeed": "Uitvoer snelheid"
-            },
-            "Headline": "Extruder",
-            "LoadFilament": "Filament laden",
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Extruder",
-                "SmoothTime": "Smooth Time"
-            },
-            "Requested": "Aangevraagd",
-            "Retract": "Retract",
-            "TooLargeExtrusion": "Extrusie te lang!",
-            "UnloadFilament": "Filament ontladen"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Opnieuw verbinden",
             "SwitchToPrinter": "Wissel naar Printer",

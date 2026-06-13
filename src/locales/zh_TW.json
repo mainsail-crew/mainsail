@@ -491,32 +491,6 @@
         "Advanced": "高級"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "允許",
-            "EstimatedExtrusion": "預計擠出量：",
-            "Extrude": "擠出",
-            "ExtruderTempTooLow": "擠出温度 <",
-            "ExtrusionFactor": "擠出係數",
-            "ExtrusionFeedrate": "進料速率",
-            "FilamentLength": "耗材長度",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "回抽長度",
-                "RetractSpeed": "回抽速度",
-                "UnretractExtraLength": "退料長度",
-                "UnretractSpeed": "退料速度"
-            },
-            "Headline": "擠出機",
-            "LoadFilament": "裝載耗材",
-            "PressureAdvanceSettings": {
-                "Advance": "壓力提前",
-                "Extruder": "擠出機",
-                "SmoothTime": "平滑時間"
-            },
-            "Requested": "需要",
-            "Retract": "回抽",
-            "TooLargeExtrusion": "擠出過大！",
-            "UnloadFilament": "釋放耗材"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "重新連線",
             "SwitchToPrinter": "切換到列印機",

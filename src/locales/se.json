@@ -519,38 +519,6 @@
         "Headline": "Manuell sond"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Tillåten",
-            "CleanNozzle": "Rengör munstycket",
-            "EstimatedExtrusion": "Extrudering:",
-            "Extrude": "Extrudera",
-            "ExtruderControl": "Extruderkontroll",
-            "ExtruderTempTooLow": "Extruder temp. <",
-            "ExtrusionFactor": "Extruderingsfaktor",
-            "ExtrusionFeedrate": "Extruderingsmatningshastighet",
-            "FilamentLength": "Filamentlängd",
-            "FirmwareRetraction": "Firmware indragning",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Retract längd",
-                "RetractSpeed": "Retract hastighet",
-                "UnretractExtraLength": "Unretract extra längd",
-                "UnretractSpeed": "Unretract hastighet"
-            },
-            "Headline": "Extruder",
-            "LoadFilament": "Ladda filament",
-            "PressureAdvance": "Pressure Advance",
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Extruder",
-                "SmoothTime": "Smooth Tid"
-            },
-            "PurgeFilament": "Rensa filament",
-            "Requested": "Begärda",
-            "Retract": "Dra tillbaka",
-            "TooLargeExtrusion": "Extrudering för stor!",
-            "Tools": "Verktyg",
-            "UnloadFilament": "Lossa filament"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Återanslut",
             "SwitchToPrinter": "Byt till skrivare",
@@ -612,31 +580,6 @@
             "Off": "Av",
             "On": "På",
             "PowerControl": "Strömstyrning"
-        },
-        "SpoolmanPanel": {
-            "ChangeSpool": "Byt spole",
-            "DaysAgo": "för {days} dagar sedan",
-            "EjectSpool": "Mata ut spolen",
-            "EjectSpoolQuestion": "Är du säker på att du matar ut filamentspolen?",
-            "Filament": "Filament",
-            "FilamentTypeMismatch": "Materialet i den aktiva spoolen ({spoolType}) matchar inte materialet i G-koden ({fileType}).",
-            "Headline": "Spoolman",
-            "LastUsed": "Senast använd",
-            "Location": "Plats",
-            "Material": "Material",
-            "Never": "Aldrig",
-            "NoActiveSpool": "Filamentspårning är inaktiv. För att komma igång, välj en spole.",
-            "NoResults": "Ingen spole hittades med de aktuella sökkriterierna.",
-            "NoSpools": "Inga spolar tillgängliga",
-            "NoSpoolSelected": "Ingen spole vald. Välj en spole annars kommer denna utskrift inte att spåras.",
-            "OpenSpoolManager": "öppna Spool Manager",
-            "Refresh": "uppdatera",
-            "Search": "Sök",
-            "SelectSpool": "Välj spole",
-            "Today": "I dag",
-            "TooLessFilament": "Den aktuella spolen kanske inte har tillräckligt med filament för denna utskrift. ({spoolWeight}g av {fileWeight}g)",
-            "Weight": "Vikt",
-            "Yesterday": "I går"
         },
         "StatusPanel": {
             "CancelPrint": "Avbryt utskrift",

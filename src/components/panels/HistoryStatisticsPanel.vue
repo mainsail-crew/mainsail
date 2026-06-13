@@ -20,13 +20,13 @@
                     <history-all-print-status-chart v-if="togglePrintStatus === 'chart'" :value-name="toggleValue" />
                     <history-all-print-status-table v-else :value-name="toggleValue" />
                     <div class="text-center mb-3">
-                        <v-btn-toggle v-model="togglePrintStatus" size="small" mandatory>
-                            <v-btn size="small" value="chart">{{ $t('History.Chart') }}</v-btn>
-                            <v-btn size="small" value="table">{{ $t('History.Table') }}</v-btn>
+ <v-btn-toggle v-model="togglePrintStatus" size="small" mandatory>
+ <v-btn size="small" value="chart">{{ $t('History.Chart') }}</v-btn>
+ <v-btn size="small" value="table">{{ $t('History.Table') }}</v-btn>
                         </v-btn-toggle>
                         <v-tooltip v-if="!allLoaded" top>
                             <template #activator="{ props }">
-                                <v-btn
+ <v-btn
                                     variant="outlined"
                                     size="small"
                                     :loading="loadings.includes('historyLoadAll')"
@@ -42,8 +42,8 @@
                         </v-tooltip>
                     </div>
                     <div class="text-center mb-3">
-                        <v-btn-toggle v-model="toggleValue" size="small" mandatory>
-                            <v-btn v-for="option in toggleValueOptions" :key="option.value" size="small" :value="option.value">
+ <v-btn-toggle v-model="toggleValue" size="small" mandatory>
+ <v-btn v-for="option in toggleValueOptions" :key="option.value" size="small" :value="option.value">
                                 {{ option.text }}
                             </v-btn>
                         </v-btn-toggle>
@@ -53,9 +53,9 @@
                     <history-filament-usage v-if="toggleChart === 'filament_usage'" />
                     <history-printtime-avg v-else-if="toggleChart === 'printtime_avg'" />
                     <div class="text-center mt-3">
-                        <v-btn-toggle v-model="toggleChart" size="small" mandatory>
-                            <v-btn size="small" value="filament_usage">{{ $t('History.FilamentUsage') }}</v-btn>
-                            <v-btn size="small" value="printtime_avg">{{ $t('History.PrinttimeAvg') }}</v-btn>
+ <v-btn-toggle v-model="toggleChart" size="small" mandatory>
+ <v-btn size="small" value="filament_usage">{{ $t('History.FilamentUsage') }}</v-btn>
+ <v-btn size="small" value="printtime_avg">{{ $t('History.PrinttimeAvg') }}</v-btn>
                         </v-btn-toggle>
                     </div>
                 </v-col>

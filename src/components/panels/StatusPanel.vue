@@ -19,7 +19,7 @@
                     class="mr-3" />
             </template>
             <template #buttons>
-                <v-btn
+ <v-btn
                     v-for="button in filteredToolbarButtons"
                     :key="button.loadingName"
                     :color="button.color"
@@ -41,7 +41,7 @@
                     <v-row>
                         <v-col class="py-2">
                             <span class="text-subtitle-2 px-0 text-disabled">
-                                <v-icon class="mr-2 mt-1 float-left" color="warning" size="small">
+                                <v-icon class="mr-2 mt-1 float-start" color="warning" size="small">
                                     {{ mdiAlertOutline }}
                                 </v-icon>
                                 {{ print_stats_message }}
@@ -56,7 +56,7 @@
                     <v-row class="flex-nowrap">
                         <v-col class="py-2" style="min-width: 0">
                             <span class="text-subtitle-2 px-0 text-disabled">
-                                <v-icon class="mr-2 mt-1 float-left" size="small">{{ mdiMessageProcessingOutline }}</v-icon>
+                                <v-icon class="mr-2 mt-1 float-start" size="small">{{ mdiMessageProcessingOutline }}</v-icon>
                                 {{ display_message }}
                             </span>
                         </v-col>

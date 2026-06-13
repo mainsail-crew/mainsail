@@ -1,8 +1,8 @@
 <template>
     <settings-row :title="outputName" :sub-title="subTitle">
         <v-chip v-if="!(is_base ?? false)" label size="small">
-            <v-icon v-if="sign === 'CCW'" size="small" left>{{ mdiRotateLeft }}</v-icon>
-            <v-icon v-if="sign === 'CW'" size="small" left>{{ mdiRotateRight }}</v-icon>
+            <v-icon v-if="sign === 'CCW'" size="small" start>{{ mdiRotateLeft }}</v-icon>
+            <v-icon v-if="sign === 'CW'" size="small" start>{{ mdiRotateRight }}</v-icon>
             {{ adjust }}
         </v-chip>
         <v-chip v-else label size="small">{{ $t('ScrewsTiltAdjust.Base') }}</v-chip>

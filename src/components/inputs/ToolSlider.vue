@@ -6,8 +6,8 @@
                     {{ icon }}
                 </v-icon>
                 <span>{{ label }}</span>
-                <v-btn
-                    v-if="value !== defaultValue && !hasInputField"
+ <v-btn
+                    v-if="_value !== defaultValue && !hasInputField"
                     size="x-small"
                     icon
                     class="ml-2"
@@ -16,7 +16,7 @@
                     <v-icon>{{ mdiRestart }}</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <span v-if="!hasInputField" class="font-weight-bold">{{ value }} {{ unit }}</span>
+                <span v-if="!hasInputField" class="font-weight-bold">{{ _value }} {{ unit }}</span>
                 <form @submit.prevent="submitInput">
                     <v-text-field
                         v-if="hasInputField"
@@ -29,10 +29,10 @@
                         variant="outlined"
                         density="compact"
                         class="_slider-input d-flex align-center pt-1"
-                        @blur="numInput = value"
+                        @blur="numInput = _value"
                         @focus="$event.target.select()"
                         @keydown="checkInvalidChars">
-                        <template v-if="value !== defaultValue || value !== numInput" #append>
+                        <template v-if="_value !== defaultValue || _value !== numInput" #append>
                             <v-icon size="small" @click="resetSlider">{{ mdiRestart }}</v-icon>
                         </template>
                     </v-text-field>
@@ -44,10 +44,10 @@
                 </div>
             </transition>
             <v-card-text class="pa-0 d-flex align-center">
-                <v-btn
+ <v-btn
                     v-if="lockSliders && isTouchDevice"
-                    plain
-                    small
+                    variant="plain"
+                    size="small"
                     icon
                     class="_lock-button"
                     @click="isLocked = !isLocked">
@@ -56,7 +56,7 @@
                     </v-icon>
                 </v-btn>
                 <v-slider
-                    v-model="value"
+                    v-model="_value"
                     v-touch="{ start: resetLockTimer }"
                     :disabled="isLocked"
                     :min="min"
@@ -65,11 +65,11 @@
                     hide-details
                     @change="changeSlider">
                     <template #prepend>
-                        <v-icon :disabled="isLocked || value <= min" @click="decrement">{{ mdiMinus }}</v-icon>
+                        <v-icon :disabled="isLocked || _value <= min" @click="decrement">{{ mdiMinus }}</v-icon>
                     </template>
 
                     <template #append>
-                        <v-icon :disabled="isLocked || (value >= max && !dynamicRange)" @click="increment">
+                        <v-icon :disabled="isLocked || (_value >= max && !dynamicRange)" @click="increment">
                             {{ mdiPlus }}
                         </v-icon>
                     </template>

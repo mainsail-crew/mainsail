@@ -3,7 +3,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn :loading="loading" color="primary" @click="refresh">{{ $t('DevicesDialog.Refresh') }}</v-btn>
+ <v-btn :loading="loading" color="primary" @click="refresh">{{ $t('DevicesDialog.Refresh') }}</v-btn>
                 </v-col>
             </v-row>
             <v-row v-if="devices.length" class="mt-0">
@@ -27,11 +27,10 @@
                         {{ $t('DevicesDialog.CanBusInfo') }}
                         <v-row class="my-0">
                             <v-col class="text-center">
-                                <v-btn
+ <v-btn
                                     href="https://docs.mainsail.xyz/overview/features/query-devices#can-devices"
                                     color="info"
                                     variant="outlined"
-                                    text
                                     size="small">
                                     open guide
                                 </v-btn>

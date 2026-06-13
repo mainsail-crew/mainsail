@@ -4,7 +4,16 @@ import logging
 import os
 from typing import Any, Dict, Iterable, Mapping, Optional
 
+try:
+    import yaml
+except ImportError:  # pragma: no cover - optional dependency in runtime envs
+    yaml = None
+    YAMLError = Exception
+else:
+    YAMLError = yaml.YAMLError
+
 DEFAULT_SETTINGS_PATH = os.path.expanduser("~/printer_data/config/cnc_dashboard_settings.json")
+DEFAULT_MACHINE_PROFILE_PATH = os.path.expanduser("~/printer_data/config/machine_profile.yaml")
 DEFAULT_WCS = "G54"
 DEFAULT_JOG_RATE_LIMIT_MS = 50
 VALID_UNITS = {"G20", "G21"}
@@ -28,8 +37,13 @@ class CncAgent:
         self.config = config
         self.logger = logging.getLogger(__name__)
         self.settings_path = os.path.expanduser(config.get("settings_path", DEFAULT_SETTINGS_PATH))
+        self.machine_profile_path = os.path.expanduser(
+            config.get("machine_profile_path", DEFAULT_MACHINE_PROFILE_PATH)
+        )
         self._state = self._build_default_state()
         self._state["settings"].update(self._load_settings())
+        self._state["profile"] = self._load_machine_profile()
+        self._state["capabilities"] = copy.deepcopy(self._state["profile"].get("capabilities", {}))
         self._klippy_apis: Any = None
         self._jog_rate_limit_ms = float(config.get("jog_rate_limit_ms", DEFAULT_JOG_RATE_LIMIT_MS))
         self._last_jog: Dict[str, float] = {}
@@ -48,6 +62,7 @@ class CncAgent:
                 "offsets": {code: {"X": 0.0, "Y": 0.0, "Z": 0.0} for code in VALID_WCS},
             },
             "capabilities": {},
+            "profile": {"name": "", "frontend": {}, "capabilities": {}, "safety": {}},
             "settings": {},
         }
 
@@ -253,6 +268,37 @@ class CncAgent:
         if axis:
             return [str(axis).upper()]
         return []
+
+    def _load_machine_profile(self) -> Dict[str, Any]:
+        if not self.machine_profile_path:
+            return {"name": "", "frontend": {}, "capabilities": {}, "safety": {}}
+
+        try:
+            with open(self.machine_profile_path, "r", encoding="utf-8") as handle:
+                if yaml is None:
+                    self.logger.warning(
+                        "CncAgent: PyYAML is not available; skipping machine profile at %s",
+                        self.machine_profile_path,
+                    )
+                    return {"name": "", "frontend": {}, "capabilities": {}, "safety": {}}
+
+                data = yaml.safe_load(handle) or {}
+                if not isinstance(data, dict):
+                    return {"name": "", "frontend": {}, "capabilities": {}, "safety": {}}
+                return {
+                    "name": str(data.get("name", "")),
+                    "frontend": dict(data.get("frontend", {})) if isinstance(data.get("frontend", {}), dict) else {},
+                    "capabilities": dict(data.get("capabilities", {})) if isinstance(data.get("capabilities", {}), dict) else {},
+                    "safety": dict(data.get("safety", {})) if isinstance(data.get("safety", {}), dict) else {},
+                }
+        except FileNotFoundError:
+            return {"name": "", "frontend": {}, "capabilities": {}, "safety": {}}
+        except YAMLError:
+            self.logger.warning("CncAgent: machine profile at %s is invalid YAML; ignoring it", self.machine_profile_path)
+            return {"name": "", "frontend": {}, "capabilities": {}, "safety": {}}
+        except OSError:
+            self.logger.exception("CncAgent: unable to read machine profile from %s", self.machine_profile_path)
+            return {"name": "", "frontend": {}, "capabilities": {}, "safety": {}}
 
     def _load_settings(self) -> Dict[str, Any]:
         try:

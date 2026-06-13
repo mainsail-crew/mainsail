@@ -1,7 +1,7 @@
 <template>
     <v-card flat>
         <v-card-text>
-            <v-form ref="formControlExtruder">
+            <v-form>
                 <!-- TOOLHEAD CONTROL SETTINGS -->
                 <div class="d-flex align-center">
                     <v-icon style="opacity: 0.7">{{ mdiGamepad }}</v-icon>
@@ -212,80 +212,26 @@
                         variant="outlined"
                         hide-spin-buttons />
                 </settings-row>
-                <!-- EXTRUDER CONTROL SETTINGS -->
-                <div class="d-flex align-center">
-                    <v-icon style="opacity: 0.7">{{ mdiPrinter3dNozzle }}</v-icon>
-                    <v-card-title class="mx-n2">
-                        {{ $t('Panels.ExtruderControlPanel.Headline') }}
-                    </v-card-title>
-                    <v-divider class="ml-3" />
-                </div>
-                <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')" :mobile-second-row="true">
-                    <v-combobox
-                        v-model="feedamountsE"
-                        hide-selected
-                        hide-details="auto"
-                        multiple
-                        chips
-                        closable-chips
-                        append-icon=""
-                        type="number"
-                        :rules="[
-                            (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
-                            (v) => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
-                        ]"
-                        density="compact"
-                        variant="outlined"
-                        hide-spin-buttons />
-                </settings-row>
-                <v-divider class="my-2" />
-                <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
-                    <v-combobox
-                        v-model="feedratesE"
-                        hide-selected
-                        hide-details="auto"
-                        multiple
-                        chips
-                        closable-chips
-                        append-icon=""
-                        type="number"
-                        :rules="[
-                            (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
-                            (v) => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '5' }),
-                        ]"
-                        density="compact"
-                        variant="outlined"
-                        hide-spin-buttons />
-                </settings-row>
-                <v-divider class="my-2" />
-                <settings-row
-                    :title="$t('Settings.ControlTab.EstimatedExtrusionInfo')"
-                    :sub-title="$t('Settings.ControlTab.EstimatedExtrusionInfoDescription')"
-                    :dynamic-slot-width="true">
-                    <v-switch v-model="showEstimatedExtrusionInfo" hide-details class="mt-0" />
-                </settings-row>
             </v-form>
         </v-card-text>
     </v-card>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import { useBase } from '@/composables/useBase'
 import { useControl } from '@/composables/useControl'
 import { useZOffset } from '@/composables/useZOffset'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { mdiPrinter3dNozzle, mdiGamepad } from '@mdi/js'
+import { mdiGamepad } from '@mdi/js'
 
 const store = useStore()
 const { t } = useI18n()
 const { klipperReadyForGui } = useBase()
 const { existsQGL, existsZtilt, defaultActionButton } = useControl()
 const { endstop_pin, existZOffsetApplyEndstop, existZOffsetApplyProbe, autoSaveZOffsetOption } = useZOffset()
-
-const formControlExtruder = ref<HTMLFormElement | null>(null)
 
 const controlStyles = computed(() => [
     {
@@ -479,43 +425,6 @@ const stepsCircleZ = computed({
         for (const value of newVal) absSteps.push(Math.abs(value))
         const steps = absSteps.filter(onlyUnique)
         store.dispatch('gui/saveSetting', { name: 'control.stepsCircleZ', value: steps })
-    },
-})
-
-const feedamountsE = computed({
-    get: () => {
-        const steps = store.state.gui.control.extruder.feedamounts
-        return [...steps].sort(function (a: number, b: number) {
-            return b - a
-        })
-    },
-    set: (newVal) => {
-        const absAmounts = []
-        for (const value of newVal) absAmounts.push(Math.abs(value))
-        const amounts = absAmounts.filter(onlyUnique)
-        store.dispatch('gui/saveSetting', { name: 'control.extruder.feedamounts', value: amounts })
-    },
-})
-
-const feedratesE = computed({
-    get: () => {
-        const steps = store.state.gui.control.extruder.feedrates
-        return [...steps].sort(function (a: number, b: number) {
-            return b - a
-        })
-    },
-    set: (newVal) => {
-        const absRates = []
-        for (const value of newVal) absRates.push(Math.abs(value))
-        const rates = absRates.filter(onlyUnique)
-        store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrates', value: rates })
-    },
-})
-
-const showEstimatedExtrusionInfo = computed({
-    get: () => store.state.gui.control.extruder.showEstimatedExtrusionInfo,
-    set: (newVal) => {
-        store.dispatch('gui/saveSetting', { name: 'control.extruder.showEstimatedExtrusionInfo', value: newVal })
     },
 })
 

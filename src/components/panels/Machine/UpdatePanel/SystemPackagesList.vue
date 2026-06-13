@@ -6,7 +6,7 @@
             :margin-bottom="false"
             card-class="machine-update-system-packages-list-dialog">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
             <v-card-text>
                 <v-row>
@@ -18,7 +18,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" color="primary" @click="closeDialog">{{ $t('Buttons.Close') }}</v-btn>
+ <v-btn variant="text" color="primary" @click="closeDialog">{{ $t('Buttons.Close') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

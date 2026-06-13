@@ -10,7 +10,7 @@
         <template #buttons>
             <v-menu v-if="showWebcamSwitch" :offset-y="true" title="Webcam">
                 <template #activator="{ props }">
-                    <v-btn variant="text" v-bind="props">
+ <v-btn variant="text" v-bind="props">
                         <v-icon size="small">{{ mdiWebcam }}</v-icon>
                         <v-icon size="small">{{ mdiMenuDown }}</v-icon>
                     </v-btn>
@@ -93,7 +93,7 @@
                     </v-card-text>
                     <v-fade-transition>
                         <v-overlay v-if="hover" absolute :z-index="4">
-                            <v-btn color="primary" @click="clickPrinter">
+ <v-btn color="primary" @click="clickPrinter">
                                 {{
                                     printer.socket.isConnected
                                         ? $t('Panels.FarmPrinterPanel.SwitchToPrinter')

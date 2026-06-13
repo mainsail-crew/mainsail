@@ -7,7 +7,7 @@
             <v-toolbar flat density="compact">
                 <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon left>{{ mdiUpdate }}</v-icon>
+                        <v-icon start>{{ mdiUpdate }}</v-icon>
                         <template v-if="application.substr(0, 8) === 'recover_' && !complete">
                             {{ $t('App.UpdateDialog.Recovering', { software: application.substr(8) }) }}
                         </template>
@@ -60,7 +60,7 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn variant="text" :disabled="!complete" color="primary" @click="close">
+ <v-btn variant="text" :disabled="!complete" color="primary" @click="close">
                             {{ $t('Buttons.Close') }}
                         </v-btn>
                     </v-col>

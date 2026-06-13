@@ -6,7 +6,7 @@
             :icon="mdiPlaylistPlus"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
 
             <v-form v-model="isValid" @submit.prevent="addBatchToQueueAction">
@@ -21,16 +21,16 @@
                         :rules="rules.count">
                         <template #append-outer>
                             <div class="_spin_button_group">
-                                <v-btn class="mt-n3" :icon="mdiChevronUp" plain size="small" @click="input++" />
-                                <v-btn :disabled="input <= 1" class="mb-n3" :icon="mdiChevronDown" plain size="small" @click="input--" />
+ <v-btn class="mt-n3" :icon="mdiChevronUp" variant="plain" size="small" @click="input++"/>
+ <v-btn :disabled="input <= 1" class="mb-n3" :icon="mdiChevronDown" variant="plain" size="small" @click="input--"/>
                             </div>
                         </template>
                     </v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                    <v-btn color="primary" variant="text" type="submit" :disabled="!isValid">
+ <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn color="primary" variant="text" type="submit" :disabled="!isValid">
                         {{ $t('Files.AddToQueue') }}
                     </v-btn>
                 </v-card-actions>

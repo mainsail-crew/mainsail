@@ -597,38 +597,6 @@
         "Headline": "Manuální měření"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Povoleno",
-            "CleanNozzle": "Vyčistit trysku",
-            "EstimatedExtrusion": "Odhadovaná extruze:",
-            "Extrude": "Extrudovat",
-            "ExtruderControl": "Ovládání extruderu",
-            "ExtruderTempTooLow": "Teplota extruderu <",
-            "ExtrusionFactor": "Extruze",
-            "ExtrusionFeedrate": "Rychlost extruze",
-            "FilamentLength": "Délka extruze filamentu",
-            "FirmwareRetraction": "Retrakce ve firmware",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Délka retrakce",
-                "RetractSpeed": "Rychlost retrakce",
-                "UnretractExtraLength": "Dod. délka při deretrakci",
-                "UnretractSpeed": "Rychlost deretrakce"
-            },
-            "Headline": "Extruder",
-            "LoadFilament": "Naložit filament",
-            "PressureAdvance": "Pressure Advance",
-            "PressureAdvanceSettings": {
-                "Advance": "Přetlak",
-                "Extruder": "Extruder",
-                "SmoothTime": "Čas vyhlazování"
-            },
-            "PurgeFilament": "Vyčistit filament",
-            "Requested": "Požadováno",
-            "Retract": "Vytáhnout",
-            "TooLargeExtrusion": "Příliš velká extruze!",
-            "Tools": "Nástroje",
-            "UnloadFilament": "Vyjmout filament"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Připojit znovu",
             "SwitchToPrinter": "Přepnout na tiskárnu",
@@ -697,33 +665,6 @@
             "Off": "Vypnuto",
             "On": "Zapnuto",
             "PowerControl": "Řízení napájení"
-        },
-        "SpoolmanPanel": {
-            "ActiveSpool": "Aktivní cívka",
-            "ChangeSpool": "Změnit cívku",
-            "DaysAgo": "{days} dní před",
-            "EjectSpool": "Vysunout cívku",
-            "EjectSpoolQuestion": "Jste si jisti, že se filament vysouvá?",
-            "Filament": "Filament",
-            "FilamentTypeMismatch": "Materiál aktivní cívky ({spoolType}) neodpovídá materiálu G-kódu ({fileType}).",
-            "Headline": "Spoolman",
-            "LastUsed": "Naposledy použitá",
-            "Location": "Umístění",
-            "Material": "Materiál",
-            "Never": "Nikdy",
-            "NoActiveSpool": "Sledování filamentu je neaktivní. Chcete-li začít, vyberte cívku.",
-            "NoResults": "Nebyla nalezena žádná cívka s aktuálními kritérii vyhledávání.",
-            "NoSpool": "Žádná cívka",
-            "NoSpools": "Nejsou k dispozici žádné cívky",
-            "NoSpoolSelected": "Není vybrána žádná cívka. Vyberte prosím cívku, jinak nebude tento tisk sledován.",
-            "OpenSpoolManager": "otevřít Správce cívek",
-            "Refresh": "obnovit",
-            "Search": "Hledat",
-            "SelectSpool": "Vybrat cívku",
-            "Today": "Dnes",
-            "TooLessFilament": "Aktuální cívka nemusí mít dostatek filamentu pro tento tisk. ({spoolWeight} g z {fileWeight} g)",
-            "Weight": "Váha",
-            "Yesterday": "Včera"
         },
         "StatusPanel": {
             "CancelPrint": "Zrušit tisk",

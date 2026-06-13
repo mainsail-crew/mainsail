@@ -14,9 +14,9 @@
             </v-col>
             <v-col class="v-col-auto pr-6 text-right" align-self="center">
                 <v-chip
-                    small
+                    size="small"
                     label
-                    outlined
+                    variant="outlined"
                     :color="btnColor"
                     :disabled="btnDisabled"
                     class="minwidth-0 px-2 text-uppercase"

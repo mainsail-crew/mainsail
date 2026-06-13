@@ -51,6 +51,7 @@
         </td>
         <temperature-panel-list-item-edit
             v-model="showEditDialog"
+            :show-dialog="showEditDialog"
             :object-name="objectName"
             :name="name"
             :format-name="formatName"
@@ -60,11 +61,11 @@
         <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
                 <v-list-item v-if="isHeater" :disabled="!isHeaterActive" @click="turnOffHeater">
-                    <v-icon left>{{ mdiSnowflake }}</v-icon>
+                    <v-icon start>{{ mdiSnowflake }}</v-icon>
                     {{ $t('Panels.TemperaturePanel.TurnHeaterOff') }}
                 </v-list-item>
                 <v-list-item @click="openEditDialog">
-                    <v-icon left>{{ mdiCog }}</v-icon>
+                    <v-icon start>{{ mdiCog }}</v-icon>
                     {{ $t('Panels.TemperaturePanel.Settings') }}
                 </v-list-item>
             </v-list>

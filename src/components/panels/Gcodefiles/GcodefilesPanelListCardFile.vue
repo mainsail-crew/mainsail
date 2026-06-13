@@ -43,7 +43,7 @@
                     <v-chip
                         v-if="item.slicer"
                         x-small
-                        outlined
+                        variant="outlined"
                         class="mr-1 gcode-card__chip">
                         {{ item.slicer }}
                     </v-chip>
@@ -110,14 +110,14 @@
         <v-divider class="gcode-card__divider" />
 
         <div class="gcode-card__action">
-            <v-btn
+ <v-btn
                 block
-                small
+                size="small"
                 color="primary"
                 class="gcode-card__start"
                 :disabled="!isGcodeFile || !canStart"
                 @click.stop="showStartPrintDialog = true">
-                <v-icon left size="small">{{ mdiPlay }}</v-icon>
+                <v-icon start size="small">{{ mdiPlay }}</v-icon>
                 {{ $t('Files.PrintStart') }}
             </v-btn>
         </div>

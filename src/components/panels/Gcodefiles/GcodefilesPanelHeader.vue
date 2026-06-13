@@ -12,7 +12,7 @@
                 density="compact"
                 class="max-width-300" />
             <v-spacer />
-            <v-btn
+ <v-btn
                 v-if="selectedFiles.length"
                 :title="$t('Files.Download')"
                 color="primary"
@@ -21,7 +21,7 @@
                 @click="downloadSelectedFiles">
                 <v-icon>{{ mdiCloudDownload }}</v-icon>
             </v-btn>
-            <v-btn
+ <v-btn
                 v-if="selectedFiles.length"
                 :title="$t('Files.Delete')"
                 color="error"
@@ -42,21 +42,21 @@
                 class="d-none"
                 multiple
                 @change="uploadFile" />
-            <v-btn
+ <v-btn
                 :title="$t('Files.UploadNewGcode')"
                 class="text-primary px-2 minwidth-0 ml-3"
                 :loading="loadings.includes('gcodeUpload')"
                 @click="clickUploadButton">
                 <v-icon>{{ mdiUpload }}</v-icon>
             </v-btn>
-            <v-btn
+ <v-btn
                 :title="$t('Files.CreateNewDirectory')"
                 class="px-2 minwidth-0 ml-3"
                 @click="showCreateDirectoryDialog = true">
                 <v-icon>{{ mdiFolderPlus }}</v-icon>
             </v-btn>
             <gcodefiles-create-directory-dialog v-model="showCreateDirectoryDialog" />
-            <v-btn :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3" @click="refreshFileList">
+ <v-btn :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3" @click="refreshFileList">
                 <v-icon>{{ mdiRefresh }}</v-icon>
             </v-btn>
             <gcodefiles-panel-header-settings />

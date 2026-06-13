@@ -522,6 +522,8 @@ safety:
 ```
 
 An example is available at `config/examples/machine-profile.example.yaml` in the repository.
+By default the agent looks for `~/printer_data/config/machine_profile.yaml`; set
+`machine_profile_path` in `[cnc_agent]` to override it.
 
 ### G-Code Metadata Extractor
 

@@ -27,7 +27,7 @@
             <v-col class="v-col-auto pr-6 text-right" align-self="center">
                 <v-chip
                     v-if="anomalies.length > 0"
-                    small
+                    size="small"
                     label
                     :outlined="!toggleAnomalies"
                     color="grey"
@@ -39,9 +39,9 @@
                     <v-menu :offset-y="true">
                         <template #activator="{ props: activatorProps }">
                             <v-chip
-                                small
+                                size="small"
                                 label
-                                outlined
+                                variant="outlined"
                                 :color="btnColor"
                                 :disabled="btnDisabled"
                                 class="minwidth-0 px-2 text-uppercase"
@@ -69,9 +69,9 @@
                 </template>
                 <v-chip
                     v-else
-                    small
+                    size="small"
                     label
-                    outlined
+                    variant="outlined"
                     :color="btnColor"
                     :disabled="btnDisabled"
                     class="minwidth-0 px-2 text-uppercase"
@@ -86,8 +86,8 @@
                 <v-alert
                     v-for="(message, index) in warnings"
                     :key="'warnings_' + index"
-                    dense
-                    text
+                    density="compact"
+                    variant="text"
                     color="orange"
                     border="start"
                     :icon="mdiCloseCircle">
@@ -100,8 +100,8 @@
                 <v-alert
                     v-for="(message, index) in anomalies"
                     :key="'anomalies_' + index"
-                    dense
-                    text
+                    density="compact"
+                    variant="text"
                     color="grey"
                     border="start"
                     :icon="mdiInformation">

@@ -2,6 +2,7 @@ import asyncio
 import copy
 import os
 import sys
+import tempfile
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -146,6 +147,46 @@ class CncAgentTests(unittest.TestCase):
         snapshot["spindle"]["state"] = "off"
         self.assertEqual(agent.get_state()["settings"]["theme"], "dark")
         self.assertEqual(agent.get_state()["spindle"]["state"], "cw")
+
+    def test_machine_profile_loads_from_yaml_and_surfaces_in_state(self):
+        server = self._make_server()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            profile_path = os.path.join(tmpdir, "machine_profile.yaml")
+            with open(profile_path, "w", encoding="utf-8") as handle:
+                handle.write(
+                    "name: test-machine\n"
+                    "frontend:\n"
+                    "  show_machine_coords: false\n"
+                    "  show_work_coords: true\n"
+                    "  show_machine_health: false\n"
+                    "capabilities:\n"
+                    "  spindle:\n"
+                    "    enabled: false\n"
+                    "  coolant:\n"
+                    "    channels: 0\n"
+                    "safety:\n"
+                    "  require_confirm_for_zero_reset: false\n"
+                )
+
+            agent = CncAgent(FakeConfig(server, {"machine_profile_path": profile_path}))
+
+        snapshot = agent.get_state()
+        self.assertEqual(snapshot["profile"]["name"], "test-machine")
+        self.assertFalse(snapshot["profile"]["frontend"]["show_machine_coords"])
+        self.assertFalse(snapshot["capabilities"]["spindle"]["enabled"])
+        self.assertEqual(snapshot["capabilities"]["coolant"]["channels"], 0)
+        self.assertFalse(snapshot["profile"]["safety"]["require_confirm_for_zero_reset"])
+
+    def test_machine_profile_missing_file_uses_defaults(self):
+        server = self._make_server()
+        agent = CncAgent(FakeConfig(server, {"machine_profile_path": "/tmp/does-not-exist-machine-profile.yaml"}))
+
+        snapshot = agent.get_state()
+        self.assertEqual(snapshot["profile"]["name"], "")
+        self.assertEqual(snapshot["profile"]["frontend"], {})
+        self.assertEqual(snapshot["profile"]["capabilities"], {})
+        self.assertEqual(snapshot["profile"]["safety"], {})
 
     def test_jog_and_wcs_handlers_normalize_payloads(self):
         server = self._make_server()

@@ -16,11 +16,11 @@
         </form>
         <v-menu v-if="presets" :offset-y="true" left title="Preheat">
             <template #activator="{ props }">
-                <v-btn
+ <v-btn
                     :disabled="['printing', 'paused'].includes(printer_state)"
                     tabindex="-1"
                     size="x-small"
-                    plain
+                    variant="plain"
                     v-bind="props"
                     class="pa-0"
                     style="min-width: 24px"

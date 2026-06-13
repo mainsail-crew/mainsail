@@ -2,7 +2,7 @@
     <v-item-group class="d-inline-flex">
         <v-tooltip :disabled="!hasDescription" top>
             <template #activator="{ props }">
-                <v-btn
+ <v-btn
                     size="small"
                     :color="color"
                     :class="paramArray.length ? 'macroWithParameters' : ''"
@@ -12,7 +12,7 @@
                     v-bind="props"
                     
                     @click="doSendMacro(macro.name)">
-                    <v-icon v-if="icon" size="small" left>{{ icon }}</v-icon>
+                    <v-icon v-if="icon" size="small" start>{{ icon }}</v-icon>
                     {{ alias ? alias : macro.name.replace(/_/g, ' ') }}
                 </v-btn>
             </template>
@@ -21,12 +21,12 @@
         <template v-if="paramArray.length">
             <v-menu v-if="!isMobile" offset-y :close-on-content-click="false">
                 <template #activator="{ props }">
-                    <v-btn
+ <v-btn
                         :disabled="disabled"
                         :color="color"
                         v-bind="props"
                         class="minwidth-0 px-1 btnMacroMenu"
-                        small
+                        size="small"
                         >
                         <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
@@ -41,8 +41,8 @@
                                     :placeholder="params[name].default"
                                     :persistent-placeholder="true"
                                     hide-details
-                                    outlined
-                                    dense
+                                    variant="outlined"
+                                    density="compact"
                                     clearable
                                     :clear-icon="mdiRefresh"
                                     @keyup.enter="sendWithParams"></v-text-field>
@@ -50,7 +50,7 @@
                         </v-row>
                         <v-row class="my-2">
                             <v-col class="py-0">
-                                <v-btn color="primary" class="text-uppercase" block @click="sendWithParams">
+ <v-btn color="primary" class="text-uppercase d-block w-100" @click="sendWithParams">
                                     {{ $t('Panels.MacrosPanel.Send') }}
                                 </v-btn>
                             </v-col>
@@ -59,18 +59,18 @@
                 </v-card>
             </v-menu>
             <template v-else>
-                <v-btn
+ <v-btn
                     :disabled="disabled"
                     :color="color"
                     class="minwidth-0 px-1 btnMacroMenu"
-                    small
+                    size="small"
                     @click="paramsDialog = true">
                     <v-icon>{{ mdiMenuDown }}</v-icon>
                 </v-btn>
                 <v-dialog v-model="paramsDialog">
                     <panel :title="macro.name" :card-class="`macro-params-mobile-${macro.name}`" :margin-bottom="false">
                         <template #buttons>
-                            <v-btn :icon="mdiCloseThick" rounded="0" @click="paramsDialog = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="paramsDialog = false"/>
                         </template>
                         <v-card-text>
                             <v-row>
@@ -81,8 +81,8 @@
                                         :placeholder="params[name].default"
                                         :persistent-placeholder="true"
                                         hide-details
-                                        outlined
-                                        dense
+                                        variant="outlined"
+                                        density="compact"
                                         clearable
                                         :clear-icon="mdiRefresh"
                                         @keyup.enter="sendWithParams"></v-text-field>
@@ -90,7 +90,7 @@
                             </v-row>
                         </v-card-text>
                         <v-card-actions class="px-4 pb-4">
-                            <v-btn color="primary" class="text-uppercase" block @click="sendWithParams">
+ <v-btn color="primary" class="text-uppercase d-block w-100" @click="sendWithParams">
                                 {{ $t('Panels.MacrosPanel.Send') }}
                             </v-btn>
                         </v-card-actions>

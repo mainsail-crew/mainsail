@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.RenameFile')" card-class="gcodefiles-rename-file-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="showDialog = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="showDialog = false"/>
             </template>
             <v-card-text>
                 <v-text-field
@@ -16,8 +16,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="showDialog = false">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn :disabled="isInvalidName || name.length === 0" color="primary" variant="text" @click="renameFileAction">
+ <v-btn variant="text" @click="showDialog = false">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn :disabled="isInvalidName || name.length === 0" color="primary" variant="text" @click="renameFileAction">
                     {{ $t('Files.Rename') }}
                 </v-btn>
             </v-card-actions>

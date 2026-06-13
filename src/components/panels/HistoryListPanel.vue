@@ -16,7 +16,7 @@
                 <v-col class="offset-4 v-col-4 d-flex align-center justify-end">
                     <v-tooltip v-if="selectedJobsTable.length" top>
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
+ <v-btn
                                 color="error"
                                 class="px-2 minwidth-0 ml-3"
                                 v-bind="activatorProps"
@@ -28,7 +28,7 @@
                     </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
+ <v-btn
                                 class="px-2 minwidth-0 ml-3"
                                 v-bind="activatorProps"
                                 @click="addMaintenanceDialog = true">
@@ -39,7 +39,7 @@
                     </v-tooltip>
                     <v-tooltip v-if="!allLoaded" top>
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
+ <v-btn
                                 :loading="loadings.includes('historyLoadAll')"
                                 class="px-2 minwidth-0 ml-3"
                                 v-bind="activatorProps"
@@ -51,7 +51,7 @@
                     </v-tooltip>
                     <v-tooltip top>
                         <template #activator="{ props: activatorProps }">
-                            <v-btn class="px-2 minwidth-0 ml-3" v-bind="activatorProps" @click="exportHistory">
+ <v-btn class="px-2 minwidth-0 ml-3" v-bind="activatorProps" @click="exportHistory">
                                 <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
                             </v-btn>
                         </template>
@@ -61,7 +61,7 @@
                         <template #activator="{ props: menuProps }">
                             <v-tooltip location="top" :text="$t('History.Settings')">
                                 <template #activator="{ props: tooltipProps }">
-                                    <v-btn class="px-2 minwidth-0 ml-3" v-bind="{ ...menuProps, ...tooltipProps }">
+ <v-btn class="px-2 minwidth-0 ml-3" v-bind="{ ...menuProps, ...tooltipProps }">
                                         <v-icon>{{ mdiCog }}</v-icon>
                                     </v-btn>
                                 </template>

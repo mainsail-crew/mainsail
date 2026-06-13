@@ -11,6 +11,8 @@
 > - `JogPanel` now uses the shared GUI readiness gate and the imported MDI icon path.
 > - `MoveToControl` now passes the correct `position` prop into `MoveToInput`, clearing the console warning.
 > - The remaining Vuetify shade-string cleanup was tightened in panels, settings, and shared helpers (`grey lighten-*`, `grey darken-*`, `blue accent-*`).
+> - The latest Vuetify 2-era template audit found one duplicate-attribute regression in `ZoffsetControl.vue`, which was fixed and revalidated.
+> - A follow-up sweep rechecked legacy Vuetify props and left the active codebase build-clean.
 > - The local Vue 3 dashboard was compared against the remote `http://192.168.0.239/` reference page for layout parity.
 > - `bun run build` still passes after the latest parity and styling cleanup.
 

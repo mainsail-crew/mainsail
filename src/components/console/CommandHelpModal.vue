@@ -1,8 +1,8 @@
 <template>
     <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" :fullscreen="isMobile">
         <template #activator="{ props: activatorProps }">
-            <v-btn v-if="inToolbar" :icon="mdiHelp" rounded="0" v-bind="activatorProps" />
-            <v-btn
+ <v-btn v-if="inToolbar" :icon="mdiHelp" rounded="0" v-bind="activatorProps"/>
+ <v-btn
                 v-else
                 class="gcode-command-btn px-2 minwidth-0"
                 color="lightgray"
@@ -18,7 +18,7 @@
                 card-class="command-help-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" rounded="0" @click="isOpen = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="isOpen = false"/>
                 </template>
                 <v-card-title>
                     <v-row>

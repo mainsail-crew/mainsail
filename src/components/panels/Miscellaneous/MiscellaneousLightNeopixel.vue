@@ -2,7 +2,7 @@
     <v-row class="my-0">
         <v-col class="py-2">
             <v-list-subheader class="_light-subheader">
-                <v-icon v-if="groups.length === 0" size="small" left @click="toggle">
+                <v-icon v-if="groups.length === 0" size="small" start @click="toggle">
                     {{ isOn ? mdiLightbulbOnOutline : mdiLightbulbOutline }}
                 </v-icon>
                 <span>{{ outputName }}</span>

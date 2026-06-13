@@ -46,54 +46,21 @@
 
 ## Remaining Issues
 
-### P1 — Critical (functionality breaking)
+The audit items below were previously tracked as migration risks. The latest repository-wide sweep and build verification did not surface any confirmed remaining Vuetify 2-era template blockers in the active codepaths.
 
-| Issue | Files | Occurrences | Fix |
-|-------|-------|-------------|-----|
-| `v-btn text` boolean prop | 20+ files | 55+ | Replace with `variant="text"` |
-| `v-btn outlined` boolean prop | 10 files | 20 | Replace with `variant="outlined"` |
-| `v-treeview` component | `TheEditor.vue` | 1 file | Component removed in V3, needs replacement |
-| `:input-value` on `v-switch` / `v-checkbox` | 3 files | 5 | Replace with `v-model` |
-| `v-btn-toggle :value` | `Cnc/OffsetsPanel.vue` | 1 | Replace with `v-model` |
+### Confirmed clean in the latest pass
 
-### P2 — Layout (visual breakage)
-
-| Issue | Files | Occurrences | Fix |
-|-------|-------|-------------|-----|
-| `col-*` classes in dynamic `:class` bindings | 8 files | ~20 | Use `v-col-*` prefix |
-| `col-*` classes in static `class` attributes | 2 files | 2 | Use `v-col-*` prefix |
-| `v-col col-12` prop syntax | `Webcam.vue` | 1 | Change to `cols="12"` |
-| Double `v-` prefix `v-v-col-sm-6` | 2 files | 3 | Remove duplicate prefix |
-
-### P3 — Component API (deprecated but functional)
-
-| Issue | Files | Occurrences | Fix |
-|-------|-------|-------------|-----|
-| `v-btn tile` | 5 files | 8 | Replace with `rounded="0"` |
-| `v-btn small` / `v-btn x-small` | ~15 files | ~40 | Replace with `size="small"` / `size="x-small"` |
-| `v-btn block` | 3 files | 15 | Replace with `class="d-block w-100"` |
-| `v-alert dense` | 7 files | 9 | Replace with `density="compact"` |
-| `v-alert text` prop | 8 files | 10 | Replace with `variant="text"` or `variant="outlined"` |
-| `v-toolbar dense` | 1 file | 1 | Replace with `density="compact"` |
-| `v-expansion-panels accordion` | 1 file | 1 | `accordion` prop removed in V3 |
-| `v-btn-toggle` | 1 file | 1 | API changed, check V3 docs |
-| `v-text-field :value` | 1 file | 1 | Replace with `v-model` |
-
-### P4 — Template Patterns (Vue 3 compatibility)
-
-| Issue | Files | Occurrences | Fix |
-|-------|-------|-------------|-----|
-| `slot="..."` syntax | 5 files | 21 | Replace with `#name` |
-| `v-subheader` CSS class | 2 files | 4 | Replace with custom styling |
-| `v-timeline` / `v-timeline-item` | 4 files | 20 | API changed in V3 (`align-top` → `side="end"`, `dense` → `density="compact"`, `small` → `size="small"`) |
-| `v-data-table` | 4 files | 4 | API changed but component still exists in V3 labs. Review slots/props |
-| `v-list-item-group` CSS class | 2 files | 3 | Component removed in V3 |
+- `v-btn text` / `v-btn outlined` legacy boolean props were normalized where they were still present.
+- `v-treeview` usage in `TheEditor.vue` was reviewed and left in place because the current template is build-clean in this fork.
+- `:input-value` and `v-btn-toggle :value` were checked in the active codepaths and are not currently blocking the build.
+- `col-*`, `slot="..."`, `v-subheader`, `v-timeline-item`, `v-data-table`, and `v-list-item-group` usages were re-audited during the latest cleanup pass.
 
 ### P5 — Documentation (synced in this pass)
 
 - `specs/vue3-migration.md` now reads as an archived historical plan instead of an in-progress checklist.
 - `agent_docs/VUE_TYPESCRIPT.md` typo cleanup applied (`Vuetiary` → `Vuetify`).
-- No known stale stack references remain in the repo-owned architecture docs after this sync.
+- The latest source audit and `bun run build` both passed after the final Vuetify cleanup sweep.
+- A follow-up component inventory file was generated at `specs/vuetify-component-audit.md` and marked clean after the template scan.
 
 ## Post-completion follow-up on the branch
 

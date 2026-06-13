@@ -1,6 +1,6 @@
 <template>
     <v-col v-if="exists" cols="12" :class="classes">
-        <v-btn :href="href" block variant="flat" class="machine-logfiles-panel__log-button" @click="downloadLog">
+ <v-btn :href="href" variant="flat" class="d-block w-100 machine-logfiles-panel__log-button" @click="downloadLog">
             <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
             {{ name }}
         </v-btn>

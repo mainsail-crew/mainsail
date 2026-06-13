@@ -1,7 +1,7 @@
 <template>
     <panel :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
         <template #buttons>
-            <v-btn
+ <v-btn
                 v-if="queueState === 'paused'"
                 color="success"
                 :loading="loadings.includes('startJobqueue')"
@@ -16,7 +16,7 @@
                     <span>{{ $t('JobQueue.Start') }}</span>
                 </v-tooltip>
             </v-btn>
-            <v-btn
+ <v-btn
                 v-if="['ready', 'loading'].includes(queueState)"
                 color="warning"
                 :loading="loadings.includes('pauseJobqueue')"

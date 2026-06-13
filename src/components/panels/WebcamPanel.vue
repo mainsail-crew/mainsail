@@ -11,7 +11,7 @@
         <template #buttons>
             <v-menu v-if="showSwitch" :offset-y="true">
                 <template #activator="{ props }">
-                    <v-btn variant="text" rounded="0" v-bind="props">
+ <v-btn variant="text" rounded="0" v-bind="props">
                         <v-icon v-if="'icon' in currentCam" size="small" class="mr-2">
                             {{ convertWebcamIcon(currentCam.icon) }}
                         </v-icon>

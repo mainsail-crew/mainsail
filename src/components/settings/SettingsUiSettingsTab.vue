@@ -15,17 +15,17 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo')">
-                    <v-btn
+ <v-btn
                         v-if="logoColor.toLowerCase() !== defaultLogoColor.toLowerCase()"
                         size="small"
-                        text
+                        variant="text"
                         class="minwidth-0"
                         @click="logoColor = defaultLogoColor">
                         <v-icon size="small">{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu location="bottom end" :close-on-content-click="false">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn v-bind="activatorProps" :color="logoColor" class="minwidth-0 px-5" size="small" />
+ <v-btn v-bind="activatorProps" :color="logoColor" class="minwidth-0 px-5" size="small"/>
                         </template>
                         <v-color-picker
                             :value="logoColor"
@@ -36,17 +36,17 @@
                 </settings-row>
                 <v-divider class="my-2" />
                 <settings-row :title="$t('Settings.UiSettingsTab.Primary')">
-                    <v-btn
+ <v-btn
                         v-if="primaryColor.toLowerCase() !== defaultPrimaryColor.toLowerCase()"
-                        small
-                        text
+                        size="small"
+                        variant="text"
                         class="minwidth-0"
                         @click="primaryColor = defaultPrimaryColor">
                         <v-icon size="small">{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu location="bottom end" :close-on-content-click="false">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn v-bind="activatorProps" :color="primaryColor" class="minwidth-0 px-5" size="small" />
+ <v-btn v-bind="activatorProps" :color="primaryColor" class="minwidth-0 px-5" size="small"/>
                         </template>
                         <v-color-picker
                             :value="primaryColor"
@@ -60,9 +60,9 @@
                     :title="$t('Settings.UiSettingsTab.GcodeThumbnails')"
                     :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription')"
                     :dynamic-slot-width="true">
-                    <v-btn
-                        outlined
-                        small
+ <v-btn
+                        variant="outlined"
+                        size="small"
                         color="primary"
                         href="https://docs.mainsail.xyz/overview/features/thumbnails"
                         target="_blank">
@@ -86,17 +86,17 @@
                     </settings-row>
                     <v-divider class="my-2" />
                     <settings-row :title="$t('Settings.UiSettingsTab.BigThumbnailBackground')">
-                        <v-btn
+ <v-btn
                             v-if="bigThumbnailBackground.toLowerCase() !== defaultBigThumbnailBackground.toLowerCase()"
-                            small
-                            text
+                            size="small"
+                            variant="text"
                             class="minwidth-0"
                             @click="bigThumbnailBackground = defaultBigThumbnailBackground">
                             <v-icon size="small">{{ mdiRestart }}</v-icon>
                         </v-btn>
                         <v-menu location="bottom end" :close-on-content-click="false">
                             <template #activator="{ props: activatorProps }">
-                                <v-btn
+ <v-btn
                                     v-bind="activatorProps"
                                     :color="bigThumbnailBackground"
                                     class="minwidth-0 px-5"
@@ -150,8 +150,8 @@
                             step="0.5"
                             suffix="s"
                             hide-details
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             hide-spin-buttons />
                     </settings-row>
                 </v-expand-transition>
@@ -194,7 +194,7 @@
                         item-value="value"
                         class="mt-0"
                         hide-details
-                        outlined
+                        variant="outlined"
                         dense />
                 </settings-row>
                 <v-divider class="my-2" />
@@ -208,7 +208,7 @@
                         item-value="value"
                         class="mt-0"
                         hide-details
-                        outlined
+                        variant="outlined"
                         dense />
                 </settings-row>
                 <v-divider class="my-2" />
@@ -230,7 +230,7 @@
                         item-value="value"
                         class="mt-0"
                         hide-details
-                        outlined
+                        variant="outlined"
                         dense />
                 </settings-row>
                 <v-divider class="my-2" />
@@ -312,7 +312,7 @@
                         item-value="value"
                         multiple
                         hide-details
-                        dense
+                        density="compact"
                         outlined />
                 </settings-row>
                 <v-divider class="my-2" />

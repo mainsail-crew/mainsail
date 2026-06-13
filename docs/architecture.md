@@ -66,7 +66,7 @@ plugin's G10 handler.
 | `JogPanel` | `gui.control`, `printer.print_stats`, `printer.toolhead.homed_axes` + `doSend` | wired, renders |
 | `OffsetsPanel` | `printer.gcode_move.gcode_position` + `G10 L20` work-zero actions (WCS plugin) | wired, renders |
 | `SpindleCoolantPanel` | `doSend` (raw `M3`/`M4`/`M5`/`M7`/`M8`/`M9`) | wired, renders |
-| `MdiPanel` | — | stub, placeholder only |
+| `MdiPanel` | `ConsoleTextarea` + quick commands for G20/G21/G90/G91 and WCS shortcuts | wired, renders |
 | `DroPanel` | `printer.motion_report.live_position`, `printer.gcode_move.gcode_position`, `printer.toolhead.axis_minimum`/`axis_maximum`, `printer.toolhead.homed_axes`, `printer.motion_report.live_velocity` | wired, renders |
 
 All wired panels read Klipper state directly from the existing Mainsail

@@ -6,7 +6,7 @@
             :margin-bottom="false"
             card-class="machine-update-commits-dialog">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
             <v-card-text class="py-0 px-0">
                 <OverlayScrollbarsComponent :style="overlayScrollbarsStyle" :options="{ overflowBehavior: { x: 'hidden' } }">
@@ -18,14 +18,14 @@
                             :grouped-commits="group" />
                         <v-timeline-item
                             v-if="displayFullHistoryWaring"
-                            small
+                            size="small"
                             class="git-commit-list-day git-commit-list-warning">
                             <v-row class="pt-0">
                                 <v-col class="pr-12">
                                     <v-alert density="compact" variant="text" color="info">
                                         <p>{{ $t('Machine.UpdatePanel.MoreCommitsInfo') }}</p>
                                         <div class="text-center mb-3">
-                                            <v-btn :href="linkToGithub" target="_blank">
+ <v-btn :href="linkToGithub" target="_blank">
                                                 {{ $t('Machine.UpdatePanel.LinkToGithub') }}
                                             </v-btn>
                                         </div>

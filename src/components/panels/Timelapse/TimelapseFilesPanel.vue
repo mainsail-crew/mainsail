@@ -18,7 +18,7 @@
                             density="compact"
                             style="max-width: 300px"></v-text-field>
                         <v-spacer></v-spacer>
-                        <v-btn
+ <v-btn
                             v-if="selectedFiles.length"
                             :title="$t('Timelapse.Download')"
                             color="primary"
@@ -27,7 +27,7 @@
                             @click="downloadSelectedFiles">
                             <v-icon>{{ mdiCloudDownload }}</v-icon>
                         </v-btn>
-                        <v-btn
+ <v-btn
                             v-if="selectedFiles.length"
                             :title="$t('Buttons.Delete')"
                             color="error"
@@ -35,14 +35,14 @@
                             @click="deleteSelectedDialog = true">
                             <v-icon>{{ mdiDelete }}</v-icon>
                         </v-btn>
-                        <v-btn
+ <v-btn
                             v-if="directoryPermissions.includes('w')"
                             :title="$t('Timelapse.CreateNewDirectory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="createDirectory">
                             <v-icon>{{ mdiFolderPlus }}</v-icon>
                         </v-btn>
-                        <v-btn
+ <v-btn
                             :title="$t('Timelapse.RefreshCurrentDirectory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="refreshFileList">
@@ -227,7 +227,7 @@
                 card-class="gcode-files-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameFile.show = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameFile.show = false"/>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -241,8 +241,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" variant="text" @click="dialogRenameFile.show = false">{{ $t('Buttons.Cancel') }}</v-btn>
-                    <v-btn :disabled="isInvalidName" color="primary" variant="text" @click="renameFileAction">
+ <v-btn color="" variant="text" @click="dialogRenameFile.show = false">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn :disabled="isInvalidName" color="primary" variant="text" @click="renameFileAction">
                         {{ $t('Timelapse.Rename') }}
                     </v-btn>
                 </v-card-actions>
@@ -254,7 +254,7 @@
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogCreateDirectory.show = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogCreateDirectory.show = false"/>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -268,10 +268,10 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" variant="text" @click="dialogCreateDirectory.show = false">
+ <v-btn color="" variant="text" @click="dialogCreateDirectory.show = false">
                         {{ $t('Buttons.Cancel') }}
                     </v-btn>
-                    <v-btn :disabled="isInvalidName" color="primary" variant="text" @click="createDirectoryAction">
+ <v-btn :disabled="isInvalidName" color="primary" variant="text" @click="createDirectoryAction">
                         {{ $t('Timelapse.Create') }}
                     </v-btn>
                 </v-card-actions>
@@ -283,7 +283,7 @@
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameDirectory.show = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="dialogRenameDirectory.show = false"/>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -297,10 +297,10 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" variant="text" @click="dialogRenameDirectory.show = false">
+ <v-btn color="" variant="text" @click="dialogRenameDirectory.show = false">
                         {{ $t('Buttons.Cancel') }}
                     </v-btn>
-                    <v-btn :disabled="isInvalidName" color="primary" variant="text" @click="renameDirectoryAction">
+ <v-btn :disabled="isInvalidName" color="primary" variant="text" @click="renameDirectoryAction">
                         {{ $t('Timelapse.Rename') }}
                     </v-btn>
                 </v-card-actions>
@@ -319,7 +319,7 @@
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" rounded="0" @click="boolVideoDialog = false" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="boolVideoDialog = false"/>
                 </template>
                 <v-card-text class="">
                     <v-row>
@@ -333,7 +333,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                                <v-btn
+ <v-btn
                                     variant="text"
                                     color="primary"
                                     :href="apiUrl + '/server/files/' + videoDialogFilename"

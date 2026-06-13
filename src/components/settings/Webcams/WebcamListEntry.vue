@@ -3,7 +3,7 @@
         <v-divider v-if="boolBorderTop" class="my-2" />
         <settings-row :title="webcam.name" :icon="icon" :sub-title="subtitle">
             <template v-if="webcam.source === 'database'">
-                <v-btn
+ <v-btn
                     class="minwidth-0 px-2"
                     size="small"
                     variant="outlined"
@@ -11,11 +11,11 @@
                     @click="toogleStatus">
                     <v-icon size="small">{{ mdiLightbulbOutline }}</v-icon>
                 </v-btn>
-                <v-btn class="ml-3" size="small" variant="outlined" @click="edit">
-                    <v-icon size="small" left>{{ mdiPencil }}</v-icon>
+ <v-btn class="ml-3" size="small" variant="outlined" @click="edit">
+                    <v-icon size="small" start>{{ mdiPencil }}</v-icon>
                     {{ $t('Settings.Edit') }}
                 </v-btn>
-                <v-btn size="small" variant="outlined" class="ml-3 minwidth-0 px-2" color="error" @click="deleteWebcam">
+ <v-btn size="small" variant="outlined" class="ml-3 minwidth-0 px-2" color="error" @click="deleteWebcam">
                     <v-icon size="small">{{ mdiDelete }}</v-icon>
                 </v-btn>
             </template>

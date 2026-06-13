@@ -18,14 +18,27 @@ need a central, guarded surface:
 - active work coordinate system (`G54`..`G59`, `G53`) and per-WCS offsets
 - safe jog / set-zero / WCS-select command endpoints
 - CNC dashboard settings persistence (separate from Mainsail's settings)
+- machine profile loading for capability/safety/frontend feature gating
 
 ## Current state
 
-The component is an empty shell. It loads cleanly under `[cnc_agent]` in
-`moonraker.conf` and logs readiness, but registers no HTTP endpoints yet.
-Endpoints will be added in `/server/cnc/...` as the corresponding state
-sources (Klipper extras, gcode parser callbacks, persisted settings) come
-online.
+The component is implemented and registers CNC endpoints under
+`/server/cnc/...`:
+
+- `GET /server/cnc/state`
+- `GET/POST /server/cnc/spindle`
+- `GET/POST /server/cnc/coolant`
+- `GET/POST /server/cnc/units`
+- `GET /server/cnc/wcs`
+- `POST /server/cnc/wcs/select`
+- `POST /server/cnc/wcs/set-zero`
+- `POST /server/cnc/jog`
+- `GET/POST /server/cnc/settings`
+
+It owns spindle, coolant, units, WCS, guarded jog/set-zero actions, CNC
+settings persistence, and optional machine profile loading for frontend
+feature gating. Read-only Klipper machine state still comes directly
+from Mainsail's existing websocket store subscription in the frontend.
 
 ## Installation
 

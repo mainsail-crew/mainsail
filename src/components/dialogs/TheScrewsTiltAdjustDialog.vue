@@ -8,12 +8,12 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="clearScrewsTiltAdjust" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="clearScrewsTiltAdjust"/>
             </template>
             <v-card-text v-if="error">
                 <v-row>
                     <v-col>
-                        <v-alert border="left" text type="error">{{ $t('ScrewsTiltAdjust.ErrorText') }}</v-alert>
+                        <v-alert border="start" variant="text" type="error">{{ $t('ScrewsTiltAdjust.ErrorText') }}</v-alert>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -27,10 +27,10 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="retryScrewsTiltAdjust">
+ <v-btn variant="text" @click="retryScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Retry') }}
                 </v-btn>
-                <v-btn color="primary" variant="text" @click="clearScrewsTiltAdjust">
+ <v-btn color="primary" variant="text" @click="clearScrewsTiltAdjust">
                     {{ $t('ScrewsTiltAdjust.Accept') }}
                 </v-btn>
             </v-card-actions>

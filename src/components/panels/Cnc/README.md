@@ -10,7 +10,7 @@ This directory contains CNC-focused dashboard panels for the Mainsail fork.
 | `JogPanel.vue` | native store + `ControlMixin.doSend` | wired, renders |
 | `OffsetsPanel.vue` | `printer.gcode_move.gcode_position` + `G10 L20` work-zero actions (WCS plugin) | wired, renders |
 | `SpindleCoolantPanel.vue` | `doSend` (`M3`/`M4`/`M5`/`M7`/`M8`/`M9`) | wired, renders |
-| `MdiPanel.vue` | — | stub, placeholder only |
+| `MdiPanel.vue` | `ConsoleTextarea` + quick commands for G20/G21/G90/G91 and WCS shortcuts | wired, renders |
 | `DroPanel.vue` | `printer.motion_report`, `printer.gcode_move`, `printer.toolhead` | wired, renders |
 
 ## Integration points

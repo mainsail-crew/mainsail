@@ -594,38 +594,6 @@
         "Headline": "Sondeada Manual"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Permitida",
-            "CleanNozzle": "Limpiar la boquilla",
-            "EstimatedExtrusion": "Extrusion estimada",
-            "Extrude": "Extruir",
-            "ExtruderControl": "Control del extrusor",
-            "ExtruderTempTooLow": "Temp del extrusor. <",
-            "ExtrusionFactor": "Factor de extrusión",
-            "ExtrusionFeedrate": "Velocidad de avance de extrusión",
-            "FilamentLength": "Largo del filamento",
-            "FirmwareRetraction": "Reversión del firmware",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Distancia de retracción",
-                "RetractSpeed": "Velocidad de retracción",
-                "UnretractExtraLength": "Distancia adicional post-retracción",
-                "UnretractSpeed": "Velocidad de post-retracción"
-            },
-            "Headline": "Extrusor",
-            "LoadFilament": "Cargar filamento",
-            "PressureAdvance": "Avance de presión de extrusión",
-            "PressureAdvanceSettings": {
-                "Advance": "Avance",
-                "Extruder": "Extrusor",
-                "SmoothTime": "Tiempo de suavizado"
-            },
-            "PurgeFilament": "Purgar filamento",
-            "Requested": "Solicitada",
-            "Retract": "Retraer",
-            "TooLargeExtrusion": "¡Extrusión muy grande!",
-            "Tools": "Herramientas",
-            "UnloadFilament": "Descargar Filamento"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconectar",
             "SwitchToPrinter": "Cambiar a impresora",
@@ -690,31 +658,6 @@
             "Off": "Apagado",
             "On": "Encendido",
             "PowerControl": "Control de energía"
-        },
-        "SpoolmanPanel": {
-            "ChangeSpool": "Cambiar carrete",
-            "DaysAgo": "Hace {days} días",
-            "EjectSpool": "Expulsar el carrete",
-            "EjectSpoolQuestion": "¿Está seguro de expulsar la bobina del filamento?",
-            "Filament": "Filamento",
-            "FilamentTypeMismatch": "El material del carrecte en uso ({spoolType}) no coincide con el material del G-Code ({fileType}).",
-            "Headline": "Carrete de bobina",
-            "LastUsed": "Utilizado por última vez",
-            "Location": "Ubicación",
-            "Material": "Material",
-            "Never": "Nunca",
-            "NoActiveSpool": "El seguimiento del filamento está inactivo. Para empezar, seleccione una bobina.",
-            "NoResults": "No se ha encontrado ninguna bobina con los criterios de búsqueda actuales.",
-            "NoSpools": "No hay bobinas disponibles",
-            "NoSpoolSelected": "No hay bobina seleccionada. Selecciona una bobina o no se realizará el seguimiento de esta impresión.",
-            "OpenSpoolManager": "Abrir el Administrador de carretes",
-            "Refresh": "recargar",
-            "Search": "Buscar",
-            "SelectSpool": "Seleccionar carrete",
-            "Today": "Hoy",
-            "TooLessFilament": "Es posible que la bobina actual no tenga suficiente filamento para esta impresión. ({spoolWeight}g de {fileWeight}g)",
-            "Weight": "Peso",
-            "Yesterday": "Ayer"
         },
         "StatusPanel": {
             "CancelPrint": "Cancelar impresión",

@@ -10,7 +10,7 @@
         transition="slide-y-transition"
         :min-width="isMobile ? '100%' : null">
         <template #activator="{ props }">
-            <v-btn :icon="boolMenu ? mdiBell : mdiBellOutline" rounded="0" class="minwidth-0" v-bind="props">
+ <v-btn :icon="boolMenu ? mdiBell : mdiBellOutline" rounded="0" class="minwidth-0" v-bind="props">
                 <v-badge
                     :content="notifications.length <= 9 ? notifications.length : '9+'"
                     :value="notifications.length > 0"
@@ -34,8 +34,8 @@
                     <v-divider />
                     <v-card-actions>
                         <v-spacer />
-                        <v-btn variant="text" color="primary" class="mr-2" @click="dismissAll">
-                            <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
+ <v-btn variant="text" color="primary" class="mr-2" @click="dismissAll">
+                            <v-icon start>{{ mdiCloseBoxMultipleOutline }}</v-icon>
                             {{ $t('App.Notifications.DismissAll') }}
                         </v-btn>
                     </v-card-actions>

@@ -14,7 +14,7 @@
         </v-card-text>
         <v-card-actions class="pt-3">
             <v-spacer />
-            <v-btn icon :loading="loadings.includes('queryEndstops')" @click="syncEndstops">
+ <v-btn icon :loading="loadings.includes('queryEndstops')" @click="syncEndstops">
                 <v-icon>{{ mdiSync }}</v-icon>
             </v-btn>
         </v-card-actions>

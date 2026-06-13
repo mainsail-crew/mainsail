@@ -8,7 +8,7 @@
             style="overflow: hidden"
             :height="isMobile ? 0 : 548">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="sendAbort" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="sendAbort"/>
             </template>
             <v-card-text>
                 <v-row>
@@ -50,13 +50,13 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn variant="text" :loading="loadingAbort" @click="sendAbort">
+ <v-btn variant="text" :loading="loadingAbort" @click="sendAbort">
                     {{ $t('BedScrews.Abort') }}
                 </v-btn>
-                <v-btn color="primary" variant="text" :loading="loadingAdjusted" @click="sendAdjusted">
+ <v-btn color="primary" variant="text" :loading="loadingAdjusted" @click="sendAdjusted">
                     {{ $t('BedScrews.Adjusted') }}
                 </v-btn>
-                <v-btn color="primary" variant="text" :loading="loadingAccept" @click="sendAccept">
+ <v-btn color="primary" variant="text" :loading="loadingAccept" @click="sendAccept">
                     {{ $t('BedScrews.Accept') }}
                 </v-btn>
             </v-card-actions>

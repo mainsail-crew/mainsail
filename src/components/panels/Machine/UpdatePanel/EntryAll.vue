@@ -2,13 +2,13 @@
     <div>
         <v-row class="pt-3">
             <v-col class="text-center">
-                <v-btn
-                    text
+ <v-btn
+                    variant="text"
                     color="primary"
                     size="small"
                     :disabled="['printing', 'paused'].includes(printer_state)"
                     @click="clickUpdate">
-                    <v-icon left>{{ mdiProgressUpload }}</v-icon>
+                    <v-icon start>{{ mdiProgressUpload }}</v-icon>
                     {{ $t('Machine.UpdatePanel.UpdateAll') }}
                 </v-btn>
             </v-col>

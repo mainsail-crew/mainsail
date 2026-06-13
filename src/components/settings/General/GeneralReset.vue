@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn color="error" size="small" @click="openDialog">
+ <v-btn color="error" size="small" @click="openDialog">
             {{ $t('Settings.GeneralTab.FactoryReset') }}
         </v-btn>
         <v-dialog v-model="showDialog" persistent :width="360">
@@ -10,7 +10,7 @@
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
                 </template>
                 <v-card-text>
                     <v-row>
@@ -26,7 +26,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <v-btn
+ <v-btn
                                 color="red"
                                 :loading="loadings.includes('resetMainsail')"
                                 @click="resetMainsailAction">

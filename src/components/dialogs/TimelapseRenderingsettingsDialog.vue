@@ -6,7 +6,7 @@
             card-class="timelapse-rendersettings-dialog-panel"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" @click="close" />
+ <v-btn :icon="mdiCloseThick" @click="close"/>
             </template>
             <v-card-text class="">
                 <v-row>
@@ -15,8 +15,8 @@
                             v-model="variable_fps"
                             :label="$t('Timelapse.Type')"
                             :items="framerateTypeOptions"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             hide-details />
                     </v-col>
                     <v-col class="v-col-4">
@@ -25,16 +25,16 @@
                                 v-model="variable_fps_min"
                                 :label="$t('Timelapse.MinFramerate')"
                                 type="number"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 hide-details
                                 hide-spin-buttons />
                             <v-text-field
                                 v-model="variable_fps_max"
                                 :label="$t('Timelapse.MaxFramerate')"
                                 type="number"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 hide-details
                                 hide-spin-buttons
                                 class="mt-3" />
@@ -42,8 +42,8 @@
                                 v-model="targetlength"
                                 :label="$t('Timelapse.Targetlength')"
                                 type="number"
-                                outlined
-                                dense
+                                variant="outlined"
+                                density="compact"
                                 hide-details
                                 hide-spin-buttons
                                 class="mt-3" />
@@ -53,16 +53,16 @@
                             v-model="output_framerate"
                             :label="$t('Timelapse.Framerate')"
                             type="number"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             hide-details
                             hide-spin-buttons />
                         <v-text-field
                             v-model="duplicatelastframe"
                             :label="$t('Timelapse.DuplicateLastframe')"
                             type="number"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             hide-details
                             hide-spin-buttons
                             class="mt-3" />
@@ -73,16 +73,16 @@
                             v-model="variableTargetFps"
                             :label="$t('Timelapse.TargetFps')"
                             type="number"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             hide-details
                             readonly
                             class="mb-3" />
                         <v-text-field
                             v-model="estimatedVideoLength"
                             :label="$t('Timelapse.EstimatedLength')"
-                            outlined
-                            dense
+                            variant="outlined"
+                            density="compact"
                             hide-details
                             readonly />
                     </v-col>
@@ -90,8 +90,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn variant="text" color="primary" @click="startRender">{{ $t('Timelapse.StartRender') }}</v-btn>
+ <v-btn variant="text" @click="close">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn variant="text" color="primary" @click="startRender">{{ $t('Timelapse.StartRender') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

@@ -14,11 +14,11 @@
                                 })
                             "
                             :dynamic-slot-width="true">
-                            <v-btn size="small" variant="outlined" class="ml-3" @click="editMacrogroup(group)">
-                                <v-icon left size="small">{{ mdiPencil }}</v-icon>
+ <v-btn size="small" variant="outlined" class="ml-3" @click="editMacrogroup(group)">
+                                <v-icon start size="small">{{ mdiPencil }}</v-icon>
                                 {{ $t('Settings.Edit') }}
                             </v-btn>
-                            <v-btn
+ <v-btn
                                 size="small"
                                 variant="outlined"
                                 class="ml-3 minwidth-0 px-2"
@@ -38,7 +38,7 @@
                 </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn variant="text" color="primary" @click="addGroup">{{ $t('Settings.MacrosTab.AddGroup') }}</v-btn>
+ <v-btn variant="text" color="primary" @click="addGroup">{{ $t('Settings.MacrosTab.AddGroup') }}</v-btn>
             </v-card-actions>
         </template>
         <template v-else-if="boolFormEdit">
@@ -46,8 +46,8 @@
                 <div class="macrogroup-edit-shell">
                     <div class="macrogroup-edit-header">
                         <h3 class="text-h5 mb-0">{{ $t('Settings.MacrosTab.EditGroup') }}</h3>
-                        <v-btn variant="text" color="primary" class="macrogroup-edit-back" @click="cancelEditMacrogroup">
-                            <v-icon left>{{ mdiChevronLeft }}</v-icon>
+ <v-btn variant="text" color="primary" class="macrogroup-edit-back" @click="cancelEditMacrogroup">
+                            <v-icon start>{{ mdiChevronLeft }}</v-icon>
                             {{ $t('Buttons.Close') }}
                         </v-btn>
                     </div>
@@ -57,8 +57,8 @@
                         v-model="editGroup.name"
                         hide-details="auto"
                         :rules="[rules.required, rules.groupUnique]"
-                        dense
-                        outlined
+                        density="compact"
+                        variant="outlined"
                         @change="updateGroupOptionName" />
                 </settings-row>
                 <v-divider class="my-2" />
@@ -68,8 +68,8 @@
                         :items="groupColors"
                         item-title="text"
                         item-value="value"
-                        outlined
-                        dense
+                        variant="outlined"
+                        density="compact"
                         hide-details
                         attach
                         @change="updateGroupOptionColor" />
@@ -79,7 +79,7 @@
                     <settings-row :title="$t('Settings.MacrosTab.CustomColor')">
                         <v-menu location="bottom end" :close-on-content-click="false">
                             <template #activator="{ props: activatorProps }">
-                                <v-btn
+ <v-btn
                                     v-bind="activatorProps"
                                     :color="editGroup.colorCustom"
                                     class="minwidth-0 px-5"
@@ -97,9 +97,9 @@
                 <settings-row :title="$t('Settings.MacrosTab.Status')">
                     <v-tooltip location="top">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
-                                small
-                                outlined
+ <v-btn
+                                size="small"
+                                variant="outlined"
                                 v-bind="activatorProps"
                                 class="ml-3 minwidth-0 px-2"
                                 :color="editGroup?.showInStandby ? '' : 'secondary'"
@@ -111,9 +111,9 @@
                     </v-tooltip>
                     <v-tooltip location="top">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
-                                small
-                                outlined
+ <v-btn
+                                size="small"
+                                variant="outlined"
                                 v-bind="activatorProps"
                                 class="ml-3 minwidth-0 px-2"
                                 :color="editGroup?.showInPause ? '' : 'secondary'"
@@ -125,9 +125,9 @@
                     </v-tooltip>
                     <v-tooltip location="top">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
-                                small
-                                outlined
+ <v-btn
+                                size="small"
+                                variant="outlined"
                                 v-bind="activatorProps"
                                 class="ml-3 minwidth-0 px-2"
                                 :color="editGroup?.showInPrinting ? '' : 'secondary'"
@@ -162,13 +162,13 @@
                                     <template v-if="existsMacro(macro.name)">
                                         <v-tooltip location="top">
                                             <template #activator="{ props: activatorProps }">
-                                                <v-btn
-                                                    small
-                                                    outlined
+ <v-btn
+                                                    size="small"
+                                                    variant="outlined"
                                                     v-bind="activatorProps"
                                                     class="minwidth-0 px-2"
                                                     @click="changeColorMacroFromGroup(macro)">
-                                                    <v-icon size="small" left>{{ mdiPalette }}</v-icon>
+                                                    <v-icon size="small" start>{{ mdiPalette }}</v-icon>
                                                     {{ $t('Settings.MacrosTab.Group') }}
                                                 </v-btn>
                                             </template>
@@ -176,9 +176,9 @@
                                         </v-tooltip>
                                         <v-tooltip location="top">
                                             <template #activator="{ props: activatorProps }">
-                                                <v-btn
-                                                    small
-                                                    outlined
+ <v-btn
+                                                    size="small"
+                                                    variant="outlined"
                                                     v-bind="activatorProps"
                                                     class="minwidth-0 px-2"
                                                     :color="macro.showInStandby ? '' : 'secondary'"
@@ -196,9 +196,9 @@
                                         </v-tooltip>
                                         <v-tooltip location="top">
                                             <template #activator="{ props: activatorProps }">
-                                                <v-btn
-                                                    small
-                                                    outlined
+ <v-btn
+                                                    size="small"
+                                                    variant="outlined"
                                                     v-bind="activatorProps"
                                                     class="minwidth-0 px-2"
                                                     :color="macro.showInPause ? '' : 'secondary'"
@@ -210,9 +210,9 @@
                                         </v-tooltip>
                                         <v-tooltip location="top">
                                             <template #activator="{ props: activatorProps }">
-                                                <v-btn
-                                                    small
-                                                    outlined
+ <v-btn
+                                                    size="small"
+                                                    variant="outlined"
                                                     v-bind="activatorProps"
                                                     class="minwidth-0 px-2"
                                                     :color="macro.showInPrinting ? '' : 'secondary'"
@@ -231,9 +231,9 @@
                                     </template>
                                     <v-tooltip location="top">
                                         <template #activator="{ props: activatorProps }">
-                                            <v-btn
-                                                small
-                                                outlined
+ <v-btn
+                                                size="small"
+                                                variant="outlined"
                                                 v-bind="activatorProps"
                                                 class="minwidth-0 px-2"
                                                 color="error"
@@ -265,7 +265,7 @@
                             :append-icon="mdiMagnify"
                             :label="$t('Settings.MacrosTab.Search')"
                             single-line
-                            outlined
+                            variant="outlined"
                             clearable
                             hide-details
                             dense />
@@ -278,8 +278,8 @@
                             :title="macro.name"
                             :sub-title="macro.description"
                             :dynamic-slot-width="true">
-                            <v-btn size="small" variant="outlined" class="ml-3" @click="addMacroToGroup(macro)">
-                                <v-icon left size="small">{{ mdiPlus }}</v-icon>
+ <v-btn size="small" variant="outlined" class="ml-3" @click="addMacroToGroup(macro)">
+                                <v-icon start size="small">{{ mdiPlus }}</v-icon>
                                 {{ $t('Settings.MacrosTab.Add') }}
                             </v-btn>
                         </settings-row>

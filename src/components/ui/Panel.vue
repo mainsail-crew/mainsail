@@ -14,7 +14,7 @@
             <slot name="buttons-left" />
             <v-toolbar-title class="d-flex align-center">
                 <slot v-if="hasIconSlot" name="icon" />
-                <v-icon v-if="icon !== null && !hasIconSlot" left>{{ icon }}</v-icon>
+                <v-icon v-if="icon !== null && !hasIconSlot" start>{{ icon }}</v-icon>
                 <span v-if="title" class="subheading">{{ title }}</span>
             </v-toolbar-title>
             <slot name="buttons-title" />
@@ -23,7 +23,7 @@
                 <div v-if="expand || !hideButtonsOnCollapse" class="d-flex align-center">
                     <slot name="buttons" />
                 </div>
-                <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
+ <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
                     <v-icon :class="expand ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}</v-icon>
                 </v-btn>
             </v-toolbar-items>

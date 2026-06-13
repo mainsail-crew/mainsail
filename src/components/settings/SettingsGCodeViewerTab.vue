@@ -9,7 +9,7 @@
                 <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
                     <v-menu :close-on-content-click="false" location="bottom end">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
+ <v-btn
                                 :color="backgroundColor"
                                 class="color-swatch"
                                 variant="flat"
@@ -26,7 +26,7 @@
                 <settings-row :title="$t('Settings.GCodeViewerTab.GridColor')">
                     <v-menu :close-on-content-click="false" location="bottom end">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn :color="gridColor" class="color-swatch" variant="flat" v-bind="activatorProps"></v-btn>
+ <v-btn :color="gridColor" class="color-swatch" variant="flat" v-bind="activatorProps"></v-btn>
                         </template>
                         <v-color-picker
                             :value="gridColor"
@@ -39,7 +39,7 @@
                 <settings-row :title="$t('Settings.GCodeViewerTab.ProgressColor')">
                     <v-menu :close-on-content-click="false" location="bottom end">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
+ <v-btn
                                 :color="progressColor"
                                 class="color-swatch"
                                 variant="flat"
@@ -53,36 +53,11 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ExtruderColor')">
-                    <v-row no-gutters>
-                        <v-menu
-                            v-for="(extruderColor, index) in extruderColors"
-                            :key="index"
-                            :close-on-content-click="false"
-                            location="bottom end">
-                            <template #activator="{ props: activatorProps }">
-                                <v-col align="right" class="mt-1" cols="12">
-                                    <span class="mr-2">{{ index }}</span>
-                                    <v-btn
-                                        :color="extruderColors[index]"
-                                        class="color-swatch"
-                                        variant="flat"
-                                        v-bind="activatorProps"></v-btn>
-                                </v-col>
-                            </template>
-                            <v-color-picker
-                                :value="extruderColors[index]"
-                                hide-mode-switch
-                                mode="rgba"
-                                @update:color="colorsUpdated($event, index)"></v-color-picker>
-                        </v-menu>
-                    </v-row>
-                </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MinFeed')">
                     <v-menu :close-on-content-click="false" location="bottom end">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
+ <v-btn
                                 :color="minFeedColor"
                                 class="color-swatch mr-3"
                                 variant="flat"
@@ -109,7 +84,7 @@
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
                     <v-menu :close-on-content-click="false" location="bottom end">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn
+ <v-btn
                                 :color="maxFeedColor"
                                 class="color-swatch mr-3"
                                 variant="flat"
@@ -152,18 +127,6 @@ const showAxes = computed({
         store.dispatch('gui/saveSetting', { name: 'gcodeViewer.showAxes', value: newVal })
     },
 })
-
-const extruderColors = computed(() => store.state.gui.gcodeViewer.extruderColors)
-
-let colorsDebounceTimer: ReturnType<typeof setTimeout> | null = null
-function colorsUpdated(value: ColorPickerValue, index: number): void {
-    if (colorsDebounceTimer) clearTimeout(colorsDebounceTimer)
-    colorsDebounceTimer = setTimeout(() => {
-        const colors = [...extruderColors.value]
-        colors[index] = clearColorObject(value)
-        store.dispatch('gui/saveSetting', { name: 'gcodeViewer.extruderColors', value: colors })
-    }, 500)
-}
 
 const backgroundColor = computed({
     get: () => store.state.gui.gcodeViewer.backgroundColor,

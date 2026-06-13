@@ -3,7 +3,7 @@
         <!-- HOME ALL / ACTION BUTTON -->
         <v-row no-gutters>
             <v-col class="v-col-12 pb-0 text-center">
-                <v-btn
+ <v-btn
                     size="small"
                     :disabled="['printing'].includes(printer_state)"
                     :loading="loadings.includes('homeAll')"
@@ -12,7 +12,7 @@
                     <v-icon class="mr-1">{{ mdiHome }}</v-icon>
                     {{ $t('Panels.ToolheadControlPanel.ALL') }}
                 </v-btn>
-                <v-btn
+ <v-btn
                     v-if="enableXYHoming"
                     :disabled="['printing'].includes(printer_state)"
                     :loading="loadings.includes('homeAll')"
@@ -23,7 +23,7 @@
                     <v-icon class="mr-1">{{ mdiHome }}</v-icon>
                     XY
                 </v-btn>
-                <v-btn
+ <v-btn
                     v-if="existsQGL"
                     :disabled="['printing'].includes(printer_state)"
                     size="small"
@@ -33,7 +33,7 @@
                     @click="doQGL">
                     {{ $t('Panels.ToolheadControlPanel.QGL') }}
                 </v-btn>
-                <v-btn
+ <v-btn
                     v-if="existsZtilt"
                     :disabled="['printing'].includes(printer_state)"
                     size="small"
@@ -43,7 +43,7 @@
                     @click="doZtilt">
                     {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
                 </v-btn>
-                <v-btn
+ <v-btn
                     size="small"
                     :disabled="['printing'].includes(printer_state)"
                     :color="homedAxes !== '' ? 'primary' : 'warning'"
@@ -57,7 +57,7 @@
         <v-row density="compact">
             <v-col class="text-center">
                 <v-item-group class="_btn-group row no-gutters">
-                    <v-btn
+ <v-btn
                         v-for="steps of stepsXYsorted"
                         :key="'x-' + steps"
                         :disabled="['printing'].includes(printer_state)"
@@ -65,7 +65,7 @@
                         @click="doSendMove('X-' + steps, feedrateXY)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
-                    <v-btn
+ <v-btn
                         :disabled="['printing'].includes(printer_state)"
                         :color="homedAxes.includes('x') ? 'primary' : 'warning'"
                         :loading="loadings.includes('homeX')"
@@ -73,7 +73,7 @@
                         @click="doHomeX">
                         X
                     </v-btn>
-                    <v-btn
+ <v-btn
                         v-for="steps of stepsXYsortedReverse"
                         :key="'x+' + steps"
                         :disabled="['printing'].includes(printer_state)"
@@ -88,7 +88,7 @@
         <v-row density="compact">
             <v-col class="text-center">
                 <v-item-group class="_btn-group row no-gutters">
-                    <v-btn
+ <v-btn
                         v-for="steps of stepsXYsorted"
                         :key="'y-' + steps"
                         :disabled="['printing'].includes(printer_state)"
@@ -96,7 +96,7 @@
                         @click="doSendMove('Y-' + steps, feedrateXY)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
-                    <v-btn
+ <v-btn
                         :disabled="['printing'].includes(printer_state)"
                         :color="homedAxes.includes('y') ? 'primary' : 'warning'"
                         :loading="loadings.includes('homeY')"
@@ -104,7 +104,7 @@
                         @click="doHomeY">
                         Y
                     </v-btn>
-                    <v-btn
+ <v-btn
                         v-for="steps of stepsXYsortedReverse"
                         :key="'y+' + steps"
                         :disabled="['printing'].includes(printer_state)"
@@ -119,7 +119,7 @@
         <v-row density="compact">
             <v-col class="text-center">
                 <v-item-group class="_btn-group row no-gutters">
-                    <v-btn
+ <v-btn
                         v-for="steps of stepsZsorted"
                         :key="'z-' + steps"
                         :disabled="['printing'].includes(printer_state)"
@@ -127,7 +127,7 @@
                         @click="doSendMove('Z-' + steps, feedrateZ)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
-                    <v-btn
+ <v-btn
                         :disabled="['printing'].includes(printer_state)"
                         :color="homedAxes.includes('z') ? 'primary' : 'warning'"
                         :loading="loadings.includes('homeZ')"
@@ -135,7 +135,7 @@
                         @click="doHomeZ">
                         Z
                     </v-btn>
-                    <v-btn
+ <v-btn
                         v-for="steps of stepsZsortedReverse"
                         :key="'z+' + steps"
                         :disabled="['printing'].includes(printer_state)"

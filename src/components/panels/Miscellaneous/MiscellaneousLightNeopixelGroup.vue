@@ -1,6 +1,6 @@
 <template>
     <v-list-subheader class="_light-subheader">
-        <v-icon size="small" left @click="toggle">
+        <v-icon size="small" start @click="toggle">
             {{ isOn ? mdiLightbulbOnOutline : mdiLightbulbOutline }}
         </v-icon>
         <span>{{ group.name }}</span>

@@ -581,38 +581,6 @@
         "Headline": "Manuel Probing"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Tilladt",
-            "CleanNozzle": "Rens dyse",
-            "EstimatedExtrusion": "Estimeret ekstrudering:",
-            "Extrude": "Extrudér",
-            "ExtruderControl": "Esktruder-kontrol",
-            "ExtruderTempTooLow": "Hotend temp. <",
-            "ExtrusionFactor": "Ekstruderingsfaktor",
-            "ExtrusionFeedrate": "Ekstruderingsfødehastighed",
-            "FilamentLength": "Filamentlængde",
-            "FirmwareRetraction": "Firwmare Retraction",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Retract længde",
-                "RetractSpeed": "Retract hastighed",
-                "UnretractExtraLength": "Unretract ekstra længde",
-                "UnretractSpeed": "Unretract hastighed"
-            },
-            "Headline": "Ekstruder Kontrolpanel",
-            "LoadFilament": "Fød filament",
-            "PressureAdvance": "Pressure Advance",
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Ekstruder",
-                "SmoothTime": "Smooth Time"
-            },
-            "PurgeFilament": "Udrens filament",
-            "Requested": "Anmodet",
-            "Retract": "Retract",
-            "TooLargeExtrusion": "Ekstruderingen er for lang!",
-            "Tools": "Printhoveder",
-            "UnloadFilament": "Fjern filament"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Genopret forbindelse",
             "SwitchToPrinter": "Skift til printer",
@@ -676,31 +644,6 @@
             "Off": "Sluk",
             "On": "Tænd",
             "PowerControl": "Strømstyring"
-        },
-        "SpoolmanPanel": {
-            "ChangeSpool": "Skift spool",
-            "DaysAgo": "{days} dage siden",
-            "EjectSpool": "Afmontér spole",
-            "EjectSpoolQuestion": "Er du sikker på du ønsker at afmontere spolen?",
-            "Filament": "Filament",
-            "FilamentTypeMismatch": "Materialet på den aktive spole({spoolType}) matcher ikke materialet i G-koden ({fileType}).",
-            "Headline": "Spoolman",
-            "LastUsed": "Sidst brugt",
-            "Location": "Placering",
-            "Material": "Materiale",
-            "Never": "Aldrig",
-            "NoActiveSpool": "Filamentforbrug registreres ikke. Vælg en spole for at begynde.",
-            "NoResults": "Ingen spole fundet der matcher søgekriterierne.",
-            "NoSpools": "Ingen spoler tilgængelige",
-            "NoSpoolSelected": "Ingen spole valgt. Vælg en spole for at registrere filamentforbrug.",
-            "OpenSpoolManager": "Åben SpoolMan",
-            "Refresh": "Opdatér",
-            "Search": "Søg",
-            "SelectSpool": "Vælg spole",
-            "Today": "I dag",
-            "TooLessFilament": "Den nuværende spole har muligvis ikke nok filament til det valgte print. ({spoolWeight}g af {fileWeight}g)",
-            "Weight": "vægt",
-            "Yesterday": "Igår"
         },
         "StatusPanel": {
             "CancelPrint": "Afbryd print",

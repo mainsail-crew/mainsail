@@ -596,38 +596,6 @@
         "Headline": "Probe Manuale"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Consentito",
-            "CleanNozzle": "Pulisci Ugello",
-            "EstimatedExtrusion": "Estrusione:",
-            "Extrude": "Estrudi",
-            "ExtruderControl": "Controllo Estrusore",
-            "ExtruderTempTooLow": "Temp. Estrusore <",
-            "ExtrusionFactor": "Fattore di Estrusione",
-            "ExtrusionFeedrate": "Feedrate Estrusione",
-            "FilamentLength": "Lunghezza Filamento",
-            "FirmwareRetraction": "Retrazione Firmware",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Lunghezza Retrazione",
-                "RetractSpeed": "Velocità Retrazione",
-                "UnretractExtraLength": "Lunghezza Extra in ripresa",
-                "UnretractSpeed": "Velocità Deretrazione"
-            },
-            "Headline": "Estrusore",
-            "LoadFilament": "Carica Filamento",
-            "PressureAdvance": "Pressure-Advance",
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure-Advance",
-                "Extruder": "Estrusore",
-                "SmoothTime": "Smooth-Time"
-            },
-            "PurgeFilament": "Spurga Filamento",
-            "Requested": "Richiesto",
-            "Retract": "Retrazione",
-            "TooLargeExtrusion": "Estrusione troppo grande!",
-            "Tools": "Utensili",
-            "UnloadFilament": "Scarica Filamento"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Riconnetti",
             "SwitchToPrinter": "Passa alla Stampante",
@@ -692,31 +660,6 @@
             "Off": "Spento",
             "On": "Acceso",
             "PowerControl": "Controllo Alimentazione"
-        },
-        "SpoolmanPanel": {
-            "ChangeSpool": "Cambia Bobina",
-            "DaysAgo": "{days} giorni fa",
-            "EjectSpool": "Espelli bobina",
-            "EjectSpoolQuestion": "Sei sicuro di voler espellere la bobina di filamento?",
-            "Filament": "Filamento",
-            "FilamentTypeMismatch": "Il materiale della bobina attiva ({spoolType}) non corrisponde al materiale del G-Code ({fileType}).",
-            "Headline": "Spoolman",
-            "LastUsed": "Ultimo Utilizzo",
-            "Location": "Posizione",
-            "Material": "Materiale",
-            "Never": "Mai",
-            "NoActiveSpool": "Il tracciamento del filamento è inattivo. Per iniziare, seleziona una bobina.",
-            "NoResults": "Nessuna bobina trovata con gli attuali criteri di ricerca.",
-            "NoSpools": "Nessuna bobina disponibile",
-            "NoSpoolSelected": "Nessuna bobina selezionata. Selezionare una bobina o questa stampa non verrà tracciata.",
-            "OpenSpoolManager": "apri il gestore delle bobine",
-            "Refresh": "aggiorna",
-            "Search": "Trova",
-            "SelectSpool": "Seleziona Bobina",
-            "Today": "Oggi",
-            "TooLessFilament": "La bobina corrente potrebbe non avere abbastanza filamento per questa stampa. ({spoolWeight}g su {fileWeight}g)",
-            "Weight": "Peso",
-            "Yesterday": "Ieri"
         },
         "StatusPanel": {
             "CancelPrint": "Annulla stampa",

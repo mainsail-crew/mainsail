@@ -18,11 +18,11 @@
                     <v-divider class="mt-4 mb-5" />
                 </template>
                 <div class="text-center mt-3">
-                    <v-btn v-if="helpButtonUrl" class="text-disabled mr-3" :href="helpButtonUrl" target="_blank">
-                        <v-icon left>{{ mdiHelp }}</v-icon>
+ <v-btn v-if="helpButtonUrl" class="text-disabled mr-3" :href="helpButtonUrl" target="_blank">
+                        <v-icon start>{{ mdiHelp }}</v-icon>
                         {{ $t('ConnectionDialog.Help') }}
                     </v-btn>
-                    <v-btn class="text-primary" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
+ <v-btn class="text-primary" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
                 </div>
             </v-card-text>
             <v-card-text v-else class="pt-5">

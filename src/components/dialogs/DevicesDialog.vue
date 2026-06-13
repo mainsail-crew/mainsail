@@ -11,7 +11,7 @@
             <template #buttons>
                 <v-menu location="bottom end" :close-on-content-click="false" attach="#devices-dialog">
                     <template #activator="{ props: activatorProps }">
-                        <v-btn :icon="mdiCog" rounded="0" v-bind="activatorProps" />
+ <v-btn :icon="mdiCog" rounded="0" v-bind="activatorProps"/>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">
@@ -23,7 +23,7 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt"/>
             </template>
             <v-tabs v-model="currentTab" fixed-tabs>
                 <v-tab v-for="t in tabs" :key="t.tab" :value="t.tab">{{ t.title }}</v-tab>

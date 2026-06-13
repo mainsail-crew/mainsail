@@ -47,9 +47,9 @@
                     </div>
                 </transition>
                 <v-card-text v-if="controllable && pwm" class="py-0 pb-2 d-flex align-center">
-                    <v-btn
+ <v-btn
                         v-if="lockSliders && isTouchDevice && pwm"
-                        plain
+                        variant="plain"
                         size="small"
                         icon
                         class="_lock-button"

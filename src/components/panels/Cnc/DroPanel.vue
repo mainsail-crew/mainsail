@@ -15,7 +15,7 @@
                         <span class="dro-panel__axis-name">{{ axis.id }}</span>
                         <v-chip size="x-small" :color="axis.homed ? 'primary' : 'warning'">{{ axis.homed ? 'HOMED' : 'OPEN' }}</v-chip>
                     </div>
-                    <div class="dro-panel__axis-section">
+                    <div v-if="showMachineCoords" class="dro-panel__axis-section">
                         <span class="dro-panel__label">Machine</span>
                         <span class="dro-panel__value">{{ axis.machine }}</span>
                     </div>
@@ -48,11 +48,13 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useBase } from '@/composables/useBase'
 import { useControl } from '@/composables/useControl'
+import { useCncProfile } from '@/composables/useCncProfile'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCrosshairsGps } from '@mdi/js'
 
 const { klipperReadyForGui } = useBase()
 const { absolute_coordinates, xAxisHomed, yAxisHomed, zAxisHomed } = useControl()
+const { showMachineCoords } = useCncProfile()
 
 const store = useStore()
 

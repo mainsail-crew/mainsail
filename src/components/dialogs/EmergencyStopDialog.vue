@@ -7,13 +7,13 @@
             :icon="mdiAlertOctagonOutline"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt"/>
             </template>
             <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.No') }}</v-btn>
-                <v-btn color="error" variant="text" @click="emergencyStop">{{ $t('Buttons.Yes') }}</v-btn>
+ <v-btn variant="text" @click="closePrompt">{{ $t('Buttons.No') }}</v-btn>
+ <v-btn color="error" variant="text" @click="emergencyStop">{{ $t('Buttons.Yes') }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

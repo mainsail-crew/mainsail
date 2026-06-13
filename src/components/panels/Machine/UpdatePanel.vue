@@ -9,7 +9,7 @@
             <template #buttons>
                 <v-tooltip top>
                     <template #activator="{ props: activatorProps }">
-                        <v-btn
+ <v-btn
                             icon
                             rounded="0"
                             color="primary"
@@ -42,7 +42,7 @@
                 <template v-else>
                     <v-row class="mt-0 mb-0">
                         <v-col class="px-6">
-                            <v-alert class="mb-0" text density="compact" type="info" border="left">
+                            <v-alert class="mb-0" variant="text" density="compact" type="info" border="start">
                                 {{ $t('Machine.UpdatePanel.InitUpdateManager') }}
                             </v-alert>
                         </v-col>

@@ -596,38 +596,6 @@
         "Headline": "Ручное зондирование стола"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Разрешено",
-            "CleanNozzle": "Очистка сопла",
-            "EstimatedExtrusion": "Расчётная экструзия:",
-            "Extrude": "Выдавить",
-            "ExtruderControl": "Управление экструдером",
-            "ExtruderTempTooLow": "Температура экструдера <",
-            "ExtrusionFactor": "Поток",
-            "ExtrusionFeedrate": "Скорость экструзии",
-            "FilamentLength": "Длина экструзии",
-            "FirmwareRetraction": "Откат из прошивки",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Длина отката",
-                "RetractSpeed": "Скорость отката",
-                "UnretractExtraLength": "Доп. длина подачи",
-                "UnretractSpeed": "Скорость подачи"
-            },
-            "Headline": "Экструдер",
-            "LoadFilament": "Загрузка прутка",
-            "PressureAdvance": "Pressure Advance",
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Экструдер",
-                "SmoothTime": "Время сглаживания PA"
-            },
-            "PurgeFilament": "Прочистка от старого материала",
-            "Requested": "Запрошено",
-            "Retract": "Втянуть",
-            "TooLargeExtrusion": "Экструзия слишком велика!",
-            "Tools": "Инструменты",
-            "UnloadFilament": "Выгрузка прутка"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Переподключиться",
             "SwitchToPrinter": "Переключиться на принтер",
@@ -692,33 +660,6 @@
             "Off": "Откл.",
             "On": "Вкл.",
             "PowerControl": "Управление питанием"
-        },
-        "SpoolmanPanel": {
-            "ActiveSpool": "Активная катушка",
-            "ChangeSpool": "Сменить катушку",
-            "DaysAgo": "Дней назад: {days}",
-            "EjectSpool": "Извлечь катушку",
-            "EjectSpoolQuestion": "Вы уверены, что хотите извлечь катушку с прутком?",
-            "Filament": "Пруток",
-            "FilamentTypeMismatch": "Материал выбранной катушки ({spoolType}) не соответствует материалу в G-коде ({fileType}).",
-            "Headline": "Spoolman",
-            "LastUsed": "Последнее использование",
-            "Location": "Слот",
-            "Material": "Материал",
-            "Never": "Никогда",
-            "NoActiveSpool": "Отслеживание прутка неактивно. Для начала выберите катушку.",
-            "NoResults": "Катушка с текущими критериями поиска не найдена.",
-            "NoSpool": "Катушка отсутствует",
-            "NoSpools": "Катушка не выбрана",
-            "NoSpoolSelected": "Катушка не выбрана. Выберите катушку, иначе эта печать не будет отслеживаться.",
-            "OpenSpoolManager": "Открыть управление прутками",
-            "Refresh": "Обновить",
-            "Search": "Поиск",
-            "SelectSpool": "Выбор катушки",
-            "Today": "Сегодня",
-            "TooLessFilament": "Возможно, на текущей катушке недостаточно прутка для печати. ({spoolWeight}г из {fileWeight}г)",
-            "Weight": "Вес",
-            "Yesterday": "Вчера"
         },
         "StatusPanel": {
             "CancelPrint": "Отменить печать",

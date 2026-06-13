@@ -6,8 +6,8 @@
             card-class="history-maintenance-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiPencil" rounded="0" @click="showEditDialog = true" />
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiPencil" rounded="0" @click="showEditDialog = true"/>
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
             <OverlayScrollbarsComponent style="height: 350px">
                 <v-card-text class="pb-0">
@@ -37,8 +37,8 @@
             <v-divider class="mt-0" />
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn v-if="showPerformButton" variant="text" color="primary" @click="showPerformDialog = true">
+ <v-btn variant="text" @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+ <v-btn v-if="showPerformButton" variant="text" color="primary" @click="showPerformDialog = true">
                     {{ $t('History.Perform') }}
                 </v-btn>
             </v-card-actions>

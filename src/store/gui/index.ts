@@ -17,7 +17,7 @@ import { console } from '@/store/gui/console'
 import { gcodehistory } from '@/store/gui/gcodehistory'
 import { macros } from '@/store/gui/macros'
 import { miscellaneous } from '@/store/gui/miscellaneous'
-import { navigation } from '@/store/gui/navigation'
+import { navigation as sidebarNavigation } from '@/store/gui/navigation'
 import { notifications } from '@/store/gui/notifications'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
@@ -163,7 +163,7 @@ export const getDefaultState = (): GuiState => {
             showGCodePanel: false,
             cncMode: true,
         },
-        navigation: {
+        navigationSettings: {
             entries: [],
         },
         uiSettings: {
@@ -327,7 +327,7 @@ export const gui: Module<GuiState, RootState> = {
         macros,
         maintenance,
         miscellaneous,
-        navigation,
+        sidebarNavigation,
         notifications,
         presets,
         remoteprinters,

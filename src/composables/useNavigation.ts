@@ -98,7 +98,7 @@ export function useNavigation() {
     )
 
     const uiSettings = computed<GuiNavigationStateEntry[]>(
-        () => store.state.gui.navigation.entries
+        () => store.state.gui.navigationSettings.entries
     )
 
     const klippy_state = computed(() => store.state.server.klippy_state)

@@ -6,7 +6,7 @@
             :margin-bottom="false"
             card-class="machine-update-hint-dialog">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
             </template>
             <v-card-text>
                 <v-row>
@@ -24,8 +24,8 @@
             <v-divider />
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="closeDialog">{{ $t('Machine.UpdatePanel.Abort') }}</v-btn>
-                <v-btn variant="text" color="primary" :disabled="!checkboxUpdateQuestion" @click="doUpdate">
+ <v-btn variant="text" @click="closeDialog">{{ $t('Machine.UpdatePanel.Abort') }}</v-btn>
+ <v-btn variant="text" color="primary" :disabled="!checkboxUpdateQuestion" @click="doUpdate">
                     {{ $t('Machine.UpdatePanel.StartUpdate') }}
                 </v-btn>
             </v-card-actions>

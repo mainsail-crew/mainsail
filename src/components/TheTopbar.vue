@@ -33,11 +33,11 @@
                 :accept="gcodeInputFileAccept.join(', ')"
                 style="display: none"
                 @change="uploadAndStart" />
-            <v-btn
+ <v-btn
                 v-if="showSaveConfigButton"
                 rounded="0"
                 :icon="displaySmAndDown"
-                :text="displayMdAndUp"
+                variant="text"
                 color="primary"
                 class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
                 :disabled="printerIsPrinting"
@@ -46,11 +46,11 @@
                 <v-icon class="d-md-none">{{ mdiContentSave }}</v-icon>
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
-            <v-btn
+ <v-btn
                 v-if="boolShowUploadAndPrint"
                 rounded="0"
                 :icon="displaySmAndDown"
-                :text="displayMdAndUp"
+                variant="text"
                 color="primary"
                 class="button-min-width-auto px-3 d-none d-sm-flex upload-and-start-button"
                 :loading="loadings.includes('btnUploadAndStart')"
@@ -58,11 +58,11 @@
                 <v-icon class="mr-md-2">{{ mdiFileUpload }}</v-icon>
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
             </v-btn>
-            <v-btn
+ <v-btn
                 v-if="klippyIsConnected"
                 rounded="0"
                 :icon="displaySmAndDown"
-                :text="displayMdAndUp"
+                variant="text"
                 color="error"
                 class="button-min-width-auto px-3 emergency-button"
                 :loading="loadings.includes('topbarEmergencyStop')"
@@ -74,14 +74,14 @@
             <the-settings-menu />
             <the-top-corner-menu />
         </v-app-bar>
-        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" fixed right bottom>
+        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" location="bottom right">
             <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
             <br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
             <br />
-            <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
+            <v-progress-linear class="mt-2" :model-value="uploadSnackbar.percent"></v-progress-linear>
             <template #actions="{ props }">
-                <v-btn :icon="mdiClose" color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelUpload" />
+ <v-btn :icon="mdiClose" color="red" variant="text" v-bind="props" style="min-width: auto" @click="cancelUpload"/>
             </template>
         </v-snackbar>
         <emergency-stop-dialog v-model="showEmergencyStopDialog" />

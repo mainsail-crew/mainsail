@@ -53,7 +53,7 @@ Six CNC panels registered in the dashboard system and visible when `cncMode` is 
 | **Jog** | Jog/homing controls — Home All / XY / Z, XY directional pad (cross layout), Z ± buttons, step-size selector (100 µm … 25 mm), configurable X/Y/Z feedrates, keyboard navigation, emergency stop (M112). |
 | **Offsets** | Work coordinate system manager — G54 … G59 selector, current work position, per-WCS origin offsets, per-axis Set Zero, manual offset entry with Apply / Reset (all via `G10 L20`). |
 | **Spindle & Coolant** | Spindle ON/OFF/CCW, RPM input (0–24 000), SET button. Flood and Mist coolant toggles. All commands sent through `/server/cnc/*` API. |
-| **MDI** *(placeholder)* | Dedicated CNC-native MDI panel stub. Full console/MDI functionality is available via the existing console page; a proper MDI panel is planned for V2. |
+| **MDI** | CNC-native MDI panel with console-style entry, quick commands, and WCS shortcuts. |
 
 ### Work Coordinate Systems (WCS)
 
@@ -134,7 +134,7 @@ Registered under `/server/cnc/...`:
 | POST | `/server/cnc/settings` | Update persisted CNC dashboard settings |
 | POST | `/server/cnc/jog` | Distance-based jog command |
 
-GET handlers return authoritative CNC state. POST handlers currently persist agent state (stubs); full machine actuation wiring requires Moonraker/Klipper integration.
+GET handlers return authoritative CNC state. POST handlers execute guarded G-code actions and persist the resulting CNC state in the agent so the frontend can stay in sync.
 
 ### Frontend architecture
 
@@ -159,15 +159,15 @@ This repository has progressed well beyond its initial scaffold. The fork is dep
 
 ### Mainsail fork features implemented
 
-- ✅ Six CNC dashboard panels (CNC Status, DRO, Jog, Offsets, Spindle & Coolant, MDI placeholder)
+- ✅ Six CNC dashboard panels (CNC Status, DRO, Jog, Offsets, Spindle & Coolant, MDI)
 - ✅ Dashboard registration, labels, icons, responsive layouts
 - ✅ CNC panels gateable via `cncMode` setting (on by default)
 - ✅ Navigation relabelling: G-Code → Job Files, Console → MDI
 - ✅ G-Code Files card grid with CAM metadata sidecar rendering
-- ✅ Moonraker CNC agent component with 11 REST endpoints
+- ✅ Moonraker CNC agent component with `/server/cnc/...` REST endpoints
 - ✅ Metadata extractor CLI (`scripts/cnc_metadata_extractor.py`)
 - ✅ Deploy script + Moonraker update-manager integration
-- ✅ Klipper G-code caveats documented (G10 unsupported, G92 for work-zero)
+- ✅ Klipper G-code caveats documented
 - ✅ Compact DRO readout in app header toolbar (machine position, homed state, live velocity, G90/G91 mode)
 - ✅ Jog console log suppression — `SAVE_GCODE_STATE`/`G91`/`G1`/`RESTORE_GCODE_STATE` no longer spams the terminal
 - ✅ Homing override fix — corrected uppercase param keys (`'X'`/`'Y'`/`'Z'`) so `G28 X Y` no longer homes Z
@@ -180,8 +180,8 @@ This repository has progressed well beyond its initial scaffold. The fork is dep
 - ✅ CNC-specific state stores: spindle, coolant, units, WCS offsets
 - ✅ Guarded command endpoints: jog, set-zero, WCS select, spindle, coolant
 - ✅ Settings persistence: runtime store + GET/POST at `/server/cnc/settings`
-- ⏳ Machine actuation wiring (POST handlers persist agent state; Klipper/Moonraker layer needed)
-- ⏳ `[cnc_agent]` section removed from moonraker.conf (agent endpoints not actively wired)
+- ✅ Machine actuation wiring via guarded G-code execution in the agent
+- ✅ `[cnc_agent]` section wired in `moonraker.conf` by the install script
 
 ### Klipper macros
 

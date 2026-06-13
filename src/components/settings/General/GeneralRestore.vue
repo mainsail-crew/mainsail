@@ -1,7 +1,7 @@
 <template>
     <div>
         <input ref="uploadBackupFile" type="file" :accept="['.json']" class="d-none" @change="uploadRestore" />
-        <v-btn size="small" :loading="loadings.includes('restoreUploadButton')" class="ml-3" @click="restoreDb">
+ <v-btn size="small" :loading="loadings.includes('restoreUploadButton')" class="ml-3" @click="restoreDb">
             {{ $t('Settings.GeneralTab.Restore') }}
         </v-btn>
         <v-dialog :value="showDialog" persistent :width="360">
@@ -11,7 +11,7 @@
                 :margin-bottom="false"
                 :icon="mdiHelpCircle">
                 <template #buttons>
-                    <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closeDialog"/>
                 </template>
                 <v-card-text>
                     <v-row>
@@ -27,7 +27,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <v-btn color="red" :loading="loadings.includes('restoreMainsail')" @click="restoreDbAction">
+ <v-btn color="red" :loading="loadings.includes('restoreMainsail')" @click="restoreDbAction">
                                 {{ $t('Settings.GeneralTab.Restore') }}
                             </v-btn>
                         </v-col>

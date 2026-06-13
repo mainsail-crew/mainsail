@@ -476,32 +476,6 @@
         "Headline": "수동 레벨 측정"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "허용 됨",
-            "EstimatedExtrusion": "예상 압출량 :",
-            "Extrude": "필라 압출",
-            "ExtruderTempTooLow": "핫엔드 온도가 낮습니다",
-            "ExtrusionFactor": "압출 속도 비율",
-            "ExtrusionFeedrate": "압출 속도",
-            "FilamentLength": "필라멘트 길이",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "필라 퇴출 길이",
-                "RetractSpeed": "필라 퇴출 속도",
-                "UnretractExtraLength": "필라 압출 추가 길이",
-                "UnretractSpeed": "필라 압출 속도"
-            },
-            "Headline": "압출 제어",
-            "LoadFilament": "필라멘트 압출",
-            "PressureAdvanceSettings": {
-                "Advance": "모서리 압출 제어 [PA]",
-                "Extruder": "필라멘트 압출 제어",
-                "SmoothTime": "반응 시간 [ST]"
-            },
-            "Requested": "요청됨",
-            "Retract": "필라 퇴출",
-            "TooLargeExtrusion": "압출 길이를 초과합니다!",
-            "UnloadFilament": "필라멘트 퇴출"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "재접속",
             "SwitchToPrinter": "프린터 전환",

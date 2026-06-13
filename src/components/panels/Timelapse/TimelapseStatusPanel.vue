@@ -48,7 +48,7 @@
                         v-if="!disableRenderButton"
                         :title="$t('Timelapse.Render')"
                         :dynamic-slot-width="true">
-                        <v-btn size="x-small" @click="saveFrames">
+ <v-btn size="x-small" @click="saveFrames">
                             {{ $t('Timelapse.SaveFrames') }}
                         </v-btn>
                     </settings-row>

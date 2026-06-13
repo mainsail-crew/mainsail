@@ -55,23 +55,20 @@ Remove or rename in `src/locales/en.json` `Files.*` section:
 - `Preheat` → remove
 - `Slicer` → keep (CNC uses CAM tools, but value is generic)
 
-### 3. Remove StatusPanel 3D-Printer References
+### 3. Remove StatusPanel 3D-Printer References ✅ Done
 
-File: `src/components/panels/StatusPanel.vue`
-- Remaining `mdiLayersPlus`, `mdiSelectionRemove` icon imports → remove
-- Remaining `btnExcludeObject()`, `btnPauseAtLayer()` references in action arrays → remove
-- Remove `mdiPrinter` import if unused
+The stale `mdiLayersPlus`, `mdiSelectionRemove`, `btnExcludeObject()`, and `btnPauseAtLayer()` references are gone from `src/components/panels/StatusPanel.vue`.
+The remaining `mdiPrinter` icon is for the generic reprint action and stays.
 
-### 4. Remove G-Code Viewer 3D-Printing References
+### 4. Remove G-Code Viewer 3D-Printing References ✅ Done
 
-File: `src/components/settings/SettingsGCodeViewerTab.vue`
-- Extruder Colors section (lines 58-85) → remove
-- Min/Max Feed rate colors → keep (CNC-relevant)
+The extruder color section was removed from `src/components/settings/SettingsGCodeViewerTab.vue`.
+Feed-rate color controls remain because they are still useful for CNC.
 
-### 5. Remove Settings Control Tab Extruder Section
+### 5. Remove Settings Control Tab Extruder Section ✅ Done
 
-File: `src/components/settings/SettingsControlTab.vue`
-- Extruder heading + `feedamountsE`, `feedratesE`, `showEstimatedExtrusionInfo` → remove (lines 213-265 + getters 497-533)
+The extruder-specific block was removed from `src/components/settings/SettingsControlTab.vue`.
+Locale keys for the old extruder labels still exist in the translation files and can be cleaned up separately if we keep pruning dead strings.
 
 ### 6. Remove UI Settings 3D-Printer References
 

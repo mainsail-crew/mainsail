@@ -2,13 +2,13 @@
     <v-dialog v-model="showDialog" width="400" :fullscreen="isMobile">
         <panel card-class="confirm-top-corner-menu-dialog" :icon="iconToUse" :title="title" :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="close" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="close"/>
             </template>
             <v-card-text>{{ text }}</v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn variant="text" @click="close">{{ cancelButtonComputed }}</v-btn>
-                <v-btn variant="text" :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
+ <v-btn variant="text" @click="close">{{ cancelButtonComputed }}</v-btn>
+ <v-btn variant="text" :color="actionButtonColor" @click="action">{{ actionButtonText }}</v-btn>
             </v-card-actions>
         </panel>
     </v-dialog>

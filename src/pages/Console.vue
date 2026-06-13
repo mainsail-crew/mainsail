@@ -6,7 +6,7 @@
             </v-col>
 
             <v-col class="v-col-auto d-flex align-center">
-                <v-btn class="mr-3 px-2 minwidth-0" color="lightgray" @click="clearConsole">
+ <v-btn class="mr-3 px-2 minwidth-0" color="lightgray" @click="clearConsole">
                     <v-icon>{{ mdiTrashCan }}</v-icon>
                 </v-btn>
                 <command-help-modal @onCommand="commandClick($event)" />
@@ -16,7 +16,7 @@
                     :close-on-content-click="false"
                     :title="$t('Console.SetupConsole')">
                     <template #activator="{ props: activatorProps }">
-                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="activatorProps">
+ <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="activatorProps">
                             <v-icon>{{ mdiCog }}</v-icon>
                         </v-btn>
                     </template>

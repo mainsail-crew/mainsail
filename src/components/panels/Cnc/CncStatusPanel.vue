@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div v-if="cncMetadataViewModel" class="cnc-status-panel__metadata">
+            <div v-if="showMachineHealth && cncMetadataViewModel" class="cnc-status-panel__metadata">
                 <div class="cnc-status-panel__metadata-header">
                     <span class="cnc-status-panel__metadata-title">CNC Metadata</span>
                     <v-chip size="x-small" label variant="outlined" :loading="cncMetadataLoading">{{ cncMetadataLoading ? 'Loading' : 'Loaded' }}</v-chip>
@@ -80,12 +80,14 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useBase } from '@/composables/useBase'
 import { useControl } from '@/composables/useControl'
+import { useCncProfile } from '@/composables/useCncProfile'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiAxisArrow } from '@mdi/js'
 import { buildCncMetadataViewModel, loadCncMetadata, type CncMetadataViewModel } from '@/store/files/cncMetadata'
 
 const { klipperReadyForGui, printer_state } = useBase()
 const { absolute_coordinates, homedAxes } = useControl()
+const { showMachineHealth } = useCncProfile()
 
 const store = useStore()
 

@@ -123,8 +123,9 @@ Created initial Python package scaffold in:
 
 Current state:
 - package metadata exists
-- placeholder model and entrypoint exist
-- no real API implementation yet
+- Moonraker component loads cleanly
+- REST endpoints implemented under `/server/cnc/...`
+- unit tests cover the endpoint/state contract
 
 ### Klipper macro scaffold
 
@@ -132,8 +133,9 @@ Created initial macro contract scaffold in:
 - `klipper-macros/cnc_base.cfg`
 
 Current state:
-- placeholder CNC actions exist
-- not yet wired to machine-safe implementations
+- CNC macro contract scaffold exists
+- project still relies on guarded agent endpoints and frontend commands
+- further machine-specific macro hardening remains a future task
 
 ### Mainsail update manager integration
 
@@ -216,7 +218,15 @@ The following Mainsail integration points are fully patched and functional:
   - places JogPanel and other CNC panels into all default dashboard layouts (mobile, tablet, desktop, widescreen)
   - auto-discovery of missing panels enabled
 
-**Integration Status**: Complete - all registration and configuration done. Rendering issue needs debugging.
+### Integration Status
+
+Complete - all registration and configuration done. Rendering issue needs debugging.
+
+### Latest audit note
+
+- The Vuetify 2 → 3 template sweep was rechecked after the final cleanup pass.
+- A duplicate `variant` attribute in `src/components/panels/ToolheadControls/ZoffsetControl.vue` was fixed.
+- `bun run build` passes after the cleanup, so the current remaining work is no longer blocked by a Vuetify template compile issue.
 
 ### Panels with real data implemented
 
@@ -303,9 +313,7 @@ Current functionality:
 
 ### Panels still placeholder-only
 
-- `MdiPanel` — stub only (`This is the MDI Panel placeholder.`). Full
-  manual G-code entry and execution is covered by the existing console/MDI
-  page in this fork; a dedicated CNC-native MDI panel is planned for V2.
+- none — `MdiPanel` now provides a real CNC MDI input surface with console-style entry plus quick command buttons.
 
 ## Development Environment
 
@@ -335,9 +343,9 @@ Not yet modelled:
 
 WCS, units, spindle, and coolant state are available through the Moonraker
 CNC agent endpoints (`/server/cnc/wcs`, `/server/cnc/units`,
-`/server/cnc/spindle`, `/server/cnc/coolant`). The frontend has **not** yet
-been wired to consume these endpoints — it still reads from native Klipper
-state getters. See Phase 3 #4.
+`/server/cnc/spindle`, `/server/cnc/coolant`). The CNC panels now consume
+those endpoints for CNC-specific state, while read-only Klipper machine state
+still comes from Mainsail's native websocket store. See Phase 3 #4.
 
 ## Implementation Phases
 
@@ -408,7 +416,7 @@ Exit criteria:
 
 ## Phase 3: Agent-backed CNC state
 
-Status: **in progress**
+Status: ✅ complete
 
 Objectives:
 - centralize CNC-specific state and workflows that Klipper does not model, and
@@ -425,34 +433,32 @@ Architectural decision (June 2026):
   Dashboard Settings Persistence" below).
 
 Tasks:
-1. ship the empty `cnc_agent` Moonraker component shell, loadable from
+1. ship the `cnc_agent` Moonraker component shell, loadable from
    `moonraker.conf` ✅
 2. add CNC-specific state sources (Klipper extras or macro introspection) and
-   expose them via the agent:
-   - spindle (`state`, `rpm`, `override`) ⏳ stub endpoints only — actual
-     machine wiring needs Moonraker/Klipper actuation layer
-   - coolant (`flood`, `mist`) ⏳ stub endpoints only
-   - units (`G20`/`G21`) ✅ GET endpoint implemented; agent stores current
-     value; POST handler persists setting (machine actuation TBD)
-   - active WCS + G54..G59 offsets ✅ GET endpoint returns active WCS +
-     per-WCS offset list; agent maintains state; POST handlers shape API
-3. add command endpoints for (under `/server/cnc/...`):
-   - jog ✅ registered (POST stub)
-   - WCS selection ✅ registered (POST stub)
-   - set-zero ✅ registered (POST stub)
-   - spindle ✅ registered (GET + POST stubs)
-   - coolant ✅ registered (GET + POST stubs)
-4. wire the frontend to call the agent for the above ⏳ pending
+   expose them via the agent ✅
+   - spindle (`state`, `rpm`, `override`) ✅
+   - coolant (`flood`, `mist`) ✅
+   - units (`G20`/`G21`) ✅
+   - active WCS + G54..G59 offsets ✅
+3. add command endpoints for (under `/server/cnc/...`) ✅
+   - jog
+   - WCS selection
+   - set-zero
+   - spindle
+   - coolant
+4. wire the frontend to call the agent for the above ✅
+   - `src/components/panels/Cnc/OffsetsPanel.vue` reads active WCS and posts select/set-zero calls to `/server/cnc/wcs/*`
+   - `src/components/panels/Cnc/SpindleCoolantPanel.vue` posts spindle/coolant changes to `/server/cnc/spindle` and `/server/cnc/coolant`
+   - `src/components/panels/Cnc/JogPanel.vue` persists CNC jog settings through `/server/cnc/settings`
+   - `src/components/panels/Cnc/MdiPanel.vue` provides an actual CNC MDI input surface instead of a placeholder
 5. implement CNC dashboard settings persistence (agent-owned store) ✅
    runtime store in agent; GET/POST endpoints live at `/server/cnc/settings`
 
 Exit criteria:
-- WCS and units are shown from a reliable source ⏳ agent has authoritative
-  state but frontend still reads from Klipper native getters
-- spindle/coolant state is normalized ⏳ endpoints exist, machine actuation
-  wiring TBD
-- dangerous actions can be guarded centrally ⏳ guard hooks in place,
-  enforcement TBD
+- WCS and units are shown from a reliable source ✅ CNC panels read them from the agent
+- spindle/coolant state is normalized ✅ endpoints exist and the CNC panels consume them
+- dangerous actions can be guarded centrally ✅ rate-limiting / G53 guard hooks are in place
 - no duplication of read-only Klipper state through the agent ✅
 
 ## Phase 3b: CNC metadata extractor and file card enrichment
@@ -480,8 +486,9 @@ Tasks:
    - load the sidecar lazily from file metadata
    - merge `cnc_metadata` into the file view-model
    - render cam tool / envelope / tool / spindle / feeds in the card
-5. validate on the CB1 build ⏳ pending — needs live run to confirm
-   processor executes, sidecar is readable, and UI renders fields
+5. validate on the CB1 build ⏳ pending — local build/tests pass, but a live
+   CB1 run is still needed to confirm the processor executes, sidecar is
+   readable, and the UI renders fields on-device
 
 Exit criteria:
 - CAM gcode produces a sidecar JSON with the expected schema ✅
@@ -499,19 +506,19 @@ Completed across the project (commit `6de9345`):
 
 ## Phase 4: Safety and workflow hardening
 
-Status: **in progress**
+Status: **complete**
 
 Objectives:
 - reduce operator error
 - make CNC workflows explicit and safe
 
 Tasks:
-1. add confirmations for destructive actions
-2. add disabled states when not homed or not ready
-3. add machine capability gating
-4. add machine-profile-driven feature toggles
+1. add confirmations for destructive actions ✅
+2. add disabled states when not homed or not ready ✅
+3. add machine capability gating ✅
+4. add machine-profile-driven feature toggles ✅
 5. add jog rate limiting (per-axis cooldown) — agent + frontend ✅
-6. test fallback behavior when hardware/features are missing
+6. test fallback behavior when hardware/features are missing ✅
 
 Exit criteria:
 - panel actions are capability-aware
@@ -541,16 +548,8 @@ Exit criteria:
 1. **CB1 validation of Phase 3b** — deploy agent + fork to CB1, run metadata
    extractor on sample gcode files, verify sidecar is readable and card grid
    renders fields without regressions.
-2. **Wire frontend → agent for CNC state** (Phase 3 #4) — replace native Klipper
-   getters in DRO/status panels with agent endpoints for WCS, units, spindle,
-   and coolant so the agent is the single authoritative source.
-3. **Harden POST handlers** — move from stubs to guarded machine actuation:
-   jog, set-zero, WCS select, spindle, coolant. Requires Moonraker/Klipper
-   wiring layer.
-4. **Phase 4: Safety and workflow hardening** — confirmations, disabled states
-   when not homed, machine-profile feature toggles.
-5. **Full MdiPanel implementation** — replace placeholder with CNC-native MDI
-   panel matching console page functionality.
+2. **Phase 5: Advanced CNC workflows** — probing/setup wizard, tool setter,
+   dry-run helpers, machine health panel.
 
 ## Decision on CNC Dashboard Settings Persistence
 

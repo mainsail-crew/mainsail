@@ -6,7 +6,7 @@
             card-class="miscellaneous-light-neopixel-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt" />
+ <v-btn :icon="mdiCloseThick" rounded="0" @click="closePrompt"/>
             </template>
             <v-card-text>
                 <template v-if="presets.length">

@@ -482,32 +482,6 @@
         "Headline": "Sonda Manual"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Permitido",
-            "EstimatedExtrusion": "Extrusão:",
-            "Extrude": "Extrusão",
-            "ExtruderTempTooLow": "Temperatura da extrusora <",
-            "ExtrusionFactor": "Fator de extrusão",
-            "ExtrusionFeedrate": "Taxa de alimentação de extrusão",
-            "FilamentLength": "Comprimento do Filamento",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Compr. Retração",
-                "RetractSpeed": "Velocidade de Retração",
-                "UnretractExtraLength": "Compr. Extra ao Voltar Retração",
-                "UnretractSpeed": "Veloc. ao Voltar Retração"
-            },
-            "Headline": "Extrusora",
-            "LoadFilament": "Carregar Filamento",
-            "PressureAdvanceSettings": {
-                "Advance": "Pressure Advance",
-                "Extruder": "Extrusora",
-                "SmoothTime": "Tempo de Suavização"
-            },
-            "Requested": "Requeridos",
-            "Retract": "Retrair",
-            "TooLargeExtrusion": "Extrusão muito grande!",
-            "UnloadFilament": "Descarregar Filamento"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconectar",
             "SwitchToPrinter": "Mudar para impressora",

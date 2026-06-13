@@ -1,11 +1,11 @@
 <template>
     <div>
-        <v-snackbar v-model="boolShowDialogRunning" :timeout="-1" :value="true" fixed right bottom>
+        <v-snackbar v-model="boolShowDialogRunning" :timeout="-1" location="bottom right">
             <div>{{ $t('Timelapse.TimelapseRendering') }}...</div>
-            <v-progress-linear v-if="progress > 0" class="mt-2" :value="progress" indeterminate />
+            <v-progress-linear v-if="progress > 0" class="mt-2" :model-value="progress" indeterminate />
             <v-progress-linear v-if="progress === 0" class="mt-2" indeterminate />
         </v-snackbar>
-        <v-snackbar v-model="boolShowDialogSuccess" :timeout="5000" :value="true" fixed right bottom>
+        <v-snackbar v-model="boolShowDialogSuccess" :timeout="5000" location="bottom right">
             <div>
                 {{ $t('Timelapse.TimelapseRenderingSuccessful') }}
                 <br />

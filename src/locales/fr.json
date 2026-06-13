@@ -530,34 +530,6 @@
         "Headline": "Sonde manuelle"
     },
     "Panels": {
-        "ExtruderControlPanel": {
-            "Allowed": "Autorisé",
-            "CleanNozzle": "Nettoyage de la buse",
-            "EstimatedExtrusion": "Extrusion:",
-            "Extrude": "Extrusion",
-            "ExtruderTempTooLow": "Température d'extrusion trop basse",
-            "ExtrusionFactor": "Facteur d'extrusion",
-            "ExtrusionFeedrate": "Vitesse d'extrusion",
-            "FilamentLength": "Longueur du filament",
-            "FirmwareRetractionSettings": {
-                "RetractLength": "Longueur de rétraction",
-                "RetractSpeed": "Vitesse de rétraction",
-                "UnretractExtraLength": "Distance de dérétraction supplémentaire",
-                "UnretractSpeed": "Vitesse de dérétraction"
-            },
-            "Headline": "Contrôles d'Extrudeur",
-            "LoadFilament": "Chargement du filament",
-            "PressureAdvanceSettings": {
-                "Advance": "Avance de la pression",
-                "Extruder": "Extrudeur",
-                "SmoothTime": "Temps de lissage"
-            },
-            "PurgeFilament": "Purge du filament",
-            "Requested": "Demandé",
-            "Retract": "Rétraction",
-            "TooLargeExtrusion": "Extrusion trop importante!",
-            "UnloadFilament": "Décharger le filament"
-        },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Se reconnecter",
             "SwitchToPrinter": "Changer d'imprimante",
@@ -622,31 +594,6 @@
             "Off": "Arrêt",
             "On": "Marche",
             "PowerControl": "Alimentation"
-        },
-        "SpoolmanPanel": {
-            "ChangeSpool": "Changer de bobine",
-            "DaysAgo": "{days} jours avant",
-            "EjectSpool": "Ejecter la bobine",
-            "EjectSpoolQuestion": "Êtes-vous sûr de vouloir éjecter la bobine de filament?",
-            "Filament": "Filament",
-            "FilamentTypeMismatch": "Le matériau de la bobine active ({spoolType}) ne correspond pas au matériau du G-Code ({fileType}).",
-            "Headline": "Spoolman",
-            "LastUsed": "Dernière utilisation",
-            "Location": "Localisation",
-            "Material": "Matériau",
-            "Never": "Jamais",
-            "NoActiveSpool": "Le suivi du filament est inactif. Pour commencer, veuillez sélectionner une bobine.",
-            "NoResults": "Aucune bobine n'a été trouvée avec les critères de recherche actuels.",
-            "NoSpools": "Pas de bobines disponibles",
-            "NoSpoolSelected": "Aucune bobine sélectionnée. Veuillez sélectionner une bobine ou cette impression ne sera pas suivie.",
-            "OpenSpoolManager": "ouvrir le gestionnaire de bobines",
-            "Refresh": "rafraîchir",
-            "Search": "Recherche",
-            "SelectSpool": "Sélectionner une bobine",
-            "Today": "Aujourd'hui",
-            "TooLessFilament": "Il se peut que la bobine actuelle ne contienne pas assez de filament pour cette impression. ({spoolWeight}g pour {fileWeight}g)",
-            "Weight": "Poids",
-            "Yesterday": "Hier"
         },
         "StatusPanel": {
             "CancelPrint": "Annuler l'impression",
