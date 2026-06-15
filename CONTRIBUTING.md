@@ -11,6 +11,7 @@ make sure to read through our contribution guidelines:
 - [Submission Guidelines](#submit)
   - [Submit an Issue](#submit-issue)
   - [Submit a Pull Request](#submit-pr)
+  - [Contributor Trust (Vouch System)](#vouch)
 - [Financial Contributions](#financial)
 - [Credits](https://docs.mainsail.xyz/credits)
 
@@ -76,6 +77,21 @@ Before you work on a PR and submit it, please pay attention to the following gui
    - The sign-off certifies that you agree with the [developer certificate of origin](https://github.com/mainsail-crew/mainsail/blob/develop/.github/DEVELOPER_CERTIFICATE_OF_ORIGIN.md).
    - If you provide a translation, a sign-off is not necessarily required.
 8. When opening a pull request, keep `Allow edits and access to secrets by maintainers` **enabled**.
+
+### <a name="vouch"></a> Contributor Trust (Vouch System)
+
+To protect the project from low-quality and automated spam contributions, Mainsail uses a
+[vouch-based trust system](https://github.com/mitchellh/vouch) for **pull requests**.
+
+- Pull requests may only be opened by **vouched contributors**. PRs from users who are not on the vouched list are **automatically closed**.
+- Maintainers and collaborators with write access, as well as bots (e.g. Dependabot), are always allowed and do not need to be vouched.
+
+The list of vouched contributors is maintained in
+[`.github/VOUCHED.td`](https://github.com/mainsail-crew/mainsail/blob/develop/.github/VOUCHED.td).
+
+If your PR was closed because you are not yet vouched, this is **not** a rejection of your work. A maintainer can
+vouch for you, after which you can reopen the PR or comment `/recheck` to have it checked again. Becoming an active,
+trusted member of the community, for example through issues is the path to being vouched.
 
 ## <a name="financial"></a> Financial Contribution
 

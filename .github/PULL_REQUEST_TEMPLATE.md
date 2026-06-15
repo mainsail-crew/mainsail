@@ -1,4 +1,12 @@
 <!--
+  ⚠️ IMPORTANT: Pull requests from contributors who are not on the vouched list
+  (.github/VOUCHED.td) are automatically closed. See the Contributing Guidelines
+  for details:
+  https://github.com/mainsail-crew/mainsail/blob/HEAD/CONTRIBUTING.md#vouch
+  If your PR gets closed, a maintainer can vouch for you; afterward reopen it
+  or comment /recheck.
+
+
   For Work In Progress Pull Requests, please use the Draft PR feature,
   see https://github.blog/2019-02-14-introducing-draft-pull-requests/ for further details.
 
