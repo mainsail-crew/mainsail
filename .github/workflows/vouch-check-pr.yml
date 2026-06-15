@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  issues: write
 
 jobs:
   check:
@@ -20,9 +21,12 @@ jobs:
        github.event.issue.pull_request &&
        contains(github.event.comment.body, '/recheck'))
     steps:
+      - uses: actions/checkout@v6
+
       - uses: mitchellh/vouch/action/check-pr@v1
         with:
           pr-number: ${{ github.event.pull_request.number || github.event.issue.number }}
           auto-close: true
+          template-file: .github/vouch-pr-unvouched.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
