@@ -18,8 +18,10 @@ jomik
 julianschill LED effects Maintainer
 moggieuk Maintainer from Happy Hare
 mspi92
+pataar
 paxx12 Maintainer from Snapmaker community firmware
 ragilo
 rcloran
 samuel-0-0 Long-time Chinese (zh) localization contributor
+Sindarius
 xtrack33
