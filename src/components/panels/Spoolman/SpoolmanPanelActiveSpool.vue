@@ -9,7 +9,11 @@
         </v-list-item-content>
 
         <v-list-item-avatar tile :size="avatarSize">
-            <spool-icon :color="color" @click-spool="clickSpool" />
+            <spool-icon
+                :color="color"
+                :multi-color-hexes="multi_color_hexes"
+                :multi-color-direction="multi_color_direction"
+                @click-spool="clickSpool" />
         </v-list-item-avatar>
     </v-list-item>
 </template>
@@ -61,6 +65,14 @@ export default class SpoolmanPanelActiveSpool extends Mixins(BaseMixin) {
         if (color === null) return '#000'
 
         return `#${color}`
+    }
+
+    get multi_color_hexes() {
+        return this.active_spool?.filament?.multi_color_hexes
+    }
+
+    get multi_color_direction() {
+        return this.active_spool?.filament?.multi_color_direction
     }
 
     get id() {

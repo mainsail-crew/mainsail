@@ -175,7 +175,7 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
             item.id.toString(),
             item.comment,
             item.filament.name,
-            item.filament.vendor.name,
+            item.filament.vendor?.name,
             item.filament.material,
             item.location,
         ]
