@@ -101,9 +101,10 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolRemainingWeight() {
-        if (this.afcExistsSpoolman && this.spool?.remaining_weight != null) {
+        if (this.afcExistsSpoolman && this.spool) {
             return Math.round(this.spool.remaining_weight)
         }
+
         return Math.round(this.lane.weight ?? 0)
     }
 
