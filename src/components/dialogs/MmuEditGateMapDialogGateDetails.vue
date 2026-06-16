@@ -139,6 +139,8 @@
                             class="w-100"
                             height="120"
                             :color="spoolmanColor"
+                            :multi-color-hexes="spoolmanSpool?.filament?.multi_color_hexes"
+                            :multi-color-direction="spoolmanSpool?.filament?.multi_color_direction"
                             @click-spool="showSpoolmanSpoolChooserDialog = true" />
                         <div class="pt-4">{{ $t('Panels.SpoolmanPanel.LastUsed') }}: {{ spoolmanLastUsed }}</div>
                         <div>
