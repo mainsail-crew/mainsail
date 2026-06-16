@@ -1,5 +1,5 @@
 import { defaultLogoColor, themeDir, thumbnailBigMin } from '@/store/variables'
-import { convertName } from '@/plugins/helpers'
+import { convertName, escapePath } from '@/plugins/helpers'
 import { GetterTree } from 'vuex'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
@@ -141,8 +141,8 @@ export const getters: GetterTree<FarmPrinterState, RootState> = {
                     state.socket.port +
                     path +
                     '/server/files/gcodes/' +
-                    dir +
-                    thumbnail.relative_path
+                    escapePath(dir) +
+                    escapePath(thumbnail.relative_path)
                 )
         }
 

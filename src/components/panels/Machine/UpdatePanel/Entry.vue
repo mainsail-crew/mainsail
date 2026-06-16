@@ -10,7 +10,7 @@
                         {{ versionOutput }}
                     </a>
                 </template>
-                <template v-else-if="type === 'web' && semverUpdatable">
+                <template v-else-if="(type === 'web' || type === 'executable') && semverUpdatable">
                     <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
                         <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
@@ -271,7 +271,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (['printing', 'paused'].includes(this.printer_state)) return true
         if (!this.isValid || this.isCorrupt || this.isDirty || this.commitsBehind.length) return false
 
-        if (['python', 'web'].includes(this.type)) return !this.semverUpdatable
+        if (['python', 'web', 'executable'].includes(this.type)) return !this.semverUpdatable
 
         return this.commitsBehind.length === 0
     }
@@ -279,7 +279,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnIcon() {
         if (this.isDetached || !this.isValid || this.isCorrupt || this.isDirty) return mdiCloseCircle
 
-        if (['python', 'web'].includes(this.type)) {
+        if (['python', 'web', 'executable'].includes(this.type)) {
             if (this.semverUpdatable) return mdiProgressUpload
             else if (this.localVersion === null || this.remoteVersion === null) return mdiHelpCircleOutline
         }
@@ -292,7 +292,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
     get btnColor() {
         if (this.isCorrupt || this.isDetached || this.isDirty || !this.isValid) return 'orange'
 
-        if (['python', 'web'].includes(this.type) && this.semverUpdatable) return 'primary'
+        if (['python', 'web', 'executable'].includes(this.type) && this.semverUpdatable) return 'primary'
         if (this.type === 'git_repo' && this.commitsBehind.length) return 'primary'
 
         return 'green'
@@ -304,7 +304,7 @@ export default class UpdatePanelEntry extends Mixins(BaseMixin) {
         if (this.isDirty) return this.$t('Machine.UpdatePanel.Dirty')
         if (!this.isValid) return this.$t('Machine.UpdatePanel.Invalid')
 
-        if (['python', 'web'].includes(this.type)) {
+        if (['python', 'web', 'executable'].includes(this.type)) {
             if (this.semverUpdatable) return this.$t('Machine.UpdatePanel.Update')
             else if (this.localVersion === null || this.remoteVersion === null)
                 return this.$t('Machine.UpdatePanel.Unknown')
