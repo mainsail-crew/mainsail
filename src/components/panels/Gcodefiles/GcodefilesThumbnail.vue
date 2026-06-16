@@ -37,13 +37,14 @@ import { FileStateGcodefile } from '@/store/files/types'
 import { mdiFile, mdiFolder } from '@mdi/js'
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { escapePath } from '@/plugins/helpers'
+import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 
 @Component
 export default class GcodefilesThumbnail extends Mixins(BaseMixin) {
     mdiFile = mdiFile
     mdiFolder = mdiFolder
 
-    @Prop({ type: Object }) declare readonly item: FileStateGcodefile
+    @Prop({ type: Object }) declare readonly item: FileStateGcodefile | ServerJobQueueStateJob
 
     get bigThumbnailBackground() {
         return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
@@ -58,17 +59,18 @@ export default class GcodefilesThumbnail extends Mixins(BaseMixin) {
     }
 
     get fileTimestamp() {
-        return typeof this.item.modified.getTime === 'function' ? this.item.modified.getTime() : 0
+        return typeof this.item.modified?.getTime === 'function' ? this.item.modified?.getTime() : 0
     }
 
     get thumbnails() {
-        return this.item.thumbnails ?? []
+        return this.item.thumbnails ?? this.item.metadata?.thumbnails ?? []
     }
 
     get subdirectory() {
-        if (!this.item.full_filename.includes('/')) return null
+        const full_filename = this.item.full_filename ?? this.item.filename
+        if (!full_filename.includes('/')) return null
 
-        return escapePath(this.item.full_filename.substring(0, this.item.full_filename.lastIndexOf('/')))
+        return escapePath(full_filename.substring(0, full_filename.lastIndexOf('/')))
     }
 
     get smallThumbnail() {
