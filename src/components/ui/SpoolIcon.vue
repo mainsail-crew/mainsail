@@ -10,13 +10,7 @@
         class="cursor-pointer"
         @click="clickSpool">
         <defs>
-            <linearGradient
-                v-if="isMultiColorLongitudinal"
-                :id="gradientId"
-                x1="0%"
-                y1="0%"
-                x2="0%"
-                y2="100%">
+            <linearGradient v-if="isMultiColorLongitudinal" :id="gradientId" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop
                     v-for="(stop, i) in gradientStops"
                     :key="`stop-${i}`"
@@ -33,9 +27,12 @@
                     :d="segment.d" />
             </template>
 
-            <template v-else-if="isMultiColorLongitudinal">
-                <circle :style="{ fill: `url(#${gradientId})` }" :cx="cx" :cy="cy" :r="outerR" />
-            </template>
+            <circle
+                v-else-if="isMultiColorLongitudinal"
+                :style="{ fill: `url(#${gradientId})` }"
+                :cx="cx"
+                :cy="cy"
+                :r="outerR" />
 
             <circle v-else :style="styleCircle1" :cx="cx" :cy="cy" :r="outerR" />
 
