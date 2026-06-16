@@ -75,19 +75,14 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
         ],
     }
 
-    get filenameWithoutSlash() {
-        if (this.filename.startsWith('/')) return this.filename.substring(1)
-
-        return this.filename
-    }
-
     async addBatchToQueueAction() {
-        const array = Array(parseInt(this.input)).fill(this.filenameWithoutSlash)
+        let filename = this.filename
+        if (filename.startsWith('/')) filename = filename.slice(1)
+        const array = Array(parseInt(this.input)).fill(filename)
 
         await this.$store.dispatch('server/jobQueue/addToQueue', array)
 
-        if (this.showToast)
-            this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.filename }).toString())
+        if (this.showToast) this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename }).toString())
 
         this.closeDialog()
     }
