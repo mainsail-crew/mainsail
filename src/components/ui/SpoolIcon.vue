@@ -48,6 +48,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { ServerSpoolmanStateFilament } from '@/store/server/spoolman/types'
 
 interface RadialSegment {
     color: string
@@ -68,11 +69,11 @@ export default class SpoolIcon extends Mixins(BaseMixin) {
     @Prop({ required: false, default: '#ff0' })
     declare readonly color: string
 
-    @Prop({ type: String, required: false, default: null })
-    declare readonly multiColorHexes: string | null
+    @Prop({ type: String, required: false })
+    declare readonly multiColorHexes: string | undefined
 
-    @Prop({ type: String, required: false, default: null })
-    declare readonly multiColorDirection: string | null
+    @Prop({ type: String, required: false })
+    declare readonly multiColorDirection: ServerSpoolmanStateFilament['multi_color_direction']
 
     // gradient ids need to be unique document-wide, not just within the scope of the svg
     gradientId = `longitudinalGradient-${Math.random().toString(36).slice(2)}`
@@ -82,6 +83,7 @@ export default class SpoolIcon extends Mixins(BaseMixin) {
 
     get multiColors(): string[] {
         if (!this.multiColorHexes) return []
+
         return this.multiColorHexes.split(',').map((h) => {
             const trimmed = h.trim()
             return trimmed.startsWith('#') ? trimmed : `#${trimmed}`
