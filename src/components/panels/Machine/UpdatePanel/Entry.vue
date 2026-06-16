@@ -10,14 +10,14 @@
                         {{ versionOutput }}
                     </a>
                 </template>
-                <template v-else-if="['executable', 'web', 'zip'].includes(type) && semverUpdatable">
-                    <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
+                <template v-else-if="type === 'python' && semverUpdatable">
+                    <a class="info--text text-decoration-none" :href="pythonChangelog" target="_blank">
                         <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
                 </template>
-                <template v-else-if="type === 'python' && semverUpdatable">
-                    <a class="info--text text-decoration-none" :href="pythonChangelog" target="_blank">
+                <template v-else-if="isSemverType && semverUpdatable">
+                    <a class="info--text text-decoration-none" :href="webLinkRelease" target="_blank">
                         <v-icon small color="info" class="mr-1">{{ mdiUpdate }}</v-icon>
                         {{ versionOutput }}
                     </a>
