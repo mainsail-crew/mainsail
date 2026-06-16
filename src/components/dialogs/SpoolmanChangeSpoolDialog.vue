@@ -204,8 +204,26 @@ export default class SpoolmanChangeSpoolDialog extends Mixins(BaseMixin) {
             return
         }
 
-        // if tool is set, execute setMacroVariable and close, because it's not an active printing spool change
+        // if tool is set
+        // -> execute setMacroVariable
+        // -> write to lane database
+        // and close, because it's not an active printing spool change
         if (this.tool) {
+            // more infos can be found in the orcaslicer repo:
+            // https://github.com/OrcaSlicer/OrcaSlicer/blob/e700113b39f39b837175c680929538aa9655a9f9/src/slic3r/Utils/MoonrakerPrinterAgent.cpp#L727
+            this.$socket.emit('server.database.post_item', {
+                namespace: 'lane_data',
+                key: this.tool,
+                value: {
+                    // must be a string for orcaslicer and this will be the filament slot number
+                    lane: this.tool.substring(1),
+                    color: spool.filament.color_hex,
+                    material: spool.filament.material,
+                    bed_temp: spool.filament.settings_bed_temp,
+                    nozzle_temp: spool.filament.settings_extruder_temp,
+                },
+            })
+
             this.setMacroVariable(spool)
             this.close()
             return
