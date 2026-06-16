@@ -58,7 +58,8 @@ export default class AfcUnitLaneMappingToolDialog extends Mixins(BaseMixin, AfcM
 
     get mappedTools(): string[] {
         const map = this.lane.map
-        if (map == null) return []
+        if (!map) return []
+
         return Array.isArray(map) ? map.map((t: string) => t.toLowerCase()) : [map.toLowerCase()]
     }
 

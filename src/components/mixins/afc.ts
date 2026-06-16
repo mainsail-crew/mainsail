@@ -73,11 +73,11 @@ export default class AfcMixin extends Vue {
 
         for (const laneName of lanes) {
             const lane = this.getAfcLaneObject(laneName)
-            if (lane?.map == null) continue
+            if (!lane?.map) continue
 
             const tools = Array.isArray(lane.map) ? lane.map : [lane.map]
             for (const tool of tools) {
-                if (tool != null && tool !== '') seen.add(tool)
+                if (tool) seen.add(tool)
             }
         }
 
