@@ -17,7 +17,7 @@ import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode'
 import { HighlightStyle, indentUnit, StreamLanguage, syntaxHighlighting } from '@codemirror/language'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
-import { KlipperDocsTooltipPlugin } from '@/plugins/CodeMirrorPluginKlipperDocsTooltips'
+import { KlipperDocsTooltip } from '@/plugins/KlipperDocsTooltip'
 import { insertTab, indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
@@ -123,7 +123,9 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
             }),
         ]
 
-        if (this.tooltipsPluginEnabled) extensions.push(KlipperDocsTooltipPlugin())
+        if (this.klipperDocsTooltips && this.fileExtension === 'cfg') {
+            extensions.push(KlipperDocsTooltip(this.klipperConfigReference))
+        }
 
         if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
@@ -161,8 +163,8 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
         })
     }
 
-    get tooltipsPluginEnabled() {
-        return this.$store.state.gui.editor.tooltipsEnabled || false
+    get klipperDocsTooltips() {
+        return this.$store.state.gui.editor.klipperDocsTooltips ?? true
     }
 }
 </script>

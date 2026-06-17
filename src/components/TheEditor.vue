@@ -166,7 +166,6 @@ import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
-import { klipperRepos } from '@/store/variables'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
 import {
@@ -337,24 +336,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
         if (!this.isWriteable) return `${title} (${this.$t('Editor.FileReadOnly')})`
 
         return `${title} ${this.changedOutput}`
-    }
-
-    get currentLanguage() {
-        return this.$store.state.gui.general.language
-    }
-
-    get klipperConfigReference(): string {
-        const currentLanguage = this.currentLanguage
-        const klipperRepo = klipperRepos[this.klipperAppName] ?? klipperRepos.Klipper
-
-        let url = klipperRepo.url
-        if (klipperRepo.docsLanguages?.includes(currentLanguage)) {
-            url += `${currentLanguage}/`
-        }
-
-        url += 'Config_Reference.html'
-
-        return url
     }
 
     get fileStructureSidebar() {

@@ -121,6 +121,7 @@ export const getDefaultState = (): GuiState => {
         editor: {
             escToClose: true,
             confirmUnsavedChanges: true,
+            klipperDocsTooltips: true,
             klipperRestartMethod: 'FIRMWARE_RESTART',
             tabSize: 2,
             fileStructureSidebar: true,
