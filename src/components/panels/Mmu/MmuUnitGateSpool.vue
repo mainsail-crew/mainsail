@@ -110,7 +110,13 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { GATE_EMPTY, GATE_UNKNOWN, NO_FILAMENT_COLOR } from '@/components/mixins/mmu'
+import MmuMixin, {
+    FILAMENT_POS_LOADED,
+    GATE_AVAILABLE,
+    GATE_EMPTY,
+    NO_FILAMENT_COLOR,
+    TOOL_GATE_BYPASS,
+} from '@/components/mixins/mmu'
 import { filamentTextColor } from '@/plugins/helpers'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
@@ -130,7 +136,11 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get status() {
-        return this.mmu?.gate_status?.[this.gateIndex] ?? GATE_UNKNOWN
+        if (this.gateIndex === TOOL_GATE_BYPASS) {
+            if (this.mmuFilamentPos === FILAMENT_POS_LOADED) return GATE_AVAILABLE
+            return GATE_EMPTY
+        }
+        return this.mmu?.gate_status?.[this.gateIndex] ?? GATE_EMPTY
     }
 
     get isNotEmpty() {
@@ -252,7 +262,7 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
             output.push(`${this.$t('Panels.MmuPanel.ToolTip.Color')}: ${color}`)
         }
 
-        if (this.spoolId) {
+        if (this.spoolId > 0) {
             output.push(`${this.$t('Panels.MmuPanel.ToolTip.SpoolId')}: ${this.spoolId}`)
         }
 
