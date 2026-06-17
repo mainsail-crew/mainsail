@@ -110,7 +110,13 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { TOOL_GATE_BYPASS, GATE_AVAILABLE, GATE_EMPTY, GATE_UNKNOWN, NO_FILAMENT_COLOR, FILAMENT_POS_LOADED } from '@/components/mixins/mmu'
+import MmuMixin, {
+    FILAMENT_POS_LOADED,
+    GATE_AVAILABLE,
+    GATE_EMPTY,
+    NO_FILAMENT_COLOR,
+    TOOL_GATE_BYPASS,
+} from '@/components/mixins/mmu'
 import { filamentTextColor } from '@/plugins/helpers'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
