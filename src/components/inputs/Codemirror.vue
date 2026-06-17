@@ -8,8 +8,8 @@
 // Inspired by this repo: https://github.com/surmon-china/vue-codemirror
 
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
-import ThemeMixin from '../mixins/theme'
+import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
 import { EditorState } from '@codemirror/state'
