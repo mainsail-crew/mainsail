@@ -13,23 +13,10 @@
                         </span>
                     </template>
                     <span>
-                        <strong>ID #{{ spoolId }}</strong>
-                        <br />
-                        <template v-if="spoolFilamentVendor">{{ spoolFilamentVendor }} —</template>
-                        {{ spoolFilamentName }}
-                        <template v-if="spoolMaterial">
-                            <br />
-                            {{ spoolMaterialOutput }}
-                            <template v-if="spoolExtruderTemp !== undefined">| {{ spoolExtruderTemp }}°C</template>
-                            <template v-if="spoolBedTemp !== undefined">| {{ spoolBedTemp }}°C</template>
-                        </template>
-                        <template v-if="spoolRemainingWeight !== undefined">
-                            <br />
-                            {{ $t('Panels.AfcPanel.WeightRemaining', { weight: Math.round(spoolRemainingWeight) }) }}
-                            <template v-if="spoolUsedWeight !== undefined">
-                                ({{ $t('Panels.AfcPanel.WeightUsed', { weight: Math.round(spoolUsedWeight) }) }})
-                            </template>
-                        </template>
+                        <div class="font-weight-bold">{{ spoolFilamentHeadline }}</div>
+                        <div>{{ spoolFilamentName }}</div>
+                        <div v-if="spoolMaterial">{{ spoolMaterialDetails }}</div>
+                        <div v-if="spoolWeightsOutput !== undefined">{{ spoolWeightsOutput }}</div>
                     </span>
                 </v-tooltip>
                 <spoolman-change-spool-dialog v-if="afcExistsSpoolman" v-model="showSpoolmanDialog" :afc-lane="name" />
@@ -116,6 +103,13 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return spools.find((spool: ServerSpoolmanStateSpool) => spool.id === this.spoolId) || null
     }
 
+    get spoolFilamentHeadline(): string {
+        const array = [`#${this.spoolId}`]
+        if (this.spoolFilamentVendor) array.push(this.spoolFilamentVendor)
+
+        return array.join(' | ')
+    }
+
     get spoolColor() {
         if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
 
@@ -129,11 +123,29 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     get spoolRemainingWeightOutput(): string {
         if (this.spoolRemainingWeight === undefined) return '--'
 
-        return `${Math.round(this.spoolRemainingWeight)} g`
+        return `${Math.round(this.spoolRemainingWeight)}g`
     }
 
     get spoolFullWeight(): number | undefined {
         return this.spool?.initial_weight ?? this.lane.initial_weight ?? undefined
+    }
+
+    get spoolWeightsOutput(): string | undefined {
+        if (this.spoolRemainingWeight === undefined) return undefined
+
+        const array = [
+            this.$t('Panels.AfcPanel.WeightRemaining', {
+                weight: Math.round(this.spoolRemainingWeight ?? 0),
+            }).toString(),
+        ]
+
+        if (this.spoolUsedWeight !== undefined) {
+            array.push(
+                this.$t('Panels.AfcPanel.WeightUsed', { weight: Math.round(this.spoolUsedWeight ?? 0) }).toString()
+            )
+        }
+
+        return array.join(' | ')
     }
 
     get spoolPercent() {
@@ -151,12 +163,20 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return this.spoolMaterial || '--'
     }
 
+    get spoolMaterialDetails(): string {
+        const array = [this.spoolMaterialOutput]
+        if (this.spoolExtruderTemp !== undefined) array.push(`${this.spoolExtruderTemp}°C`)
+        if (this.spoolBedTemp !== undefined) array.push(`${this.spoolBedTemp}°C`)
+
+        return array.join(' | ')
+    }
+
     get spoolFilamentVendor(): string | undefined {
         return this.spool?.filament?.vendor?.name
     }
 
-    get spoolFilamentName(): string | undefined {
-        return this.spool?.filament?.name || this.lane.filament_name || undefined
+    get spoolFilamentName(): string {
+        return this.spool?.filament?.name || this.lane.filament_name || 'Unknown'
     }
 
     get spoolUrl(): string | undefined {
