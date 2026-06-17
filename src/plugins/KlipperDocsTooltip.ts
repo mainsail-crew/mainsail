@@ -82,7 +82,7 @@ export function KlipperDocsTooltip(baseUrl: string) {
                     .replace(/</g, '&lt;')
                     .replace(/>/g, '&gt;')
                     .replace(/"/g, '&quot;')
-                const url = `${baseUrl}#${escapedWord}`
+                const url = `${baseUrl}#${encodeURIComponent(word)}`
                 const div = document.createElement('div')
                 div.className = 'cm-tooltip-klipper-docs'
 
