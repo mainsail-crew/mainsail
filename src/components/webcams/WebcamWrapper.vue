@@ -3,7 +3,7 @@
         <template v-if="webcam.service === 'grid'">
             <v-container v-if="webcams" fluid class="pb-4">
                 <v-row dense>
-                    <v-col v-for="gridWebcam in webcams" :key="gridWebcam.name" cols="6" class="webcam-grid-col">
+                    <v-col v-for="gridWebcam in webcams" :key="gridWebcam.name" class="col-12 col-md-6">
                         <webcam-wrapper-item
                             :webcam="gridWebcam"
                             :printer-url="printerUrl"
@@ -42,12 +42,3 @@ export default class WebcamWrapper extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style scoped>
-@media (orientation: portrait) {
-    .webcam-grid-col {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
-    }
-}
-</style>
