@@ -13,9 +13,10 @@
                         </span>
                     </template>
                     <span>
-                        #{{ spoolId }} | {{ spoolVendor }}
-                        <br />
-                        {{ spoolFilamentName }}
+                        <div class="font-weight-bold">{{ spoolFilamentHeadline }}</div>
+                        <div>{{ spoolFilamentName }}</div>
+                        <div v-if="spoolMaterial">{{ spoolMaterialDetails }}</div>
+                        <div v-if="spoolWeightsOutput !== undefined">{{ spoolWeightsOutput }}</div>
                     </span>
                 </v-tooltip>
                 <spoolman-change-spool-dialog v-if="afcExistsSpoolman" v-model="showSpoolmanDialog" :afc-lane="name" />
@@ -27,7 +28,7 @@
                     <template v-else>{{ runoutLane }}</template>
                 </v-btn>
                 <afc-unit-lane-infinite-dialog v-model="showInfintiyDialog" :name="name" />
-                <span class="font-weight-bold">{{ spoolMaterial }}</span>
+                <span class="font-weight-bold">{{ spoolMaterialOutput }}</span>
                 <span class="text--disabled">{{ spoolRemainingWeightOutput }}</span>
                 <v-tooltip v-if="hasTd" top>
                     <template #activator="{ on, attr }">
@@ -42,7 +43,15 @@
         <v-row v-if="afcShowFilamentName" class="mb-0 mt-n3">
             <v-col class="px-6 pt-1">
                 <div class="position-relative pb-4">
-                    <span class="position-absolute text-truncate text-truncate-element text-center">
+                    <a
+                        v-if="spoolUrl"
+                        :href="spoolUrl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="position-absolute text-truncate text-truncate-element text-center text-decoration-none filament-link">
+                        {{ spoolFilamentName }}
+                    </a>
+                    <span v-else class="position-absolute text-truncate text-truncate-element text-center">
                         {{ spoolFilamentName }}
                     </span>
                 </div>
@@ -94,44 +103,98 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return spools.find((spool: ServerSpoolmanStateSpool) => spool.id === this.spoolId) || null
     }
 
+    get spoolFilamentHeadline(): string {
+        const array = [`#${this.spoolId}`]
+        if (this.spoolFilamentVendor) array.push(this.spoolFilamentVendor)
+
+        return array.join(' | ')
+    }
+
     get spoolColor() {
         if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
 
         return this.lane.color || '#000000'
     }
 
-    get spoolRemainingWeight() {
-        if (this.afcExistsSpoolman && this.spool) {
-            return Math.round(this.spool.remaining_weight)
+    get spoolRemainingWeight(): number | undefined {
+        return this.spool?.remaining_weight ?? this.lane.weight ?? undefined
+    }
+
+    get spoolRemainingWeightOutput(): string {
+        if (this.spoolRemainingWeight === undefined) return '--'
+
+        return `${Math.round(this.spoolRemainingWeight)}g`
+    }
+
+    get spoolFullWeight(): number | undefined {
+        return this.spool?.initial_weight ?? this.lane.initial_weight ?? undefined
+    }
+
+    get spoolWeightsOutput(): string | undefined {
+        if (this.spoolRemainingWeight === undefined) return undefined
+
+        const array = [
+            this.$t('Panels.AfcPanel.WeightRemaining', {
+                weight: Math.round(this.spoolRemainingWeight ?? 0),
+            }).toString(),
+        ]
+
+        if (this.spoolUsedWeight !== undefined) {
+            array.push(
+                this.$t('Panels.AfcPanel.WeightUsed', { weight: Math.round(this.spoolUsedWeight ?? 0) }).toString()
+            )
         }
 
-        return Math.round(this.lane.weight ?? 0)
-    }
-
-    get spoolRemainingWeightOutput() {
-        return `${this.spoolRemainingWeight} g`
-    }
-
-    get spoolFullWeight() {
-        return this.spool?.filament?.weight ?? 1000
+        return array.join(' | ')
     }
 
     get spoolPercent() {
+        if (this.spoolRemainingWeight === undefined || this.spoolFullWeight === undefined) return 100
         if (this.spoolFullWeight === 0) return 100
 
         return Math.round((this.spoolRemainingWeight / this.spoolFullWeight) * 100)
     }
 
-    get spoolMaterial() {
-        return this.lane.material || '--'
+    get spoolMaterial(): string {
+        return this.spool?.filament?.material ?? this.lane.material ?? ''
     }
 
-    get spoolVendor() {
-        return this.spool?.filament?.vendor?.name ?? 'Unknown'
+    get spoolMaterialOutput(): string {
+        return this.spoolMaterial || '--'
     }
 
-    get spoolFilamentName() {
-        return this.spool?.filament?.name ?? 'Unknown'
+    get spoolMaterialDetails(): string {
+        const array = [this.spoolMaterialOutput]
+        if (this.spoolExtruderTemp !== undefined) array.push(`${this.spoolExtruderTemp}°C`)
+        if (this.spoolBedTemp !== undefined) array.push(`${this.spoolBedTemp}°C`)
+
+        return array.join(' | ')
+    }
+
+    get spoolFilamentVendor(): string | undefined {
+        return this.spool?.filament?.vendor?.name
+    }
+
+    get spoolFilamentName(): string {
+        return this.spool?.filament?.name || this.lane.filament_name || 'Unknown'
+    }
+
+    get spoolUrl(): string | undefined {
+        if (!this.spoolManagerUrl || !this.spoolId) return undefined
+
+        return `${this.spoolManagerUrl.replace(/\/$/, '')}/spool/show/${this.spoolId}`
+    }
+
+    get spoolExtruderTemp(): number | undefined {
+        return this.spool?.filament?.settings_extruder_temp
+    }
+
+    get spoolBedTemp(): number | undefined {
+        return this.spool?.filament?.settings_bed_temp
+    }
+
+    get spoolUsedWeight(): number | undefined {
+        return this.spool?.used_weight
     }
 
     get showTd1Color(): boolean {
@@ -169,5 +232,15 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
 .text-truncate-element {
     left: 0;
     right: 0;
+}
+
+.filament-link {
+    color: inherit !important;
+    cursor: pointer;
+}
+
+.filament-link:hover,
+.filament-link:focus {
+    text-decoration: underline !important;
 }
 </style>
