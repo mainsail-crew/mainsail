@@ -218,7 +218,8 @@
         "UnsavedChanges": "Unsaved Changes",
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
         "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
-        "Uploading": "Uploading"
+        "Uploading": "Uploading",
+        "ViewModuleDocumentation": "View {module} documentation"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -1202,6 +1203,8 @@
             "ConfirmUnsavedChanges": "Prompt to save or discard unsaved changes",
             "ConfirmUnsavedChangesDescription": "If enabled, the editor requires a confirmation to either save or discard the changes made. If disabled, changes are silently discarded.",
             "Editor": "Editor",
+            "KlipperDocsTooltips": "Enable tooltips to Klipper Docs",
+            "KlipperDocsTooltipsDescription": "When enabled, you can hover over config section headers and get a link to the documentation.",
             "KlipperRestartMethod": "Klipper restart method",
             "KlipperRestartMethodDescription": "Select which restart method will be used on 'Save & Restart' when editing Klipper config files.",
             "Spaces": "Spaces: {count}",

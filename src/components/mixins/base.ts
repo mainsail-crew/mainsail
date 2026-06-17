@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { DateTimeFormatOptions } from 'vue-i18n'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
+import { klipperRepos } from '@/store/variables'
 
 @Component
 export default class BaseMixin extends Vue {
@@ -45,6 +46,20 @@ export default class BaseMixin extends Vue {
 
     get klipperAppName() {
         return this.$store.state.printer.app_name ?? 'Klipper'
+    }
+
+    get klipperConfigReference(): string {
+        const currentLanguage = this.$store.state.gui.general.language ?? 'en'
+        const klipperRepo = klipperRepos[this.klipperAppName] ?? klipperRepos.Klipper
+
+        let url = klipperRepo.url
+        if (klipperRepo.docsLanguages?.includes(currentLanguage)) {
+            url += `${currentLanguage}/`
+        }
+
+        url += 'Config_Reference.html'
+
+        return url
     }
 
     get printerIsPrinting() {
