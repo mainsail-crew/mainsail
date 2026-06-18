@@ -25,6 +25,8 @@ export interface ServerSpoolmanStateFilament {
     name: string
     comment?: string
     color_hex: string
+    multi_color_hexes?: string
+    multi_color_direction?: 'coaxial' | 'longitudinal'
     density: number
     diameter: number
     material: string

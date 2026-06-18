@@ -51,9 +51,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-    @Prop({ default: true }) declare showFps: boolean
+    @Prop({ default: true }) readonly showFps!: boolean
     @Prop({ type: String, default: null }) readonly page!: string | null
-    @Ref('image') readonly image!: HTMLImageElement
+    @Ref() readonly image!: HTMLImageElement
 
     constructor() {
         super()
@@ -112,7 +112,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         this.startStream()
     }
 
-    log(msg: string, obj?: any) {
+    log(msg: string, obj?: unknown) {
         if (obj) {
             window.console.log(`[MJPEG streamer] ${msg}`, obj)
             return
@@ -121,13 +121,13 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
         window.console.log(`[MJPEG streamer] ${msg}`)
     }
 
-    getLength(headers: any) {
+    getLength(headers: string) {
         let contentLength = -1
-        headers.split('\n').forEach((header: any) => {
+        headers.split('\n').forEach((header: string) => {
             const pair = header.split(':')
             if (pair[0].toLowerCase() === CONTENT_LENGTH) {
                 // Fix for issue https://github.com/aruntj/mjpeg-readable-stream/issues/3 suggested by martapanc
-                contentLength = pair[1]
+                contentLength = Number(pair[1])
             }
         })
         return contentLength
@@ -183,8 +183,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
             // cleanup
             this.reader = null
             response = null
-        } catch (error: any) {
-            this.log(error.message)
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : String(error)
+            this.log(message)
             this.status = 'error'
             this.statusMessage = this.$t('Panels.WebcamPanel.ErrorWhileConnecting', { url: this.url }).toString()
 
@@ -256,8 +257,9 @@ export default class Mjpegstreamer extends Mixins(BaseMixin, WebcamMixin) {
                     headers = ''
                 }
             } while (!done)
-        } catch (error: any) {
-            this.log(`readStream error: ${error.message ?? ''}`, error)
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : String(error)
+            this.log(`readStream error: ${message}`, error)
         } finally {
             this.reader?.releaseLock()
         }

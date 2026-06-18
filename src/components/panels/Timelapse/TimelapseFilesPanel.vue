@@ -122,7 +122,7 @@
                 <template #item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
-                        v-longpress:600="(e) => showContextMenu(e, item)"
+                        v-longpress:600="{ handler: showContextMenu, args: [item] }"
                         class="file-list-cursor user-select-none"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)">
@@ -370,7 +370,8 @@
     </div>
 </template>
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Ref } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
@@ -392,6 +393,7 @@ import {
     mdiDelete,
 } from '@mdi/js'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import type { FocusableRef } from '@/types/vuetify'
 
 interface dialogRenameObject {
     show: boolean
@@ -420,11 +422,9 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
 
-    declare $refs: {
-        inputFieldRenameFile: any
-        inputFieldCreateDirectory: any
-        inputFieldRenameDirectory: any
-    }
+    @Ref() readonly inputFieldRenameFile!: FocusableRef | undefined
+    @Ref() readonly inputFieldCreateDirectory!: FocusableRef | undefined
+    @Ref() readonly inputFieldRenameDirectory!: FocusableRef | undefined
 
     private search = ''
     private boolVideoDialog = false
@@ -607,7 +607,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.dialogCreateDirectory.show = true
 
         setTimeout(() => {
-            this.$refs.inputFieldCreateDirectory?.focus()
+            this.inputFieldCreateDirectory?.focus()
         }, 200)
     }
 
@@ -670,7 +670,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.currentPath = `${this.rootDirectory}${segment.location}`
     }
 
-    showContextMenu(e: any, item: FileStateFile) {
+    showContextMenu(e: MouseEvent | LongpressEvent, item: FileStateFile) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
@@ -698,7 +698,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     async downloadSelectedFiles() {
-        let items: string[] = []
+        const items: string[] = []
 
         const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
@@ -715,10 +715,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
                 if (file.filename.endsWith('.mp4')) {
                     const indexLastPoint = file.filename.lastIndexOf('.')
                     const filenameWithoutExtension = file.filename.slice(0, indexLastPoint)
-                    const filenamePng = `${filenameWithoutExtension}.jpg`
+                    const filenameJpg = `${filenameWithoutExtension}.jpg`
 
-                    if (this.files.indexOf((file: FileStateFile) => file.filename === filenamePng) !== -1) {
-                        items.push(`${absolutPath}/${filenamePng}`)
+                    if (this.files.some((f: FileStateFile) => f.filename === filenameJpg)) {
+                        items.push(`${absolutPath}/${filenameJpg}`)
                     }
                 }
             }
@@ -745,7 +745,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.dialogRenameFile.show = true
 
         setTimeout(() => {
-            this.$refs.inputFieldRenameFile?.focus()
+            this.inputFieldRenameFile?.focus()
         }, 200)
     }
 
@@ -790,7 +790,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.dialogRenameDirectory.show = true
 
         setTimeout(() => {
-            this.$refs.inputFieldRenameDirectory?.focus()
+            this.inputFieldRenameDirectory?.focus()
         }, 200)
     }
 

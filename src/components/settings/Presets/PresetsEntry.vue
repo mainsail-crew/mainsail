@@ -28,7 +28,7 @@ export default class PresetsEntry extends Mixins(BaseMixin) {
     @Prop({ required: true }) readonly preset!: GuiPresetsStatePreset
 
     get subTitle() {
-        let output: string[] = []
+        const output: string[] = []
 
         Object.keys(this.preset.values).forEach((key: string) => {
             const values = this.preset.values[key]

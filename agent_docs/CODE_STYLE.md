@@ -14,6 +14,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for commands.
 ## Nullish Handling
 
 Use `??` for default values (checks null/undefined only):
+
 ```typescript
 const value = input ?? 'default'
 ```
@@ -31,11 +32,12 @@ Explain "why", not "what". Code should be self-documenting.
 ## Early Returns
 
 Use guard clauses to avoid deep nesting:
+
 ```typescript
 function process(item) {
-    if (!item) return
-    if (!item.isValid) return
-    // main logic here
+  if (!item) return
+  if (!item.isValid) return
+  // main logic here
 }
 ```
 
@@ -47,6 +49,7 @@ Consider refactoring if exceeding 20-30 lines.
 ## Magic Numbers
 
 Use named constants:
+
 ```typescript
 const STATUS_PRINTING = 3
 if (status === STATUS_PRINTING) { ... }
@@ -62,6 +65,7 @@ Use `throttle()` for resize handlers.
 No raw `console.log` in production code.
 
 For debug output, define a class method with a descriptive prefix:
+
 ```typescript
 log(msg: string, obj?: unknown): void {
     const message = `[MyFeature] ${msg}`

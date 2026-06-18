@@ -48,6 +48,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
+import type { FocusableRef } from '@/types/vuetify'
 import BaseMixin from '@/components/mixins/base'
 import { mdiChevronDown, mdiChevronUp, mdiPlaylistPlus, mdiCloseThick } from '@mdi/js'
 
@@ -61,7 +62,7 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Boolean, default: false }) readonly showToast!: boolean
     @Prop({ type: String, required: true }) readonly filename!: string
-    @Ref() inputField!: HTMLInputElement
+    @Ref() readonly inputField!: FocusableRef
 
     isValid = false
     // because of the text field, the input is always a string
@@ -75,12 +76,13 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
     }
 
     async addBatchToQueueAction() {
-        const array = Array(parseInt(this.input)).fill(this.filename)
+        let filename = this.filename
+        if (filename.startsWith('/')) filename = filename.slice(1)
+        const array = Array(parseInt(this.input)).fill(filename)
 
         await this.$store.dispatch('server/jobQueue/addToQueue', array)
 
-        if (this.showToast)
-            this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.filename }).toString())
+        if (this.showToast) this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename }).toString())
 
         this.closeDialog()
     }

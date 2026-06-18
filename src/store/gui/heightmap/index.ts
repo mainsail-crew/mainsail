@@ -2,6 +2,7 @@ import { Module } from 'vuex'
 import { HeightmapState } from './types'
 import { getters } from './getters'
 import { actions } from './actions'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): HeightmapState => {
     return {
@@ -12,7 +13,7 @@ export const getDefaultState = (): HeightmapState => {
 
 const state = getDefaultState()
 
-export const heightmap: Module<HeightmapState, any> = {
+export const heightmap: Module<HeightmapState, RootState> = {
     namespaced: true,
     state,
     getters,

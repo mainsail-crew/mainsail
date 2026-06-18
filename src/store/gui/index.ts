@@ -1,4 +1,5 @@
 import { GuiState } from '@/store/gui/types'
+import { RootState } from '@/store/types'
 import { Module } from 'vuex'
 import { actions } from '@/store/gui/actions'
 import { mutations } from '@/store/gui/mutations'
@@ -120,6 +121,7 @@ export const getDefaultState = (): GuiState => {
         editor: {
             escToClose: true,
             confirmUnsavedChanges: true,
+            klipperDocsTooltips: true,
             klipperRestartMethod: 'FIRMWARE_RESTART',
             tabSize: 2,
             fileStructureSidebar: true,
@@ -320,7 +322,7 @@ export const getDefaultState = (): GuiState => {
 // initial state
 const state = getDefaultState()
 
-export const gui: Module<GuiState, any> = {
+export const gui: Module<GuiState, RootState> = {
     namespaced: true,
     state,
     getters,

@@ -1,5 +1,6 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
+import { GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 import { GuiMacrosState } from '@/store/gui/macros/types'
@@ -61,7 +62,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         commit('groupDelete', id)
         Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'macros.macrogroups.' + id })
 
-        const layouts = [
+        const layouts: GuiStateDashboardLayoutKey[] = [
             'mobileLayout',
             'tabletLayout1',
             'tabletLayout2',
@@ -72,23 +73,23 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
             'widescreenLayout3',
         ]
 
-        layouts.forEach((layoutname: string) => {
-            // @ts-ignore
-            const layoutArray = rootState.gui ? [...rootState.gui.dashboard[layoutname]] : []
+        layouts.forEach((layoutname) => {
+            const dashboard = rootState.gui?.dashboard
+            if (!dashboard) return
 
-            const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_' + id)
-            if (index !== -1) {
-                commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
-                dispatch(
-                    'gui/updateSettings',
-                    {
-                        keyName: 'dashboard.' + layoutname,
-                        // @ts-ignore
-                        newVal: rootState.gui?.dashboard[layoutname],
-                    },
-                    { root: true }
-                )
-            }
+            const layoutArray = [...(dashboard[layoutname] as GuiStateLayoutoption[])]
+            const index = layoutArray.findIndex((layoutPos) => layoutPos.name === 'macrogroup_' + id)
+            if (index === -1) return
+
+            commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
+            dispatch(
+                'gui/updateSettings',
+                {
+                    keyName: 'dashboard.' + layoutname,
+                    newVal: dashboard[layoutname],
+                },
+                { root: true }
+            )
         })
     },
 }

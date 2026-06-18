@@ -3,6 +3,7 @@ import { Module } from 'vuex'
 import { actions } from './actions'
 import { mutations } from './mutations'
 import { getters } from './getters'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): GuiNotificationState => {
     return {
@@ -13,7 +14,7 @@ export const getDefaultState = (): GuiNotificationState => {
 // initial state
 const state = getDefaultState()
 
-export const notifications: Module<GuiNotificationState, any> = {
+export const notifications: Module<GuiNotificationState, RootState> = {
     namespaced: true,
     state,
     getters,

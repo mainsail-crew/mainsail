@@ -13,23 +13,50 @@ import {
     mdiThermometer,
 } from '@mdi/js'
 import Vue from 'vue'
+import { VColorPickerColor } from '@/types/vuetify'
 
-export const setDataDeep = (currentState: any, payload: any) => {
-    if (payload !== null && typeof payload === 'object') {
-        Object.keys(payload).forEach((key: string) => {
-            const value = payload[key]
+export const isRecord = (value: unknown): value is Record<string, unknown> => {
+    return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
 
-            if (
-                typeof value === 'object' &&
-                !Array.isArray(value) &&
-                key in currentState &&
-                value !== null &&
-                currentState[key] !== null
-            ) {
-                setDataDeep(currentState[key], value)
-            } else Vue.set(currentState, key, value)
-        })
-    }
+/**
+ * Parses an unknown value into a finite number.
+ *
+ * If parsing fails (`NaN`) or yields a non-finite value (`Infinity`, `-Infinity`),
+ * the provided fallback is returned instead.
+ *
+ * This is useful for Klipper/Moonraker config values that may be delivered as strings
+ * (e.g. `"250"`, `"0.400"`) while callers require a safe `number`.
+ *
+ * @param value - Input value to parse.
+ * @param fallback - Value returned when parsing does not produce a finite number.
+ * @returns Parsed finite number, or `fallback`.
+ *
+ * @example
+ * parseNumber('250', 0) // 250
+ * parseNumber('0.400', 0) // 0.4
+ * parseNumber('abc', 170) // 170
+ */
+export const parseNumber = (value: unknown, fallback: number): number => {
+    const parsedValue = Number(value)
+
+    return Number.isFinite(parsedValue) ? parsedValue : fallback
+}
+
+export const setDataDeep = (currentState: unknown, payload: unknown): void => {
+    if (!isRecord(currentState) || !isRecord(payload)) return
+
+    Object.keys(payload).forEach((key: string) => {
+        const value = payload[key]
+        const currentValue = currentState[key]
+
+        if (isRecord(value) && isRecord(currentValue)) {
+            setDataDeep(currentValue, value)
+            return
+        }
+
+        Vue.set(currentState, key, value)
+    })
 }
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
@@ -73,7 +100,7 @@ export const capitalize = (str: string): string => {
 export const camelize = (str: string): string => {
     return str
         .replace(/_/g, ' ')
-        .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
+        .replace(/^\w|[A-Z]|\b\w/g, (word, index) => {
             return index === 0 ? word.toLowerCase() : word.toUpperCase()
         })
         .replace(/\s+/g, '')
@@ -162,31 +189,46 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
     const sortBySingle = sortBy.length ? sortBy[0] : 'filename'
     const sortDescSingle = sortDesc[0]
 
+    const reduceArrayToNumber = (value: unknown[]): number => {
+        return value.reduce((sum: number, item: unknown) => sum + (typeof item === 'number' ? item : 0), 0)
+    }
+
     if (items !== null) {
         // Sort by index
-        items.sort(function (a: any, b: any) {
-            if (a[sortBySingle] === b[sortBySingle]) return 0
-            if (a[sortBySingle] === null || a[sortBySingle] === undefined) return -1
-            if (b[sortBySingle] === null || b[sortBySingle] === undefined) return 1
+        items.sort((a: FileStateFile, b: FileStateFile) => {
+            const valueA = a[sortBySingle]
+            const valueB = b[sortBySingle]
 
-            if (a[sortBySingle].constructor === String && b[sortBySingle].constructor === String) {
-                return a[sortBySingle].localeCompare(b[sortBySingle], undefined, { sensivity: 'base' })
+            if (valueA === valueB) return 0
+            if (valueA === null || valueA === undefined) return -1
+            if (valueB === null || valueB === undefined) return 1
+
+            if (typeof valueA === 'string' && typeof valueB === 'string') {
+                return valueA.localeCompare(valueB, undefined, { sensitivity: 'base' })
             }
 
-            if (a[sortBySingle] instanceof Array && b[sortBySingle] instanceof Array) {
-                const reducedA = a[sortBySingle].length ? a.filament.reduce((a: any, b: any) => a + b) : 0
-                const reducedB = b[sortBySingle].length ? b.filament.reduce((a: any, b: any) => a + b) : 0
-                return reducedA - reducedB
+            if (Array.isArray(valueA) && Array.isArray(valueB)) {
+                return reduceArrayToNumber(valueA) - reduceArrayToNumber(valueB)
             }
 
-            return a[sortBySingle] - b[sortBySingle]
+            if (valueA instanceof Date && valueB instanceof Date) {
+                return valueA.getTime() - valueB.getTime()
+            }
+
+            if (typeof valueA === 'number' && typeof valueB === 'number') {
+                return valueA - valueB
+            }
+
+            return String(valueA).localeCompare(String(valueB), undefined, { numeric: true, sensitivity: 'base' })
         })
 
         // Deal with descending order
         if (sortDescSingle) items.reverse()
 
         // Then make sure directories come first
-        items.sort((a: any, b: any) => (a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1))
+        items.sort((a: FileStateFile, b: FileStateFile) =>
+            a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1
+        )
     }
 
     return items ?? []
@@ -198,22 +240,7 @@ export function strLongestEqual(a: string, b: string): string {
     while (i < l && (a.charCodeAt(i) ^ b.charCodeAt(i)) === 0) {
         i += 1
     }
-    return a.substr(0, i)
-}
-
-export function reverseString(str: string): string {
-    return str === '' ? '' : reverseString(str.substr(1)) + str.charAt(0)
-}
-
-export function formatTime(date: Date): string {
-    let hours: string | number = date.getHours()
-    if (hours < 10) hours = '0' + hours.toString()
-    let minutes: string | number = date.getMinutes()
-    if (minutes < 10) minutes = '0' + minutes.toString()
-    let seconds: string | number = date.getSeconds()
-    if (seconds < 10) seconds = '0' + seconds.toString()
-
-    return hours + ':' + minutes + ':' + seconds
+    return a.substring(0, i)
 }
 
 export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParams {
@@ -404,7 +431,7 @@ export function convertStringToArray(str: string, separator = ';'): string[] {
             if (Array.isArray(arr) && arr.every((item) => typeof item === 'string')) {
                 return arr.map((s) => s.trim())
             }
-        } catch (e) {
+        } catch {
             // Fallback to separator split
         }
     }
@@ -514,18 +541,40 @@ export function colorsMatch(color1: string, color2: string, tolerance = 0): bool
  * @param obj - The object to modify.
  * @param path - Dot-separated path to the property to delete (e.g. "a.b.c").
  */
-export const deletePath = (obj: any, path: string) => {
+export const deletePath = (obj: Record<string, unknown>, path: string): void => {
     const parts = path.split('.')
     const last = parts.pop()
     if (!last) return
 
-    let current = obj
+    let current: unknown = obj
     for (const part of parts) {
-        if (current[part] === undefined) return
+        if (!isRecord(current) || !(part in current)) return
         current = current[part]
     }
 
-    if (current && typeof current === 'object') delete current[last]
+    if (isRecord(current)) delete current[last]
+}
+
+export type ColorPickerValue = string | VColorPickerColor
+
+/**
+ * Extracts a plain 7-character hex color string (`#RRGGBB`) from a Vuetify
+ * color-picker value, which may be either a string or an object with a `hex`
+ * property.  Any alpha portion (8-digit hex) is stripped.
+ *
+ * @param color - Value emitted by Vuetify's `v-color-picker` `update:color` event.
+ * @returns 7-character hex color string (e.g. `#FF5500`).
+ *
+ * @example
+ * clearColorObject('#FF5500FF') // '#FF5500'
+ * clearColorObject({ hex: '#FF5500FF' }) // '#FF5500'
+ * clearColorObject('#F00') // '#F00'
+ */
+export function clearColorObject(color: ColorPickerValue): string {
+    const colorValue = typeof color === 'object' && 'hex' in color ? color.hex : color
+    if (colorValue.length > 7) return colorValue.slice(0, 7)
+
+    return colorValue
 }
 
 /**

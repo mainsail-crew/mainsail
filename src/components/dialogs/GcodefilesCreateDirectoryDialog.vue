@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Ref, VModel, Watch } from 'vue-property-decorator'
+import type { FocusableRef } from '@/types/vuetify'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
@@ -48,7 +49,7 @@ export default class GcodefilesCreateDirectoryDialog extends Mixins(BaseMixin, G
     isInvalidName = false
 
     @VModel({ type: Boolean }) showDialog!: boolean
-    @Ref() readonly inputField!: HTMLInputElement
+    @Ref() readonly inputField!: FocusableRef
 
     nameInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),

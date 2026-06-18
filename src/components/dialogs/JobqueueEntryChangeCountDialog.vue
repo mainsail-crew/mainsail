@@ -43,6 +43,7 @@
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
+import type { FocusableRef } from '@/types/vuetify'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiChevronUp, mdiChevronDown, mdiCounter } from '@mdi/js'
@@ -59,7 +60,7 @@ export default class JobqueueEntryChangeCountDialog extends Mixins(BaseMixin) {
 
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) job!: ServerJobQueueStateJob
-    @Ref() inputField!: HTMLInputElement
+    @Ref() readonly inputField!: FocusableRef
 
     count = 1
 

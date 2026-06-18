@@ -87,7 +87,7 @@ import { GuiMaintenanceStateEntry } from '@/store/gui/maintenance/types'
 
 interface ReminderOption {
     text: string | TranslateResult
-    clickFunction: Function
+    clickFunction: () => void
 }
 
 @Component({

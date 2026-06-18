@@ -8,8 +8,6 @@ jobs:
   code-style:
     name: Code style check
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -22,11 +20,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
-          prettier: true
+      - name: Run ESLint
+        run: npx eslint --max-warnings 0 .
+
+      - name: Run Prettier
+        run: npx prettier --check .
 
   check-translations:
     name: Check translations

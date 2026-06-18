@@ -51,7 +51,7 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly job!: ServerHistoryStateJob
 
     get entries() {
-        let entries: { name: string; value: string | null; exists: boolean }[] = [
+        const entries: { name: string; value: string | null; exists: boolean }[] = [
             {
                 name: this.$t('History.Filename').toString(),
                 value: this.job.filename,

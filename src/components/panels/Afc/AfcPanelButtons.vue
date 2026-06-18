@@ -122,9 +122,9 @@ export default class AfcPanelButtons extends Mixins(BaseMixin, AfcMixin) {
     downloadDebugJson() {
         const AFC_DEBUG_FILENAME = 'afc_debug.json'
         const output: {
-            config: { [key: string]: any }
-            settings: { [key: string]: any }
-            printer: { [key: string]: any }
+            config: Record<string, unknown>
+            settings: Record<string, unknown>
+            printer: Record<string, unknown>
         } = {
             config: {},
             settings: {},

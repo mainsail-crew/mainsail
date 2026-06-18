@@ -495,8 +495,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(() => {
             if (!('printer' in this.$route.query)) return
 
-            let name = this.$route.query.printer.toString().toLowerCase()
-            let matching = this.printers.filter(
+            const name = this.$route.query.printer.toString().toLowerCase()
+            const matching = this.printers.filter(
                 (printer: GuiRemoteprintersStatePrinter) => printer.name?.toLowerCase() === name
             )
 

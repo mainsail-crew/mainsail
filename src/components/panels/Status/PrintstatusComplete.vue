@@ -67,10 +67,10 @@ export default class StatusPanelPrintstatusComplete extends Mixins(BaseMixin) {
     }
 
     formatTime(seconds: number) {
-        let h = Math.floor(seconds / 3600)
+        const h = Math.floor(seconds / 3600)
         seconds %= 3600
-        let m = ('0' + Math.floor(seconds / 60)).slice(-2)
-        let s = ('0' + (seconds % 60).toFixed(0)).slice(-2)
+        const m = ('0' + Math.floor(seconds / 60)).slice(-2)
+        const s = ('0' + (seconds % 60).toFixed(0)).slice(-2)
 
         return h + ':' + m + ':' + s
     }

@@ -9,8 +9,33 @@
         xml:space="preserve"
         class="cursor-pointer"
         @click="clickSpool">
+        <defs>
+            <linearGradient v-if="isMultiColorLongitudinal" :id="gradientId" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop
+                    v-for="(stop, i) in gradientStops"
+                    :key="`stop-${i}`"
+                    :offset="stop.offset"
+                    :stop-color="stop.color" />
+            </linearGradient>
+        </defs>
         <g>
-            <circle :style="styleCircle1" cx="243.52" cy="243.52" r="232.97" />
+            <template v-if="isMultiColorCoaxial">
+                <path
+                    v-for="(segment, i) in radialSegments"
+                    :key="`coaxial-${i}`"
+                    :style="{ fill: segment.color }"
+                    :d="segment.d" />
+            </template>
+
+            <circle
+                v-else-if="isMultiColorLongitudinal"
+                :style="{ fill: `url(#${gradientId})` }"
+                :cx="cx"
+                :cy="cy"
+                :r="outerR" />
+
+            <circle v-else :style="styleCircle1" :cx="cx" :cy="cy" :r="outerR" />
+
             <circle :style="styleCircle2" cx="243.52" cy="243.52" r="112.5" />
             <path
                 :style="styleCircle3"
@@ -23,11 +48,56 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { ServerSpoolmanStateFilament } from '@/store/server/spoolman/types'
+
+interface RadialSegment {
+    color: string
+    d: string
+}
+
+interface GradientStop {
+    offset: string
+    color: string
+}
+
+const SPOOL_CX = 243.52
+const SPOOL_CY = 243.52
+const SPOOL_OUTER_R = 232.97
 
 @Component({})
 export default class SpoolIcon extends Mixins(BaseMixin) {
     @Prop({ required: false, default: '#ff0' })
     declare readonly color: string
+
+    @Prop({ type: String, required: false })
+    declare readonly multiColorHexes: string | undefined
+
+    @Prop({ type: String, required: false })
+    declare readonly multiColorDirection: ServerSpoolmanStateFilament['multi_color_direction']
+
+    // gradient ids need to be unique document-wide, not just within the scope of the svg
+    gradientId = `longitudinalGradient-${Math.random().toString(36).slice(2)}`
+    readonly cx = SPOOL_CX
+    readonly cy = SPOOL_CY
+    readonly outerR = SPOOL_OUTER_R
+
+    get multiColors(): string[] {
+        if (!this.multiColorHexes) return []
+
+        return this.multiColorHexes.split(',').map((h) => {
+            const trimmed = h.trim()
+            return trimmed.startsWith('#') ? trimmed : `#${trimmed}`
+        })
+    }
+
+    get isMultiColorCoaxial(): boolean {
+        return this.multiColors.length > 1 && this.multiColorDirection === 'coaxial'
+    }
+
+    get isMultiColorLongitudinal(): boolean {
+        // fall back to longitudinal for null/unknown direction values
+        return this.multiColors.length > 1 && this.multiColorDirection !== 'coaxial'
+    }
 
     get styleCircle1() {
         return { fill: this.color }
@@ -39,6 +109,38 @@ export default class SpoolIcon extends Mixins(BaseMixin) {
 
     get styleCircle3() {
         return { fill: '#343434' }
+    }
+
+    get radialSegments(): RadialSegment[] {
+        const colors = this.multiColors
+        const count = colors.length
+        const anglePerSegment = (2 * Math.PI) / count
+        // start with the first border between two colors at 12 o'clock
+        const rotate = -Math.PI / 2
+
+        return colors.map((color, i) => {
+            const startRad = i * anglePerSegment + rotate
+            const endRad = (i + 1) * anglePerSegment + rotate
+            const x1 = this.cx + this.outerR * Math.cos(startRad)
+            const y1 = this.cy + this.outerR * Math.sin(startRad)
+            const x2 = this.cx + this.outerR * Math.cos(endRad)
+            const y2 = this.cy + this.outerR * Math.sin(endRad)
+            return {
+                color,
+                d: `M${this.cx},${this.cy} L${x1},${y1} A${this.outerR},${this.outerR} 0 0,1 ${x2},${y2} Z`,
+            }
+        })
+    }
+
+    get gradientStops(): GradientStop[] {
+        const colors = this.multiColors
+        if (colors.length < 2) return []
+
+        const count = colors.length
+        return colors.map((color, i) => ({
+            offset: `${(i / (count - 1)) * 100}%`,
+            color,
+        }))
     }
 
     clickSpool() {

@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsGeneralTab from '@/components/settings/SettingsGeneralTab.vue'
 import SettingsWebcamsTab from '@/components/settings/SettingsWebcamsTab.vue'
@@ -104,6 +104,7 @@ import {
 } from '@mdi/js'
 import SettingsMiscellaneousTab from '@/components/settings/SettingsMiscellaneousTab.vue'
 import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 @Component({
     components: {
@@ -126,18 +127,13 @@ import SettingsHeightmapTab from '@/components/settings/SettingsHeightmapTab.vue
     },
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
-    private showSettings = false
-    private activeTab = 'general'
+    @Ref() readonly settingsScroll!: OverlayScrollbarsComponent
 
-    /**
-     * Icons
-     */
     mdiCloseThick = mdiCloseThick
     mdiCogs = mdiCogs
 
-    declare $refs: {
-        settingsScroll: any
-    }
+    showSettings = false
+    activeTab = 'general'
 
     get tabTitles() {
         const tabs = [
@@ -241,10 +237,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     }
 
     scrollToTop() {
-        if (this.$refs.settingsScroll) {
-            const overlayscroll = this.$refs.settingsScroll.osInstance()
-            overlayscroll?.scroll({ y: '0%' })
-        }
+        this.settingsScroll?.osInstance()?.scroll({ y: '0%' })
     }
 }
 </script>
