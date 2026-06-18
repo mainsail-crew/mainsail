@@ -155,7 +155,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
                 label: this.$t('Panels.MmuPanel.ButtonSelect').toString(),
                 loading: '',
                 action: { kind: 'call', fn: () => this.selectGate() },
-                disabled: () => !this.canSend || this.isSelectedGate || this.isPrinting || this.isLoaded,
+                disabled: () => !this.canSend || this.isSelectedGate || this.printerIsPrintingOnly || this.isLoaded,
             },
             {
                 icon: this.mdiDatabaseEdit,
@@ -186,7 +186,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
                 label: this.$t('Panels.MmuPanel.ButtonChangeTool').toString(),
                 loading: 'mmu_change_tool',
                 action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
-                disabled: () => !this.canSend || this.isSelectedGate || this.isPrinting,
+                disabled: () => !this.canSend || this.isSelectedGate || this.printerIsPrintingOnly,
             },
         ]
 
