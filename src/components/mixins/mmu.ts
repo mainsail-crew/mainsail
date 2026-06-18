@@ -142,6 +142,7 @@ export interface MmuMachineUnit {
     variable_bowden_lengths: boolean
     require_bowden_move: boolean
     filament_always_gripped: boolean
+    can_crossload: boolean
     has_bypass: boolean
     multi_gear: boolean
     environment_sensor: string
