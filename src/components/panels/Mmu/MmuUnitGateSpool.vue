@@ -270,7 +270,6 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
 
     get svgClasses() {
         const classes = [this.svgClass]
-        classes.push('isHover')
         if (this.isSelected) classes.push('isSelected')
         if (!this.isSelected && this.unhighlightSpools) classes.push('unhighlighted')
 
@@ -296,7 +295,7 @@ svg.isSelected {
     opacity: 1 !important;
 }
 
-svg.isHover:hover {
+svg:hover {
     transform: translateY(-4px);
 }
 
