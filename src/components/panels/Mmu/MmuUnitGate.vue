@@ -6,8 +6,7 @@
                 :gate-index="gateIndex"
                 :show-details="showDetails"
                 :is-selected="isSelected"
-                :unhighlight-spools="unhighlightSpools"
-                @select-spool="() => {}" />
+                :unhighlight-spools="unhighlightSpools" />
         </div>
 
         <div class="mmu-unit-box d-flex zindex-3 pb-1 pt-2 position-relative" :class="gateClass">
