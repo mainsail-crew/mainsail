@@ -49,8 +49,7 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import { mdiCloseThick, mdiCounter, mdiDragVertical, mdiFile, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
-import { defaultBigThumbnailBackground } from '@/store/variables'
+import { mdiCloseThick, mdiCounter, mdiDragVertical, mdiPlay, mdiPlaylistRemove } from '@mdi/js'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
@@ -61,7 +60,6 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
     mdiCounter = mdiCounter
     mdiDragVertical = mdiDragVertical
-    mdiFile = mdiFile
     mdiPlay = mdiPlay
     mdiPlaylistRemove = mdiPlaylistRemove
 
@@ -74,14 +72,6 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     contextMenuY = 0
 
     showChangeCountDialog = false
-
-    get smallThumbnail() {
-        return this.$store.getters['server/jobQueue/getSmallThumbnail'](this.job)
-    }
-
-    get bigThumbnail() {
-        return this.$store.getters['server/jobQueue/getBigThumbnail'](this.job)
-    }
 
     get description() {
         if (!this.job?.metadata?.metadataPulled) return false
@@ -144,18 +134,6 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         if (seconds) output.push(seconds.toFixed(0) + 's')
 
         return output.join(' ')
-    }
-
-    get bigThumbnailBackground() {
-        return this.$store.state.gui.uiSettings.bigThumbnailBackground ?? defaultBigThumbnailBackground
-    }
-
-    get bigThumbnailTooltipColor() {
-        if (defaultBigThumbnailBackground.toLowerCase() === this.bigThumbnailBackground.toLowerCase()) {
-            return undefined
-        }
-
-        return this.bigThumbnailBackground
     }
 
     openContextMenu(e: MouseEvent | LongpressEvent) {
