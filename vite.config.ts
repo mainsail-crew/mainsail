@@ -65,10 +65,9 @@ const PWAConfig: Partial<VitePWAOptions> = {
                     },
                     plugins: [
                         {
-                            cacheWillUpdate: new Function(
-                                '{ response }',
-                                'return response && !response.redirected ? response : null'
-                            ) as any,
+                            cacheWillUpdate: async ({ response }) => {
+                                return response && !response.redirected ? response : null
+                            },
                         },
                     ],
                 },
