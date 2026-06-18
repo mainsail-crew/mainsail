@@ -11,6 +11,7 @@ make sure to read through our contribution guidelines:
 - [Submission Guidelines](#submit)
   - [Submit an Issue](#submit-issue)
   - [Submit a Pull Request](#submit-pr)
+  - [Contributor Trust (Vouch System)](#vouch)
 - [Financial Contributions](#financial)
 - [Credits](https://docs.mainsail.xyz/credits)
 
@@ -76,6 +77,34 @@ Before you work on a PR and submit it, please pay attention to the following gui
    - The sign-off certifies that you agree with the [developer certificate of origin](https://github.com/mainsail-crew/mainsail/blob/develop/.github/DEVELOPER_CERTIFICATE_OF_ORIGIN.md).
    - If you provide a translation, a sign-off is not necessarily required.
 8. When opening a pull request, keep `Allow edits and access to secrets by maintainers` **enabled**.
+
+### <a name="vouch"></a> Contributor Trust (Vouch System)
+
+To protect the project from low-quality and automated spam contributions, Mainsail uses a
+[vouch-based trust system](https://github.com/mitchellh/vouch) for **pull requests**.
+
+- Pull requests may only be opened by **vouched contributors**. PRs from users who are not on the vouched list are **automatically closed**.
+- Maintainers and collaborators with write access, as well as bots (e.g. Dependabot), are always allowed and do not need to be vouched.
+
+The list of vouched contributors is maintained in
+[`.github/VOUCHED.td`](https://github.com/mainsail-crew/mainsail/blob/develop/.github/VOUCHED.td).
+
+#### How to Become a Trusted Contributor
+
+If your PR was closed because you are not yet vouched, this is **not** a rejection of your work, and it is not
+permanent. The vouch system simply asks new contributors to build a little trust with the project first. Here is how
+you can get vouched:
+
+- **Engage with the community.** Open well-described issues, help others reproduce or diagnose bugs, and join the
+  discussion on our [Discord server](https://discord.gg/mainsail). Issues are open to everyone and are a great first
+  step.
+- **Start small.** Smaller, focused, and well-documented pull requests are easier to review and help maintainers get
+  to know your work.
+- **Be responsive.** Reply to questions and review feedback on your issues and PRs.
+
+Once a maintainer vouches for you, you become a trusted contributor. You can then reopen your closed PR or comment
+`/recheck` to have it re-evaluated, and your future pull requests will no longer be closed automatically. If you
+believe you should already be vouched, feel free to reach out to a maintainer on Discord.
 
 ## <a name="financial"></a> Financial Contribution
 

@@ -1,0 +1,44 @@
+name: Vouch Check PR
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # Run on PR open/reopen, or when a maintainer comments "/recheck" on a PR
+    if: >-
+      github.event_name == 'pull_request_target' ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request &&
+       contains(github.event.comment.body, '/recheck'))
+    steps:
+      - name: Checkout Repo for Vouch Templates
+        uses: actions/checkout@v6
+
+      - name: Execute Vouch Check PR Action
+        id: vouch
+        uses: mitchellh/vouch/action/check-pr@v1
+        with:
+          pr-number: ${{ github.event.pull_request.number || github.event.issue.number }}
+          auto-close: true
+          template-file: .github/vouch-pr-unvouched.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Label unvouched PR
+        if: steps.vouch.outputs.status == 'closed'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number || github.event.issue.number }}
+        run: |
+          gh pr edit "$PR" --repo "$REPO" --add-label "unvouched"
