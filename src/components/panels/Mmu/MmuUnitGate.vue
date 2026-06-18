@@ -153,21 +153,21 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         const items: ContextMenuItem[] = [
             {
                 icon: this.mdiSwapHorizontal,
-                label: this.$t('Panels.MmuPanel.ButtonSelect'),
+                label: this.$t('Panels.MmuPanel.ButtonSelect').toString(),
                 loading: '',
                 action: { kind: 'call', fn: () => this.selectGate() },
                 disabled: () => !this.canSend || this.isSelectedGate || this.isPrinting || this.isLoaded,
             },
             {
                 icon: this.mdiDatabaseEdit,
-                label: this.$t('Panels.MmuPanel.EditGateMap'),
+                label: this.$t('Panels.MmuPanel.EditGateMap').toString(),
                 loading: '',
                 action: { kind: 'call', fn: () => this.editFilament() },
                 disabled: () => false,
             },
             {
                 icon: this.mdiDownloadOutline,
-                label: this.$t('Panels.MmuPanel.ButtonPreload'),
+                label: this.$t('Panels.MmuPanel.ButtonPreload').toString(),
                 loading: 'mmu_preload',
                 action: { kind: 'gcode', command: 'MMU_PRELOAD' },
                 disabled: () =>
@@ -177,14 +177,14 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
             },
             {
                 icon: this.mdiEject,
-                label: this.$t('Panels.MmuPanel.ButtonEject'),
+                label: this.$t('Panels.MmuPanel.ButtonEject').toString(),
                 loading: 'mmu_eject',
                 action: { kind: 'gcode', command: 'MMU_EJECT' },
                 disabled: () => !this.canSend || (this.gateIndex !== this.selectedGate && !this.canCrossload),
             },
             {
                 icon: this.mdiAxisArrow,
-                label: this.$t('Panels.MmuPanel.ButtonChangeTool'),
+                label: this.$t('Panels.MmuPanel.ButtonChangeTool').toString(),
                 loading: 'mmu_change_tool',
                 action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
                 disabled: () => !this.canSend || this.isSelectedGate || this.isPrinting,
