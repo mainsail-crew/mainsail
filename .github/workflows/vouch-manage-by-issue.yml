@@ -23,5 +23,7 @@ jobs:
         with:
           issue-id: ${{ github.event.issue.number }}
           comment-id: ${{ github.event.comment.id }}
+          # develop is a protected branch -> open a PR instead of pushing directly
+          pull-request: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
