@@ -16,6 +16,7 @@ bigtreetech
 jimmyjon711 Maintainer from AFC
 jomik
 julianschill LED effects Maintainer
+jwueller
 moggieuk Maintainer from Happy Hare
 mspi92
 pataar
@@ -23,5 +24,5 @@ paxx12 Maintainer from Snapmaker community firmware
 ragilo
 rcloran
 samuel-0-0 Long-time Chinese (zh) localization contributor
-Sindarius
+sindarius
 xtrack33
