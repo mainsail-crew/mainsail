@@ -1,5 +1,5 @@
 <template>
-    <div :class="mmuUnitClass" class="d-inline-flex flex-column mx-1 mb-3">
+    <div :class="mmuUnitClass" class="d-inline-flex flex-column mx-1 mb-3 mmu-unit">
         <div class="d-flex flex-wrap pt-3 px-4 position-relative">
             <mmu-unit-gate
                 v-for="gateIndex in numGates"
@@ -48,8 +48,7 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
 
     get mmuUnitClass() {
-        if (this.unitIndex < 0) return 'mmu-unit-clear mmu-unit'
-        return 'mmu-unit'
+        return this.unitIndex < 0 ? 'mmu-unit-clear' : ''
     }
 
     get mmuMachineUnit() {
@@ -70,18 +69,18 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return this.mmuMachineUnit?.has_bypass ?? true
     }
 
+    get footerStyle() {
+        const numSpools = this.numGates + (this.hasBypass ? 1 : 0)
+        const maxWidth = this.spoolWidth * numSpools + 32
+        return `max-width: ${maxWidth}px;`
+    }
+
     editFilament(gateIndex: number) {
         this.$emit('edit-filament', gateIndex)
     }
 
     selectGate(gateIndex: number) {
         this.$emit('select-gate', gateIndex)
-    }
-
-    get footerStyle() {
-        const numSpools = this.numGates + (this.hasBypass ? 1 : 0)
-        const maxWidth = this.spoolWidth * numSpools + 32
-        return `max-width: ${maxWidth}px;`
     }
 }
 </script>
@@ -96,11 +95,11 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     background: #2c2c2c;
     overflow: hidden;
     border-radius: 32px 32px 8px 8px;
-    box-shadow: inset 0px 4px 4px -4px #ffffff80;
+    box-shadow: inset 0 4px 4px -4px #ffffff80;
 }
 
 html.theme--light .mmu-unit {
     background: #f0f0f0;
-    box-shadow: inset 0px 4px 2px -4px #2c2c2c80;
+    box-shadow: inset 0 4px 2px -4px #2c2c2c80;
 }
 </style>
