@@ -61,7 +61,7 @@
                     <use href="#oval" style="filter: url(#blur_wheel2)" :fill="spoolWheelColor" />
                     <use href="#oval" transform="scale(0.41)" fill="#111111" />
                 </g>
-                <rect v-if="isSelected" x="0" y="314" width="258" height="186" fill="url(#spotlight)" />
+                <rect v-if="isSelected" x="0" y="260" width="258" height="186" fill="url(#spotlight)" />
 
                 <g v-if="showDetails">
                     <text

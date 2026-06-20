@@ -1,5 +1,5 @@
 <template>
-    <div class="mmu-unit d-inline-flex flex-column mx-1 rounded-lg mb-3">
+    <div :class="mmuUnitClass" class="d-inline-flex flex-column mx-1 mb-3 mmu-unit">
         <div class="d-flex flex-wrap pt-3 px-4 position-relative">
             <mmu-unit-gate
                 v-for="gateIndex in numGates"
@@ -21,7 +21,13 @@
                 :selected-gate="selectedGate"
                 @select-gate="selectGate" />
         </div>
-        <mmu-unit-footer class="pt-0 position-relative" :mmu-machine-unit="mmuMachineUnit" :unit-index="unitIndex" />
+        <mmu-unit-footer
+            class="pt-0 position-relative"
+            :style="footerStyle"
+            :mmu-machine-unit="mmuMachineUnit"
+            :show-details="showDetails"
+            :show-footer="showFooter"
+            :unit-index="unitIndex" />
     </div>
 </template>
 <script lang="ts">
@@ -37,8 +43,13 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly unitIndex!: number
     @Prop({ default: false }) readonly showDetails!: boolean
     @Prop({ default: true }) readonly showContextMenu!: boolean
+    @Prop({ default: true }) readonly showFooter!: boolean
     @Prop({ default: false }) readonly hideBypass!: boolean
     @Prop({ default: false }) readonly unhighlightSpools!: boolean
+
+    get mmuUnitClass() {
+        return this.unitIndex < 0 ? 'mmu-unit-clear' : ''
+    }
 
     get mmuMachineUnit() {
         return this.getMmuMachineUnit(this.unitIndex)
@@ -58,6 +69,12 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
         return this.mmuMachineUnit?.has_bypass ?? true
     }
 
+    get footerStyle() {
+        const numSpools = this.numGates + (this.hasBypass ? 1 : 0)
+        const maxWidth = this.spoolWidth * numSpools + 32
+        return `max-width: ${maxWidth}px;`
+    }
+
     editFilament(gateIndex: number) {
         this.$emit('edit-filament', gateIndex)
     }
@@ -69,12 +86,20 @@ export default class MmuUnit extends Mixins(BaseMixin, MmuMixin) {
 </script>
 
 <style scoped>
+.mmu-unit-clear {
+    background: none !important;
+    box-shadow: none !important;
+}
+
 .mmu-unit {
     background: #2c2c2c;
     overflow: hidden;
+    border-radius: 32px 32px 8px 8px;
+    box-shadow: inset 0 4px 4px -4px #ffffff80;
 }
 
 html.theme--light .mmu-unit {
     background: #f0f0f0;
+    box-shadow: inset 0 4px 2px -4px #2c2c2c80;
 }
 </style>

@@ -40,7 +40,7 @@ import MmuUnitGateMenuItem from '@/components/panels/Mmu/MmuUnitGateMenuItem.vue
 export default class MmuUnitGateMenu extends Mixins(BaseMixin, MmuMixin) {
     @VModel({ type: Boolean }) showContextMenu!: boolean
     @Prop({ type: Number, required: true }) readonly gateIndex!: number
-    @Prop({ type: Object, required: true }) readonly mmuMachineUnit!: MmuMachineUnit
+    @Prop({ required: true }) readonly mmuMachineUnit!: MmuMachineUnit | undefined
     @Prop({ type: Number, required: true }) readonly selectedGate!: number
     @Prop({ type: Number, required: true }) readonly menuX!: number
     @Prop({ type: Number, required: true }) readonly menuY!: number

@@ -801,6 +801,10 @@
                 "AreYouSure": "Are you sure?"
             },
             "Disabled": "disabled",
+            "Drying": "Drying",
+            "DryingCancelled": "Drying cancelled",
+            "DryingComplete": "Drying complete",
+            "DryingQueued": "Drying queued",
             "EditGateMap": "Edit Filaments",
             "EditGateMapTitle": "Edit Filaments (Gate Map)",
             "EditTtgMap": "Map Tools",
@@ -833,6 +837,7 @@
             "Gear": "Gear",
             "Guard": "Guard",
             "Headline": "Mmu",
+            "Heater": "Heater",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
             "MmuMaintenanceDialog": {
@@ -901,6 +906,7 @@
             "Ok": "Ok",
             "PreGate": "Pre-Gate",
             "RecoverState": "Fix MMU State",
+            "ShowClimate": "Display Climate Info",
             "ShowClogTangleDetection": "Clog/Tangle Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",

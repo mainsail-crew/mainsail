@@ -89,6 +89,7 @@ export interface Mmu {
     spoolman_support: 'off' | 'readonly' | 'push' | 'pull'
     bowden_progress: number
     espooler_active: MmuEspoolerState
+    drying_state: MmuDryingState[]
     sensors: {
         mmu_pre_gate?: boolean
         mmu_gear?: boolean
@@ -145,7 +146,23 @@ export interface MmuMachineUnit {
     can_crossload: boolean
     has_bypass: boolean
     multi_gear: boolean
-    environment_sensor: string
+    environment_sensor?: string
+    environment_sensors?: string[]
+    filament_heater?: string
+    filament_heaters?: string[]
+}
+
+export type MmuDryingState = '' | 'active' | 'queued' | 'complete' | 'cancelled'
+
+export interface MmuFilamentHeater {
+    temperature: number
+    target: number
+    power: number
+}
+
+export interface MmuEnvironmentSensor {
+    temperature?: number
+    humidity?: number
 }
 
 export interface MmuSlicerToolMap {
