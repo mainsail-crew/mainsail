@@ -142,6 +142,7 @@ export interface MmuMachineUnit {
     variable_bowden_lengths: boolean
     require_bowden_move: boolean
     filament_always_gripped: boolean
+    can_crossload: boolean
     has_bypass: boolean
     multi_gear: boolean
     environment_sensor: string
@@ -162,6 +163,17 @@ export interface MmuSlicerToolMapTool {
     temp: number
     name: string
     in_use: boolean
+}
+
+type MmuUnitGateMenuDisabled = boolean | ((gate: number) => boolean)
+type MmuUnitGateMenuAction = { kind: 'gcode'; command: string } | { kind: 'call'; fn: (gate: number) => void }
+
+export interface MmuUnitGateContextMenuItem {
+    icon: string
+    label: string
+    loading: string
+    disabled?: MmuUnitGateMenuDisabled
+    action: MmuUnitGateMenuAction
 }
 
 export const NO_FILAMENT_COLOR = '#808182E3'

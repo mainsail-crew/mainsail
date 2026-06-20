@@ -8,8 +8,7 @@
                 :width="spoolWidth"
                 v-bind="attrs"
                 :class="svgClasses"
-                v-on="on"
-                @click="selectGate">
+                v-on="on">
                 <defs>
                     <path
                         id="oval"
@@ -271,19 +270,10 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
 
     get svgClasses() {
         const classes = [this.svgClass]
-        if (this.hasSelectGateListener) classes.push('hasSelectGate')
         if (this.isSelected) classes.push('isSelected')
         if (!this.isSelected && this.unhighlightSpools) classes.push('unhighlighted')
 
         return classes
-    }
-
-    get hasSelectGateListener() {
-        return !!this.$listeners['select-gate']
-    }
-
-    selectGate() {
-        this.$emit('select-gate')
     }
 }
 </script>
@@ -291,7 +281,6 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
 <style scoped>
 svg {
     outline: none;
-    cursor: pointer;
     transition:
         transform 0.2s,
         opacity 0.2s;
@@ -306,7 +295,7 @@ svg.isSelected {
     opacity: 1 !important;
 }
 
-svg.hasSelectGate:hover {
+svg:hover {
     transform: translateY(-4px);
 }
 
