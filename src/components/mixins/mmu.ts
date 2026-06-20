@@ -165,6 +165,17 @@ export interface MmuSlicerToolMapTool {
     in_use: boolean
 }
 
+type MmuUnitGateMenuDisabled = boolean | ((gate: number) => boolean)
+type MmuUnitGateMenuAction = { kind: 'gcode'; command: string } | { kind: 'call'; fn: (gate: number) => void }
+
+export interface MmuUnitGateContextMenuItem {
+    icon: string
+    label: string
+    loading: string
+    disabled?: MmuUnitGateMenuDisabled
+    action: MmuUnitGateMenuAction
+}
+
 export const NO_FILAMENT_COLOR = '#808182E3'
 
 export const TOOL_GATE_BYPASS = -2
