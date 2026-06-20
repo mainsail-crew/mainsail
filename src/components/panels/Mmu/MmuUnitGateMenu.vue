@@ -38,12 +38,6 @@ import MmuUnitGateMenuItem from '@/components/panels/Mmu/MmuUnitGateMenuItem.vue
     components: { MmuUnitGateMenuItem },
 })
 export default class MmuUnitGateMenu extends Mixins(BaseMixin, MmuMixin) {
-    mdiSwapHorizontal = mdiSwapHorizontal
-    mdiDownloadOutline = mdiDownloadOutline
-    mdiEject = mdiEject
-    mdiAxisArrow = mdiAxisArrow
-    mdiDatabaseEdit = mdiDatabaseEdit
-
     @VModel({ type: Boolean }) showContextMenu!: boolean
     @Prop({ type: Number, required: true }) readonly gateIndex!: number
     @Prop({ type: Object, required: true }) readonly mmuMachineUnit!: MmuMachineUnit
@@ -76,21 +70,21 @@ export default class MmuUnitGateMenu extends Mixins(BaseMixin, MmuMixin) {
     get contextMenuItems(): MmuUnitGateContextMenuItem[] {
         const items: MmuUnitGateContextMenuItem[] = [
             {
-                icon: this.mdiSwapHorizontal,
+                icon: mdiSwapHorizontal,
                 label: this.$t('Panels.MmuPanel.ButtonSelect').toString(),
                 loading: '',
                 action: { kind: 'call', fn: () => this.selectGate() },
                 disabled: () => !this.canSend || this.isSelectedGate || this.printerIsPrintingOnly || this.isLoaded,
             },
             {
-                icon: this.mdiDatabaseEdit,
+                icon: mdiDatabaseEdit,
                 label: this.$t('Panels.MmuPanel.EditGateMap').toString(),
                 loading: '',
                 action: { kind: 'call', fn: () => this.editFilament() },
                 disabled: () => false,
             },
             {
-                icon: this.mdiDownloadOutline,
+                icon: mdiDownloadOutline,
                 label: this.$t('Panels.MmuPanel.ButtonPreload').toString(),
                 loading: 'mmu_preload',
                 action: { kind: 'gcode', command: 'MMU_PRELOAD' },
@@ -100,14 +94,14 @@ export default class MmuUnitGateMenu extends Mixins(BaseMixin, MmuMixin) {
                     (this.isSelectedGate && this.isLoaded),
             },
             {
-                icon: this.mdiEject,
+                icon: mdiEject,
                 label: this.$t('Panels.MmuPanel.ButtonEject').toString(),
                 loading: 'mmu_eject',
                 action: { kind: 'gcode', command: 'MMU_EJECT' },
                 disabled: () => !this.canSend || (this.gateIndex !== this.selectedGate && !this.canCrossload),
             },
             {
-                icon: this.mdiAxisArrow,
+                icon: mdiAxisArrow,
                 label: this.$t('Panels.MmuPanel.ButtonChangeTool').toString(),
                 loading: 'mmu_change_tool',
                 action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
