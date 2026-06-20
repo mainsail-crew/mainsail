@@ -16,33 +16,15 @@
                 </span>
             </div>
         </div>
-
-        <v-menu
+        <mmu-unit-gate-menu
             v-model="contextMenu"
-            transition="slide-y-transition"
-            :position-x="menuX"
-            :position-y="menuY"
-            :close-on-content-click="false"
-            absolute
-            offset-y>
-            <v-list dense @mouseleave="closeContextMenu">
-                <v-subheader class="d-block text-subtitle-2 text-center mb-0 h-auto pb-2">
-                    {{ contextMenuHeader }}
-                </v-subheader>
-                <v-divider class="mb-2" />
-                <v-list-item v-for="(item, index) in contextMenuItems" :key="index">
-                    <v-btn
-                        small
-                        class="w-100"
-                        :disabled="isItemDisabled(item)"
-                        :loading="loadings.includes(item.loading)"
-                        @click="runMenuItem(item)">
-                        <v-icon left>{{ item.icon }}</v-icon>
-                        {{ item.label }}
-                    </v-btn>
-                </v-list-item>
-            </v-list>
-        </v-menu>
+            :gate-index="gateIndex"
+            :mmu-machine-unit="mmuMachineUnit"
+            :menu-x="menuX"
+            :menu-y="menuY"
+            :selected-gate="selectedGate"
+            @select-gate="selectGate"
+            @edit-filament="$emit('edit-filament', $event)" />
     </div>
 </template>
 
@@ -50,29 +32,13 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { MmuMachineUnit, TOOL_GATE_BYPASS, FILAMENT_POS_LOADED } from '@/components/mixins/mmu'
-import { mdiSwapHorizontal, mdiDownloadOutline, mdiEject, mdiAxisArrow, mdiDatabaseEdit } from '@mdi/js'
+import MmuMixin, { MmuMachineUnit, TOOL_GATE_BYPASS } from '@/components/mixins/mmu'
+import MmuUnitGateMenu from '@/components/panels/Mmu/MmuUnitGateMenu.vue'
 
-type MenuDisabled = boolean | ((gate: number) => boolean)
-
-type MenuAction = { kind: 'gcode'; command: string } | { kind: 'call'; fn: (gate: number) => void }
-
-type ContextMenuItem = {
-    icon: string
-    label: string
-    loading: string
-    disabled?: MenuDisabled
-    action: MenuAction
-}
-
-@Component
+@Component({
+    components: { MmuUnitGateMenu },
+})
 export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
-    mdiSwapHorizontal = mdiSwapHorizontal
-    mdiDownloadOutline = mdiDownloadOutline
-    mdiEject = mdiEject
-    mdiAxisArrow = mdiAxisArrow
-    mdiDatabaseEdit = mdiDatabaseEdit
-
     @Prop({ required: true }) readonly gateIndex!: number
     @Prop({ required: true }) readonly mmuMachineUnit!: MmuMachineUnit
     @Prop({ default: false }) readonly showDetails!: boolean
@@ -87,13 +53,11 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     menuY = 0
 
     get cursorType() {
-        if (this.showContextMenu) return 'gate-menu'
-        return 'gate-selection'
+        return this.showContextMenu ? 'gate-menu' : 'gate-selection'
     }
 
     get gateName() {
-        if (this.gateIndex === TOOL_GATE_BYPASS) return 'Bypass'
-        return this.gateIndex
+        return this.gateIndex === TOOL_GATE_BYPASS ? 'Bypass' : this.gateIndex.toString()
     }
 
     get gateStatus() {
@@ -111,96 +75,6 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
     get isSelected() {
         return this.selectedGate === this.gateIndex
-    }
-
-    private isItemDisabled(item: ContextMenuItem): boolean {
-        if (!item.disabled) return false
-        return typeof item.disabled === 'function' ? item.disabled(this.gateIndex) : item.disabled
-    }
-
-    get contextMenuHeader() {
-        if (this.gateIndex >= 0) return this.$t('Panels.MmuPanel.Gate') + ' ' + this.gateIndex
-        return this.gateName
-    }
-
-    private runMenuItem(item: ContextMenuItem) {
-        if (this.isItemDisabled(item)) return
-
-        this.closeContextMenu()
-
-        if (item.action.kind === 'gcode') {
-            if (!this.canSend) return
-            this.doSend(`${item.action.command} GATE=${this.gateIndex}`, item.loading)
-        } else {
-            item.action.fn(this.gateIndex)
-        }
-    }
-
-    get canCrossload() {
-        return this.mmuMachineUnit?.can_crossload ?? false
-    }
-
-    get isLoaded() {
-        return this.mmuFilamentPos === FILAMENT_POS_LOADED
-    }
-
-    get isSelectedGate() {
-        return this.gateIndex === this.selectedGate
-    }
-
-    get contextMenuItems(): ContextMenuItem[] {
-        const items: ContextMenuItem[] = [
-            {
-                icon: this.mdiSwapHorizontal,
-                label: this.$t('Panels.MmuPanel.ButtonSelect').toString(),
-                loading: '',
-                action: { kind: 'call', fn: () => this.selectGate() },
-                disabled: () => !this.canSend || this.isSelectedGate || this.printerIsPrintingOnly || this.isLoaded,
-            },
-            {
-                icon: this.mdiDatabaseEdit,
-                label: this.$t('Panels.MmuPanel.EditGateMap').toString(),
-                loading: '',
-                action: { kind: 'call', fn: () => this.editFilament() },
-                disabled: () => false,
-            },
-            {
-                icon: this.mdiDownloadOutline,
-                label: this.$t('Panels.MmuPanel.ButtonPreload').toString(),
-                loading: 'mmu_preload',
-                action: { kind: 'gcode', command: 'MMU_PRELOAD' },
-                disabled: () =>
-                    !this.canSend ||
-                    (!this.isSelectedGate && !this.canCrossload) ||
-                    (this.isSelectedGate && this.isLoaded),
-            },
-            {
-                icon: this.mdiEject,
-                label: this.$t('Panels.MmuPanel.ButtonEject').toString(),
-                loading: 'mmu_eject',
-                action: { kind: 'gcode', command: 'MMU_EJECT' },
-                disabled: () => !this.canSend || (this.gateIndex !== this.selectedGate && !this.canCrossload),
-            },
-            {
-                icon: this.mdiAxisArrow,
-                label: this.$t('Panels.MmuPanel.ButtonChangeTool').toString(),
-                loading: 'mmu_change_tool',
-                action: { kind: 'gcode', command: 'MMU_CHANGE_TOOL' },
-                disabled: () => !this.canSend || this.isSelectedGate || this.printerIsPrintingOnly,
-            },
-        ]
-
-        if (this.gateIndex < 0) return items.slice(0, 1)
-
-        return items
-    }
-
-    private editFilament() {
-        this.$emit('edit-filament', this.gateIndex)
-    }
-
-    private selectGate() {
-        this.$emit('select-gate', this.gateIndex)
     }
 
     get gatePosition() {
@@ -227,14 +101,19 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
 
     handleClickGate(e: MouseEvent) {
         if (this.showContextMenu) return this.openContextMenu(e)
+
         this.selectGate()
+    }
+
+    selectGate() {
+        this.$emit('select-gate', this.gateIndex)
     }
 
     openContextMenu(e: MouseEvent | LongpressEvent) {
         e.preventDefault()
 
-        this.menuX = e.clientX - 20
-        this.menuY = e.clientY - 20
+        this.menuX = (e.clientX ?? 0) - 20
+        this.menuY = (e.clientY ?? 0) - 20
 
         this.closeContextMenu()
 
@@ -255,12 +134,7 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
         this.closeTimeout = null
     }
 
-    mounted() {
-        addEventListener('mmu-close-gate-context-menus', this.closeContextMenu)
-    }
-
     beforeDestroy() {
-        removeEventListener('mmu-close-gate-context-menus', this.closeContextMenu)
         this.clearCloseTimeout()
     }
 }
