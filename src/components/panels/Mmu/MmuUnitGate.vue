@@ -40,7 +40,7 @@ import MmuUnitGateMenu from '@/components/panels/Mmu/MmuUnitGateMenu.vue'
 })
 export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     @Prop({ required: true }) readonly gateIndex!: number
-    @Prop({ required: true }) readonly mmuMachineUnit!: MmuMachineUnit
+    @Prop({ required: false }) readonly mmuMachineUnit!: MmuMachineUnit
     @Prop({ default: false }) readonly showDetails!: boolean
     @Prop({ default: false }) readonly showContextMenu!: boolean
     @Prop({ required: true }) readonly selectedGate!: number
@@ -83,11 +83,11 @@ export default class MmuUnitGate extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get firstGate() {
-        return this.gatePosition === 1
+        return !this.mmuMachineUnit || this.gatePosition === 1
     }
 
     get lastGate() {
-        if (this.gateIndex === TOOL_GATE_BYPASS) return true
+        if (!this.mmuMachineUnit || this.gateIndex === TOOL_GATE_BYPASS) return true
 
         return this.gatePosition === this.mmuMachineUnit?.num_gates && !this.hasBypass
     }
