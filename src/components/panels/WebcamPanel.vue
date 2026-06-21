@@ -42,7 +42,10 @@
         <v-card-text v-if="webcams.length" class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative">
-                    <webcam-wrapper :webcam="currentCam" :page="currentPage" />
+                    <webcam-wrapper
+                        :webcam="currentCam"
+                        :page="currentPage"
+                        :overlay-display-mode="currentPage === 'dashboard' ? 'hidden' : 'auto'" />
                 </v-col>
             </v-row>
         </v-card-text>
