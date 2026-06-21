@@ -25,4 +25,5 @@ ragilo
 rcloran
 samuel-0-0 Long-time Chinese (zh) localization contributor
 sindarius
+weblate
 xtrack33
