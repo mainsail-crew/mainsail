@@ -14,6 +14,7 @@ import {
 } from '@mdi/js'
 import Vue from 'vue'
 import { VColorPickerColor } from '@/types/vuetify'
+import DOMPurify from 'dompurify'
 
 export const isRecord = (value: unknown): value is Record<string, unknown> => {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -107,6 +108,8 @@ export const camelize = (str: string): string => {
 }
 
 export function formatConsoleMessage(message: string): string {
+    // remove all dirty HTML code
+    message = DOMPurify.sanitize(message)
     // remove !! at error msg start
     message = message.replace(/^!! /g, '')
     // remove !! after \n new line
@@ -119,7 +122,7 @@ export function formatConsoleMessage(message: string): string {
     message = message.replace(/^echo:/g, '')
     // remove debug
     message = message.replace(/^debug:/g, '')
-    // replace linebreaks with html <br>
+    // replace linebreaks with HTML <br>
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
 
