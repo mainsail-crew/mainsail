@@ -2,7 +2,8 @@
     "App": {
         "Notifications": {
             "BrowserWarnings": {
-                "Description": "{name} je zastarané a nie sú plne podporované. Aktuálna verzia je {verzia}, ale Mainsail vyžaduje verziu {minVersion} alebo vyšší."
+                "Description": "{name} je zastarané a nie sú plne podporované. Aktuálna verzia je {verzia}, ale Mainsail vyžaduje verziu {minVersion} alebo vyšší.",
+                "Headline": "Zastaralý prehliadač"
             },
             "DependencyDescription": "Aktuálna verzia {name} nepodporuje všetky funkcie Mainsail. Aktualizovať {name} aspoň {needVersion}.",
             "DependencyName": "V závislosti od: {name}",
@@ -14,6 +15,15 @@
                 "DeprecatedValueHeadline": "Zastaraná hodnota Klipper",
                 "KlipperRuntimeWarning": "Upozornenie počas behu Klipperu",
                 "KlipperWarning": "Upozornenie Klipper"
+            },
+            "MaintenanceReminder": "Pripomienka údržby",
+            "MaintenanceReminderText": "Údržba \"{name}\" je z dôvodu.",
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "Chyba bola detekovaná pri načítaní moonraker komponentu '{komponent}'. Skontrolujte log súbor a opravte problém.",
+                "MoonrakerFailedInitComponentDescription": "Chyba bola detekovaná počas inicializácie moonraker komponentu '{komponent}'. Skontrolujte log súbor a opravte problém.",
+                "MoonrakerInitComponent": "Moonraker: {component}",
+                "MoonrakerWarning": "Moonraker varovanie"
             }
         }
     },
