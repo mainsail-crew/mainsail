@@ -2,6 +2,105 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.18.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.18.0) - 2026-06-21
+### Features
+
+- **HappyHare**: Support for multi-gate espooler display (HH v3.2.4) ([#2431](https://github.com/mainsail-crew/mainsail/pull/2431))
+- **HappyHare**: Replace right-click menu with regular click menu([#2437](https://github.com/mainsail-crew/mainsail/pull/2437))
+- **HappyHare**: Addition of heater and climate to the MMU unit footer ([#2429](https://github.com/mainsail-crew/mainsail/pull/2429))
+- **UpdatePanel**: Add support for executable type in update manager ([#2463](https://github.com/mainsail-crew/mainsail/pull/2463))
+- **afc**: Support multiple tools per lane via `map` array ([#2512](https://github.com/mainsail-crew/mainsail/pull/2512))
+- **afc**: Enhance Spoolman lane details in AFC panel ([#2521](https://github.com/mainsail-crew/mainsail/pull/2521))
+- **editor**: Add YAML support to editor ([#2479](https://github.com/mainsail-crew/mainsail/pull/2479))
+- **editor**: Add tooltip with link to Klipper Documentation ([#2537](https://github.com/mainsail-crew/mainsail/pull/2537))
+- **spoolman**: Add support for multicolor spools ([#2483](https://github.com/mainsail-crew/mainsail/pull/2483))
+- **spoolman**: Write multi-tool spool info to moonraker database ([#2510](https://github.com/mainsail-crew/mainsail/pull/2510))
+- **webcam**: Full width on smaller viewports for multi cams ([#2481](https://github.com/mainsail-crew/mainsail/pull/2481))
+- Add SHT4X to additional sensors list ([#2518](https://github.com/mainsail-crew/mainsail/pull/2518))
+
+### Bug Fixes and Improvements
+
+- **ConfigFilesPanel**: Fix translation key for delete dialog titles ([#2399](https://github.com/mainsail-crew/mainsail/pull/2399))
+- **HappyHare**: Fixes sync-feedback buffer state output in visualization and supports analog sensors
+- **HappyHare**: Retains the correct font size for filament status messages ([#2428](https://github.com/mainsail-crew/mainsail/pull/2428))
+- **HappyHare**: Show spool for bypass empty/full based on loaded ([#2438](https://github.com/mainsail-crew/mainsail/pull/2438))
+- **JanusStreamer**: Fix type import in JanusStreamer.vue ([#2475](https://github.com/mainsail-crew/mainsail/pull/2475))
+- **JobQueue**: Batch adding file from subdir to queue ([#2474](https://github.com/mainsail-crew/mainsail/pull/2474))
+- **JobQueue**: Enhance thumbnail handling for job queue items ([#2536](https://github.com/mainsail-crew/mainsail/pull/2536))
+- **Temperature**: Dynamic input width based on max temp digits ([#2411](https://github.com/mainsail-crew/mainsail/pull/2411))
+- **TemperatureInput**: Improve temperature handling and validation logic ([#2413](https://github.com/mainsail-crew/mainsail/pull/2413))
+- **UpdatePanel**: Add zip type to semver-based update checks ([#2444](https://github.com/mainsail-crew/mainsail/pull/2444))
+- **afc**: Pull remaining weight from Spoolman when enabled ([#2511](https://github.com/mainsail-crew/mainsail/pull/2511))
+- **editor**: Insert spaces at cursor position on Tab key ([#2422](https://github.com/mainsail-crew/mainsail/pull/2422))
+- **spoolman**: Handle undefined filament vendor in custom filter ([#2480](https://github.com/mainsail-crew/mainsail/pull/2480))
+- **thumbnails**: Escape thumbnail URLs to prevent issues ([#2505](https://github.com/mainsail-crew/mainsail/pull/2505))
+- Exclude tmp data from backup/restore mainsail settings ([#2391](https://github.com/mainsail-crew/mainsail/pull/2391))
+- Add start print dialog, when click reprint in history  ([#2406](https://github.com/mainsail-crew/mainsail/pull/2406))
+- Correct month output in date formatting to start from 1 instead of 0 ([#2408](https://github.com/mainsail-crew/mainsail/pull/2408))
+- ETA day calculation ([#2394](https://github.com/mainsail-crew/mainsail/pull/2394))
+- Selected files single file download without zip ([#2414](https://github.com/mainsail-crew/mainsail/pull/2414))
+- Format timestamp for selected files download ([#2415](https://github.com/mainsail-crew/mainsail/pull/2415))
+- Fix Z offset panel error for generic_cartesian ([#2494](https://github.com/mainsail-crew/mainsail/pull/2494))
+- Fix units and number formats for additionial sensors ([#2042](https://github.com/mainsail-crew/mainsail/pull/2042))
+
+### Refactor
+
+- **SpoolmanPanel**: Correct weight output formatting by removing unused variable ([#2451](https://github.com/mainsail-crew/mainsail/pull/2451))
+- **TimelapseFilesPanel**: Correct filename extension handling for JPG images ([#2450](https://github.com/mainsail-crew/mainsail/pull/2450))
+- Add strict typing for emitAndWait RPC methods ([#2325](https://github.com/mainsail-crew/mainsail/pull/2325))
+- Update start-print-dialog to use v-model for better state management ([#2405](https://github.com/mainsail-crew/mainsail/pull/2405))
+- Remove unused PowerControlPanel ([#2449](https://github.com/mainsail-crew/mainsail/pull/2449))
+
+### Styling
+
+- **icons**: Fix maskable icon paddings ([#2426](https://github.com/mainsail-crew/mainsail/pull/2426))
+- **prettier**: Run prettier and fix format in variables.ts ([#2392](https://github.com/mainsail-crew/mainsail/pull/2392))
+- Run prettier and fix format in some files ([#2398](https://github.com/mainsail-crew/mainsail/pull/2398))
+- Fix formatting in agent_docs ([#2439](https://github.com/mainsail-crew/mainsail/pull/2439))
+
+### Localization
+
+- **sl**: Add Slovenia locale file ([#2499](https://github.com/mainsail-crew/mainsail/pull/2499))
+- **zh**: Update chinese locale ([#2435](https://github.com/mainsail-crew/mainsail/pull/2435))
+
+### Other
+
+- **deps**: Bump axios from 1.13.2 to 1.13.5 ([#2436](https://github.com/mainsail-crew/mainsail/pull/2436))
+- **deps**: Bump rollup ([#2446](https://github.com/mainsail-crew/mainsail/pull/2446))
+- **deps**: Bump markdown-it from 14.1.0 to 14.1.1 ([#2441](https://github.com/mainsail-crew/mainsail/pull/2441))
+- **deps**: Upgrade eslint from v8 to v10  ([#2448](https://github.com/mainsail-crew/mainsail/pull/2448))
+- **deps**: Bump immutable from 5.1.4 to 5.1.5 ([#2456](https://github.com/mainsail-crew/mainsail/pull/2456))
+- **deps**: Bump lodash from 4.17.23 to 4.18.1 ([#2466](https://github.com/mainsail-crew/mainsail/pull/2466))
+- **deps**: Bump yaml from 2.8.2 to 2.8.3 ([#2467](https://github.com/mainsail-crew/mainsail/pull/2467))
+- **deps**: Bump axios from 1.13.6 to 1.15.0 ([#2469](https://github.com/mainsail-crew/mainsail/pull/2469))
+- **deps**: Bump picomatch ([#2462](https://github.com/mainsail-crew/mainsail/pull/2462))
+- **deps**: Bump brace-expansion ([#2468](https://github.com/mainsail-crew/mainsail/pull/2468))
+- **deps**: Bump axios from 1.15.0 to 1.16.0
+- **deps**: Bump uuid from 9.0.1 to 14.0.0
+- **deps**: Remove obsolete @types/uuid (uuid ships own types since v10)
+- **deps**: Bump uuid and cypress ([#2503](https://github.com/mainsail-crew/mainsail/pull/2503))
+- **deps**: Bump serialize-javascript and workbox-build ([#2489](https://github.com/mainsail-crew/mainsail/pull/2489))
+- **deps**: Bump form-data from 4.0.5 to 4.0.6 ([#2532](https://github.com/mainsail-crew/mainsail/pull/2532))
+- **deps**: Bump markdown-it from 14.1.1 to 14.2.0 ([#2533](https://github.com/mainsail-crew/mainsail/pull/2533))
+- **deps-dev**: Bump qs from 6.14.1 to 6.14.2 ([#2440](https://github.com/mainsail-crew/mainsail/pull/2440))
+- **deps-dev**: Bump vite from 7.3.1 to 7.3.2 ([#2465](https://github.com/mainsail-crew/mainsail/pull/2465))
+- **deps-dev**: Bump flatted from 3.3.3 to 3.4.2 ([#2461](https://github.com/mainsail-crew/mainsail/pull/2461))
+- **deps-dev**: Bump fast-uri from 3.1.0 to 3.1.2
+- **deps-dev**: Bump postcss from 8.5.6 to 8.5.13
+- **deps-dev**: Bump @babel/plugin-transform-modules-systemjs
+- **deps-dev**: Bump vitest from 3.2.4 to 3.2.6 ([#2519](https://github.com/mainsail-crew/mainsail/pull/2519))
+- **deps-dev**: Bump tmp from 0.2.5 to 0.2.7 ([#2507](https://github.com/mainsail-crew/mainsail/pull/2507))
+- **deps-dev**: Bump js-yaml from 4.1.1 to 4.2.0 ([#2534](https://github.com/mainsail-crew/mainsail/pull/2534))
+- **deps-dev**: Bump vite from 7.3.2 to 7.3.5 ([#2535](https://github.com/mainsail-crew/mainsail/pull/2535))
+- **eslint**: Add vueTsConfigs.recommended and fix lint issues ([#2452](https://github.com/mainsail-crew/mainsail/pull/2452))
+- **github**: Update pull request template ([#2522](https://github.com/mainsail-crew/mainsail/pull/2522))
+- **vouch**: Implement contributor trust system ([#2529](https://github.com/mainsail-crew/mainsail/pull/2529))
+- **vouch**: Enable pull request creation for protected branch ([#2539](https://github.com/mainsail-crew/mainsail/pull/2539))
+- **vouch**: Update VOUCHED list ([#2540](https://github.com/mainsail-crew/mainsail/pull/2540))
+- Upgrade vite to v7 to fix esbuild security vulnerabilit ([#2393](https://github.com/mainsail-crew/mainsail/pull/2393))
+- Vitest Test Environment ([#2396](https://github.com/mainsail-crew/mainsail/pull/2396))
+- Refactor AGENTS.md with progressive disclosure structure ([#2419](https://github.com/mainsail-crew/mainsail/pull/2419))
+
 ## [2.17.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.17.0) - 2026-01-11
 ### Features
 
