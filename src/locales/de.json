@@ -145,6 +145,7 @@
     "Buttons": {
         "Cancel": "Abbrechen",
         "Close": "Schließen",
+        "Confirm": "Bestätigen",
         "Delete": "Löschen",
         "No": "Nein",
         "Save": "Speichern",
@@ -1534,6 +1535,7 @@
         "Update": "speichern",
         "WebcamsTab": {
             "AddWebcam": "Webcam hinzufügen",
+            "AspectRatio": "Seitenverhältnis",
             "Color": "Farbe",
             "CreateWebcam": "Erstelle Webcam",
             "EditCrowsnestConf": "crowsnest.conf bearbeiten",
@@ -1544,6 +1546,7 @@
             "HideFps": "FPS-Anzeige verstecken",
             "Hlsstream": "HLS-Stream",
             "Horizontally": "horizontal",
+            "HtmlIframe": "HTML iframe",
             "HtmlVideo": "HTML Video",
             "IconBed": "Bett",
             "IconCam": "Kamera",
