@@ -1,6 +1,10 @@
 {
     "App": {
         "Notifications": {
+            "BrowserWarnings": {
+                "Description": "{name} está ultrapassado e não é totalmente suportado. A versão atual é {version}, mas o Mainsail requer {minVersion} ou superior.",
+                "Headline": "Navegador Desatualizado"
+            },
             "DependencyDescription": "A versão {name} atual não oferece suporte a todos os recursos do Mainsail. Atualize {name} para pelo menos {neededVersion}.",
             "DependencyName": "Dependência: {name}",
             "DismissAll": "Recusar tudo",
@@ -9,11 +13,14 @@
                 "DeprecatedOptionHeadline": "Opção obsoleta do Klipper",
                 "DeprecatedValue": "O valor '{value}' na opção '{option}' na seção '{section}' está obsoleto e será removido em uma liberação futura.",
                 "DeprecatedValueHeadline": "Valor obsoleto do Klipper",
+                "KlipperRuntimeWarning": "Alerta de execução do Klipper",
                 "KlipperWarning": "Aviso do Klipper"
             },
+            "MaintenanceReminder": "Lembrete de Manutenção",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "Foi detectado um erro ao carregar o componente moonraker '{component}'. Verifique o arquivo de log e corrija o problema.",
+                "MoonrakerFailedInitComponentDescription": "Um erro foi detectado durante a inicialização do componente '{component}' do moonraker. Por favor, verifique o arquivo de log e corrija o problema.",
                 "MoonrakerWarning": "Aviso do Moonraker",
                 "UnparsedConfigOption": "Opção de configuração não analisada '{option}: {value}' detectada na seção [{section}]. Isso pode ser uma opção não mais disponível ou pode ser o resultado de um módulo que falhou ao carregar. No futuro, isso resultará em um erro de inicialização.",
                 "UnparsedConfigSection": "Seção de configuração não analisada [{section}] detectada. Isso pode ser o resultado de um componente que falhou ao carregar. No futuro, isso resultará em um erro de inicialização."
@@ -22,7 +29,12 @@
             "NextReboot": "próxima reinicialização",
             "NoNotification": "Nenhuma notificação disponível",
             "Notifications": "Notificações",
-            "Remind": "Lembrar:"
+            "Remind": "Lembrar:",
+            "ShowDetails": "mostrar detalhes",
+            "TmcOtFlag": "Erro do driver de motor de passo: sinal OT acionado",
+            "TmcOtFlagText": "O driver de motor de passo '{name}' ativou a flag OT e parou de funcionar. Isso pode ser causado por uma corrente muito alta. Verifique as configurações e a refrigeração do driver.",
+            "TmcOtpwFlag": "Alerta do driver de motor de passo: sinal OTPW acionado",
+            "TmcOtpwFlagText": "O driver de motor de passo '{name}' ativou a flag OTPW e pode parar de funcionar. Isso é um indicativo de excesso de temperatura e pode ser causado por uma corrente muito alta. Verifique as configurações e a refrigeração do driver."
         },
         "NumberInput": {
             "GreaterOrEqualError": "Deve ser maior ou igual a {min}!",
@@ -30,6 +42,14 @@
             "NoEmptyAllowedError": "A entrada não deve estar vazia!"
         },
         "Printers": "Impressoras",
+        "TextfieldWithCopy": {
+            "Copied": "Copiado"
+        },
+        "TheServiceWorker": {
+            "DescriptionNeedUpdate": "O cache local está ultrapassado e precisa ser atualizado. Por favor, clique no botão abaixo para atualizar o cache.",
+            "TitleNeedUpdate": "PWA precisa ser atualizado",
+            "Update": "atualização"
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "O(s) núcleo(s) rPi ARM está atualmente restringido.",
             "DescriptionFrequencyCapped": "A frequência máxima do rPi ARM está atualmente limitada a 1,2 GHz.",
@@ -115,21 +135,28 @@
         "ScrewAccepted": "Aceitar parafusos",
         "ScrewIndex": "Índice de parafuso",
         "ScrewName": "Nome do parafuso",
-        "ScrewOutput": " {current} de {max}"
+        "ScrewOutput": "{current} de {max}"
     },
     "Buttons": {
         "Cancel": "Cancelar",
         "Close": "Fechar",
+        "Confirm": "Confirmar",
         "Delete": "Excluir",
         "No": "Não",
         "Save": "Salvar",
         "Yes": "Sim"
     },
+    "CancelJobDialog": {
+        "AreYouSure": "Tem certeza?",
+        "CancelJob": "Cancelar Trabalho"
+    },
     "ConnectionDialog": {
         "CannotConnectTo": "Não é possível conectar ao Moonraker ({host}).",
         "CheckMoonrakerLog": "Se esta mensagem aparecer repetidamente, dê uma olhada no arquivo de log localizado em:",
         "Connecting": "Conectando-se a {host}",
+        "ErrorMessage": "Mensagem de erro: {message}",
         "Failed": "Falha na conexão",
+        "Help": "Ajuda",
         "Initializing": "Inicializando",
         "TryAgain": "Tente novamente"
     },
@@ -138,11 +165,35 @@
         "Empty": "Esvaziar",
         "HideTemperatures": "Ocultar temperaturas",
         "HideTimelapse": "Ocultar lapso de tempo",
+        "Search": "Pesquisa",
         "SetupConsole": "Console de configuração"
+    },
+    "CoolDownDialog": {
+        "AreYouSure": "Tem certeza?",
+        "CoolDown": "Resfriar"
+    },
+    "DevicesDialog": {
+        "CanBusInfo": "Apenas nós não atribuídos podem ser detectados. É recomendado haver apenas um nó não atribuído à rede can para evitar problemas de comunicação. Para mais detalhes clique no link:",
+        "ClickRefresh": "Clique no botão atualizar para buscar por dispositivos.",
+        "DevicePath": "Caminho do dispositivo",
+        "Formats": "Formatos",
+        "Headline": "Dispositivos",
+        "HideSystemEntries": "Ocultar entradas do sistema",
+        "LibcameraId": "ID do Libcamera",
+        "NoDeviceFound": "Nenhum dispositivo encontrado. Por favor, verifique a conexão e clique no botão atualizar.",
+        "PathByHardware": "Caminho por hardware",
+        "PathById": "Caminho por ID",
+        "Refresh": "atualizar",
+        "Resolutions": "Resoluções"
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "FilamentTypeMismatch": "O tipo de filamento no arquivo G-Code {file} não corresponde ao tipo selecionado em {lane}.",
+                "FilamentWeightNotEnough": "Não há filamento suficiente na linha selecionada ({lane}). Requer: {required}, Disponível: {available}."
+            },
             "DoYouWantToStartFilename": "Deseja iniciar {filename}?",
+            "DoYouWantToStartFilenameFilament": "Você deseja iniciar {filename} com este filamento?",
             "Headline": "Iniciar trabalho",
             "Print": "Impressão",
             "Timelapse": "Lapso de tempo"
@@ -150,10 +201,12 @@
     },
     "Editor": {
         "ConfigReference": "Referência de configuração",
+        "DeviceDialog": "Dispositivos",
         "DontSave": "Não salvar",
-        "Downloading": "Downloading",
+        "Downloading": "Baixando",
         "FailedSave": "{filename} não pôde ser carregado!",
         "FileReadOnly": "Somente leitura",
+        "FileStructure": "Estrutura de Arquivos",
         "SaveClose": "Salvar fechar",
         "SaveRestart": "Salvar e Reiniciar",
         "SuccessfullySaved": "{filename} salvo com sucesso.",
@@ -170,8 +223,8 @@
         "AddBatchToQueue": "Adicionar lote à fila",
         "AddToQueue": "Adicionar à fila",
         "AllFiles": "Todos",
-        "BedTemp": "Temp. mesa",
-        "ChamberTemp": "Temp. Câmara",
+        "BedTemp": "Temp. mesa.",
+        "ChamberTemp": "Temp. Câmara.",
         "Count": "Contagem",
         "Create": "Criar",
         "CreateNewDirectory": "Criar novo diretório",
@@ -180,13 +233,15 @@
         "DeleteDirectory": "Excluir diretório",
         "DeleteDirectoryQuestion": "Deseja realmente excluir o diretório \"{name}\" com todo o seu conteúdo?",
         "DeleteSelectedQuestion": "Você realmente deseja excluir {count} arquivos selecionados?",
+        "DeleteSingleFileQuestion": "Deseja realmente apagar o arquivo \"{name]\"?",
         "Download": "Baixar",
         "Duplicate": "Duplicado",
         "DuplicateFile": "Arquivo Duplicado",
         "EditFile": "Editar arquivo",
         "Empty": "Esvaziar",
-        "ExtruderTemp": "Temp. Extrusora",
+        "ExtruderTemp": "Temp. Extrusora.",
         "FilamentName": "Nome do Filamento",
+        "Filaments": "Filamentos",
         "FilamentType": "Tipo de filamento",
         "FilamentUsage": "Uso de Filamento",
         "FilamentWeight": "Peso do Filamento",
@@ -241,7 +296,7 @@
         "ClearLoadedFile": "Limpar",
         "CNCMode": "Modo CNC",
         "ColorMode": "Modo de cor",
-        "Downloading": "Downloading",
+        "Downloading": "Baixando",
         "ForceLineRendering": "Forçar renderização de linha",
         "HDRendering": "Renderização HD (Extrusões redondas)",
         "High": "Alto",
@@ -259,7 +314,7 @@
         "ShowTravelMoves": "Mostrar movimentos de viagem",
         "SpecularLighting": "Iluminação especular",
         "Title": "Visualizador de código G",
-        "Tracking": "RASTREAMENTO",
+        "Tracking": "Rastreamento",
         "Transparency": "Transparência",
         "Ultra": "Ultra",
         "VoxelMode": "Modo Voxel (ASMBL)"
@@ -302,20 +357,35 @@
         "Wireframe": "Wireframe"
     },
     "History": {
+        "AddANote": "Adicionar uma nota",
+        "AddMaintenance": "Adicionar Manutenção",
         "AddNote": "Adicionar nota",
+        "AddToQueueSuccessful": "Arquivo {filename} adicionado à fila.",
         "AllJobs": "Todos",
         "AvgPrinttime": "Tempo de impressão - Ø",
         "Chart": "Gráfico",
         "CreateNote": "Criar nota",
+        "DateBasedReminder": "Data",
+        "DateBasedReminderDescription": "Este lembrete é baseado na data.",
+        "Days": "dias",
         "Delete": "Excluir",
         "DeleteSelectedQuestion": "Você realmente deseja excluir {count} trabalhos selecionados?",
+        "DeleteSingleJobQuestion": "Deseja realmente apagar o trabalho?",
         "Details": "Detalhes",
+        "EditMaintenance": "Editar Manutenção",
         "EditNote": "Editar nota",
         "Empty": "Esvaziar",
         "EndTime": "Fim do tempo",
+        "EntryCreatedAt": "Criado em {date}.",
+        "EntryNextPerform": "Próxima execução:",
+        "EntryPerformedAt": "Executado em {date].",
+        "EntrySince": "Usado desde:",
         "EstimatedFilament": "Filamento Estimado",
         "EstimatedFilamentWeight": "Peso Estimado do Filamento",
         "EstimatedTime": "Tempo estimado",
+        "Filament": "Filamento",
+        "FilamentBasedReminder": "Filamento",
+        "FilamentBasedReminderDescription": "Este lembrete é baseado no uso de filamento.",
         "FilamentCalc": "Calc. Filamento",
         "FilamentUsage": "Uso de Filamento",
         "FilamentUsed": "Filamento usado",
@@ -326,22 +396,40 @@
         "FirstLayerHeight": "Altura da Primeira Camada",
         "HistoryFilamentUsage": "Filamento",
         "HistoryPrinttimeAVG": "Impressões",
+        "Hours": "horas",
+        "InvalidNameEmpty": "Nome inválido. O nome não pode estar vazio!",
         "JobDetails": "Detalhes do trabalho",
         "Jobs": "Trabalhos",
         "LastModified": "Última modificação",
         "LayerHeight": "Altura da Camada",
+        "LoadCompleteHistory": "Carregar histórico completo",
         "LongestPrinttime": "Maior tempo de impressão",
+        "Maintenance": "Manutenção",
+        "MaintenanceEntries": "Lista de Manutenções",
+        "Name": "Nome",
+        "NoReminder": "Sem lembrete",
         "Note": "Nota",
         "ObjectHeight": "Altura do Objeto",
+        "OneTime": "Uma Vez",
+        "Perform": "executar",
+        "Performed": "executado",
+        "PerformedAndReschedule": "executado e reagendado",
+        "PerformMaintenance": "Executar Manutenção",
         "PrintDuration": "Tempo de impressão",
         "PrintHistory": "Histórico de impressão",
+        "PrintJobs": "Trabalhos de Impressão",
         "PrintTime": "Tempo de impressão",
         "PrinttimeAvg": "Tempo de impressão - Ø",
+        "PrinttimeBasedReminder": "Tempo de Impressão",
+        "PrinttimeBasedReminderDescription": "Este lembrete é baseado no tempo de impressão.",
+        "Reminder": "Lembrete",
+        "Repeat": "Repetir",
         "Reprint": "Reimprimir",
         "Search": "Procurar",
         "SelectedFilamentUsed": "Filamento selecionado usado",
         "SelectedJobs": "Trabalhos selecionados",
         "SelectedPrinttime": "Tempo de impressão selecionado",
+        "Settings": "Configurações",
         "Slicer": "Fatiador",
         "SlicerVersion": "Versão do Fatiador",
         "StartTime": "Hora de início",
@@ -352,12 +440,14 @@
             "completed": "Completed",
             "error": "Error",
             "in_progress": "In progress",
+            "interrupted": "Interrompido",
             "klippy_disconnect": "Klippy disconnect",
             "klippy_shutdown": "Klippy shutdown",
             "Others": "Others",
             "server_exit": "Server exit"
         },
         "Table": "Table",
+        "Time": "Tempo",
         "TitleExportHistory": "Export History",
         "TotalDuration": "Total Time",
         "TotalFilamentUsed": "Total Filament Used",
@@ -374,7 +464,8 @@
         "JobQueue": "Fila de trabalho",
         "Pause": "Pausa",
         "RemoveFromQueue": "Remover da fila",
-        "Start": "Começar"
+        "Start": "Começar",
+        "StartPrint": "Iniciar Trabalho"
     },
     "Machine": {
         "ConfigFilesPanel": {
@@ -388,6 +479,7 @@
             "DeleteDirectory": "Excluir diretório",
             "DeleteDirectoryQuestion": "Excluir diretório \"{name}\" e todo o seu conteúdo?",
             "DeleteSelectedQuestion": "Excluir {count} elementos selecionados?",
+            "DeleteSingleFileQuestion": "Deseja realmente apagar o arquivo \"{name]\"?",
             "Download": "Baixar",
             "Duplicate": "Duplicado",
             "DuplicateFile": "Arquivo Duplicado",
@@ -454,7 +546,10 @@
             }
         },
         "UpdatePanel": {
+            "Abort": "Abortar",
+            "AreYouSure": "Você tem certeza?",
             "CheckForUpdates": "Verifique se há atualizações",
+            "CommitHistory": "Histórico de Commits",
             "Commits": "Confirma",
             "CommitsAvailable": "nenhum commit disponível | {count} confirmação disponível | {count} confirmações disponíveis",
             "CommitsOnDate": "Commits em {date}",
@@ -462,6 +557,9 @@
             "CommittedHoursAgo": "committed {hours} horas atrás",
             "CommittedOnDate": "committed em {date}",
             "CommittedYesterday": "committed ontem",
+            "ConfigChanges": "Mudanças de Configuração",
+            "Corrupt": "corrompido",
+            "CountPackagesCanBeUpgraded": "{count} pacotes podem ser atualizados",
             "Detached": "independente",
             "Dirty": "lixo",
             "Invalid": "inválido",
