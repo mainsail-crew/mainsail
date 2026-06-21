@@ -520,7 +520,6 @@
         },
         "LogfilesPanel": {
             "Accept": "接受",
-            "Cancel": "取消",
             "Logfiles": "日志文件",
             "Rollover": "清理日志",
             "RolloverDescription": "请选择需要重置的日志：",
@@ -898,7 +897,6 @@
             "Ok": "确定",
             "PreGate": "通道入口",
             "RecoverState": "修复MMU状态",
-            "ShowClogDetection": "堵塞检测",
             "ShowDetails": "耗材详情",
             "ShowLogos": "显示Logo",
             "ShowName": "显示单元名称",
