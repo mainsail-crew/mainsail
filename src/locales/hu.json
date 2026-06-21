@@ -85,9 +85,9 @@
             "CannotUploadTheFile": "A fájl nem feltölthető!",
             "EmergencyStop": "Vészstop",
             "SAVE_CONFIG": "BÁLLÍTÁS_MENTÉSE",
-            "Uploading": "Feltöltés",
             "UploadOfFileSuccessful": "{file} feltöltése sikeres!",
-            "UploadPrint": "Feltöltés és nyomtatás"
+            "UploadPrint": "Feltöltés és nyomtatás",
+            "Uploading": "Feltöltés"
         },
         "TopCornerMenu": {
             "ConfirmationDialog": {
@@ -265,9 +265,9 @@
         "NozzleDiameter": "Fúvóka Átmérője",
         "ObjectHeight": "Tárgymagasság",
         "Preheat": "Előhevítés",
-        "PrintedFiles": "Nyomtatott fájlok",
         "PrintStart": "Nyomtatás kezdete",
         "PrintTime": "Nyomtatási idő",
+        "PrintedFiles": "Nyomtatott fájlok",
         "RefreshCurrentDirectory": "Aktuális mappa frissítése",
         "Rename": "Átnevezés",
         "RenameDirectory": "Mappa átnevezése",
@@ -292,8 +292,8 @@
         "DropFilesToUploadFiles": "Húzd át a fájlokat feltöltéshez"
     },
     "GCodeViewer": {
-        "ClearLoadedFile": "Kitakarít",
         "CNCMode": "CNC mód",
+        "ClearLoadedFile": "Kitakarít",
         "ColorMode": "Színes Mód",
         "Downloading": "Letöltés",
         "ForceLineRendering": "Vonalas renderelés Erőltetése",
@@ -305,8 +305,8 @@
         "Max": "Max",
         "Medium": "Közepes",
         "ReloadRequired": "Újratöltés szükséges",
-        "Rendering": "Renderelés",
         "RenderQuality": "Renderelési minőség",
+        "Rendering": "Renderelés",
         "ShowGCode": "G-kód mutatása",
         "ShowObjectSelection": "Mutasd a kijelölt objektumokat",
         "ShowToolhead": "Fej mutatása",
@@ -412,9 +412,9 @@
         "ObjectHeight": "Tárgy magassága",
         "OneTime": "Egyszeri",
         "Perform": "végezzük",
+        "PerformMaintenance": "Karbantartás elvégzése",
         "Performed": "elvégzett",
         "PerformedAndReschedule": "elvégzett és átütemezett",
-        "PerformMaintenance": "Karbantartás elvégzése",
         "PrintDuration": "Nyomtatás ideje",
         "PrintHistory": "Nyomtatási előzmények",
         "PrintJobs": "Nyomtatási munkák",
@@ -436,6 +436,7 @@
         "Statistics": "Statisztikák",
         "Status": "Státusz",
         "StatusValues": {
+            "Others": "Egyebek",
             "cancelled": "Megszakított",
             "completed": "Elkészült",
             "error": "Hiba",
@@ -443,7 +444,6 @@
             "interrupted": "Megszakított",
             "klippy_disconnect": "Klippy lecsatlakotatás",
             "klippy_shutdown": "Klippy leállítás",
-            "Others": "Egyebek",
             "server_exit": "Szerverből kilépés"
         },
         "Table": "Táblázat",
@@ -509,8 +509,8 @@
             "Endstop": "Végállás",
             "EndstopInfo": "Nyomd meg a jobb-alsó szinkronizáló gombot jelenlegi a végállásállapot betöltéséhez.",
             "Endstops": "Végállások",
-            "open": "NYITVA",
-            "TRIGGERED": "AKTÍV"
+            "TRIGGERED": "AKTÍV",
+            "open": "NYITVA"
         },
         "LogfilesPanel": {
             "Accept": "elfogad",
@@ -565,9 +565,9 @@
             "GenericUpdateQuestion": "Ellenőrizd a rögzített történeteket (ha elérhető) és a projekt GitHub oldalát, hogy lásd, szükséges-e bármilyen manuális módosítás a frissítéshez.",
             "GitHubPage": "GitHub oldal",
             "HardRecovery": "Teljes visszaállítás",
+            "IUnderstandTheRisks": "Megértem a kockázatokat",
             "InitUpdateManager": "A Frissítéskezelő még nem lett inicializálva. Ez a rendszer első indításakor normális. Kérjük, kattints a frissítés gombra az összes komponens inicializálásához.",
             "Invalid": "érvénytelen",
-            "IUnderstandTheRisks": "Megértem a kockázatokat",
             "KlipperUpdateQuestionConfig": "Ez a frissítés a konfigurációs paraméterek olyan módosításait is tartalmazhatja, amelyeket módosítani kell a printer.cfg fájlban, a részletekért lásd a változásnaplót.",
             "KlipperUpdateQuestionFirmware": "Ez frissíti a Klipper gazdaszoftvert. A Klipper firmware-t futtató alaplapokat esetleg újrafordított firmware-rel kell feltölteni, mielőtt a gép újra üzembe helyezhető.",
             "LinkToGithub": "Link a GitHub-hoz",
@@ -579,13 +579,13 @@
             "System": "Rendszer",
             "ThesePackagesCanBeUpgrade": "Ezek a rendszercsomagok frissíthetők:",
             "Unknown": "ismeretlen",
+            "UpToDate": "legfrissebb",
             "Update": "frissítés",
             "UpdateAll": "Minden elem frissítése",
             "UpdateManager": "Frissítéskezelő",
             "UpdateWarning": "Frissítési figyelmeztetés: {name}",
             "Upgrade": "frissítés",
             "UpgradeableSystemPackages": "Frissíthető rendszercsomagok",
-            "UpToDate": "legfrissebb",
             "WebClientUpdateQuestion": "Bizonyos esetekben a webes kliens frissítése olyan változásokat eredményezhet, amelyek inkompatibilitást okozhatnak. További információkat lásd a kiadási jegyzékben."
         }
     },
@@ -659,6 +659,12 @@
             "Headline": "Makrók",
             "Send": "küldés"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Tedd bele a mainsail.cfg fájlt a printer.cfg fájlba.",
+            "IsNotDefinedInConfig": "nincs definiálva a konfigban.",
+            "MissingConfiguration": "Hiányzó konfiguráció",
+            "MoreInformation": "több információ"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Automatikus görgetés",
             "Headline": "Konzol",
@@ -667,12 +673,6 @@
             "RawOutput": "RAW-kimenet (hibakereséshez)",
             "SendCode": "Kód küldése...",
             "SetupConsole": "Konzol beállítása"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Tedd bele a mainsail.cfg fájlt a printer.cfg fájlba.",
-            "IsNotDefinedInConfig": "nincs definiálva a konfigban.",
-            "MissingConfiguration": "Hiányzó konfiguráció",
-            "MoreInformation": "több információ"
         },
         "MiscellaneousPanel": {
             "Headline": "Kiegészítők",
@@ -709,8 +709,8 @@
             "NoActiveSpool": "A szálkövetés inaktív. A kezdéshez válassz ki egy orsót.",
             "NoResults": "Az aktuális keresési feltételeknek megfelelő orsó nem található.",
             "NoSpool": "Nincs tekercs",
-            "NoSpools": "Nincs elérhető orsó",
             "NoSpoolSelected": "Nincs kiválasztott orsó. Kérjük, válassz ki egy orsót, különben a nyomtatás nem lesz nyomonkövethető.",
+            "NoSpools": "Nincs elérhető orsó",
             "OpenSpoolManager": "Orsókezelő megnyitása",
             "Refresh": "frissítés",
             "Search": "Keresés",
@@ -724,16 +724,16 @@
             "CancelPrint": "Nyomtatás megszakítása",
             "ClearPrintStats": "Nyomtatási statisztikák törlése",
             "Difference": "Különbség",
+            "ETA": "Becs.Idő",
             "EmptyGcodes": "Nincs elérhető G-Code.",
             "EmptyHistory": "Nincs munka a történetben.",
             "EmptyJobqueue": "Jelenleg nincs munka a várólistán.",
             "Estimate": "Becslés",
-            "ETA": "Becs.Idő",
             "ExcludeObject": {
-                "Excluded": "Kizárva",
                 "ExcludeObject": "Test kizárása",
                 "ExcludeObjectHeadline": "Test kizárása",
-                "ExcludeObjectText": "Tényleg ki akarod zárni ezt: \"{name}\"?"
+                "ExcludeObjectText": "Tényleg ki akarod zárni ezt: \"{name}\"?",
+                "Excluded": "Kizárva"
             },
             "Filament": "Nyomtatószál",
             "File": "Fájl",
@@ -792,14 +792,14 @@
             "ShowNameInList": "{name} megjelenítése a listában",
             "State": "Állapot",
             "Target": "Cél",
-            "TemperaturesInChart": "Hőmérséklet [°C]",
             "TempTooHigh": "A {name} hőmérséklete túl magas! (max: {max})",
             "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})",
+            "TemperaturesInChart": "Hőmérséklet [°C]",
             "TurnHeaterOff": "A fűtés kikapcsolása"
         },
         "ToolheadControlPanel": {
-            "Absolute": "abszolút",
             "ALL": "MIND",
+            "Absolute": "abszolút",
             "ControlButtons": "Vezérlőgombok",
             "CoordinateFields": "Koordinátamezők",
             "Headline": "Fúvókafej",
@@ -1038,8 +1038,8 @@
             "CountMacros": "Nincs Makró | {count} Makró | {count} Makrók",
             "Custom": "egyedi",
             "CustomColor": "Alapértemezett szín",
-            "DeletedMacro": "Törölt Makrók",
             "DeleteMacroFromGroup": "Makró törlése a csoportból.",
+            "DeletedMacro": "Törölt Makrók",
             "EditGroup": "Csoport Szerkesztése",
             "Error": "hiba",
             "Expert": "Szakértői",
@@ -1049,10 +1049,10 @@
             "Macrogroups": "Csoportok",
             "Macros": "Makrók",
             "Management": "Menedzselés",
+            "NOMacros": "Nem található makró ...",
             "Name": "Név",
             "NoAvailableMacros": "Nincs elérhető makró.",
             "NoGroups": "Csoport nem található...",
-            "NOMacros": "Nem található makró ...",
             "NoMacrosInGroup": "Ebben a csoportban nincsenek makrók.",
             "Primary": "elsődleges",
             "Search": "Keresés",
@@ -1074,8 +1074,8 @@
             "CreatePreset": "Előbeállítás készítése",
             "End": "Vége",
             "EndDescription": "A csoport utolsó LED-je.",
-            "Groups": "Csoportok",
             "GroupSubTitle": "Kezdés: {start}, Vége: {end}",
+            "Groups": "Csoportok",
             "LightGroups": "{name} - Csoportok",
             "LightPresets": "{name} - Előbeállítások",
             "Miscellaneous": "Kiegészítők",
@@ -1130,8 +1130,6 @@
             "CameraWarningAlreadySetSmall": "pillanatképek a [timelapse] szakaszban",
             "ConstantRateFactor": "Videóráta állandó",
             "ConstantRateFactorDescription": "A minőség kontra fájlméret állítását végzi a renderelésben. A CRF értéke 0–51 közötti, ahol 0 iveszteségmentes, 23 az alapértelmezett és 51 a legkisebb méretű(rossz minőség).",
-            "duplicatelastframe": "utolsókockaduplázás",
-            "duplicatelastframeDescription": "Megduplázza a videó utolsó képkockáját",
             "Enabled": "Engedélyezve",
             "EnabledDescription": "Kikapcsoláskor: G-Code makrókat kihagyása, nincs auto renderelés.",
             "Extraoutputparams": "Extraparaméterekki",
@@ -1148,12 +1146,12 @@
             "NoWebcamFound": "Nincs elérhető webkamera",
             "OutputFramerate": "Kimenő Képsebesség",
             "OutputFramerateDescription": "Beállítja a videó képsebességét. Megjegyzés: az Állítható FPS bekapcsolása érvényteleníti",
+            "ParkTime": "Parkolási Idő",
+            "ParkTimeDescription": "Plusz várakozási idő hozzáadása parkoláskor.",
             "Parkhead": "Fej parkoltatása",
             "ParkheadDescription": "Bekapcsolás után, a fej leparkol minden képkocka készítése előtt.",
             "Parkpos": "Parkolási pozíció",
             "ParkposDescription": "Válaszd ki a parkolás helyét",
-            "ParkTime": "Parkolási Idő",
-            "ParkTimeDescription": "Plusz várakozási idő hozzáadása parkoláskor.",
             "Pixelformat": "Pixelformátum",
             "PixelformatDescription": "Beállítja a kimenő videó pixelformátumát",
             "PosDZ": "Z Pozíció",
@@ -1195,7 +1193,9 @@
             "VariableFpsMax": "Állítható maxFPS",
             "VariableFpsMaxDescription": "Maximális változó FPS érték",
             "VariableFpsMin": "Állítható minFPS",
-            "VariableFpsMinDescription": "Minimális változó FPS érték"
+            "VariableFpsMinDescription": "Minimális változó FPS érték",
+            "duplicatelastframe": "utolsókockaduplázás",
+            "duplicatelastframeDescription": "Megduplázza a videó utolsó képkockáját"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Ágycsavarok párbeszédpanel",
