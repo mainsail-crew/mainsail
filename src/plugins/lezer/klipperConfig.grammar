@@ -1,0 +1,51 @@
+// Klipper printer.cfg grammar.
+// Structure only; the body of *_gcode: / enable: fields is captured as one
+// GcodeBody node (indentation-delimited, via the external tokenizer) and then
+// overlaid with jinja(base: gcode) through parseMixed (see index.ts).
+@external tokens gcodeBody from "./klipperConfig.tokens" { GcodeBody }
+
+@skip { whitespace }
+
+@top ConfigFile { item* }
+
+item {
+  Comment |
+  SectionHeader |
+  GcodeProperty |
+  Property
+}
+
+SectionHeader { "[" SectionType SectionName? "]" }
+SectionType { word }
+SectionName { word }
+
+Property { PropertyName value* }
+value { Number | StringValue | Comma }
+StringValue { word }
+
+// No skipping between the key and its body, so the external tokenizer starts
+// right after the "gcode:" / "enable:" colon and can measure indentation.
+@skip {} {
+  GcodeProperty { GcodeKey GcodeBody }
+}
+
+@tokens {
+  whitespace { $[ \t\r\n]+ }
+
+  Comment { ("#" | ";") ![\n]* }
+
+  "[" "]"
+
+  Comma { "," }
+
+  Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
+
+  // gcode / enable keys -> gcode block. Mirrors the old /^(?:[A-Za-z]*_?gcode|enable):/
+  GcodeKey { $[A-Za-z]* "_"? "gcode" ":" | "enable" ":" }
+
+  PropertyName { ![ \t\r\n:#;\[\],]+ ":" }
+
+  word { ![ \t\r\n:#;\[\],]+ }
+
+  @precedence { Comment, Number, GcodeKey, PropertyName, word }
+}
