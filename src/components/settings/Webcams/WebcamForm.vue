@@ -1,5 +1,5 @@
 <template>
-    <v-form ref="webcamForm" v-model="valid" @submit.prevent="submit">
+    <v-form ref="webcamForm" v-model="valid" v-observe-visibility="visibilityChanged" @submit.prevent="submit">
         <v-card-title>{{ title }}</v-card-title>
         <v-card-text>
             <v-row>
@@ -205,7 +205,7 @@
                     </template>
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-center" align-self="center">
-                    <webcam-wrapper :webcam="webcam" page="settings" />
+                    <webcam-wrapper v-if="showWebcamPreview" :webcam="webcam" page="settings" />
                 </v-col>
             </v-row>
         </v-card-text>
@@ -240,6 +240,8 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     selectIcon = false
     valid = false
     oldWebcamName = ''
+
+    showWebcamPreview = false
 
     rules = {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
@@ -466,6 +468,10 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
         // If we are editing a webcam, we want to check if the name only exists once (the one we are editing)
         return count >= 1
+    }
+
+    visibilityChanged(newVal: boolean) {
+        this.showWebcamPreview = newVal
     }
 
     submit() {
