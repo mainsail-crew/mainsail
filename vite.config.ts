@@ -115,6 +115,11 @@ export default defineConfig({
             output: {
                 manualChunks: (id: string) => {
                     if (id.includes('node_modules')) {
+                        // keep Vue in a single chunk
+                        if (id.includes('/node_modules/vue/') || id.includes('/node_modules/@vue/')) {
+                            return 'vue'
+                        }
+
                         // split codemirror into its own chunk
                         if (id.includes('/codemirror/') || id.includes('/@codemirror/')) {
                             return 'codemirror'
@@ -138,7 +143,14 @@ export default defineConfig({
 
     envPrefix: 'VUE_',
     resolve: {
+        dedupe: ['vue'],
         alias: {
+            // Ensure every importer exact same Vue build
+            vue: 'vue/dist/vue.runtime.esm.js',
+            'vue/dist/vue.runtime.common.js': 'vue/dist/vue.runtime.esm.js',
+            'vue/dist/vue.runtime.common.dev.js': 'vue/dist/vue.runtime.esm.js',
+            'vue/dist/vue.runtime.common.prod.js': 'vue/dist/vue.runtime.esm.js',
+            'vue/dist/vue.common.js': 'vue/dist/vue.runtime.esm.js',
             '@': path.resolve(__dirname, './src'),
             stream: 'stream-browserify',
             events: 'events',
