@@ -108,8 +108,6 @@ export const camelize = (str: string): string => {
 }
 
 export function formatConsoleMessage(message: string): string {
-    // remove all dirty HTML code
-    message = DOMPurify.sanitize(message)
     // remove !! at error msg start
     message = message.replace(/^!! /g, '')
     // remove !! after \n new line
@@ -125,6 +123,8 @@ export function formatConsoleMessage(message: string): string {
     // replace linebreaks with HTML <br>
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
+    // remove all dirty HTML code
+    message = DOMPurify.sanitize(message)
 
     return message.trim()
 }
