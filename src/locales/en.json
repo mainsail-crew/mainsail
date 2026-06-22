@@ -1078,6 +1078,7 @@
         },
         "WebcamPanel": {
             "All": "All",
+            "BrowserNotSupported": "Your browser does not support this webcam type.",
             "ConnectingTo": "Connecting to {url}",
             "Disconnected": "Disconnected",
             "ErrorWhileConnecting": "Error while connecting to {url}",
