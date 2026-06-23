@@ -36,7 +36,7 @@
                             outlined
                             dense
                             class="_slider-input pt-1"
-                            @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
+                            @blur="onInputBlur"
                             @focus="$event.target.select()"
                             @keydown="checkInvalidChars" />
                     </form>
@@ -304,6 +304,18 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.colorOrder === 'B') return 'BLUE'
 
         return 'WHITE'
+    }
+
+    onInputBlur(): void {
+        // commit the typed value on blur (Tab / click-away), same as Enter -> submitInput.
+        // previously blur reset inputValue to the current value, silently discarding the typed
+        // number -> fan left at its last M106 (e.g. stuck at 0% for many layers mid-print).
+        if (this.errors.length > 0) {
+            this.inputValue = Math.round(this.value * 100)
+            return
+        }
+
+        this.submitInput()
     }
 
     submitInput(): void {
