@@ -139,7 +139,9 @@ jobs:
           token: ${{ secrets.PAT }}
           name: v${{ github.event.inputs.version }}
           tag_name: v${{ github.event.inputs.version }}
-          files: ./mainsail.zip
+          files: |
+            ./mainsail.zip
+            ./mainsail.zip.asc
           body: ${{ steps.generate-changelog.outputs.content }}
 
       - name: Copy remote configs to dist
