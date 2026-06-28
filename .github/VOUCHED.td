@@ -19,6 +19,7 @@ julianschill LED effects Maintainer
 jwueller
 moggieuk Maintainer from Happy Hare
 mspi92
+neko-vecter
 pataar
 paxx12 Maintainer from Snapmaker community firmware
 ragilo
