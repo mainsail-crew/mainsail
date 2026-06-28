@@ -14,6 +14,7 @@ body = """
     | filter(attribute="scope")
     | sort(attribute="scope") %}
         - **{{commit.scope}}**: {{ commit.message | upper_first | trim }}\
+        {%- if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}\
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
@@ -24,6 +25,7 @@ body = """
         {% else -%}
         {% raw %}\n{% endraw %}\
         - {{ commit.message | upper_first | trim }}\
+        {%- if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}\
         {%- if commit.breaking %}
         {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {%- endif -%}
@@ -44,6 +46,10 @@ postprocessors = [
     { pattern = '<REPO>', replace = "https://github.com/mainsail-crew/mainsail" }, # replace repository URL
 ]
 
+
+[remote.github]
+owner = "mainsail-crew"
+repo = "mainsail"
 
 [git]
 # allow only conventional commits
