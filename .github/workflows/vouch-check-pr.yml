@@ -42,3 +42,13 @@ jobs:
           PR: ${{ github.event.pull_request.number || github.event.issue.number }}
         run: |
           gh pr edit "$PR" --repo "$REPO" --add-label "unvouched"
+
+      - name: Reopen and unlabel vouched PR
+        if: steps.vouch.outputs.status == 'vouched' || steps.vouch.outputs.status == 'allowed'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number || github.event.issue.number }}
+        run: |
+          gh pr reopen "$PR" --repo "$REPO" || true
+          gh pr edit "$PR" --repo "$REPO" --remove-label "unvouched" || true
