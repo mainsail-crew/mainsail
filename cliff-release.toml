@@ -57,6 +57,7 @@ commit_parsers = [
     { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
     { message = "^chore: push version number to", group = "9$Other", skip = true}, # Old redundant commits
     { message = "^chore\\(changelog\\): update changelog", group = "Changelog", skip = true}, # Old redundant commits
+    { message = "^chore\\(vouch\\): update VOUCHED contributors", skip = true}, # vouch system commits
 
     # Commits to parse
     { message = "^feat(\\(.*\\))?:", group = "<!-- 1 -->Features"},
