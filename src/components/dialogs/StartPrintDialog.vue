@@ -96,10 +96,7 @@ export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
         if (!newVal || !this.file || this.file.metadataPulled || this.file.metadataRequested) return
 
         const fullPath = ['gcodes']
-        if (this.currentPath !== '') {
-            if (this.currentPath.startsWith('/')) fullPath.push(this.currentPath.substr(1))
-            else fullPath.push(this.currentPath)
-        }
+        if (this.currentPath) fullPath.push(this.currentPath.replace(/^\/+/, ''))
         fullPath.push(this.file.filename)
         this.$store.dispatch('files/requestMetadata', [{ filename: fullPath.join('/') }])
     }
