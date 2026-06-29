@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
+import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -89,6 +89,16 @@ export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
 
     closeDialog() {
         this.showDialog = false
+    }
+
+    @Watch('showDialog')
+    onShowDialogChanged(newVal: boolean) {
+        if (!newVal || !this.file || this.file.metadataPulled || this.file.metadataRequested) return
+
+        const fullPath = ['gcodes']
+        if (this.currentPath) fullPath.push(this.currentPath.replace(/^\/+/, ''))
+        fullPath.push(this.file.filename)
+        this.$store.dispatch('files/requestMetadata', [{ filename: fullPath.join('/') }])
     }
 }
 </script>
