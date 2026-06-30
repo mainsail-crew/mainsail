@@ -28,7 +28,6 @@
         "src/*/*.ts",
         "src/**/*.tsx",
         "src/**/*.vue",
-        "cypress/**/*.ts",
         "tests/**/*.ts",
         "tests/**/*.tsx",
         "node_modules/vite-plugin-pwa/client.d.ts"

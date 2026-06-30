@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue, { DirectiveBinding, VNode } from 'vue'
 
 export type LongpressEvent = Partial<Touch> & { preventDefault: () => void }
 
@@ -15,7 +15,7 @@ function resolveHandler(value: LongpressBinding): (e: LongpressEvent) => void {
 }
 
 Vue.directive('longpress', {
-    bind: function (el, binding, vNode) {
+    bind: function (el: HTMLElement, binding: DirectiveBinding<LongpressBinding>, vNode: VNode) {
         // Make sure expression provided is a function or { handler, args } object
         if (typeof binding.value !== 'function' && typeof binding.value?.handler !== 'function') {
             // Fetch name of component
@@ -42,7 +42,7 @@ Vue.directive('longpress', {
         let startY = 0
         const moveThreshold = 10
 
-        // Define funtion handlers
+        // Define function handlers
         // Create timeout ( run function after 1s )
         const start = (e: TouchEvent) => {
             if (e.type === 'click') {
