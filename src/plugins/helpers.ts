@@ -259,10 +259,7 @@ export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParam
         }
         const name = params[1]
         const t: 'int' | 'string' | 'double' | null = (params[2] ?? params[4] ?? null) as
-            | 'int'
-            | 'string'
-            | 'double'
-            | null
+            'int' | 'string' | 'double' | null
         const def = params[3] ?? null
         ret[`${name}`] = {
             type: t,

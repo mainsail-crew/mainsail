@@ -1,6 +1,6 @@
-import vue from '@vitejs/plugin-vue2'
+import vue from '@pedrolamas/plugin-vue2'
 import version from 'vite-plugin-package-version'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
 import Components from 'unplugin-vue-components/vite'
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
@@ -157,13 +157,22 @@ export default defineConfig({
         },
     },
 
+    // 'global' is required by node polyfills (stream-browserify, events) at runtime
+    define: {
+        global: 'globalThis',
+    },
+
+    // Vite 8 transforms TS via Oxc, which (unlike the build) does not auto-detect
+    // experimentalDecorators from tsconfig in per-file transforms (e.g. Vitest).
+    // Vue 2 class components rely on legacy decorators, so enable them explicitly.
+    oxc: {
+        decorator: {
+            legacy: true,
+        },
+    },
+
     optimizeDeps: {
         include: ['events'],
-        esbuildOptions: {
-            define: {
-                global: 'globalThis',
-            },
-        },
     },
 
     server: {
