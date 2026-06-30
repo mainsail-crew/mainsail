@@ -5,17 +5,19 @@
         "strict": true,
         "jsx": "preserve",
         "importHelpers": true,
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "sourceMap": true,
         "skipLibCheck": true,
-        "baseUrl": ".",
         "types": ["cypress", "vite/client"],
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["./src/*"],
+            "vuex": ["./node_modules/vuex/types/index.d.ts"],
+            "unplugin-vue-components/vite": ["./node_modules/unplugin-vue-components/dist/vite.d.ts"],
+            "unplugin-vue-components/resolvers": ["./node_modules/unplugin-vue-components/dist/resolvers.d.ts"]
         },
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
         "typeRoots": ["./node_modules/@types", "./node_modules/cypress/types", "./node_modules/vuetify/types"]
