@@ -579,6 +579,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     set currentPath(newVal) {
+        this.selectedFiles = []
+
         this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newVal })
     }
 
