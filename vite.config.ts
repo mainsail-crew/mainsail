@@ -111,28 +111,20 @@ export default defineConfig({
 
     build: {
         target: 'safari12',
-        rollupOptions: {
+        rolldownOptions: {
             output: {
                 manualChunks: (id: string) => {
-                    if (id.includes('node_modules')) {
-                        // split codemirror into its own chunk
-                        if (id.includes('/codemirror/') || id.includes('/@codemirror/')) {
-                            return 'codemirror'
-                        }
+                    if (!id.includes('node_modules')) return
 
-                        // split these libs into their own chunks
-                        const chunkedLibs = ['vuetify', 'echarts', 'overlayscrollbars']
-                        for (const lib of chunkedLibs) {
-                            if (id.includes(`/node_modules/${lib}/`)) {
-                                return lib.replace('.js', '')
-                            }
+                    // split these libs (incl. their @lib/* scoped packages) into their own chunks
+                    const chunkedLibs = ['codemirror', 'vuetify', 'echarts', 'overlayscrollbars']
+                    for (const lib of chunkedLibs) {
+                        if (id.includes(`/node_modules/${lib}/`) || id.includes(`/node_modules/@${lib}/`)) {
+                            return lib
                         }
                     }
                 },
             },
-        },
-        commonjsOptions: {
-            transformMixedEsModules: true,
         },
     },
 
