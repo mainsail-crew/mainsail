@@ -23,7 +23,7 @@ export default class WebcamMixin extends Mixins(BaseMixin) {
         // overwrite url to baseUrl, if it is an absolute URL
         if (baseUrl.startsWith('http') || baseUrl.startsWith('://')) url = new URL(baseUrl)
 
-        if (baseUrl.startsWith('/webcam')) {
+        if (baseUrl.startsWith('/')) {
             const ports = [80]
             ports.push(this.$store.state.server.config?.config?.server?.port ?? 7125)
             ports.push(this.$store.state.server.config?.config?.server?.ssl_port ?? 7130)

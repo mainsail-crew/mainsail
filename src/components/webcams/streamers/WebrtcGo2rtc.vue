@@ -65,15 +65,16 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get url() {
-        // eslint-disable-next-line no-useless-assignment -- urlSearch is used inside try after reassignment
-        let urlSearch = ''
-        let url = new URL(location.href)
+        // parse against a dummy base, so relative stream URLs can be manipulated with the URL API.
+        const url = new URL(this.camSettings.stream_url, 'http://dummy')
 
-        try {
-            urlSearch = new URL(this.camSettings.stream_url).search.toString()
-            url = new URL('api/ws' + urlSearch, this.camSettings.stream_url)
-        } catch {
-            this.log('invalid url', this.camSettings.stream_url)
+        // if the urls is /api/webrtc, it has to be changed to /api/ws
+        if (url.pathname.endsWith('/api/webrtc')) {
+            url.pathname = url.pathname.slice(0, -'webrtc'.length) + 'ws'
+        }
+        // fallback if the "stream url" is used (like http://<host>/stream.html?src=<source>
+        else if (!url.pathname.endsWith('/api/ws')) {
+            url.pathname = url.pathname.replace(/[^/]*$/, '') + 'api/ws'
         }
 
         // create media types array
@@ -81,15 +82,20 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         if (this.enableAudio) media.push('audio')
 
         url.searchParams.set('media', media.join('+'))
-        // change protocol to ws
-        url.protocol = this.$store.state.socket.protocol + ':'
 
         // output a warning, if no src is set in the url
         if (!url.searchParams.has('src')) {
             this.log('no src set in url')
         }
 
-        return this.convertUrl(url.toString(), this.printerUrl)
+        // keep user-entered absolute URLs, otherwise stay relative so convertUrl can resolve the host
+        const isAbsolute = /^https?:\/\//i.test(this.camSettings.stream_url)
+        const outputUrl = isAbsolute ? url.toString() : url.pathname + url.search
+
+        const wsUrl = new URL(this.convertUrl(outputUrl, this.printerUrl))
+        wsUrl.protocol = this.$store.state.socket.protocol + ':'
+
+        return wsUrl.toString()
     }
 
     get enableAudio() {
