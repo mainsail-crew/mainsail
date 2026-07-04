@@ -412,7 +412,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getPrinterConfigObjects: (state) => (objectNames: string[]) => {
-        const settings = state.configfile.settings
+        const settings = state.configfile?.settings
         if (!settings) return {}
 
         const output: Record<string, unknown> = {}
