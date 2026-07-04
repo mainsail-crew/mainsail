@@ -129,8 +129,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
             }
         }
 
-        const absolutePath = this.currentPath ? `gcodes${this.currentPath}` : 'gcodes'
-        addElementToItems(absolutePath, this.selectedFiles)
+        addElementToItems(`gcodes${this.currentPath}`, this.selectedFiles)
 
         this.$socket.emit(
             'server.files.zip',
