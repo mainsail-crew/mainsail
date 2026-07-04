@@ -95,6 +95,9 @@ export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, 
     }
 
     goToDirectory() {
+        // reset selectedFiles when changing directory to prevent wrong absolute paths
+        this.selectedFiles = []
+
         this.currentPath += '/' + this.item.filename
     }
 
