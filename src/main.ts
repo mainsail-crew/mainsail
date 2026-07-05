@@ -36,7 +36,7 @@ Vue.config.productionTip = false
 
 Vue.directive('observe-visibility', ObserveVisibility)
 
-Vue.component('VueLoadImage', VueLoadImage)
+Vue.component('VueLoadImage', VueLoadImage.default ?? VueLoadImage)
 
 Vue.use(VueToast, {
     duration: 3000,
