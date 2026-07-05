@@ -2,6 +2,54 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.18.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.18.1) - 2026-07-05
+### Bug Fixes and Improvements
+
+- **Gcodefiles**: Correct file path for multi gcode downloads ([#2567](https://github.com/mainsail-crew/mainsail/pull/2567))
+- **StartPrintDialog**: Pull gcode metadata to display thumbnails ([#2566](https://github.com/mainsail-crew/mainsail/pull/2566))
+- **Timelapse**: Reset selectedFiles array after folder switch ([#2574](https://github.com/mainsail-crew/mainsail/pull/2574))
+- **console**: Sanitize console messages using DOMPurify ([#2549](https://github.com/mainsail-crew/mainsail/pull/2549))
+- **store**: Prevent TypeError when configfile is not yet loaded ([#2580](https://github.com/mainsail-crew/mainsail/pull/2580))
+- **vite**: Optimize Vue chunking and deduplication in Vite ([#2547](https://github.com/mainsail-crew/mainsail/pull/2547))
+- **webcam**: Close stream from settings page, when dialog closed ([#2550](https://github.com/mainsail-crew/mainsail/pull/2550))
+- **webcam**: Resolve relative go2rtc stream URLs ([#2581](https://github.com/mainsail-crew/mainsail/pull/2581))
+- **webcams**: Debounce preview to prevent restarts while typing ([#2548](https://github.com/mainsail-crew/mainsail/pull/2548))
+
+### Refactor
+
+- **webcam**: Move Mjpegstreamer to web worker ([#2552](https://github.com/mainsail-crew/mainsail/pull/2552))
+
+### Localization
+
+- **ca**: Add Catalan translation file ([#2546](https://github.com/mainsail-crew/mainsail/pull/2546))
+- **cz**: Update Czech translation file
+- **de**: Update German translation file
+- **pl**: Update Polish translation file
+- **pt**: Update Portuguese translation file
+- **ru**: Update Russian translation file
+- **ru**: Update Russian translate file
+- **sk**: Update Slovak translation file
+- **sl**: Update Slovenian translation file
+- **tr**: Update Turkish translation file
+- **zh**: Update Chinese (Simplified) translation file
+- **zh_TW**: Update Chinese (Traditional) translation file
+- **zh_TW**: Update Chinese (Traditional Han script) translate file
+
+### Other
+
+- **changelog**: Skip vouch system auto-commits ([#2563](https://github.com/mainsail-crew/mainsail/pull/2563))
+- **deps**: Bump qs and @cypress/request ([#2551](https://github.com/mainsail-crew/mainsail/pull/2551))
+- **deps**: Upgrade TypeScript to v5 ([#2568](https://github.com/mainsail-crew/mainsail/pull/2568))
+- **deps**: Upgrade TypeScript to version v6 ([#2569](https://github.com/mainsail-crew/mainsail/pull/2569))
+- **deps**: Upgrade Vite to v8 ([#2571](https://github.com/mainsail-crew/mainsail/pull/2571))
+- **deps**: Upgrade some smaller dependencies ([#2572](https://github.com/mainsail-crew/mainsail/pull/2572))
+- **label-actions**: Update to dessant/label-actions@v5 ([#2565](https://github.com/mainsail-crew/mainsail/pull/2565))
+- **release**: Update release body text to add contributors ([#2562](https://github.com/mainsail-crew/mainsail/pull/2562))
+- **vite**: Remove Vue chunking and deduplication configuration ([#2577](https://github.com/mainsail-crew/mainsail/pull/2577))
+- **vouch**: Add weblate to VOUCHED list ([#2544](https://github.com/mainsail-crew/mainsail/pull/2544))
+- **vouch**: Enhance manage-by-issue workflow ([#2561](https://github.com/mainsail-crew/mainsail/pull/2561))
+- **vouch**: Add step to reopen and unlabel vouched PRs ([#2564](https://github.com/mainsail-crew/mainsail/pull/2564))
+
 ## [2.18.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.18.0) - 2026-06-21
 ### Features
 
