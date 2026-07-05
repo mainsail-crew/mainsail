@@ -218,7 +218,8 @@
         "UnsavedChanges": "未儲存的變更",
         "UnsavedChangesMessage": "您是否要儲存對 {filename} 所做的變更？",
         "UnsavedChangesSubMessage": "若不儲存，您的變更將會遺失。您可以在編輯器設定中停用此提示。",
-        "Uploading": "上傳中"
+        "Uploading": "上傳中",
+        "ViewModuleDocumentation": "查看 {module}文檔"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "您確定嗎？",
