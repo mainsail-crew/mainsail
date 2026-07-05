@@ -218,7 +218,8 @@
         "UnsavedChanges": "Несохранённые изменения",
         "UnsavedChangesMessage": "Сохранить изменения внесённые в файл {filename}?",
         "UnsavedChangesSubMessage": "Ваши изменения будут потеряны, если не сохранить их. Вы можете отключить это напоминание в настройках редактора.",
-        "Uploading": "Сохранение"
+        "Uploading": "Сохранение",
+        "ViewModuleDocumentation": "Посмотреть документацию {module}"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Вы уверены, что хотите это сделать?",
