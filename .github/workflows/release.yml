@@ -35,12 +35,10 @@ jobs:
 
       - name: git add & commit & push
         if: steps.package-version.outputs.current-version != github.event.inputs.version
-        uses: EndBug/add-and-commit@v9
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          add: 'package.json package-lock.json'
-          default_author: github_actions
-          message: 'chore: push version number to v${{ github.event.inputs.version }}'
-          push: true
+          commit_message: 'chore: push version number to v${{ github.event.inputs.version }}'
+          file_pattern: 'package.json package-lock.json'
 
   update-master-branch:
     needs: ['push-version-number']
@@ -103,7 +101,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release and upload build
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         id: create-release
         with:
           token: ${{ secrets.PAT }}
@@ -117,7 +115,7 @@ jobs:
         run: cp ./remote/* ./dist/
 
       - name: Upload to remote server
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.REMOTEHOST }}
           username: ${{ secrets.REMOTEUSER }}
@@ -156,6 +154,7 @@ jobs:
       - name: Show CHANGELOG
         run: |
           cat CHANGELOG.md
+
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: 'docs(changelog): update changelog'
