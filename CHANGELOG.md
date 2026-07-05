@@ -2,6 +2,15 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.18.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.18.2) - 2026-07-05
+### Bug Fixes and Improvements
+
+- **VueLoadImage**: Handle default export for VueLoadImage ([#2585](https://github.com/mainsail-crew/mainsail/pull/2585))
+
+### Other
+
+- **release**: Update GitHub Actions for release workflow ([#2583](https://github.com/mainsail-crew/mainsail/pull/2583))
+
 ## [2.18.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.18.1) - 2026-07-05
 ### Bug Fixes and Improvements
 
