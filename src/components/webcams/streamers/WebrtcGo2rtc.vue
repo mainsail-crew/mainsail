@@ -89,7 +89,8 @@ export default class WebrtcGo2rtc extends Mixins(BaseMixin, WebcamMixin) {
         }
 
         // keep user-entered absolute URLs, otherwise stay relative so convertUrl can resolve the host
-        const isAbsolute = /^https?:\/\//i.test(this.camSettings.stream_url)
+        const lower = this.camSettings.stream_url.toLowerCase()
+        const isAbsolute = lower.startsWith('http://') || lower.startsWith('https://')
         const outputUrl = isAbsolute ? url.toString() : url.pathname + url.search
 
         const wsUrl = new URL(this.convertUrl(outputUrl, this.printerUrl))
