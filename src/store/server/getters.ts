@@ -21,6 +21,7 @@ export const getters: GetterTree<ServerState, RootState> = {
                 message += '- Use the ⇵ arrow keys to navigate through the previous entries.\n'
 
                 events.unshift({
+                    id: 'console-help',
                     date: date,
                     message: message,
                     formatMessage: formatConsoleMessage(message),
