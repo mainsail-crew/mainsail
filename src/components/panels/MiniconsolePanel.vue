@@ -106,7 +106,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
     mdiCog = mdiCog
 
     @Ref() readonly miniConsoleScroll?: OverlayScrollbarsComponent
-    @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
+    @Ref() readonly gcodeCommandField!: ConsoleTextarea
 
     autoscrollTimer: number | null = null
 
