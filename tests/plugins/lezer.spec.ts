@@ -131,6 +131,20 @@ aliases:
         expect(find(tokens, '<')).toContain('operator')
     })
 
+    it('keeps mcu-prefixed pins and ratios as single string values', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[extruder]
+step_pin: EBBCan:PD0
+enable_pin: !EBBCan:PD2
+gear_ratio: 50:10`
+        )
+        expect(find(tokens, 'step_pin:')).toContain('propertyName')
+        expect(find(tokens, 'EBBCan:PD0')).toContain('string')
+        expect(find(tokens, '!EBBCan:PD2')).toContain('string')
+        expect(find(tokens, '50:10')).toContain('string')
+    })
+
     it('resumes config parsing after an indented gcode block', () => {
         const tokens = highlight(
             klipperConfigLanguage,

@@ -3,6 +3,10 @@
 // GcodeBody node (indentation-delimited, via the external tokenizer) and then
 // overlaid with jinja(base: gcode) through parseMixed (see index.ts).
 @external tokens gcodeBody from "./klipperConfig.tokens" { GcodeBody }
+// Klipper keys only exist at column 0; a ":" inside an indented/mid-line
+// value (e.g. "step_pin: EBBCan:PD0") must stay part of the value. Lezer
+// tokens can't anchor to line starts, so PropertyName is external.
+@external tokens propertyName from "./klipperConfig.tokens" { PropertyName }
 
 // Comments are skipped so an inline comment doesn't terminate a Property
 // (e.g. a "# EXP1 header" line inside a board_pins aliases: block).
@@ -46,12 +50,11 @@ StringValue { word }
   // gcode / enable keys -> gcode block. Mirrors the old /^(?:[A-Za-z]*_?gcode|enable):/
   GcodeKey { $[A-Za-z]* "_"? "gcode" ":" | "enable" ":" }
 
-  PropertyName { ![ \t\r\n:#;\[\],]+ ":" }
-
   // A word must contain at least one non-numeric char after an optional
   // numeric prefix, so it never fully matches a pure number. That allows
-  // word to rank above Number ("5V" -> word, "0.5" -> Number).
-  word { ("-" | "+")? $[0-9.]* ![0-9.+\- \t\r\n:#;\[\],=<>] ![ \t\r\n:#;\[\],=<>]* }
+  // word to rank above Number ("5V" -> word, "0.5" -> Number). ":" is a
+  // word char so "EBBCan:PD0" / "50:10" stay single values.
+  word { ("-" | "+")? $[0-9.]* ![0-9.+\- \t\r\n#;\[\],=<>] ![ \t\r\n#;\[\],=<>]* }
 
-  @precedence { Comment, GcodeKey, PropertyName, word, Number }
+  @precedence { Comment, GcodeKey, word, Number }
 }
