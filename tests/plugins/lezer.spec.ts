@@ -114,6 +114,23 @@ gcode:
         expect(nodeNameOf(klipperConfigLanguage, code, 'default')).toBe('FilterName')
     })
 
+    it('keeps board_pins aliases as string values despite an inline comment', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[board_pins]
+aliases:
+    # EXP1 header
+    EXP1_1=P2.8, EXP1_9=<GND>, EXP1_10=<5V>`
+        )
+        expect(find(tokens, '# EXP1 header')).toContain('comment')
+        expect(find(tokens, 'EXP1_1')).toContain('string')
+        expect(find(tokens, '5V')).toContain('string')
+        expect(find(tokens, 'P2.8')).toContain('string')
+        expect(find(tokens, 'GND')).toContain('string')
+        expect(find(tokens, '=')).toContain('operator')
+        expect(find(tokens, '<')).toContain('operator')
+    })
+
     it('resumes config parsing after an indented gcode block', () => {
         const tokens = highlight(
             klipperConfigLanguage,

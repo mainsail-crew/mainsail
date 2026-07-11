@@ -60,6 +60,7 @@ const klipperConfigParser = klipperConfigParserRaw.configure({
             GcodeKey: t.propertyName,
             Number: t.number,
             StringValue: t.string,
+            Operator: t.operator,
             Comment: t.lineComment,
             '[ ]': t.squareBracket,
         }),

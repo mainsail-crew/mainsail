@@ -4,12 +4,13 @@
 // overlaid with jinja(base: gcode) through parseMixed (see index.ts).
 @external tokens gcodeBody from "./klipperConfig.tokens" { GcodeBody }
 
-@skip { whitespace }
+// Comments are skipped so an inline comment doesn't terminate a Property
+// (e.g. a "# EXP1 header" line inside a board_pins aliases: block).
+@skip { whitespace | Comment }
 
 @top ConfigFile { item* }
 
 item {
-  Comment |
   SectionHeader |
   GcodeProperty |
   Property
@@ -20,7 +21,7 @@ SectionType { word }
 SectionName { word }
 
 Property { PropertyName value* }
-value { Number | StringValue | Comma }
+value { Number | StringValue | Comma | Operator }
 StringValue { word }
 
 // No skipping between the key and its body, so the external tokenizer starts
@@ -38,6 +39,8 @@ StringValue { word }
 
   Comma { "," }
 
+  Operator { "=" | "<" | ">" }
+
   Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
 
   // gcode / enable keys -> gcode block. Mirrors the old /^(?:[A-Za-z]*_?gcode|enable):/
@@ -45,7 +48,10 @@ StringValue { word }
 
   PropertyName { ![ \t\r\n:#;\[\],]+ ":" }
 
-  word { ![ \t\r\n:#;\[\],]+ }
+  // A word must contain at least one non-numeric char after an optional
+  // numeric prefix, so it never fully matches a pure number. That allows
+  // word to rank above Number ("5V" -> word, "0.5" -> Number).
+  word { ("-" | "+")? $[0-9.]* ![0-9.+\- \t\r\n:#;\[\],=<>] ![ \t\r\n:#;\[\],=<>]* }
 
-  @precedence { Comment, Number, GcodeKey, PropertyName, word }
+  @precedence { Comment, GcodeKey, PropertyName, word, Number }
 }
