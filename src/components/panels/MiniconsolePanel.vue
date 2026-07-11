@@ -108,6 +108,8 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
     @Ref() readonly miniConsoleScroll?: OverlayScrollbarsComponent
     @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
 
+    autoscrollTimer: number | null = null
+
     get consoleHeight() {
         return this.$store.state.gui.console.height ?? 300
     }
@@ -122,11 +124,12 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
 
     @Watch('events')
     eventsChanged() {
-        if (this.consoleDirection === 'shell' && this.autoscroll) {
-            setTimeout(() => {
-                this.scrollToBottom()
-            }, 50)
-        }
+        if (this.consoleDirection !== 'shell' || !this.autoscroll || this.autoscrollTimer !== null) return
+
+        this.autoscrollTimer = window.setTimeout(() => {
+            this.autoscrollTimer = null
+            this.scrollToBottom()
+        }, 50)
     }
 
     @Watch('autoscroll')
@@ -159,6 +162,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
 
         const instance = this.miniConsoleScroll.osInstance()
         instance?.scroll({ y: `${position}%` })
+    }
+
+    beforeDestroy() {
+        if (this.autoscrollTimer !== null) window.clearTimeout(this.autoscrollTimer)
     }
 }
 </script>
