@@ -24,10 +24,8 @@
                     <span>{{ $t('Machine.LogfilesPanel.Rollover') }}</span>
                 </v-tooltip>
             </template>
-            <v-card-text :class="'text-center text-lg-left'">
-                <v-row class="pt-3">
-                    <logfiles-panel-generic-log v-for="logfile in genericLogfiles" :key="logfile" :name="logfile" />
-                </v-row>
+            <v-card-text class="logfiles-grid pa-3">
+                <logfiles-panel-generic-log v-for="logfile in logfiles" :key="logfile" :name="logfile" />
             </v-card-text>
         </panel>
         <logfiles-panel-rollover-dialog v-model="showRolloverDialog" />
@@ -41,6 +39,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiFileDocumentEdit, mdiFileSyncOutline } from '@mdi/js'
 import { genericLogfiles } from '@/store/variables'
 import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/LogfilesPanelGenericLog.vue'
+import { FileStateFile } from '@/store/files/types'
 @Component({
     components: { LogfilesPanelGenericLog, Panel },
 })
@@ -48,8 +47,30 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentEdit = mdiFileDocumentEdit
     mdiFileSyncOutline = mdiFileSyncOutline
 
-    genericLogfiles = genericLogfiles
-
     showRolloverDialog = false
+
+    get filesInLogRoot() {
+        return this.$store.getters['files/getDirectory']('logs')?.childrens ?? []
+    }
+
+    get logfiles() {
+        const logfiles = ['klippy', 'moonraker']
+
+        genericLogfiles.forEach((logfile: string) => {
+            if (this.filesInLogRoot.findIndex((log: FileStateFile) => log.filename === `${logfile}.log`) === -1) return
+
+            logfiles.push(logfile)
+        })
+
+        return logfiles
+    }
 }
 </script>
+
+<style scoped>
+.logfiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+</style>

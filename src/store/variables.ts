@@ -157,7 +157,7 @@ export const hiddenDirectories = ['.git']
 /*
  * List of all downloadable logfiles
  */
-export const genericLogfiles = ['klippy', 'moonraker', 'crowsnest', 'mmu', 'sonar']
+export const genericLogfiles = ['crowsnest', 'mmu', 'sonar']
 
 /*
  * List of all rollover logfiles
