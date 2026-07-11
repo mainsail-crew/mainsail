@@ -53,7 +53,7 @@ gcode:
         expect(find(tokens, 'set')).toContain('keyword')
         expect(find(tokens, '{%')).toBeDefined()
         // gcode overlay on the literal text between jinja tags
-        expect(find(tokens, 'G1')).toContain('keyword')
+        expect(find(tokens, 'G1')).toContain('variableName')
         expect(find(tokens, 'F600')).toContain('string')
         expect(find(tokens, 'M117 parked')).toContain('string')
     })
@@ -84,8 +84,8 @@ gcode:
         )
         // the gcode commands after the MSG='{...}' line must stay commands, not
         // get eaten by the unclosed single quote
-        expect(find(tokens, 'M109')).toContain('keyword')
-        expect(find(tokens, 'G28')).toContain('keyword')
+        expect(find(tokens, 'M109')).toContain('variableName')
+        expect(find(tokens, 'G28')).toContain('variableName')
     })
 
     it('parses member access after a subscript across multiple lines', () => {
@@ -168,10 +168,10 @@ describe('lezer gcode grammar', () => {
 M117 hello
 ; comment`
         )
-        expect(find(tokens, 'G1')).toContain('keyword')
+        expect(find(tokens, 'G1')).toContain('variableName')
         expect(find(tokens, 'X10')).toContain('className')
         expect(find(tokens, 'F3000')).toContain('string')
-        expect(find(tokens, 'S200')).toContain('atom')
+        expect(find(tokens, 'S200')).toContain('number')
         expect(find(tokens, 'M117 hello')).toContain('string')
         expect(find(tokens, '; comment')).toContain('comment')
     })

@@ -17,11 +17,14 @@ import { parser as klipperConfigParserRaw } from './klipperConfig.parser'
 const gcodeParser = gcodeParserRaw.configure({
     props: [
         styleTags({
-            Command: t.keyword,
+            // same tag as MacroName: G1/M106 and TURN_OFF_HEATERS are both
+            // commands, and t.keyword would collide with the config-key blue
+            Command: t.variableName,
             Message: t.string,
             AxisWord: t.className,
             FeedWord: t.string,
-            ParamWord: t.atom,
+            // params like S0/T1 get the same color as macro param values (ENABLE=0)
+            ParamWord: t.number,
             Number: t.number,
             String: t.string,
             MacroName: t.variableName,
@@ -56,8 +59,10 @@ const klipperConfigParser = klipperConfigParserRaw.configure({
         styleTags({
             SectionType: t.namespace,
             SectionName: t.className,
-            PropertyName: t.propertyName,
-            GcodeKey: t.propertyName,
+            // definition() so config keys can be styled darker than the
+            // plain propertyName used by jinja variables (see Codemirror.vue)
+            PropertyName: t.definition(t.propertyName),
+            GcodeKey: t.definition(t.propertyName),
             Number: t.number,
             StringValue: t.string,
             Operator: t.operator,
