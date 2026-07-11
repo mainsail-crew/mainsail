@@ -67,7 +67,7 @@
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
                     <v-col>
-                        <overlay-scrollbars ref="miniConsoleScroll" :style="'height: ' + consoleHeight + 'px;'">
+                        <overlay-scrollbars ref="miniConsoleScroll" :style="overlayScrollbarStyle">
                             <console-table
                                 ref="console"
                                 :events="events"
@@ -110,6 +110,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
 
     get consoleHeight() {
         return this.$store.state.gui.console.height ?? 300
+    }
+
+    get overlayScrollbarStyle() {
+        return `height: ${this.consoleHeight}px`
     }
 
     get events() {
