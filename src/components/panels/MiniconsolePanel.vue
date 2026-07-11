@@ -67,10 +67,7 @@
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
                     <v-col>
-                        <overlay-scrollbars
-                            ref="miniConsoleScroll"
-                            :style="'height: ' + consoleHeight + 'px;'"
-                            :options="{}">
+                        <overlay-scrollbars ref="miniConsoleScroll" :style="'height: ' + consoleHeight + 'px;'">
                             <console-table
                                 ref="console"
                                 :events="events"
