@@ -94,7 +94,7 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
     dismissAll() {
         this.notifications.forEach(async (entry: GuiNotificationStateEntry) => {
             if (entry.id.startsWith('announcement')) {
-                await this.$store.dispatch('gui/notifications/close', { id: entry.id })
+                await this.$store.dispatch('gui/notifications/close', entry.id)
             }
 
             await this.$store.dispatch('gui/notifications/dismiss', { id: entry.id, type: 'reboot', time: null })
