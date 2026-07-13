@@ -1,0 +1,96 @@
+// Jinja templating as used by Klipper (gcode_macro).
+// Klipper configures jinja2.Environment('{%', '%}', '{', '}'):
+//   - statements use {% ... %}
+//   - EXPRESSIONS use SINGLE braces { ... }  (not {{ }} like stock jinja)
+//   - comments use {# ... #}
+// Text between tags is overlaid with the gcode parser via parseMixed (see index.ts).
+@top Template { (Text | Interpolation | StatementTag | Comment)* }
+
+@skip { space } {
+  Interpolation { InterpolationStart expr* InterpolationEnd }
+  StatementTag { StatementStart expr* StatementEnd }
+}
+
+expr {
+  Keyword |
+  Boolean |
+  Filter |
+  StringLiteral |
+  Number |
+  VariableName |
+  Operator |
+  LineComment
+}
+
+// Filter names are only function-like after a "|" pipe. Builtin names like
+// max / min / list are ordinary variables anywhere else (e.g. {% set max = .. %}).
+Filter { Pipe FilterName }
+FilterName { identifier }
+
+Keyword {
+  @specialize<identifier,
+    "if" | "elif" | "else" | "endif" |
+    "for" | "endfor" | "in" | "is" | "recursive" |
+    "and" | "or" | "not" |
+    "set" | "endset" | "macro" | "endmacro" | "call" | "endcall" |
+    "filter" | "endfilter" | "block" | "endblock" | "extends" |
+    "include" | "import" | "from" | "as" | "do" | "with" | "without" | "context" |
+    "loop" | "namespace">
+}
+
+Boolean {
+  @specialize<identifier, "true" | "false" | "True" | "False" | "none" | "None">
+}
+
+VariableName { identifier }
+
+@tokens {
+  space { $[ \t\r\n]+ }
+
+  InterpolationStart { "{" }
+  InterpolationEnd { "}" }
+  StatementStart { "{%" }
+  StatementEnd { "%}" }
+
+  // Text = any run that does not start a jinja tag. A bare "}" / "%}" outside a
+  // tag is just literal text (gcode), so only "{" breaks Text.
+  Text { ![{]+ }
+
+  Comment { "{#" blockCommentRest }
+  blockCommentRest { ![#]* "#"+ (![}#] ![#]* "#"+)* "}" }
+
+  // Klipper strips '#' / ';' comments at config-parse level, even inside
+  // multi-line {% ... %} statements, so they are valid line comments here too.
+  LineComment { ("#" | ";") ![\n]* }
+
+  Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
+
+  // bounded to a single line so an unclosed quote cannot swallow the rest of
+  // the template.
+  StringLiteral {
+    '"' (!["\\\n] | "\\" _)* '"'? |
+    "'" (!['\\\n] | "\\" _)* "'"?
+  }
+
+  identifier { $[A-Za-z_] $[A-Za-z0-9_]* ("." $[A-Za-z_] $[A-Za-z0-9_]*)* }
+
+  // "." handles member access after a subscript/call, e.g. printer[x].enabled
+  // (plain dotted names like printer.toolhead.x are matched as one identifier).
+  Pipe { "|" }
+
+  Operator { "+" | "-" | "*" | "/" | "//" | "**" | "%" | "==" | "!=" | ">=" | "<=" | ">" | "<" | "=" | "~" | "," | "." | "(" | ")" | "[" | "]" | ":" }
+
+  @precedence {
+    Comment,
+    LineComment,
+    StatementStart,
+    InterpolationStart,
+    StatementEnd,
+    Number,
+    StringLiteral,
+    Operator,
+    identifier,
+    InterpolationEnd,
+    Text
+  }
+}

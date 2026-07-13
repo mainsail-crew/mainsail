@@ -14,9 +14,8 @@ import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
 import { EditorState, Prec } from '@codemirror/state'
 import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode'
-import { HighlightStyle, indentUnit, StreamLanguage, syntaxHighlighting } from '@codemirror/language'
-import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
-import { gcode } from '@/plugins/StreamParserGcode'
+import { HighlightStyle, indentUnit, syntaxHighlighting } from '@codemirror/language'
+import { klipperConfig, gcode, klipperConfigLanguage } from '@/plugins/lezer'
 import { KlipperDocsTooltip } from '@/plugins/KlipperDocsTooltip'
 import { insertTab, indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
@@ -42,6 +41,28 @@ const yamlLightHighlightStyle = HighlightStyle.define(
         },
     ],
     { scope: yamlLanguage, themeType: 'light' }
+)
+
+// config keys (description:, gcode:, ...) in the darker vscode keyword blue,
+// so they differ from jinja variables which share the plain propertyName tag
+const klipperConfigDarkHighlightStyle = HighlightStyle.define(
+    [
+        {
+            tag: tags.definition(tags.propertyName),
+            color: '#569cd6',
+        },
+    ],
+    { scope: klipperConfigLanguage, themeType: 'dark' }
+)
+
+const klipperConfigLightHighlightStyle = HighlightStyle.define(
+    [
+        {
+            tag: tags.definition(tags.propertyName),
+            color: '#0000ff',
+        },
+    ],
+    { scope: klipperConfigLanguage, themeType: 'light' }
 )
 
 @Component
@@ -127,8 +148,13 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
             extensions.push(KlipperDocsTooltip(this.klipperConfigReference))
         }
 
-        if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
-        else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
+        if (['cfg', 'conf'].includes(this.fileExtension))
+            extensions.push(
+                klipperConfig(),
+                Prec.highest(syntaxHighlighting(klipperConfigDarkHighlightStyle)),
+                Prec.highest(syntaxHighlighting(klipperConfigLightHighlightStyle))
+            )
+        else if (['gcode'].includes(this.fileExtension)) extensions.push(gcode())
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
         else if (['yaml', 'yml'].includes(this.fileExtension)) {
             extensions.push(

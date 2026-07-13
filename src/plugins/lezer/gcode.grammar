@@ -1,0 +1,69 @@
+// Klipper-aware G-code grammar.
+// Flat token stream (no line structure) so it stays robust when used as the
+// `base` overlay of the Jinja parser, where the gcode text arrives in fragments
+// split around `{ ... }` / `{% ... %}` tags.
+@top Program { item* }
+
+@skip { spaces }
+
+item {
+  LineComment |
+  Message |
+  Command |
+  AxisWord |
+  FeedWord |
+  ParamWord |
+  Number |
+  String |
+  MacroName |
+  Operator
+}
+
+@tokens {
+  spaces { $[ \t\r\n]+ }
+
+  // Klipper strips '#' and ';' comments at config-parse level, so both are
+  // valid line comments inside gcode blocks.
+  LineComment { ("#" | ";") ![\n]* }
+
+  num { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
+
+  // M117 (and M118) take the rest of the line as a display message.
+  Message { $[Mm] ("117" | "118") ![\n]* }
+
+  // G1, M104, _G28 ...
+  Command { "_"? $[GMgm] @digit (@digit | ".")* }
+
+  // axis / move words: X10 Y-5 Z0.2 E1.2 I.. J.. P..
+  AxisWord { $[EePpXxYyZzIiJj] num }
+  // feed rate: F3000
+  FeedWord { $[Ff] num }
+  // tool / param: S200 T0
+  ParamWord { $[TtSs] num }
+
+  Number { num }
+
+  // bounded to a single line: an unclosed quote (e.g. the ' wrapping a jinja
+  // interpolation in MSG='{...}') must not swallow the following lines.
+  String { '"' !["\n]* '"'? | "'" !['\n]* "'"? }
+
+  // macro names and macro param keys: BED_MESH_CALIBRATE, PIN, VALUE ...
+  MacroName { $[A-Za-z_] $[A-Za-z0-9_]* }
+
+  Operator { "=" }
+
+  @precedence {
+    LineComment,
+    Message,
+    Command,
+    AxisWord,
+    FeedWord,
+    ParamWord,
+    Number,
+    String,
+    MacroName,
+    Operator
+  }
+}
+
+@detectDelim
