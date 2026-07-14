@@ -18,14 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout develop branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: 'develop'
           token: ${{ secrets.PAT }}
 
       - name: get-npm-version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Push version number
         if: steps.package-version.outputs.current-version != github.event.inputs.version
@@ -46,13 +46,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: 'develop'
           fetch-depth: 0
 
       - name: Install node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 20
 
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: 'develop'
           fetch-depth: 0
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: 'master'
           token: ${{ secrets.PAT }}
