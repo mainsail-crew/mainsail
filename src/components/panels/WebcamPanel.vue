@@ -15,7 +15,7 @@
                         <v-icon v-if="'icon' in currentCam" small class="mr-2">
                             {{ convertWebcamIcon(currentCam.icon) }}
                         </v-icon>
-                        <span class="d-none d-md-block">{{ 'name' in currentCam ? currentCam.name : 'unknown' }}</span>
+                        <span class="d-none d-md-block">{{ currentCam.name ?? 'unknown' }}</span>
                         <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
@@ -99,15 +99,16 @@ export default class WebcamPanel extends Mixins(BaseMixin, WebcamMixin) {
         this.$store.dispatch('gui/setCurrentWebcam', { page: this.currentPage, value: newVal })
     }
 
-    get currentCam(): any {
+    get currentCam(): GuiWebcamStateWebcam {
         const cam = this.webcams.find((cam: GuiWebcamStateWebcam) => cam.name === this.currentCamId)
 
         return (
-            cam ?? {
-                name: this.$t('Panels.WebcamPanel.All'),
+            cam ??
+            ({
+                name: this.$t('Panels.WebcamPanel.All').toString(),
                 service: 'grid',
                 icon: mdiViewGrid,
-            }
+            } as GuiWebcamStateWebcam)
         )
     }
 }

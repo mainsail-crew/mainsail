@@ -85,10 +85,9 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
 
         for (const file in locales) {
             const langKey = file.slice(file.lastIndexOf('/') + 1, file.lastIndexOf('.'))
-            const locale = await locales[file]()
+            const locale = (await locales[file]()) as { title: string }
 
             languages.push({
-                // @ts-ignore
                 text: locale.title,
                 value: langKey,
             })

@@ -43,7 +43,7 @@ export interface ServerHistoryStateJob {
         modified?: number
         uuid?: string
         nozzle_diameter?: number
-        [key: string]: any
+        [key: string]: unknown
     }
     note?: string
     print_duration: number
@@ -89,9 +89,14 @@ export interface ServerHistoryStateAllPrintStatusEntry {
 
 export type HistoryStatsValueNames = 'jobs' | 'filament' | 'time'
 
+export type HistoryListPanelColValue = Extract<
+    keyof ServerHistoryStateJob | keyof ServerHistoryStateJob['metadata'],
+    string
+>
+
 export interface HistoryListPanelCol {
     text: string
-    value: string
+    value: HistoryListPanelColValue
     align: string
     configable: boolean
     visible: boolean

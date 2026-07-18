@@ -13,6 +13,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
 import { defaultBigThumbnailBackground, thumbnailBigMin } from '@/store/variables'
+import { escapePath } from '@/plugins/helpers'
 
 @Component
 export default class StartPrintDialogThumbnail extends Mixins(BaseMixin) {
@@ -51,10 +52,9 @@ export default class StartPrintDialogThumbnail extends Mixins(BaseMixin) {
 
     get bigThumbnailUrl() {
         if (this.bigThumbnail === undefined || !('relative_path' in this.bigThumbnail)) return null
-
         const baseArray = [this.apiUrl, 'server/files/gcodes']
-        if (this.currentPathWithoutSlash) baseArray.push(this.currentPathWithoutSlash)
-        baseArray.push(this.bigThumbnail.relative_path)
+        if (this.currentPathWithoutSlash) baseArray.push(escapePath(this.currentPathWithoutSlash))
+        baseArray.push(escapePath(this.bigThumbnail.relative_path))
         const baseUrl = baseArray.join('/')
 
         return `${baseUrl}?timestamp=${this.fileTimestamp}`

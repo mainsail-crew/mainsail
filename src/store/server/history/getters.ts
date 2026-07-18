@@ -1,7 +1,8 @@
 import { GetterTree } from 'vuex'
 import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<ServerHistoryState, any> = {
+export const getters: GetterTree<ServerHistoryState, RootState> = {
     getTotalPrintTime(state) {
         let output = 0
 
@@ -112,7 +113,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
     },
 
     getFilteredJobList: (state, getters, rootState) => {
-        const hideStatus = rootState.gui.view.history.hidePrintStatus
+        const hideStatus = rootState.gui?.view?.history?.hidePrintStatus ?? []
 
         return state.jobs.filter((job: ServerHistoryStateJob) => {
             return !hideStatus.includes(job.status)

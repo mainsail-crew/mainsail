@@ -259,10 +259,11 @@
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import GCodeViewer from '@sindarius/gcodeviewer'
-import axios, { AxiosProgressEvent } from 'axios'
+import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
 import { escapePath, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodeStream from '@/components/gcodeviewer/CodeStream.vue'
+import type { GCodeViewerInstance } from '@/store/gcodeviewer/types'
 import {
     mdiCameraRetake,
     mdiCog,
@@ -286,10 +287,20 @@ interface downloadSnackbar {
     percent: number
     speed: number
     total: number
-    cancelTokenSource: any
+    cancelTokenSource: CancelTokenSource | null
 }
 
-let viewer: any = null
+interface PrintableObject {
+    name: string
+    polygon: [number, number][]
+}
+
+interface ViewerObjectMetadata {
+    cancelled?: boolean
+    name?: string
+}
+
+let viewer: GCodeViewerInstance | null = null
 @Component({
     components: { ConfirmationDialog, Panel, CodeStream },
 })
@@ -335,7 +346,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         percent: 0,
         speed: 0,
         total: 0,
-        cancelTokenSource: {},
+        cancelTokenSource: null,
     }
 
     excludeObject = {
@@ -366,7 +377,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer = this.$store.state.gcodeviewer?.viewerBackup ?? null
         await this.init()
 
-        if (this.loadedFile !== null) this.scrubFileSize = viewer.fileSize
+        if (this.loadedFile !== null && viewer) this.scrubFileSize = viewer.fileSize
         if (viewer) this.fileData = viewer.fileData
 
         this.resizeObserver = new ResizeObserver(() => this.handleResize())
@@ -433,7 +444,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.printerIsPrinting && this.sdCardFilePath === this.loadedFile
     }
 
-    get printing_objects() {
+    get printing_objects(): PrintableObject[] {
         return this.$store.state.printer?.exclude_object?.objects ?? []
     }
 
@@ -557,6 +568,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     finishLoad() {
         this.loading = false
+        if (viewer === null) return
+
         viewer.setCursorVisiblity(this.showCursor)
 
         this.refreshPrintingObjects()
@@ -574,9 +587,9 @@ export default class Viewer extends Mixins(BaseMixin) {
             x: number[]
             y: number[]
         }[] = []
-        this.printing_objects.forEach((object: any) => {
-            const xValues = object.polygon.map((point: number[]) => point[0])
-            const yValues = object.polygon.map((point: number[]) => point[1])
+        this.printing_objects.forEach((object) => {
+            const xValues = object.polygon.map((point) => point[0])
+            const yValues = object.polygon.map((point) => point[1])
 
             objects.push({
                 cancelled: this.excluded_objects.includes(object.name),
@@ -590,25 +603,29 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer?.buildObjects.showObjectSelection(this.showObjectSelection)
     }
 
-    async fileSelected(e: any) {
+    async fileSelected(e: Event) {
+        const input = e.target as HTMLInputElement | null
+        if (input === null || viewer === null) return
+
         const reader = new FileReader()
-        reader.addEventListener('load', async (event) => {
-            if (!event || !event.target) return
-            const blob = event.target.result
+        reader.addEventListener('load', async (event: ProgressEvent<FileReader>) => {
+            const blob = event.target?.result
             if (typeof blob === 'string') {
                 this.fileSize = blob.length
                 // Do something with result
-                await viewer.processFile(blob)
-                this.fileData = viewer.fileData
+                await viewer?.processFile(blob)
+                this.fileData = viewer?.fileData ?? ''
             }
             this.finishLoad()
         })
         this.tracking = false
-        if (e.target.files?.length) {
-            this.loadedFile = e?.target?.files[0].name
-            reader.readAsText(e.target.files[0])
+
+        const selectedFile = input.files?.[0]
+        if (selectedFile) {
+            this.loadedFile = selectedFile.name
+            reader.readAsText(selectedFile)
         }
-        e.target.value = ''
+        input.value = ''
     }
 
     async loadFile(filename: string) {
@@ -616,11 +633,12 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.downloadSnackbar.speed = 0
         this.downloadSnackbar.filename = filename.startsWith('gcodes/') ? filename.slice(7) : filename
         const CancelToken = axios.CancelToken
-        this.downloadSnackbar.cancelTokenSource = CancelToken.source()
+        const cancelTokenSource = CancelToken.source()
+        this.downloadSnackbar.cancelTokenSource = cancelTokenSource
 
         const text = await axios
             .get(this.apiUrl + '/server/files/' + escapePath(filename), {
-                cancelToken: this.downloadSnackbar.cancelTokenSource.token,
+                cancelToken: cancelTokenSource.token,
                 responseType: 'blob',
                 onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
                     this.downloadSnackbar.percent = (progressEvent.progress ?? 0) * 100
@@ -635,6 +653,8 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.downloadSnackbar.status = false
         this.loadedFile = this.downloadSnackbar.filename
 
+        if (viewer === null) return
+
         viewer.updateRenderQuality(this.renderQuality.value)
         await viewer.processFile(text)
         this.fileData = viewer.fileData
@@ -644,7 +664,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     cancelDownload() {
-        this.downloadSnackbar.cancelTokenSource.cancel('User canceled download gcode file')
+        this.downloadSnackbar.cancelTokenSource?.cancel('User canceled download gcode file')
     }
 
     async sleep(ms: number) {
@@ -657,7 +677,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     async reloadViewer() {
-        if (this.loadedFile === null) return
+        if (this.loadedFile === null || viewer === null) return
 
         if (this.loading) {
             //if we are actively loading signal a cancel and wait a second
@@ -677,7 +697,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     resetCamera() {
-        viewer.resetCamera()
+        viewer?.resetCamera()
     }
 
     setReloadRequiredFlag() {
@@ -897,6 +917,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     set cncMode(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'gcodeViewer.cncMode', value: newVal })
+        if (viewer === null) return
+
         viewer.gcodeProcessor.g1AsExtrusion = newVal
         viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering || newVal)
         this.reloadViewer()
@@ -907,13 +929,13 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     loadToolColors(colors: string[]) {
-        if (viewer && colors.length) {
-            viewer.gcodeProcessor.resetTools()
-            colors.forEach((color: string) => {
-                viewer.gcodeProcessor.addTool(color, this.nozzle_diameter)
-            })
-            this.setReloadRequiredFlag()
-        }
+        if (!viewer || colors.length === 0) return
+
+        viewer?.gcodeProcessor.resetTools()
+        colors.forEach((color: string) => {
+            viewer?.gcodeProcessor.addTool(color, this.nozzle_diameter)
+        })
+        this.setReloadRequiredFlag()
     }
 
     @Watch('extruderColors')
@@ -1088,6 +1110,11 @@ export default class Viewer extends Mixins(BaseMixin) {
             return
         }
 
+        if (viewer === null) {
+            this.scrubPlaying = false
+            return
+        }
+
         if (this.scrubInterval) {
             clearInterval(this.scrubInterval)
             this.scrubInterval = undefined
@@ -1098,11 +1125,11 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.scrubPosition = 0
         }
 
-        viewer.gcodeProcessor.updateFilePosition(this.scrubPosition - 30000)
+        viewer?.gcodeProcessor.updateFilePosition(this.scrubPosition - 30000)
         this.scrubInterval = setInterval(() => {
             this.scrubPosition += 100 * this.scrubSpeed
-            viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
-            viewer.simulateToolPosition()
+            viewer?.gcodeProcessor.updateFilePosition(this.scrubPosition)
+            viewer?.simulateToolPosition()
             if (this.tracking || this.scrubPosition >= this.scrubFileSize) {
                 this.scrubPlaying = false
             }
@@ -1123,11 +1150,13 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     fastForward(): void {
+        if (viewer === null) return
+
         this.scrubPosition = this.scrubFileSize
         viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
     }
 
-    objectCallback(metadata: any) {
+    objectCallback(metadata: ViewerObjectMetadata | null) {
         if (metadata?.cancelled === false) {
             this.excludeObject.name = metadata.name ?? 'UNKNOWN'
             this.excludeObject.bool = true

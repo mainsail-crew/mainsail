@@ -1,7 +1,8 @@
 import { GetterTree } from 'vuex'
 import { GuiMiscellaneousState, GuiMiscellaneousStateEntry } from '@/store/gui/miscellaneous/types'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<GuiMiscellaneousState, any> = {
+export const getters: GetterTree<GuiMiscellaneousState, RootState> = {
     getEntries: (state) => {
         const output: GuiMiscellaneousStateEntry[] = []
 

@@ -1,5 +1,5 @@
 <template>
-    <tr v-longpress:600="(e) => openContextMenu(e)" @contextmenu.prevent="openContextMenu($event)">
+    <tr v-longpress:600="openContextMenu" @contextmenu.prevent="openContextMenu($event)">
         <td class="icon">
             <v-icon :color="iconColor" :class="iconClass" tabindex="-1" @click="openEditDialog">
                 {{ icon }}
@@ -75,6 +75,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { convertName } from '@/plugins/helpers'
 import {
@@ -313,7 +314,7 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
         EventBus.$off(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
 
-    openContextMenu(event: MouseEvent) {
+    openContextMenu(event: MouseEvent | LongpressEvent) {
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 
         this.showContextMenu = true

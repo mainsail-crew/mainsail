@@ -104,7 +104,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
     }
 
     downloadSelectedFiles() {
-        if (this.selectedFiles.length === 1) {
+        if (this.selectedFiles.length === 1 && !this.selectedFiles[0].isDirectory) {
             const filepath = `${this.currentPath}/${this.selectedFiles[0].filename}`
             const href = `${this.apiUrl}/server/files/gcodes${escapePath(filepath)}`
             window.open(href)
@@ -117,7 +117,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
 
         const addElementToItems = (absolutPath: string, directory: FileStateFile[]) => {
             for (const file of directory) {
-                const filePath = `${absolutPath}/${escapePath(file.filename)}`
+                const filePath = `${absolutPath}/${file.filename}`
 
                 if (file.isDirectory && file.childrens) {
                     addElementToItems(filePath, file.childrens)
@@ -129,7 +129,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
             }
         }
 
-        addElementToItems('gcodes/' + this.currentPath, this.selectedFiles)
+        addElementToItems(`gcodes${this.currentPath}`, this.selectedFiles)
 
         this.$socket.emit(
             'server.files.zip',

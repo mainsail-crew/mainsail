@@ -74,11 +74,11 @@
 </template>
 
 <script lang="ts">
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { validGcodeExtensions } from '@/store/variables'
 import Component from 'vue-class-component'
-import axios, { AxiosProgressEvent } from 'axios'
+import axios, { AxiosProgressEvent, CancelTokenSource } from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
@@ -98,7 +98,7 @@ type uploadSnackbar = {
     percent: number
     speed: number
     total: number
-    cancelTokenSource: any
+    cancelTokenSource: CancelTokenSource | null
 }
 
 @Component({
@@ -135,9 +135,7 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
 
     formatFilesize = formatFilesize
 
-    declare $refs: {
-        fileUploadAndStart: HTMLFormElement
-    }
+    @Ref() readonly fileUploadAndStart!: HTMLInputElement
 
     get gcodeInputFileAccept() {
         if (this.isIOS) return []
@@ -251,27 +249,27 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     btnUploadAndStart() {
-        this.$refs.fileUploadAndStart.click()
+        this.fileUploadAndStart?.click()
     }
 
     async uploadAndStart() {
-        if (this.$refs.fileUploadAndStart?.files.length) {
-            await this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
-            const successFiles = []
-            for (const file of this.$refs.fileUploadAndStart?.files || []) {
-                const result = await this.doUploadAndStart(file)
-                successFiles.push(result)
-            }
+        if (!this.fileUploadAndStart?.files?.length) return
 
-            await this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
-            for (const file of successFiles) {
-                const text = this.$t('App.TopBar.UploadOfFileSuccessful', { file: file }).toString()
-                this.$toast.success(text)
-            }
-
-            this.$refs.fileUploadAndStart.value = ''
-            if (this.currentPage !== '/') await this.$router.push('/')
+        await this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
+        const successFiles = []
+        for (const file of this.fileUploadAndStart.files) {
+            const result = await this.doUploadAndStart(file)
+            successFiles.push(result)
         }
+
+        await this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
+        for (const file of successFiles) {
+            const text = this.$t('App.TopBar.UploadOfFileSuccessful', { file: file }).toString()
+            this.$toast.success(text)
+        }
+
+        this.fileUploadAndStart.value = ''
+        if (this.currentPage !== '/') await this.$router.push('/')
     }
 
     doUploadAndStart(file: File) {
@@ -312,7 +310,7 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     cancelUpload(): void {
-        this.uploadSnackbar.cancelTokenSource.cancel()
+        this.uploadSnackbar.cancelTokenSource?.cancel()
         this.uploadSnackbar.status = false
     }
 }

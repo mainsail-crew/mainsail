@@ -4,6 +4,7 @@ import { MutationTree } from 'vuex'
 import { ServerState } from '@/store/server/types'
 import { formatConsoleMessage } from '@/plugins/helpers'
 import { maxEventHistory } from '@/store/variables'
+import { v4 as uuidv4 } from 'uuid'
 
 export const mutations: MutationTree<ServerState> = {
     reset(state) {
@@ -109,6 +110,7 @@ export const mutations: MutationTree<ServerState> = {
             }
 
             state.events.push({
+                id: uuidv4(),
                 date,
                 message: message.message,
                 formatMessage: formatMessage,
@@ -129,6 +131,7 @@ export const mutations: MutationTree<ServerState> = {
         }
 
         state.events.push({
+            id: uuidv4(),
             date: payload.date,
             message: payload.message,
             formatMessage: payload.formatMessage,

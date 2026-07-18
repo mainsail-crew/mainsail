@@ -7,8 +7,14 @@ export interface VTextareaType extends HTMLInputElement {
 }
 
 export interface PrinterState {
-    [key: string]: any
+    [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
     tempHistory?: PrinterTempHistoryState
+}
+
+export interface EndstopItem {
+    type: 'endstop' | 'probe'
+    name: string
+    value: string
 }
 
 export interface PrinterStateHeater {
@@ -103,8 +109,8 @@ export interface PrinterStateMiscellaneous {
     pwm: boolean
     rpm: number
     scale: number
-    object: any
-    config: any
+    object: Record<string, unknown>
+    config: Record<string, unknown>
     off_below?: number
     max_power?: number
 }
@@ -164,16 +170,35 @@ export interface PrinterStateMacro {
     name: string
     description: string | null
     prop: {
-        [key: string]: any
+        [key: string]: unknown
     }
     variables: {
-        [key: string]: any
+        [key: string]: unknown
     }
     params: PrinterStateMacroParams
 }
 
 export interface PrinterStateKlipperConfig {
-    [key: string]: any
+    [key: string]: unknown
+}
+
+export interface PrinterConfigMcuTempSensor {
+    sensor_type?: string
+    sensor_mcu?: string
+    [key: string]: unknown
+}
+
+export interface PrinterTempSensorObject {
+    temperature?: number
+    measured_min_temp?: number
+    measured_max_temp?: number
+    [key: string]: unknown
+}
+
+export interface McuTempSensorEntry {
+    key: string
+    settings: PrinterConfigMcuTempSensor
+    object: PrinterTempSensorObject
 }
 
 export interface PrinterStateMcu {
@@ -203,6 +228,41 @@ export interface PrinterStateKlipperConfigWarning {
     value: string
 }
 
+export type PrinterConfigNumberLike = number | string
+
+export interface ExtruderConfigSettings {
+    pressure_advance: PrinterConfigNumberLike
+    pressure_advance_smooth_time: PrinterConfigNumberLike
+    step_pin: string
+    dir_pin: string
+    rotation_distance: PrinterConfigNumberLike
+    microsteps: PrinterConfigNumberLike
+    full_steps_per_rotation: PrinterConfigNumberLike
+    gear_ratio: string | number[][]
+    enable_pin: string
+    sensor_type: string
+    pullup_resistor: PrinterConfigNumberLike
+    sensor_pin: string
+    min_temp: PrinterConfigNumberLike
+    max_temp: PrinterConfigNumberLike
+    min_extrude_temp: PrinterConfigNumberLike
+    max_power: PrinterConfigNumberLike
+    smooth_time: PrinterConfigNumberLike
+    control: string
+    pid_kp: PrinterConfigNumberLike
+    pid_ki: PrinterConfigNumberLike
+    pid_kd: PrinterConfigNumberLike
+    heater_pin: string
+    pwm_cycle_time: PrinterConfigNumberLike
+    nozzle_diameter: PrinterConfigNumberLike
+    filament_diameter: PrinterConfigNumberLike
+    max_extrude_cross_section: PrinterConfigNumberLike
+    max_extrude_only_velocity: PrinterConfigNumberLike
+    max_extrude_only_accel: PrinterConfigNumberLike
+    max_extrude_only_distance: PrinterConfigNumberLike
+    instantaneous_corner_velocity: PrinterConfigNumberLike
+}
+
 export interface PrinterStateExtruder {
     key: string
     name: string
@@ -222,12 +282,12 @@ export interface PrinterGetterObject {
     name: string
     type: string
     state: {
-        [key: string]: any
+        [key: string]: unknown
     }
     config: {
         [key: string]: string
     }
     settings: {
-        [key: string]: any
+        [key: string]: unknown
     }
 }

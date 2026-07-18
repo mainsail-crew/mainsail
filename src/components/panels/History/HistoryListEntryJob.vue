@@ -1,7 +1,7 @@
 <template>
     <tr
         :key="item.job_id"
-        v-longpress:600="(e) => showContextMenu(e)"
+        v-longpress:600="showContextMenu"
         :class="cssClasses"
         @contextmenu="showContextMenu($event)"
         @click="detailsDialogBool = true">
@@ -122,6 +122,7 @@
 </template>
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import type { LongpressEvent } from '@/directives/longpress'
 import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanelDetailsDialog.vue'
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
@@ -252,7 +253,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$emit('select', newVal)
     }
 
-    showContextMenu(e: any) {
+    showContextMenu(e: MouseEvent | LongpressEvent) {
         e?.preventDefault()
         EventBus.$emit(CLOSE_CONTEXT_MENU)
 
@@ -290,17 +291,27 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
-        //@ts-ignore
-        let value = col.value in item ? item[col.value] : null
-        if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
-        if (col.value.startsWith('history_field_')) {
-            const fieldName = col.value.replace('history_field_', '')
-            const field = item.auxiliary_data?.find((field: any) => field.name === fieldName)
+        const key = col.value
+        let value: string | number | null = null
+        if (key in item) {
+            const raw = item[key as keyof ServerHistoryStateJob]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
+        } else if (key in item.metadata) {
+            const raw = item.metadata[key]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
+        }
+
+        if (key.startsWith('history_field_')) {
+            const fieldName = key.replace('history_field_', '')
+            const field = item.auxiliary_data?.find((field) => field.name === fieldName)
             if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
         }
+
         if (value === null) return '--'
 
-        if (col.value === 'slicer') value += '<br />' + item.metadata.slicer_version
+        if (key === 'slicer') return `${value}<br />${item.metadata.slicer_version}`
+
+        if (typeof value !== 'number') return value
 
         switch (col.outputType) {
             case 'filesize':
@@ -313,12 +324,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 return formatPrintTime(value, false)
 
             case 'temp':
-                return value?.toFixed() + ' °C'
+                return value.toFixed() + ' °C'
 
             case 'length':
                 if (value > 1000) return (value / 1000).toFixed(2) + ' m'
 
-                return value?.toFixed(2) + ' mm'
+                return value.toFixed(2) + ' mm'
 
             default:
                 return value

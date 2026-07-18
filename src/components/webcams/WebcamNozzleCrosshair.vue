@@ -16,7 +16,7 @@ import { Debounce } from 'vue-debounce-decorator'
 @Component
 export default class WebcamWrapper extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
-    @Ref() container!: HTMLDivElement
+    @Ref() readonly container!: HTMLDivElement
 
     clientHeight = 0
     resizeObserver: ResizeObserver | null = null

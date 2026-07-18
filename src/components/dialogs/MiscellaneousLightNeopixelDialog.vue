@@ -109,7 +109,7 @@ import { Component, Mixins, Prop, VModel } from 'vue-property-decorator'
 import { mdiCloseThick, mdiLightbulbOutline } from '@mdi/js'
 import BaseMixin from '@/components/mixins/base'
 import { caseInsensitiveSort, convertName } from '@/plugins/helpers'
-import { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
+import type { ColorPickerProps } from '@jaames/iro/dist/ColorPicker.d'
 import iro from '@jaames/iro'
 import { IroColor } from '@irojs/iro-core'
 import { Debounce } from 'vue-debounce-decorator'
@@ -244,38 +244,13 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
             margin: 15,
             layout: [],
         }
+        const layout: ColorPickerProps['layout'] = []
 
-        if (this.colorOrder.includes('R')) {
-            // @ts-ignore
-            options?.layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'red',
-                },
-            })
-        }
+        const existRed = this.colorOrder.includes('R')
+        const existGreen = this.colorOrder.includes('G')
+        const existBlue = this.colorOrder.includes('B')
 
-        if (this.colorOrder.includes('G')) {
-            // @ts-ignore
-            options?.layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'green',
-                },
-            })
-        }
-
-        if (this.colorOrder.includes('B')) {
-            // @ts-ignore
-            options?.layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'blue',
-                },
-            })
-        }
-
-        if (this.colorOrder.includes('R') && this.colorOrder.includes('G') && this.colorOrder.includes('B')) {
+        if (existRed && existGreen && existBlue) {
             options.layout = [
                 {
                     component: iro.ui.Wheel,
@@ -287,8 +262,38 @@ export default class MiscellaneousLightNeopixelDialog extends Mixins(BaseMixin) 
                     },
                 },
             ]
+
+            return options
         }
 
+        if (existRed) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'red',
+                },
+            })
+        }
+
+        if (existGreen) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'green',
+                },
+            })
+        }
+
+        if (existBlue) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'blue',
+                },
+            })
+        }
+
+        options.layout = layout
         return options
     }
 

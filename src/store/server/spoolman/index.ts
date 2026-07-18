@@ -3,6 +3,7 @@ import { ServerSpoolmanState } from '@/store/server/spoolman/types'
 import { actions } from '@/store/server/spoolman/actions'
 import { mutations } from '@/store/server/spoolman/mutations'
 import { getters } from '@/store/server/spoolman/getters'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): ServerSpoolmanState => {
     return {
@@ -24,7 +25,7 @@ export const getDefaultState = (): ServerSpoolmanState => {
 // initial state
 const state = getDefaultState()
 
-export const spoolman: Module<ServerSpoolmanState, any> = {
+export const spoolman: Module<ServerSpoolmanState, RootState> = {
     namespaced: true,
     state,
     getters,

@@ -218,7 +218,8 @@
         "UnsavedChanges": "Unsaved Changes",
         "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
         "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
-        "Uploading": "Uploading"
+        "Uploading": "Uploading",
+        "ViewModuleDocumentation": "View {module} documentation"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Are you sure?",
@@ -677,7 +678,9 @@
             "Unloading": "Unloading",
             "UnloadLane": "Unload Lane",
             "Weight": "Weight",
-            "WeightSubtitle": "The weight of the filament in grams (without spool)."
+            "WeightRemaining": "{weight}g remaining",
+            "WeightSubtitle": "The weight of the filament in grams (without spool).",
+            "WeightUsed": "{weight}g used"
         },
         "ExtruderControlPanel": {
             "Allowed": "Allowed",
@@ -777,6 +780,7 @@
         },
         "MmuPanel": {
             "Active": "Active",
+            "ButtonChangeTool": "Change Tool",
             "ButtonCheckAllGates": "Check All Gates",
             "ButtonCheckGate": "Check Gate",
             "ButtonEject": "Eject",
@@ -797,6 +801,10 @@
                 "AreYouSure": "Are you sure?"
             },
             "Disabled": "disabled",
+            "Drying": "Drying",
+            "DryingCancelled": "Drying cancelled",
+            "DryingComplete": "Drying complete",
+            "DryingQueued": "Drying queued",
             "EditGateMap": "Edit Filaments",
             "EditGateMapTitle": "Edit Filaments (Gate Map)",
             "EditTtgMap": "Map Tools",
@@ -829,6 +837,7 @@
             "Gear": "Gear",
             "Guard": "Guard",
             "Headline": "Mmu",
+            "Heater": "Heater",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
             "MmuMaintenanceDialog": {
@@ -897,6 +906,7 @@
             "Ok": "Ok",
             "PreGate": "Pre-Gate",
             "RecoverState": "Fix MMU State",
+            "ShowClimate": "Display Climate Info",
             "ShowClogTangleDetection": "Clog/Tangle Detection",
             "ShowDetails": "Filament Details",
             "ShowLogos": "Display Logo",
@@ -1068,6 +1078,7 @@
         },
         "WebcamPanel": {
             "All": "All",
+            "BrowserNotSupported": "Your browser does not support this webcam type.",
             "ConnectingTo": "Connecting to {url}",
             "Disconnected": "Disconnected",
             "ErrorWhileConnecting": "Error while connecting to {url}",
@@ -1209,6 +1220,8 @@
             "ConfirmUnsavedChanges": "Prompt to save or discard unsaved changes",
             "ConfirmUnsavedChangesDescription": "If enabled, the editor requires a confirmation to either save or discard the changes made. If disabled, changes are silently discarded.",
             "Editor": "Editor",
+            "KlipperDocsTooltips": "Enable tooltips to Klipper Docs",
+            "KlipperDocsTooltipsDescription": "When enabled, you can hover over config section headers and get a link to the documentation.",
             "KlipperRestartMethod": "Klipper restart method",
             "KlipperRestartMethodDescription": "Select which restart method will be used on 'Save & Restart' when editing Klipper config files.",
             "Spaces": "Spaces: {count}",

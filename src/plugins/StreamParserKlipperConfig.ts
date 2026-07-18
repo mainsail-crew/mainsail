@@ -1,7 +1,7 @@
 import { StreamParser, StringStream } from '@codemirror/language'
 import { gcode } from '@/plugins/StreamParserGcode'
 
-export const klipper_config: StreamParser<any> = {
+export const klipper_config: StreamParser<StreamParserKlipperConfigState> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
         /* see https://tedboy.github.io/jinja2/off_doc.templates.html */
         const operators = [
@@ -140,8 +140,8 @@ export const klipper_config: StreamParser<any> = {
         )
 
         function jinja2Element(stream: StringStream): string {
-            const pctMatch: any = stream.match(/^%}/)
-            const braceMatch: any = stream.match(/^}/)
+            const pctMatch = stream.match(/^%}/)
+            const braceMatch = stream.match(/^}/)
             function notJinja(): boolean {
                 return state.klipperMacroJinjaBraceStack.length === 0 && state.klipperMacroJinjaPctStack.length === 0
             }

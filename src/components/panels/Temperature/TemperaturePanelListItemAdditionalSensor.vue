@@ -5,6 +5,7 @@
             :key="keyName"
             :printer-object="printerObject"
             :object-name="objectName"
+            :sensor-type="sensorType"
             :key-name="keyName" />
     </div>
 </template>
@@ -29,6 +30,10 @@ export default class TemperaturePanelListItemAdditionalSensor extends Mixins(Bas
         if (this.objectName === 'z_thermal_adjust') return ['current_z_adjust']
 
         return Object.keys(this.printerObject).filter((key) => key !== 'temperature')
+    }
+
+    get sensorType() {
+        return this.additionalObjectName.split(' ')[0]
     }
 }
 </script>

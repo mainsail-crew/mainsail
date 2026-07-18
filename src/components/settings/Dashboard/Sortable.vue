@@ -41,6 +41,7 @@ import draggable from 'vuedraggable'
 import { mdiInformation, mdiLock } from '@mdi/js'
 import DashboardMixin from '@/components/mixins/dashboard'
 import SettingsDashboardSortableItem from '@/components/settings/Dashboard/SortableItem.vue'
+import { GuiStateLayoutoption } from '@/store/gui/types'
 
 @Component({
     components: { SettingsDashboardSortableItem, draggable },
@@ -65,25 +66,26 @@ export default class SettingsDashboardSortable extends Mixins(DashboardMixin) {
         return `${this.viewportName}Viewport`
     }
 
-    get layout() {
-        return this.$store.getters['gui/getPanels'](this.viewportName, this.column)
+    get layout(): GuiStateLayoutoption[] {
+        return this.$store.getters['gui/getPanels'](this.viewportName, this.column) as GuiStateLayoutoption[]
     }
 
-    set layout(newVal) {
-        newVal = newVal.filter((element: any) => element !== undefined)
+    set layout(newVal: Array<GuiStateLayoutoption | undefined>) {
+        const filteredLayout = newVal.filter((element) => element !== undefined)
 
-        this.$store.dispatch('gui/saveSetting', { name: `dashboard.${this.layoutname}`, value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: `dashboard.${this.layoutname}`, value: filteredLayout })
     }
 
     changeVisible(name: string, newVal: boolean) {
-        const index = this.layout.findIndex((element: any) => element.name === name)
-        if (index !== -1) {
-            this.layout[index].visible = newVal
-            this.$store.dispatch('gui/saveSetting', {
-                name: `dashboard.${this.layoutname}`,
-                value: this.layout,
-            })
-        }
+        const index = this.layout.findIndex((element) => element.name === name)
+        if (index === -1) return
+
+        const newLayout = [...this.layout]
+        newLayout[index] = { ...newLayout[index], visible: newVal }
+        this.$store.dispatch('gui/saveSetting', {
+            name: `dashboard.${this.layoutname}`,
+            value: newLayout,
+        })
     }
 }
 </script>

@@ -1,5 +1,9 @@
+import type GCodeViewer from '@sindarius/gcodeviewer'
+
+export type GCodeViewerInstance = InstanceType<typeof GCodeViewer>
+
 export interface GcodeviewerState {
-    viewerBackup: any
-    canvasBackup: any
+    viewerBackup: GCodeViewerInstance | null
+    canvasBackup: HTMLCanvasElement | null
     loadedFileBackup: string | null
 }

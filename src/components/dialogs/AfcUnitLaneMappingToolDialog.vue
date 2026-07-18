@@ -21,7 +21,7 @@
                         <v-btn
                             v-for="tool in afcMapList"
                             :key="tool"
-                            :disabled="tool.toLowerCase() === mappedTool.toLowerCase()"
+                            :disabled="mappedTools.includes(tool.toLowerCase())"
                             color="primary"
                             class="ma-2"
                             @click="mapTool(tool)">
@@ -56,8 +56,11 @@ export default class AfcUnitLaneMappingToolDialog extends Mixins(BaseMixin, AfcM
         return this.getAfcLaneObject(this.name)
     }
 
-    get mappedTool() {
-        return this.lane.map ?? '--'
+    get mappedTools(): string[] {
+        const map = this.lane.map
+        if (!map) return []
+
+        return Array.isArray(map) ? map.map((t: string) => t.toLowerCase()) : [map.toLowerCase()]
     }
 
     mapTool(newTool: string) {

@@ -136,6 +136,7 @@ import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
 import { mdiFilter, mdiPencil, mdiFilterOff, mdiDelete, mdiConsoleLine } from '@mdi/js'
+import { GuiConsoleStateFilter } from '@/store/gui/console/types'
 
 interface consoleForm {
     bool: boolean
@@ -144,6 +145,8 @@ interface consoleForm {
     name: string
     regex: string
 }
+
+type ConsoleFilter = Omit<GuiConsoleStateFilter, 'id'> & { id: string }
 
 @Component({
     components: { SettingsRow },
@@ -175,7 +178,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     get consoleFilters() {
-        return this.$store.getters['gui/console/getConsolefilters'] ?? []
+        return (this.$store.getters['gui/console/getConsolefilters'] ?? []) as ConsoleFilter[]
     }
 
     get availableDirections() {
@@ -255,7 +258,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     existsPresetName(name: string) {
-        return this.consoleFilters.findIndex((filter: any) => filter.name === name && filter.id !== this.form.id) >= 0
+        return this.consoleFilters.some((filter) => filter.name === name && filter.id !== this.form.id)
     }
 
     clearForm() {
@@ -265,7 +268,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
         this.form.regex = ''
     }
 
-    toggleFilter(filter: any) {
+    toggleFilter(filter: ConsoleFilter) {
         const values = {
             name: filter.name,
             bool: !filter.bool,
@@ -280,7 +283,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
         this.form.bool = true
     }
 
-    editFilter(filter: any) {
+    editFilter(filter: ConsoleFilter) {
         this.form.name = filter.name
         this.form.id = filter.id
         this.form.regex = filter.regex

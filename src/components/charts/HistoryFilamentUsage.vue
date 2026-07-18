@@ -10,20 +10,32 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Watch } from 'vue-property-decorator'
+import { Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import type { ECharts } from 'echarts/core'
+import type { ECBasicOption, TopLevelFormatterParams } from 'echarts/types/dist/shared.d'
+import type { EChartRef } from '@/types/echarts'
 import ThemeMixin from '../mixins/theme'
 import HistoryMixin from '@/components/mixins/history'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 
-@Component({})
+@Component
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin, ThemeMixin) {
-    declare $refs: {
-        historyFilamentUsage: any
+    @Ref('historyFilamentUsage') readonly historyFilamentUsage!: EChartRef | undefined
+
+    formatTooltip(params: TopLevelFormatterParams): string {
+        const entry = Array.isArray(params) ? params[0] : params
+        if (!Array.isArray(entry?.data) || typeof entry.data[0] !== 'number' || typeof entry.data[1] !== 'number')
+            return ''
+
+        const marker = typeof entry.marker === 'string' ? entry.marker : ''
+        const outputDate = this.formatDate(entry.data[0])
+        const outputValue = Math.round(entry.data[1] * 10) / 10
+
+        return `${marker}${outputDate}: ${outputValue}m`
     }
 
-    get chartOptions(): any {
+    get chartOptions(): ECBasicOption {
         return {
             animation: false,
             grid: {
@@ -35,21 +47,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
             tooltip: {
                 trigger: 'axis',
                 borderWidth: 0,
-                formatter: (datasets: any) => {
-                    let output = ''
-
-                    if (datasets.length) {
-                        output = datasets[0]['marker']
-                        const outputTime = datasets[0]['axisValueLabel']
-                        const a = outputTime.split(/[^0-9]/)
-                        const outputTimeDate = new Date(a[0], a[1] - 1, a[2])
-                        const outputValue = Math.round(datasets[0]['data'][1] * 10) / 10
-
-                        output += outputTimeDate.toLocaleDateString() + ': ' + outputValue + 'm'
-                    }
-
-                    return output
-                },
+                formatter: (params: TopLevelFormatterParams) => this.formatTooltip(params),
             },
             xAxis: {
                 type: 'time',
@@ -109,7 +107,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
         }
     }
 
-    get filamentUsageArray() {
+    get filamentUsageArray(): [number, number][] {
         const output: [number, number][] = []
         const startDate = new Date()
         startDate.setDate(startDate.getDate() - 14)
@@ -150,7 +148,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin, HistoryMixin,
     }
 
     get chart(): ECharts | null {
-        return this.$refs.historyFilamentUsage?.chart ?? null
+        return this.historyFilamentUsage?.chart ?? null
     }
 
     beforeDestroy() {

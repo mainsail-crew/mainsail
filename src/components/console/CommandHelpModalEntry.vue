@@ -16,7 +16,7 @@ import Component from 'vue-class-component'
 
 @Component
 export default class CommandHelpModalEntry extends Mixins(BaseMixin) {
-    @Prop({ required: true, type: String }) declare command: string
+    @Prop({ required: true, type: String }) readonly command!: string
 
     get commands(): { [key: string]: { help?: string } } {
         return this.$store.state.printer.gcode?.commands ?? {}

@@ -18,16 +18,7 @@ export default defineConfigWithVueTs(
     // eslintRecommended = disables core ESLint rules that conflict with TS
     vueTsConfigs.base,
     vueTsConfigs.eslintRecommended,
-
-    // Disable no-unused-vars for TS/Vue files — core rule doesn't understand
-    // TypeScript properly (false positives on type imports, declaration files).
-    // Will be replaced by @typescript-eslint/no-unused-vars when enabling vueTsConfigs.recommended
-    {
-        files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts', '**/*.vue'],
-        rules: {
-            'no-unused-vars': 'off',
-        },
-    },
+    vueTsConfigs.recommended,
 
     {
         languageOptions: {

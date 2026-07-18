@@ -1,12 +1,13 @@
 import { GetterTree } from 'vuex'
 import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
 import { formatConsoleMessage, formatFilesize } from '@/plugins/helpers'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<ServerState, any> = {
+export const getters: GetterTree<ServerState, RootState> = {
     getConsoleEvents:
         (state) =>
         (reverse = true, limit = 500) => {
-            const events = [...state.events].slice(limit * -1) ?? []
+            const events = state.events.slice(-limit)
 
             if (events.length < 20 && !state.console_cleared_this_session) {
                 const date = events.length ? events[0].date : new Date()
@@ -20,6 +21,7 @@ export const getters: GetterTree<ServerState, any> = {
                 message += '- Use the ⇵ arrow keys to navigate through the previous entries.\n'
 
                 events.unshift({
+                    id: 'console-help',
                     date: date,
                     message: message,
                     formatMessage: formatConsoleMessage(message),
@@ -87,7 +89,7 @@ export const getters: GetterTree<ServerState, any> = {
             }
 
             const cpuCors = state.system_info?.cpu_info?.cpu_count ?? 1
-            const load = Math.round((rootState.printer.system_stats?.sysload ?? 0) * 100) / 100
+            const load = Math.round((rootState.printer?.system_stats?.sysload ?? 0) * 100) / 100
             const loadPercent = Math.round((load / cpuCors) * 100)
 
             let loadProgressColor = 'primary'
@@ -96,7 +98,7 @@ export const getters: GetterTree<ServerState, any> = {
 
             let memoryFormat: null | string = null
             let memUsage: null | number = null
-            const memAvail = (rootState.printer.system_stats?.memavail ?? 0) * 1024
+            const memAvail = (rootState.printer?.system_stats?.memavail ?? 0) * 1024
             const memTotal = (state.system_info?.cpu_info?.total_memory ?? 0) * 1024
 
             if (memAvail > 0 && memTotal > 0) {

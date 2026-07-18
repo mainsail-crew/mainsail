@@ -24,7 +24,7 @@ export const actions: ActionTree<ServerUpdateManagerState, RootState> = {
                 continue
             }
 
-            if (['web', 'web_beta', 'python'].includes(configured_type)) {
+            if (['web', 'web_beta', 'python', 'executable'].includes(configured_type)) {
                 await commit('storeWebRepo', { ...module, name: key })
                 continue
             }

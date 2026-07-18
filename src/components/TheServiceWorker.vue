@@ -37,7 +37,7 @@ export default class TheServiceWorker extends Mixins(BaseMixin) {
         window.console.debug('PWA is registered')
     }
 
-    onRegisterError(error: any) {
+    onRegisterError(error: Error) {
         window.console.error('PWA registration error:', error)
     }
 

@@ -3,6 +3,7 @@ import { ServerTimelapseState } from '@/store/server/timelapse/types'
 import { actions } from '@/store/server/timelapse/actions'
 import { mutations } from '@/store/server/timelapse/mutations'
 import { getters } from '@/store/server/timelapse/getters'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): ServerTimelapseState => {
     return {
@@ -58,7 +59,7 @@ export const getDefaultState = (): ServerTimelapseState => {
 // initial state
 const state = getDefaultState()
 
-export const timelapse: Module<ServerTimelapseState, any> = {
+export const timelapse: Module<ServerTimelapseState, RootState> = {
     namespaced: true,
     state,
     getters,

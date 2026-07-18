@@ -49,7 +49,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
 import AfcMixin from '@/components/mixins/afc'
 import { afcIconLogo } from '@/plugins/afcIcons'
-import { VColorPickerColor } from 'vuetify/src/components/VColorPicker/util'
+import { VColorPickerColor } from '@/types/vuetify'
 import { Debounce } from 'vue-debounce-decorator'
 
 @Component({

@@ -1,7 +1,12 @@
 <template>
     <tr class="cursor-pointer" @click="setSpoolRow">
         <td style="width: 50px" class="pr-0 py-2">
-            <spool-icon :color="color" style="width: 50px; float: left" class="mr-3" />
+            <spool-icon
+                :color="color"
+                :multi-color-hexes="multi_color_hexes"
+                :multi-color-direction="multi_color_direction"
+                style="width: 50px; float: left"
+                class="mr-3" />
         </td>
 
         <td class="py-2" style="min-width: 300px">
@@ -52,6 +57,14 @@ export default class SpoolmanChangeSpoolDialogRow extends Mixins(BaseMixin, AfcM
         const color = this.spool.filament?.color_hex ?? '000'
 
         return `#${color}`
+    }
+
+    get multi_color_hexes() {
+        return this.spool.filament?.multi_color_hexes
+    }
+
+    get multi_color_direction() {
+        return this.spool.filament?.multi_color_direction
     }
 
     get id() {

@@ -29,20 +29,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-
-export interface UsbDevice {
-    bus_num: number
-    device_num: number
-    usb_location: string
-    vendor_id: string
-    product_id: string
-    manufacturer?: string
-    product?: string
-    class?: string
-    subclass?: string
-    protocol?: string
-    description?: string
-}
+import type { RPCResult } from '@/types/moonraker'
+import type { UsbDevice } from '@/types/moonraker/MachineRPC'
 
 @Component
 export default class DevicesDialogUsb extends Mixins(BaseMixin) {
@@ -63,7 +51,7 @@ export default class DevicesDialogUsb extends Mixins(BaseMixin) {
 
         this.devices = await fetch(this.apiUrl + '/machine/peripherals/usb')
             .then((res) => res.json())
-            .then((res) => res.result?.usb_devices ?? [])
+            .then((res: { result?: RPCResult<'machine.peripherals.usb'> }) => res.result?.usb_devices ?? [])
 
         this.loading = false
         this.loaded = true

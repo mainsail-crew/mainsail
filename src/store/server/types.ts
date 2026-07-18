@@ -15,9 +15,7 @@ export interface ServerState {
     warnings: string[]
     registered_directories: string[]
     events: ServerStateEvent[]
-    config: {
-        [key: string]: any
-    }
+    config: ServerStateConfig
     system_info: {
         available_services: string[]
         cpu_info: ServerStateCpuInfo
@@ -68,6 +66,7 @@ export interface ServerState {
 }
 
 export interface ServerStateEvent {
+    id: string
     date: Date
     time?: number
     type: string
@@ -149,4 +148,13 @@ export interface ServerStateNetworkInterface {
     rx_bytes: number
     tx_bytes: number
     details?: ServerStateNetwork
+}
+
+export interface ServerStateConfigSection {
+    [key: string]: string | number | boolean
+}
+
+export interface ServerStateConfig {
+    config: Record<string, ServerStateConfigSection>
+    orig: Record<string, ServerStateConfigSection>
 }

@@ -114,6 +114,7 @@ interface ColorData {
     green: number | null
     blue: number | null
     white: number | null
+    [key: string]: number | null
 }
 
 @Component({
@@ -257,36 +258,7 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             margin: 15,
             layout: [],
         }
-
-        if (this.existRed) {
-            // @ts-ignore
-            options?.layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'red',
-                },
-            })
-        }
-
-        if (this.existGreen) {
-            // @ts-ignore
-            options?.layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'green',
-                },
-            })
-        }
-
-        if (this.existBlue) {
-            // @ts-ignore
-            options?.layout.push({
-                component: iro.ui.Slider,
-                options: {
-                    sliderType: 'blue',
-                },
-            })
-        }
+        const layout: ColorPickerProps['layout'] = []
 
         if (this.existRed && this.existGreen && this.existBlue) {
             options.layout = [
@@ -300,8 +272,38 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
                     },
                 },
             ]
+
+            return options
         }
 
+        if (this.existRed) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'red',
+                },
+            })
+        }
+
+        if (this.existGreen) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'green',
+                },
+            })
+        }
+
+        if (this.existBlue) {
+            layout.push({
+                component: iro.ui.Slider,
+                options: {
+                    sliderType: 'blue',
+                },
+            })
+        }
+
+        options.layout = layout
         return options
     }
 
@@ -343,7 +345,6 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             white: this.white,
         }
 
-        // @ts-ignore
         color.white = payload.alpha * 255
 
         this.colorChanged(color)
@@ -357,7 +358,6 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             white: this.white,
         }
 
-        // @ts-ignore
         color[payload.name] = payload.value
 
         this.colorChanged(color)

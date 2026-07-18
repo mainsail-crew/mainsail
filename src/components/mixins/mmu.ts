@@ -48,14 +48,7 @@ export interface Mmu {
     slicer_color_rgb: number[][]
     tool_extrusion_multipliers: number[]
     tool_speed_multipliers: number[]
-    slicer_tool_map: {
-        tools: any
-        referenced_tools: number[]
-        initial_tool: number | null
-        purge_volumes: number[]
-        total_toolchanges: number | null
-        skip_automap: boolean
-    }
+    slicer_tool_map: MmuSlicerToolMap
     action:
         | typeof ACTION_IDLE
         | typeof ACTION_LOADING
@@ -96,6 +89,7 @@ export interface Mmu {
     spoolman_support: 'off' | 'readonly' | 'push' | 'pull'
     bowden_progress: number
     espooler_active: MmuEspoolerState
+    drying_state: MmuDryingState[]
     sensors: {
         mmu_pre_gate?: boolean
         mmu_gear?: boolean
@@ -149,9 +143,54 @@ export interface MmuMachineUnit {
     variable_bowden_lengths: boolean
     require_bowden_move: boolean
     filament_always_gripped: boolean
+    can_crossload: boolean
     has_bypass: boolean
     multi_gear: boolean
-    environment_sensor: string
+    environment_sensor?: string
+    environment_sensors?: string[]
+    filament_heater?: string
+    filament_heaters?: string[]
+}
+
+export type MmuDryingState = '' | 'active' | 'queued' | 'complete' | 'cancelled'
+
+export interface MmuFilamentHeater {
+    temperature: number
+    target: number
+    power: number
+}
+
+export interface MmuEnvironmentSensor {
+    temperature?: number
+    humidity?: number
+}
+
+export interface MmuSlicerToolMap {
+    tools: Record<string, MmuSlicerToolMapTool>
+    referenced_tools: number[]
+    initial_tool: number | null
+    purge_volumes: number[][]
+    total_toolchanges: number | null
+    skip_automap: boolean
+}
+
+export interface MmuSlicerToolMapTool {
+    color: string
+    material: string
+    temp: number
+    name: string
+    in_use: boolean
+}
+
+type MmuUnitGateMenuDisabled = boolean | ((gate: number) => boolean)
+type MmuUnitGateMenuAction = { kind: 'gcode'; command: string } | { kind: 'call'; fn: (gate: number) => void }
+
+export interface MmuUnitGateContextMenuItem {
+    icon: string
+    label: string
+    loading: string
+    disabled?: MmuUnitGateMenuDisabled
+    action: MmuUnitGateMenuAction
 }
 
 export const NO_FILAMENT_COLOR = '#808182E3'

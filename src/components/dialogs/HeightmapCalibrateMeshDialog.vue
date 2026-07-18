@@ -36,6 +36,7 @@
 </template>
 <script lang="ts">
 import { Component, Mixins, Ref, VModel, Watch } from 'vue-property-decorator'
+import type { FocusableRef } from '@/types/vuetify'
 import BaseMixin from '@/components/mixins/base'
 import { mdiCloseThick, mdiGrid } from '@mdi/js'
 
@@ -45,7 +46,7 @@ export default class HeightmapRenameProfileDialog extends Mixins(BaseMixin) {
     mdiGrid = mdiGrid
 
     @VModel({ type: Boolean }) showDialog!: boolean
-    @Ref() input!: HTMLInputElement
+    @Ref() readonly input!: FocusableRef
 
     isInvalidName = false
     name = ''

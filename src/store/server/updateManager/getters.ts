@@ -1,8 +1,9 @@
 import { GetterTree } from 'vuex'
 import { ServerUpdateManagerState, ServerUpdateManagerStateGuiList } from '@/store/server/updateManager/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<ServerUpdateManagerState, any> = {
+export const getters: GetterTree<ServerUpdateManagerState, RootState> = {
     getUpdateManagerList(state): ServerUpdateManagerStateGuiList[] {
         const output: ServerUpdateManagerStateGuiList[] = []
 

@@ -1,8 +1,9 @@
 import { GetterTree } from 'vuex'
 import { GuiMacrosState, GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<GuiMacrosState, any> = {
+export const getters: GetterTree<GuiMacrosState, RootState> = {
     getAllMacrogroups: (state) => {
         const macrogroups: GuiMacrosStateMacrogroup[] = []
 

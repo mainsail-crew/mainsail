@@ -1,8 +1,9 @@
 import { GetterTree } from 'vuex'
 import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import Vue from 'vue'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<ServerJobQueueState, any> = {
+export const getters: GetterTree<ServerJobQueueState, RootState> = {
     getJobs: (state, getters, rootState, rootGetters) => {
         const jobs: ServerJobQueueStateJob[] = []
 

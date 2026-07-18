@@ -1,8 +1,9 @@
 import { GetterTree } from 'vuex'
 import { GuiPresetsState, GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<GuiPresetsState, any> = {
+export const getters: GetterTree<GuiPresetsState, RootState> = {
     getCooldownGcode: (state) => {
         return state.cooldownGcode ?? 'TURN_OFF_HEATERS'
     },
@@ -45,8 +46,7 @@ export const getters: GetterTree<GuiPresetsState, any> = {
                 ) === -1
             ) {
                 output.push({
-                    // @ts-ignore
-                    value: parseFloat(preset.values[payload.name].value),
+                    value: Number(preset.values[payload.name].value),
                     text: preset.values[payload.name].value + ' °C',
                 })
             }

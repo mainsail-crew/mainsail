@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -60,32 +60,28 @@ export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin,
     mdiHelpCircle = mdiHelpCircle
     mdiCloseThick = mdiCloseThick
 
-    declare $refs: {
-        uploadBackupFile: HTMLInputElement
-    }
+    @Ref() readonly uploadBackupFile!: HTMLInputElement
 
     showDialog = false
     restoreableNamespaces: { value: string; label: string | TranslateResult }[] = []
     restoreCheckboxes: string[] = []
-    restoreObjects: any = {}
+    restoreObjects: Record<string, unknown> = {}
 
     onSelectRestoreCheckboxes(backupCheckboxes: string[]) {
         this.restoreCheckboxes = backupCheckboxes
     }
 
     async restoreDb() {
-        this.$refs?.uploadBackupFile?.click()
+        this.uploadBackupFile.click()
     }
 
     uploadRestore() {
-        if ((this.$refs.uploadBackupFile.files?.length ?? 0) === 0) {
+        const backup = this.uploadBackupFile?.files?.[0]
+        if (!backup) {
             window.console.error('No json uploaded')
             return
         }
 
-        // get file
-        // @ts-ignore
-        const backup = this.$refs?.uploadBackupFile?.files[0]
         const reader = new FileReader()
         reader.readAsText(backup, 'UTF-8')
         reader.onload = (evt) => {
@@ -105,7 +101,7 @@ export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin,
                 this.restoreableNamespaces = this.restoreableNamespaces.sort(this.sortNamespaces)
 
                 this.openDialog()
-            } catch (e) {
+            } catch {
                 Vue.$toast.error(this.$t('Settings.GeneralTab.CannotReadJson').toString())
             }
         }
@@ -114,7 +110,7 @@ export default class SettingsGeneralTabRestoreDatabase extends Mixins(BaseMixin,
         }
 
         // empty input file field
-        this.$refs.uploadBackupFile.value = ''
+        this.uploadBackupFile.value = ''
     }
 
     openDialog() {

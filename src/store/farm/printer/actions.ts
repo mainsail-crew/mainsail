@@ -81,7 +81,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     Object.assign(preload, { requestParams: wsData.params })
                     Object.assign(preload, result)
 
-                    dispatch(wsData.action, preload)
+                    if (wsData.action) dispatch(wsData.action, preload)
                 }
 
                 if (requestIndex !== -1) commit('removeWsData', requestIndex)

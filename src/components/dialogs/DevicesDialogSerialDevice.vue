@@ -33,8 +33,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { SerialDevice } from '@/components/dialogs/DevicesDialogSerial.vue'
 import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
+import type { SerialDevice } from '@/types/moonraker/MachineRPC'
 
 @Component({
     components: { TextfieldWithCopy },

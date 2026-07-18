@@ -67,10 +67,7 @@
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
                     <v-col>
-                        <overlay-scrollbars
-                            ref="miniConsoleScroll"
-                            :style="'height: ' + consoleHeight + 'px;'"
-                            :options="{}">
+                        <overlay-scrollbars ref="miniConsoleScroll" :style="overlayScrollbarStyle">
                             <console-table
                                 ref="console"
                                 :events="events"
@@ -94,6 +91,7 @@ import { mdiCog, mdiConsoleLine, mdiTrashCan } from '@mdi/js'
 import CommandHelpModal from '@/components/console/CommandHelpModal.vue'
 import ConsoleMixin from '@/components/mixins/console'
 import ConsoleTextarea from '@/components/inputs/ConsoleTextarea.vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 @Component({
     components: {
@@ -107,11 +105,17 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
     mdiConsoleLine = mdiConsoleLine
     mdiCog = mdiCog
 
-    @Ref() readonly miniConsoleScroll!: any
-    @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
+    @Ref() readonly miniConsoleScroll?: OverlayScrollbarsComponent
+    @Ref() readonly gcodeCommandField!: ConsoleTextarea
+
+    autoscrollTimer: number | null = null
 
     get consoleHeight() {
         return this.$store.state.gui.console.height ?? 300
+    }
+
+    get overlayScrollbarStyle() {
+        return `height: ${this.consoleHeight}px`
     }
 
     get events() {
@@ -120,11 +124,12 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
 
     @Watch('events')
     eventsChanged() {
-        if (this.consoleDirection === 'shell' && this.autoscroll) {
-            setTimeout(() => {
-                this.scrollToBottom()
-            }, 50)
-        }
+        if (this.consoleDirection !== 'shell' || !this.autoscroll || this.autoscrollTimer !== null) return
+
+        this.autoscrollTimer = window.setTimeout(() => {
+            this.autoscrollTimer = null
+            this.scrollToBottom()
+        }, 50)
     }
 
     @Watch('autoscroll')
@@ -157,6 +162,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin, ConsoleMixin) {
 
         const instance = this.miniConsoleScroll.osInstance()
         instance?.scroll({ y: `${position}%` })
+    }
+
+    beforeDestroy() {
+        if (this.autoscrollTimer !== null) window.clearTimeout(this.autoscrollTimer)
     }
 }
 </script>

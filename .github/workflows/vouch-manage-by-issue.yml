@@ -1,0 +1,53 @@
+name: Vouch Manage by Issue
+
+on:
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: vouch-manage
+  cancel-in-progress: false
+
+jobs:
+  manage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop branch
+        uses: actions/checkout@v7
+        with:
+          ref: 'develop'
+          token: ${{ secrets.VOUCH_TOKEN }}
+
+      - name: Setup Vouch CLI-Tool
+        uses: mitchellh/vouch/action/setup-vouch@v1
+
+      - name: Execute Vouch Manage CLI-Tool
+        id: vouch
+        env:
+          GITHUB_TOKEN: ${{ secrets.VOUCH_TOKEN }}
+        run: |
+          output=$(vouch gh-manage-by-issue \
+            ${{ github.event.issue.number }} ${{ github.event.comment.id }} \
+            -R ${{ github.repository }} \
+            --dry-run=false \
+            --commit=false)
+          echo "$output"
+          echo "status=$(echo "$output" | tail -n1)" >> "$GITHUB_OUTPUT"
+
+      - name: Commit & Push VOUCHED.td file
+        if: steps.vouch.outputs.status != 'unchanged'
+        uses: EndBug/add-and-commit@v10
+        with:
+          add: '.github/VOUCHED.td'
+          default_author: github_actions
+          message: 'chore(vouch): update VOUCHED contributors'
+          push: true
+
+      - name: Add reaction to comment
+        if: steps.vouch.outputs.status != 'unchanged'
+        env:
+          GH_TOKEN: ${{ secrets.VOUCH_TOKEN }}
+        run: |
+          gh api -X POST \
+            /repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -f content=+1

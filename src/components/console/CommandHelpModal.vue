@@ -1,21 +1,18 @@
 <template>
     <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" :fullscreen="isMobile">
         <template #activator="{ on, attrs }">
-            <template v-if="inToolbar">
-                <v-btn icon tile v-bind="attrs" v-on="on">
-                    <v-icon small>{{ mdiHelp }}</v-icon>
-                </v-btn>
-            </template>
-            <template v-else>
-                <v-btn
-                    class="gcode-command-btn px-2 minwidth-0"
-                    color="lightgray"
-                    :small="isMini"
-                    v-bind="attrs"
-                    v-on="on">
-                    <v-icon>{{ mdiHelp }}</v-icon>
-                </v-btn>
-            </template>
+            <v-btn v-if="inToolbar" icon tile v-bind="attrs" v-on="on">
+                <v-icon small>{{ mdiHelp }}</v-icon>
+            </v-btn>
+            <v-btn
+                v-else
+                class="gcode-command-btn px-2 minwidth-0"
+                color="lightgray"
+                :small="isMini"
+                v-bind="attrs"
+                v-on="on">
+                <v-icon>{{ mdiHelp }}</v-icon>
+            </v-btn>
         </template>
         <template #default>
             <panel
@@ -70,8 +67,8 @@ import CommandHelpModalEntry from '@/components/console/CommandHelpModalEntry.vu
     components: { CommandHelpModalEntry, Panel },
 })
 export default class CommandHelpModal extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: false }) declare isMini: boolean
-    @Prop({ required: false, default: false }) declare inToolbar: boolean
+    @Prop({ required: false, default: false }) readonly isMini!: boolean
+    @Prop({ required: false, default: false }) readonly inToolbar!: boolean
 
     cmdListSearch = ''
     isOpen = false

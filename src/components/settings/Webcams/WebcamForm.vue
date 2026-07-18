@@ -1,5 +1,5 @@
 <template>
-    <v-form ref="webcamForm" v-model="valid" @submit.prevent="submit">
+    <v-form ref="webcamForm" v-model="valid" v-observe-visibility="visibilityChanged" @submit.prevent="submit">
         <v-card-title>{{ title }}</v-card-title>
         <v-card-text>
             <v-row>
@@ -434,7 +434,8 @@
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-center position-sticky" style="top: 80px; align-self: flex-start">
                     <webcam-wrapper
-                        :webcam="webcam"
+                        v-if="showPreviewWebcam"
+                        :webcam="previewWebcam"
                         page="settings"
                         overlay-display-mode="dummy"
                         :font-size-override="8" />
@@ -449,7 +450,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import OverlayPositionButton from '@/components/settings/Webcams/OverlayPositionButton.vue'
@@ -495,6 +496,10 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     selectIcon = false
     valid = false
     oldWebcamName = ''
+
+    showPreviewWebcam = false
+    previewWebcam: GuiWebcamStateWebcam = {} as GuiWebcamStateWebcam
+    previewDebounce: ReturnType<typeof setTimeout> | null = null
 
     rules = {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
@@ -891,8 +896,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
 
-        // @ts-ignore
-        this.webcam.extra_data.hideFps = newVal
+        this.webcam.extra_data!.hideFps = newVal
     }
 
     get enableAudio() {
@@ -908,8 +912,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
             return
         }
 
-        // @ts-ignore
-        this.webcam.extra_data.enableAudio = newVal
+        this.webcam.extra_data!.enableAudio = newVal
     }
 
     get nozzleCrosshairAvailable() {
@@ -960,6 +963,24 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
     mounted() {
         this.oldWebcamName = this.webcam.name
+        this.previewWebcam = this.cloneWebcam(this.webcam)
+    }
+
+    beforeDestroy() {
+        if (this.previewDebounce) clearTimeout(this.previewDebounce)
+    }
+
+    cloneWebcam(webcam: GuiWebcamStateWebcam): GuiWebcamStateWebcam {
+        return JSON.parse(JSON.stringify(webcam))
+    }
+
+    @Watch('webcam', { deep: true })
+    onWebcamChanged() {
+        if (this.previewDebounce) clearTimeout(this.previewDebounce)
+
+        this.previewDebounce = setTimeout(() => {
+            this.previewWebcam = this.cloneWebcam(this.webcam)
+        }, 500)
     }
 
     existsWebcamName(name: string) {
@@ -973,6 +994,10 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
         // If we are editing a webcam, we want to check if the name only exists once (the one we are editing)
         return count >= 1
+    }
+
+    visibilityChanged(newVal: boolean) {
+        this.showPreviewWebcam = newVal
     }
 
     submit() {

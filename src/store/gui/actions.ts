@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiState, GuiStateDashboard, GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { RootState } from '@/store/types'
 import { getDefaultState } from './index'
 import { excludeKeys, themeDir } from '@/store/variables'
-import { deletePath } from '@/plugins/helpers'
+import { deletePath, isRecord } from '@/plugins/helpers'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
@@ -57,7 +58,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         if ('presets' in payload.value && Array.isArray(payload.value.presets)) {
             window.console.debug('update presets to new namespace')
 
-            payload.value.presets.forEach((preset: any) => {
+            payload.value.presets.forEach((preset: GuiPresetsStatePreset) => {
                 dispatch('presets/store', { values: preset })
             })
 
@@ -80,8 +81,8 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         //update tools to temperatures panel from V2.1.x to V2.2.0
         if ('dashboard' in payload.value) {
-            const dashboard = payload.value.dashboard
-            const layouts = [
+            const dashboard = payload.value.dashboard as GuiStateDashboard
+            const layouts: GuiStateDashboardLayoutKey[] = [
                 'mobileLayout',
                 'tabletLayout1',
                 'tabletLayout2',
@@ -94,14 +95,15 @@ export const actions: ActionTree<GuiState, RootState> = {
 
             layouts.forEach((layout) => {
                 if (layout in dashboard) {
-                    const index = dashboard[layout].findIndex((entry: GuiStateLayoutoption) => entry.name === 'tools')
+                    const layoutArray = dashboard[layout] as GuiStateLayoutoption[]
+                    const index = layoutArray.findIndex((entry) => entry.name === 'tools')
 
                     if (index !== -1) {
-                        dashboard[layout][index].name = 'temperature'
+                        layoutArray[index].name = 'temperature'
 
                         dispatch('saveSetting', {
                             name: 'dashboard.' + layout,
-                            value: dashboard[layout],
+                            value: layoutArray,
                         })
                     }
                 }
@@ -121,15 +123,17 @@ export const actions: ActionTree<GuiState, RootState> = {
         const urlDefault =
             rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
         const responseDefault = await fetch(urlDefault)
-        let defaults: any = {}
+        let defaults: Record<string, unknown> & { error?: { code?: number } } = {}
         if (responseDefault) {
             defaults = await responseDefault.json()
             if (defaults.error?.code === 404) defaults = {}
         }
 
         for (const key in defaults) {
-            if (['webcams', 'timelapse'].includes(key)) {
-                for (const key2 of defaults[key]) {
+            const namespaceDefaults = defaults[key]
+
+            if (['webcams', 'timelapse'].includes(key) && isRecord(namespaceDefaults)) {
+                for (const key2 of Object.keys(namespaceDefaults)) {
                     await fetch(baseUrl, {
                         method: 'POST',
                         headers: {
@@ -138,7 +142,7 @@ export const actions: ActionTree<GuiState, RootState> = {
                         body: JSON.stringify({
                             namespace: key,
                             key: key2,
-                            value: defaults[key][key2],
+                            value: namespaceDefaults[key2],
                         }),
                     })
                 }
@@ -151,7 +155,7 @@ export const actions: ActionTree<GuiState, RootState> = {
                     body: JSON.stringify({
                         namespace: 'mainsail',
                         key: key,
-                        value: defaults[key],
+                        value: namespaceDefaults,
                     }),
                 })
             }
@@ -235,7 +239,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         const urlDefault =
             rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
 
-        let defaults: any = {}
+        let defaults: Record<string, unknown> = {}
         try {
             defaults = await fetch(urlDefault).then((result) => result.json())
         } catch (error) {
@@ -255,18 +259,21 @@ export const actions: ActionTree<GuiState, RootState> = {
                 }
 
                 if (key in defaults) {
-                    for (const key2 of defaults[key]) {
-                        await fetch(baseUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                namespace: key,
-                                key: key2,
-                                value: defaults[key][key2],
-                            }),
-                        })
+                    const namespaceDefaults = defaults[key]
+                    if (isRecord(namespaceDefaults)) {
+                        for (const key2 of Object.keys(namespaceDefaults)) {
+                            await fetch(baseUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    namespace: key,
+                                    key: key2,
+                                    value: namespaceDefaults[key2],
+                                }),
+                            })
+                        }
                     }
                 }
             } else if (key === 'history_jobs') {
@@ -298,11 +305,11 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     async backupMoonrakerDB({ rootGetters }, payload) {
-        const backup: any = {}
+        const backup: Record<string, Record<string, unknown>> = {}
 
         const responseMainsail = await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail')
         const objectsMainsail = await responseMainsail.json()
-        const mainsailDb = objectsMainsail?.result?.value ?? {}
+        const mainsailDb = (objectsMainsail?.result?.value ?? {}) as Record<string, unknown>
 
         for (const key of payload) {
             if (['timelapse', 'webcams'].includes(key)) {
@@ -310,9 +317,12 @@ export const actions: ActionTree<GuiState, RootState> = {
 
                 const response = await fetch(url)
                 const objects = await response.json()
-                if (objects?.result?.value) backup[key] = { ...objects?.result?.value }
-            } else if (key in mainsailDb) {
-                backup[key] = { ...mainsailDb[key] }
+                if (isRecord(objects?.result?.value)) backup[key] = { ...objects?.result?.value }
+            } else {
+                const mainsailValue = mainsailDb[key]
+                if (!isRecord(mainsailValue)) continue
+
+                backup[key] = { ...mainsailValue }
 
                 excludeKeys
                     .filter((excludeKey) => excludeKey.startsWith(key + '.'))
@@ -425,10 +435,9 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    resetLayout({ dispatch }, name) {
+    resetLayout({ dispatch }, name: GuiStateDashboardLayoutKey) {
         const defaultState = getDefaultState()
-        // @ts-ignore
-        const newVal: any = defaultState.dashboard[name] ?? []
+        const newVal = defaultState.dashboard[name]
 
         dispatch('saveSetting', {
             name: 'dashboard.' + name,
@@ -437,10 +446,11 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     updateGcodeviewerCache({ dispatch, state }, payload) {
-        const klipperCache = (state.gcodeViewer.klipperCache as { [key: string]: any }) ?? {}
+        const klipperCache = state.gcodeViewer.klipperCache as Record<string, unknown>
+        const payloadCache = payload as Record<string, unknown>
 
-        Object.keys(payload).forEach((key) => {
-            const value = payload[key]
+        Object.keys(payloadCache).forEach((key) => {
+            const value = payloadCache[key]
             const oldValue = key in klipperCache ? klipperCache[key] : null
 
             if (JSON.stringify(value) !== JSON.stringify(oldValue))

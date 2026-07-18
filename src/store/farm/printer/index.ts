@@ -4,6 +4,7 @@ import { actions } from '@/store/farm/printer/actions'
 import { mutations } from '@/store/farm/printer/mutations'
 import { getters } from '@/store/farm/printer/getters'
 import { Module } from 'vuex'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): FarmPrinterState => {
     return {
@@ -46,7 +47,7 @@ const state = (): FarmPrinterState => {
     return getDefaultState()
 }
 
-export const printer: Module<FarmPrinterState, any> = {
+export const printer: Module<FarmPrinterState, RootState> = {
     namespaced: true,
     state,
     getters,

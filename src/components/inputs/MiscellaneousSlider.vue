@@ -258,7 +258,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     // input validation //
-    checkInvalidChars(event: any): void {
+    checkInvalidChars(event: KeyboardEvent): void {
         // add '-' to invalid characters if no negative input is allowed
         if (this.min >= 0) this.invalidChars.push('-')
         if (this.invalidChars.includes(event.key)) event.preventDefault()

@@ -55,7 +55,7 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
         this.visible = false
     }
 
-    onDragOverWindow(e: any) {
+    onDragOverWindow(e: DragEvent) {
         const types = e.dataTransfer?.types ?? []
         if (!types.includes('Files')) return
 
@@ -65,12 +65,12 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
         this.showDropZone()
     }
 
-    onDragLeaveWindow(e: any) {
+    onDragLeaveWindow(e: DragEvent) {
         e.preventDefault()
         this.hideDropZone()
     }
 
-    async onDrop(e: any) {
+    async onDrop(e: DragEvent) {
         e.preventDefault()
         this.hideDropZone()
 

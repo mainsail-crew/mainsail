@@ -91,7 +91,7 @@ export default class GcodefilesPanelTable extends Mixins(BaseMixin, GcodefilesMi
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
     }
 
-    advancedSearch(value: any, search: string | null) {
+    advancedSearch(value: unknown, search: string | null) {
         if (search === null) return false
         if (typeof value !== 'string') return false
 

@@ -48,7 +48,7 @@ export interface FileStateFile {
     metadataPulled?: boolean
     metadataRequested?: boolean
     size?: number
-    [key: string]: any
+    [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface FileStateGcodefile extends FileStateFile {
@@ -61,7 +61,7 @@ export interface FileStateGcodefile extends FileStateFile {
     last_status: string | null
     last_start_time: Date | null
     last_total_duration: number | null
-    [key: string]: any
+    [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface FileStateGcodefileFilament {
@@ -94,7 +94,7 @@ export interface ApiGetDirectoryReturn {
     files: ApiGetDirectoryReturnFile[]
     disk_usage: FileStateDiskUsage
     root_info?: FileStateRootInfo
-    requestParams?: any
+    requestParams?: Record<string, unknown>
 }
 
 export interface ApiGetDirectoryReturnDir {

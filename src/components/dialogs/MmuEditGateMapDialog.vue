@@ -26,6 +26,7 @@
                             :selected-gate="selectedGate"
                             :unit-index="i - 1"
                             :hide-bypass="true"
+                            :show-context-menu="false"
                             :unhighlight-spools="true"
                             @select-gate="selectGate" />
                     </v-col>
@@ -56,7 +57,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, VModel } from 'vue-property-decorator'
+import { Mixins, VModel, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MmuMixin, { TOOL_GATE_UNKNOWN } from '@/components/mixins/mmu'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
@@ -73,8 +74,22 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
 
     @VModel({ type: Boolean }) showDialog!: boolean
 
+    @Prop({ required: false, default: null })
+    readonly initialGate!: number | null
+
     showResetConfirmationDialog = false
     selectedGate = TOOL_GATE_UNKNOWN
+
+    @Watch('showDialog')
+    onShowDialogChanged(val: boolean) {
+        if (!val) return
+
+        if (this.initialGate !== null && this.initialGate !== undefined) {
+            this.selectedGate = this.initialGate
+        } else {
+            this.selectedGate = TOOL_GATE_UNKNOWN
+        }
+    }
 
     selectGate(gate: number) {
         this.selectedGate = gate
@@ -99,6 +114,7 @@ export default class MmuEditGateMapDialog extends Mixins(BaseMixin, MmuMixin) {
     }
 
     close() {
+        this.$emit('close')
         this.showDialog = false
     }
 }

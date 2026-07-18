@@ -55,13 +55,12 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
         return output
     }
 
-    downloadLog(event: any) {
+    downloadLog(event: MouseEvent) {
         event.preventDefault()
-        let href = ''
-        if ('href' in event.target.attributes) href = event.target.attributes.href.value
-        if ('href' in event.target.parentElement.attributes) href = event.target.parentElement.attributes.href.value
 
-        window.open(href)
+        const target = event.target as HTMLElement | null
+        const href = target?.closest('a')?.href ?? ''
+        if (href) window.open(href)
     }
 }
 </script>

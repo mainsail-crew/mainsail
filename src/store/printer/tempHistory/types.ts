@@ -42,5 +42,6 @@ export interface PrinterTempHistoryStateSerie {
 }
 
 export interface PrinterTempHistoryStateSourceEntry {
-    [key: string]: any
+    date: Date
+    [key: string]: Date | number | null
 }

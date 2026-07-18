@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import { PrinterStateExtruder } from '@/store/printer/types'
+import { parseNumber } from '@/plugins/helpers'
+import { ExtruderConfigSettings, PrinterStateExtruder } from '@/store/printer/types'
+
 @Component
 export default class ExtruderMixin extends Vue {
     get extruders(): PrinterStateExtruder[] {
@@ -11,16 +13,16 @@ export default class ExtruderMixin extends Vue {
         return this.$store.state.printer.toolhead?.extruder
     }
 
-    get activeExtruderSettings(): any {
+    get activeExtruderSettings(): ExtruderConfigSettings | undefined {
         return this.$store.state.printer.configfile?.settings?.[this.activeExtruder]
     }
 
     get filamentDiameter(): number {
-        return this.activeExtruderSettings?.filament_diameter ?? 1.75
+        return parseNumber(this.activeExtruderSettings?.filament_diameter, 1.75)
     }
 
     get nozzleDiameter(): number {
-        return this.activeExtruderSettings?.nozzle_diameter ?? 0.4
+        return parseNumber(this.activeExtruderSettings?.nozzle_diameter, 0.4)
     }
 
     get feedamount(): number {
@@ -40,6 +42,6 @@ export default class ExtruderMixin extends Vue {
     }
 
     get minExtrudeTemp(): number {
-        return this.activeExtruderSettings?.min_extrude_temp ?? 170
+        return parseNumber(this.activeExtruderSettings?.min_extrude_temp, 170)
     }
 }

@@ -3,6 +3,7 @@ import { Module } from 'vuex'
 import { actions } from '@/store/editor/actions'
 import { mutations } from '@/store/editor/mutations'
 import { getters } from '@/store/editor/getters'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): EditorState => {
     return {
@@ -28,7 +29,7 @@ export const getDefaultState = (): EditorState => {
 // initial state
 const state = getDefaultState()
 
-export const editor: Module<EditorState, any> = {
+export const editor: Module<EditorState, RootState> = {
     namespaced: true,
     state,
     getters,

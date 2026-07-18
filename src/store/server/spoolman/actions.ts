@@ -3,7 +3,7 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { ServerSpoolmanState } from '@/store/server/spoolman/types'
 
-function convertV2response(payload: { error?: { message: string } | null; response: any }) {
+function convertV2response(payload: { error?: { message: string } | null; response?: unknown }) {
     if ((payload.error?.message ?? null) !== null) {
         Vue.$toast.error(payload.error?.message ?? 'unknown spoolman error')
         return null

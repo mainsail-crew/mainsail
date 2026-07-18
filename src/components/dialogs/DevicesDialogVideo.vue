@@ -33,27 +33,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-
-export interface V4l2Device {
-    device_name: string
-    device_path: string
-    camera_name: string
-    driver_name: string
-    alt_name: string | null
-    hardware_bus: string
-    capabilities: string
-    version: string
-    path_by_hardware: string | null
-    path_by_id: string | null
-    usb_location: string | null
-    modes: { description: string; format: string; flags: string[]; resolutions: string[] }[]
-}
-
-export interface LibcameraDevice {
-    libcamera_id: string
-    model: string
-    modes: { format: string; resolutions: string[] }[]
-}
+import type { RPCResult } from '@/types/moonraker'
+import type { LibcameraDevice, V4l2Device } from '@/types/moonraker/MachineRPC'
 
 @Component
 export default class DevicesDialogVideo extends Mixins(BaseMixin) {
@@ -89,10 +70,10 @@ export default class DevicesDialogVideo extends Mixins(BaseMixin) {
 
         const result = await fetch(this.apiUrl + '/machine/peripherals/video')
             .then((res) => res.json())
-            .then((res) => res.result ?? {})
+            .then((res: { result?: RPCResult<'machine.peripherals.video'> }) => res.result)
 
-        this.v4l2Devices = result.v4l2_devices ?? []
-        this.libcameraDevices = result.libcamera_devices ?? []
+        this.v4l2Devices = result?.v4l2_devices ?? []
+        this.libcameraDevices = result?.libcamera_devices ?? []
 
         this.loading = false
         this.loaded = true

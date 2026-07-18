@@ -25,6 +25,7 @@ export default class ZoffsetMixin extends Vue {
 
     get stepper_name() {
         if (this.kinematics === 'delta') return 'stepper_a'
+        if (this.kinematics === 'generic_cartesian') return 'carriage carriage_z'
 
         return 'stepper_z'
     }
@@ -38,7 +39,7 @@ export default class ZoffsetMixin extends Vue {
     }
     get isEndstopProbe() {
         // remove spaces and search for probe:z_virtual_endstop
-        return this.endstop_pin.replaceAll(' ', '').search('probe:z_virtual_endstop') !== -1
+        return (this.endstop_pin ?? '').replaceAll(' ', '').search('probe:z_virtual_endstop') !== -1
     }
 
     get existZOffsetApplyProbe() {

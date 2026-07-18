@@ -73,7 +73,7 @@ export default class JMuxerStreamer extends Mixins(BaseMixin, WebcamMixin) {
                 this.status = 'connected'
                 console.log('jmuxer ready')
             },
-            onError: (data: any) => {
+            onError: (data: unknown) => {
                 this.status = 'error'
                 console.log('jmuxer error:', data)
             },

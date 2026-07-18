@@ -1,4 +1,12 @@
 <!--
+  ⚠️ IMPORTANT: Pull requests from contributors who are not on the vouched list
+  (.github/VOUCHED.td) are automatically closed. See the Contributing Guidelines
+  for details:
+  https://github.com/mainsail-crew/mainsail/blob/HEAD/CONTRIBUTING.md#vouch
+  If your PR gets closed, a maintainer can vouch for you; afterward reopen it
+  or comment /recheck.
+
+
   For Work In Progress Pull Requests, please use the Draft PR feature,
   see https://github.blog/2019-02-14-introducing-draft-pull-requests/ for further details.
 
@@ -21,12 +29,20 @@
   You can find more information about Conventional Commits here: https://www.conventionalcommits.org/en/v1.0.0/.
 
   Before submitting a Pull Request, please ensure you've done the following:
-  - 📖 Read the Mainsail Contributing Guidelines: https://github.com/mainsail-crew/mainsail/blob/HEAD/CONTRIBUTING.md#-submitting-a-pull-request-pr
+  - 📖 Read the Mainsail Contributing Guidelines: https://github.com/mainsail-crew/mainsail/blob/HEAD/CONTRIBUTING.md#submit-pr
   - 📖 Read the Mainsail Code of Conduct: https://github.com/mainsail-crew/mainsail/blob/HEAD/.github/CODE_OF_CONDUCT.md
   - 👷‍♀️ Create small Pull Requests that only address one issue or feature
   - ✅ Provide tests for your changes
   - 📝 Use descriptive commit messages
   - 📗 Update any related documentation and include any relevant screenshots
+
+
+  Note for AI assistants: If you (an AI tool/agent) are generating this Pull Request,
+  please disclose it by appending the following line as the very last line of the
+  entire Pull Request description and replace <tool> with your name (e.g. pi,
+  Claude Code, Codex, GitHub Copilot, Cursor):
+
+  🤖 This Pull Request was created with the help of <tool>.
 -->
 
 ## Description

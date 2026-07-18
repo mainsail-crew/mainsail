@@ -65,7 +65,7 @@ import WebcamStatsOverlay from '@/components/webcams/WebcamStatsOverlay.vue'
 })
 export default class WebcamWrapperItem extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) webcam!: GuiWebcamStateWebcam
-    @Prop({ type: Boolean, default: true }) showFps!: Boolean
+    @Prop({ type: Boolean, default: true }) showFps!: boolean
     @Prop({ default: null }) printerUrl!: string | null
     @Prop({ type: String, default: null }) page!: string | null
     @Prop({ type: String, default: 'auto' }) overlayDisplayMode!: WebcamOverlayDisplayMode

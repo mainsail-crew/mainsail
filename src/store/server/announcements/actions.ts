@@ -14,17 +14,19 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
 
     async getList({ commit, dispatch }, payload) {
         if ('entries' in payload) {
-            const entries = payload.entries.map((entry: any) => {
-                const date = new Date(entry.date * 1000)
-                const date_dismissed = payload.date_dismissed ? new Date(entry.date_dismissed * 1000) : null
-                const dismiss_wake = payload.dismiss_wake ? new Date(entry.dismiss_wake * 1000) : null
+            const entries = payload.entries.map(
+                (entry: { date: number; date_dismissed: number; dismiss_wake: number }) => {
+                    const date = new Date(entry.date * 1000)
+                    const date_dismissed = payload.date_dismissed ? new Date(entry.date_dismissed * 1000) : null
+                    const dismiss_wake = payload.dismiss_wake ? new Date(entry.dismiss_wake * 1000) : null
 
-                return { ...entry, date, date_dismissed, dismiss_wake }
-            })
+                    return { ...entry, date, date_dismissed, dismiss_wake }
+                }
+            )
 
-            await commit('setEntries', entries)
+            commit('setEntries', entries)
         }
-        if ('feeds' in payload) await commit('setFeeds', payload.feeds)
+        if ('feeds' in payload) commit('setFeeds', payload.feeds)
 
         await dispatch('socket/removeInitModule', 'server/announcements/init', { root: true })
     },

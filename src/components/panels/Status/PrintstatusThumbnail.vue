@@ -87,6 +87,7 @@ import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thum
 import { mdiFileOutline, mdiFile } from '@mdi/js'
 import { Debounce } from 'vue-debounce-decorator'
 import { escapePath } from '@/plugins/helpers'
+import { FileStateFileThumbnail } from '@/store/files/types'
 import Vue from 'vue'
 
 @Component({})
@@ -111,7 +112,9 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 
     get thumbnailBig() {
         if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
-            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
+            const thumbnail = this.current_file.thumbnails.find(
+                (thumb: FileStateFileThumbnail) => thumb.width >= thumbnailBigMin
+            )
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 let relative_url = ''
@@ -132,7 +135,9 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 
     get thumbnailBigHeight() {
         if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
-            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
+            const thumbnail = this.current_file.thumbnails.find(
+                (thumb: FileStateFileThumbnail) => thumb.width >= thumbnailBigMin
+            )
 
             if (thumbnail && 'height' in thumbnail) {
                 return thumbnail.height
@@ -144,7 +149,9 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
 
     get thumbnailBigWidth() {
         if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
-            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
+            const thumbnail = this.current_file.thumbnails.find(
+                (thumb: FileStateFileThumbnail) => thumb.width >= thumbnailBigMin
+            )
 
             if (thumbnail && 'width' in thumbnail) {
                 return thumbnail.width
@@ -157,7 +164,7 @@ export default class StatusPanelPrintstatusThumbnail extends Mixins(BaseMixin) {
     get thumbnailSmall() {
         if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
             const thumbnail = this.current_file.thumbnails.find(
-                (thumb: any) =>
+                (thumb: FileStateFileThumbnail) =>
                     thumb.width >= thumbnailSmallMin &&
                     thumb.width <= thumbnailSmallMax &&
                     thumb.height >= thumbnailSmallMin &&

@@ -3,6 +3,7 @@ import { FileState } from '@/store/files/types'
 import { actions } from '@/store/files/actions'
 import { mutations } from '@/store/files/mutations'
 import { getters } from '@/store/files/getters'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): FileState => {
     return {
@@ -22,7 +23,7 @@ export const getDefaultState = (): FileState => {
 // initial state
 const state = getDefaultState()
 
-export const files: Module<FileState, any> = {
+export const files: Module<FileState, RootState> = {
     namespaced: true,
     state,
     getters,

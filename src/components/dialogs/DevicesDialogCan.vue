@@ -49,11 +49,8 @@ import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import DevicesDialogCanDevice from '@/components/dialogs/DevicesDialogCanDevice.vue'
 import { mdiInformationVariantCircle } from '@mdi/js'
-
-export interface CanDevice {
-    application: string
-    uuid: string
-}
+import type { RPCResult } from '@/types/moonraker'
+import type { CanDevice } from '@/types/moonraker/MachineRPC'
 
 @Component({
     components: { DevicesDialogCanDevice },
@@ -73,7 +70,7 @@ export default class DevicesDialogCan extends Mixins(BaseMixin) {
 
         this.devices = await fetch(`${this.apiUrl}/machine/peripherals/canbus?interface=${this.name}`)
             .then((res) => res.json())
-            .then((res) => res.result.can_uuids ?? [])
+            .then((res: { result?: RPCResult<'machine.peripherals.canbus'> }) => res.result?.can_uuids ?? [])
 
         this.loading = false
         this.loaded = true

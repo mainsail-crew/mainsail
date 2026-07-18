@@ -43,6 +43,13 @@
             <v-list-item class="minHeight36">
                 <v-checkbox v-model="showLogos" class="mt-0" hide-details :label="$t('Panels.MmuPanel.ShowLogos')" />
             </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
+                    v-model="showClimate"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.MmuPanel.ShowClimate')" />
+            </v-list-item>
         </v-list>
     </v-menu>
 </template>
@@ -103,6 +110,14 @@ export default class MmuPanelSettings extends Mixins(BaseMixin, MmuMixin) {
 
     get showName(): boolean {
         return this.$store.state.gui.view.mmu.showName
+    }
+
+    set showClimate(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.mmu.showClimate', value: newVal })
+    }
+
+    get showClimate(): boolean {
+        return this.$store.state.gui.view.mmu.showClimate
     }
 
     get showUnavailableSpoolColor(): boolean {

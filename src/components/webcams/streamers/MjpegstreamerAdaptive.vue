@@ -49,9 +49,9 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin, WebcamMixin
 
     aspectRatio: null | number = null
 
-    @Prop({ required: true }) declare camSettings: GuiWebcamStateWebcam
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
     @Prop({ default: null }) readonly printerUrl!: string | null
-    @Prop({ default: true }) declare showFps: boolean
+    @Prop({ default: true }) readonly showFps!: boolean
 
     @Ref('image') readonly image!: HTMLImageElement
 

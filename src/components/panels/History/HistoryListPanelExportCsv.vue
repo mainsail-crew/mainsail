@@ -106,30 +106,40 @@ export default class HistoryListPanelExportCsv extends Mixins(BaseMixin, History
         return rows
     }
 
-    private outputValue(col: any, job: any, escapeChar: string) {
-        let value = col.value in job ? job[col.value] : null
-        if (value === null) value = col.value in job.metadata ? job.metadata[col.value] : null
+    private outputValue(col: HistoryListPanelCol, job: ServerHistoryStateJob, escapeChar: string): string {
+        const key = col.value
+        let value: string | number | null = null
+        if (key in job) {
+            const raw = job[key as keyof ServerHistoryStateJob]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
+        } else if (key in job.metadata) {
+            const raw = job.metadata[key]
+            if (typeof raw === 'string' || typeof raw === 'number') value = raw
+        }
+
+        if (key.startsWith('history_field_')) {
+            const fieldName = key.replace('history_field_', '')
+            const field = job.auxiliary_data?.find((field) => field.name === fieldName)
+            if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
+        }
+
+        if (value === null) return ''
+
+        if (typeof value === 'string') {
+            if (value.includes(escapeChar)) return '"' + value + '"'
+
+            return value
+        }
 
         switch (col.outputType) {
             case 'date':
                 return this.formatDateTime(value * 1000)
 
             case 'time':
-                return value?.toFixed() ?? ''
+                return value.toFixed()
 
             default:
-                switch (typeof value) {
-                    case 'number':
-                        return value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
-
-                    case 'string':
-                        if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
-
-                        return value
-
-                    default:
-                        return value
-                }
+                return value.toLocaleString(this.browserLocale, { useGrouping: false })
         }
     }
 }

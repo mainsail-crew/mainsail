@@ -3,6 +3,7 @@ import { Module } from 'vuex'
 import { actions } from '@/store/gcodeviewer/actions'
 import { mutations } from '@/store/gcodeviewer/mutations'
 import { getters } from '@/store/gcodeviewer/getters'
+import { RootState } from '@/store/types'
 
 export const getDefaultState = (): GcodeviewerState => {
     return {
@@ -15,7 +16,7 @@ export const getDefaultState = (): GcodeviewerState => {
 // initial state
 const state = getDefaultState()
 
-export const gcodeviewer: Module<GcodeviewerState, any> = {
+export const gcodeviewer: Module<GcodeviewerState, RootState> = {
     namespaced: true,
     state,
     getters,

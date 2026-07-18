@@ -48,10 +48,11 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
         let counter = 0
 
         state.source
-            .filter((data) => data.date > maxTime)
+            .filter((data) => data.date.getTime() > maxTime)
             .forEach((item: PrinterTempHistoryStateSourceEntry) => {
-                if (key in item) {
-                    value += item[key]
+                const val = item[key]
+                if (typeof val === 'number') {
+                    value += val
                     counter++
                 }
             })
@@ -116,7 +117,7 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
                 if (state.series.findIndex((serie) => serie.name === serieName) === -1) return
 
                 // add to selected
-                selected[serieName] = viewSettings[key][attrKey]
+                selected[serieName] = viewSettings[key][attrKey] as boolean
             })
         })
 

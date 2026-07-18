@@ -20,8 +20,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { CanDevice } from '@/components/dialogs/DevicesDialogCan.vue'
 import TextfieldWithCopy from '@/components/inputs/TextfieldWithCopy.vue'
+import type { CanDevice } from '@/types/moonraker/MachineRPC'
 
 @Component({
     components: { TextfieldWithCopy },

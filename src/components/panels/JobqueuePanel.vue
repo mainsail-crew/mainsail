@@ -60,6 +60,7 @@ import { mdiPlay, mdiPause, mdiTrayFull } from '@mdi/js'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
 import draggable from 'vuedraggable'
 import JobqueueEntrySum from '@/components/panels/Status/JobqueueEntrySum.vue'
+import { DraggableEndEvent } from '@/types/vuedraggable'
 @Component({
     components: { JobqueueEntrySum, draggable, JobqueueEntry, Panel },
 })
@@ -86,7 +87,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         this.$store.dispatch('server/jobQueue/pause')
     }
 
-    updateOrder(event: { oldIndex: number; newIndex: number }) {
+    updateOrder(event: DraggableEndEvent) {
         this.$store.dispatch('server/jobQueue/changePosition', {
             newIndex: event.newIndex,
             oldIndex: event.oldIndex,

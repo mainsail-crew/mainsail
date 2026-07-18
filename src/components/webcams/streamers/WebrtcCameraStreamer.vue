@@ -45,9 +45,9 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
     restartTimer: number | null = null
 
     @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
-    @Prop({ default: null }) declare readonly printerUrl: string | null
+    @Prop({ default: null }) readonly printerUrl!: string | null
     @Prop({ type: String, default: null }) readonly page!: string | null
-    @Ref() declare stream: HTMLVideoElement
+    @Ref() readonly stream!: HTMLVideoElement
 
     get url() {
         return this.convertUrl(this.camSettings?.stream_url, this.printerUrl)
@@ -137,10 +137,9 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
 
         // It's important to set any ICE servers returned, which could include servers we requested or servers
         // setup by the server. But note that older versions of camera-streamer won't return this property.
-        const peerConnectionConfig: RTCConfiguration = {
+        // https://webrtc.org/getting-started/unified-plan-transition-guide
+        const peerConnectionConfig: RTCConfiguration & { sdpSemantics?: string } = {
             iceServers: iceResponse.iceServers ?? [],
-            // https://webrtc.org/getting-started/unified-plan-transition-guide
-            // @ts-ignore
             sdpSemantics: 'unified-plan',
         }
         this.pc = new RTCPeerConnection(peerConnectionConfig)
@@ -244,7 +243,7 @@ export default class WebrtcCameraStreamer extends Mixins(BaseMixin, WebcamMixin)
         }
     }
 
-    log(msg: string, obj?: any) {
+    log(msg: string, obj?: unknown) {
         const message = `[WebRTC camera-streamer] ${msg}`
         if (obj) {
             window.console.log(message, obj)

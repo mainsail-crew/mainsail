@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex'
 import { EditorState } from '@/store/editor/types'
 import { RootState } from '@/store/types'
-import axios from 'axios'
+import axios, { AxiosProgressEvent } from 'axios'
 import { sha256 } from 'js-sha256'
 import Vue from 'vue'
 import i18n from '@/plugins/i18n'
@@ -12,7 +12,10 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('reset')
     },
 
-    downloadProgress({ commit }, payload: { progressEvent: any; direction: string; filesize: number | null }) {
+    downloadProgress(
+        { commit },
+        payload: { progressEvent: AxiosProgressEvent; direction: string; filesize: number | null }
+    ) {
         commit('updateLoader', {
             direction: payload.direction,
             speed: formatFilesize(payload.progressEvent.rate ?? 0),

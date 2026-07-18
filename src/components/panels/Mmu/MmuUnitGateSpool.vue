@@ -8,8 +8,7 @@
                 :width="spoolWidth"
                 v-bind="attrs"
                 :class="svgClasses"
-                v-on="on"
-                @click="selectGate">
+                v-on="on">
                 <defs>
                     <path
                         id="oval"
@@ -62,7 +61,7 @@
                     <use href="#oval" style="filter: url(#blur_wheel2)" :fill="spoolWheelColor" />
                     <use href="#oval" transform="scale(0.41)" fill="#111111" />
                 </g>
-                <rect v-if="isSelected" x="0" y="314" width="258" height="186" fill="url(#spotlight)" />
+                <rect v-if="isSelected" x="0" y="260" width="258" height="186" fill="url(#spotlight)" />
 
                 <g v-if="showDetails">
                     <text
@@ -110,7 +109,13 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import MmuMixin, { GATE_EMPTY, GATE_UNKNOWN, NO_FILAMENT_COLOR } from '@/components/mixins/mmu'
+import MmuMixin, {
+    FILAMENT_POS_LOADED,
+    GATE_AVAILABLE,
+    GATE_EMPTY,
+    NO_FILAMENT_COLOR,
+    TOOL_GATE_BYPASS,
+} from '@/components/mixins/mmu'
 import { filamentTextColor } from '@/plugins/helpers'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
@@ -130,7 +135,11 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
     }
 
     get status() {
-        return this.mmu?.gate_status?.[this.gateIndex] ?? GATE_UNKNOWN
+        if (this.gateIndex === TOOL_GATE_BYPASS) {
+            if (this.mmuFilamentPos === FILAMENT_POS_LOADED) return GATE_AVAILABLE
+            return GATE_EMPTY
+        }
+        return this.mmu?.gate_status?.[this.gateIndex] ?? GATE_EMPTY
     }
 
     get isNotEmpty() {
@@ -252,7 +261,7 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
             output.push(`${this.$t('Panels.MmuPanel.ToolTip.Color')}: ${color}`)
         }
 
-        if (this.spoolId) {
+        if (this.spoolId > 0) {
             output.push(`${this.$t('Panels.MmuPanel.ToolTip.SpoolId')}: ${this.spoolId}`)
         }
 
@@ -261,19 +270,10 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
 
     get svgClasses() {
         const classes = [this.svgClass]
-        if (this.hasSelectGateListener) classes.push('hasSelectGate')
         if (this.isSelected) classes.push('isSelected')
         if (!this.isSelected && this.unhighlightSpools) classes.push('unhighlighted')
 
         return classes
-    }
-
-    get hasSelectGateListener() {
-        return !!this.$listeners['select-gate']
-    }
-
-    selectGate() {
-        this.$emit('select-gate')
     }
 }
 </script>
@@ -281,7 +281,6 @@ export default class MmuUnitGateSpool extends Mixins(BaseMixin, MmuMixin) {
 <style scoped>
 svg {
     outline: none;
-    cursor: pointer;
     transition:
         transform 0.2s,
         opacity 0.2s;
@@ -296,7 +295,7 @@ svg.isSelected {
     opacity: 1 !important;
 }
 
-svg.hasSelectGate:hover {
+svg:hover {
     transform: translateY(-4px);
 }
 

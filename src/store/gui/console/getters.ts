@@ -2,8 +2,9 @@ import { GetterTree } from 'vuex'
 import { GuiConsoleState, GuiConsoleStateFilter } from '@/store/gui/console/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { timelapseConsoleFilters } from '@/store/variables'
+import { RootState } from '@/store/types'
 
-export const getters: GetterTree<GuiConsoleState, any> = {
+export const getters: GetterTree<GuiConsoleState, RootState> = {
     getConsolefilters: (state) => {
         const consolefilters: GuiConsoleStateFilter[] = []
 
@@ -17,9 +18,9 @@ export const getters: GetterTree<GuiConsoleState, any> = {
     getConsolefilterRules: (state, getters, rootState) => {
         const output = []
 
-        if (rootState.gui.console.hideWaitTemperatures) output.push('^(?:ok\\s+)?(B|C|T\\d*):')
+        if (rootState.gui?.console?.hideWaitTemperatures) output.push('^(?:ok\\s+)?(B|C|T\\d*):')
 
-        if (rootState.gui.console.hideTlCommands)
+        if (rootState.gui?.console?.hideTlCommands)
             timelapseConsoleFilters.forEach((rule: string) => {
                 output.push(rule)
             })

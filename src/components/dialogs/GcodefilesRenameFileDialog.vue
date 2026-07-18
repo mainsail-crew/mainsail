@@ -29,6 +29,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
+import type { FocusableRef } from '@/types/vuetify'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
@@ -46,7 +47,7 @@ export default class GcodefilesRenameFileDialog extends Mixins(BaseMixin, Gcodef
 
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
-    @Ref('inputFieldRenameFile') readonly inputFieldRenameFile!: HTMLInputElement
+    @Ref('inputFieldRenameFile') readonly inputFieldRenameFile!: FocusableRef
 
     nameInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),

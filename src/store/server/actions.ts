@@ -28,12 +28,13 @@ export const actions: ActionTree<ServerState, RootState> = {
                 url: 'https://github.com/mainsail-crew/mainsail',
             })
             commit('setConnectionId', connection.connection_id)
-        } catch (e: any) {
-            if (e.message === 'Unauthorized') {
-                this.dispatch('socket/setConnectionFailed', e.message)
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : String(e)
+            if (message === 'Unauthorized') {
+                this.dispatch('socket/setConnectionFailed', message)
             }
 
-            window.console.error('Error while identifying client: ' + e.message)
+            window.console.error('Error while identifying client: ' + message)
             return
         }
 
