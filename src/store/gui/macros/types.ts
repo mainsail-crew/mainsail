@@ -1,9 +1,7 @@
 export interface GuiMacrosState {
     mode: 'simple' | 'expert'
     hiddenMacros: string[]
-    macrogroups: {
-        [key: string]: GuiMacrosStateMacrogroup
-    }
+    macrogroups: Record<string, GuiMacrosStateMacrogroup>
 }
 
 export interface GuiMacrosStateMacrogroup {
