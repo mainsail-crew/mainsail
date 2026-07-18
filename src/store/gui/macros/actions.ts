@@ -1,84 +1,134 @@
-import { ActionTree } from 'vuex'
+import { ActionContext, ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
-import Vue from 'vue'
-import { GuiMacrosState } from '@/store/gui/macros/types'
-import { GuiState, GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiMacrosState, GuiMacrosStateMacrogroup, GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
+import { GuiStateDashboard } from '@/store/gui/types'
+
+const LOG_PREFIX = '[GUI][MACROS]'
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
 
 export const actions: ActionTree<GuiMacrosState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    saveSetting({ dispatch }, payload) {
-        dispatch(
-            'gui/saveSetting',
-            {
-                name: 'macros.' + payload.name,
-                value: payload.value,
-            },
-            { root: true }
-        )
+    async saveSetting<T extends keyof GuiMacrosState>(
+        { dispatch }: ActionContext<GuiMacrosState, RootState>,
+        payload: { name: T; value: GuiMacrosState[T] }
+    ): Promise<void> {
+        const key = `macros.${payload.name}`
+        await dispatch('gui/saveSetting', { name: key, value: payload.value }, { root: true })
     },
 
-    groupUpload({ state }, id) {
-        Vue.$socket.emit('server.database.post_item', {
-            namespace: 'mainsail',
-            key: 'macros.macrogroups.' + id,
-            value: state.macrogroups[id],
-        })
+    async saveMacrogroup({ dispatch }, payload: { id: string; value: GuiMacrosStateMacrogroup }): Promise<void> {
+        const key = `macros.macrogroups.${payload.id}`
+        await dispatch('gui/saveSetting', { name: key, value: payload.value }, { root: true })
     },
 
-    async groupStore({ commit, dispatch }, payload) {
+    async groupStore({ dispatch }, value: GuiMacrosStateMacrogroup): Promise<string> {
         const id = uuidv4()
-
-        await commit('groupStore', { id, values: payload.values })
-        await dispatch('groupUpload', id)
+        await dispatch('saveMacrogroup', { id, value })
 
         return id
     },
 
-    groupUpdate({ commit, dispatch }, payload) {
-        commit('groupUpdate', payload)
-        dispatch('groupUpload', payload.id)
+    async groupUpdate(
+        { dispatch, state },
+        payload: { id: string; values: Partial<GuiMacrosStateMacrogroup> }
+    ): Promise<void> {
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot update non-existent macrogroup with id ${payload.id}`)
+            return
+        }
+
+        const group = { ...state.macrogroups[payload.id], ...payload.values }
+        await dispatch('saveMacrogroup', { id: payload.id, value: group })
     },
 
-    addMacroToMacrogroup({ commit, dispatch }, payload) {
-        commit('addMacroToMacrogroup', payload)
-        dispatch('groupUpload', payload.id)
-    },
+    async addMacroToMacrogroup({ dispatch, state }, payload: { id: string; macro: string }): Promise<void> {
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot add macro to non-existent macrogroup with id ${payload.id}`)
+            return
+        }
 
-    updateMacroFromMacrogroup({ commit, dispatch }, payload) {
-        commit('updateMacroFromMacrogroup', payload)
-        dispatch('groupUpload', payload.id)
-    },
+        const group = state.macrogroups[payload.id]
+        const macros = [...(group.macros ?? [])]
+        const lastPos = Math.max(...macros.map((m: GuiMacrosStateMacrogroupMacro) => m.pos), 0)
 
-    removeMacroFromMacrogroup({ commit, dispatch }, payload) {
-        commit('removeMacroFromMacrogroup', payload)
-        dispatch('groupUpload', payload.id)
-    },
-
-    async groupDelete({ commit, dispatch, rootState }, id) {
-        commit('groupDelete', id)
-        await Vue.$socket.emitAndWait('server.database.delete_item', {
-            namespace: 'mainsail',
-            key: `macros.macrogroups.${id}`,
+        macros.push({
+            pos: lastPos + 1,
+            name: payload.macro,
+            color: 'group',
+            showInStandby: true,
+            showInPrinting: true,
+            showInPause: true,
         })
 
-        type DashboardLayoutKey = Exclude<keyof GuiState['dashboard'], 'nonExpandPanels'>
+        await dispatch('groupUpdate', { id: payload.id, values: { macros } })
+    },
+
+    async updateMacroFromMacrogroup<T extends keyof GuiMacrosStateMacrogroupMacro>(
+        { dispatch, state }: ActionContext<GuiMacrosState, RootState>,
+        payload: { id: string; macro: string; option: T; value: GuiMacrosStateMacrogroupMacro[T] }
+    ): Promise<void> {
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot update macro in non-existent macrogroup with id ${payload.id}`)
+            return
+        }
+
+        const group = state.macrogroups[payload.id]
+        const macros = [...(group.macros ?? [])]
+        const macroIndex = macros.findIndex((m: GuiMacrosStateMacrogroupMacro) => m.name === payload.macro)
+        if (macroIndex === -1) {
+            logError(`Cannot update non-existent macro ${payload.macro} in macrogroup with id ${payload.id}`)
+            return
+        }
+
+        macros[macroIndex] = { ...macros[macroIndex], [payload.option]: payload.value }
+        await dispatch('groupUpdate', { id: payload.id, values: { macros } })
+    },
+
+    async removeMacroFromMacrogroup({ dispatch, state }, payload: { id: string; macro: string }): Promise<void> {
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot remove macro from non-existent macrogroup with id ${payload.id}`)
+            return
+        }
+
+        const group = state.macrogroups[payload.id]
+        const macros = [...(group.macros ?? [])]
+
+        const macroIndex = macros.findIndex((m) => m.name === payload.macro)
+        if (macroIndex === -1) {
+            logError(`Cannot remove non-existent macro ${payload.macro} from macrogroup with id ${payload.id}`)
+            return
+        }
+
+        const oldPos = macros[macroIndex].pos
+        macros.splice(macroIndex, 1)
+        const updated = macros.map((m) => (m.pos > oldPos ? { ...m, pos: m.pos - 1 } : m))
+
+        await dispatch('groupUpdate', { id: payload.id, values: { macros: updated } })
+    },
+
+    async groupDelete({ commit, dispatch, rootState }, id: string): Promise<void> {
+        commit('groupDelete', id)
+        const key = `macros.macrogroups.${id}`
+        await dispatch('gui/deleteSetting', key, { root: true })
+
+        type DashboardLayoutKey = Exclude<keyof GuiStateDashboard, 'nonExpandPanels'>
         const layouts = Object.keys(rootState.gui?.dashboard ?? {}).filter(
             (key) => key !== 'nonExpandPanels'
         ) as DashboardLayoutKey[]
 
         for (const layoutname of layouts) {
             const macrogroupId = `macrogroup_${id}`
-            const layoutArray: GuiStateLayoutoption[] = [...(rootState.gui?.dashboard[layoutname] ?? [])]
+            const layoutArray = [...(rootState.gui?.dashboard[layoutname] ?? [])]
             const index = layoutArray.findIndex((layoutPos) => layoutPos.name === macrogroupId)
 
             if (index === -1) continue
 
             layoutArray.splice(index, 1)
-            dispatch('gui/saveSetting', { name: `dashboard.${layoutname}`, value: layoutArray }, { root: true })
+            await dispatch('gui/saveSetting', { name: `dashboard.${layoutname}`, value: layoutArray }, { root: true })
         }
     },
 }
