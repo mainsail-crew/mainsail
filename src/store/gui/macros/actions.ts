@@ -80,9 +80,9 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
 
         const oldPos = macros[macroIndex].pos
         macros.splice(macroIndex, 1)
-        macros.filter((m) => m.pos > oldPos).forEach((m) => m.pos--)
+        const updated = macros.map((m) => (m.pos > oldPos ? { ...m, pos: m.pos - 1 } : m))
 
-        await dispatch('groupUpdate', { id: payload.id, values: { macros } })
+        await dispatch('groupUpdate', { id: payload.id, values: { macros: updated } })
     },
 
     async groupDelete({ commit, dispatch, rootState }, id: string): Promise<void> {
