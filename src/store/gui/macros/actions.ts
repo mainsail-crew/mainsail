@@ -4,6 +4,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { GuiMacrosState, GuiMacrosStateMacrogroup, GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
 import { GuiStateDashboard } from '@/store/gui/types'
 
+const LOG_PREFIX = '[GUI][MACROS]'
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
 export const actions: ActionTree<GuiMacrosState, RootState> = {
     reset({ commit }): void {
         commit('reset')
@@ -33,14 +36,21 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         { dispatch, state },
         payload: { id: string; values: Partial<GuiMacrosStateMacrogroup> }
     ): Promise<void> {
-        if (!(payload.id in state.macrogroups)) return
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot update non-existent macrogroup with id ${payload.id}`)
+            return
+        }
 
         const group = { ...state.macrogroups[payload.id], ...payload.values }
         await dispatch('saveMacrogroup', { id: payload.id, value: group })
     },
 
     async addMacroToMacrogroup({ dispatch, state }, payload: { id: string; macro: string }): Promise<void> {
-        if (!(payload.id in state.macrogroups)) return
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot add macro to non-existent macrogroup with id ${payload.id}`)
+            return
+        }
+
         const group = state.macrogroups[payload.id]
         const macros = [...(group.macros ?? [])]
         const lastPos = Math.max(...macros.map((m: GuiMacrosStateMacrogroupMacro) => m.pos), 0)
@@ -61,23 +71,37 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         { dispatch, state }: ActionContext<GuiMacrosState, RootState>,
         payload: { id: string; macro: string; option: T; value: GuiMacrosStateMacrogroupMacro[T] }
     ): Promise<void> {
-        if (!(payload.id in state.macrogroups)) return
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot update macro in non-existent macrogroup with id ${payload.id}`)
+            return
+        }
+
         const group = state.macrogroups[payload.id]
         const macros = [...(group.macros ?? [])]
         const macroIndex = macros.findIndex((m: GuiMacrosStateMacrogroupMacro) => m.name === payload.macro)
-        if (macroIndex === -1) return
+        if (macroIndex === -1) {
+            logError(`Cannot update non-existent macro ${payload.macro} in macrogroup with id ${payload.id}`)
+            return
+        }
 
         macros[macroIndex] = { ...macros[macroIndex], [payload.option]: payload.value }
         await dispatch('groupUpdate', { id: payload.id, values: { macros } })
     },
 
     async removeMacroFromMacrogroup({ dispatch, state }, payload: { id: string; macro: string }): Promise<void> {
-        if (!(payload.id in state.macrogroups)) return
+        if (!(payload.id in state.macrogroups)) {
+            logError(`Cannot remove macro from non-existent macrogroup with id ${payload.id}`)
+            return
+        }
+
         const group = state.macrogroups[payload.id]
         const macros = [...(group.macros ?? [])]
 
         const macroIndex = macros.findIndex((m) => m.name === payload.macro)
-        if (macroIndex === -1) return
+        if (macroIndex === -1) {
+            logError(`Cannot remove non-existent macro ${payload.macro} from macrogroup with id ${payload.id}`)
+            return
+        }
 
         const oldPos = macros[macroIndex].pos
         macros.splice(macroIndex, 1)
