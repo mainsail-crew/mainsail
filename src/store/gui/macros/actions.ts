@@ -18,7 +18,8 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
     },
 
     async saveMacrogroup({ dispatch }, payload: { id: string; value: GuiMacrosStateMacrogroup }): Promise<void> {
-        await dispatch('saveSetting', { name: `macrogroups.${payload.id}`, value: payload.value })
+        const key = `macros.macrogroups.${payload.id}`
+        await dispatch('gui/saveSetting', { name: key, value: payload.value }, { root: true })
     },
 
     async groupStore({ dispatch }, value: GuiMacrosStateMacrogroup): Promise<string> {
