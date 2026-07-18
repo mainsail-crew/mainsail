@@ -172,7 +172,7 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     }
 
     close() {
-        this.$store.dispatch('gui/notifications/close', { id: this.entry.id })
+        this.$store.dispatch('gui/notifications/close', this.entry.id)
     }
 
     dismiss(type: 'time' | 'reboot', time: number | null) {

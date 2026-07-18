@@ -14,7 +14,18 @@ export interface GuiNotificationStateEntry {
 
 export interface GuiNotificationStateDismissEntry {
     id: string
-    category: string
-    type: string
+    category: GuiNotificationCategory
+    type: 'time' | 'reboot' | 'ever'
     date: number
 }
+
+export type GuiNotificationCategory =
+    | 'flag'
+    | 'dependency'
+    | 'moonrakerWarning'
+    | 'moonrakerFailedComponent'
+    | 'moonrakerFailedInitComponent'
+    | 'klipperWarning'
+    | 'browserWarning'
+    | 'maintenance'
+    | 'tmcwarning'
