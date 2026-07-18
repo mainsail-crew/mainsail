@@ -1,5 +1,3 @@
-<style scoped></style>
-
 <template>
     <panel
         v-if="klipperReadyForGui && macros.length > 0 && macrogroupStatus"
@@ -39,7 +37,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare panelId: string
 
     get macrogroup() {
-        return this.$store.getters['gui/macros/getMacrogroup'](this.panelId)
+        return this.$store.state.gui.macros.macrogroups[this.panelId]
     }
 
     get allMacros() {
