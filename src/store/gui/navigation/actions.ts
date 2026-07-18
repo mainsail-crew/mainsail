@@ -1,28 +1,23 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import Vue from 'vue'
 import { GuiNavigationState, GuiNavigationStateEntry } from '@/store/gui/navigation/types'
-import { NaviPoint } from '@/components/mixins/navigation'
 
 export const actions: ActionTree<GuiNavigationState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    upload({ state }) {
-        Vue.$socket.emit('server.database.post_item', {
-            namespace: 'mainsail',
-            key: 'navigation.entries',
-            value: state.entries,
-        })
+    async upload({ state, dispatch }): Promise<void> {
+        const key = 'navigation.entries'
+        await dispatch('gui/saveSetting', { name: key, value: state.entries }, { root: true })
     },
 
-    updatePos({ commit }, payload: GuiNavigationStateEntry) {
-        commit('updatePos', payload)
+    updatePos({ commit }, payload: GuiNavigationStateEntry): void {
+        commit('update', { parameter: 'position', entry: payload })
     },
 
-    changeVisibility({ commit, dispatch }, payload: NaviPoint) {
-        commit('changeVisibility', payload)
+    changeVisibility({ commit, dispatch }, payload: GuiNavigationStateEntry & { orgTitle?: string }): void {
+        commit('update', { parameter: 'toggleVisibility', entry: payload })
         dispatch('upload')
     },
 }

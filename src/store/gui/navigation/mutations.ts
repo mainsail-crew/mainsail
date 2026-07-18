@@ -2,64 +2,44 @@ import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { GuiNavigationState, GuiNavigationStateEntry } from './types'
 import Vue from 'vue'
-import { NaviPoint } from '@/components/mixins/navigation'
 
 export const mutations: MutationTree<GuiNavigationState> = {
-    reset(state) {
+    reset(state): void {
         Object.assign(state, getDefaultState())
     },
 
-    updatePos(state, payload: GuiNavigationStateEntry) {
-        const index = state.entries.findIndex((entry) => {
-            return entry.type === payload.type && entry.title === payload.title
+    update(
+        state,
+        payload: { parameter: 'position' | 'toggleVisibility'; entry: GuiNavigationStateEntry & { orgTitle?: string } }
+    ): void {
+        const entries = [...state.entries]
+        const title = payload.entry.orgTitle ?? payload.entry.title
+
+        let indexEntry = entries.findIndex((entry) => {
+            return entry.type === payload.entry.type && entry.title === title
         })
 
-        // update existing entry
-        if (index !== -1) {
-            state.entries[index].position = payload.position
-            return
+        if (indexEntry === -1) {
+            const newEntry: GuiNavigationStateEntry = {
+                type: payload.entry.type,
+                title,
+                visible: payload.entry.visible,
+                position: payload.entry.position,
+            }
+            entries.push(newEntry)
+            indexEntry = entries.length - 1
         }
 
-        // create new entry
-        const newEntry: GuiNavigationStateEntry = {
-            type: payload.type,
-            title: payload.title,
-            visible: payload.visible,
-            position: payload.position,
-        }
-        // copy old array
-        const entries = [...state.entries]
-        // add new entry
-        entries.push(newEntry)
-        // set new array
-        Vue.set(state, 'entries', entries)
-    },
+        switch (payload.parameter) {
+            case 'toggleVisibility':
+                entries[indexEntry].visible = !entries[indexEntry].visible
+                break
 
-    changeVisibility(state, payload: NaviPoint) {
-        const title = payload.orgTitle ?? payload.title
-
-        const index = state.entries.findIndex((entry) => {
-            return entry.type === payload.type && entry.title === title
-        })
-
-        // update existing entry
-        if (index !== -1) {
-            state.entries[index].visible = !payload.visible
-            return
+            case 'position':
+                entries[indexEntry].position = payload.entry.position
+                break
         }
 
-        // create new entry
-        const newEntry: GuiNavigationStateEntry = {
-            type: payload.type,
-            title,
-            visible: !payload.visible,
-            position: payload.position,
-        }
-        // copy old array
-        const entries = [...state.entries]
-        // add new entry
-        entries.push(newEntry)
-        // set new array
         Vue.set(state, 'entries', entries)
     },
 }
