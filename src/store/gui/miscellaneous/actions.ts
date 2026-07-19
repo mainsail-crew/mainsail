@@ -1,127 +1,150 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
-import Vue from 'vue'
 import {
     GuiMiscellaneousState,
+    GuiMiscellaneousStateEntry,
     GuiMiscellaneousStateEntryLightgroup,
     GuiMiscellaneousStateEntryPreset,
 } from '@/store/gui/miscellaneous/types'
 
+const LOG_PREFIX = '[GUI][Miscellaneous]'
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
 export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    upload({ state }, id) {
-        Vue.$socket.emit('server.database.post_item', {
-            namespace: 'mainsail',
-            key: 'miscellaneous.entries.' + id,
-            value: state.entries[id],
-        })
+    async saveSetting(
+        { dispatch },
+        payload: { id: string; value: Partial<GuiMiscellaneousStateEntry> }
+    ): Promise<void> {
+        const key = `miscellaneous.entries.${payload.id}`
+        await dispatch('gui/saveSetting', { name: key, value: payload.value }, { root: true })
     },
 
-    store({ commit, dispatch }, payload: payloadStore) {
+    async store({ dispatch }, value: Pick<GuiMiscellaneousStateEntry, 'type' | 'name'>): Promise<string> {
         const id = uuidv4()
-
-        commit('store', { id, values: payload })
-        dispatch('upload', id)
+        await dispatch('saveSetting', { id, value: { ...value, lightgroups: {}, presets: {} } })
 
         return id
     },
 
-    storeLightgroup(
-        { commit, dispatch, state },
+    async update(
+        { dispatch, state },
+        payload: { id: string; value: Partial<GuiMiscellaneousStateEntry> }
+    ): Promise<void> {
+        const entry = state.entries[payload.id]
+        if (!entry) {
+            logError(`Failed to update entry with id ${payload.id}. Entry does not exist`)
+            return
+        }
+        const value = { ...entry, ...payload.value }
+
+        await dispatch('saveSetting', { id: payload.id, value })
+    },
+
+    async storeLightgroup(
+        { dispatch, getters, state },
         payload: { type: string; name: string; lightgroup: GuiMiscellaneousStateEntryLightgroup }
-    ) {
-        let entryId =
-            Object.keys(state.entries).find(
-                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
-            ) ?? null
+    ): Promise<void> {
+        let entryId = getters.getEntryKey(payload.type, payload.name)
+        if (!entryId) entryId = await dispatch('store', { type: payload.type, name: payload.name })
 
-        if (entryId === null) {
-            entryId = uuidv4()
-            commit('store', { id: entryId, values: { name: payload.name, type: payload.type } })
-        }
+        const entry = { ...state.entries[entryId] }
+        const lightgroups = { ...(entry.lightgroups ?? {}) }
+        const lightgroupId = uuidv4()
+        lightgroups[lightgroupId] = { ...payload.lightgroup }
 
-        commit('storeLightgroup', { entryId, values: payload.lightgroup })
-        dispatch('upload', entryId)
+        await dispatch('update', { id: entryId, value: { lightgroups } })
     },
 
-    updateLightgroup(
-        { commit, dispatch, state },
+    async updateLightgroup(
+        { dispatch, getters, state },
         payload: { type: string; name: string; lightgroupId: string; lightgroup: GuiMiscellaneousStateEntryLightgroup }
-    ) {
-        const entryId =
-            Object.keys(state.entries).find(
-                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
-            ) ?? null
-        if (entryId === null) return
-
-        commit('updateLightgroup', { entryId, lightgroupId: payload.lightgroupId, values: payload.lightgroup })
-        dispatch('upload', entryId)
-    },
-
-    deleteLightgroup({ commit, dispatch, state }, payload: { type: string; name: string; lightgroupId: string }) {
-        const entryId =
-            Object.keys(state.entries).find(
-                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
-            ) ?? null
-        if (entryId === null) return
-
-        commit('destroyLightgroup', { entryId, lightgroupId: payload.lightgroupId })
-        dispatch('upload', entryId)
-    },
-
-    storePreset(
-        { commit, dispatch, state },
-        payload: {
-            type: string
-            name: string
-            preset: GuiMiscellaneousStateEntryPreset
-        }
-    ) {
-        let entryId =
-            Object.keys(state.entries).find(
-                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
-            ) ?? null
-
-        if (entryId === null) {
-            entryId = uuidv4()
-            commit('store', { id: entryId, values: { name: payload.name, type: payload.type } })
+    ): Promise<void> {
+        const entryId = getters.getEntryKey(payload.type, payload.name)
+        if (!entryId) {
+            logError(
+                `Failed to update lightgroup with id ${payload.lightgroupId}. ` +
+                    `Entry does not exist for type ${payload.type} and name ${payload.name}`
+            )
+            return
         }
 
-        commit('storePreset', { entryId, values: payload.preset })
-        dispatch('upload', entryId)
+        const entry = { ...state.entries[entryId] }
+        const lightgroups = { ...(entry.lightgroups ?? {}) }
+        lightgroups[payload.lightgroupId] = { ...payload.lightgroup }
+
+        await dispatch('update', { id: entryId, value: { lightgroups } })
     },
 
-    updatePreset(
-        { commit, dispatch, state },
+    async deleteLightgroup(
+        { commit, dispatch, getters },
+        payload: { type: string; name: string; lightgroupId: string }
+    ) {
+        const entryId = getters.getEntryKey(payload.type, payload.name)
+        if (!entryId) {
+            logError(
+                `Failed to delete lightgroup with id ${payload.lightgroupId}. ` +
+                    `Entry does not exist for type ${payload.type} and name ${payload.name}`
+            )
+            return
+        }
+
+        const key = `miscellaneous.entries.${entryId}.lightgroups.${payload.lightgroupId}`
+        await dispatch('gui/deleteSetting', key, { root: true })
+        commit('destroyLightgroup', { id: entryId, lightgroupId: payload.lightgroupId })
+    },
+
+    async storePreset(
+        { dispatch, getters, state },
+        payload: { type: string; name: string; preset: GuiMiscellaneousStateEntryPreset }
+    ): Promise<void> {
+        let entryId = getters.getEntryKey(payload.type, payload.name)
+        if (!entryId) entryId = await dispatch('store', { type: payload.type, name: payload.name })
+
+        const entry = { ...state.entries[entryId] }
+        const presets = { ...(entry.presets ?? {}) }
+        const presetId = uuidv4()
+        presets[presetId] = { ...payload.preset }
+
+        await dispatch('update', { id: entryId, value: { presets } })
+    },
+
+    async updatePreset(
+        { dispatch, getters, state },
         payload: { type: string; name: string; presetId: string; preset: GuiMiscellaneousStateEntryPreset }
-    ) {
-        const entryId =
-            Object.keys(state.entries).find(
-                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
-            ) ?? null
-        if (entryId === null) return
+    ): Promise<void> {
+        const entryId = getters.getEntryKey(payload.type, payload.name)
+        if (!entryId) {
+            logError(
+                `Failed to update preset with id ${payload.presetId}. ` +
+                    `Entry does not exist for type ${payload.type} and name ${payload.name}`
+            )
+            return
+        }
 
-        commit('updatePreset', { entryId, presetId: payload.presetId, values: payload.preset })
-        dispatch('upload', entryId)
+        const entry = { ...state.entries[entryId] }
+        const presets = { ...(entry.presets ?? {}) }
+        presets[payload.presetId] = { ...payload.preset }
+
+        await dispatch('update', { id: entryId, value: { presets } })
     },
 
-    deletePreset({ commit, dispatch, state }, payload: { type: string; name: string; presetId: string }) {
-        const entryId =
-            Object.keys(state.entries).find(
-                (key) => state.entries[key].type === payload.type && state.entries[key].name === payload.name
-            ) ?? null
-        if (entryId === null) return
+    async deletePreset({ commit, dispatch, getters }, payload: { type: string; name: string; presetId: string }) {
+        const entryId = getters.getEntryKey(payload.type, payload.name)
+        if (!entryId) {
+            logError(
+                `Failed to delete preset with id ${payload.presetId}. ` +
+                    `Entry does not exist for type ${payload.type} and name ${payload.name}`
+            )
+            return
+        }
 
-        commit('destroyPreset', { entryId, presetId: payload.presetId })
-        dispatch('upload', entryId)
+        const key = `miscellaneous.entries.${entryId}.presets.${payload.presetId}`
+        await dispatch('gui/deleteSetting', key, { root: true })
+        commit('destroyPreset', { id: entryId, presetId: payload.presetId })
     },
-}
-
-interface payloadStore {
-    type: string
-    name: string
 }
