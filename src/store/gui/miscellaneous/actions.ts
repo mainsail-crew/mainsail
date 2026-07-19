@@ -26,7 +26,7 @@ export const actions: ActionTree<GuiMiscellaneousState, RootState> = {
 
     async store({ dispatch }, value: Pick<GuiMiscellaneousStateEntry, 'type' | 'name'>): Promise<string> {
         const id = uuidv4()
-        await dispatch('saveSetting', { id, value })
+        await dispatch('saveSetting', { id, value: { ...value, lightgroups: {}, presets: {} } })
 
         return id
     },
