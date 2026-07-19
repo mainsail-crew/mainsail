@@ -177,13 +177,16 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
             end: parseInt(this.end.toString(), 10),
         }
 
-        await this.$store.dispatch('gui/miscellaneous/storeLightgroup', {
-            type: this.type,
-            name: this.name,
-            lightgroup,
-        })
+        try {
+            await this.$store.dispatch('gui/miscellaneous/storeLightgroup', {
+                type: this.type,
+                name: this.name,
+                lightgroup,
+            })
+        } finally {
+            this.loading = false
+        }
 
-        this.loading = false
         this.close()
     }
 
@@ -196,14 +199,17 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
             end: parseInt(this.end.toString(), 10),
         }
 
-        await this.$store.dispatch('gui/miscellaneous/updateLightgroup', {
-            type: this.type,
-            name: this.name,
-            lightgroupId: this.groupId,
-            lightgroup,
-        })
+        try {
+            await this.$store.dispatch('gui/miscellaneous/updateLightgroup', {
+                type: this.type,
+                name: this.name,
+                lightgroupId: this.groupId,
+                lightgroup,
+            })
+        } finally {
+            this.loading = false
+        }
 
-        this.loading = false
         this.close()
     }
 

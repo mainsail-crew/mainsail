@@ -398,13 +398,16 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             white: this.white !== null ? parseInt(this.white.toString(), 10) : 0,
         }
 
-        await this.$store.dispatch('gui/miscellaneous/storePreset', {
-            type: this.type,
-            name: this.name,
-            preset,
-        })
+        try {
+            await this.$store.dispatch('gui/miscellaneous/storePreset', {
+                type: this.type,
+                name: this.name,
+                preset,
+            })
+        } finally {
+            this.loading = false
+        }
 
-        this.loading = false
         this.close()
     }
 
@@ -419,14 +422,17 @@ export default class SettingsMiscellaneousTabLightPresetsForm extends Mixins(Bas
             white: this.white !== null ? parseInt(this.white.toString(), 10) : 0,
         }
 
-        await this.$store.dispatch('gui/miscellaneous/updatePreset', {
-            type: this.type,
-            name: this.name,
-            presetId: this.presetId,
-            preset,
-        })
+        try {
+            await this.$store.dispatch('gui/miscellaneous/updatePreset', {
+                type: this.type,
+                name: this.name,
+                presetId: this.presetId,
+                preset,
+            })
+        } finally {
+            this.loading = false
+        }
 
-        this.loading = false
         this.close()
     }
 
