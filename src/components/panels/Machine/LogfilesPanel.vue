@@ -49,7 +49,7 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
 
     showRolloverDialog = false
 
-    get filesInLogRoot() {
+    get filesInLogRoot(): FileStateFile[] {
         return this.$store.getters['files/getDirectory']('logs')?.childrens ?? []
     }
 
@@ -57,7 +57,8 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
         const logfiles = ['klippy', 'moonraker']
 
         genericLogfiles.forEach((logfile: string) => {
-            if (this.filesInLogRoot.findIndex((log: FileStateFile) => log.filename === `${logfile}.log`) === -1) return
+            const existsLogfile = this.filesInLogRoot.some((file) => file.filename === `${logfile}.log`)
+            if (existsLogfile) return
 
             logfiles.push(logfile)
         })
