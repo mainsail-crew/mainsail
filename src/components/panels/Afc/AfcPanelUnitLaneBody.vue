@@ -62,8 +62,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import AfcMixin from '@/components/mixins/afc'
-import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import AfcMixin, { AfcSpoolLaneInfo } from '@/components/mixins/afc'
 import { afcIconInfintiy } from '@/plugins/afcIcons'
 import AfcUnitLaneInfiniteDialog from '@/components/dialogs/AfcUnitLaneInfiniteDialog.vue'
 import AfcUnitLaneFilamentDialog from '@/components/dialogs/AfcUnitLaneFilamentDialog.vue'
@@ -91,33 +90,31 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return this.lane.runout_lane ?? 'NONE'
     }
 
-    get spoolId(): number {
-        return Number(this.lane.spool_id || '0')
+    get laneInfo(): AfcSpoolLaneInfo {
+        return this.getAfcLaneInfo(this.name)
     }
 
-    get spool(): ServerSpoolmanStateSpool | null {
-        if (this.spoolId === 0) return null
+    get spoolId(): number {
+        return Number(this.laneInfo.spoolId || '0')
+    }
 
-        const spools = this.$store.state.server.spoolman?.spools || []
-
-        return spools.find((spool: ServerSpoolmanStateSpool) => spool.id === this.spoolId) || null
+    get spool() {
+        return this.laneInfo.spool
     }
 
     get spoolFilamentHeadline(): string {
         const array = [`#${this.spoolId}`]
-        if (this.spoolFilamentVendor) array.push(this.spoolFilamentVendor)
+        if (this.laneInfo.filamentVendor) array.push(this.laneInfo.filamentVendor)
 
         return array.join(' | ')
     }
 
     get spoolColor() {
-        if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
-
-        return this.lane.color || '#000000'
+        return this.laneInfo.color
     }
 
     get spoolRemainingWeight(): number | undefined {
-        return this.spool?.remaining_weight ?? this.lane.weight ?? undefined
+        return this.laneInfo.remainingWeight
     }
 
     get spoolRemainingWeightOutput(): string {
@@ -127,7 +124,7 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolFullWeight(): number | undefined {
-        return this.spool?.initial_weight ?? this.lane.initial_weight ?? undefined
+        return this.laneInfo.fullWeight
     }
 
     get spoolWeightsOutput(): string | undefined {
@@ -139,9 +136,11 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
             }).toString(),
         ]
 
-        if (this.spoolUsedWeight !== undefined) {
+        if (this.laneInfo.usedWeight !== undefined) {
             array.push(
-                this.$t('Panels.AfcPanel.WeightUsed', { weight: Math.round(this.spoolUsedWeight ?? 0) }).toString()
+                this.$t('Panels.AfcPanel.WeightUsed', {
+                    weight: Math.round(this.laneInfo.usedWeight ?? 0),
+                }).toString()
             )
         }
 
@@ -149,14 +148,11 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolPercent() {
-        if (this.spoolRemainingWeight === undefined || this.spoolFullWeight === undefined) return 100
-        if (this.spoolFullWeight === 0) return 100
-
-        return Math.round((this.spoolRemainingWeight / this.spoolFullWeight) * 100)
+        return this.laneInfo.spoolPercent
     }
 
     get spoolMaterial(): string {
-        return this.spool?.filament?.material ?? this.lane.material ?? ''
+        return this.laneInfo.material
     }
 
     get spoolMaterialOutput(): string {
@@ -165,40 +161,34 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
 
     get spoolMaterialDetails(): string {
         const array = [this.spoolMaterialOutput]
-        if (this.spoolExtruderTemp !== undefined) array.push(`${this.spoolExtruderTemp}°C`)
-        if (this.spoolBedTemp !== undefined) array.push(`${this.spoolBedTemp}°C`)
+        if (this.laneInfo.extruderTemp !== undefined) array.push(`${this.laneInfo.extruderTemp}°C`)
+        if (this.laneInfo.bedTemp !== undefined) array.push(`${this.laneInfo.bedTemp}°C`)
 
         return array.join(' | ')
     }
 
     get spoolFilamentVendor(): string | undefined {
-        return this.spool?.filament?.vendor?.name
+        return this.laneInfo.filamentVendor
     }
 
     get spoolFilamentName(): string {
-        return this.spool?.filament?.name || this.lane.filament_name || 'Unknown'
+        return this.laneInfo.filamentName ?? 'Unknown'
     }
 
     get spoolUrl(): string | undefined {
-        if (!this.spoolManagerUrl || !this.spoolId) return undefined
-
-        return `${this.spoolManagerUrl.replace(/\/$/, '')}/spool/show/${this.spoolId}`
+        return this.laneInfo.spoolUrl
     }
 
     get spoolExtruderTemp(): number | undefined {
-        return this.spool?.filament?.settings_extruder_temp
+        return this.laneInfo.extruderTemp
     }
 
     get spoolBedTemp(): number | undefined {
-        return this.spool?.filament?.settings_bed_temp
+        return this.laneInfo.bedTemp
     }
 
     get spoolUsedWeight(): number | undefined {
-        return this.spool?.used_weight
-    }
-
-    get showTd1Color(): boolean {
-        return this.$store.state.gui.view.afc?.showTd1Color ?? true
+        return this.laneInfo.usedWeight
     }
 
     get hasTd() {
