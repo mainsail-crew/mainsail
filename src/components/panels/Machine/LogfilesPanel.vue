@@ -58,7 +58,7 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
 
         genericLogfiles.forEach((logfile: string) => {
             const existsLogfile = this.filesInLogRoot.some((file) => file.filename === `${logfile}.log`)
-            if (existsLogfile) return
+            if (!existsLogfile) return
 
             logfiles.push(logfile)
         })
