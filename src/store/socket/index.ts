@@ -24,6 +24,7 @@ export const getDefaultState = (): SocketState => {
         loadings: [],
         initializationList: ['server'],
         connection_id: null,
+        isResyncing: false,
     }
 }
 

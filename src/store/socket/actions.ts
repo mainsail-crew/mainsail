@@ -44,7 +44,28 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setDisconnected')
     },
 
-    onMessage({ commit, dispatch }, payload) {
+    onMessage({ commit, dispatch, state }, payload) {
+        const suppressDuringResync = [
+            'notify_status_update',
+            'notify_gcode_response',
+            'notify_proc_stat_update',
+            'notify_filelist_changed',
+            'notify_metadata_update',
+            'notify_power_changed',
+            'notify_history_changed',
+            'notify_service_state_changed',
+            'notify_timelapse_event',
+            'notify_job_queue_changed',
+            'notify_announcement_update',
+            'notify_announcement_dismissed',
+            'notify_announcement_wake',
+            'notify_webcams_changed',
+            'notify_active_spool_set',
+            'notify_sensor_update',
+        ]
+
+        if (state.isResyncing && suppressDuringResync.includes(payload.method)) return
+
         switch (payload.method) {
             case 'notify_status_update':
                 dispatch('printer/getData', payload.params[0], { root: true })

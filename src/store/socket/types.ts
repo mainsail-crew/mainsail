@@ -11,4 +11,5 @@ export interface SocketState {
     loadings: string[]
     initializationList: string[]
     connection_id: number | null
+    isResyncing: boolean
 }
