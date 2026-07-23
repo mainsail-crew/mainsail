@@ -18,14 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout develop branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: 'develop'
           token: ${{ secrets.PAT }}
 
       - name: get-npm-version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Push version number
         if: steps.package-version.outputs.current-version != github.event.inputs.version
@@ -40,38 +40,19 @@ jobs:
           commit_message: 'chore: push version number to v${{ github.event.inputs.version }}'
           file_pattern: 'package.json package-lock.json'
 
-  update-master-branch:
-    needs: ['push-version-number']
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@v6
-        with:
-          ref: 'master'
-          token: ${{ secrets.PAT }}
-          fetch-depth: 0
-
-      - name: Fast-forward merge from develop
-        shell: bash
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git merge --ff-only origin/develop
-          git push origin master
-
   release:
-    needs: ['update-master-branch']
+    needs: 'push-version-number'
     name: Build and release
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
-          ref: 'master'
+          ref: 'develop'
           fetch-depth: 0
 
       - name: Install node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 20
 
@@ -125,12 +106,12 @@ jobs:
           local-dir: ./dist/
 
   update-changelog:
-    needs: ['release']
+    needs: 'release'
     name: Generate changelog
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: 'develop'
           fetch-depth: 0
@@ -159,3 +140,22 @@ jobs:
         with:
           commit_message: 'docs(changelog): update changelog'
           file_pattern: CHANGELOG.md
+
+  update-master-branch:
+    needs: 'update-changelog'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v7
+        with:
+          ref: 'master'
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
+
+      - name: Fast-forward merge from develop
+        shell: bash
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git merge --ff-only origin/develop
+          git push origin master
