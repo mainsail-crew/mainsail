@@ -7,10 +7,7 @@
                         <v-icon color="warning">{{ mdiAlert }}</v-icon>
                     </span>
                 </template>
-                <div
-                    v-for="(warning, i) in warnings"
-                    :key="i"
-                    :class="{ 'mb-1': i < warnings.length - 1 }">
+                <div v-for="(warning, i) in warnings" :key="i" :class="{ 'mb-1': i < warnings.length - 1 }">
                     {{ warning }}
                 </div>
             </v-tooltip>
@@ -21,16 +18,10 @@
             <gcodefiles-panel-table-row-file-metadata-filaments-badge :filament="fileFilament" />
         </v-col>
         <v-col class="d-flex align-center pr-0">
-            <v-tooltip
-                v-if="laneInfo"
-                :disabled="!hasLaneTooltipContent"
-                top
-                max-width="280">
+            <v-tooltip v-if="laneInfo" :disabled="!hasLaneTooltipContent" top max-width="280">
                 <template #activator="{ on, attrs }">
                     <span class="d-flex align-center" v-bind="attrs" v-on="on">
-                        <span
-                            class="mr-2 text-subtitle-1 font-weight-bold text-uppercase"
-                            style="padding-right: 4px;">
+                        <span class="mr-2 text-subtitle-1 font-weight-bold text-uppercase" style="padding-right: 4px">
                             {{ laneName }}
                         </span>
                         <div class="d-flex flex-column align-center mx-1">
@@ -60,9 +51,7 @@
                     </div>
                 </div>
             </v-tooltip>
-            <span
-                v-else
-                class="mr-3 text-subtitle-1 font-weight-bold text-uppercase text--disabled">
+            <span v-else class="mr-3 text-subtitle-1 font-weight-bold text-uppercase text--disabled">
                 {{ $t('Dialogs.StartPrint.Afc.NoLane') }}
             </span>
 
@@ -82,10 +71,7 @@
                         @click="changeToolMapping(option.lane)">
                         <v-tooltip :disabled="!option.hasContent" top max-width="280">
                             <template #activator="{ on, attrs }">
-                                <v-list-item-title
-                                    class="d-flex align-center"
-                                    v-bind="attrs"
-                                    v-on="on">
+                                <v-list-item-title class="d-flex align-center" v-bind="attrs" v-on="on">
                                     <span class="mr-2 text-subtitle-1 font-weight-bold text-uppercase">
                                         {{ option.lane }}
                                     </span>
@@ -95,23 +81,21 @@
                                             x-small
                                             :color="option.badge.color"
                                             :style="{ color: option.badgeTextColor }">
-                                            {{ option.badge.weight > 0 ? filamentWeightFormat(option.badge.weight) : '' }}
+                                            {{
+                                                option.badge.weight > 0 ? filamentWeightFormat(option.badge.weight) : ''
+                                            }}
                                         </v-chip>
-                                        <small v-if="option.badge.type" class="type mt-1">{{ option.badge.type }}</small>
+                                        <small v-if="option.badge.type" class="type mt-1">
+                                            {{ option.badge.type }}
+                                        </small>
                                     </div>
-                                    <v-icon
-                                        v-if="option.lane === laneName"
-                                        small
-                                        color="primary"
-                                        class="ml-2">
+                                    <v-icon v-if="option.lane === laneName" small color="primary" class="ml-2">
                                         {{ mdiCheck }}
                                     </v-icon>
                                 </v-list-item-title>
                             </template>
                             <div v-if="option.spoolId">
-                                <div class="font-weight-bold">
-                                    #{{ option.spoolId }} | {{ option.vendorName }}
-                                </div>
+                                <div class="font-weight-bold">#{{ option.spoolId }} | {{ option.vendorName }}</div>
                                 <div>{{ option.filamentName }}</div>
                                 <div v-if="option.materialDetails">{{ option.materialDetails }}</div>
                                 <div v-if="option.weightsOutput">{{ option.weightsOutput }}</div>
@@ -119,7 +103,11 @@
                             <div v-else>
                                 <div v-if="option.material">{{ option.material }}</div>
                                 <div v-if="option.remainingWeight !== undefined">
-                                    {{ $t('Panels.AfcPanel.WeightRemaining', { weight: Math.round(option.remainingWeight) }) }}
+                                    {{
+                                        $t('Panels.AfcPanel.WeightRemaining', {
+                                            weight: Math.round(option.remainingWeight),
+                                        })
+                                    }}
                                 </div>
                             </div>
                         </v-tooltip>

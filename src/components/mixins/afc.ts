@@ -169,9 +169,7 @@ export default class AfcMixin extends Vue {
         const lane = this.getAfcLaneObject(laneName)
         const spoolId: number | undefined = lane?.spool_id ?? undefined
         const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools || []
-        const spool = spoolId
-            ? spools.find((s: ServerSpoolmanStateSpool) => s.id === spoolId) ?? null
-            : null
+        const spool = spoolId ? (spools.find((s: ServerSpoolmanStateSpool) => s.id === spoolId) ?? null) : null
 
         // Color: td1_color (when enabled) → spoolman color_hex → lane color
         let color: string
@@ -196,12 +194,9 @@ export default class AfcMixin extends Vue {
         }
 
         // Use base mixin's spoolManagerUrl if available, otherwise build from store
-        const spoolmanBase: string | undefined =
-            this.$store.state.server.config.config?.spoolman?.server ?? undefined
+        const spoolmanBase: string | undefined = this.$store.state.server.config.config?.spoolman?.server ?? undefined
         const spoolUrl =
-            spoolmanBase && spoolId
-                ? `${spoolmanBase.replace(/\/$/, '')}/spool/show/${spoolId}`
-                : undefined
+            spoolmanBase && spoolId ? `${spoolmanBase.replace(/\/$/, '')}/spool/show/${spoolId}` : undefined
 
         return {
             spoolId,
