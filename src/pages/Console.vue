@@ -100,7 +100,7 @@ export default class PageConsole extends Mixins(BaseMixin, ConsoleMixin) {
     mdiTrashCan = mdiTrashCan
 
     @Ref() readonly consoleScroll!: OverlayScrollbarsComponent
-    @Ref() readonly gcodeCommandField!: typeof ConsoleTextarea
+    @Ref() readonly gcodeCommandField!: ConsoleTextarea
 
     get events() {
         return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table')

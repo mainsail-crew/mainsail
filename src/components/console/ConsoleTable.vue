@@ -5,8 +5,8 @@
         </v-row>
         <template v-else>
             <console-table-entry
-                v-for="(event, index) of events"
-                :key="index"
+                v-for="event of events"
+                :key="event.id"
                 class="consoleTableRow"
                 :event="event"
                 @command-click="commandClick" />
