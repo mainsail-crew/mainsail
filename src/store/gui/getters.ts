@@ -106,6 +106,10 @@ export const getters: GetterTree<GuiState, RootState> = {
             allPanels = allPanels.filter((name) => name !== 'led-effects')
         }
 
+        if (state.view.customPanels.length > 0) {
+            allPanels.push('custom');
+        }
+
         return allPanels
     },
 
@@ -191,5 +195,9 @@ export const getters: GetterTree<GuiState, RootState> = {
         }
 
         return false
+    },
+
+    getCustomPanels: (state) => {
+        return state.view.customPanels;
     },
 }

@@ -7,6 +7,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-mobileLayout-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -18,6 +19,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-tabletLayout1-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -26,6 +28,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-tabletLayout2-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -37,6 +40,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -45,6 +49,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -56,6 +61,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout1-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -64,6 +70,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout2-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -72,6 +79,7 @@
                     <component
                         :is="extractPanelName(component.name)"
                         :key="'dashboard-desktopLayout3-' + component.name"
+                        :config="component.config"
                         :panel-id="extractPanelId(component.name)"></component>
                 </template>
             </v-col>
@@ -99,6 +107,7 @@ import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
+import CustomPanel from '@/components/panels/CustomPanel.vue'
 
 @Component({
     components: {
@@ -118,6 +127,7 @@ import WebcamPanel from '@/components/panels/WebcamPanel.vue'
         ToolheadControlPanel,
         TemperaturePanel,
         WebcamPanel,
+        CustomPanel,
     },
 })
 export default class PageDashboard extends Mixins(DashboardMixin) {

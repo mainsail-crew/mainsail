@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { GuiState, GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiState, GuiStateDashboard, GuiStateDashboardLayoutKey, GuiStateLayoutoption } from '@/store/gui/types'
 import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<GuiState> = {
@@ -120,5 +120,18 @@ export const mutations: MutationTree<GuiState> = {
             payload.dataset,
             payload.value
         )
+    },
+
+    addPanel(state, payload) {
+        const panels = state.dashboard[payload.viewport as GuiStateDashboardLayoutKey];
+        panels.push(payload.panel)
+
+        Vue.set(state.dashboard, payload.viewport, panels)
+    },
+
+    setCustomPanels(state, payload) {
+        if (payload.customPanels) {
+            Vue.set(state.view, 'customPanels', payload.customPanels)
+        }
     },
 }

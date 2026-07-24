@@ -316,6 +316,7 @@ export const getDefaultState = (): GuiState => {
                     page: 'all',
                 },
             },
+            customPanels: []
         },
     }
 }

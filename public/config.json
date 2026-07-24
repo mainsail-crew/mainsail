@@ -6,5 +6,6 @@
     "port": null,
     "path": null,
     "instancesDB": "moonraker",
-    "instances": []
+    "instances": [],
+    "customPanels": []
 }

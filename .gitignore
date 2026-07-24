@@ -16,7 +16,7 @@ package-lock.json
 *.local
 .env
 .vscode
-
+public/plugins
 cypress/screenshots/
 cypress/videos/
 components.d.ts

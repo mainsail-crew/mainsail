@@ -31,12 +31,21 @@ export interface ConfigJson {
     path?: string | null
     instancesDB?: 'moonraker' | 'browser' | 'json'
     instances?: ConfigJsonInstance[]
+    customPanels?: ConfigJsonCustomPanel[]
 }
 
 export interface ConfigJsonInstance {
     hostname: string
     port?: number
     path?: string
+}
+
+export interface ConfigJsonCustomPanel {
+    id: string;
+    title: string;
+    icon: string;
+    entryUrl: string;
+    collapsible: boolean;
 }
 
 export interface Theme {

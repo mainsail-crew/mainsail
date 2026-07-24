@@ -37,9 +37,10 @@ export default class SettingsDashboardSortableItem extends Mixins(DashboardMixin
 
     @Prop({ type: String, required: true }) declare readonly name: string
     @Prop({ type: Boolean, required: true }) declare readonly visible: boolean
+    @Prop({ type: Object, required: false }) declare readonly panelConfig: { [key: string]: unknown }
 
     get panelname() {
-        return this.getPanelName(this.name)
+        return this.getPanelName(this.name, this.panelConfig)
     }
 
     get icon() {

@@ -111,7 +111,35 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         await commit('setData', payload.value)
+        await dispatch('initCustomPanels')
         await dispatch('socket/removeInitModule', 'gui/init', { root: true })
+    },
+
+    async initCustomPanels({ commit, rootGetters, rootState }) {
+        const customPanels = rootState.gui?.view?.customPanels ?? [];
+        const viewports = {
+            'mobile': 'mobileLayout',
+            'tablet': 'tabletLayout2',
+            'desktop': 'desktopLayout2',
+            'widescreen': 'widescreenLayout3',
+        };
+
+        for (const [viewport, defaultLayout] of Object.entries(viewports)) {
+            const panels = rootGetters['gui/getAllPanelsFromViewport'](viewport);
+            for (const customPanel of customPanels) {
+                if (panels.some((panel: GuiStateLayoutoption) => panel.config?.id === customPanel.id)) {
+                    continue;
+                }
+                await commit('addPanel', {
+                    viewport: defaultLayout,
+                    panel: {
+                        name: 'custom',
+                        visible: true,
+                        config: customPanel,
+                    }
+                });
+            }
+        }
     },
 
     /*
@@ -443,6 +471,24 @@ export const actions: ActionTree<GuiState, RootState> = {
             name: 'dashboard.' + name,
             value: newVal,
         })
+    },
+
+    addDefaultCustomPanels({ dispatch, state }, name: GuiStateDashboardLayoutKey) {
+        if (state.view.customPanels) {
+            const panels = state.dashboard[name].filter(panel => panel.name !== 'custom');
+            state.view.customPanels.forEach((panelConfig) => {
+                panels.push({
+                    name: 'custom',
+                    visible: true,
+                    config: panelConfig as Record<string, unknown>,
+                });
+            });
+
+            dispatch('saveSetting', {
+                name: 'dashboard.' + name,
+                value: panels,
+            });
+        }
     },
 
     updateGcodeviewerCache({ dispatch, state }, payload) {

@@ -4,5 +4,6 @@
     "hostname": null,
     "port": null,
     "instancesDB": "browser",
-    "instances": []
+    "instances": [],
+    "customPanels": []
 }

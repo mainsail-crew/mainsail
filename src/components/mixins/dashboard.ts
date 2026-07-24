@@ -29,7 +29,11 @@ export default class DashboardMixin extends BaseMixin {
         return this.$store.getters['gui/webcams/getWebcams'] ?? []
     }
 
-    getPanelName(name: string) {
+    getPanelName(name: string, config: { [key: string]: unknown }): string {
+        if (name === 'custom') {
+            return config['title'] ?? 'Custom panel'
+        }
+
         if (name.startsWith('macrogroup_')) {
             const groupId = name.split('_')[1] ?? ''
             const group = this.macrogroups.find((group: GuiMacrosStateMacrogroup) => group.id === groupId)
