@@ -2,7 +2,7 @@
     <div>
         <v-row class="my-3">
             <v-col class="pl-6 pr-0 pt-0 pb-0 d-flex flex-column">
-                <v-tooltip top>
+                <v-tooltip :disabled="tooltipDisabled" top>
                     <template #activator="{ on, attr }">
                         <span class="d-flex align-center justify-center" v-bind="attr" v-on="on">
                             <afc-filament-reel
@@ -97,6 +97,9 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     get spoolId(): number {
         return Number(this.laneInfo.spoolId || '0')
     }
+    get tooltipDisabled(): boolean {
+        return this.spoolId === 0
+    }
 
     get spool() {
         return this.laneInfo.spool
@@ -152,7 +155,7 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolFilamentName(): string {
-        return this.laneInfo.filamentName ?? 'Unknown'
+        return this.laneInfo.filamentName ?? ''
     }
 
     get spoolUrl(): string | undefined {
