@@ -1,0 +1,26 @@
+{
+    "name": "example-panel-plugin",
+    "version": "1.0.0",
+    "description": "An example of mainsail panel plugin",
+    "type": "module",
+    "main": "./dist/example-panel-plugin.mjs",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "vite preview"
+    },
+    "peerDependencies": {
+        "vue": "^2.7.0",
+        "vue-class-component": "^7.2.0",
+        "vue-property-decorator": "^9.1.2"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue2": "^2.3.1",
+        "typescript": "^5.0.0",
+        "vite": "^5.0.0",
+        "vue": "^2.7.16",
+        "vue-class-component": "^7.2.3",
+        "vue-property-decorator": "^9.1.2",
+        "vue-template-compiler": "^2.7.16"
+    }
+}
