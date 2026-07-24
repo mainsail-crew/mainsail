@@ -9,6 +9,7 @@ export interface AfcSpoolLaneInfo {
     material: string
     filamentVendor: string | undefined
     filamentName: string | undefined
+    filamentLoaded: boolean
     remainingWeight: number | undefined
     fullWeight: number | undefined
     spoolPercent: number
@@ -17,6 +18,9 @@ export interface AfcSpoolLaneInfo {
     bedTemp: number | undefined
     spoolUrl: string | undefined
 }
+
+// AFC's default full-spool weight (g) when no initial_weight is tracked (e.g. no Spoolman spool)
+const AFC_DEFAULT_SPOOL_WEIGHT = 1000
 
 @Component
 export default class AfcMixin extends Vue {
@@ -184,7 +188,8 @@ export default class AfcMixin extends Vue {
 
         const material = spool?.filament?.material || lane?.material || ''
         const remainingWeight: number | undefined = spool?.remaining_weight ?? lane?.weight
-        const fullWeight: number | undefined = spool?.initial_weight ?? lane?.initial_weight
+
+        const fullWeight: number = spool?.initial_weight ?? lane?.initial_weight ?? AFC_DEFAULT_SPOOL_WEIGHT
 
         let spoolPercent = 100
         if (remainingWeight != null && fullWeight != null && fullWeight > 0) {
@@ -205,6 +210,7 @@ export default class AfcMixin extends Vue {
             material,
             filamentVendor: spool?.filament?.vendor?.name,
             filamentName: spool?.filament?.name || lane?.filament_name || undefined,
+            filamentLoaded: lane?.load && lane?.prep,
             remainingWeight,
             fullWeight,
             spoolPercent,
@@ -233,5 +239,33 @@ export default class AfcMixin extends Vue {
     getAfcHubObject(hub: string) {
         const key = `AFC_hub ${hub}`
         return this.getPrinterObject(key) ?? {}
+    }
+
+    buildAfcMaterialDetails(info: AfcSpoolLaneInfo): string {
+        const parts = [info.material || '--']
+        if (info.extruderTemp !== undefined) parts.push(`${info.extruderTemp}°C`)
+        if (info.bedTemp !== undefined) parts.push(`${info.bedTemp}°C`)
+
+        return parts.join(' | ')
+    }
+
+    buildAfcWeightsOutput(info: AfcSpoolLaneInfo): string | undefined {
+        if (info.remainingWeight === undefined) return undefined
+
+        const parts = [
+            this.$t('Panels.AfcPanel.WeightRemaining', {
+                weight: Math.round(info.remainingWeight),
+            }).toString(),
+        ]
+
+        if (info.usedWeight !== undefined) {
+            parts.push(
+                this.$t('Panels.AfcPanel.WeightUsed', {
+                    weight: Math.round(info.usedWeight),
+                }).toString()
+            )
+        }
+
+        return parts.join(' | ')
     }
 }

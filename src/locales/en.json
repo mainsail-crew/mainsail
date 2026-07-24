@@ -196,6 +196,7 @@
             "Afc": {
                 "FilamentTypeMismatch": "Filament type in the G-Code ({file}) does not match the selected filament type ({lane}).",
                 "FilamentWeightNotEnough": "Not enough filament in the selected lane ({lane}). Required: {required}, Available: {available}.",
+                "LaneNotLoaded": "No filament loaded in lane {lane}",
                 "NoLane": "No Lane",
                 "NoLaneMapped": "No lane mapped to {tool}",
                 "Unknown": "Unknown"

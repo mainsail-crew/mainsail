@@ -71,6 +71,16 @@ export interface FileStateGcodefileFilament {
     weight: number
 }
 
+export interface FilamentBadgeDetails {
+    spoolId?: number | null
+    vendorName?: string
+    filamentName?: string
+    materialDetails?: string
+    weightsOutput?: string
+    material?: string
+    remainingWeight?: number
+}
+
 export interface FileStateDiskUsage {
     free: number
     total: number

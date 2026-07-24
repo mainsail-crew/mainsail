@@ -128,23 +128,7 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolWeightsOutput(): string | undefined {
-        if (this.spoolRemainingWeight === undefined) return undefined
-
-        const array = [
-            this.$t('Panels.AfcPanel.WeightRemaining', {
-                weight: Math.round(this.spoolRemainingWeight ?? 0),
-            }).toString(),
-        ]
-
-        if (this.laneInfo.usedWeight !== undefined) {
-            array.push(
-                this.$t('Panels.AfcPanel.WeightUsed', {
-                    weight: Math.round(this.laneInfo.usedWeight ?? 0),
-                }).toString()
-            )
-        }
-
-        return array.join(' | ')
+        return this.buildAfcWeightsOutput(this.laneInfo)
     }
 
     get spoolPercent() {
@@ -160,11 +144,7 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolMaterialDetails(): string {
-        const array = [this.spoolMaterialOutput]
-        if (this.laneInfo.extruderTemp !== undefined) array.push(`${this.laneInfo.extruderTemp}°C`)
-        if (this.laneInfo.bedTemp !== undefined) array.push(`${this.laneInfo.bedTemp}°C`)
-
-        return array.join(' | ')
+        return this.buildAfcMaterialDetails(this.laneInfo)
     }
 
     get spoolFilamentVendor(): string | undefined {
