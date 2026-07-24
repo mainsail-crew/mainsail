@@ -473,24 +473,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    addDefaultCustomPanels({ dispatch, state }, name: GuiStateDashboardLayoutKey) {
-        if (state.view.customPanels) {
-            const panels = state.dashboard[name].filter(panel => panel.name !== 'custom');
-            state.view.customPanels.forEach((panelConfig) => {
-                panels.push({
-                    name: 'custom',
-                    visible: true,
-                    config: panelConfig as Record<string, unknown>,
-                });
-            });
-
-            dispatch('saveSetting', {
-                name: 'dashboard.' + name,
-                value: panels,
-            });
-        }
-    },
-
     updateGcodeviewerCache({ dispatch, state }, payload) {
         const klipperCache = state.gcodeViewer.klipperCache as Record<string, unknown>
         const payloadCache = payload as Record<string, unknown>
