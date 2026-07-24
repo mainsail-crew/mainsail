@@ -85,9 +85,9 @@
             "CannotUploadTheFile": "Dosya yüklenemedi!",
             "EmergencyStop": "Acil Stop",
             "SAVE_CONFIG": "YAPILANDIRMAYI KAYDET",
-            "Uploading": "Yükleniyor",
             "UploadOfFileSuccessful": "{file} başarıyla yüklendi!",
-            "UploadPrint": "Yükle ve Yazdır"
+            "UploadPrint": "Yükle ve Yazdır",
+            "Uploading": "Yükleniyor"
         },
         "TopCornerMenu": {
             "ConfirmationDialog": {
@@ -218,7 +218,8 @@
         "UnsavedChanges": "Kaydedilmemiş Değişiklikler",
         "UnsavedChangesMessage": "{filename} üzerinde yaptığınız değişiklikleri kaydetmek istiyor musunuz?",
         "UnsavedChangesSubMessage": "Kaydetmezseniz değişiklikleriniz kaybolacaktır. Bu mesajı düzenleyici ayarlarından devre dışı bırakabilirsiniz.",
-        "Uploading": "Karşıya Yükleniyor"
+        "Uploading": "Karşıya Yükleniyor",
+        "ViewModuleDocumentation": "{module} belgelerini görüntüle"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Emin misiniz?",
@@ -246,10 +247,10 @@
         "Empty": "Boş",
         "ExtruderTemp": "Ekstruder Sıcaklığı.",
         "FilamentName": "Filament Adı",
-        "Filaments": "Filamentler",
         "FilamentType": "Filament Tipi",
         "FilamentUsage": "Filament kullanımı",
         "FilamentWeight": "Filament Ağırlığı",
+        "Filaments": "Filamentler",
         "Files": "Dosyalar",
         "Filesize": "Dosya boyutu",
         "Free": "Boş",
@@ -271,9 +272,9 @@
         "NozzleDiameter": "Nozül Çapı",
         "ObjectHeight": "Nesne Yüksekliği",
         "Preheat": "Ön ısıtma",
-        "PrintedFiles": "Basılmış dosyalar",
         "PrintStart": "Baskı başlangıcı",
         "PrintTime": "Baskı Süresi",
+        "PrintedFiles": "Basılmış dosyalar",
         "RefreshCurrentDirectory": "Geçerli dizini yenile",
         "Rename": "Yeniden Adlandır",
         "RenameDirectory": "Dizini Yeniden Adlandır",
@@ -298,8 +299,8 @@
         "DropFilesToUploadFiles": "Yüklemek için dosyaları sürükleyip bırakın"
     },
     "GCodeViewer": {
-        "ClearLoadedFile": "Temizle",
         "CNCMode": "CNC Modu",
+        "ClearLoadedFile": "Temizle",
         "ColorMode": "Renk modu",
         "Downloading": "İndiriliyor",
         "ForceLineRendering": "Çizgi İşlemeyi Zorla",
@@ -311,8 +312,8 @@
         "Max": "Maks",
         "Medium": "Orta",
         "ReloadRequired": "Yeniden yükleme gerekli",
-        "Rendering": "İşleme",
         "RenderQuality": "İşleme kalitesi",
+        "Rendering": "İşleme",
         "ShowGCode": "G-Kodu Göster",
         "ShowObjectSelection": "Nesne Seçimini Göster",
         "ShowToolhead": "Baskı Kafasını Göster",
@@ -418,9 +419,9 @@
         "ObjectHeight": "Nesne Yüksekliği",
         "OneTime": "Tek seferlik",
         "Perform": "yapmak",
+        "PerformMaintenance": "Bakım işlerini yapın",
         "Performed": "yapıldı",
         "PerformedAndReschedule": "gerçekleştirildi ve yeniden planlandı",
-        "PerformMaintenance": "Bakım işlerini yapın",
         "PrintDuration": "Baskı Süresi",
         "PrintHistory": "Baskı Geçmişi",
         "PrintJobs": "Baskı İşleri",
@@ -442,6 +443,7 @@
         "Statistics": "İstatistik",
         "Status": "Durum",
         "StatusValues": {
+            "Others": "Diğerleri",
             "cancelled": "İptal Edildi",
             "completed": "Tamamlandı",
             "error": "Hata",
@@ -449,7 +451,6 @@
             "interrupted": "Kesintiye uğradı",
             "klippy_disconnect": "Klippy bağlantısını kes",
             "klippy_shutdown": "Klippy kapat",
-            "Others": "Diğerleri",
             "server_exit": "Sunucu çıkışı"
         },
         "Table": "Tablo",
@@ -515,8 +516,8 @@
             "Endstop": "Endstop",
             "EndstopInfo": "Mevcut endstop durumunu yüklemek için sağ alttaki senkronizasyon düğmesine basın.",
             "Endstops": "Endstoplar",
-            "open": "AÇIK",
-            "TRIGGERED": "TETİKLENDİ"
+            "TRIGGERED": "TETİKLENDİ",
+            "open": "AÇIK"
         },
         "LogfilesPanel": {
             "Accept": "kabul et",
@@ -571,9 +572,9 @@
             "GenericUpdateQuestion": "Bu güncelleme için herhangi bir manuel düzenleme gerekip gerekmediğini görmek için güncelleme geçmişini (varsa) ve bu proje için GitHub sayfasını kontrol edin.",
             "GitHubPage": "GitHub Sayfası",
             "HardRecovery": "Sert Kurtarma",
+            "IUnderstandTheRisks": "Riskleri anlıyorum",
             "InitUpdateManager": "Güncelleme Yöneticisi henüz başlatılmamış. Sistemi ilk kez başlattığınızda bu normaldir. Tüm bileşenleri başlatmak için lütfen yenileme düğmesine tıklayın.",
             "Invalid": "geçersiz",
-            "IUnderstandTheRisks": "Riskleri anlıyorum",
             "KlipperUpdateQuestionConfig": "Bu güncelleme, printer.cfg dosyasında değiştirilmesi gereken yapılandırma parametrelerinde de değişiklikler içerebilir; ayrıntılar için değişiklik günlüğüne bakın.",
             "KlipperUpdateQuestionFirmware": "Bu, Klipper ana yazılımını güncelleyecek. Klipper firmware'i çalıştıran kontrol kartları, makineyi tekrar kullanıma sokmadan önce derlenmiş firmware ile yeniden yazılması gerekebilir.",
             "LinkToGithub": "GitHub Bağlantısı",
@@ -585,13 +586,13 @@
             "System": "Sistem",
             "ThesePackagesCanBeUpgrade": "Bu sistem paketleri güncellenebilir:",
             "Unknown": "bilinmeyen",
+            "UpToDate": "güncel",
             "Update": "güncelleme",
             "UpdateAll": "Tüm Bileşenleri Güncelle",
             "UpdateManager": "Güncelleme Yöneticisi",
             "UpdateWarning": "Güncelleme Uyarısı: {name}",
             "Upgrade": "yükseltme",
             "UpgradeableSystemPackages": "Yükseltilebilir Sistem Paketleri",
-            "UpToDate": "güncel",
             "WebClientUpdateQuestion": "Bazı durumlarda web istemcisinin güncellenmesi, uyumsuzluğa neden olabilecek değişikliklere yol açabilir. Daha fazla bilgi için sürüm notlarına bakın."
         }
     },
@@ -630,9 +631,9 @@
             "LaneMappingToCommand": "{name} öğesini araç komutuna yeniden eşle",
             "LedOff": "LED'ler Kapalı",
             "LedOn": "LED'ler Açık",
+            "LoadLane": "Hat Yükleniyor",
             "LoadedInLane": "{lane} hattına yüklendi",
             "Loading": "Yükleniyor",
-            "LoadLane": "Hat Yükleniyor",
             "Material": "Malzeme",
             "MaterialSubtitle": "Örneğin ABS, PETG, PLA, vb.",
             "Moving": "Hareket ediyor",
@@ -662,8 +663,8 @@
                 "ToolSensorAfterExtruderDescription": "Ekstrüder dişlilerinden toolhead ucu sensörüne olan mesafe (mm). Bu mesafe, toolhead ucu sensörü artık tetiklenmediğinde filamentin ekstruder dişlilerinden çıkarılması için kullanılır.",
                 "ToolStn": "Araç yükleme uzunluğu",
                 "ToolStnDescriptionWithEndSensor": "Araç ucu sensöründen erime bölgesinin başlangıcına kadar olan mesafe (mm).",
-                "ToolStnDescriptionWithoutEndSensor": "Aracın başlangıç sensöründen erime bölgesinin başlangıcına kadar olan mesafe (mm).",
                 "ToolStnDescriptionWithRamming": "Ekstrüder dişlilerinden erime bölgesinin başlangıcına kadar olan mesafe (mm).",
+                "ToolStnDescriptionWithoutEndSensor": "Aracın başlangıç sensöründen erime bölgesinin başlangıcına kadar olan mesafe (mm).",
                 "ToolStnUnload": "Araç boşaltma uzunluğu",
                 "ToolStnUnloadDescription": "Filamentin toolhead'ten çıkarılması için geri çekilmesi gereken mesafe (mm).",
                 "WriteToFile": "Dosyaya Yaz"
@@ -674,10 +675,12 @@
             "ShowTool": "Aracı Göster \"{name}\"",
             "ShowUnit": "\"{name}\" birimini göster",
             "ShowUnitIcons": "Birim Simgesini Göster",
-            "Unloading": "Boşaltma",
             "UnloadLane": "Hattı Boşalt",
+            "Unloading": "Boşaltma",
             "Weight": "Ağırlık",
-            "WeightSubtitle": "Filamentin ağırlığı (makara hariç) gram cinsinden."
+            "WeightRemaining": "{weight}g kaldı",
+            "WeightSubtitle": "Filamentin ağırlığı (makara hariç) gram cinsinden.",
+            "WeightUsed": "{weight}g kullanıldı"
         },
         "ExtruderControlPanel": {
             "Allowed": "İzin Verildi",
@@ -747,6 +750,12 @@
             "Headline": "Makrolar",
             "Send": "gönder"
         },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "printer.cfg dosyanızda mainsail.cfg dosyasını eklediğinizden emin olun.",
+            "IsNotDefinedInConfig": "config dosyasında tanımlı değil.",
+            "MissingConfiguration": "Eksik yapılandırma",
+            "MoreInformation": "daha fazla bilgi"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Otomatik Kaydırma",
             "Headline": "Konsol",
@@ -755,12 +764,6 @@
             "RawOutput": "Ham Çıktı (hata ayıklama için)",
             "SendCode": "Kod Gönder...",
             "SetupConsole": "Konsolu Ayarla"
-        },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "printer.cfg dosyanızda mainsail.cfg dosyasını eklediğinizden emin olun.",
-            "IsNotDefinedInConfig": "config dosyasında tanımlı değil.",
-            "MissingConfiguration": "Eksik yapılandırma",
-            "MoreInformation": "daha fazla bilgi"
         },
         "MiscellaneousPanel": {
             "Headline": "Çeşitli",
@@ -777,6 +780,7 @@
         },
         "MmuPanel": {
             "Active": "Aktif",
+            "ButtonChangeTool": "Aracı Değiştir",
             "ButtonCheckAllGates": "Tüm Geçişleri Kontrol Et",
             "ButtonCheckGate": "Geçişi Kontrol Et",
             "ButtonEject": "Çıkar",
@@ -797,6 +801,10 @@
                 "AreYouSure": "Emin misin?"
             },
             "Disabled": "Devre dışı",
+            "Drying": "Kurutma",
+            "DryingCancelled": "Kurutma iptal edildi",
+            "DryingComplete": "Kurutma tamamlandı",
+            "DryingQueued": "Kurutma sıraya alındı",
             "EditGateMap": "Filamentleri Düzenle",
             "EditGateMapTitle": "Filamentleri Düzenle (Geçiş Haritası)",
             "EditTtgMap": "Harita Araçları",
@@ -829,6 +837,7 @@
             "Gear": "Dişli",
             "Guard": "Koruma",
             "Headline": "Çoklu Malzeme Ünitesi (Mmu)",
+            "Heater": "Isıtıcı",
             "LargeFilamentStatus": "Büyük Filament Durumu",
             "MmuMaintenance": "MMU Bakımı",
             "MmuMaintenanceDialog": {
@@ -897,6 +906,7 @@
             "Ok": "Tamam",
             "PreGate": "Geçiş Öncesi",
             "RecoverState": "MMU Durumunu Düzelt",
+            "ShowClimate": "İklim Bilgilerini Göster",
             "ShowClogTangleDetection": "Tıkanıklık/Dolaşma Tespiti",
             "ShowDetails": "Filament Detayları",
             "ShowLogos": "Logoyu Göster",
@@ -908,13 +918,13 @@
                 "SingleColor": "Bu tek renkli bir baskı gibi görünüyor, ancak MMU'nuzda baypas seçeneği seçili değil. Seçili aracı kontrol etmeniz gerekebilir"
             },
             "Tangle": "Dolaşma",
-            "Toolhead": "Araç başlığı",
             "ToolMapping": "Araç Eşleştirme",
             "ToolTip": {
                 "Color": "Renk",
                 "Empty": "Boş",
                 "SpoolId": "Makara Kimliği (ID)"
             },
+            "Toolhead": "Araç başlığı",
             "TtgMapDialog": {
                 "AllTools": "Tüm Araçlar",
                 "Bypass": "Bypass",
@@ -927,8 +937,8 @@
                 "Material": "Malzeme",
                 "Mismatch": "Olası filament uyumsuzluğu:",
                 "NoGateData": "Geçiş verisi yok",
-                "None": "hiç",
                 "NoSlicerInfo": "Dilimleyici bilgisi yok, {tool} için varsayılan eşlemeyi seçin",
+                "None": "hiç",
                 "Reset": "Sıfırla",
                 "ResetConfirmation": "Bu işlem, tüm araç-geçiş eşleştirmesini ve sonsuz makara grupları 'mmu_parameters.cfg' dosyasında tanımlanan varsayılan değerlere veya varsayılan değerler mevcut değilse varsayılan 1:1 'e sıfırlayacaktır",
                 "SelectTool": "Haritalama yapılacak aracı seçin, ardından listeden geçişi seçin",
@@ -961,8 +971,8 @@
             "NoActiveSpool": "Filament takibi devre dışı. Başlatmak için lütfen bir makara seçin.",
             "NoResults": "Mevcut arama kriterleriyle makara bulunamadı.",
             "NoSpool": "Makara yok",
-            "NoSpools": "Mevcut makara yok",
             "NoSpoolSelected": "Yazdırma makarası seçilmedi. Lütfen bir makara seçin, aksi takdirde bu yazdırma işlemi takip edilmeyecektir.",
+            "NoSpools": "Mevcut makara yok",
             "OpenSpoolManager": "Makara düzenleyiciyi aç",
             "Refresh": "Yenile",
             "Search": "Arama",
@@ -976,16 +986,16 @@
             "CancelPrint": "Baskıyı İptal Et",
             "ClearPrintStats": "Baskı İstatistiklerini Temizle",
             "Difference": "Fark",
+            "ETA": "Tahmini Bitiş Zamanı",
             "EmptyGcodes": "G-Kod yok.",
             "EmptyHistory": "Tarihte böyle bir iş yok.",
             "EmptyJobqueue": "Şu anda iş kuyruğunda dosya yok.",
             "Estimate": "Tahmin",
-            "ETA": "Tahmini Bitiş Zamanı",
             "ExcludeObject": {
-                "Excluded": "Hariç Tutuldu",
                 "ExcludeObject": "Nesneyi Hariç Tut",
                 "ExcludeObjectHeadline": "Nesneyi Hariç Tut",
-                "ExcludeObjectText": "\"{name}\" nesnesini gerçekten hariç tutmak istiyor musunuz?"
+                "ExcludeObjectText": "\"{name}\" nesnesini gerçekten hariç tutmak istiyor musunuz?",
+                "Excluded": "Hariç Tutuldu"
             },
             "Filament": "Filament",
             "File": "Dosya",
@@ -1045,14 +1055,14 @@
             "ShowNameInList": "{name}'i listede göster",
             "State": "Durum",
             "Target": "Hedef",
-            "TemperaturesInChart": "Sıcaklık [°C]",
             "TempTooHigh": "{name} için sıcaklık çok yüksek! (maks: {max})",
             "TempTooLow": "{name} için sıcaklık çok düşük! (min: {min})",
+            "TemperaturesInChart": "Sıcaklık [°C]",
             "TurnHeaterOff": "Isıtıcıyı Kapat"
         },
         "ToolheadControlPanel": {
-            "Absolute": "mutlak",
             "ALL": "TÜMÜ",
+            "Absolute": "mutlak",
             "ControlButtons": "Kontrol Butonları",
             "CoordinateFields": "Koordinat Alanları",
             "Headline": "Araç Başlığı",
@@ -1068,6 +1078,7 @@
         },
         "WebcamPanel": {
             "All": "Tümü",
+            "BrowserNotSupported": "Tarayıcınız bu web kamerası türünü desteklemiyor.",
             "ConnectingTo": "{url} adresine bağlanılıyor",
             "Disconnected": "Bağlantı kesildi",
             "ErrorWhileConnecting": "{url} adresine bağlanırken hata oluştu",
@@ -1200,6 +1211,8 @@
             "ConfirmUnsavedChanges": "Kaydedilmemiş değişiklikleri kaydetmek veya iptal için uyarı göster",
             "ConfirmUnsavedChangesDescription": "Etkinleştirilirse, editör yapılan değişiklikleri kaydetmek veya iptal etmek için onay gerektirir. Devre dışı bırakılırsa değişiklikler sessizce iptal edilir.",
             "Editor": "Editör",
+            "KlipperDocsTooltips": "Klipper belgelerine ipuçlarını etkinleştir",
+            "KlipperDocsTooltipsDescription": "Etkinleştirildiğinde, yapılandırma bölümü başlıklarının üzerine fareyi getirdiğinizde belgeler için bir bağlantı görebilirsiniz.",
             "KlipperRestartMethod": "Klipper yeniden başlatma yöntemi",
             "KlipperRestartMethodDescription": "Klipper yapılandırma dosyalarını düzenlerken 'Kaydet ve Yeniden Başlat' seçildiğinde hangi yeniden başlatma yönteminin kullanılacağını seçin.",
             "Spaces": "Boşluklar: {count}",
@@ -1291,8 +1304,8 @@
             "CountMacros": "Makro eklenmedi | {count} Makro | {count} Makro",
             "Custom": "özel",
             "CustomColor": "Özel Renk",
-            "DeletedMacro": "Silinen makro",
             "DeleteMacroFromGroup": "Makroyu gruptan sil.",
+            "DeletedMacro": "Silinen makro",
             "EditGroup": "Grubu Düzenle",
             "Error": "hata",
             "Expert": "Uzman",
@@ -1302,10 +1315,10 @@
             "Macrogroups": "Gruplar",
             "Macros": "Makrolar",
             "Management": "Yönetim",
+            "NOMacros": "Makro bulunamadı...",
             "Name": "Ad",
             "NoAvailableMacros": "Mevcut makro yok.",
             "NoGroups": "Grup bulunamadı...",
-            "NOMacros": "Makro bulunamadı...",
             "NoMacrosInGroup": "Bu grupta makro yok.",
             "Primary": "birincil",
             "Search": "Ara",
@@ -1330,8 +1343,8 @@
             "End": "Son",
             "EndDescription": "Bu grubun son LED'i.",
             "GreaterThanZero": "Değer 0(sıfır)'dan büyük olmalıdır.",
-            "Groups": "Gruplar",
             "GroupSubTitle": "Başlangıç: {start}, Son: {end}",
+            "Groups": "Gruplar",
             "HigherThanStart": "Son değer, başlangıç değerinden büyük olmalıdır.",
             "LessThanChainCount": "Değer, toplam LED sayısından ({count}) küçük olmalıdır.",
             "LightGroups": "{name} - Gruplar",
@@ -1390,8 +1403,6 @@
             "CameraWarningAlreadySetSmall": "timelapse] bölümündeki snapshoturl",
             "ConstantRateFactor": "Sabit Oran Faktörü",
             "ConstantRateFactorDescription": "Bu, oluşturulan video kalitesini ve dosya boyutunu yapılandırır. CRF ölçeğinin aralığı 0-51 arasındadır, 0 kayıpsız, 23 varsayılan ve 51 en düşük kaliteye sahiptir. Daha düşük bir değer genellikle daha yüksek kaliteye yol açar ve nispeten sağlıklı bir aralık 17-28'dir. Görsel olarak kayıpsız kabul edilebilecek 17 veya 18'i düşünün.",
-            "duplicatelastframe": "Son Kareyi Kopyala",
-            "duplicatelastframeDescription": "Video sonundaki son kareyi kopyalar",
             "Enabled": "Etkin",
             "EnabledDescription": "Devre dışı bırakılırsa, G-Code makroları yok sayılır ve otomatik render atlanır.",
             "Extraoutputparams": "Ekstra Çıkış Parametreleri",
@@ -1408,12 +1419,12 @@
             "NoWebcamFound": "Web kamerası mevcut değil",
             "OutputFramerate": "Çıkış Kare Hızı",
             "OutputFramerateDescription": "Video kare hızını belirler. Not: variable_fps etkinleştirildiyse bu göz ardı edilecektir",
+            "ParkTime": "Park Süresi",
+            "ParkTimeDescription": "Park ederken ekstra boş süre ekler.",
             "Parkhead": "Baskı kafasını park et",
             "ParkheadDescription": "Etkinleştirilirse, kare alınmadan önce toolhead park konumuna getirilecektir.",
             "Parkpos": "Park konumu",
             "ParkposDescription": "Park konumunu seçin",
-            "ParkTime": "Park Süresi",
-            "ParkTimeDescription": "Park ederken ekstra boş süre ekler.",
             "Pixelformat": "Piksel Formatı",
             "PixelformatDescription": "Oluşturulan videoyun piksel formatını tanımlar",
             "PosDZ": "Z Konumu",
@@ -1455,7 +1466,9 @@
             "VariableFpsMax": "Değişken FPS maks",
             "VariableFpsMaxDescription": "Maksimum değişken FPS değeri",
             "VariableFpsMin": "Değişken FPS min",
-            "VariableFpsMinDescription": "Minimum değişken FPS değeri"
+            "VariableFpsMinDescription": "Minimum değişken FPS değeri",
+            "duplicatelastframe": "Son Kareyi Kopyala",
+            "duplicatelastframeDescription": "Video sonundaki son kareyi kopyalar"
         },
         "UiSettingsTab": {
             "BedScrewsDialog": "Tabla Vidaları Diyaloğu",
