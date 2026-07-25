@@ -125,7 +125,8 @@ aliases:
         expect(find(tokens, '# EXP1 header')).toContain('comment')
         expect(find(tokens, 'EXP1_1')).toContain('string')
         expect(find(tokens, '5V')).toContain('string')
-        expect(find(tokens, 'P2.8')).toContain('string')
+        // a directly attached "," stays part of the value token
+        expect(find(tokens, 'P2.8,')).toContain('string')
         expect(find(tokens, 'GND')).toContain('string')
         expect(find(tokens, '=')).toContain('operator')
         expect(find(tokens, '<')).toContain('operator')
@@ -145,6 +146,16 @@ gear_ratio: 50:10`
         expect(find(tokens, '50:10')).toContain('string')
     })
 
+    it('keeps a comma with the value it belongs to', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `description: Extrudes, if the extruder is hot enough
+mesh_min: 25,25`
+        )
+        expect(find(tokens, 'Extrudes,')).toContain('string')
+        expect(find(tokens, '25,')).toContain('number')
+    })
+
     it('keeps double-dash cli flags as one string', () => {
         const tokens = highlight(klipperConfigLanguage, `custom_flags: --http-listen=0.0.0.0`)
         expect(find(tokens, '--http-listen')).toContain('string')
@@ -157,7 +168,7 @@ mmu_statistics = {'count': 170, 'quality': -1.0, 'warning': ''}`
         const tokens = highlight(klipperConfigLanguage, code)
         expect(find(tokens, 'mmu_state_gate_status =')).toContain('propertyName')
         expect(find(tokens, 'mmu_statistics =')).toContain('propertyName')
-        expect(find(tokens, '-1.0')).toContain('number')
+        expect(find(tokens, '-1.0,')).toContain('number')
         expect(find(tokens, "'count':")).toContain('string')
         // brackets/braces mid-line are punctuation, not a new section header
         const tree = klipperConfigLanguage.parser.parse(code).toString()
