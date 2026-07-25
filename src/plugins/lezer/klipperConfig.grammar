@@ -53,8 +53,10 @@ StringValue { word }
   // A word must contain at least one non-numeric char after an optional
   // numeric prefix, so it never fully matches a pure number. That allows
   // word to rank above Number ("5V" -> word, "0.5" -> Number). ":" is a
-  // word char so "EBBCan:PD0" / "50:10" stay single values.
-  word { ("-" | "+")? $[0-9.]* ![0-9.+\- \t\r\n#;\[\],=<>] ![ \t\r\n#;\[\],=<>]* }
+  // word char so "EBBCan:PD0" / "50:10" stay single values. Multiple leading
+  // signs are allowed so CLI-style values ("--http-listen=0.0.0.0") stay one
+  // word instead of splitting at the second "-".
+  word { $[-+]* $[0-9.]* ![0-9.+\- \t\r\n#;\[\],=<>] ![ \t\r\n#;\[\],=<>]* }
 
   @precedence { Comment, GcodeKey, word, Number }
 }

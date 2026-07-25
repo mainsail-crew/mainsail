@@ -145,6 +145,11 @@ gear_ratio: 50:10`
         expect(find(tokens, '50:10')).toContain('string')
     })
 
+    it('keeps double-dash cli flags as one string', () => {
+        const tokens = highlight(klipperConfigLanguage, `custom_flags: --http-listen=0.0.0.0`)
+        expect(find(tokens, '--http-listen')).toContain('string')
+    })
+
     it('resumes config parsing after an indented gcode block', () => {
         const tokens = highlight(
             klipperConfigLanguage,
