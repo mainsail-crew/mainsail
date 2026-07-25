@@ -30,8 +30,13 @@ SectionType { word }
 SectionName { word }
 
 Property { PropertyName value* }
-value { Number | StringValue | Comma | Operator | ValuePunctuation }
+value { Number | Boolean | StringValue | Comma | Operator | ValuePunctuation }
 StringValue { word }
+// @specialize (not a token rule) so only the whole word matches: "true" is a
+// Boolean, "true_x" stays a StringValue.
+// The "," variants cover list items ("[True, false]"), where the separator is
+// part of the word token.
+Boolean { @specialize<word, "true" | "True" | "false" | "False" | "true," | "True," | "false," | "False,"> }
 
 // No skipping between the key and its body, so the external tokenizer starts
 // right after the "gcode:" / "enable:" colon and can measure indentation.

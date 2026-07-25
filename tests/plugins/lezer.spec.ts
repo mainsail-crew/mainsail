@@ -156,6 +156,20 @@ mesh_min: 25,25`
         expect(find(tokens, '25,')).toContain('number')
     })
 
+    it('highlights booleans', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `a: true
+b: False
+c: true_x
+d = [True, false]`
+        )
+        expect(find(tokens, 'true')).toContain('number')
+        expect(find(tokens, 'False')).toContain('number')
+        expect(find(tokens, 'True,')).toContain('number')
+        expect(find(tokens, 'true_x')).toContain('string')
+    })
+
     it('keeps double-dash cli flags as one string', () => {
         const tokens = highlight(klipperConfigLanguage, `custom_flags: --http-listen=0.0.0.0`)
         expect(find(tokens, '--http-listen')).toContain('string')

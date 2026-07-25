@@ -14,6 +14,7 @@ export const
   GcodeKey = 12,
   Property = 13,
   Number = 14,
-  StringValue = 15,
-  Comma = 16,
-  Operator = 17
+  Boolean = 15,
+  StringValue = 16,
+  Comma = 17,
+  Operator = 18

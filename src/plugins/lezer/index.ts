@@ -40,7 +40,8 @@ const jinjaParser = jinjaParserRaw.configure({
             Keyword: t.controlKeyword,
             FilterName: t.function(t.variableName),
             Pipe: t.operator,
-            Boolean: t.bool,
+            // same as in the config grammar: number color, not the theme blue
+            Boolean: t.number,
             StringLiteral: t.string,
             Number: t.number,
             VariableName: t.propertyName,
@@ -65,6 +66,9 @@ const klipperConfigParser = klipperConfigParserRaw.configure({
             GcodeKey: t.definition(t.propertyName),
             Number: t.number,
             StringValue: t.string,
+            // number tag, not t.bool: the base theme paints bools in the same
+            // blue as the config keys, and True/False is a value like 1/0
+            Boolean: t.number,
             Operator: t.operator,
             Comment: t.lineComment,
             '[ ]': t.squareBracket,
