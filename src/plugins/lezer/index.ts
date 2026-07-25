@@ -28,6 +28,9 @@ const gcodeParser = gcodeParserRaw.configure({
             Number: t.number,
             String: t.string,
             MacroName: t.variableName,
+            // unquoted param value (MACRO=TIMELAPSE_TAKE_FRAME) -> value color,
+            // not the command color; path rule so ParamValue's own token wins
+            ParamValue: t.string,
             Operator: t.operator,
             LineComment: t.lineComment,
         }),

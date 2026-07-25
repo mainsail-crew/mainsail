@@ -2,6 +2,10 @@
 // Flat token stream (no line structure) so it stays robust when used as the
 // `base` overlay of the Jinja parser, where the gcode text arrives in fragments
 // split around `{ ... }` / `{% ... %}` tags.
+// The unquoted value of NAME=VALUE, external so it only matches directly after
+// the "=" (see gcode.tokens.ts).
+@external tokens paramValue from "./gcode.tokens" { ParamValue }
+
 @top Program { item* }
 
 @skip { spaces }
@@ -9,15 +13,22 @@
 item {
   LineComment |
   Message |
+  Param |
   Command |
   AxisWord |
   FeedWord |
   ParamWord |
   Number |
   String |
-  MacroName |
-  Operator
+  MacroName
 }
+
+// macro parameter: NAME=value. ParamValue keeps an unquoted word
+// (MACRO=TIMELAPSE_TAKE_FRAME) from getting the command color. Jinja values
+// (VALUE="{tl.macro}") are handled by the jinja parser above this one, which
+// splits the text around "{...}".
+Param { MacroName Operator value }
+value { String | Number | ParamWord | AxisWord | FeedWord | ParamValue }
 
 @tokens {
   spaces { $[ \t\r\n]+ }

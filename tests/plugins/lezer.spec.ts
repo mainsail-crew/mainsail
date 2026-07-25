@@ -191,6 +191,25 @@ mmu_statistics = {'count': 170, 'quality': -1.0, 'warning': ''}`
         expect(tree).toContain('ValuePunctuation')
     })
 
+    it('styles unquoted macro param values as values, not commands', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[gcode_macro X]
+gcode:
+    SET_GCODE_VARIABLE MACRO=TIMELAPSE VARIABLE=v VALUE={tl.macro}
+    SET_PIN PIN=my_led VALUE=0.5`
+        )
+        expect(find(tokens, 'SET_GCODE_VARIABLE')).toContain('variableName')
+        expect(find(tokens, 'MACRO')).toContain('variableName')
+        expect(find(tokens, 'TIMELAPSE')).toContain('string')
+        expect(find(tokens, 'my_led')).toContain('string')
+        expect(find(tokens, '0.5')).toContain('number')
+        // a jinja value ends the gcode fragment: the next command must not
+        // become the value of "VALUE="
+        expect(find(tokens, 'tl.macro')).toContain('propertyName')
+        expect(find(tokens, 'SET_PIN')).toContain('variableName')
+    })
+
     it('resumes config parsing after an indented gcode block', () => {
         const tokens = highlight(
             klipperConfigLanguage,
