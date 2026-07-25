@@ -1,16 +1,21 @@
 import { ExternalTokenizer } from '@lezer/lr'
-import { GcodeBody, PropertyName } from './klipperConfig.terms'
+import { GcodeBody, PropertyName, ValuePunctuation } from './klipperConfig.terms'
 
 const NEWLINE = 10
 const SPACE = 32
 const TAB = 9
 const CR = 13
 const COLON = 58
+const EQUALS = 61
 
 // Klipper keys are only valid at column 0. A word followed by ":" anywhere
 // else (e.g. the value "EBBCan:PD0") is not a key, so PropertyName can't be
 // a regular grammar token (lezer tokens can't anchor to line starts).
-const KEY_STOP = new Set([...' \t\r\n:#;[],'].map((c) => c.charCodeAt(0)))
+const KEY_STOP = new Set([...' \t\r\n:=#;[],'].map((c) => c.charCodeAt(0)))
+
+// "[" / "{" only start a section header at column 0; inside a value they are
+// plain punctuation of a python literal (save_variables files: "x = [1, 2]").
+const VALUE_PUNCTUATION = new Set([...'[]{}'].map((c) => c.charCodeAt(0)))
 
 export const propertyName = new ExternalTokenizer((input) => {
     if (input.pos > 0 && input.peek(-1) != NEWLINE) return
@@ -19,11 +24,21 @@ export const propertyName = new ExternalTokenizer((input) => {
         name += String.fromCharCode(input.next)
         input.advance()
     }
-    if (name.length == 0 || input.next != COLON) return
+    if (name.length == 0) return
+    // configparser allows spaces before the delimiter ("blobifier = 2096")
+    while (input.next == SPACE || input.next == TAB) input.advance()
+    // "=" is a key delimiter too (save_variables / [Variables] files)
+    if (input.next != COLON && input.next != EQUALS) return
     // *_gcode: / enable: belong to the built-in GcodeKey token
     if (/^(?:[A-Za-z]*_?gcode|enable)$/.test(name)) return
     input.advance()
     input.acceptToken(PropertyName)
+})
+
+export const valuePunctuation = new ExternalTokenizer((input) => {
+    if (input.pos == 0 || input.peek(-1) == NEWLINE) return
+    if (!VALUE_PUNCTUATION.has(input.next)) return
+    input.acceptToken(ValuePunctuation, 1)
 })
 
 // Consumes a *_gcode: / enable: body: the rest of the key line plus every

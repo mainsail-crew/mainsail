@@ -150,6 +150,22 @@ gear_ratio: 50:10`
         expect(find(tokens, '--http-listen')).toContain('string')
     })
 
+    it('handles "=" keys and python literal values (save_variables)', () => {
+        const code = `[Variables]
+mmu_state_gate_status = [1, 1, 0]
+mmu_statistics = {'count': 170, 'quality': -1.0, 'warning': ''}`
+        const tokens = highlight(klipperConfigLanguage, code)
+        expect(find(tokens, 'mmu_state_gate_status =')).toContain('propertyName')
+        expect(find(tokens, 'mmu_statistics =')).toContain('propertyName')
+        expect(find(tokens, '-1.0')).toContain('number')
+        expect(find(tokens, "'count':")).toContain('string')
+        // brackets/braces mid-line are punctuation, not a new section header
+        const tree = klipperConfigLanguage.parser.parse(code).toString()
+        expect(tree).not.toContain('⚠')
+        expect(tree).not.toContain('SectionHeader,SectionHeader')
+        expect(tree).toContain('ValuePunctuation')
+    })
+
     it('resumes config parsing after an indented gcode block', () => {
         const tokens = highlight(
             klipperConfigLanguage,

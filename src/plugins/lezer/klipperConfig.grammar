@@ -7,6 +7,11 @@
 // value (e.g. "step_pin: EBBCan:PD0") must stay part of the value. Lezer
 // tokens can't anchor to line starts, so PropertyName is external.
 @external tokens propertyName from "./klipperConfig.tokens" { PropertyName }
+// "["/"{"/"]"/"}" inside a value (python literals in save_variables files:
+// "mmu_state_gate_status = [1, 1, 0]") are punctuation, not a section header.
+// The content stays flat StringValue/Number/Comma tokens - no json/array
+// parsing, highlighting doesn't need the structure.
+@external tokens valuePunctuation from "./klipperConfig.tokens" { ValuePunctuation }
 
 // Comments are skipped so an inline comment doesn't terminate a Property
 // (e.g. a "# EXP1 header" line inside a board_pins aliases: block).
@@ -25,7 +30,7 @@ SectionType { word }
 SectionName { word }
 
 Property { PropertyName value* }
-value { Number | StringValue | Comma | Operator }
+value { Number | StringValue | Comma | Operator | ValuePunctuation }
 StringValue { word }
 
 // No skipping between the key and its body, so the external tokenizer starts
@@ -56,7 +61,7 @@ StringValue { word }
   // word char so "EBBCan:PD0" / "50:10" stay single values. Multiple leading
   // signs are allowed so CLI-style values ("--http-listen=0.0.0.0") stay one
   // word instead of splitting at the second "-".
-  word { $[-+]* $[0-9.]* ![0-9.+\- \t\r\n#;\[\],=<>] ![ \t\r\n#;\[\],=<>]* }
+  word { $[-+]* $[0-9.]* ![0-9.+\- \t\r\n#;\[\]{},=<>] ![ \t\r\n#;\[\]{},=<>]* }
 
   @precedence { Comment, GcodeKey, word, Number }
 }

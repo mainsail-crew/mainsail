@@ -68,6 +68,7 @@ const klipperConfigParser = klipperConfigParserRaw.configure({
             Operator: t.operator,
             Comment: t.lineComment,
             '[ ]': t.squareBracket,
+            ValuePunctuation: t.bracket,
         }),
     ],
     // reparse *_gcode:/enable: bodies as jinja(base: gcode)
