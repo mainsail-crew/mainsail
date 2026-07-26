@@ -229,8 +229,8 @@
         "AddBatchToQueue": "Добавить несколько заданий в очередь",
         "AddToQueue": "Добавить задание в очередь",
         "AllFiles": "Все",
-        "BedTemp": "Темп. стола",
-        "ChamberTemp": "Темп. в камере",
+        "BedTemp": "Температура стола.",
+        "ChamberTemp": "Температура в камере.",
         "Count": "Количество",
         "Create": "Создать",
         "CreateNewDirectory": "Создать папку",
@@ -245,7 +245,7 @@
         "DuplicateFile": "Создать копию файла",
         "EditFile": "Редактировать файл",
         "Empty": "Пусто",
-        "ExtruderTemp": "Темп. экструдера",
+        "ExtruderTemp": "Температура экструдера.",
         "FilamentName": "Имя профиля прутка",
         "Filaments": "Филаменты",
         "FilamentType": "Тип прутка",
@@ -678,7 +678,8 @@
             "Unloading": "Выгрузка",
             "UnloadLane": "Выгрузить нить",
             "Weight": "Масса",
-            "WeightSubtitle": "Вес филамента в граммах (без катушки)."
+            "WeightSubtitle": "Вес филамента в граммах (без катушки).",
+            "WeightUsed": "использавано {weight}г"
         },
         "ExtruderControlPanel": {
             "Allowed": "Разрешено",
@@ -778,6 +779,7 @@
         },
         "MmuPanel": {
             "Active": "Активный",
+            "ButtonChangeTool": "Сменить инструмент",
             "ButtonCheckAllGates": "Проверить все выходы",
             "ButtonCheckGate": "Проверить выход",
             "ButtonEject": "Извлечь",
@@ -798,6 +800,9 @@
                 "AreYouSure": "Вы уверены?"
             },
             "Disabled": "отключено",
+            "Drying": "Сушка",
+            "DryingCancelled": "Сушка отменена",
+            "DryingComplete": "Сушка завершена",
             "EditGateMap": "Редактировать филамент",
             "EditGateMapTitle": "Редактировать филамент (карта затвора)",
             "EditTtgMap": "Карта инструментов",
@@ -830,6 +835,7 @@
             "Gear": "шестерня",
             "Guard": "Защита",
             "Headline": "MMU",
+            "Heater": "Нагреватель",
             "LargeFilamentStatus": "Статус большого филамента",
             "MmuMaintenance": "техническое обслуживание MMu",
             "MmuMaintenanceDialog": {
@@ -1069,6 +1075,7 @@
         },
         "WebcamPanel": {
             "All": "Все",
+            "BrowserNotSupported": "Ваш браузер не поддерживает этот тип веб-камеры.",
             "ConnectingTo": "Подключение к {url}",
             "Disconnected": "Отключено",
             "ErrorWhileConnecting": "Ошибка при подключении к {url}",
@@ -1201,6 +1208,7 @@
             "ConfirmUnsavedChanges": "Запрос на сохранение или отмену несохранённых изменений",
             "ConfirmUnsavedChangesDescription": "Если включено, то для сохранения или отмены внесенных изменений требуется подтверждение. Если отключено, изменения отклоняются без предупреждения.",
             "Editor": "Редактор",
+            "KlipperDocsTooltips": "Включить всплывающие подсказки для документации Klipper",
             "KlipperRestartMethod": "Метод перезапуска Klipper",
             "KlipperRestartMethodDescription": "Выберите, какой метод перезапуска будет использоваться при нажатии «Сохранить и перезапустить» при редактировании файлов конфигурации Klipper.",
             "Spaces": "Пробелов: {count}",
