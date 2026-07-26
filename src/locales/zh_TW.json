@@ -648,7 +648,7 @@
             "Settings": "設定",
             "SettingsDialog": {
                 "BowdenLength": "Bowden 長度",
-                "BowdenLengthDescription": "這是連接集料器到工具頭之間Bowden管的長度。",
+                "BowdenLengthDescription": "連接集料器到工具頭之間Bowden管的長度。",
                 "DistHub": "到集料器的距離",
                 "DistHubDescription": "從槽位擠出機齒輪到集料器的距離 (mm)。",
                 "Help": "說明",
