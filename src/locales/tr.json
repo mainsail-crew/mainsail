@@ -218,7 +218,8 @@
         "UnsavedChanges": "Kaydedilmemiş Değişiklikler",
         "UnsavedChangesMessage": "{filename} üzerinde yaptığınız değişiklikleri kaydetmek istiyor musunuz?",
         "UnsavedChangesSubMessage": "Kaydetmezseniz değişiklikleriniz kaybolacaktır. Bu mesajı düzenleyici ayarlarından devre dışı bırakabilirsiniz.",
-        "Uploading": "Karşıya Yükleniyor"
+        "Uploading": "Karşıya Yükleniyor",
+        "ViewModuleDocumentation": "{module} belgelerini görüntüle"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Emin misiniz?",
@@ -677,7 +678,9 @@
             "Unloading": "Boşaltma",
             "UnloadLane": "Hattı Boşalt",
             "Weight": "Ağırlık",
-            "WeightSubtitle": "Filamentin ağırlığı (makara hariç) gram cinsinden."
+            "WeightRemaining": "{weight}g kaldı",
+            "WeightSubtitle": "Filamentin ağırlığı (makara hariç) gram cinsinden.",
+            "WeightUsed": "{weight}g kullanıldı"
         },
         "ExtruderControlPanel": {
             "Allowed": "İzin Verildi",
@@ -777,6 +780,7 @@
         },
         "MmuPanel": {
             "Active": "Aktif",
+            "ButtonChangeTool": "Aracı Değiştir",
             "ButtonCheckAllGates": "Tüm Geçişleri Kontrol Et",
             "ButtonCheckGate": "Geçişi Kontrol Et",
             "ButtonEject": "Çıkar",
@@ -797,6 +801,10 @@
                 "AreYouSure": "Emin misin?"
             },
             "Disabled": "Devre dışı",
+            "Drying": "Kurutma",
+            "DryingCancelled": "Kurutma iptal edildi",
+            "DryingComplete": "Kurutma tamamlandı",
+            "DryingQueued": "Kurutma sıraya alındı",
             "EditGateMap": "Filamentleri Düzenle",
             "EditGateMapTitle": "Filamentleri Düzenle (Geçiş Haritası)",
             "EditTtgMap": "Harita Araçları",
@@ -829,6 +837,7 @@
             "Gear": "Dişli",
             "Guard": "Koruma",
             "Headline": "Çoklu Malzeme Ünitesi (Mmu)",
+            "Heater": "Isıtıcı",
             "LargeFilamentStatus": "Büyük Filament Durumu",
             "MmuMaintenance": "MMU Bakımı",
             "MmuMaintenanceDialog": {
@@ -897,6 +906,7 @@
             "Ok": "Tamam",
             "PreGate": "Geçiş Öncesi",
             "RecoverState": "MMU Durumunu Düzelt",
+            "ShowClimate": "İklim Bilgilerini Göster",
             "ShowClogTangleDetection": "Tıkanıklık/Dolaşma Tespiti",
             "ShowDetails": "Filament Detayları",
             "ShowLogos": "Logoyu Göster",
@@ -1068,6 +1078,7 @@
         },
         "WebcamPanel": {
             "All": "Tümü",
+            "BrowserNotSupported": "Tarayıcınız bu web kamerası türünü desteklemiyor.",
             "ConnectingTo": "{url} adresine bağlanılıyor",
             "Disconnected": "Bağlantı kesildi",
             "ErrorWhileConnecting": "{url} adresine bağlanırken hata oluştu",
@@ -1200,6 +1211,8 @@
             "ConfirmUnsavedChanges": "Kaydedilmemiş değişiklikleri kaydetmek veya iptal için uyarı göster",
             "ConfirmUnsavedChangesDescription": "Etkinleştirilirse, editör yapılan değişiklikleri kaydetmek veya iptal etmek için onay gerektirir. Devre dışı bırakılırsa değişiklikler sessizce iptal edilir.",
             "Editor": "Editör",
+            "KlipperDocsTooltips": "Klipper belgelerine ipuçlarını etkinleştir",
+            "KlipperDocsTooltipsDescription": "Etkinleştirildiğinde, yapılandırma bölümü başlıklarının üzerine fareyi getirdiğinizde belgeler için bir bağlantı görebilirsiniz.",
             "KlipperRestartMethod": "Klipper yeniden başlatma yöntemi",
             "KlipperRestartMethodDescription": "Klipper yapılandırma dosyalarını düzenlerken 'Kaydet ve Yeniden Başlat' seçildiğinde hangi yeniden başlatma yönteminin kullanılacağını seçin.",
             "Spaces": "Boşluklar: {count}",
