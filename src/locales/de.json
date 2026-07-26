@@ -218,7 +218,8 @@
         "UnsavedChanges": "Ungespeicherte Änderungen",
         "UnsavedChangesMessage": "Möchtest du die Änderungen an {filename} speichern?",
         "UnsavedChangesSubMessage": "Deine Änderungen werden verloren gehen wenn du sie nicht speicherst. Du kannst diese Meldung in den Editor-Einstellungen deaktivieren.",
-        "Uploading": "Hochladen"
+        "Uploading": "Hochladen",
+        "ViewModuleDocumentation": "Zeige {module} Dokumentation"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Bist du sicher?",
@@ -677,7 +678,9 @@
             "Unloading": "Entladen",
             "UnloadLane": "Linie entladen",
             "Weight": "Gewicht",
-            "WeightSubtitle": "Das Gewicht des Filaments in Gramm (ohne Spule)."
+            "WeightRemaining": "Noch {weight}g übrig",
+            "WeightSubtitle": "Das Gewicht des Filaments in Gramm (ohne Spule).",
+            "WeightUsed": "{weight}g verbraucht"
         },
         "ExtruderControlPanel": {
             "Allowed": "Erlaubt",
@@ -777,6 +780,7 @@
         },
         "MmuPanel": {
             "Active": "Aktiv",
+            "ButtonChangeTool": "Werkzeug wechseln",
             "ButtonCheckAllGates": "Überprüfe alle Gates",
             "ButtonCheckGate": "Gate überprüfen",
             "ButtonEject": "Auswerfen",
@@ -797,6 +801,10 @@
                 "AreYouSure": "Bist du sicher?"
             },
             "Disabled": "deaktiviert",
+            "Drying": "Trocknen",
+            "DryingCancelled": "Trocknen abgebrochen",
+            "DryingComplete": "Trocknen abgeschlossen",
+            "DryingQueued": "Trocknen in Warteschlange",
             "EditGateMap": "Filamente bearbeiten",
             "EditGateMapTitle": "Filamente Bearbeiten (Gate Zuweisung)",
             "EditTtgMap": "Werkzeugzuweisung",
@@ -829,6 +837,7 @@
             "Gear": "Zahnrad",
             "Guard": "Wächter",
             "Headline": "Mmu",
+            "Heater": "Heizung",
             "LargeFilamentStatus": "Status großer Filamente",
             "MmuMaintenance": "MMU-Wartung",
             "MmuMaintenanceDialog": {
@@ -897,6 +906,7 @@
             "Ok": "Ok",
             "PreGate": "Vor-Gate",
             "RecoverState": "MMU-Status reparieren",
+            "ShowClimate": "Zeige Klima-Informationen",
             "ShowClogTangleDetection": "Verstopfungs-/Verwicklungserkennung",
             "ShowDetails": "Filamentdetails",
             "ShowLogos": "Logo anzeigen",
@@ -938,12 +948,6 @@
                 "ToolNotUsed": "{tool} wird in diesem Druck nicht verwendet, Standardzuordnung wählen"
             },
             "Unknown": "Unbekannt"
-        },
-        "PowerControlPanel": {
-            "Error": "Fehler",
-            "Off": "Aus",
-            "On": "An",
-            "PowerControl": "Stromversorgung"
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktive Rolle",
@@ -1046,8 +1050,6 @@
             "State": "Status",
             "Target": "Ziel",
             "TemperaturesInChart": "Temperatur [°C]",
-            "TempTooHigh": "Temperature von {name} zu hoch! (max: {max})",
-            "TempTooLow": "Temperature von {name} zu niedrig! (min: {min})",
             "TurnHeaterOff": "Heizung ausschalten"
         },
         "ToolheadControlPanel": {
@@ -1068,6 +1070,7 @@
         },
         "WebcamPanel": {
             "All": "Alle",
+            "BrowserNotSupported": "Dein Browser unterstützt diesen Webcam-Typ nicht.",
             "ConnectingTo": "Verbinde zu {url}",
             "Disconnected": "Getrennt",
             "ErrorWhileConnecting": "Fehler während dem Verbinden zu {url}",
@@ -1200,6 +1203,8 @@
             "ConfirmUnsavedChanges": "Aufforderung zum Speichern oder Verwerfen nicht gespeicherter Änderungen",
             "ConfirmUnsavedChangesDescription": "Wenn aktiviert, dann ist eine Bestätigung notwendig um ungespeicherte Änderungen zu speichern/verwerfen. Wenn deaktiviert,dann werden Änderungen im Hintergrund verworfen.",
             "Editor": "Editor",
+            "KlipperDocsTooltips": "Klipper Dokumentation Tooltips aktivieren",
+            "KlipperDocsTooltipsDescription": "Wenn aktiviert, erhaltest du beim Überfahren der Überschriften in der Konfiguration einen Link zu den Klipper Dokumentationen.",
             "KlipperRestartMethod": "Klipper Neustartmethode",
             "KlipperRestartMethodDescription": "Wähle aus, welche Neustartmethode verwendet werden soll wenn 'Speichern & Neustarten' geklickt wir im Editor.",
             "Spaces": "Leerzeichen: {count}",
@@ -1556,6 +1561,7 @@
             "IconMcu": "MCU",
             "IconNozzle": "Düse",
             "IconPrinter": "Drucker",
+            "InvalidAspectRatio": "Muss WIDTH:HEIGHT (z.B.: 16:9) sein",
             "JMuxerStream": "Roher h264 stream (jmuxer)",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimental)",
@@ -1586,6 +1592,7 @@
         "Create": "Erstellen",
         "CreateNewDirectory": "Neues Verzeichnis",
         "CurrentPath": "Aktueller Pfad",
+        "Delete": "Löschen",
         "DeleteDirectory": "Verzeichnis löschen",
         "DeleteDirectoryQuestion": "Willst du wirklich das Verzeichnis \"{name}\" mit seinem gesamten Inhalt löschen?",
         "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Dateien gelöscht werden?",
