@@ -167,15 +167,17 @@ export default class PresetsForm extends Mixins(BaseMixin) {
             return
         }
 
+        const values = structuredClone(this.preset)
+
         // create new preset, if id === null
         if (this.preset.id === null) {
-            this.$store.dispatch('gui/presets/store', { values: this.preset })
+            this.$store.dispatch('gui/presets/store', { values })
             this.closeForm()
             return
         }
 
         // update existing preset
-        this.$store.dispatch('gui/presets/update', { id: this.preset.id, values: this.preset })
+        this.$store.dispatch('gui/presets/update', { id: this.preset.id, values })
         this.closeForm()
     }
 }
