@@ -949,12 +949,6 @@
             },
             "Unknown": "Unknown"
         },
-        "PowerControlPanel": {
-            "Error": "Error",
-            "Off": "Off",
-            "On": "On",
-            "PowerControl": "Power Control"
-        },
         "SpoolmanPanel": {
             "ActiveSpool": "Active Spool",
             "ChangeSpool": "Change Spool",
@@ -1056,8 +1050,6 @@
             "State": "State",
             "Target": "Target",
             "TemperaturesInChart": "Temperature [°C]",
-            "TempTooHigh": "Temperature too high for {name}! (max: {max})",
-            "TempTooLow": "Temperature too low for {name}! (min: {min})",
             "TurnHeaterOff": "Turn Heater Off"
         },
         "ToolheadControlPanel": {
@@ -1600,6 +1592,7 @@
         "Create": "Create",
         "CreateNewDirectory": "create directory",
         "CurrentPath": "Current Path",
+        "Delete": "Delete",
         "DeleteDirectory": "Delete Directory",
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected files?",
