@@ -353,7 +353,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
     private boolFormEdit = false
     private editGroupId: string | null = ''
-    private searchMacros: string = ''
+    private searchMacros: string | null = ''
 
     get groupColors() {
         return [
@@ -397,18 +397,23 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         return colors
     }
 
-    get allMacros() {
-        const macros = this.$store.getters['printer/getMacros'] ?? []
-        return macros.filter((macro: PrinterStateMacro) => {
+    get allMacros(): PrinterStateMacro[] {
+        return this.$store.getters['printer/getMacros'] ?? []
+    }
+
+    get filteredMacros() {
+        const search = (this.searchMacros ?? '').toLowerCase()
+
+        return this.allMacros.filter((macro: PrinterStateMacro) => {
             return (
-                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
-                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
+                macro.name.toLowerCase().includes(search) ||
+                (macro.description?.toLowerCase().includes(search) ?? false)
             )
         })
     }
 
     get availableMacros() {
-        return this.allMacros.filter((m: GuiMacrosStateMacrogroupMacro) => !this.editGroupUsedMacros.includes(m.name))
+        return this.filteredMacros.filter((m: PrinterStateMacro) => !this.editGroupUsedMacros.includes(m.name))
     }
 
     get groups() {
@@ -512,17 +517,26 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         })
     }
 
+    get macroListLoaded() {
+        return this.klipperReadyForGui && this.allMacros.length > 0
+    }
+
+    findMacro(macroname: string) {
+        return this.allMacros.find((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase())
+    }
+
     existsMacro(macroname: string) {
-        return (
-            this.allMacros.findIndex((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase()) !== -1
-        )
+        if (!this.macroListLoaded) return true
+
+        return this.findMacro(macroname) !== undefined
     }
 
     getMacroDescription(macroname: string) {
-        const macro = this.allMacros.find((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase())
-        if (!macro) return this.$t('Settings.MacrosTab.DeletedMacro')
+        const macro = this.findMacro(macroname)
+        if (macro) return macro.description ?? null
+        if (!this.macroListLoaded) return null
 
-        return macro?.description ?? null
+        return this.$t('Settings.MacrosTab.DeletedMacro')
     }
 
     updateMacrogroupOption(option: string, newVal: boolean | string) {
