@@ -54,7 +54,7 @@ gcode:
         expect(find(tokens, '{%')).toBeDefined()
         // gcode overlay on the literal text between jinja tags
         expect(find(tokens, 'G1')).toContain('variableName')
-        expect(find(tokens, 'F600')).toContain('string')
+        expect(find(tokens, 'F600')).toContain('number')
         // M117 keeps the command color, only its text is a string
         expect(find(tokens, 'M117')).toContain('variableName')
         expect(find(tokens, ' parked')).toContain('string')
@@ -264,7 +264,7 @@ mesh_min: 10, 10`
 })
 
 describe('lezer gcode grammar', () => {
-    it('highlights commands, axis words and comments', () => {
+    it('highlights commands, params and comments', () => {
         const tokens = highlight(
             gcodeLanguage,
             `G1 X10 Y-5 F3000 S200
@@ -272,8 +272,9 @@ M117 hello ; msg comment
 ; comment`
         )
         expect(find(tokens, 'G1')).toContain('variableName')
-        expect(find(tokens, 'X10')).toContain('className')
-        expect(find(tokens, 'F3000')).toContain('string')
+        // all letter+number words are parameters (no separate axis color)
+        expect(find(tokens, 'X10')).toContain('number')
+        expect(find(tokens, 'F3000')).toContain('number')
         expect(find(tokens, 'S200')).toContain('number')
         expect(find(tokens, 'M117')).toContain('variableName')
         expect(find(tokens, ' hello ')).toContain('string')

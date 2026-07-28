@@ -21,8 +21,6 @@ const gcodeParser = gcodeParserRaw.configure({
             // commands, and t.keyword would collide with the config-key blue
             'Command MessageCommand': t.variableName,
             MessageText: t.string,
-            AxisWord: t.className,
-            FeedWord: t.string,
             // params like S0/T1 get the same color as macro param values (ENABLE=0)
             ParamWord: t.number,
             Number: t.number,

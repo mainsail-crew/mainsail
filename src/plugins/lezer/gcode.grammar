@@ -18,8 +18,6 @@ item {
   Message |
   Param |
   Command |
-  AxisWord |
-  FeedWord |
   ParamWord |
   Number |
   String |
@@ -31,7 +29,7 @@ item {
 // (VALUE="{tl.macro}") are handled by the jinja parser above this one, which
 // splits the text around "{...}".
 Param { MacroName Operator value }
-value { String | Number | ParamWord | AxisWord | FeedWord | ParamValue }
+value { String | Number | ParamWord | ParamValue }
 
 // split, so M117 keeps the command color and only its text is a string
 Message { MessageCommand MessageText? }
@@ -51,12 +49,9 @@ Message { MessageCommand MessageText? }
   // G1, M104, _G28 ...
   Command { "_"? $[GMgm] @digit (@digit | ".")* }
 
-  // axis / move words: X10 Y-5 Z0.2 E1.2 I.. J.. P..
-  AxisWord { $[EePpXxYyZzIiJj] num }
-  // feed rate: F3000
-  FeedWord { $[Ff] num }
-  // tool / param: S200 T0
-  ParamWord { $[TtSs] num }
+  // every letter+number word is a parameter: X10 Y-5 Z0.2 E1.2 F3000 S200 T0
+  // P1000 ... (Command wins for G/M, see @precedence)
+  ParamWord { $[A-Za-z] num }
 
   Number { num }
 
@@ -73,8 +68,6 @@ Message { MessageCommand MessageText? }
     LineComment,
     MessageCommand,
     Command,
-    AxisWord,
-    FeedWord,
     ParamWord,
     Number,
     String,

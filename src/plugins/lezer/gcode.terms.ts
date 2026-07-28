@@ -14,6 +14,4 @@ export const
   String = 10,
   Number = 11,
   ParamWord = 12,
-  AxisWord = 13,
-  FeedWord = 14,
-  Command = 15
+  Command = 13
