@@ -219,7 +219,7 @@
         "UnsavedChangesMessage": "Möchtest du die Änderungen an {filename} speichern?",
         "UnsavedChangesSubMessage": "Deine Änderungen werden verloren gehen wenn du sie nicht speicherst. Du kannst diese Meldung in den Editor-Einstellungen deaktivieren.",
         "Uploading": "Hochladen",
-        "ViewModuleDocumentation": "Zeige {module} Dokumentation"
+        "ViewModuleDocumentation": "{module} Dokumentation anzeigen"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Bist du sicher?",
@@ -1203,8 +1203,8 @@
             "ConfirmUnsavedChanges": "Aufforderung zum Speichern oder Verwerfen nicht gespeicherter Änderungen",
             "ConfirmUnsavedChangesDescription": "Wenn aktiviert, dann ist eine Bestätigung notwendig um ungespeicherte Änderungen zu speichern/verwerfen. Wenn deaktiviert,dann werden Änderungen im Hintergrund verworfen.",
             "Editor": "Editor",
-            "KlipperDocsTooltips": "Klipper Dokumentation Tooltips aktivieren",
-            "KlipperDocsTooltipsDescription": "Wenn aktiviert, erhaltest du beim Überfahren der Überschriften in der Konfiguration einen Link zu den Klipper Dokumentationen.",
+            "KlipperDocsTooltips": "Tooltips zur Klipper-Dokumentation aktivieren",
+            "KlipperDocsTooltipsDescription": "Wenn aktiviert, erhälst du beim Überfahren der Überschriften in der Konfiguration einen Link zu den Klipper Dokumentationen.",                   
             "KlipperRestartMethod": "Klipper Neustartmethode",
             "KlipperRestartMethodDescription": "Wähle aus, welche Neustartmethode verwendet werden soll wenn 'Speichern & Neustarten' geklickt wir im Editor.",
             "Spaces": "Leerzeichen: {count}",
