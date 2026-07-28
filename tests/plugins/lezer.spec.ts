@@ -90,6 +90,21 @@ gcode:
         expect(find(tokens, 'G28')).toContain('variableName')
     })
 
+    it('colors a param letter without a number like a param', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[gcode_macro PARK]
+gcode:
+    G0 X{printer.toolhead.axis_maximum.x-1} F6000
+    G28 X Y
+    BED_MESH_CALIBRATE PROFILE=default`
+        )
+        expect(find(tokens, 'X')).toContain('number')
+        expect(find(tokens, 'Y')).toContain('number')
+        // a macro name must not be shredded into single letters
+        expect(find(tokens, 'BED_MESH_CALIBRATE')).toContain('variableName')
+    })
+
     it('parses a closed string literal spanning multiple lines', () => {
         const code = `[gcode_macro HYPERLAPSE]
 gcode:

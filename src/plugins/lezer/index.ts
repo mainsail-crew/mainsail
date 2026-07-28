@@ -22,7 +22,7 @@ const gcodeParser = gcodeParserRaw.configure({
             'Command MessageCommand': t.variableName,
             MessageText: t.string,
             // params like S0/T1 get the same color as macro param values (ENABLE=0)
-            ParamWord: t.number,
+            'ParamWord BareParamWord': t.number,
             Number: t.number,
             String: t.string,
             MacroName: t.variableName,

@@ -8,6 +8,11 @@
 // The display text of M117/M118, external so it only matches on the same line
 // directly after that command (see gcode.tokens.ts).
 @external tokens messageText from "./gcode.tokens" { MessageText }
+// A parameter letter without a number, either standalone ("G28 X Y") or with a
+// jinja value behind it ("G0 X{...}", where the gcode fragment ends after the
+// letter). External because it needs the lookahead that keeps it from eating
+// the first letter of a macro name.
+@external tokens bareParamWord from "./gcode.tokens" { BareParamWord }
 
 @top Program { item* }
 
@@ -19,6 +24,7 @@ item {
   Param |
   Command |
   ParamWord |
+  BareParamWord |
   Number |
   String |
   MacroName
