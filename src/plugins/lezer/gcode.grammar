@@ -5,6 +5,9 @@
 // The unquoted value of NAME=VALUE, external so it only matches directly after
 // the "=" (see gcode.tokens.ts).
 @external tokens paramValue from "./gcode.tokens" { ParamValue }
+// The display text of M117/M118, external so it only matches on the same line
+// directly after that command (see gcode.tokens.ts).
+@external tokens messageText from "./gcode.tokens" { MessageText }
 
 @top Program { item* }
 
@@ -30,6 +33,9 @@ item {
 Param { MacroName Operator value }
 value { String | Number | ParamWord | AxisWord | FeedWord | ParamValue }
 
+// split, so M117 keeps the command color and only its text is a string
+Message { MessageCommand MessageText? }
+
 @tokens {
   spaces { $[ \t\r\n]+ }
 
@@ -40,7 +46,7 @@ value { String | Number | ParamWord | AxisWord | FeedWord | ParamValue }
   num { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
 
   // M117 (and M118) take the rest of the line as a display message.
-  Message { $[Mm] ("117" | "118") ![\n]* }
+  MessageCommand { $[Mm] ("117" | "118") }
 
   // G1, M104, _G28 ...
   Command { "_"? $[GMgm] @digit (@digit | ".")* }
@@ -65,7 +71,7 @@ value { String | Number | ParamWord | AxisWord | FeedWord | ParamValue }
 
   @precedence {
     LineComment,
-    Message,
+    MessageCommand,
     Command,
     AxisWord,
     FeedWord,

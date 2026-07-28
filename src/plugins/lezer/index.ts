@@ -19,8 +19,8 @@ const gcodeParser = gcodeParserRaw.configure({
         styleTags({
             // same tag as MacroName: G1/M106 and TURN_OFF_HEATERS are both
             // commands, and t.keyword would collide with the config-key blue
-            Command: t.variableName,
-            Message: t.string,
+            'Command MessageCommand': t.variableName,
+            MessageText: t.string,
             AxisWord: t.className,
             FeedWord: t.string,
             // params like S0/T1 get the same color as macro param values (ENABLE=0)

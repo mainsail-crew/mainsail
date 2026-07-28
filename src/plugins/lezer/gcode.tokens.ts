@@ -1,7 +1,12 @@
 import { ExternalTokenizer } from '@lezer/lr'
-import { ParamValue } from './gcode.terms'
+import { MessageText, ParamValue } from './gcode.terms'
 
 const EQUALS = 61
+const NEWLINE = 10
+const RETURN = 13
+// klipper strips both as comments, even in an M117/M118 message
+const isComment = (ch: number) => ch == 59 /* ; */ || ch == 35 /* # */
+const isEnd = (ch: number) => ch < 0 || ch == NEWLINE || ch == RETURN || isComment(ch)
 
 const isValueChar = (ch: number) =>
     (ch >= 48 && ch <= 57) || // 0-9
@@ -21,4 +26,18 @@ export const paramValue = new ExternalTokenizer((input) => {
     if (!((first >= 65 && first <= 90) || (first >= 97 && first <= 122) || first == 95)) return
     while (isValueChar(input.next)) input.advance()
     input.acceptToken(ParamValue)
+})
+
+// The rest of the line after M117/M118, up to a comment. canShift() keeps it
+// to that position, the backwards scan keeps it on the command's own line (the
+// skipped whitespace between the two includes newlines).
+export const messageText = new ExternalTokenizer((input, stack) => {
+    if (!stack.canShift(MessageText) || isEnd(input.next)) return
+    for (let back = -1; ; back--) {
+        const ch = input.peek(back)
+        if (ch == NEWLINE || ch == RETURN) return
+        if (ch != 32 && ch != 9) break
+    }
+    while (!isEnd(input.next)) input.advance()
+    input.acceptToken(MessageText)
 })

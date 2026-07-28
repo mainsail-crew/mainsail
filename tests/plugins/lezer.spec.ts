@@ -55,7 +55,9 @@ gcode:
         // gcode overlay on the literal text between jinja tags
         expect(find(tokens, 'G1')).toContain('variableName')
         expect(find(tokens, 'F600')).toContain('string')
-        expect(find(tokens, 'M117 parked')).toContain('string')
+        // M117 keeps the command color, only its text is a string
+        expect(find(tokens, 'M117')).toContain('variableName')
+        expect(find(tokens, ' parked')).toContain('string')
     })
 
     it('treats # and ; as comments inside gcode blocks and {% %} statements', () => {
@@ -260,14 +262,17 @@ describe('lezer gcode grammar', () => {
         const tokens = highlight(
             gcodeLanguage,
             `G1 X10 Y-5 F3000 S200
-M117 hello
+M117 hello ; msg comment
 ; comment`
         )
         expect(find(tokens, 'G1')).toContain('variableName')
         expect(find(tokens, 'X10')).toContain('className')
         expect(find(tokens, 'F3000')).toContain('string')
         expect(find(tokens, 'S200')).toContain('number')
-        expect(find(tokens, 'M117 hello')).toContain('string')
+        expect(find(tokens, 'M117')).toContain('variableName')
+        expect(find(tokens, ' hello ')).toContain('string')
+        // klipper strips ';' comments inside an M117 message too
+        expect(find(tokens, '; msg comment')).toContain('comment')
         expect(find(tokens, '; comment')).toContain('comment')
     })
 })
