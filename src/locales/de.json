@@ -1204,7 +1204,7 @@
             "ConfirmUnsavedChangesDescription": "Wenn aktiviert, dann ist eine Bestätigung notwendig um ungespeicherte Änderungen zu speichern/verwerfen. Wenn deaktiviert,dann werden Änderungen im Hintergrund verworfen.",
             "Editor": "Editor",
             "KlipperDocsTooltips": "Tooltips zur Klipper-Dokumentation aktivieren",
-            "KlipperDocsTooltipsDescription": "Wenn aktiviert, erhälst du beim Überfahren der Überschriften in der Konfiguration einen Link zu den Klipper Dokumentationen.",                   
+            "KlipperDocsTooltipsDescription": "Wenn aktiviert, erhälst du beim Überfahren der Überschriften in der Konfiguration einen Link zu den Klipper Dokumentationen.",
             "KlipperRestartMethod": "Klipper Neustartmethode",
             "KlipperRestartMethodDescription": "Wähle aus, welche Neustartmethode verwendet werden soll wenn 'Speichern & Neustarten' geklickt wir im Editor.",
             "Spaces": "Leerzeichen: {count}",
