@@ -68,14 +68,15 @@ const klipperConfigParser = klipperConfigParserRaw.configure({
             PropertyName: t.definition(t.propertyName),
             GcodeKey: t.definition(t.propertyName),
             Number: t.number,
-            StringValue: t.string,
+            'StringValue QuotedString': t.string,
             // number tag, not t.bool: the base theme paints bools in the same
             // blue as the config keys, and True/False is a value like 1/0
             Boolean: t.number,
             Operator: t.operator,
             Comment: t.lineComment,
             '[ ]': t.squareBracket,
-            ValuePunctuation: t.bracket,
+            // separators of a python/json literal get the bracket color
+            'ValuePunctuation Comma': t.bracket,
         }),
     ],
     // reparse *_gcode:/enable: bodies as jinja(base: gcode)

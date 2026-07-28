@@ -30,13 +30,11 @@ SectionType { word }
 SectionName { word }
 
 Property { PropertyName value* }
-value { Number | Boolean | StringValue | Comma | Operator | ValuePunctuation }
+value { Number | Boolean | StringValue | QuotedString | Comma | Operator | ValuePunctuation }
 StringValue { word }
 // @specialize (not a token rule) so only the whole word matches: "true" is a
 // Boolean, "true_x" stays a StringValue.
-// The "," variants cover list items ("[True, false]"), where the separator is
-// part of the word token.
-Boolean { @specialize<word, "true" | "True" | "false" | "False" | "true," | "True," | "false," | "False,"> }
+Boolean { @specialize<word, "true" | "True" | "false" | "False"> }
 
 // No skipping between the key and its body, so the external tokenizer starts
 // right after the "gcode:" / "enable:" colon and can measure indentation.
@@ -55,9 +53,12 @@ Boolean { @specialize<word, "true" | "True" | "false" | "False" | "true," | "Tru
 
   Operator { "=" | "<" | ">" }
 
-  // A directly attached "," (list separator without a space: "25,25") is part
-  // of the number, so it keeps the number color instead of standing out.
-  Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) ","? }
+  Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
+
+  // Quoted list/dict items ("mmu_state_gate_color = ['000000', '1e1e1e,']").
+  // Must be closed and single-line, otherwise an apostrophe in a prose value
+  // would swallow the rest; those stay part of a word.
+  QuotedString { '"' !["\n]* '"' | "'" !['\n]* "'" }
 
   // gcode / enable keys -> gcode block. Mirrors the old /^(?:[A-Za-z]*_?gcode|enable):/
   GcodeKey { $[A-Za-z]* "_"? "gcode" ":" | "enable" ":" }
@@ -68,10 +69,12 @@ Boolean { @specialize<word, "true" | "True" | "false" | "False" | "true," | "Tru
   // word char so "EBBCan:PD0" / "50:10" stay single values. Multiple leading
   // signs are allowed so CLI-style values ("--http-listen=0.0.0.0") stay one
   // word instead of splitting at the second "-".
-  // A "," may not start the non-numeric part (so "25," stays a Number) but is
-  // allowed inside a word, so prose values ("Extrudes, if the ...") and quoted
-  // list items ("'Black',") stay one string token.
-  word { $[-+]* $[0-9.]* ![0-9.+\- \t\r\n#;\[\]{},=<>] ![ \t\r\n#;\[\]{}=<>]* }
+  // A "," is never part of a word: it is a list separator ("[True, false]",
+  // "EXP1_1=PE6, EXP1_2=PE5") and gets the punctuation color. Commas inside a
+  // value are only kept by QuotedString ('1e1e1e,').
+  word { $[-+]* $[0-9.]* ![0-9.+\- \t\r\n#;\[\]{},=<>] ![ \t\r\n#;\[\]{},=<>]* }
 
-  @precedence { Comment, GcodeKey, word, Number }
+  // QuotedString over word so "'Black'," splits into string + separator
+  // instead of matching as one (longer) word.
+  @precedence { Comment, GcodeKey, QuotedString, word, Number }
 }

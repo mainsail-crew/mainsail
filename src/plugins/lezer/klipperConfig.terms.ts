@@ -16,5 +16,6 @@ export const
   Number = 14,
   Boolean = 15,
   StringValue = 16,
-  Comma = 17,
-  Operator = 18
+  QuotedString = 17,
+  Comma = 18,
+  Operator = 19
