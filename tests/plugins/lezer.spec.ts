@@ -88,6 +88,36 @@ gcode:
         expect(find(tokens, 'G28')).toContain('variableName')
     })
 
+    it('parses a closed string literal spanning multiple lines', () => {
+        const code = `[gcode_macro HYPERLAPSE]
+gcode:
+    {action_raise_error("No valid input parameter
+                         Use:
+                         - HYPERLAPSE ACTION=STOP")}
+    G28`
+        const tokens = highlight(klipperConfigLanguage, code)
+        // whole message is one string, and the parse recovers afterwards
+        expect(nodeNameOf(klipperConfigLanguage, code, '"No valid')).toBe('StringLiteral')
+        expect(nodeNameOf(klipperConfigLanguage, code, 'ACTION=STOP")')).toBe('StringLiteral')
+        expect(find(tokens, 'G28')).toContain('variableName')
+    })
+
+    it('does not pair a quote around an interpolation with a later quote', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[gcode_macro TIMELAPSE_TAKE_FRAME]
+gcode:
+    SET_GCODE_VARIABLE MACRO=TL VARIABLE=park VALUE="{tl.park}"
+    {% if params.TRAVEL_SPEED %}
+        {action_raise_error("TRAVEL_SPEED=%s must be larger than 0" % params.TRAVEL_SPEED)}
+    {% endif %}`
+        )
+        // the trailing quote of VALUE="{...}" must not swallow the lines below
+        expect(find(tokens, 'if')).toContain('keyword')
+        expect(find(tokens, 'endif')).toContain('keyword')
+        expect(find(tokens, 'params.TRAVEL_SPEED')).toContain('propertyName')
+    })
+
     it('parses member access after a subscript across multiple lines', () => {
         const tokens = highlight(
             klipperConfigLanguage,

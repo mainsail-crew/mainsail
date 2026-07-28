@@ -65,11 +65,19 @@ VariableName { identifier }
 
   Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
 
-  // bounded to a single line so an unclosed quote cannot swallow the rest of
-  // the template.
+  // Single-line form (quotes around a jinja tag are common in gcode text:
+  // VALUE="{tl.park}"), so an unclosed quote stays bounded to its line.
+  // Second form: a closed string may span lines (jinja lexes strings with
+  // DOTALL, e.g. a multi-line action_raise_error message) as long as it
+  // contains no braces - that keeps a stray quote from pairing up across
+  // jinja tags.
+  // ponytail: brace-free heuristic; needs a stack-aware external tokenizer if
+  // a multi-line message ever has to contain { or }.
   StringLiteral {
     '"' (!["\\\n] | "\\" _)* '"'? |
-    "'" (!['\\\n] | "\\" _)* "'"?
+    "'" (!['\\\n] | "\\" _)* "'"? |
+    '"' (!["\\{}] | "\\" _)* '"' |
+    "'" (!['\\{}] | "\\" _)* "'"
   }
 
   identifier { $[A-Za-z_] $[A-Za-z0-9_]* ("." $[A-Za-z_] $[A-Za-z0-9_]*)* }
