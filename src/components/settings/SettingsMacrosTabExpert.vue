@@ -518,7 +518,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     }
 
     get macroListLoaded() {
-        return this.klipperReadyForGui && this.allMacros.length > 0
+        return this.klipperReadyForGui
     }
 
     findMacro(macroname: string) {

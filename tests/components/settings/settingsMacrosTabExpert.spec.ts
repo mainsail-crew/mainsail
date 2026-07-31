@@ -158,11 +158,11 @@ describe('SettingsMacrosTabExpert', () => {
             expect(component.getMacroDescription('START_PRINT')).toBeNull()
         })
 
-        it('does not report macros as deleted while the macro list is still empty', () => {
+        it('reports a macro as deleted once klipper is ready with a genuinely empty macro list', () => {
             const component = createComponent({ macros: [], klipperReady: true })
 
-            expect(component.existsMacro('START_PRINT')).toBe(true)
-            expect(component.getMacroDescription('START_PRINT')).toBeNull()
+            expect(component.existsMacro('START_PRINT')).toBe(false)
+            expect(component.getMacroDescription('START_PRINT')).toBe('Settings.MacrosTab.DeletedMacro')
         })
     })
 })
