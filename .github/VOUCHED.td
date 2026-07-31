@@ -13,6 +13,7 @@
 # Maintainers can vouch via issue/PR comments: "vouch", "vouch @user",
 # or denounce via "denounce" / "denounce @user".
 bigtreetech
+hannott
 jimmyjon711 Maintainer from AFC
 jomik
 julianschill LED effects Maintainer
