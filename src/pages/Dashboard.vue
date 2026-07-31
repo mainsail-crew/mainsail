@@ -81,6 +81,7 @@ interface DashboardColumn {
 })
 export default class PageDashboard extends Mixins(DashboardMixin) {
     dragHandle = '.panel-header-icon'
+    dragGroup = 'dashboard-panels'
 
     dragging = false
     resizeObserver: ResizeObserver | null = null
@@ -118,10 +119,6 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
         })
 
         return output
-    }
-
-    get dragGroup() {
-        return `dashboard-${this.viewport}`
     }
 
     extractPanelName(name: string) {
