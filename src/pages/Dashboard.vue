@@ -176,10 +176,8 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     outline-color: var(--v-primary-base);
     background-color: rgba(125, 125, 125, 0.06);
 }
-</style>
 
-<style>
-.dashboard-dropzone .panel-header-icon {
+.dashboard-dropzone ::v-deep .panel-header-icon {
     cursor: grab;
     user-select: none;
     -webkit-touch-callout: none;
@@ -189,7 +187,7 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     cursor: grabbing;
 }
 
-.dashboard--dragging .panel > * {
+.dashboard--dragging ::v-deep .panel > * {
     pointer-events: none;
 }
 
@@ -203,7 +201,7 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     pointer-events: none;
 }
 
-.dashboard-panel--dragged > *:not(.panel-toolbar) {
+.dashboard-panel--dragged ::v-deep > *:not(.panel-toolbar) {
     display: none !important;
 }
 </style>
