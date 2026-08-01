@@ -194,7 +194,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         const controllableFans = ['fan_generic', 'fan']
 
-        objects.foreach((object: PrinterGetterObject) => {
+        objects.forEach((object: PrinterGetterObject) => {
             fans.push({
                 name: object.name,
                 type: object.type,
