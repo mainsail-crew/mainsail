@@ -1,19 +1,29 @@
 import { describe, expect, it } from 'vitest'
-import DashboardMixin from '@/components/mixins/dashboard'
+import PageDashboardComponent from '@/pages/Dashboard.vue'
 import { GuiStateLayoutoption } from '@/store/gui/types'
+
+const PageDashboard = PageDashboardComponent as unknown as {
+    new (): {
+        mergeLayout(
+            storedPanels: GuiStateLayoutoption[],
+            oldPanels: GuiStateLayoutoption[],
+            newPanels: GuiStateLayoutoption[]
+        ): GuiStateLayoutoption[]
+    }
+}
 
 const panel = (name: string, visible = true): GuiStateLayoutoption => ({ name, visible })
 const names = (panels: GuiStateLayoutoption[]) => panels.map((entry) => entry.name)
 
-const mixin = new DashboardMixin()
+const page = new PageDashboard()
 
-describe('DashboardMixin.mergeLayout', () => {
+describe('PageDashboard.mergeLayout', () => {
     it('applies a new order of the visible panels', () => {
         const stored = [panel('webcam'), panel('toolhead-control'), panel('temperature')]
         const oldPanels = [panel('webcam'), panel('toolhead-control'), panel('temperature')]
         const newPanels = [panel('temperature'), panel('webcam'), panel('toolhead-control')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
             'temperature',
             'webcam',
             'toolhead-control',
@@ -25,7 +35,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('toolhead-control'), panel('temperature')]
         const newPanels = [panel('toolhead-control'), panel('temperature'), panel('webcam')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
             'toolhead-control',
             'temperature',
             'webcam',
@@ -38,7 +48,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('temperature')]
         const newPanels = [panel('temperature'), panel('webcam')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
             'temperature',
             'macros',
             'webcam',
@@ -50,7 +60,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('toolhead-control'), panel('webcam'), panel('temperature')]
         const newPanels = [panel('webcam'), panel('temperature')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
             'macros',
             'webcam',
             'temperature',
@@ -62,7 +72,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('temperature')]
         const newPanels = [panel('temperature'), panel('webcam')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
             'temperature',
             'webcam',
             'macros',
@@ -75,7 +85,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('temperature')]
         const newPanels = [panel('temperature'), panel('webcam')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual([
             'temperature',
             'webcam',
             'spoolman',
@@ -87,7 +97,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('toolhead-control'), panel('temperature')]
         const newPanels = [panel('webcam'), panel('temperature')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual(['webcam', 'temperature'])
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual(['webcam', 'temperature'])
     })
 
     it('keeps hidden panels of a column, when their anchor panel is dragged away', () => {
@@ -95,7 +105,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('toolhead-control')]
         const newPanels = [panel('webcam')]
 
-        expect(names(mixin.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual(['webcam', 'macros'])
+        expect(names(page.mergeLayout(stored, oldPanels, newPanels))).toStrictEqual(['webcam', 'macros'])
     })
 
     it('adds a panel which was dragged in from another column', () => {
@@ -103,7 +113,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('temperature')]
         const newPanels = [panel('webcam'), panel('toolhead-control'), panel('temperature')]
 
-        expect(mixin.mergeLayout(stored, oldPanels, newPanels)).toStrictEqual([
+        expect(page.mergeLayout(stored, oldPanels, newPanels)).toStrictEqual([
             panel('webcam'),
             panel('toolhead-control'),
             panel('temperature'),
@@ -115,7 +125,7 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('temperature')]
         const newPanels = [panel('temperature', false), panel('webcam', false)]
 
-        expect(mixin.mergeLayout(stored, oldPanels, newPanels)).toStrictEqual([panel('temperature'), panel('webcam')])
+        expect(page.mergeLayout(stored, oldPanels, newPanels)).toStrictEqual([panel('temperature'), panel('webcam')])
     })
 
     it('materializes panels which were only added implicitly by the getter', () => {
@@ -123,6 +133,6 @@ describe('DashboardMixin.mergeLayout', () => {
         const oldPanels = [panel('webcam'), panel('temperature')]
         const newPanels = [panel('temperature'), panel('webcam')]
 
-        expect(mixin.mergeLayout(stored, oldPanels, newPanels)).toStrictEqual([panel('temperature'), panel('webcam')])
+        expect(page.mergeLayout(stored, oldPanels, newPanels)).toStrictEqual([panel('temperature'), panel('webcam')])
     })
 })

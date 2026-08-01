@@ -18,13 +18,6 @@ import {
     mdiMulticast,
 } from '@mdi/js'
 import { afcIconLogo } from '@/plugins/afcIcons'
-import { GuiStateLayoutoption } from '@/store/gui/types'
-
-interface LayoutFixedPanel {
-    panel: GuiStateLayoutoption
-    predecessor: string | null
-    successor: string | null
-}
 
 @Component
 export default class DashboardMixin extends BaseMixin {
@@ -90,47 +83,5 @@ export default class DashboardMixin extends BaseMixin {
             default:
                 return mdiInformation
         }
-    }
-
-    mergeLayout(
-        storedPanels: GuiStateLayoutoption[],
-        oldPanels: GuiStateLayoutoption[],
-        newPanels: GuiStateLayoutoption[]
-    ): GuiStateLayoutoption[] {
-        const draggableNames = new Set(oldPanels.map((panel) => panel.name))
-        const storedByName = new Map(storedPanels.map((panel) => [panel.name, panel]))
-
-        const output = newPanels.map((panel) => storedByName.get(panel.name) ?? { name: panel.name, visible: true })
-        const movableNames = new Set(output.map((panel) => panel.name))
-
-        const fixedPanels: LayoutFixedPanel[] = []
-        let predecessor: string | null = null
-        storedPanels.forEach((panel) => {
-            if (draggableNames.has(panel.name)) {
-                fixedPanels.forEach((entry) => {
-                    if (entry.successor === null) entry.successor = panel.name
-                })
-
-                predecessor = panel.name
-                return
-            }
-
-            fixedPanels.push({ panel, predecessor, successor: null })
-        })
-
-        fixedPanels.forEach((entry) => {
-            let index = output.length
-
-            if (entry.predecessor !== null && movableNames.has(entry.predecessor)) {
-                index = output.findIndex((panel) => panel.name === entry.predecessor) + 1
-                while (index < output.length && !movableNames.has(output[index].name)) index++
-            } else if (entry.successor !== null && movableNames.has(entry.successor)) {
-                index = output.findIndex((panel) => panel.name === entry.successor)
-            }
-
-            output.splice(index, 0, entry.panel)
-        })
-
-        return output
     }
 }

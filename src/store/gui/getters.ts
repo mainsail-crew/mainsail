@@ -158,13 +158,6 @@ export const getters: GetterTree<GuiState, RootState> = {
             return panels.filter((element) => allPossiblePanels.includes(element.name))
         },
 
-    getStoredPanels: (state) => (viewport: string, column: number) => {
-        const layoutName = (column ? `${viewport}Layout${column}` : `${viewport}Layout`) as keyof GuiStateDashboard
-        const panels = state.dashboard[layoutName] as GuiStateLayoutoption[]
-
-        return panels?.filter((element) => element !== null) ?? []
-    },
-
     getAllPanelsFromViewport: (state) => (viewport: string) => {
         let panels: GuiStateLayoutoption[] = []
 

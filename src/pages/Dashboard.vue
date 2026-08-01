@@ -51,11 +51,17 @@ import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import TemperaturePanel from '@/components/panels/TemperaturePanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
-import { GuiStateLayoutoption } from '@/store/gui/types'
+import { GuiStateDashboard, GuiStateLayoutoption } from '@/store/gui/types'
 
 interface DashboardColumn {
     index: number
     class: string
+}
+
+interface LayoutFixedPanel {
+    panel: GuiStateLayoutoption
+    predecessor: string | null
+    successor: string | null
 }
 
 @Component({
@@ -146,9 +152,58 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
         this.resizeObserver = null
     }
 
+    getStoredPanels(viewport: string, column: number): GuiStateLayoutoption[] {
+        const layoutName = (column ? `${viewport}Layout${column}` : `${viewport}Layout`) as keyof GuiStateDashboard
+        const panels = this.$store.state.gui.dashboard[layoutName] as GuiStateLayoutoption[]
+
+        return panels?.filter((element) => element !== null) ?? []
+    }
+
+    mergeLayout(
+        storedPanels: GuiStateLayoutoption[],
+        oldPanels: GuiStateLayoutoption[],
+        newPanels: GuiStateLayoutoption[]
+    ): GuiStateLayoutoption[] {
+        const draggableNames = new Set(oldPanels.map((panel) => panel.name))
+        const storedByName = new Map(storedPanels.map((panel) => [panel.name, panel]))
+
+        const output = newPanels.map((panel) => storedByName.get(panel.name) ?? { name: panel.name, visible: true })
+        const movableNames = new Set(output.map((panel) => panel.name))
+
+        const fixedPanels: LayoutFixedPanel[] = []
+        let predecessor: string | null = null
+        storedPanels.forEach((panel) => {
+            if (draggableNames.has(panel.name)) {
+                fixedPanels.forEach((entry) => {
+                    if (entry.successor === null) entry.successor = panel.name
+                })
+
+                predecessor = panel.name
+                return
+            }
+
+            fixedPanels.push({ panel, predecessor, successor: null })
+        })
+
+        fixedPanels.forEach((entry) => {
+            let index = output.length
+
+            if (entry.predecessor !== null && movableNames.has(entry.predecessor)) {
+                index = output.findIndex((panel) => panel.name === entry.predecessor) + 1
+                while (index < output.length && !movableNames.has(output[index].name)) index++
+            } else if (entry.successor !== null && movableNames.has(entry.successor)) {
+                index = output.findIndex((panel) => panel.name === entry.successor)
+            }
+
+            output.splice(index, 0, entry.panel)
+        })
+
+        return output
+    }
+
     saveColumn(column: number, panels: GuiStateLayoutoption[]) {
         const layoutName = column ? `${this.viewport}Layout${column}` : `${this.viewport}Layout`
-        const storedPanels = this.$store.getters['gui/getStoredPanels'](this.viewport, column)
+        const storedPanels = this.getStoredPanels(this.viewport, column)
 
         this.$store.dispatch('gui/saveSetting', {
             name: `dashboard.${layoutName}`,
