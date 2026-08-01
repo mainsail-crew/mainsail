@@ -495,9 +495,20 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         const [movedMacro] = sortedMacros.splice(oldIndex, 1)
         sortedMacros.splice(newIndex, 0, movedMacro)
 
+        let changed = false
         sortedMacros.forEach((macro, index) => {
-            if (macro.pos !== positions[index]) this.updateMacroFromGroup(macro, 'pos', positions[index])
+            if (macro.pos === positions[index]) return
+
+            changed = true
+            this.$store.commit('gui/macros/updateMacroFromMacrogroup', {
+                id: this.editGroupId,
+                macro: macro.name,
+                option: 'pos',
+                value: positions[index],
+            })
         })
+
+        if (changed) this.$store.dispatch('gui/macros/groupUpload', this.editGroupId)
     }
 
     changeColorMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
