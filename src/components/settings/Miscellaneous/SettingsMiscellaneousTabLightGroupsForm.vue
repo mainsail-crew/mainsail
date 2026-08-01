@@ -214,7 +214,7 @@ export default class SettingsMiscellaneousTabLightGroupsForm extends Mixins(Base
     }
 
     existsGroupName(name: string) {
-        return this.groups.findIndex((group) => group.name === name && group.id !== this.groupId) >= 0
+        return this.groups.some((group) => group.name === name && group.id !== this.groupId)
     }
 }
 </script>
