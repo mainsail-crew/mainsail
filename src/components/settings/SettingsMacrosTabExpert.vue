@@ -473,12 +473,18 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
         })
     }
 
-    updateMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro, option: string, value: boolean | string | number) {
+    updateMacroFromGroup(
+        macro: GuiMacrosStateMacrogroupMacro,
+        option: string,
+        value: boolean | string | number,
+        skipUpload: boolean = false
+    ) {
         this.$store.dispatch('gui/macros/updateMacroFromMacrogroup', {
             id: this.editGroupId,
             macro: macro.name,
             option: option,
             value: value,
+            skipUpload,
         })
     }
 
@@ -487,11 +493,20 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
         const oldIndex = output.moved.oldIndex
         const newIndex = output.moved.newIndex
-        const oldPos = this.editGroupMacros[oldIndex].pos
-        const newPos = this.editGroupMacros[newIndex].pos
 
-        this.updateMacroFromGroup(this.editGroupMacros[oldIndex], 'pos', newPos)
-        this.updateMacroFromGroup(this.editGroupMacros[newIndex], 'pos', oldPos)
+        const sortedMacros = [...this.editGroupMacros]
+        const positions = sortedMacros.map((macro) => macro.pos)
+
+        const [movedMacro] = sortedMacros.splice(oldIndex, 1)
+        sortedMacros.splice(newIndex, 0, movedMacro)
+
+        sortedMacros.forEach((macro, index) => {
+            if (macro.pos === positions[index]) return
+
+            this.updateMacroFromGroup(macro, 'pos', positions[index], true)
+        })
+
+        this.$store.dispatch('gui/macros/groupUpload', this.editGroupId)
     }
 
     changeColorMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
