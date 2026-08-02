@@ -353,7 +353,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
 
     private boolFormEdit = false
     private editGroupId: string | null = ''
-    private searchMacros: string = ''
+    private searchMacros: string | null = null
 
     get groupColors() {
         return [
@@ -398,12 +398,11 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin, ThemeMixi
     }
 
     get allMacros() {
+        const search = (this.searchMacros ?? '').toLowerCase()
         const macros = this.$store.getters['printer/getMacros'] ?? []
+
         return macros.filter((macro: PrinterStateMacro) => {
-            return (
-                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
-                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
-            )
+            return macro.name.toLowerCase().includes(search) || macro.description?.toLowerCase().includes(search)
         })
     }
 

@@ -52,15 +52,14 @@ import { PrinterStateMacro } from '@/store/printer/types'
 })
 export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
     mdiMagnify = mdiMagnify
-    searchMacros: string = ''
+    private searchMacros: string | null = null
 
     get macros() {
+        const search = (this.searchMacros ?? '').toLowerCase()
         const macros = this.$store.getters['printer/getMacros'] ?? []
+
         return macros.filter((macro: PrinterStateMacro) => {
-            return (
-                macro.name.toLowerCase().includes(this.searchMacros.toLowerCase()) ||
-                macro.description?.toLowerCase().includes(this.searchMacros.toLowerCase())
-            )
+            return macro.name.toLowerCase().includes(search) || macro.description?.toLowerCase().includes(search)
         })
     }
 
