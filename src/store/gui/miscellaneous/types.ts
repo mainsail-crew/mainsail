@@ -1,19 +1,13 @@
 export interface GuiMiscellaneousState {
-    entries: {
-        [key: string]: GuiMiscellaneousStateEntry
-    }
+    entries: Record<string, GuiMiscellaneousStateEntry>
 }
 
 export interface GuiMiscellaneousStateEntry {
     id?: string
     type: string
     name: string
-    lightgroups: {
-        [key: string]: GuiMiscellaneousStateEntryLightgroup
-    }
-    presets: {
-        [key: string]: GuiMiscellaneousStateEntryPreset
-    }
+    lightgroups: Record<string, GuiMiscellaneousStateEntryLightgroup>
+    presets: Record<string, GuiMiscellaneousStateEntryPreset>
 }
 
 export interface GuiMiscellaneousStateEntryLightgroup {
