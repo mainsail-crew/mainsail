@@ -13,7 +13,7 @@ export const mutations: MutationTree<GuiNotificationState> = {
     },
 
     removeDismiss(state, payload: GuiNotificationStateDismissEntry) {
-        const dismiss = [...state.dismiss].filter(
+        const dismiss = state.dismiss.filter(
             (d) => !(d.id === payload.id && d.category === payload.category && d.type === payload.type)
         )
 
