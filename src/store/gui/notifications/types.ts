@@ -20,6 +20,7 @@ export interface GuiNotificationStateDismissEntry {
 }
 
 export type GuiNotificationCategory =
+    | 'announcement'
     | 'flag'
     | 'dependency'
     | 'moonrakerWarning'

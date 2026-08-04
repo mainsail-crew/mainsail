@@ -2,11 +2,14 @@ import { ActionTree } from 'vuex'
 import { GuiNotificationCategory, GuiNotificationState, GuiNotificationStateDismissEntry } from './types'
 import { RootState } from '../../types'
 
-function extractIdCategory(input: string): { entry_id: string | undefined; category: string | undefined } {
+function extractIdCategory(input: string): {
+    entry_id: string | undefined
+    category: GuiNotificationCategory | undefined
+} {
     const posFirstSlash = input.indexOf('/')
     if (posFirstSlash === -1) return { entry_id: undefined, category: undefined }
 
-    const category = input.slice(0, posFirstSlash)
+    const category = input.slice(0, posFirstSlash) as GuiNotificationCategory
     const entry_id = input.slice(posFirstSlash + 1)
 
     return { entry_id, category }
@@ -23,7 +26,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
 
     async close({ dispatch }, id: string): Promise<void> {
         const { entry_id, category } = extractIdCategory(id)
-        if (!entry_id) return
+        if (!entry_id || !category) return
 
         if (category === 'announcement') {
             await dispatch('server/announcements/close', { entry_id }, { root: true })
