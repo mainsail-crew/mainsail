@@ -59,7 +59,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
     },
 
     async storeDismiss(
-        { commit, dispatch, state },
+        { commit, dispatch },
         payload: {
             entry_id: string
             category: GuiNotificationCategory
