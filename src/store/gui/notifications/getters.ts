@@ -235,8 +235,8 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
     },
 
     getNotificationsMoonrakerFailedInitComponents: (_state, getters, rootState) => {
-        let failedInitCompontents = rootState.server?.failed_init_components ?? []
-        if (failedInitCompontents.length === 0) return []
+        let failedInitComponents = rootState.server?.failed_init_components ?? []
+        if (failedInitComponents.length === 0) return []
 
         const date = rootState.server?.system_boot_at ?? new Date()
 
@@ -248,10 +248,10 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
         )
 
         // filter all dismissed failed init components
-        failedInitCompontents = failedInitCompontents.filter((component: string) => !flagDismisses.includes(component))
+        failedInitComponents = failedInitComponents.filter((component: string) => !flagDismisses.includes(component))
 
         const notifications: GuiNotificationStateEntry[] = []
-        failedInitCompontents.forEach((component: string) => {
+        failedInitComponents.forEach((component: string) => {
             notifications.push({
                 id: `moonrakerFailedInitComponent/${component}`,
                 priority: 'high',
