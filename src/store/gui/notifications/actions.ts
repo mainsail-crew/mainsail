@@ -79,17 +79,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
             date,
         }
 
-        if (
-            state.dismiss.filter(
-                (dismiss) =>
-                    dismiss.id === newDismiss.id &&
-                    dismiss.category === newDismiss.category &&
-                    dismiss.type === newDismiss.type
-            ).length
-        ) {
-            commit('removeDismiss', newDismiss)
-        }
-
+        commit('removeDismiss', newDismiss)
         commit('addDismiss', newDismiss)
         await dispatch('upload')
     },
