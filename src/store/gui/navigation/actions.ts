@@ -16,8 +16,11 @@ export const actions: ActionTree<GuiNavigationState, RootState> = {
         commit('update', { parameter: 'position', entry: payload })
     },
 
-    changeVisibility({ commit, dispatch }, payload: GuiNavigationStateEntry & { orgTitle?: string }): void {
+    async changeVisibility(
+        { commit, dispatch },
+        payload: GuiNavigationStateEntry & { orgTitle?: string }
+    ): Promise<void> {
         commit('update', { parameter: 'toggleVisibility', entry: payload })
-        dispatch('upload')
+        await dispatch('upload')
     },
 }
