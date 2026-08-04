@@ -19,6 +19,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('gcodehistory/reset')
         dispatch('heightmap/reset')
         dispatch('macros/reset')
+        dispatch('notifications/reset')
         dispatch('presets/reset')
         dispatch('webcams/reset')
     },
@@ -135,7 +136,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
     },
 
-    async saveSetting({ commit }, payload) {
+    async saveSetting({ commit }, payload: { name: string; value: unknown }) {
         commit('saveSetting', payload)
         if (excludeKeys.includes(payload.name)) return
 
