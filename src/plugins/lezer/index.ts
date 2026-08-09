@@ -49,7 +49,10 @@ const jinjaParser = jinjaParserRaw.configure({
             Operator: t.operator,
             Comment: t.blockComment,
             LineComment: t.lineComment,
-            'InterpolationStart InterpolationEnd StatementStart StatementEnd': t.tagName,
+            // path rules: the same brace tokens build a Dict literal inside a tag
+            // ({% set m = {'a': 1} %}), those are punctuation, not tag delimiters
+            'Interpolation/InterpolationStart Interpolation/InterpolationEnd StatementStart StatementEnd': t.tagName,
+            'Dict/InterpolationStart Dict/InterpolationEnd': t.operator,
         }),
     ],
     // overlay the gcode parser on the literal Text fragments between jinja tags

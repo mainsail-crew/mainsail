@@ -174,6 +174,23 @@ gcode:
         expect(find(tokens, 'if')).toContain('keyword')
     })
 
+    it('styles dict braces as punctuation, not as tag delimiters', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[gcode_macro A]
+gcode:
+    {% set m = {'a': {'t': 1}} %}
+    M117 {m.a.t}`
+        )
+        const braces = tokens.filter(([text]) => text === '{' || text === '}')
+        // 2x "{"/"}" of the nested dict literal + the {m.a.t} interpolation
+        expect(braces).toHaveLength(6)
+        // the 4 dict braces are punctuation, only the interpolation pair is a
+        // tag delimiter (t.tagName -> tok-typeName in the class highlighter)
+        expect(braces.filter(([, cls]) => cls.includes('operator'))).toHaveLength(4)
+        expect(braces.filter(([, cls]) => cls.includes('typeName'))).toHaveLength(2)
+    })
+
     it('parses member access after a subscript across multiple lines', () => {
         const tokens = highlight(
             klipperConfigLanguage,
