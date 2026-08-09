@@ -16,8 +16,9 @@ export const
   VariableName = 12,
   Operator = 13,
   LineComment = 14,
-  InterpolationEnd = 15,
-  StatementTag = 16,
-  StatementStart = 17,
-  StatementEnd = 18,
-  Comment = 19
+  Dict = 15,
+  InterpolationEnd = 16,
+  StatementTag = 17,
+  StatementStart = 18,
+  StatementEnd = 19,
+  Comment = 20

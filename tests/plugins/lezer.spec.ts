@@ -148,6 +148,21 @@ gcode:
         expect(find(tokens, 'tool_temps')).toContain('propertyName')
     })
 
+    it('parses a dict literal inside a statement tag', () => {
+        const code = `[gcode_macro MMU_COLD_PULL]
+gcode:
+    {% set materials = {
+        'NYLON': {'hot_temp': 260, 'cold_temp': 50},
+        'PETG':  {'hot_temp': 250, 'cold_temp': 45}
+    } %}
+    {% if material not in materials %}`
+        const tokens = highlight(klipperConfigLanguage, code)
+        // the braces of the dict must not end the tag at the first "}"
+        expect(nodeNameOf(klipperConfigLanguage, code, `{\n        'NYLON'`)).toBe('Dict')
+        expect(find(tokens, 'materials')).toContain('propertyName')
+        expect(find(tokens, 'if')).toContain('keyword')
+    })
+
     it('parses member access after a subscript across multiple lines', () => {
         const tokens = highlight(
             klipperConfigLanguage,

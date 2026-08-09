@@ -9,6 +9,10 @@
 @skip { space } {
   Interpolation { InterpolationStart expr* InterpolationEnd }
   StatementTag { StatementStart expr* StatementEnd }
+  // A "{" inside a tag is a dict/set literal ("{% set m = {'a': {'t': 1}} %}"),
+  // not a nested interpolation - without this the tag would end at the first
+  // "}" and the rest ("} %}") would fall back to text.
+  Dict { InterpolationStart expr* InterpolationEnd }
 }
 
 expr {
@@ -19,8 +23,10 @@ expr {
   Number |
   VariableName |
   Operator |
-  LineComment
+  LineComment |
+  Dict
 }
+
 
 // Filter names are only function-like after a "|" pipe. Builtin names like
 // max / min / list are ordinary variables anywhere else (e.g. {% set max = .. %}).
