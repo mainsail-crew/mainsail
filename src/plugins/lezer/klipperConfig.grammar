@@ -12,6 +12,10 @@
 // The content stays flat StringValue/Number/Comma tokens - no json/array
 // parsing, highlighting doesn't need the structure.
 @external tokens valuePunctuation from "./klipperConfig.tokens" { ValuePunctuation }
+// A "," is only a separator inside a python/json literal ("[1, 2]", "{a: 1,
+// b: 2}"). In a prose value ("description: Cancel the actual, running print")
+// it belongs to the text, so the tokenizer emits StringComma there.
+@external tokens comma from "./klipperConfig.tokens" { Comma, StringComma }
 
 // Comments are skipped so an inline comment doesn't terminate a Property
 // (e.g. a "# EXP1 header" line inside a board_pins aliases: block).
@@ -30,7 +34,7 @@ SectionType { word }
 SectionName { word }
 
 Property { PropertyName value* }
-value { Number | Boolean | StringValue | QuotedString | Comma | Operator | ValuePunctuation }
+value { Number | Boolean | StringValue | QuotedString | Comma | StringComma | Operator | ValuePunctuation }
 StringValue { word }
 // @specialize (not a token rule) so only the whole word matches: "true" is a
 // Boolean, "true_x" stays a StringValue.
@@ -49,7 +53,6 @@ Boolean { @specialize<word, "true" | "True" | "false" | "False"> }
 
   "[" "]"
 
-  Comma { "," }
 
   Operator { "=" | "<" | ">" }
 
@@ -69,9 +72,9 @@ Boolean { @specialize<word, "true" | "True" | "false" | "False"> }
   // word char so "EBBCan:PD0" / "50:10" stay single values. Multiple leading
   // signs are allowed so CLI-style values ("--http-listen=0.0.0.0") stay one
   // word instead of splitting at the second "-".
-  // A "," is never part of a word: it is a list separator ("[True, false]",
-  // "EXP1_1=PE6, EXP1_2=PE5") and gets the punctuation color. Commas inside a
-  // value are only kept by QuotedString ('1e1e1e,').
+  // A "," is never part of a word; it is tokenized separately (see the
+  // external comma tokenizer). Commas inside a quoted item ('1e1e1e,') are
+  // kept by QuotedString.
   word { $[-+]* $[0-9.]* ![0-9.+\- \t\r\n#;\[\]{},=<>] ![ \t\r\n#;\[\]{},=<>]* }
 
   // QuotedString over word so "'Black'," splits into string + separator

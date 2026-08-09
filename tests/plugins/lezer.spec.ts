@@ -193,19 +193,28 @@ gear_ratio: 50:10`
         expect(find(tokens, '50:10')).toContain('string')
     })
 
-    it('treats a comma as a separator, except inside a quoted string', () => {
-        const tokens = highlight(
-            klipperConfigLanguage,
-            `description: Extrudes, if the extruder is hot enough
-mesh_min: 25,25
-colors = ['1e1e1e,', 'red']`
-        )
-        expect(find(tokens, 'Extrudes')).toContain('string')
+    it('treats a comma as a separator, except inside prose', () => {
+        const prose = highlight(klipperConfigLanguage, `description: Extrudes, if the extruder is hot enough`)
+        expect(find(prose, 'Extrudes')).toContain('string')
+        // prose comma is part of the text, not a separator
+        expect(find(prose, ',')).toContain('string')
+
+        const numbers = highlight(klipperConfigLanguage, `probe_points:\n    60, 60, 20  # an example`)
+        expect(find(numbers, '60')).toContain('number')
+        expect(find(numbers, ',')).toContain('punctuation')
+
+        const aliases = highlight(klipperConfigLanguage, `aliases:\n    EXP1_1=P2.8, EXP1_3=P0.19`)
+        expect(find(aliases, ',')).toContain('punctuation')
+
+        const inline = highlight(klipperConfigLanguage, `mesh_min: 25,25`)
+        expect(find(inline, ',')).toContain('punctuation')
+
+        const list = highlight(klipperConfigLanguage, `colors = ['1e1e1e,', 'red', 25, 30]`)
         // only a quoted value keeps its comma
-        expect(find(tokens, "'1e1e1e,'")).toContain('string')
+        expect(find(list, "'1e1e1e,'")).toContain('string')
+        expect(find(list, '25')).toContain('number')
         // list separators are punctuation, like the brackets around them
-        expect(find(tokens, '25')).toContain('number')
-        expect(find(tokens, ',')).toContain('punctuation')
+        expect(find(list, ',')).toContain('punctuation')
     })
 
     it('highlights booleans', () => {

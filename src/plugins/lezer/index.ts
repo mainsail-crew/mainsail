@@ -66,7 +66,7 @@ const klipperConfigParser = klipperConfigParserRaw.configure({
             PropertyName: t.definition(t.propertyName),
             GcodeKey: t.definition(t.propertyName),
             Number: t.number,
-            'StringValue QuotedString': t.string,
+            'StringValue QuotedString StringComma': t.string,
             // number tag, not t.bool: the base theme paints bools in the same
             // blue as the config keys, and True/False is a value like 1/0
             Boolean: t.number,
