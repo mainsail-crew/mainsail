@@ -95,10 +95,14 @@ VariableName { identifier }
     InterpolationStart,
     StatementEnd,
     Number,
-    StringLiteral,
     Operator,
     identifier,
     InterpolationEnd,
-    Text
+    // Text before StringLiteral: outside a tag a quote is plain gcode text, so
+    // a multi-line string must not start there and swallow the lines below
+    // ("MSG=\"a={a}\"" on consecutive lines). Inside a tag Text is not valid,
+    // so StringLiteral still wins there.
+    Text,
+    StringLiteral
   }
 }

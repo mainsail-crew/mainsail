@@ -135,6 +135,19 @@ gcode:
         expect(find(tokens, 'params.TRAVEL_SPEED')).toContain('propertyName')
     })
 
+    it('does not join quotes of consecutive interpolation lines', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[gcode_macro MMU_LOG_TEST]
+gcode:
+    MMU_LOG MSG="  TOOL_COLORS={tool_colors}"
+    MMU_LOG MSG="  TOOL_TEMPS={tool_temps}"`
+        )
+        // the closing quote must not open a string running into the next line
+        expect(find(tokens, 'MMU_LOG')).toContain('variableName')
+        expect(find(tokens, 'tool_temps')).toContain('propertyName')
+    })
+
     it('parses member access after a subscript across multiple lines', () => {
         const tokens = highlight(
             klipperConfigLanguage,
