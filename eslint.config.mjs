@@ -30,6 +30,13 @@ export default defineConfigWithVueTs(
     },
 
     {
+        files: ['scripts/**/*.js'],
+        languageOptions: {
+            globals: globals.node,
+        },
+    },
+
+    {
         files: ['**/*.vue'],
         rules: {
             'vue/no-v-html': 'off',
