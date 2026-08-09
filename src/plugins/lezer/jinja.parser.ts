@@ -5,7 +5,7 @@ import {LRParser} from "@lezer/lr"
 const spec_identifier = {__proto__:null,if:56, elif:56, else:56, endif:56, for:56, endfor:56, in:56, is:56, recursive:56, and:56, or:56, not:56, set:56, endset:56, macro:56, endmacro:56, call:56, endcall:56, filter:56, endfilter:56, block:56, endblock:56, extends:56, include:56, import:56, from:56, as:56, do:56, with:56, without:56, context:56, loop:56, namespace:56, true:58, false:58, True:58, False:58, none:58, None:58}
 export const parser = LRParser.deserialize({
   version: 14,
-  states: "$[QVOPOOO!SQQO'#C_O!ZQQO'#CmOOOO'#Cq'#CqQVOPOOOOQO'#Ca'#CaOOQO'#Cb'#CbO!bOPO'#CcOOQO'#Ch'#ChO!gQQO'#CkOOQO'#Cv'#CvOOQO'#Cr'#CrO!nQQO,58yOOOO,58y,58yO!uQQO,59XOOOO,59X,59XOOOO-E6o-E6oOOQO'#Ce'#CeOOQO,58},58}OOQO,59V,59VO!|QQO,59VOOQO-E6p-E6pOOOO1G.e1G.eOOOO1G.s1G.sOOQO1G.q1G.q",
+  states: "$[QVOPOOO!SQQO'#C_O!ZQQO'#CmOOOO'#Cq'#CqQVOPOOOOQO'#Ca'#CaOOQO'#Cb'#CbO!bQQO'#CcOOQO'#Ch'#ChO!gQQO'#CkOOQO'#Cv'#CvOOQO'#Cr'#CrO!nQQO,58yOOOO,58y,58yO!uQQO,59XOOOO,59X,59XOOOO-E6o-E6oOOQO'#Ce'#CeOOQO,58},58}OOQO,59V,59VO!|QQO,59VOOQO-E6p-E6pOOOO1G.e1G.eOOOO1G.s1G.sOOQO1G.q1G.q",
   stateData: "#b~OiOS~OQROSPObQOdRO~OSXOWVOYYOZYO]YO^YOkWOlTOmUO~O`]O~PeOc_O~PeOkaO~O`cO~PeO`fO~PeOcgO~PeO`hO~PeOd^bScZ]k`QYZ~",
   goto: "!ikPPPlPpppPxPPpPPpPlPPP{!RPPP!aTROS]YPQX[^dRbVQSOR`SQ[PQ^QQdXVe[^d]ZPQX[^d",
   nodeNames: "⚠ Template Text Interpolation InterpolationStart Keyword Boolean Filter Pipe FilterName StringLiteral Number VariableName Operator LineComment Dict InterpolationEnd StatementTag StatementStart StatementEnd Comment",

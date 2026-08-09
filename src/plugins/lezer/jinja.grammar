@@ -13,6 +13,10 @@
   // not a nested interpolation - without this the tag would end at the first
   // "}" and the rest ("} %}") would fall back to text.
   Dict { InterpolationStart expr* InterpolationEnd }
+  // Filter names are only function-like after a "|" pipe. Builtin names like
+  // max / min / list are ordinary variables anywhere else (e.g. {% set max = .. %}).
+  // Inside the skip block, so "| min" (with spaces) is a filter too.
+  Filter { Pipe FilterName }
 }
 
 expr {
@@ -28,9 +32,6 @@ expr {
 }
 
 
-// Filter names are only function-like after a "|" pipe. Builtin names like
-// max / min / list are ordinary variables anywhere else (e.g. {% set max = .. %}).
-Filter { Pipe FilterName }
 FilterName { identifier }
 
 Keyword {

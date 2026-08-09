@@ -148,6 +148,17 @@ gcode:
         expect(find(tokens, 'tool_temps')).toContain('propertyName')
     })
 
+    it('parses a filter with spaces around the pipe', () => {
+        const code = `[gcode_macro TEST]
+gcode:
+    {% set x_min = all_points | map(attribute=0) | min | default(bed_mesh_min[0]) %}`
+        const tokens = highlight(klipperConfigLanguage, code)
+        expect(nodeNameOf(klipperConfigLanguage, code, 'min |')).toBe('FilterName')
+        // the tag must not break at the pipe and swallow its end
+        expect(nodeNameOf(klipperConfigLanguage, code, '%}')).toBe('StatementEnd')
+        expect(find(tokens, 'bed_mesh_min')).toContain('propertyName')
+    })
+
     it('parses a dict literal inside a statement tag', () => {
         const code = `[gcode_macro MMU_COLD_PULL]
 gcode:
