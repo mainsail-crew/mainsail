@@ -7,7 +7,7 @@
         style="height: 600px" />
 </template>
 <script lang="ts">
-import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import BedmeshMixin from '@/components/mixins/bedmesh'
 
@@ -56,6 +56,8 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
     @Prop({ type: Number, default: 1 }) scaleZMax!: number
 
     @Ref('heightmap') readonly heightmap!: EChartRef | undefined
+
+    declare private appliedScaleZMax: number
 
     get chart(): ECharts | null {
         return this.heightmap?.chart ?? null
@@ -119,8 +121,8 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
             },
             zAxis3D: {
                 type: 'value',
-                min: this.scaleZMax * -1,
-                max: this.scaleZMax,
+                min: this.appliedScaleZMax * -1,
+                max: this.appliedScaleZMax,
                 nameTextStyle: {
                     color: this.fgColorMid,
                 },
@@ -425,10 +427,20 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
         return outputArray.join('<br />')
     }
 
+    created(): void {
+        this.appliedScaleZMax = this.scaleZMax
+    }
+
     beforeDestroy(): void {
         if (typeof window === 'undefined') return
 
         this.chart?.dispose()
+    }
+
+    @Watch('scaleZMax')
+    scaleZMaxChanged(newVal: number): void {
+        this.appliedScaleZMax = newVal
+        this.chart?.setOption({ zAxis3D: { min: newVal * -1, max: newVal } })
     }
 }
 </script>
