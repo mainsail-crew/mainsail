@@ -59,16 +59,6 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
 
     declare private appliedScaleZMax: number
 
-    created(): void {
-        this.appliedScaleZMax = this.scaleZMax
-    }
-
-    @Watch('scaleZMax')
-    scaleZMaxChanged(newVal: number): void {
-        this.appliedScaleZMax = newVal
-        this.chart?.setOption({ zAxis3D: { min: newVal * -1, max: newVal } })
-    }
-
     get chart(): ECharts | null {
         return this.heightmap?.chart ?? null
     }
@@ -437,10 +427,20 @@ export default class HeightmapChart extends Mixins(BaseMixin, BedmeshMixin, Them
         return outputArray.join('<br />')
     }
 
+    created(): void {
+        this.appliedScaleZMax = this.scaleZMax
+    }
+
     beforeDestroy(): void {
         if (typeof window === 'undefined') return
 
         this.chart?.dispose()
+    }
+
+    @Watch('scaleZMax')
+    scaleZMaxChanged(newVal: number): void {
+        this.appliedScaleZMax = newVal
+        this.chart?.setOption({ zAxis3D: { min: newVal * -1, max: newVal } })
     }
 }
 </script>
