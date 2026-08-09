@@ -206,6 +206,16 @@ gcode:
         expect(find(tokens, 'filament_detected')).toContain('propertyName')
     })
 
+    it('keeps a comma between quoted list items a separator', () => {
+        const tokens = highlight(
+            klipperConfigLanguage,
+            `[gcode_macro A]
+variable_names: ["fan speed", "heater speed"]`
+        )
+        // separator color (bracket), not part of the string
+        expect(find(tokens, ',')).not.toContain('string')
+    })
+
     it('treats a builtin name as a variable outside filter position', () => {
         const code = `[gcode_macro A]
 gcode:

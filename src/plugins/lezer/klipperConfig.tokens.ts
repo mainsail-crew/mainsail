@@ -10,8 +10,10 @@ const EQUALS = 61
 const COMMA = 44
 
 // Borders of the list item next to a comma: another separator, a bracket of a
-// python literal, the key delimiter or a comment.
-const ITEM_BORDER = new Set([...',:=[]{}()#;'].map((c) => c.charCodeAt(0)))
+// python literal, a quote, the key delimiter or a comment. Quotes are borders
+// so a quoted item keeps its spaces out of the prose check
+// (['fan speed', 'heater speed'] is a list, not prose).
+const ITEM_BORDER = new Set([...',:=[]{}()#;"\''].map((c) => c.charCodeAt(0)))
 
 // Klipper keys are only valid at column 0. A word followed by ":" anywhere
 // else (e.g. the value "EBBCan:PD0") is not a key, so PropertyName can't be
