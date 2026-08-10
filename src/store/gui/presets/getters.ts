@@ -4,18 +4,15 @@ import { caseInsensitiveSort } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiPresetsState, RootState> = {
-    getCooldownGcode: (state) => {
+    getCooldownGcode: (state): string => {
         return state.cooldownGcode ?? 'TURN_OFF_HEATERS'
     },
 
-    getPresets: (state) => {
-        const presets: GuiPresetsStatePreset[] = []
-
-        if ('presets' in state) {
-            Object.keys(state.presets).forEach((id: string) => {
-                presets.push({ ...state.presets[id], id })
-            })
-        }
+    getPresets: (state): GuiPresetsStatePreset[] => {
+        const presets: GuiPresetsStatePreset[] = Object.entries(state.presets).map(([id, preset]) => ({
+            ...preset,
+            id,
+        }))
 
         return caseInsensitiveSort(presets, 'name')
     },
