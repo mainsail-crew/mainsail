@@ -44,8 +44,8 @@ export default class PresetsFormCooldown extends Mixins(BaseMixin) {
         this.$emit('close')
     }
 
-    saveCooldown() {
-        this.$store.dispatch('gui/presets/saveSetting', { name: 'cooldownGcode', value: this.gcode })
+    async saveCooldown() {
+        await this.$store.dispatch('gui/presets/saveSetting', { name: 'cooldownGcode', value: this.gcode })
         this.closeForm()
     }
 }

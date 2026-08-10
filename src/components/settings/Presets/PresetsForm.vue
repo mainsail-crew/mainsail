@@ -154,7 +154,7 @@ export default class PresetsForm extends Mixins(BaseMixin) {
         this.$emit('close')
     }
 
-    savePreset() {
+    async savePreset() {
         let setValues = 0
         for (const key of Object.keys(this.preset.values)) {
             if (this.preset.values[key].bool) setValues++
@@ -167,15 +167,7 @@ export default class PresetsForm extends Mixins(BaseMixin) {
             return
         }
 
-        // create new preset, if id === null
-        if (this.preset.id === null) {
-            this.$store.dispatch('gui/presets/store', { values: this.preset })
-            this.closeForm()
-            return
-        }
-
-        // update existing preset
-        this.$store.dispatch('gui/presets/update', { id: this.preset.id, values: this.preset })
+        await this.$store.dispatch('gui/presets/updateOrCreate', this.preset)
         this.closeForm()
     }
 }
