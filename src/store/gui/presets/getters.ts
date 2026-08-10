@@ -1,62 +1,43 @@
 import { GetterTree } from 'vuex'
-import { GuiPresetsState, GuiPresetsStatePreset } from '@/store/gui/presets/types'
+import { GuiPresetsState, GuiPresetsStatePreset, TemperaturePanelHeaterPreset } from '@/store/gui/presets/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiPresetsState, RootState> = {
-    getCooldownGcode: (state) => {
+    getCooldownGcode: (state): string => {
         return state.cooldownGcode ?? 'TURN_OFF_HEATERS'
     },
 
-    getPresets: (state) => {
-        const presets: GuiPresetsStatePreset[] = []
-
-        if ('presets' in state) {
-            Object.keys(state.presets).forEach((id: string) => {
-                presets.push({ ...state.presets[id], id })
-            })
-        }
+    getPresets: (state): GuiPresetsStatePreset[] => {
+        const presets: GuiPresetsStatePreset[] = Object.entries(state.presets).map(([id, preset]) => ({
+            ...preset,
+            id,
+        }))
 
         return caseInsensitiveSort(presets, 'name')
     },
 
-    getPresetsFromHeater: (state) => (payload: { name: string }) => {
-        interface preset {
-            value: number
-            text: string
-        }
+    getPresetsFromHeater:
+        (state) =>
+        (payload: { name: string }): TemperaturePanelHeaterPreset[] => {
+            const output: TemperaturePanelHeaterPreset[] = [{ value: 0, text: '0 °C' }]
 
-        const output: preset[] = []
+            // return only 0 entry, if there is no presets set
+            if (!('presets' in state)) return output
 
-        output.push({
-            value: 0,
-            text: '0 °C',
-        })
+            Object.values(state.presets).forEach((preset: GuiPresetsStatePreset) => {
+                const presetStatus = preset.values[payload.name]?.bool ?? false
+                if (!presetStatus) return
 
-        // return only 0 entry, if there is no presets set
-        if (!('presets' in state)) return output
+                const presetValue = parseFloat(preset.values[payload.name]?.value?.toString() ?? '0')
+                if (output.some((entry) => entry.value === presetValue)) return
 
-        Object.keys(state.presets).forEach((id: string) => {
-            const preset = state.presets[id]
-
-            if (
-                preset.values[payload.name]?.bool &&
-                output.findIndex(
-                    (entry: preset) => entry.value === parseFloat(preset.values[payload.name]?.value?.toString() ?? '0')
-                ) === -1
-            ) {
                 output.push({
                     value: Number(preset.values[payload.name].value),
                     text: preset.values[payload.name].value + ' °C',
                 })
-            }
-        })
+            })
 
-        return output.sort((a: preset, b: preset) => {
-            if (a.value > b.value) return -1
-            if (a.value < b.value) return 1
-
-            return 0
-        })
-    },
+            return output.sort((a, b) => b.value - a.value)
+        },
 }
