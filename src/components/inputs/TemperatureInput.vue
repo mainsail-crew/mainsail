@@ -11,13 +11,14 @@
                 hide-spin-buttons
                 class="_temp-input"
                 :style="inputStyle"
+                :disabled="disabled"
                 @blur="value = target"
                 @focus="$event.target.select()" />
         </form>
         <v-menu v-if="presets" :offset-y="true" left title="Preheat">
             <template #activator="{ on, attrs }">
                 <v-btn
-                    :disabled="['printing', 'paused'].includes(printer_state)"
+                    :disabled="disabled || ['printing', 'paused'].includes(printer_state)"
                     tabindex="-1"
                     x-small
                     plain
@@ -71,6 +72,7 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     @Prop({ type: String, required: true }) declare readonly attributeName: string
     @Prop({ type: Array, default: [] }) declare presets: number[]
     @Prop({ type: Number, default: 3 }) declare readonly inputDigits: number
+    @Prop({ type: Boolean, default: false }) declare readonly disabled: boolean
 
     get inputStyle() {
         const PER_DIGIT = 10
@@ -92,6 +94,8 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
     }
 
     setTemps(): void {
+        if (this.disabled) return
+
         const temp = this.normalizeValue(this.value)
 
         if (temp > this.max_temp) {

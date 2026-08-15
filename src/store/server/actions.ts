@@ -247,7 +247,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    addEvent({ commit, rootGetters }, payload) {
+    addEvent({ commit, dispatch, rootGetters }, payload) {
         let message = payload
         let type = 'response'
 
@@ -262,6 +262,11 @@ export const actions: ActionTree<ServerState, RootState> = {
             if (message.startsWith('// action:')) type = 'action'
             else if (message.startsWith('// debug:')) type = 'debug'
         }
+
+        // Track PID_CALIBRATE progress off the raw message, ahead of the user-configurable console
+        // filters below - a console filter hiding "//" chatter must never be able to hide this too.
+        if (type === 'command') dispatch('printer/pidCalibrate/onGcodeSent', message, { root: true })
+        else dispatch('printer/pidCalibrate/onGcodeResponse', message, { root: true })
 
         const filters = rootGetters['gui/console/getConsolefilterRules']
         let boolImport = true

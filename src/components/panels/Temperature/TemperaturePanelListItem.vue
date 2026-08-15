@@ -9,7 +9,7 @@
             <span class="cursor-pointer" @click="openEditDialog">{{ formatName }}</span>
         </td>
         <td v-if="!isResponsiveMobile" class="state">
-            <v-tooltip v-if="state !== null" top>
+            <v-tooltip v-if="state !== null || isCalibrating" top>
                 <template #activator="{ on, attrs }">
                     <div v-bind="attrs" v-on="on">{{ formatState }}</div>
                 </template>
@@ -47,7 +47,8 @@
                 :max_temp="max_temp"
                 :command="command"
                 :input-digits="inputDigits"
-                :attribute-name="commandAttributeName" />
+                :attribute-name="commandAttributeName"
+                :disabled="isCalibrating" />
         </td>
         <temperature-panel-list-item-edit
             v-model="showEditDialog"
@@ -59,7 +60,7 @@
             :color="color" />
         <v-menu v-model="showContextMenu" :position-x="contextMenuX" :position-y="contextMenuY" absolute offset-y>
             <v-list>
-                <v-list-item v-if="isHeater" :disabled="!isHeaterActive" @click="turnOffHeater">
+                <v-list-item v-if="isHeater" :disabled="!isHeaterActive || isCalibrating" @click="turnOffHeater">
                     <v-icon left>{{ mdiSnowflake }}</v-icon>
                     {{ $t('Panels.TemperaturePanel.TurnHeaterOff') }}
                 </v-list-item>
@@ -74,7 +75,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { convertName } from '@/plugins/helpers'
@@ -196,7 +197,21 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
         return this.printerObject.power ?? this.printerObject.speed ?? null
     }
 
+    get pidCalibrateEntry() {
+        return this.$store.getters['printer/pidCalibrate/getEntry'](this.name)
+    }
+
+    get isCalibrating(): boolean {
+        return this.pidCalibrateEntry?.status === 'running'
+    }
+
     get formatState() {
+        if (this.isCalibrating) {
+            return this.$t('Panels.TemperaturePanel.PidCalibrate.StateRunning', {
+                target: this.pidCalibrateEntry.target,
+            }).toString()
+        }
+
         if (this.state === null) return null
         if (this.target === 0 && this.state === 0) return 'off'
 
@@ -306,6 +321,17 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
         return this.target > 0
     }
 
+    // Klipper's PID_CALIBRATE toggles the heater's standard `target` field while running (see
+    // src/store/printer/pidCalibrate/helpers.ts for why) - watching it here, where Mainsail
+    // already receives every target update, is how calibration progress is estimated without
+    // depending on anything beyond a normal printer object subscription.
+    @Watch('target')
+    onTargetChanged(newTarget: number | null): void {
+        if (newTarget === null) return
+
+        this.$store.dispatch('printer/pidCalibrate/onTargetChanged', { heaterName: this.name, target: newTarget })
+    }
+
     mounted() {
         EventBus.$on(CLOSE_CONTEXT_MENU, this.closeContextMenu)
     }
@@ -332,6 +358,8 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
     }
 
     turnOffHeater() {
+        if (this.isCalibrating) return
+
         const gcode = `SET_HEATER_TEMPERATURE HEATER=${this.name} TARGET=0`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })

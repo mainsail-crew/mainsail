@@ -6,6 +6,7 @@ import { getters } from '@/store/printer/getters'
 
 // import modules
 import { tempHistory } from '@/store/printer/tempHistory'
+import { pidCalibrate } from '@/store/printer/pidCalibrate'
 import { RootState } from '@/store/types'
 
 export const getDefaultState = (): PrinterState => {
@@ -23,5 +24,6 @@ export const printer: Module<PrinterState, RootState> = {
     mutations,
     modules: {
         tempHistory,
+        pidCalibrate,
     },
 }

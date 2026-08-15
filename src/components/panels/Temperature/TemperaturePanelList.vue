@@ -21,8 +21,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <template v-for="objectName in filteredHeaters">
+                        <temperature-panel-list-item
+                            :key="objectName"
+                            :object-name="objectName"
+                            :input-digits="inputFieldDigits"
+                            :is-responsive-mobile="el.is.mobile ?? false" />
+                        <temperature-panel-list-item-pid-calibrate
+                            :key="`${objectName}-pid-calibrate`"
+                            :heater-name="shortName(objectName)"
+                            :is-responsive-mobile="el.is.mobile ?? false" />
+                    </template>
                     <temperature-panel-list-item
-                        v-for="objectName in heaterObjects"
+                        v-for="objectName in temperature_fans"
                         :key="objectName"
                         :object-name="objectName"
                         :input-digits="inputFieldDigits"
@@ -55,9 +66,10 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import TemperaturePanelListItemNevermore from '@/components/panels/Temperature/TemperaturePanelListItemNevermore.vue'
+import TemperaturePanelListItemPidCalibrate from '@/components/panels/Temperature/TemperaturePanelListItemPidCalibrate.vue'
 
 @Component({
-    components: { TemperaturePanelListItemNevermore },
+    components: { TemperaturePanelListItemNevermore, TemperaturePanelListItemPidCalibrate },
 })
 export default class TemperaturePanelList extends Mixins(BaseMixin) {
     get available_heaters() {
