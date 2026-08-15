@@ -112,6 +112,17 @@ describe('printer/pidCalibrate/isPidCalibrateTargetToggle', () => {
 
     it('ignores a value that matches neither expected level', () => {
         expect(isPidCalibrateTargetToggle(calibrationTarget, calibrationTarget, 0)).toBe(false)
+        expect(isPidCalibrateTargetToggle(calibrationTarget, calibrationTarget, calibrationTarget + 10)).toBe(false)
+    })
+
+    it('does not let a stray/third-party target change corrupt the next real toggle', () => {
+        // e.g. another client (not this Mainsail tab) nudges the target mid-calibration - the
+        // action layer only advances lastObservedTarget on a recognized toggle (see actions.ts),
+        // so a stray value in between two real toggles must not stop the second one being detected
+        // against the still-unchanged lastObservedTarget.
+        const strayValue = 0
+        expect(isPidCalibrateTargetToggle(calibrationTarget, calibrationTarget, strayValue)).toBe(false)
+        expect(isPidCalibrateTargetToggle(calibrationTarget, calibrationTarget, 205)).toBe(true)
     })
 })
 
