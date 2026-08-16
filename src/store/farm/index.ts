@@ -2,6 +2,7 @@ import { printer } from '@/store/farm/printer'
 import { Module } from 'vuex'
 import { FarmState } from '@/store/farm/types'
 import { RootState } from '@/store/types'
+import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
 
 export const getDefaultState = (): FarmState => {
     return {}
@@ -48,14 +49,18 @@ export const farm: Module<FarmState, RootState> = {
                 dispatch('farm/' + payload.id + '/connect', {}, { root: true })
             }
         },
-        updatePrinter({ dispatch, commit }, payload) {
-            commit(payload.id + '/setSocketData', {
-                hostname: payload.values.hostname,
-                port: payload.values.port,
-                path: payload.values.path,
+        updatePrinter({ commit, dispatch }, payload: { id: string; value: GuiRemoteprintersStatePrinter }): void {
+            const id = payload.id
+            const value = payload.value
+
+            commit(`${id}/setSocketData`, {
+                hostname: value.hostname,
+                port: value.port,
+                path: value.path,
                 isConnecting: true,
             })
-            dispatch(payload.id + '/reconnect')
+
+            dispatch(`${id}/reconnect`)
         },
         unregisterPrinter({ state }, id) {
             if (id in state) {
