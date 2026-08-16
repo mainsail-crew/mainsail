@@ -56,8 +56,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         if ('remoteprinters' in values) {
             if (rootState.instancesDB === 'moonraker') {
-                // TODO: convert to async module initialization
-                dispatch('remoteprinters/initStore', values.remoteprinters?.printers ?? {})
+                dispatch('remoteprinters/init', values.remoteprinters?.printers ?? {})
             }
             delete values.remoteprinters
         }

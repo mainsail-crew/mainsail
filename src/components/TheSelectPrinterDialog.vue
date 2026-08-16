@@ -409,13 +409,13 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     addPrinter() {
-        const values = {
+        const value = {
             hostname: this.dialogAddPrinter.hostname,
             port: this.dialogAddPrinter.port,
             path: this.dialogAddPrinter.path,
             name: this.dialogAddPrinter.name,
         }
-        this.$store.dispatch('gui/remoteprinters/store', { values })
+        this.$store.dispatch('gui/remoteprinters/store', value)
 
         this.dialogAddPrinter.hostname = ''
         this.dialogAddPrinter.bool = false
@@ -435,17 +435,14 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     updatePrinter() {
-        const values = {
+        const id = this.dialogEditPrinter.id
+        const value = {
             hostname: this.dialogEditPrinter.hostname,
             port: this.dialogEditPrinter.port,
             path: this.dialogEditPrinter.path,
-            id: this.dialogEditPrinter.id,
             name: this.dialogEditPrinter.name,
         }
-        this.$store.dispatch('gui/remoteprinters/update', {
-            id: this.dialogEditPrinter.id,
-            values,
-        })
+        this.$store.dispatch('gui/remoteprinters/update', { id, value })
 
         this.dialogEditPrinter.bool = false
     }
@@ -485,35 +482,35 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     checkPrinters() {
         this.printers.forEach((printer: GuiRemoteprintersStatePrinter) => {
-            if (printer && !printer.socket?.isConnected && !printer.socket?.isConnecting) {
-                this.$store.dispatch('farm/' + printer.id + '/connect')
-            }
+            if (!printer || printer?.socket?.isConnected || printer?.socket?.isConnecting) return
+
+            this.$store.dispatch(`farm/${printer.id}/connect`)
         })
     }
 
-    mounted() {
-        this.$store.dispatch('gui/remoteprinters/initFromLocalstorage').then(() => {
-            if (!('printer' in this.$route.query)) return
+    async mounted() {
+        await this.$store.dispatch('gui/remoteprinters/initFromLocalstorage')
 
-            const name = this.$route.query.printer.toString().toLowerCase()
-            const matching = this.printers.filter(
-                (printer: GuiRemoteprintersStatePrinter) => printer.name?.toLowerCase() === name
-            )
+        if (!('printer' in this.$route.query)) return
 
-            // no printers found with this name
-            if (matching.length == 0) {
-                window.console.error(`No printer with given name '${name}' found. Showing selection dialog instead.`)
-                return
-            }
+        const name = this.$route.query.printer.toString().toLowerCase()
+        const matching = this.printers.filter(
+            (printer: GuiRemoteprintersStatePrinter) => printer.name?.toLowerCase() === name
+        )
 
-            // multiple printers found with this name
-            if (matching.length > 1) {
-                window.console.error(`Multiple printers with name '${name}' found. Showing selection dialog instead.`)
-                return
-            }
+        // no printers found with this name
+        if (matching.length == 0) {
+            window.console.error(`No printer with given name '${name}' found. Showing selection dialog instead.`)
+            return
+        }
 
-            this.connect(matching[0])
-        })
+        // multiple printers found with this name
+        if (matching.length > 1) {
+            window.console.error(`Multiple printers with name '${name}' found. Showing selection dialog instead.`)
+            return
+        }
+
+        this.connect(matching[0])
     }
 }
 </script>

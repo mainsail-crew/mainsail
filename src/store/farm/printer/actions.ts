@@ -199,13 +199,13 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         }
     },
 
-    setSettings({ commit, dispatch, state }, payload) {
+    async setSettings({ commit, dispatch, state }, payload) {
         commit('setSettings', payload)
-        dispatch(
+        await dispatch(
             'gui/remoteprinters/updateSettings',
             {
                 id: state._namespace,
-                values: state.settings,
+                settings: state.settings,
             },
             { root: true }
         )

@@ -168,7 +168,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
             path: this.form.path,
         }
 
-        this.$store.dispatch('gui/remoteprinters/store', { values: printer })
+        this.$store.dispatch('gui/remoteprinters/store', printer)
 
         this.form.hostname = ''
         this.form.port = 7125
@@ -187,14 +187,14 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     }
 
     updatePrinter() {
-        const values = {
+        const value = {
             hostname: this.form.hostname,
             port: this.form.port,
             name: this.form.name,
             path: this.form.path,
         }
 
-        this.$store.dispatch('gui/remoteprinters/update', { id: this.form.id, values })
+        this.$store.dispatch('gui/remoteprinters/update', { id: this.form.id, value })
 
         this.form.id = null
         this.form.hostname = ''

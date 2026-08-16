@@ -4,7 +4,7 @@ import { caseInsensitiveSort } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiRemoteprintersState, RootState> = {
-    getRemoteprinters: (state, getters, rootState, rootGetters) => {
+    getRemoteprinters: (state, _getters, _rootState, rootGetters): GuiRemoteprintersStatePrinter[] => {
         const printers: GuiRemoteprintersStatePrinter[] = []
 
         Object.keys(state.printers).forEach((id: string) => {
