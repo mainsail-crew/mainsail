@@ -9,6 +9,7 @@ import {
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
 import { allDashboardPanels, defaultTheme, themes } from '@/store/variables'
 import { RootState, Theme } from '@/store/types'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 export const getters: GetterTree<GuiState, RootState> = {
     getThemeName(state): string {
@@ -86,7 +87,7 @@ export const getters: GetterTree<GuiState, RootState> = {
         }
 
         // remove webcam panel, if no webcam exists
-        const webcams = getters['webcams/getWebcams']
+        const webcams = getters['webcams/getWebcams'] as GuiWebcamStateWebcam[]
         if (webcams.length === 0) {
             allPanels = allPanels.filter((name) => name !== 'webcam')
         }

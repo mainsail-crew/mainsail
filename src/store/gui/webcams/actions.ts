@@ -1,43 +1,61 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
-import { GuiWebcamState, GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { GuiWebcamState } from '@/store/gui/webcams/types'
 import Vue from 'vue'
+import i18n from '@/plugins/i18n'
+import { Webcam, WebcamIdentifier, WebcamPostParams } from '@/types/moonraker/WebcamRPC'
+
+const LOG_PREFIX = '[GUI][Webcams]'
+const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
 
 export const actions: ActionTree<GuiWebcamState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    init() {
-        window.console.debug('init gui/webcams')
-        Vue.$socket.emit('server.webcams.list', {}, { action: 'gui/webcams/initStore' })
+    async init({ commit, dispatch }): Promise<void> {
+        logDebug('init')
+        commit('reset')
+
+        dispatch('socket/setInitializationStep', i18n.t('ConnectionDialog.InitComponents.Webcams').toString(), {
+            root: true,
+        })
+
+        try {
+            const response = await Vue.$socket.emitAndWait('server.webcams.list')
+            dispatch('notifyWebcamsChanged', response)
+        } catch (error) {
+            logError('Failed to initialize webcams:', error)
+        }
     },
 
-    async initStore({ commit, dispatch }, payload) {
-        await commit('reset')
-        await commit('initStore', payload.webcams)
-        await dispatch('socket/removeInitModule', 'gui/webcam/init', { root: true })
+    notifyWebcamsChanged({ commit }, payload: { webcams: Webcam[] }): void {
+        commit('setWebcams', payload.webcams)
     },
 
-    store(_, payload) {
-        Vue.$socket.emit('server.webcams.post_item', payload)
-    },
+    async store({ dispatch, rootState }, payload: { webcam: WebcamPostParams; oldWebcamName?: string }): Promise<void> {
+        const { webcam, oldWebcamName } = payload
+        const response = await Vue.$socket.emitAndWait('server.webcams.post_item', webcam)
 
-    update({ dispatch, rootState }, payload: { webcam: GuiWebcamStateWebcam; oldWebcamName: string }) {
-        Vue.$socket.emit('server.webcams.post_item', payload.webcam)
-        if (payload.webcam.name !== payload.oldWebcamName) dispatch('delete', payload.oldWebcamName)
+        // stop here, when the name didn't change and/or it's a new webcam
+        if (!oldWebcamName || oldWebcamName === response.webcam.name) return
+
+        // Moonraker < 0.9.0 has no uid, so a rename created a second entry instead of
+        // updating the existing one. Remove the leftover entry under the old name.
+        if (!('uid' in webcam)) await dispatch('delete', { name: oldWebcamName })
 
         // check if timelapse plugin is active, if not stop here
         if (!rootState.server?.components.includes('timelapse')) return
 
         dispatch(
             'server/timelapse/updateCamSettings',
-            { newName: payload.webcam.name, oldName: payload.oldWebcamName },
+            { newName: response.webcam.name, oldName: oldWebcamName },
             { root: true }
         )
     },
 
-    delete(_, payload: string) {
-        Vue.$socket.emit('server.webcams.delete_item', { name: payload })
+    async delete(_, identifier: WebcamIdentifier): Promise<void> {
+        await Vue.$socket.emitAndWait('server.webcams.delete_item', identifier)
     },
 }

@@ -48,9 +48,9 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
 
-    private boolForm = false
-    private typeForm: 'create' | 'edit' = 'create'
-    private formWebcam: GuiWebcamStateWebcam = {} as GuiWebcamStateWebcam
+    boolForm = false
+    typeForm: 'create' | 'edit' = 'create'
+    formWebcam: GuiWebcamStateWebcam = {} as GuiWebcamStateWebcam
 
     get webcams() {
         return this.$store.state.gui.webcams.webcams ?? []
@@ -93,6 +93,8 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             flip_vertical: false,
             aspect_ratio: DEFAULT_ASPECT_RATIO,
             extra_data: {},
+            location: 'printer',
+            source: 'database',
         }
 
         this.typeForm = 'create'

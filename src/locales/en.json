@@ -179,7 +179,8 @@
             "Spoolman": "Spoolman",
             "SystemInfo": "System Info",
             "Timelapse": "Timelapse",
-            "UpdateManager": "Update Manager"
+            "UpdateManager": "Update Manager",
+            "Webcams": "Webcams"
         },
         "InitializationFailed": "Initialization failed",
         "Initializing": "Initializing",

@@ -83,9 +83,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             logError('maintenance init failed', e)
         )
 
-        // TODO: convert to async module initialization
-        dispatch('socket/addInitModule', 'gui/webcam/init', { root: true })
-        dispatch('gui/webcams/init', null, { root: true })
+        await dispatch('gui/webcams/init', null, { root: true })
     },
 
     async getDefaults({ rootGetters }) {
