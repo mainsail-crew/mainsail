@@ -8,7 +8,7 @@
                     small
                     outlined
                     :color="webcam.enabled ? '' : 'secondary'"
-                    @click="toogleStatus">
+                    @click="toggleStatus">
                     <v-icon small>{{ mdiLightbulbOutline }}</v-icon>
                 </v-btn>
                 <v-btn class="ml-3" small outlined @click="edit">
@@ -30,6 +30,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { mdiDelete, mdiPencil, mdiLightbulbOutline } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
+import { WebcamIdentifier } from '@/types/moonraker/WebcamRPC'
 
 @Component({
     components: {
@@ -54,20 +55,32 @@ export default class WebcamListEntry extends Mixins(BaseMixin, WebcamMixin) {
         return `URL: ${this.webcam.stream_url}`
     }
 
-    toogleStatus() {
+    async toggleStatus() {
         const webcam = { ...this.webcam }
         webcam.enabled = !webcam.enabled
-        this.$store.dispatch('gui/webcams/update', { webcam: webcam, oldWebcamName: webcam.name })
+
+        try {
+            await this.$store.dispatch('gui/webcams/store', { webcam })
+        } catch (e) {
+            window.console.error('[WebcamListEntry] Failed to change webcam status', e)
+        }
     }
 
     edit() {
         this.$emit('edit-webcam', this.webcam)
     }
 
-    deleteWebcam() {
-        this.$store.dispatch('gui/webcams/delete', this.webcam.name)
+    async deleteWebcam() {
+        const identifier: WebcamIdentifier = {
+            uid: this.webcam.uid ?? undefined,
+            name: this.webcam.name,
+        }
+
+        try {
+            await this.$store.dispatch('gui/webcams/delete', identifier)
+        } catch (e) {
+            window.console.error('[WebcamListEntry] Failed to delete webcam', e)
+        }
     }
 }
 </script>
-
-<style scoped></style>

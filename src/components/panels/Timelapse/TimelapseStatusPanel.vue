@@ -145,7 +145,7 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin, TimelapseMix
     }
 
     get camSettings() {
-        return this.$store.getters['gui/webcams/getWebcam'](this.camId)
+        return this.$store.getters['gui/webcams/getWebcamByName'](this.camId)
     }
 
     get webcamStyle() {

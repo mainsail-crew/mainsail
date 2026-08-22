@@ -468,23 +468,16 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         return count >= 1
     }
 
-    submit() {
-        if (this.type === 'create') {
-            this.save()
-            return
+    async submit() {
+        try {
+            await this.$store.dispatch('gui/webcams/store', {
+                webcam: this.webcam,
+                oldWebcamName: this.type === 'edit' ? this.oldWebcamName : undefined,
+            })
+            this.$emit('close')
+        } catch (error) {
+            window.console.error('[WebcamForm] failed to save webcam', error)
         }
-
-        this.update()
-    }
-
-    async save() {
-        await this.$store.dispatch('gui/webcams/store', this.webcam)
-        this.$emit('close')
-    }
-
-    async update() {
-        await this.$store.dispatch('gui/webcams/update', { webcam: this.webcam, oldWebcamName: this.oldWebcamName })
-        this.$emit('close')
     }
 
     closeForm() {
