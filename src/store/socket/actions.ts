@@ -127,7 +127,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_webcams_changed':
-                dispatch('gui/webcams/initStore', payload.params[0], { root: true })
+                dispatch('gui/webcams/notifyWebcamsChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_active_spool_set':
