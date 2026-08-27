@@ -949,12 +949,6 @@
             },
             "Unknown": "未知"
         },
-        "PowerControlPanel": {
-            "Error": "错误",
-            "Off": "关闭",
-            "On": "打开",
-            "PowerControl": "电源控制"
-        },
         "SpoolmanPanel": {
             "ActiveSpool": "激活料盘",
             "ChangeSpool": "更换料盘",
@@ -1056,8 +1050,6 @@
             "State": "状态",
             "Target": "目标",
             "TemperaturesInChart": "温度 [°C]",
-            "TempTooHigh": "温度{name}过高！(最高：{max})",
-            "TempTooLow": "温度{name}过低！(最低：{min})",
             "TurnHeaterOff": "关闭加热"
         },
         "ToolheadControlPanel": {
