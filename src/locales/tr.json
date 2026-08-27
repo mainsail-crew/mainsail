@@ -949,12 +949,6 @@
             },
             "Unknown": "Bilinmeyen"
         },
-        "PowerControlPanel": {
-            "Error": "Hata",
-            "Off": "Kapat",
-            "On": "Aç",
-            "PowerControl": "Güç Kontrolü"
-        },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktif Makara",
             "ChangeSpool": "Makara Değiştir",
@@ -1056,8 +1050,6 @@
             "State": "Durum",
             "Target": "Hedef",
             "TemperaturesInChart": "Sıcaklık [°C]",
-            "TempTooHigh": "{name} için sıcaklık çok yüksek! (maks: {max})",
-            "TempTooLow": "{name} için sıcaklık çok düşük! (min: {min})",
             "TurnHeaterOff": "Isıtıcıyı Kapat"
         },
         "ToolheadControlPanel": {
@@ -1600,6 +1592,7 @@
         "Create": "Oluştur",
         "CreateNewDirectory": "dizin oluştur",
         "CurrentPath": "Geçerli Yol",
+        "Delete": "Sil",
         "DeleteDirectory": "Dizini Sil",
         "DeleteDirectoryQuestion": "\"{name}\" adlı dizini tüm içeriğiyle birlikte silmek istediğinizden emin misiniz?",
         "DeleteSelectedQuestion": "Seçili {count} dosyayı silmek istediğinize emin misiniz?",
