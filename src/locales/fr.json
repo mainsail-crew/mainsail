@@ -617,12 +617,6 @@
                 "Empty": "Vide"
             }
         },
-        "PowerControlPanel": {
-            "Error": "Erreur",
-            "Off": "Arrêt",
-            "On": "Marche",
-            "PowerControl": "Alimentation"
-        },
         "SpoolmanPanel": {
             "ChangeSpool": "Changer de bobine",
             "DaysAgo": "{days} jours avant",
@@ -717,9 +711,7 @@
             "ShowNameInList": "Afficher {name} dans la liste",
             "State": "État",
             "Target": "Cible",
-            "TemperaturesInChart": "Température [°C]",
-            "TempTooHigh": "Température trop élevée pour {name}! (max: {max})",
-            "TempTooLow": "Température trop basse pour {name}! (min: {min})"
+            "TemperaturesInChart": "Température [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "absolue",
