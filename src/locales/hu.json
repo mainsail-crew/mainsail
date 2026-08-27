@@ -145,6 +145,7 @@
     "Buttons": {
         "Cancel": "Mégsem",
         "Close": "Bezárás",
+        "Confirm": "Megerősít",
         "Delete": "Törlés",
         "No": "Nem",
         "Save": "Mentés",
@@ -192,6 +193,10 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "FilamentTypeMismatch": "A ({file}) G-Code állományban szereplő filament típus nem egyezik a kiválasztott ({lane}) filament típussal .",
+                "FilamentWeightNotEnough": "Nincs elegendő filament a kiválasztott csatornában ({lane}). Szükséges: {required}, rendelkezésre áll: {available}."
+            },
             "DoYouWantToStartFilename": "Elkezded a {filename} nyomtatását?",
             "DoYouWantToStartFilenameFilament": "Szeretnéd a {filename} fájlt a következő nyomtatószállal indítani?",
             "Headline": "Feladat kezdése",
@@ -213,7 +218,8 @@
         "UnsavedChanges": "Mentetlen Változások",
         "UnsavedChangesMessage": "Szeretnéd menteni a következőn végzett változtatásokat: {filename}?",
         "UnsavedChangesSubMessage": "A változtatásaid elvesznek ha nem mented őket. Ezt az üzenetet az Editor beállításokban kikapcsolhatod.",
-        "Uploading": "Feltöltés"
+        "Uploading": "Feltöltés",
+        "ViewModuleDocumentation": "{module} dokumentáció megtekintése"
     },
     "EmergencyStopDialog": {
         "AreYouSure": "Biztos?",
@@ -241,6 +247,7 @@
         "Empty": "Üres",
         "ExtruderTemp": "Adagoló hőmérs.",
         "FilamentName": "Nyomtatószál neve",
+        "Filaments": "Filamentek",
         "FilamentType": "Nyomtatószál típusa",
         "FilamentUsage": "Nyomtatószál használat",
         "FilamentWeight": "Nyomtatószál súlya",
@@ -596,6 +603,62 @@
         "Headline": "Kézi szintezés"
     },
     "Panels": {
+        "AfcPanel": {
+            "AfcSettings": "AFC beállítások",
+            "BrushNozzle": "Fúvókatisztítás",
+            "BufferDisabled": "Puffer inaktív",
+            "Calibrate": "Kalibrálás",
+            "Color": "Szín",
+            "DebugJson": "JSON hibakeresés",
+            "Detected": "Észlelve",
+            "EjectFilament": "Filament kiadása",
+            "Ejecting": "Kiadása",
+            "Empty": "Üres",
+            "Error": "Hiba",
+            "FilamentForLane": "A(z) {name} filamentje",
+            "Functions": "Funkciók",
+            "Headline": "AFC",
+            "Hub": "Hub",
+            "HubLoad": "Hub betöltése",
+            "Idle": "Üresjárat",
+            "InfiniteSpoolDescription": "A következő csatorna betöltése, ha a(z) {name} kifogy",
+            "InfiniteSpoolHeadline": "Végtelen orsó",
+            "Initialized": "Inicializált",
+            "LaneLoadedNone": "ÜRES",
+            "LaneMapping": "Csatorna kiosztás",
+            "LedOff": "LED-ek ki",
+            "LedOn": "LED-ek be",
+            "LoadedInLane": "{lane} betöltve",
+            "Loading": "Betöltés",
+            "LoadLane": "Csatorna betöltése",
+            "Material": "Anyag",
+            "MaterialSubtitle": "Például ABS, PETG, PLA, stb.",
+            "Moving": "Mozgásban",
+            "ParkNozzle": "Fúvóka parkolás",
+            "PostExtruderSensor": "Extruder utáni szenzor",
+            "PreExtruderSensor": "Extruder előtti szenzor",
+            "PrepDetected": "Filament érzékelve, de nincs betöltve",
+            "Printing": "Nyomtatás",
+            "RammingSensor": "Ütközés szenzor",
+            "Restoring": "Visszaállítás",
+            "SetSpool": "Orsó kiválasztása",
+            "Settings": "Beállítások",
+            "SettingsDialog": {
+                "BowdenLength": "Bowden hossza",
+                "BowdenLengthDescription": "A Hub és a nyomtatófej közötti Bowden cső hossza.",
+                "DistHub": "Hub távolsága",
+                "DistHubDescription": "A csatorna extruder fogaskerekei és a hub közötti távolság (mm).",
+                "Help": "Súgó",
+                "LoadUnloadLane": "Csatorna betöltése / kiürítése",
+                "LoadUnloadLaneDescription": "A gombokra kattintva betöltheti vagy kiürítheti a filamentet a csatornából az extruderbe, illetve vissza.",
+                "SaveExtruderValues": "Extruder beállítások mentése",
+                "SaveExtruderValuesDescription": "Ez a jelenlegi extruder aktuális értékeit a hozzá tartozó konfigurációs fájlba írja.",
+                "SaveHubDist": "Csatorna beállítások mentése",
+                "SaveHubDistDescription": "A megadott csatorna értékeit a konfigurációs fájlba menti.",
+                "WriteToFile": "Fájlba írás"
+            },
+            "ShowFilamentName": "Filament név megjelenítése"
+        },
         "ExtruderControlPanel": {
             "Allowed": "Megengedett",
             "CleanNozzle": "Fúvóka tisztítása",
@@ -686,12 +749,6 @@
                 "Detected": "érzékelt",
                 "Empty": "Üres"
             }
-        },
-        "PowerControlPanel": {
-            "Error": "Hiba",
-            "Off": "KI",
-            "On": "BE",
-            "PowerControl": "Tápellátás vezérlés"
         },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktív tekercs",
@@ -793,8 +850,6 @@
             "State": "Állapot",
             "Target": "Cél",
             "TemperaturesInChart": "Hőmérséklet [°C]",
-            "TempTooHigh": "A {name} hőmérséklete túl magas! (max: {max})",
-            "TempTooLow": "A {name} hőmérséklete túl alacsony! (min: {min})",
             "TurnHeaterOff": "A fűtés kikapcsolása"
         },
         "ToolheadControlPanel": {
