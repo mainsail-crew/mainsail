@@ -913,12 +913,6 @@
             },
             "Unknown": "Neznano"
         },
-        "PowerControlPanel": {
-            "Error": "Napaka",
-            "Off": "Izklopljeno",
-            "On": "Vklopljeno",
-            "PowerControl": "Nadzor napajanja"
-        },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktivni kolut",
             "ChangeSpool": "Zamenjaj kolut",
@@ -1020,8 +1014,6 @@
             "State": "Stanje",
             "Target": "Cilj",
             "TemperaturesInChart": "Temperatura [°C]",
-            "TempTooHigh": "Kritična temperatura za {name}! (Maksimalno dovoljeno: {max})",
-            "TempTooLow": "Prenizka temperatura za {name}! (Minimalno zahtevano: {min})",
             "TurnHeaterOff": "Izklopi grelec"
         },
         "ToolheadControlPanel": {
