@@ -946,12 +946,6 @@
             },
             "Unknown": "Неизвестный"
         },
-        "PowerControlPanel": {
-            "Error": "Ошибка",
-            "Off": "Откл.",
-            "On": "Вкл.",
-            "PowerControl": "Управление питанием"
-        },
         "SpoolmanPanel": {
             "ActiveSpool": "Активная катушка",
             "ChangeSpool": "Сменить катушку",
@@ -1053,8 +1047,6 @@
             "State": "Мощность",
             "Target": "Заданная",
             "TemperaturesInChart": "Температуры [°C]",
-            "TempTooHigh": "Слишком высокая температура для {name}! (макс.: {max})",
-            "TempTooLow": "Слишком низкая температура для {name}! (мин.: {min})",
             "TurnHeaterOff": "Выключить нагреватель"
         },
         "ToolheadControlPanel": {
