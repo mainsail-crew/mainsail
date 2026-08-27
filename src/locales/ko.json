@@ -556,12 +556,6 @@
                 "Empty": "필라멘트 없음"
             }
         },
-        "PowerControlPanel": {
-            "Error": "오류",
-            "Off": "끄기",
-            "On": "켜기",
-            "PowerControl": "전원 제어"
-        },
         "StatusPanel": {
             "CancelPrint": "취소",
             "ClearPrintStats": "통계 초기화",
@@ -629,9 +623,7 @@
             "ShowNameInList": "목록에서 {name} 보기",
             "State": "전력 사용량",
             "Target": "설정 온도",
-            "TemperaturesInChart": "온도 [°C]",
-            "TempTooHigh": "{name}의 온도가 너무 높습니다! (최대: {max})",
-            "TempTooLow": "{name}의 온도가 너무 낮습니다!! (최저: {min})"
+            "TemperaturesInChart": "온도 [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "절대 좌표",
