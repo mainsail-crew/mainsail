@@ -660,12 +660,6 @@
                 "Empty": "Vazio"
             }
         },
-        "PowerControlPanel": {
-            "Error": "Erro",
-            "Off": "Off",
-            "On": "On",
-            "PowerControl": "Controle de Energia"
-        },
         "StatusPanel": {
             "CancelPrint": "Cancelar Impressão",
             "ClearPrintStats": "Limpar estatísticas de impressão",
@@ -733,9 +727,7 @@
             "ShowNameInList": "Mostrar {name} na lista",
             "State": "Estado",
             "Target": "Alvo",
-            "TemperaturesInChart": "Temperatura [°C]",
-            "TempTooHigh": "Temperatura muito alta para {name}! (máx: {max})",
-            "TempTooLow": "Temperatura muito baixa para {name}! (mín: {min})"
+            "TemperaturesInChart": "Temperatura [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "absoluto",
