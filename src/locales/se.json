@@ -607,12 +607,6 @@
                 "Empty": "Tom"
             }
         },
-        "PowerControlPanel": {
-            "Error": "Fel",
-            "Off": "Av",
-            "On": "På",
-            "PowerControl": "Strömstyrning"
-        },
         "SpoolmanPanel": {
             "ChangeSpool": "Byt spole",
             "DaysAgo": "för {days} dagar sedan",
@@ -707,9 +701,7 @@
             "ShowNameInList": "Visa {name} i listan",
             "State": "Läge",
             "Target": "Mål",
-            "TemperaturesInChart": "Temperatur [°C]",
-            "TempTooHigh": "Temperaturen är för hög för {name}! (max: {max})",
-            "TempTooLow": "Temperaturen är för låg för {name}! (min: {min})"
+            "TemperaturesInChart": "Temperatur [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "absolut",
