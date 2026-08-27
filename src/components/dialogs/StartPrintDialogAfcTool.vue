@@ -76,12 +76,21 @@ export default class StartPrintDialogAfc extends Mixins(BaseMixin, AfcMixin) {
 
     get laneName() {
         const lanes = this.afc?.lanes ?? []
+        const toolNameLower = this.toolName.toLowerCase()
 
         return lanes.find((lane: string) => {
             const laneObject = this.getAfcLaneObject(lane)
-            const mappedTool = laneObject?.map?.toLowerCase()
+            const mappedTool = laneObject?.map ?? ''
 
-            return mappedTool === this.toolName.toLowerCase()
+            if (Array.isArray(mappedTool)) {
+                return mappedTool.some((t: string) => t.toLowerCase() === toolNameLower)
+            }
+
+            if (typeof mappedTool === 'string') {
+                return mappedTool.toLowerCase() === toolNameLower
+            }
+
+            return false
         })
     }
 
