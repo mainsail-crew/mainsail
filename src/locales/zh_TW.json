@@ -678,7 +678,9 @@
             "Unloading": "退料中",
             "UnloadLane": "槽位退料",
             "Weight": "重量",
-            "WeightSubtitle": "耗材淨重 (g)。"
+            "WeightRemaining": "剩餘的(g)重",
+            "WeightSubtitle": "耗材淨重 (g)。",
+            "WeightUsed": "已使用(g)重"
         },
         "ExtruderControlPanel": {
             "Allowed": "允許",
@@ -778,6 +780,7 @@
         },
         "MmuPanel": {
             "Active": "使用中",
+            "ButtonChangeTool": "切換工具",
             "ButtonCheckAllGates": "檢查所有通道",
             "ButtonCheckGate": "檢查通道",
             "ButtonEject": "退料",
@@ -798,6 +801,10 @@
                 "AreYouSure": "您確定嗎？"
             },
             "Disabled": "停用",
+            "Drying": "烘乾中",
+            "DryingCancelled": "取消烘乾",
+            "DryingComplete": "烘乾完成",
+            "DryingQueued": "等待烘乾中",
             "EditGateMap": "編輯耗材",
             "EditGateMapTitle": "編輯耗材 (通道對應表)",
             "EditTtgMap": "對應工具",
@@ -830,6 +837,7 @@
             "Gear": "齒輪",
             "Guard": "防護",
             "Headline": "Mmu",
+            "Heater": "加熱器",
             "LargeFilamentStatus": "大型耗材狀態",
             "MmuMaintenance": "MMU 維護",
             "MmuMaintenanceDialog": {
@@ -852,15 +860,12 @@
                     "On": "開啟",
                     "SlicerColor": "切片軟體顏色"
                 },
+                "Load": "載入",
+                "MmuMotors": "MMU 馬達",
+                "MotorSync": "擠出機馬達同步",
                 "TxMacroColor": "Tx 巨集顏色"
             },
             "Unknown": "未知"
-        },
-        "PowerControlPanel": {
-            "Error": "錯誤",
-            "Off": "關",
-            "On": "開",
-            "PowerControl": "電源管理"
         },
         "SpoolmanPanel": {
             "ActiveSpool": "使用中的線捲",
@@ -953,9 +958,7 @@
             "ShowNameInList": "顯示 {name} 在列表中",
             "State": "狀態",
             "Target": "目標",
-            "TemperaturesInChart": "溫度 [°C]",
-            "TempTooHigh": "溫度{name}過高！(最高：{max})",
-            "TempTooLow": "溫度{name}過低！(最低：{min})"
+            "TemperaturesInChart": "溫度 [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "絕對座標",
