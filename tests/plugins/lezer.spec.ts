@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { highlightTree, classHighlighter } from '@lezer/highlight'
-import { klipperConfigLanguage, gcodeLanguage } from '@/plugins/lezer'
+import { klipperConfigLanguage, gcodeLanguage } from '@/plugins/codemirror/lezer'
 
 // returns [text, cls] pairs for every highlighted token
 function highlight(lang: typeof klipperConfigLanguage, code: string): [string, string][] {

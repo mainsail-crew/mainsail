@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const dir = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'plugins', 'lezer')
+const dir = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'plugins', 'codemirror', 'lezer')
 
 for (const name of ['gcode', 'jinja', 'klipperConfig']) {
     const grammar = join(dir, `${name}.grammar`)
