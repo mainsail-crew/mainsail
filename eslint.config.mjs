@@ -13,8 +13,8 @@ export default defineConfigWithVueTs(
             'i18n-extract/',
             'components.d.ts',
             'cypress/',
-            'src/plugins/lezer/*.parser.ts',
-            'src/plugins/lezer/*.terms.ts',
+            'src/plugins/codemirror/lezer/*.parser.ts',
+            'src/plugins/codemirror/lezer/*.terms.ts',
         ],
     },
 
