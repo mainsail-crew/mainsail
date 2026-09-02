@@ -1,35 +1,33 @@
 <template>
-    <div>
-        <panel
-            :title="$t('Machine.LogfilesPanel.Logfiles')"
-            :icon="mdiFileDocumentEdit"
-            card-class="machine-logfiles-panel"
-            :collapsible="true">
-            <template #buttons>
-                <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <v-btn
-                            icon
-                            tile
-                            color="primary"
-                            :ripple="true"
-                            :loading="loadings.includes('loadingBtnRolloverLogs')"
-                            :disabled="['printing', 'paused'].includes(printer_state)"
-                            v-bind="attrs"
-                            v-on="on"
-                            @click="showRolloverDialog = true">
-                            <v-icon>{{ mdiFileSyncOutline }}</v-icon>
-                        </v-btn>
-                    </template>
-                    <span>{{ $t('Machine.LogfilesPanel.Rollover') }}</span>
-                </v-tooltip>
-            </template>
-            <v-card-text class="logfiles-grid pa-3">
-                <logfiles-panel-generic-log v-for="logfile in logfiles" :key="logfile" :name="logfile" />
-            </v-card-text>
-        </panel>
+    <panel
+        :title="$t('Machine.LogfilesPanel.Logfiles')"
+        :icon="mdiFileDocumentEdit"
+        card-class="machine-logfiles-panel"
+        :collapsible="true">
+        <template #buttons>
+            <v-tooltip top>
+                <template #activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        tile
+                        color="primary"
+                        :ripple="true"
+                        :loading="loadings.includes('loadingBtnRolloverLogs')"
+                        :disabled="['printing', 'paused'].includes(printer_state)"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="showRolloverDialog = true">
+                        <v-icon>{{ mdiFileSyncOutline }}</v-icon>
+                    </v-btn>
+                </template>
+                <span>{{ $t('Machine.LogfilesPanel.Rollover') }}</span>
+            </v-tooltip>
+        </template>
+        <v-card-text class="logfiles-grid pa-3">
+            <logfiles-panel-generic-log v-for="logfile in logfiles" :key="logfile" :name="logfile" />
+        </v-card-text>
         <logfiles-panel-rollover-dialog v-model="showRolloverDialog" />
-    </div>
+    </panel>
 </template>
 
 <script lang="ts">
