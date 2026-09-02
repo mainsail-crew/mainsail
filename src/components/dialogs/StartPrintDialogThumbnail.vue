@@ -44,6 +44,7 @@ export default class StartPrintDialogThumbnail extends Mixins(BaseMixin) {
         // Status/History panel items already carry the full relative path in `filename`.
         const pos = this.file.filename.lastIndexOf('/')
         if (pos > 0) return this.file.filename.slice(0, pos)
+        // Gcodefiles panel items are basename-only; currentPath supplies the folder.
         if (this.currentPath.startsWith('/')) return this.currentPath.substring(1)
 
         return this.currentPath
