@@ -41,6 +41,8 @@ export default class StartPrintDialogThumbnail extends Mixins(BaseMixin) {
     }
 
     get currentPathWithoutSlash() {
+        const pos = this.file.filename.lastIndexOf('/')
+        if (pos > 0) return this.file.filename.slice(0, pos)
         if (this.currentPath.startsWith('/')) return this.currentPath.substring(1)
 
         return this.currentPath
