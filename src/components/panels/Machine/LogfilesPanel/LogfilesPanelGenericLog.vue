@@ -1,5 +1,5 @@
 <template>
-    <v-btn :href="href" block class="primary--text" @click="downloadLog">
+    <v-btn :href="href" class="primary--text logfile-btn" @click="downloadLog">
         <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
         {{ name }}
     </v-btn>
@@ -36,3 +36,10 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.logfile-btn {
+    width: 100%;
+    min-width: 0 !important;
+}
+</style>
