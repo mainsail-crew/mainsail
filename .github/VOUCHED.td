@@ -25,6 +25,7 @@ pataar
 paxx12 Maintainer from Snapmaker community firmware
 ragilo
 rcloran
+rescosta
 samuel-0-0 Long-time Chinese (zh) localization contributor
 sindarius
 weblate
