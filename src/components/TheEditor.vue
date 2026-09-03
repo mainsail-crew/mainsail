@@ -540,7 +540,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     clip-path: inset(0 0 0 -12px);
 }
 
-.theme--light .structure-sidebar {
+html.theme--light .structure-sidebar {
     border-left-color: rgba(0, 0, 0, 0.12);
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.12);
 }
