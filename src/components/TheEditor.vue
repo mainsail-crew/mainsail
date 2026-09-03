@@ -535,7 +535,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     width: 300px;
     overflow-y: auto;
     max-height: calc(100vh - 48px);
-    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 1px solid #272727;
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.35);
     clip-path: inset(0 0 0 -12px);
 }
