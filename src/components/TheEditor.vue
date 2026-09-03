@@ -546,12 +546,15 @@ export default class TheEditor extends Mixins(BaseMixin) {
 ._structure-sidebar-section {
     color: #4ec9b0;
 }
+
 ._structure-sidebar-key {
     color: #569cd6;
 }
+
 html.theme--light ._structure-sidebar-section {
     color: #267f99;
 }
+
 html.theme--light ._structure-sidebar-key {
     color: #0000ff;
 }
