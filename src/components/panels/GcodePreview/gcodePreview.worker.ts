@@ -8,7 +8,8 @@ import { parseGcodeToolpath, GcodePreviewRun } from './parser'
 const ctx_self = self as unknown as DedicatedWorkerGlobalScope
 
 export type GcodePreviewWorkerInMessage = { type: 'parse'; text: string; bedSizeMm: number }
-export type GcodePreviewWorkerOutMessage = { type: 'result'; runs: GcodePreviewRun[] } | { type: 'error'; message: string }
+export type GcodePreviewWorkerOutMessage =
+    { type: 'result'; runs: GcodePreviewRun[] } | { type: 'error'; message: string }
 
 ctx_self.onmessage = (event: MessageEvent<GcodePreviewWorkerInMessage>) => {
     if (event.data.type !== 'parse') return
