@@ -720,6 +720,12 @@
             "SwitchToPrinter": "Switch to Printer",
             "WebcamOff": "Off"
         },
+        "GcodePreviewPanel": {
+            "FileTooLarge": "File is too large to preview",
+            "Headline": "G-Code Preview",
+            "LoadError": "Failed to load G-code file",
+            "NoFile": "No G-code file loaded"
+        },
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Please check if the Klipper service is running and klippy_uds_address is correctly configured in the moonraker.conf.",
             "FirmwareRestart": "Firmware Restart",
@@ -836,7 +842,7 @@
             },
             "Gear": "Gear",
             "Guard": "Guard",
-            "Headline": "Mmu",
+            "Headline": "MMU",
             "Heater": "Heater",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
