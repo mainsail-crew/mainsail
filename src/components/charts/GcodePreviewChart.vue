@@ -14,6 +14,26 @@
             :stroke="fgColorLow"
             stroke-width="1"
             vector-effect="non-scaling-stroke" />
+        <line
+            v-for="x in xGridLines"
+            :key="'x' + x"
+            :x1="x"
+            :x2="x"
+            :y1="convertY(bedMin[1])"
+            :y2="convertY(bedMax[1])"
+            :stroke="fgColorFaint"
+            stroke-width="1"
+            vector-effect="non-scaling-stroke" />
+        <line
+            v-for="y in yGridLines"
+            :key="'y' + y"
+            :x1="bedMin[0]"
+            :x2="bedMax[0]"
+            :y1="convertY(y)"
+            :y2="convertY(y)"
+            :stroke="fgColorFaint"
+            stroke-width="1"
+            vector-effect="non-scaling-stroke" />
         <path
             :d="remainingPath"
             fill="none"
@@ -41,6 +61,7 @@ import { defaultPrimaryColor } from '@/store/variables'
 import { GcodePreviewRun } from '@/components/panels/GcodePreview/parser'
 
 const PROGRESS_THROTTLE_MS = 500
+const GRID_SPACING_MM = 50
 
 @Component
 export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
@@ -52,9 +73,10 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
 
     throttledProgressOffset = 0
 
-    private setThrottledProgressOffset = throttle((value: number) => {
-        this.throttledProgressOffset = value
-    }, PROGRESS_THROTTLE_MS)
+    // built in created(), not as a class-field initializer - a class field's arrow function
+    // captures `this` before vue-class-component finishes wiring up the reactive instance, so
+    // assignments from inside it silently miss reactivity.
+    private setThrottledProgressOffset: ((value: number) => void) & { cancel(): void } = throttle(() => {}, 0)
 
     get primaryColor() {
         return this.$store.state.gui.theme?.primary ?? defaultPrimaryColor
@@ -70,6 +92,14 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
 
     get viewBox() {
         return `${this.bedMin[0]} ${this.convertY(this.bedMax[1])} ${this.bedWidth} ${this.bedHeight}`
+    }
+
+    get xGridLines(): number[] {
+        return this.gridLines(this.bedMin[0], this.bedMax[0])
+    }
+
+    get yGridLines(): number[] {
+        return this.gridLines(this.bedMin[1], this.bedMax[1])
     }
 
     get donePath(): string {
@@ -109,12 +139,29 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
         this.setThrottledProgressOffset(newVal)
     }
 
+    created(): void {
+        this.setThrottledProgressOffset = throttle((value: number) => {
+            this.throttledProgressOffset = value
+        }, PROGRESS_THROTTLE_MS)
+    }
+
     beforeDestroy(): void {
         this.setThrottledProgressOffset.cancel()
     }
 
     convertY(y: number): number {
         return y * -1
+    }
+
+    gridLines(min: number, max: number): number[] {
+        const lines: number[] = []
+        const start = Math.ceil(min / GRID_SPACING_MM) * GRID_SPACING_MM
+
+        for (let value = start; value < max; value += GRID_SPACING_MM) {
+            lines.push(value)
+        }
+
+        return lines
     }
 
     runToSubpath(run: GcodePreviewRun): string {
