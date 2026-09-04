@@ -113,6 +113,7 @@ export const allDashboardPanels = [
     'toolhead-control',
     'extruder-control',
     'macros',
+    'gcode-preview',
     'led-effects',
     'machine-settings',
     'miniconsole',
