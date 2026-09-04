@@ -1,6 +1,6 @@
 <template>
     <panel
-        :icon="mdiVectorPolyline"
+        :icon="mdiVideo2d"
         :title="$t('Panels.GcodePreviewPanel.Headline')"
         card-class="gcode-preview-panel"
         :loading="loading">
@@ -9,7 +9,7 @@
                 <v-icon>{{ mdiRefresh }}</v-icon>
             </v-btn>
         </template>
-        <v-card-text>
+        <v-card-text :class="hasFile && !error ? 'gcode-preview-content' : ''">
             <p v-if="error" class="text-center mb-0 text--disabled">{{ error }}</p>
             <p v-else-if="!hasFile" class="text-center mb-0 text--disabled">
                 {{ $t('Panels.GcodePreviewPanel.NoFile') }}
@@ -35,7 +35,7 @@ import type { GcodePreviewWorkerOutMessage } from './GcodePreview/gcodePreview.w
 import { GcodePreviewRun } from './GcodePreview/parser'
 import { escapePath } from '@/plugins/helpers'
 import axios, { CancelTokenSource } from 'axios'
-import { mdiRefresh, mdiVectorPolyline } from '@mdi/js'
+import { mdiRefresh, mdiVideo2d } from '@mdi/js'
 
 const MAX_FILE_SIZE_BYTES = 80 * 1024 * 1024
 
@@ -44,7 +44,7 @@ const MAX_FILE_SIZE_BYTES = 80 * 1024 * 1024
 })
 export default class GcodePreviewPanel extends Mixins(BaseMixin) {
     mdiRefresh = mdiRefresh
-    mdiVectorPolyline = mdiVectorPolyline
+    mdiVideo2d = mdiVideo2d
 
     loading = false
     error: string | null = null
@@ -167,3 +167,9 @@ export default class GcodePreviewPanel extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.gcode-preview-content {
+    padding: 10px;
+}
+</style>

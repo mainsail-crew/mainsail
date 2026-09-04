@@ -4,7 +4,8 @@
         xmlns="http://www.w3.org/2000/svg"
         :viewBox="viewBox"
         preserveAspectRatio="xMidYMid meet"
-        class="gcode-preview-svg">
+        class="gcode-preview-svg"
+        :style="{ aspectRatio: `${bedWidth} / ${bedHeight}` }">
         <rect
             :x="bedMin[0]"
             :y="convertY(bedMax[1])"
@@ -34,12 +35,25 @@
             :stroke="fgColorFaint"
             stroke-width="1"
             vector-effect="non-scaling-stroke" />
-        <path
-            :d="remainingPath"
-            fill="none"
-            :stroke="fgColorFaint"
+        <line
+            v-if="hasXAxis"
+            :x1="0"
+            :x2="0"
+            :y1="convertY(bedMin[1])"
+            :y2="convertY(bedMax[1])"
+            stroke="#e53935"
             stroke-width="1"
             vector-effect="non-scaling-stroke" />
+        <line
+            v-if="hasYAxis"
+            :x1="bedMin[0]"
+            :x2="bedMax[0]"
+            :y1="convertY(0)"
+            :y2="convertY(0)"
+            stroke="#43a047"
+            stroke-width="1"
+            vector-effect="non-scaling-stroke" />
+        <path :d="remainingPath" fill="none" stroke="#9e9e9e" stroke-width="1" vector-effect="non-scaling-stroke" />
         <path :d="donePath" fill="none" :stroke="primaryColor" stroke-width="1.5" vector-effect="non-scaling-stroke" />
         <circle
             v-if="toolPosition"
@@ -61,7 +75,7 @@ import { defaultPrimaryColor } from '@/store/variables'
 import { GcodePreviewRun } from '@/components/panels/GcodePreview/parser'
 
 const PROGRESS_THROTTLE_MS = 500
-const GRID_SPACING_MM = 50
+const GRID_SPACING_MM = 25
 
 @Component
 export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
@@ -95,11 +109,19 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get xGridLines(): number[] {
-        return this.gridLines(this.bedMin[0], this.bedMax[0])
+        return this.gridLines(this.bedMin[0], this.bedMax[0]).filter((value) => value !== 0)
     }
 
     get yGridLines(): number[] {
-        return this.gridLines(this.bedMin[1], this.bedMax[1])
+        return this.gridLines(this.bedMin[1], this.bedMax[1]).filter((value) => value !== 0)
+    }
+
+    get hasXAxis(): boolean {
+        return this.bedMin[0] <= 0 && this.bedMax[0] >= 0
+    }
+
+    get hasYAxis(): boolean {
+        return this.bedMin[1] <= 0 && this.bedMax[1] >= 0
     }
 
     get donePath(): string {
@@ -174,8 +196,9 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
 
 <style scoped>
 .gcode-preview-svg {
+    display: block;
     width: 100%;
-    height: 260px;
+    height: auto;
 }
 
 .gcode-preview-tool {

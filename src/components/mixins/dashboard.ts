@@ -16,7 +16,7 @@ import {
     mdiWebcam,
     mdiAdjust,
     mdiMulticast,
-    mdiVectorPolyline,
+    mdiVideo2d,
 } from '@mdi/js'
 import { afcIconLogo } from '@/plugins/afcIcons'
 
@@ -79,7 +79,7 @@ export default class DashboardMixin extends BaseMixin {
             case 'mmu':
                 return mdiMulticast
             case 'gcode-preview':
-                return mdiVectorPolyline
+                return mdiVideo2d
             case 'afc':
                 return afcIconLogo
 
