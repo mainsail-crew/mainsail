@@ -83,10 +83,15 @@ export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
 
     startPrint(filename = '') {
         if (!filename.includes('/')) {
-            filename = (this.currentPath + '/' + filename).substring(1)
+            filename = `${this.currentPath}/${filename}`
         }
+
+        if (filename.startsWith('/')) {
+            filename = filename.substring(1)
+        }
+
         this.closeDialog()
-        this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
+        this.$socket.emit('printer.print.start', { filename }, { action: 'switchToDashboard' })
     }
 
     closeDialog() {
