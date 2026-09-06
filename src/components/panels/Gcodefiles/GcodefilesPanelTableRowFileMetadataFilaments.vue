@@ -12,14 +12,14 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile, FileStateGcodefileFilament } from '@/store/files/types'
-import { convertStringToArray } from '@/plugins/helpers'
+import { convertStringToArray, getFileFilamentColors } from '@/plugins/helpers'
 
 @Component
 export default class GcodefilesPanelTableRowFileMetadataFilaments extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
 
     get filament_colors() {
-        return this.item.filament_colors ?? []
+        return getFileFilamentColors(this.item)
     }
 
     get filament_types() {
