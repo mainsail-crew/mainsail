@@ -123,8 +123,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     @Prop({ type: Object, required: true }) item!: FileStateGcodefile
     @Prop({ type: Number, required: true }) contentTdWidth!: number
 
-    currentPath = ''
-
     contextMenuShow = false
     contextMenuX = 0
     contextMenuY = 0
