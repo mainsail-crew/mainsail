@@ -42,7 +42,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: &tags |
+          tags: |
             type=edge,branch=develop
             type=semver,pattern=v{{major}}
             type=semver,pattern=v{{major}}.{{minor}}
@@ -72,7 +72,14 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
             suffix=-unprivileged
-          tags: *tags
+            latest=false
+          tags: |
+            type=edge,branch=develop
+            type=semver,pattern=v{{major}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}.{{minor}}.{{patch}}
+            type=sha
+            type=raw,value=latest-unprivileged,enable=${{ github.event_name == 'release' }}
 
       - name: Build and push unprivileged Docker image
         uses: docker/build-push-action@v6
