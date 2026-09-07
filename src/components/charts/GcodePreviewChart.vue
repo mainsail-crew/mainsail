@@ -192,6 +192,10 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
         this.setThrottledProgressOffset = throttle((value: number) => {
             this.throttledProgressOffset = value
         }, PROGRESS_THROTTLE_MS)
+        // the immediate watcher above already fired, into the placeholder - take the
+        // current value now, or a progress that never changes again (an idle or finished
+        // print) would leave the whole path drawn as not-yet-printed
+        this.throttledProgressOffset = this.progressOffset
     }
 
     beforeDestroy(): void {

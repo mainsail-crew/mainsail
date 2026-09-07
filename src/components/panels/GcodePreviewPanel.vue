@@ -80,6 +80,7 @@ export default class GcodePreviewPanel extends Mixins(BaseMixin) {
 
     private worker: Worker | null = null
     private cancelTokenSource: CancelTokenSource | null = null
+    private loadCounter = 0
 
     get sdCardFilePath(): string {
         return this.$store.state.printer.print_stats?.filename ?? ''
@@ -172,14 +173,31 @@ export default class GcodePreviewPanel extends Mixins(BaseMixin) {
         this.error = null
         this.layers = []
 
+        // cancelling can't call back an already-fulfilled request, so every load carries
+        // an id and anything that isn't the newest one is dropped on arrival
+        const loadId = ++this.loadCounter
         const cancelTokenSource = axios.CancelToken.source()
         this.cancelTokenSource = cancelTokenSource
+        const url = this.apiUrl + '/server/files/' + escapePath('gcodes/' + filename)
 
         try {
-            const response = await axios.get<string>(
-                this.apiUrl + '/server/files/' + escapePath('gcodes/' + filename),
-                { cancelToken: cancelTokenSource.token, responseType: 'text' }
-            )
+            // check the size before pulling the body down, so an oversized file isn't
+            // buffered into memory just to be rejected afterwards
+            const head = await axios.head(url, { cancelToken: cancelTokenSource.token })
+            if (loadId !== this.loadCounter) return
+
+            const contentLength = Number(head.headers['content-length'] ?? 0)
+            if (contentLength > MAX_FILE_SIZE_BYTES) {
+                this.error = this.$t('Panels.GcodePreviewPanel.FileTooLarge').toString()
+                this.loading = false
+                return
+            }
+
+            const response = await axios.get<string>(url, {
+                cancelToken: cancelTokenSource.token,
+                responseType: 'text',
+            })
+            if (loadId !== this.loadCounter) return
 
             if (response.data.length > MAX_FILE_SIZE_BYTES) {
                 this.error = this.$t('Panels.GcodePreviewPanel.FileTooLarge').toString()
@@ -187,22 +205,28 @@ export default class GcodePreviewPanel extends Mixins(BaseMixin) {
                 return
             }
 
-            this.parseInWorker(response.data, filename)
+            this.parseInWorker(response.data, filename, loadId)
         } catch (e) {
-            if (axios.isCancel(e)) return
+            if (axios.isCancel(e) || loadId !== this.loadCounter) return
 
             this.error = this.$t('Panels.GcodePreviewPanel.LoadError').toString()
             this.loading = false
         }
     }
 
-    private parseInWorker(text: string, filename: string): void {
+    private parseInWorker(text: string, filename: string, loadId = this.loadCounter): void {
         const bedSizeMm = Math.max(this.bedMax[0] - this.bedMin[0], this.bedMax[1] - this.bedMin[1])
 
         const worker = new GcodePreviewWorker()
         this.worker = worker
 
         worker.onmessage = (event: MessageEvent<GcodePreviewWorkerOutMessage>) => {
+            // a worker from a superseded load must not overwrite the current preview
+            if (loadId !== this.loadCounter) {
+                worker.terminate()
+                return
+            }
+
             if (event.data.type === 'result') {
                 // frozen: a sliced file is easily 100k+ points, and Vue would otherwise
                 // deep-walk every one of them installing reactivity we never need - the
