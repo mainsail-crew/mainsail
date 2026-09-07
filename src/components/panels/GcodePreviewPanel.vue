@@ -3,29 +3,31 @@
         :icon="mdiVideo2d"
         :title="$t('Panels.GcodePreviewPanel.Headline')"
         card-class="gcode-preview-panel"
-        :loading="loading"
-        :margin-bottom="currentPage !== 'page'">
+        :loading="loading">
         <template #buttons>
             <v-btn icon tile :disabled="!sdCardFilePath" @click="loadFile(true)">
                 <v-icon>{{ mdiRefresh }}</v-icon>
             </v-btn>
         </template>
-        <v-card-text
-            :class="[
-                hasFile && !error ? 'gcode-preview-content' : '',
-                hasFile && !error && currentPage === 'page' ? 'gcode-preview-content--page' : '',
-            ]">
+        <v-card-text :class="hasFile && !error ? 'gcode-preview-content' : ''">
             <p v-if="error" class="text-center mb-0 text--disabled">{{ error }}</p>
             <p v-else-if="!hasFile" class="text-center mb-0 text--disabled">
                 {{ $t('Panels.GcodePreviewPanel.NoFile') }}
             </p>
             <template v-else>
                 <div class="gcode-preview-toolbar">
-                    <v-checkbox
-                        v-model="showMovePath"
-                        :label="$t('Panels.GcodePreviewPanel.ShowMovePath')"
-                        hide-details
-                        dense />
+                    <div class="gcode-preview-toggles">
+                        <v-checkbox
+                            v-model="showPrintPreview"
+                            :label="$t('Panels.GcodePreviewPanel.PrintPreview')"
+                            hide-details
+                            dense />
+                        <v-checkbox
+                            v-model="showMovePath"
+                            :label="$t('Panels.GcodePreviewPanel.ShowMovePath')"
+                            hide-details
+                            dense />
+                    </div>
                     <div class="gcode-preview-layer-label">
                         {{
                             $t('Panels.GcodePreviewPanel.Layer', {
@@ -35,22 +37,21 @@
                         }}
                     </div>
                 </div>
-                <div class="gcode-preview-chart-wrap">
-                    <gcode-preview-chart
-                        :runs="currentLayerRuns"
-                        :travels="showMovePath ? currentLayerTravels : []"
-                        :progress-offset="fileProgressOffset"
-                        :tool-position="toolPositionXY"
-                        :bed-min="bedMin"
-                        :bed-max="bedMax" />
-                </div>
+                <gcode-preview-chart
+                    :runs="currentLayerRuns"
+                    :show-remaining="showPrintPreview"
+                    :travels="showMovePath ? currentLayerTravels : []"
+                    :progress-offset="fileProgressOffset"
+                    :tool-position="toolPositionXY"
+                    :bed-min="bedMin"
+                    :bed-max="bedMax" />
             </template>
         </v-card-text>
     </panel>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import GcodePreviewChart from '@/components/charts/GcodePreviewChart.vue'
@@ -67,8 +68,6 @@ const MAX_FILE_SIZE_BYTES = 80 * 1024 * 1024
     components: { Panel, GcodePreviewChart },
 })
 export default class GcodePreviewPanel extends Mixins(BaseMixin) {
-    @Prop({ default: 'dashboard' }) declare currentPage?: string
-
     mdiRefresh = mdiRefresh
     mdiVideo2d = mdiVideo2d
 
@@ -76,6 +75,7 @@ export default class GcodePreviewPanel extends Mixins(BaseMixin) {
     error: string | null = null
     layers: GcodePreviewLayer[] = []
     loadedFilename: string | null = null
+    showPrintPreview = true
     showMovePath = false
 
     private worker: Worker | null = null
@@ -204,7 +204,10 @@ export default class GcodePreviewPanel extends Mixins(BaseMixin) {
 
         worker.onmessage = (event: MessageEvent<GcodePreviewWorkerOutMessage>) => {
             if (event.data.type === 'result') {
-                this.layers = event.data.layers
+                // frozen: a sliced file is easily 100k+ points, and Vue would otherwise
+                // deep-walk every one of them installing reactivity we never need - the
+                // parsed result is replaced wholesale, never mutated in place
+                this.layers = Object.freeze(event.data.layers) as GcodePreviewLayer[]
                 this.loadedFilename = filename
             } else {
                 this.error = event.data.message
@@ -225,31 +228,18 @@ export default class GcodePreviewPanel extends Mixins(BaseMixin) {
     padding: 10px;
 }
 
-/* on the dedicated page, fit the panel to the viewport instead of letting the bed's
-   aspect ratio push the page taller than the screen - the toolbar row above the chart
-   is a fixed-size flex item, so the chart wrap gets whatever height remains regardless
-   of the toolbar's own size */
-.gcode-preview-content--page {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 148px);
-    box-sizing: border-box;
-}
-
-.gcode-preview-chart-wrap {
-    flex: 1 1 auto;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .gcode-preview-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 8px;
     flex: 0 0 auto;
+}
+
+.gcode-preview-toggles {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .gcode-preview-toolbar ::v-deep .v-input--checkbox {

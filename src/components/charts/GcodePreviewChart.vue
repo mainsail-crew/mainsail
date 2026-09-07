@@ -60,7 +60,13 @@
             stroke-width="1"
             stroke-dasharray="2,2"
             vector-effect="non-scaling-stroke" />
-        <path :d="remainingPath" fill="none" stroke="#9e9e9e" stroke-width="1" vector-effect="non-scaling-stroke" />
+        <path
+            v-if="showRemaining"
+            :d="remainingPath"
+            fill="none"
+            stroke="#9e9e9e"
+            stroke-width="1"
+            vector-effect="non-scaling-stroke" />
         <path :d="donePath" fill="none" :stroke="primaryColor" stroke-width="1.5" vector-effect="non-scaling-stroke" />
         <circle
             v-if="toolPosition"
@@ -88,6 +94,7 @@ const GRID_SPACING_MM = 25
 export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
     @Prop({ type: Array, required: true }) declare readonly runs: GcodePreviewRun[]
     @Prop({ type: Array, required: false, default: () => [] }) declare readonly travels: GcodePreviewRun[]
+    @Prop({ type: Boolean, required: false, default: true }) declare readonly showRemaining: boolean
     @Prop({ type: Number, required: true }) declare readonly progressOffset: number
     @Prop({ type: Array, required: false, default: null }) declare readonly toolPosition: [number, number] | null
     @Prop({ type: Array, required: true }) declare readonly bedMin: number[]
