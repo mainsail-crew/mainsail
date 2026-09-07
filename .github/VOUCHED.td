@@ -26,6 +26,7 @@ paxx12 Maintainer from Snapmaker community firmware
 ragilo
 rcloran
 rescosta
+rt530
 samuel-0-0 Long-time Chinese (zh) localization contributor
 sindarius
 weblate
