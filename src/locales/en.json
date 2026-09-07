@@ -723,8 +723,10 @@
         "GcodePreviewPanel": {
             "FileTooLarge": "File is too large to preview",
             "Headline": "G-Code Preview",
+            "Layer": "Layer {current} / {total}",
             "LoadError": "Failed to load G-code file",
-            "NoFile": "No G-code file loaded"
+            "NoFile": "No G-code file loaded",
+            "ShowMovePath": "Show move path"
         },
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Please check if the Klipper service is running and klippy_uds_address is correctly configured in the moonraker.conf.",

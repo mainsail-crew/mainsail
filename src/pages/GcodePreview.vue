@@ -2,7 +2,7 @@
     <div>
         <v-row>
             <v-col col-12>
-                <gcode-preview-panel />
+                <gcode-preview-panel current-page="page" />
             </v-col>
         </v-row>
     </div>

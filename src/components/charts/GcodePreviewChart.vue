@@ -53,6 +53,13 @@
             stroke="#43a047"
             stroke-width="1"
             vector-effect="non-scaling-stroke" />
+        <path
+            :d="travelPath"
+            fill="none"
+            stroke="#ffd600"
+            stroke-width="1"
+            stroke-dasharray="2,2"
+            vector-effect="non-scaling-stroke" />
         <path :d="remainingPath" fill="none" stroke="#9e9e9e" stroke-width="1" vector-effect="non-scaling-stroke" />
         <path :d="donePath" fill="none" :stroke="primaryColor" stroke-width="1.5" vector-effect="non-scaling-stroke" />
         <circle
@@ -60,8 +67,8 @@
             class="gcode-preview-tool"
             :cx="toolPosition[0]"
             :cy="convertY(toolPosition[1])"
-            r="3"
-            :fill="primaryColor"
+            r="1.8"
+            fill="#ff9100"
             vector-effect="non-scaling-stroke" />
     </svg>
 </template>
@@ -80,6 +87,7 @@ const GRID_SPACING_MM = 25
 @Component
 export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
     @Prop({ type: Array, required: true }) declare readonly runs: GcodePreviewRun[]
+    @Prop({ type: Array, required: false, default: () => [] }) declare readonly travels: GcodePreviewRun[]
     @Prop({ type: Number, required: true }) declare readonly progressOffset: number
     @Prop({ type: Array, required: false, default: null }) declare readonly toolPosition: [number, number] | null
     @Prop({ type: Array, required: true }) declare readonly bedMin: number[]
@@ -132,11 +140,23 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
         return this.splitRuns.remaining.map((run) => this.runToSubpath(run)).join(' ')
     }
 
+    // only the portion already traveled is shown - the dashed line should trail the
+    // toolhead marker, not reveal moves that haven't happened yet
+    get travelPath(): string {
+        return this.splitByProgress(this.travels)
+            .done.map((run) => this.runToSubpath(run))
+            .join(' ')
+    }
+
     get splitRuns(): { done: GcodePreviewRun[]; remaining: GcodePreviewRun[] } {
+        return this.splitByProgress(this.runs)
+    }
+
+    splitByProgress(runs: GcodePreviewRun[]): { done: GcodePreviewRun[]; remaining: GcodePreviewRun[] } {
         const done: GcodePreviewRun[] = []
         const remaining: GcodePreviewRun[] = []
 
-        for (const run of this.runs) {
+        for (const run of runs) {
             const splitIndex = run.findIndex((point) => point.offset > this.throttledProgressOffset)
 
             if (splitIndex === -1) {
@@ -199,26 +219,11 @@ export default class GcodePreviewChart extends Mixins(BaseMixin, ThemeMixin) {
     display: block;
     width: 100%;
     height: auto;
-}
-
-.gcode-preview-tool {
-    animation: gcode-preview-pulse 1.2s ease-in-out infinite;
-    transform-box: fill-box;
-    transform-origin: center;
-}
-
-@keyframes gcode-preview-pulse {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.5;
-        transform: scale(1.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    /* a percentage max-height only resolves against a definite parent height - on the
+       dedicated page (GcodePreviewPanel.vue's flex chart-wrap) that caps it to the
+       viewport; on the dashboard, where the wrap's height is just auto, it's a no-op */
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
 }
 </style>
