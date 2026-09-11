@@ -28,6 +28,9 @@ COPY --link --from=builder /app/.docker/nginx.conf.unprivileged  /etc/nginx/conf
 COPY --link --from=builder /app/dist/ /usr/share/nginx/html/
 USER nginx
 
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:8080/healthz >/dev/null || exit 1
+
 #
 # Runner stage, runs the application in nginx
 #
@@ -37,3 +40,6 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/.docker/nginx.conf  /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist/ /usr/share/nginx/html/
 COPY --chmod=755 --from=builder /app/.docker/00-remove-ipv6-if-unavailable.sh /docker-entrypoint.d/
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://127.0.0.1/healthz >/dev/null || exit 1
