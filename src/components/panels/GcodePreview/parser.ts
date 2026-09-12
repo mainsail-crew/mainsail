@@ -1,0 +1,220 @@
+/**
+ * Minimal top-down G-code parser for the live 2D preview.
+ * Groups extruding X/Y moves into per-layer "runs" (connected polylines), each point
+ * tagged with its byte offset in the source file so the panel can split done/remaining
+ * against Moonraker's virtual_sdcard.file_position, and pick the layer currently being
+ * printed. Non-extruding travel moves are captured separately per layer as "travels",
+ * for an optional move-path overlay.
+ *
+ * Arcs (G2/G3) are approximated by their endpoint - good enough for a small preview.
+ */
+
+export interface GcodePreviewPoint {
+    x: number
+    y: number
+    offset: number
+}
+
+export type GcodePreviewRun = GcodePreviewPoint[]
+
+export interface GcodePreviewLayer {
+    z: number
+    runs: GcodePreviewRun[]
+    travels: GcodePreviewRun[]
+}
+
+const EXTRUSION_EPSILON = 1e-6
+const LAYER_Z_EPSILON = 1e-3
+
+function stripComment(line: string): string {
+    const semiIndex = line.indexOf(';')
+    const withoutLineComment = semiIndex === -1 ? line : line.slice(0, semiIndex)
+
+    return withoutLineComment.replace(/\([^)]*\)/g, '')
+}
+
+function parseParams(line: string): Record<string, number> {
+    const params: Record<string, number> = {}
+    const tokens = line.split(' ')
+
+    for (let i = 1; i < tokens.length; i++) {
+        const token = tokens[i]
+        if (token.length < 2) continue
+
+        const value = parseFloat(token.slice(1))
+        if (!Number.isNaN(value)) params[token[0].toUpperCase()] = value
+    }
+
+    return params
+}
+
+/** UTF-8 byte length of a line, so offsets line up with the file's byte positions */
+function utf8ByteLength(line: string): number {
+    let bytes = 0
+
+    for (let i = 0; i < line.length; i++) {
+        const code = line.charCodeAt(i)
+
+        if (code < 0x80) bytes += 1
+        else if (code < 0x800) bytes += 2
+        else if (code >= 0xd800 && code <= 0xdbff) {
+            // surrogate pair - one 4-byte code point, and skip its low half
+            bytes += 4
+            i++
+        } else bytes += 3
+    }
+
+    return bytes
+}
+
+function pushPointDecimated(run: GcodePreviewRun, point: GcodePreviewPoint, minDistanceSq: number): void {
+    const last = run[run.length - 1]
+    if (last) {
+        const dx = point.x - last.x
+        const dy = point.y - last.y
+        if (dx * dx + dy * dy < minDistanceSq) return
+    }
+
+    run.push(point)
+}
+
+/**
+ * @param bedSizeMm largest bed axis span, used to scale the decimation threshold
+ */
+export function parseGcodeToolpath(text: string, bedSizeMm: number): GcodePreviewLayer[] {
+    const minDistance = Math.max(bedSizeMm / 600, 0.05)
+    const minDistanceSq = minDistance * minDistance
+
+    const layers: GcodePreviewLayer[] = []
+    let currentLayer: GcodePreviewLayer = { z: 0, runs: [], travels: [] }
+    let currentRun: GcodePreviewRun = []
+    let currentTravel: GcodePreviewRun = []
+
+    let x = 0
+    let y = 0
+    let z = 0
+    let e = 0
+    let relativeXYZ = false
+    let relativeE = false
+    let offset = 0
+
+    const finishRun = (): void => {
+        if (currentRun.length > 1) currentLayer.runs.push(currentRun)
+        currentRun = []
+    }
+
+    const finishTravel = (): void => {
+        if (currentTravel.length > 1) currentLayer.travels.push(currentTravel)
+        currentTravel = []
+    }
+
+    const pushLayer = (): void => {
+        if (currentLayer.runs.length > 0) layers.push(currentLayer)
+    }
+
+    const finishLayer = (): void => {
+        finishRun()
+        finishTravel()
+        pushLayer()
+    }
+
+    const lines = text.split('\n')
+
+    for (const rawLine of lines) {
+        const startOffset = offset
+        // byte offset, not character count: progress is compared against Moonraker's
+        // virtual_sdcard.file_position, and a non-ASCII comment would otherwise make
+        // every later point's offset drift short of the real byte position
+        offset += utf8ByteLength(rawLine) + 1 // + the split-away newline
+
+        const line = stripComment(rawLine).trim()
+        if (!line) continue
+
+        const spaceIndex = line.indexOf(' ')
+        const command = (spaceIndex === -1 ? line : line.slice(0, spaceIndex)).toUpperCase()
+
+        if (command === 'G90') {
+            relativeXYZ = false
+            continue
+        }
+        if (command === 'G91') {
+            relativeXYZ = true
+            continue
+        }
+        if (command === 'M82') {
+            relativeE = false
+            continue
+        }
+        if (command === 'M83') {
+            relativeE = true
+            continue
+        }
+
+        if (command === 'G92') {
+            const params = parseParams(line)
+            if ('X' in params) x = params.X
+            if ('Y' in params) y = params.Y
+            if ('Z' in params) z = params.Z
+            if ('E' in params) e = params.E
+            continue
+        }
+
+        if (command !== 'G0' && command !== 'G1' && command !== 'G2' && command !== 'G3') continue
+
+        const params = parseParams(line)
+        const prevX = x
+        const prevY = y
+        let hasXY = false
+
+        if ('X' in params) {
+            x = relativeXYZ ? x + params.X : params.X
+            hasXY = true
+        }
+        if ('Y' in params) {
+            y = relativeXYZ ? y + params.Y : params.Y
+            hasXY = true
+        }
+        if ('Z' in params) {
+            z = relativeXYZ ? z + params.Z : params.Z
+        }
+
+        let extruding = false
+        if ('E' in params) {
+            const newE = relativeE ? e + params.E : params.E
+            // G2/G3 count too - arc-welded files (common with Klipper) would otherwise
+            // have all of their extrusion recorded as travel
+            extruding = command !== 'G0' && newE > e + EXTRUSION_EPSILON
+            e = newE
+        }
+
+        if (!hasXY) continue
+
+        if (extruding) {
+            // only commit to a layer change right as we're about to draw at a new Z - a
+            // z-hop (lift for travel, then lower back to the same print height before the
+            // next extrusion) never reaches this branch at the hopped height, so it can't
+            // split one physical layer into two
+            if (Math.abs(z - currentLayer.z) > LAYER_Z_EPSILON) {
+                // close the old layer's extrusion but leave the pending travel alone: it
+                // is the lead-in that moved the head here, so it belongs to the new layer
+                finishRun()
+                pushLayer()
+                currentLayer = { z, runs: [], travels: [] }
+            }
+            // the travel that just brought the head here belongs with the layer it arrived at
+            finishTravel()
+
+            if (currentRun.length === 0) currentRun.push({ x: prevX, y: prevY, offset: startOffset })
+            pushPointDecimated(currentRun, { x, y, offset: startOffset }, minDistanceSq)
+        } else {
+            finishRun()
+
+            if (currentTravel.length === 0) currentTravel.push({ x: prevX, y: prevY, offset: startOffset })
+            pushPointDecimated(currentTravel, { x, y, offset: startOffset }, minDistanceSq)
+        }
+    }
+
+    finishLayer()
+
+    return layers
+}
