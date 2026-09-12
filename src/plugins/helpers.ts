@@ -1,4 +1,4 @@
-import { FileStateFile } from '@/store/files/types'
+import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { PrinterStateMacroParams } from '@/store/printer/types'
 import {
     mdiAlertOutline,
@@ -593,4 +593,25 @@ export function generateTimestamp(date: Date = new Date()): string {
     const timeString = `${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`
 
     return `${dateString}-${timeString}`
+}
+
+/**
+ * Returns the filament colors of a G-code file, preferring `extruder_colors` over `filament_colors`.
+ *
+ * Moonraker extracts both arrays from the slicer config block (`extruder_colour` / `filament_colour`),
+ * but their meaning differs between slicers:
+ * - PrusaSlicer (and forks): `extruder_colour` is the per-slot color the user selected in the project,
+ *   `filament_colour` is only the default color of the filament preset. `extruder_colour` is the correct one.
+ * - OrcaSlicer: writes `extruder_colour` with the value of `filament_colour`, so both are identical.
+ * - BambuStudio (and older OrcaSlicer versions): `extruder_colour` is missing or empty,
+ *   `filament_colour` is the only source.
+ *
+ * @param file - The G-code file object containing `filament_colors` and/or `extruder_colors`.
+ * @returns Array of color strings (hex format, e.g. `#FF3232`), one per tool/slot. Empty if none are available.
+ */
+export function getFileFilamentColors(file: FileStateGcodefile): string[] {
+    const extruder = file.extruder_colors ?? []
+    if (extruder.length) return extruder
+
+    return file.filament_colors ?? []
 }
