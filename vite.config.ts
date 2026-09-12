@@ -50,6 +50,9 @@ const PWAConfig: Partial<VitePWAOptions> = {
     },
     workbox: {
         globPatterns: ['**/*.{js,css,html,woff,woff2,png,svg}'],
+        navigateFallbackAllowlist: [
+            /^\/(allPrinters|cam|console|heightmap|files|viewer|history|timelapse|config|settings)(\/.*)?$|^\/$/,
+        ],
         navigateFallbackDenylist: [/^\/(access|api|printer|server|websocket)/, /^\/webcam[2-4]?/],
         runtimeCaching: [
             {
@@ -60,6 +63,13 @@ const PWAConfig: Partial<VitePWAOptions> = {
                     cacheableResponse: {
                         statuses: [0, 200],
                     },
+                    plugins: [
+                        {
+                            cacheWillUpdate: async ({ response }) => {
+                                return response && !response.redirected ? response : null
+                            },
+                        },
+                    ],
                 },
             },
         ],
