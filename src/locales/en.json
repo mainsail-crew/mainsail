@@ -720,6 +720,12 @@
             "SwitchToPrinter": "Switch to Printer",
             "WebcamOff": "Off"
         },
+        "GcodePreviewPanel": {
+            "FileTooLarge": "File is too large to preview",
+            "Headline": "G-Code Preview",
+            "LoadError": "Failed to load G-code file",
+            "NoFile": "No G-code file loaded"
+        },
         "KlippyStatePanel": {
             "CheckKlippyAndUdsAddress": "Please check if the Klipper service is running and klippy_uds_address is correctly configured in the moonraker.conf.",
             "FirmwareRestart": "Firmware Restart",
@@ -836,7 +842,7 @@
             },
             "Gear": "Gear",
             "Guard": "Guard",
-            "Headline": "Mmu",
+            "Headline": "MMU",
             "Heater": "Heater",
             "LargeFilamentStatus": "Large Filament Status",
             "MmuMaintenance": "MMU Maintenance",
@@ -1099,6 +1105,7 @@
         "Console": "Console",
         "Dashboard": "Dashboard",
         "G-Code Files": "G-Code Files",
+        "G-Code Preview": "G-Code Preview",
         "G-Code Viewer": "G-Code Viewer",
         "Heightmap": "Heightmap",
         "History": "History",
@@ -1354,6 +1361,28 @@
         },
         "NavigationTab": {
             "Navigation": "Navigation"
+        },
+        "NotificationsTab": {
+            "Enable": "Enable Notifications",
+            "EnableDescription": "Allow this device to receive push notifications from the printer.",
+            "NeedsInstall": "Add Mainsail to your home screen to enable push notifications on this device.",
+            "NeedsPublicKey": "Enter the VAPID public key before enabling notifications.",
+            "NeedsSecureContext": "Push notifications require a secure connection (HTTPS).",
+            "NoSubscription": "This device is not subscribed yet.",
+            "Notifications": "Notifications",
+            "NotSupported": "This browser does not support push notifications.",
+            "PermissionDenied": "Notification permission was denied.",
+            "PublicKey": "VAPID Public Key",
+            "PublicKeyDescription": "The public key of the VAPID key pair that the printer signs its notifications with.",
+            "PublicKeyPlaceholder": "BN...",
+            "Saved": "Subscription saved to {path}.",
+            "SaveFailed": "Could not save the subscription to the printer.",
+            "SendTest": "Send",
+            "SubscribeFailed": "Could not subscribe to push notifications.",
+            "TestBody": "Push notifications are working on this device.",
+            "TestNotification": "Test Notification",
+            "TestNotificationDescription": "Display a notification to check that this device shows them.",
+            "TestTitle": "Mainsail"
         },
         "PresetsTab": {
             "AddPreset": "add preset",
