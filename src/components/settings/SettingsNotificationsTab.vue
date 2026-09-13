@@ -28,6 +28,7 @@
                         <v-text-field
                             v-model="vapidPublicKey"
                             :placeholder="$t('Settings.NotificationsTab.PublicKeyPlaceholder')"
+                            :disabled="enabled || loading"
                             hide-details
                             outlined
                             dense />
@@ -273,9 +274,18 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
      */
     async onEnabledChanged(newVal: boolean) {
         if (!newVal) {
-            await unsubscribe()
-            this.subscription = null
+            try {
+                await unsubscribe()
+                this.subscription = null
+            } catch (error: unknown) {
+                // the browser kept the subscription, but dropping this device
+                // from the printer is what actually stops the notifications
+                window.console.error('unsubscribing failed:', error)
+                this.$toast.error(this.$t('Settings.NotificationsTab.UnsubscribeFailed').toString())
+            }
+
             await this.removeFromPrinter()
+
             return
         }
 
@@ -296,17 +306,39 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
         try {
             const subscription = await subscribe(this.vapidPublicKey)
             this.subscription = toSubscriptionJson(subscription)
-            // save straight away -- a subscription the printer does not know
-            // about receives nothing, and a separate step is easy to miss
-            await this.saveToPrinter()
         } catch (error: unknown) {
-            this.enabled = false
-            this.subscription = null
             window.console.error('push subscribe failed:', error)
-            this.$toast.error(this.$t('Settings.NotificationsTab.SubscribeFailed').toString())
+            await this.rollbackSubscription('SubscribeFailed')
+
+            return
         } finally {
             this.loading = false
         }
+
+        // save straight away -- a subscription the printer does not know about
+        // receives nothing, and a separate step is easy to miss
+        try {
+            await this.saveToPrinter()
+        } catch (error: unknown) {
+            window.console.error('saving the subscription failed:', error)
+            await this.rollbackSubscription('SaveFailed')
+        }
+    }
+
+    /**
+     * Leaves nothing half-enabled: a browser subscription the printer does not
+     * know about receives nothing, and would silently look like it works.
+     */
+    async rollbackSubscription(message: string) {
+        try {
+            await unsubscribe()
+        } catch (error: unknown) {
+            window.console.error('rolling back the subscription failed:', error)
+        }
+
+        this.subscription = null
+        this.enabled = false
+        this.$toast.error(this.$t(`Settings.NotificationsTab.${message}`).toString())
     }
 
     async sendTestNotification() {
@@ -333,11 +365,20 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
                 params: { date: Date.now() },
             })
             if (response.data && typeof response.data === 'object') return response.data
-        } catch {
-            window.console.debug('no existing subscription file, starting a new one')
-        }
 
-        return {}
+            return {}
+        } catch (error: unknown) {
+            // only a missing file means "no subscriptions yet". Treating any
+            // other failure as empty would write this device over the top of
+            // every other one already in the file
+            if (axios.isAxiosError(error) && error.response?.status === 404) {
+                window.console.debug('no existing subscription file, starting a new one')
+
+                return {}
+            }
+
+            throw error
+        }
     }
 
     async writeSubscriptions(subscriptions: Record<string, WebPushSubscriptionJson>) {
@@ -364,15 +405,10 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
             return
         }
 
-        try {
-            const subscriptions = await this.readSubscriptions()
-            subscriptions[this.deviceName] = this.subscription
-            await this.writeSubscriptions(subscriptions)
-            this.$toast.success(this.$t('Settings.NotificationsTab.Saved', { path: this.configPath }).toString())
-        } catch (error: unknown) {
-            window.console.error('saving the subscription failed:', error)
-            this.$toast.error(this.$t('Settings.NotificationsTab.SaveFailed').toString())
-        }
+        const subscriptions = await this.readSubscriptions()
+        subscriptions[this.deviceName] = this.subscription
+        await this.writeSubscriptions(subscriptions)
+        this.$toast.success(this.$t('Settings.NotificationsTab.Saved', { path: this.configPath }).toString())
     }
 
     /**

@@ -65,19 +65,31 @@ self.addEventListener('push', (event) => {
     )
 })
 
+const openNotification = async (target) => {
+    const clientList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+
+    // focus an already open Mainsail instead of opening a second one
+    for (const client of clientList) {
+        if (!('focus' in client)) continue
+
+        // ...but still take it to the page the notification points at
+        if ('navigate' in client && client.url !== new URL(target, self.location.origin).href) {
+            try {
+                const navigated = await client.navigate(target)
+                if (navigated) return await navigated.focus()
+            } catch {
+                // navigation can be refused, in which case focusing is still useful
+            }
+        }
+
+        return await client.focus()
+    }
+
+    return await self.clients.openWindow(target)
+}
+
 self.addEventListener('notificationclick', (event) => {
     event.notification.close()
 
-    const target = event.notification.data?.url ?? '/'
-
-    event.waitUntil(
-        self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-            // focus an already open Mainsail instead of opening a second one
-            for (const client of clientList) {
-                if ('focus' in client) return client.focus()
-            }
-
-            return self.clients.openWindow(target)
-        })
-    )
+    event.waitUntil(openNotification(event.notification.data?.url ?? '/'))
 })

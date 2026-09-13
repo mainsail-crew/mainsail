@@ -1377,7 +1377,7 @@
             "ProgressDescription": "How often to notify while a print runs. The printer sends these, so they arrive with the app closed.",
             "ProgressEvery": "Every {percent}%",
             "PublicKey": "VAPID Public Key",
-            "PublicKeyDescription": "The public key of the VAPID key pair that the printer signs its notifications with.",
+            "PublicKeyDescription": "The public key of the VAPID key pair that the printer signs its notifications with. Disable notifications to change it.",
             "PublicKeyPlaceholder": "BN...",
             "Runout": "Filament Runout",
             "RunoutDescription": "Notify when a sensor reports no filament during a job. Each sensor notifies once per runout; leave unused MMU gates off, since they always read empty.",
@@ -1389,7 +1389,8 @@
             "TestBody": "Push notifications are working on this device.",
             "TestNotification": "Test Notification",
             "TestNotificationDescription": "Display a notification to check that this device shows them.",
-            "TestTitle": "Mainsail"
+            "TestTitle": "Mainsail",
+            "UnsubscribeFailed": "Could not unsubscribe this device from the browser."
         },
         "PresetsTab": {
             "AddPreset": "add preset",
