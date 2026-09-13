@@ -4,6 +4,7 @@ import { GuiPresetsState } from '@/store/gui/presets/types'
 import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { GuiNotificationState } from '@/store/gui/notifications/types'
+import { GuiPushState } from '@/store/gui/push/types'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { GuiNavigationState } from '@/store/gui/navigation/types'
 
@@ -86,6 +87,7 @@ export interface GuiState {
     navigation: GuiNavigationState
     notifications?: GuiNotificationState
     presets?: GuiPresetsState
+    push?: GuiPushState
     remoteprinters?: GuiRemoteprintersState
     uiSettings: {
         mode: 'dark' | 'light'
