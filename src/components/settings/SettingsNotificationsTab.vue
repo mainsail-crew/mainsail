@@ -44,6 +44,36 @@
                             :disabled="loading"
                             @change="onEnabledChanged" />
                     </settings-row>
+                    <template v-if="hasProgressMacro">
+                        <v-divider class="my-2" />
+                        <settings-row
+                            :title="$t('Settings.NotificationsTab.Progress')"
+                            :sub-title="$t('Settings.NotificationsTab.ProgressDescription')"
+                            :mobile-second-row="true">
+                            <v-select v-model="progressInterval" :items="progressOptions" hide-details outlined dense />
+                        </settings-row>
+                    </template>
+                    <template v-if="hasRunoutMacro">
+                        <h3 class="text-h5 mb-3 mt-6">{{ $t('Settings.NotificationsTab.Runout') }}</h3>
+                        <p class="mb-3 text--secondary runout-hint">
+                            {{ $t('Settings.NotificationsTab.RunoutDescription') }}
+                        </p>
+                        <template v-if="availableRunoutSensors.length">
+                            <template v-for="(sensor, index) in availableRunoutSensors">
+                                <v-divider v-if="index" :key="'runout_divider_' + sensor" class="my-2" />
+                                <settings-row :key="sensor" :title="convertName(sensor)" :dynamic-slot-width="true">
+                                    <v-switch
+                                        :input-value="isRunoutSensorEnabled(sensor)"
+                                        hide-details
+                                        class="mt-0"
+                                        @change="setRunoutSensor(sensor, $event)" />
+                                </settings-row>
+                            </template>
+                        </template>
+                        <p v-else class="mb-0 text-center font-italic">
+                            {{ $t('Settings.NotificationsTab.RunoutNoSensors') }}
+                        </p>
+                    </template>
                 </template>
             </v-card-text>
         </v-card>
@@ -58,6 +88,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiBellRing } from '@mdi/js'
 import { sha256 } from 'js-sha256'
+import { convertName } from '@/plugins/helpers'
 import axios from 'axios'
 import {
     getSubscription,
@@ -80,6 +111,8 @@ const deviceNameStorageKey = 'mainsail.push.deviceName'
 })
 export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
     mdiBellRing = mdiBellRing
+
+    convertName = convertName
 
     loading = false
     enabled = false
@@ -141,6 +174,77 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
 
     set vapidPublicKey(newVal: string) {
         this.$store.dispatch('gui/push/saveSetting', { name: 'vapidPublicKey', value: newVal.trim() })
+    }
+
+    /**
+     * Both of these settings are driven by printer-side macros, which Mainsail
+     * does not ship. Hiding the controls when the macros are absent keeps them
+     * from writing save variables that nothing would ever read.
+     */
+    get hasProgressMacro(): boolean {
+        return 'gcode_macro _NOTIFY_PROGRESS_VARS' in (this.$store.state.printer ?? {})
+    }
+
+    get hasRunoutMacro(): boolean {
+        return 'gcode_macro _NOTIFY_RUNOUT_VARS' in (this.$store.state.printer ?? {})
+    }
+
+    get progressOptions() {
+        return [
+            { text: this.$t('Settings.NotificationsTab.ProgressEvery', { percent: 10 }), value: 10 },
+            { text: this.$t('Settings.NotificationsTab.ProgressEvery', { percent: 25 }), value: 25 },
+            { text: this.$t('Settings.NotificationsTab.ProgressEvery', { percent: 50 }), value: 50 },
+            { text: this.$t('Settings.NotificationsTab.ProgressComplete'), value: 100 },
+        ]
+    }
+
+    get progressInterval(): number {
+        return this.$store.state.gui.push?.progressInterval ?? 25
+    }
+
+    set progressInterval(newVal: number) {
+        this.$store.dispatch('gui/push/saveSetting', { name: 'progressInterval', value: newVal })
+        // the printer-side macro reads this from save_variables, so that
+        // progress notifications keep working with no browser open
+        this.$store.dispatch('printer/sendGcode', `SAVE_VARIABLE VARIABLE=notify_progress_interval VALUE=${newVal}`)
+    }
+
+    get availableRunoutSensors(): string[] {
+        const printer = this.$store.state.printer ?? {}
+
+        return (
+            Object.keys(printer)
+                .filter((key) => key.startsWith('filament_switch_sensor ') || key.startsWith('filament_motion_sensor '))
+                .map((key) => key.split(' ').slice(1).join(' '))
+                // numeric-aware, or mmu_entry_10 sorts between _1 and _2
+                .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+        )
+    }
+
+    get runoutSensors(): string[] {
+        return this.$store.state.gui.push?.runoutSensors ?? []
+    }
+
+    isRunoutSensorEnabled(name: string): boolean {
+        return this.runoutSensors.includes(name)
+    }
+
+    /**
+     * Watched sensors go to the printer as a comma-separated string, so a
+     * printer-side macro can poll them with no browser open. Each is latched
+     * separately there, which matters on an MMU where unused gates read empty.
+     */
+    setRunoutSensor(name: string, value: boolean | null) {
+        const current = this.runoutSensors.filter((sensor) => sensor !== name)
+        const next = value === true ? [...current, name].sort() : current
+
+        this.$store.dispatch('gui/push/saveSetting', { name: 'runoutSensors', value: next })
+        // klipper strips one level of quotes before ast.literal_eval, so the
+        // value has to arrive with its quotes escaped
+        this.$store.dispatch(
+            'printer/sendGcode',
+            `SAVE_VARIABLE VARIABLE=notify_runout_sensors VALUE=\\"${next.join(',')}\\"`
+        )
     }
 
     get subscriptionPath(): string {
@@ -288,3 +392,10 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
     }
 }
 </script>
+
+<style scoped>
+.runout-hint {
+    font-size: 0.8em;
+    line-height: 1.3;
+}
+</style>

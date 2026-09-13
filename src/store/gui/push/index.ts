@@ -7,6 +7,8 @@ export const getDefaultState = (): GuiPushState => {
     return {
         vapidPublicKey: '',
         subscriptionPath: 'webpush/subscriptions.json',
+        progressInterval: 25,
+        runoutSensors: ['extruder'],
     }
 }
 
