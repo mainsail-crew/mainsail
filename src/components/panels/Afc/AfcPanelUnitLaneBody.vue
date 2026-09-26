@@ -98,6 +98,10 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     get spool(): ServerSpoolmanStateSpool | null {
         if (this.spoolId === 0) return null
 
+        // active_spool is kept live via websocket, unlike the static spools list below
+        const activeSpool = this.$store.state.server.spoolman?.active_spool
+        if (activeSpool?.id === this.spoolId) return activeSpool
+
         const spools = this.$store.state.server.spoolman?.spools || []
 
         return spools.find((spool: ServerSpoolmanStateSpool) => spool.id === this.spoolId) || null
