@@ -13,6 +13,8 @@
             "DependencyDescription": "The current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
             "DependencyName": "Dependency: {name}",
             "DismissAll": "Dismiss all",
+            "FirmwareUpdates": "Firmware updates available",
+            "FirmwareUpdatesText": "New firmware is available for {mcus}.",
             "KlipperWarnings": {
                 "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
                 "DeprecatedOptionHeadline": "Deprecated Klipper Option",

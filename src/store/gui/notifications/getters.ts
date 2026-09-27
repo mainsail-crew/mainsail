@@ -26,6 +26,9 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
         // moonraker warnings
         notifications = notifications.concat(getters['getNotificationsMoonrakerWarnings'])
 
+        // firmware updates from the aldis agent
+        notifications = notifications.concat(getters['getNotificationsFirmwareUpdates'])
+
         // moonraker failed components
         notifications = notifications.concat(getters['getNotificationsMoonrakerFailedComponents'])
 
@@ -198,6 +201,30 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
         }
 
         return notifications
+    },
+
+    getNotificationsFirmwareUpdates: (state, getters, rootState, rootGetters) => {
+        if (!rootGetters['server/firmware/hasUpdates']) return []
+
+        // The host version is the id, so a "never" dismissal lapses when Klipper is next updated.
+        const version: string = rootGetters['server/firmware/getHost']?.software_version ?? 'unknown'
+        const dismissed = rootGetters['gui/notifications/getDismissByCategory']('firmware').map(
+            (dismiss: GuiNotificationStateDismissEntry) => dismiss.id
+        )
+        if (dismissed.includes(version)) return []
+
+        const mcus: string[] = rootGetters['server/firmware/getUpdatableMcus']
+
+        return [
+            {
+                id: `firmware/${version}`,
+                priority: 'normal',
+                title: i18n.t('App.Notifications.FirmwareUpdates').toString(),
+                description: i18n.t('App.Notifications.FirmwareUpdatesText', { mcus: mcus.join(', ') }).toString(),
+                date: rootState.server?.system_boot_at ?? new Date(),
+                dismissed: false,
+            },
+        ] as GuiNotificationStateEntry[]
     },
 
     getNotificationsMoonrakerFailedComponents: (state, getters, rootState, rootGetters) => {
