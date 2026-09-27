@@ -525,8 +525,31 @@
             "TRIGGERED": "TRIGGERED"
         },
         "FirmwarePanel": {
+            "FirmwareUpdates": "Firmware Updates",
+            "KlipperService": "Klipper Service",
+            "KlipperServiceHint": "MCU firmware is compared against this version",
+            "Loading": "Checking firmware...",
             "MalformedStatus": "The firmware agent sent a status Mainsail could not read.",
-            "RequestFailed": "The request to the firmware agent failed."
+            "NotRunning": "The aldis firmware agent is not running. Start the aldis service from Service Control in the top-right menu.",
+            "Refresh": "Refresh",
+            "RequestFailed": "The request to the firmware agent failed.",
+            "RestartPendingHint": "Restart Klipper from Klipper Control in the top-right menu.",
+            "State": {
+                "Current": "UP TO DATE",
+                "ExternallyManaged": "EXTERNAL",
+                "Indeterminate": "INDETERMINATE",
+                "NotIdentified": "NOT IDENTIFIED",
+                "NotResponding": "NOT RESPONDING",
+                "UnsupportedLegacy": "LEGACY",
+                "UnsupportedMcu": "UNSUPPORTED",
+                "UpdateAvailable": "UPDATE AVAILABLE"
+            },
+            "StatusError": "Could not read firmware status: {message}. Refresh to try again.",
+            "UnknownVersion": "unknown",
+            "UnsupportedApi": "This version of Mainsail does not support aldis API version {version}.",
+            "Update": "Update",
+            "UpdateAll": "Update all",
+            "UpdateHintText": "This flashes new firmware to {mcus}. Klipper is stopped during the update and started again afterwards."
         },
         "LogfilesPanel": {
             "Accept": "accept",

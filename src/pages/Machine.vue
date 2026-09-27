@@ -8,6 +8,7 @@
                 <klippy-state-panel></klippy-state-panel>
                 <system-panel></system-panel>
                 <update-panel></update-panel>
+                <firmware-panel></firmware-panel>
                 <v-row>
                     <v-col v-if="klipperState === 'ready'" class="col-12 col-sm-6 pb-0 pb-md-3">
                         <endstop-panel></endstop-panel>
@@ -25,6 +26,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import UpdatePanel from '@/components/panels/Machine/UpdatePanel.vue'
+import FirmwarePanel from '@/components/panels/Machine/FirmwarePanel.vue'
 import LogfilesPanel from '@/components/panels/Machine/LogfilesPanel.vue'
 import EndstopPanel from '@/components/panels/Machine/EndstopPanel.vue'
 import ConfigFilesPanel from '@/components/panels/Machine/ConfigFilesPanel.vue'
@@ -36,6 +38,7 @@ import SystemPanel from '@/components/panels/Machine/SystemPanel.vue'
         EndstopPanel,
         LogfilesPanel,
         UpdatePanel,
+        FirmwarePanel,
         KlippyStatePanel,
     },
 })
