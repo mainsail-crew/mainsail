@@ -4,18 +4,23 @@ import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
 import type { RPCMethods, RPCParams, RPCResult } from '@/types/moonraker'
 
+const HEARTBEAT_TIMEOUT = 10_000
+const MAX_RECONNECT_DELAY = 30_000
+
 export class WebSocketClient {
     url = ''
     instance: WebSocket | null = null
     maxReconnects = 5
     reconnectInterval = 1000
     reconnects = 0
+    reconnectTimer: number | null = null
     keepAliveTimeout = 1000
     messageId: number = 0
     timerId: number | null = null
     store: Store<RootState> | null = null
     waits: Wait[] = []
     heartbeatTimer: number | null = null
+    autoReconnect: boolean = false
 
     constructor(options: WebSocketPluginOptions) {
         this.url = options.url
@@ -96,24 +101,26 @@ export class WebSocketClient {
             isConnecting: true,
         })
 
-        this.instance?.close()
+        this.dropInstance()
+        this.clearReconnectTimer()
+        this.autoReconnect = true
         this.instance = new WebSocket(this.url)
 
         this.instance.onopen = () => {
             this.reconnects = 0
-            this.store?.dispatch('socket/onOpen', event)
+            this.heartbeat()
+            this.store?.dispatch('socket/onOpen')
         }
 
-        this.instance.onclose = (e) => {
-            if (e.wasClean || this.reconnects >= this.maxReconnects) {
-                this.store?.dispatch('socket/onClose', e)
+        this.instance.onclose = () => {
+            this.clearHeartbeat()
+
+            if (!this.autoReconnect) {
+                this.store?.dispatch('socket/onClose')
                 return
             }
 
-            this.reconnects++
-            setTimeout(() => {
-                this.connect()
-            }, this.reconnectInterval)
+            this.scheduleReconnect()
         }
 
         this.instance.onerror = () => {
@@ -140,6 +147,9 @@ export class WebSocketClient {
     }
 
     close(): void {
+        this.autoReconnect = false
+        this.clearReconnectTimer()
+        this.clearHeartbeat()
         this.instance?.close()
     }
 
@@ -243,14 +253,50 @@ export class WebSocketClient {
     }
 
     heartbeat(): void {
-        if (this.heartbeatTimer) clearInterval(this.heartbeatTimer)
-
+        this.clearHeartbeat()
         this.heartbeatTimer = window.setTimeout(() => {
-            if (this.instance?.readyState !== WebSocket.OPEN || !this.store) return
+            if (this.instance?.readyState !== WebSocket.OPEN) return
 
-            this.close()
+            this.dropInstance()
+            this.scheduleReconnect()
+        }, HEARTBEAT_TIMEOUT)
+    }
+
+    private clearHeartbeat(): void {
+        if (this.heartbeatTimer) clearTimeout(this.heartbeatTimer)
+
+        this.heartbeatTimer = null
+    }
+
+    private scheduleReconnect(): void {
+        if (this.reconnectTimer) return
+        if (this.reconnects >= this.maxReconnects) {
             this.store?.dispatch('socket/onClose')
-        }, 10000)
+            return
+        }
+
+        const delay = Math.min(this.reconnectInterval * 2 ** this.reconnects, MAX_RECONNECT_DELAY)
+        this.reconnects++
+        this.store?.dispatch('socket/setData', { isConnected: false, isConnecting: true, connectingFailed: false })
+        this.reconnectTimer = window.setTimeout(() => {
+            this.reconnectTimer = null
+            this.connect()
+        }, delay)
+    }
+
+    private clearReconnectTimer(): void {
+        if (this.reconnectTimer) clearTimeout(this.reconnectTimer)
+
+        this.reconnectTimer = null
+    }
+
+    private dropInstance(): void {
+        if (!this.instance) return
+
+        this.instance.onopen = this.instance.onclose = this.instance.onerror = this.instance.onmessage = null
+        this.instance.close()
+        this.instance = null
+        this.clearHeartbeat()
     }
 }
 
