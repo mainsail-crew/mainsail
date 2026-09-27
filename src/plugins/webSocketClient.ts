@@ -99,7 +99,7 @@ export class WebSocketClient {
         this.removeWaitById(wait.id)
     }
 
-    async connect() {
+    connect(): void {
         this.store.dispatch('socket/setData', {
             isConnecting: true,
         })
