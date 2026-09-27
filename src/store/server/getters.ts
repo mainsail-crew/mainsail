@@ -191,4 +191,8 @@ export const getters: GetterTree<ServerState, RootState> = {
 
         return flags
     },
+
+    agentSupport: (state) => (name: string) => {
+        return state.agents.includes(name)
+    },
 }

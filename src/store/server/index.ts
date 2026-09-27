@@ -47,6 +47,8 @@ export const getDefaultState = (): ServerState => {
         dbNamespaces: [],
         websocket_count: 0,
         moonraker_version: '',
+        agents: [],
+        agentsLoaded: false,
     }
 }
 

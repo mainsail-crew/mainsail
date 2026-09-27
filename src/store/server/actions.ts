@@ -5,8 +5,11 @@ import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
+import { agentActions } from '@/store/server/agentActions'
 
 export const actions: ActionTree<ServerState, RootState> = {
+    ...agentActions,
+
     reset({ commit, dispatch }) {
         dispatch('stopKlippyConnectedInterval')
         dispatch('stopKlippyStateInterval')
@@ -14,6 +17,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('reset')
         dispatch('power/reset')
         dispatch('updateManager/reset')
+        dispatch('firmware/reset')
     },
 
     async init({ commit, dispatch, rootState }) {
@@ -49,6 +53,8 @@ export const actions: ActionTree<ServerState, RootState> = {
         Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
         Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
         Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
+
+        Vue.$socket.emit('server.extensions.list', {}, { action: 'server/initExtensions' })
 
         await dispatch('socket/removeInitModule', 'server', { root: true })
     },
@@ -191,7 +197,10 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setKlippyStateTimer', null)
     },
 
-    checkKlippyState({ commit, dispatch }, payload: { state: string; state_message: string | null }) {
+    checkKlippyState({ state, commit, dispatch }, payload: { state: string; state_message: string | null }) {
+        const klippyStateChanged = state.klippy_state !== payload.state
+        if (klippyStateChanged) dispatch('notifyAgentsKlippyState')
+
         commit('setKlippyState', payload.state)
         commit('setKlippyMessage', payload.state_message)
 

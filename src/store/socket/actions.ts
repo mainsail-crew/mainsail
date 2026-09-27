@@ -33,6 +33,8 @@ export const actions: ActionTree<SocketState, RootState> = {
         //set socket connection to connected
         commit('setConnected')
 
+        dispatch('server/resetAgents', null, { root: true })
+
         // init server
         dispatch('server/init', null, { root: true })
 
@@ -61,14 +63,17 @@ export const actions: ActionTree<SocketState, RootState> = {
                 dispatch('server/stopKlippyConnectedInterval', null, { root: true })
                 dispatch('server/stopKlippyStateInterval', null, { root: true })
                 dispatch('printer/init', null, { root: true })
+                dispatch('server/notifyAgentsKlippyState', null, { root: true })
                 break
 
             case 'notify_klippy_disconnected':
                 dispatch('server/setKlippyDisconnected', null, { root: true })
+                dispatch('server/notifyAgentsKlippyState', null, { root: true })
                 break
 
             case 'notify_klippy_shutdown':
                 dispatch('server/setKlippyShutdown', null, { root: true })
+                dispatch('server/notifyAgentsKlippyState', null, { root: true })
                 break
 
             case 'notify_proc_stat_update':
@@ -137,6 +142,10 @@ export const actions: ActionTree<SocketState, RootState> = {
 
             case 'notify_sensor_update':
                 dispatch('server/sensor/updateSensors', payload.params[0], { root: true })
+                break
+
+            case 'notify_agent_event':
+                dispatch('server/onAgentEvent', payload.params[0], { root: true })
                 break
 
             default:

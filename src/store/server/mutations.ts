@@ -183,4 +183,24 @@ export const mutations: MutationTree<ServerState> = {
         components.splice(index, 1)
         Vue.set(state, 'components', components)
     },
+
+    setAgents(state, payload: string[]) {
+        Vue.set(state, 'agents', [...payload])
+    },
+
+    addAgent(state, payload: string) {
+        if (!state.agents.includes(payload)) state.agents.push(payload)
+    },
+
+    removeAgent(state, payload: string) {
+        Vue.set(
+            state,
+            'agents',
+            state.agents.filter((name) => name !== payload)
+        )
+    },
+
+    setAgentsLoaded(state, payload: boolean) {
+        Vue.set(state, 'agentsLoaded', payload)
+    },
 }
