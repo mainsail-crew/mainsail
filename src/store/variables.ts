@@ -1,4 +1,5 @@
 import { KlipperRepos, Theme } from '@/store/types'
+import type { AgentRegistration } from '@/plugins/agentEvents'
 
 export const defaultMode = 'dark'
 export const defaultTheme = 'mainsail'
@@ -50,6 +51,17 @@ export const initableServerComponents = [
     'announcements',
     'spoolman',
     'sensor',
+]
+
+export const moonrakerAgents: readonly AgentRegistration[] = [
+    {
+        name: 'aldis',
+        dispatch: 'server/firmware/init',
+        eventDispatch: 'server/firmware/onAgentEvent',
+        disconnectDispatch: 'server/firmware/onAgentDisconnected',
+        klippyDispatch: 'server/firmware/onKlippyStateChanged',
+        resetDispatch: 'server/firmware/reset',
+    },
 ]
 
 /*
