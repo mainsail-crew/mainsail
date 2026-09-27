@@ -158,3 +158,13 @@ export interface ServerStateConfig {
     config: Record<string, ServerStateConfigSection>
     orig: Record<string, ServerStateConfigSection>
 }
+
+/**
+ * Envelope of Moonraker's `notify_agent_event`. `data` is absent on `disconnected`,
+ * the agent's client data on `connected`, and the agent's payload otherwise.
+ */
+export interface MoonrakerAgentEvent {
+    agent: string
+    event: string
+    data?: unknown
+}

@@ -5,6 +5,15 @@
  *
  * @see https://moonraker.readthedocs.io/en/latest/external_api/server/
  */
+
+/** An agent connected to Moonraker, as listed by `server.extensions.list`. */
+export interface MoonrakerAgent {
+    name: string
+    version: string
+    type: string
+    url: string
+}
+
 export interface ServerRPC {
     /**
      * Identify the client connection to Moonraker.
@@ -27,4 +36,23 @@ export interface ServerRPC {
         /** The connection's unique identifier */
         connection_id: number
     }>
+
+    /**
+     * List the agents connected to Moonraker.
+     */
+    'server.extensions.list': () => Promise<{
+        agents: MoonrakerAgent[]
+    }>
+
+    /**
+     * Relay a request to a connected agent. The result is whatever the agent returns.
+     */
+    'server.extensions.request': (params: {
+        /** Name of the agent to address */
+        agent: string
+        /** Agent-defined method name */
+        method: string
+        /** Agent-defined arguments; `null` when the method takes none */
+        arguments: unknown
+    }) => Promise<unknown>
 }
