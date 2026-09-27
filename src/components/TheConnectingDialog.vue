@@ -102,8 +102,7 @@ export default class TheConnectingDialog extends Mixins(BaseMixin, ThemeMixin) {
 
     reconnect() {
         this.counter++
-        this.$store.dispatch('socket/setData', { connectingFailed: false })
-        this.$socket.connect()
+        this.$socket.reconnect()
     }
 }
 </script>

@@ -154,6 +154,12 @@ export class WebSocketClient {
         this.instance?.close()
     }
 
+    reconnect(): void {
+        this.reconnects = 0
+        this.store?.dispatch('socket/setData', { connectingFailed: false })
+        this.connect()
+    }
+
     getWaitById(id: number): Wait | null {
         return this.waits.find((wait: Wait) => wait.id === id) ?? null
     }
