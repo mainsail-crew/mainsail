@@ -1,5 +1,8 @@
 {
     "App": {
+        "FirmwareDialog": {
+            "LostRun": "Lost track of the run; check the run log under logs/aldis."
+        },
         "Notifications": {
             "BrowserWarnings": {
                 "Description": "{name} is outdated and not fully supported. The current version is {version}, but Mainsail requires version {minVersion} or higher.",
@@ -518,6 +521,10 @@
             "Endstops": "Endstops",
             "open": "OPEN",
             "TRIGGERED": "TRIGGERED"
+        },
+        "FirmwarePanel": {
+            "MalformedStatus": "The firmware agent sent a status Mainsail could not read.",
+            "RequestFailed": "The request to the firmware agent failed."
         },
         "LogfilesPanel": {
             "Accept": "accept",

@@ -13,6 +13,7 @@ import { jobQueue } from '@/store/server/jobQueue'
 import { announcements } from '@/store/server/announcements'
 import { spoolman } from '@/store/server/spoolman'
 import { sensor } from '@/store/server/sensor'
+import { firmware } from '@/store/server/firmware'
 import { RootState } from '@/store/types'
 
 // create getDefaultState
@@ -67,5 +68,6 @@ export const server: Module<ServerState, RootState> = {
         announcements,
         spoolman,
         sensor,
+        firmware,
     },
 }
