@@ -74,7 +74,7 @@ export class WebSocketClient {
             return
         }
 
-        // pass it to socket/onMessage, if no wait exists
+        // pass it to socket/onMessage if no wait exists
         if (!wait) {
             this.store.dispatch('socket/onMessage', data)
             return
@@ -89,11 +89,11 @@ export class WebSocketClient {
             if (result === 'ok') result = { result }
             if (typeof result === 'string') result = { result }
 
-            const preload: Record<string, unknown> = {}
-            if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
-            Object.assign(preload, { requestParams: wait.params })
-            Object.assign(preload, result as Record<string, unknown>)
-            this.store.dispatch(wait.action, preload)
+            const payload: Record<string, unknown> = {}
+            if (wait.actionPayload) Object.assign(payload, wait.actionPayload)
+            Object.assign(payload, { requestParams: wait.params })
+            Object.assign(payload, result as Record<string, unknown>)
+            this.store.dispatch(wait.action, payload)
         }
 
         this.removeWaitById(wait.id)
@@ -183,7 +183,7 @@ export class WebSocketClient {
         this.waits.splice(index, 1)
     }
 
-    emit(method: string, params: Params, options: emitOptions = {}): void {
+    emit(method: string, params: Params, options: EmitOptions = {}): void {
         if (this.instance?.readyState !== WebSocket.OPEN) return
 
         const id = this.messageId++
@@ -210,7 +210,7 @@ export class WebSocketClient {
     emitAndWait<M extends RPCMethods>(
         method: M,
         params?: RPCParams<M>,
-        options: emitOptions = {}
+        options: EmitOptions = {}
     ): Promise<RPCResult<M>> {
         return new Promise<RPCResult<M>>((resolve, reject) => {
             if (this.instance?.readyState !== WebSocket.OPEN) {
@@ -343,7 +343,7 @@ export interface WebSocketPluginOptions {
 export interface BatchMessage {
     method: string
     params: Params
-    emitOptions: emitOptions
+    emitOptions: EmitOptions
 }
 
 interface SocketError {
@@ -373,7 +373,7 @@ interface Wait {
 
 type Params = object
 
-interface emitOptions {
+interface EmitOptions {
     action?: string | null
     actionPayload?: Params
     loading?: string | null
