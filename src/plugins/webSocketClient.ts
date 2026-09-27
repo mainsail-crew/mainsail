@@ -60,12 +60,12 @@ export class WebSocketClient {
                     modulename &&
                     wait.action?.startsWith('server/') &&
                     initableServerComponents.includes(modulename) &&
-                    this.store?.state.socket?.initializationList.length
+                    this.store.state.socket?.initializationList.length
                 ) {
                     const component = wait.action.replace('server/', '').split('/')[0]
                     window.console.error(`init server component ${component} failed`)
-                    this.store?.dispatch('server/addFailedInitComponent', component)
-                    this.store?.dispatch('socket/removeInitComponent', `server/${component}/`)
+                    this.store.dispatch('server/addFailedInitComponent', component)
+                    this.store.dispatch('socket/removeInitComponent', `server/${component}/`)
                 }
 
                 this.removeWaitById(wait.id)
@@ -76,7 +76,7 @@ export class WebSocketClient {
 
         // pass it to socket/onMessage, if no wait exists
         if (!wait) {
-            this.store?.dispatch('socket/onMessage', data)
+            this.store.dispatch('socket/onMessage', data)
             return
         }
 
@@ -93,14 +93,14 @@ export class WebSocketClient {
             if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
             Object.assign(preload, { requestParams: wait.params })
             Object.assign(preload, result as Record<string, unknown>)
-            this.store?.dispatch(wait.action, preload)
+            this.store.dispatch(wait.action, preload)
         }
 
         this.removeWaitById(wait.id)
     }
 
     async connect() {
-        this.store?.dispatch('socket/setData', {
+        this.store.dispatch('socket/setData', {
             isConnecting: true,
         })
 
@@ -112,7 +112,7 @@ export class WebSocketClient {
         this.instance.onopen = () => {
             this.reconnects = 0
             this.heartbeat()
-            this.store?.dispatch('socket/onOpen')
+            this.store.dispatch('socket/onOpen')
         }
 
         this.instance.onclose = () => {
@@ -120,7 +120,7 @@ export class WebSocketClient {
             this.rejectPendingWaits()
 
             if (!this.autoReconnect) {
-                this.store?.dispatch('socket/onClose')
+                this.store.dispatch('socket/onClose')
                 return
             }
 
@@ -132,8 +132,6 @@ export class WebSocketClient {
         }
 
         this.instance.onmessage = (msg) => {
-            if (this.store === null) return
-
             // websocket is alive
             this.heartbeat()
 
@@ -159,7 +157,7 @@ export class WebSocketClient {
 
     reconnect(): void {
         this.reconnects = 0
-        this.store?.dispatch('socket/setData', { connectingFailed: false })
+        this.store.dispatch('socket/setData', { connectingFailed: false })
         this.connect()
     }
 
@@ -181,7 +179,7 @@ export class WebSocketClient {
         if (index === -1) return
 
         const wait = this.waits[index]
-        if (wait.loading) this.store?.dispatch('socket/removeLoading', { name: wait.loading })
+        if (wait.loading) this.store.dispatch('socket/removeLoading', { name: wait.loading })
         this.waits.splice(index, 1)
     }
 
@@ -197,9 +195,9 @@ export class WebSocketClient {
             loading: options.loading ?? null,
         })
 
-        if (options.loading) this.store?.dispatch('socket/addLoading', { name: options.loading })
+        if (options.loading) this.store.dispatch('socket/addLoading', { name: options.loading })
 
-        this.instance?.send(
+        this.instance.send(
             JSON.stringify({
                 jsonrpc: '2.0',
                 method,
@@ -231,9 +229,9 @@ export class WebSocketClient {
                 reject,
             })
 
-            if (options.loading) this.store?.dispatch('socket/addLoading', { name: options.loading })
+            if (options.loading) this.store.dispatch('socket/addLoading', { name: options.loading })
 
-            this.instance?.send(
+            this.instance.send(
                 JSON.stringify({
                     jsonrpc: '2.0',
                     method,
@@ -259,7 +257,7 @@ export class WebSocketClient {
                 loading: emitOptions.loading ?? null,
             })
 
-            if (emitOptions.loading) this.store?.dispatch('socket/addLoading', { name: emitOptions.loading })
+            if (emitOptions.loading) this.store.dispatch('socket/addLoading', { name: emitOptions.loading })
             body.push({
                 jsonrpc: '2.0',
                 method,
@@ -290,13 +288,13 @@ export class WebSocketClient {
     private scheduleReconnect(): void {
         if (this.reconnectTimer) return
         if (this.reconnects >= this.maxReconnects) {
-            this.store?.dispatch('socket/onClose')
+            this.store.dispatch('socket/onClose')
             return
         }
 
         const delay = Math.min(this.reconnectInterval * 2 ** this.reconnects, MAX_RECONNECT_DELAY)
         this.reconnects++
-        this.store?.dispatch('socket/setData', { isConnected: false, isConnecting: true, connectingFailed: false })
+        this.store.dispatch('socket/setData', { isConnected: false, isConnecting: true, connectingFailed: false })
         this.reconnectTimer = window.setTimeout(() => {
             this.reconnectTimer = null
             this.connect()
@@ -321,7 +319,7 @@ export class WebSocketClient {
 
     private rejectPendingWaits(): void {
         this.waits.forEach((wait) => {
-            if (wait.loading) this.store?.dispatch('socket/removeLoading', { name: wait.loading })
+            if (wait.loading) this.store.dispatch('socket/removeLoading', { name: wait.loading })
             wait.reject?.(new Error('WebSocket connection lost'))
         })
 
