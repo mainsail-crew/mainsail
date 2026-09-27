@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="application !== ''" persistent max-width="800" class="mx-0">
+    <v-dialog :value="show" persistent max-width="800" class="mx-0">
         <v-card :loading="!complete">
             <template slot="progress">
                 <v-progress-linear color="primary" indeterminate></v-progress-linear>
@@ -8,18 +8,7 @@
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon left>{{ mdiUpdate }}</v-icon>
-                        <template v-if="application.substr(0, 8) === 'recover_' && !complete">
-                            {{ $t('App.UpdateDialog.Recovering', { software: application.substr(8) }) }}
-                        </template>
-                        <template v-else-if="application.substr(0, 8) === 'recover_'">
-                            {{ $t('App.UpdateDialog.RecoveringDone', { software: application.substr(8) }) }}
-                        </template>
-                        <template v-else-if="!complete">
-                            {{ $t('App.UpdateDialog.Updating', { software: application }) }}
-                        </template>
-                        <template v-else>
-                            {{ $t('App.UpdateDialog.UpdatingDone', { software: application }) }}
-                        </template>
+                        {{ complete ? titleDone : titleRunning }}
                     </span>
                 </v-toolbar-title>
             </v-toolbar>
@@ -31,7 +20,7 @@
                                 ref="updaterLog"
                                 :headers="headers"
                                 :items="messages"
-                                item-key="date"
+                                :item-key="itemKey"
                                 hide-default-footer
                                 hide-default-header
                                 disable-pagination
@@ -50,7 +39,10 @@
                                             {{ formatTime(item.date) }}
                                         </td>
                                         <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width: 100%">
-                                            <span v-if="item.message" class="message" v-html="item.message"></span>
+                                            <template v-if="item.message">
+                                                <span v-if="renderHtml" class="message" v-html="item.message"></span>
+                                                <span v-else class="message">{{ item.message }}</span>
+                                            </template>
                                         </td>
                                     </tr>
                                 </template>
@@ -60,7 +52,7 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn text :disabled="!complete" color="primary" @click="close">
+                        <v-btn text :disabled="!complete" color="primary" @click="$emit('close')">
                             {{ $t('Buttons.Close') }}
                         </v-btn>
                     </v-col>
@@ -72,16 +64,28 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Ref, Watch } from 'vue-property-decorator'
+import { Mixins, Prop, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ServerUpdateManagerStateMessages } from '@/store/server/updateManager/types'
 import { mdiUpdate } from '@mdi/js'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+
+export interface UpdateDialogMessage {
+    date: Date
+    message: string
+}
 
 @Component
 export default class TheUpdateDialog extends Mixins(BaseMixin) {
     @Ref() readonly updaterLogScroll!: OverlayScrollbarsComponent
     @Ref() readonly updaterLog!: HTMLDivElement
+
+    @Prop({ type: Boolean, required: true }) readonly show!: boolean
+    @Prop({ type: Boolean, required: true }) readonly complete!: boolean
+    @Prop({ type: Array, required: true }) readonly messages!: UpdateDialogMessage[]
+    @Prop({ type: String, required: true }) readonly titleRunning!: string
+    @Prop({ type: String, required: true }) readonly titleDone!: string
+    @Prop({ type: String, default: 'date' }) readonly itemKey!: string
+    @Prop({ type: Boolean, default: true }) readonly renderHtml!: boolean
 
     mdiUpdate = mdiUpdate
 
@@ -100,19 +104,7 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
         },
     ]
 
-    get application() {
-        return this.$store.state.server.updateManager.updateResponse.application ?? ''
-    }
-
-    get messages(): ServerUpdateManagerStateMessages[] {
-        return this.$store.state.server.updateManager.updateResponse.messages ?? []
-    }
-
-    get complete() {
-        return this.$store.state.server.updateManager.updateResponse.complete ?? true
-    }
-
-    customSort(items: ServerUpdateManagerStateMessages[], sortBy: string[], sortDesc: boolean[]) {
+    customSort(items: UpdateDialogMessage[], sortBy: string[], sortDesc: boolean[]) {
         const sortKey = sortBy[0]
         const isDescending = sortDesc[0]
 
@@ -144,24 +136,6 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
         const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds().toString() : date.getSeconds()
 
         return hours + ':' + minutes + ':' + seconds
-    }
-
-    close() {
-        if (
-            this.application !== null &&
-            this.complete &&
-            ['client', 'mainsail', 'full'].includes(this.application.toLowerCase())
-        ) {
-            window.location.reload()
-            return
-        }
-
-        this.$store.commit('server/updateManager/resetUpdateResponse')
-        this.$socket.emit(
-            'machine.update.status',
-            { refresh: false },
-            { action: 'server/updateManager/onUpdateStatus' }
-        )
     }
 
     @Watch('messages')

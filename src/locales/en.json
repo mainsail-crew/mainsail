@@ -1,7 +1,9 @@
 {
     "App": {
         "FirmwareDialog": {
-            "LostRun": "Lost track of the run; check the run log under logs/aldis."
+            "LostRun": "Lost track of the run; check the run log under logs/aldis.",
+            "Updating": "Updating firmware...",
+            "UpdatingDone": "Firmware updates finished"
         },
         "Notifications": {
             "BrowserWarnings": {

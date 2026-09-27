@@ -4,6 +4,7 @@ import {
     agentErrorReason,
     apiVersionOf,
     applyEvent,
+    firmwareDialogVisible,
     formatResponse,
     isStatusResponse,
     isUpdateResponse,
@@ -275,5 +276,16 @@ describe('run walkthrough', () => {
         state = applyEvent(state, event({ message: 'b' }))
         expect(state.busy).toBe(true)
         expect(state.responses.map((line) => line.message)).toEqual(['can: a', 'can: b'])
+    })
+})
+
+describe('firmwareDialogVisible', () => {
+    it('shows while busy or while a log is left to read', () => {
+        expect(firmwareDialogVisible(true, 0)).toBe(true)
+        expect(firmwareDialogVisible(false, 3)).toBe(true)
+    })
+
+    it('hides once a rejected request leaves no run and no log', () => {
+        expect(firmwareDialogVisible(false, 0)).toBe(false)
     })
 })

@@ -9,7 +9,8 @@
                 </v-container>
             </v-main>
             <the-service-worker />
-            <the-update-dialog />
+            <the-update-manager-dialog />
+            <the-firmware-dialog />
             <the-editor />
             <the-timelapse-rendering-snackbar />
             <the-fullscreen-upload />
@@ -31,7 +32,8 @@ import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
-import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
+import TheUpdateManagerDialog from '@/components/TheUpdateManagerDialog.vue'
+import TheFirmwareDialog from '@/components/TheFirmwareDialog.vue'
 import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
@@ -53,7 +55,8 @@ import { AppRoute } from '@/routes'
         TheEditor,
         TheSelectPrinterDialog,
         TheConnectingDialog,
-        TheUpdateDialog,
+        TheUpdateManagerDialog,
+        TheFirmwareDialog,
         TheTopbar,
         TheSidebar,
         TheFullscreenUpload,

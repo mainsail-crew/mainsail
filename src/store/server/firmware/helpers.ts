@@ -152,3 +152,5 @@ export const agentErrorReason = (error: unknown): string | null => {
 
     return typeof reason === 'string' ? reason : null
 }
+
+export const firmwareDialogVisible = (busy: boolean, responseCount: number): boolean => busy || responseCount > 0
