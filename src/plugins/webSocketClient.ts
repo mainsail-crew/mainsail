@@ -186,7 +186,10 @@ export class WebSocketClient {
         options: emitOptions = {}
     ): Promise<RPCResult<M>> {
         return new Promise<RPCResult<M>>((resolve, reject) => {
-            if (this.instance?.readyState !== WebSocket.OPEN) reject()
+            if (this.instance?.readyState !== WebSocket.OPEN) {
+                reject(new Error('WebSocket is not connected'))
+                return
+            }
 
             const id = this.messageId++
             this.waits.push({
