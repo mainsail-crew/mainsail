@@ -114,6 +114,7 @@ export class WebSocketClient {
 
         this.instance.onclose = () => {
             this.clearHeartbeat()
+            this.rejectPendingWaits()
 
             if (!this.autoReconnect) {
                 this.store?.dispatch('socket/onClose')
@@ -297,6 +298,16 @@ export class WebSocketClient {
         this.instance.close()
         this.instance = null
         this.clearHeartbeat()
+        this.rejectPendingWaits()
+    }
+
+    private rejectPendingWaits(): void {
+        this.waits.forEach((wait) => {
+            if (wait.loading) this.store?.dispatch('socket/removeLoading', { name: wait.loading })
+            wait.reject?.(new Error('WebSocket connection lost'))
+        })
+
+        this.waits = []
     }
 }
 
