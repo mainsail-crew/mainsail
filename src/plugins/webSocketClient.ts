@@ -8,24 +8,22 @@ const HEARTBEAT_TIMEOUT = 10_000
 const MAX_RECONNECT_DELAY = 30_000
 
 export class WebSocketClient {
-    url = ''
-    instance: WebSocket | null = null
-    maxReconnects = 5
-    reconnectInterval = 1000
-    reconnects = 0
-    reconnectTimer: number | null = null
-    keepAliveTimeout = 1000
-    messageId: number = 0
-    timerId: number | null = null
-    store: Store<RootState> | null = null
-    waits: Wait[] = []
-    heartbeatTimer: number | null = null
-    autoReconnect: boolean = false
+    private url: string
+    private instance: WebSocket | null = null
+    private readonly maxReconnects: number
+    private readonly reconnectInterval: number
+    private reconnects = 0
+    private reconnectTimer: number | null = null
+    private messageId: number = 0
+    private readonly store: Store<RootState>
+    private waits: Wait[] = []
+    private heartbeatTimer: number | null = null
+    private autoReconnect: boolean = false
 
     constructor(options: WebSocketPluginOptions) {
         this.url = options.url
-        this.maxReconnects = options.maxReconnects || 5
-        this.reconnectInterval = options.reconnectInterval || 1000
+        this.maxReconnects = options.maxReconnects ?? 5
+        this.reconnectInterval = options.reconnectInterval ?? 1_000
         this.store = options.store
 
         document.addEventListener('visibilitychange', () => {
@@ -38,7 +36,7 @@ export class WebSocketClient {
         this.url = url
     }
 
-    handleMessage(data: SocketIncomingMessage): void {
+    private handleMessage(data: SocketIncomingMessage): void {
         const wait = typeof data.id === 'number' ? this.getWaitById(data.id) : null
 
         // reject promise if it exists
@@ -174,11 +172,11 @@ export class WebSocketClient {
         this.reconnect()
     }
 
-    getWaitById(id: number): Wait | null {
+    private getWaitById(id: number): Wait | null {
         return this.waits.find((wait: Wait) => wait.id === id) ?? null
     }
 
-    removeWaitById(id: number | null): void {
+    private removeWaitById(id: number): void {
         const index = this.waits.findIndex((wait: Wait) => wait.id === id)
         if (index === -1) return
 
@@ -273,7 +271,7 @@ export class WebSocketClient {
         this.instance.send(JSON.stringify(body))
     }
 
-    heartbeat(): void {
+    private heartbeat(): void {
         this.clearHeartbeat()
         this.heartbeatTimer = window.setTimeout(() => {
             if (this.instance?.readyState !== WebSocket.OPEN) return
@@ -365,7 +363,7 @@ interface SocketIncomingMessage {
     [key: string]: unknown
 }
 
-export interface Wait {
+interface Wait {
     id: number
     params: unknown
     action?: string | null
