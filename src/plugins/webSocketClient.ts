@@ -149,11 +149,11 @@ export class WebSocketClient {
 
     removeWaitById(id: number | null): void {
         const index = this.waits.findIndex((wait: Wait) => wait.id === id)
-        if (index) {
-            const wait = this.waits[index]
-            if (wait.loading) this.store?.dispatch('socket/removeLoading', { name: wait.loading })
-            this.waits.splice(index, 1)
-        }
+        if (index === -1) return
+
+        const wait = this.waits[index]
+        if (wait.loading) this.store?.dispatch('socket/removeLoading', { name: wait.loading })
+        this.waits.splice(index, 1)
     }
 
     emit(method: string, params: Params, options: emitOptions = {}): void {
