@@ -27,6 +27,11 @@ export class WebSocketClient {
         this.maxReconnects = options.maxReconnects || 5
         this.reconnectInterval = options.reconnectInterval || 1000
         this.store = options.store
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') this.reconnectIfDisconnected()
+        })
+        window.addEventListener('online', () => this.reconnectIfDisconnected())
     }
 
     setUrl(url: string): void {
@@ -158,6 +163,15 @@ export class WebSocketClient {
         this.reconnects = 0
         this.store?.dispatch('socket/setData', { connectingFailed: false })
         this.connect()
+    }
+
+    private reconnectIfDisconnected(): void {
+        if (!this.autoReconnect) return
+
+        const state = this.instance?.readyState
+        if (state === WebSocket.OPEN || state === WebSocket.CONNECTING) return
+
+        this.reconnect()
     }
 
     getWaitById(id: number): Wait | null {

@@ -479,6 +479,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     switchToChangePrinter() {
+        this.$socket.close()
         this.$store.dispatch('socket/setData', { connectingFailed: false })
     }
 
