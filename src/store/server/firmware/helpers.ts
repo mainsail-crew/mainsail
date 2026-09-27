@@ -3,6 +3,7 @@ import type {
     AldisRun,
     AldisRunResult,
     AldisStatusResponse,
+    AldisTransport,
     AldisUpdateResponse,
     AldisUpdateResult,
     FirmwareResponseLine,
@@ -154,3 +155,23 @@ export const agentErrorReason = (error: unknown): string | null => {
 }
 
 export const firmwareDialogVisible = (busy: boolean, responseCount: number): boolean => busy || responseCount > 0
+
+export const transportLabel = (transport: AldisTransport | null): string | null => {
+    if (transport === null) return null
+
+    return transport.type === 'can' ? `${transport.interface} · ${transport.uuid}` : transport.device
+}
+
+const STATE_LABELS: Record<string, string> = {
+    current: 'Current',
+    update_available: 'UpdateAvailable',
+    indeterminate: 'Indeterminate',
+    externally_managed: 'ExternallyManaged',
+    unsupported_legacy: 'UnsupportedLegacy',
+    unsupported_mcu: 'UnsupportedMcu',
+    not_identified: 'NotIdentified',
+    not_responding: 'NotResponding',
+}
+
+export const stateLabelKey = (state: string): string | null =>
+    state in STATE_LABELS ? `Machine.FirmwarePanel.State.${STATE_LABELS[state]}` : null

@@ -11,6 +11,8 @@ import {
     isUpdateResult,
     needsRetry,
     reconcileRun,
+    stateLabelKey,
+    transportLabel,
     unsupportedStatus,
     updatableMcus,
 } from '@/store/server/firmware/helpers'
@@ -287,5 +289,35 @@ describe('firmwareDialogVisible', () => {
 
     it('hides once a rejected request leaves no run and no log', () => {
         expect(firmwareDialogVisible(false, 0)).toBe(false)
+    })
+})
+
+describe('transportLabel', () => {
+    it('formats CAN and serial transports', () => {
+        expect(transportLabel({ type: 'can', interface: 'can0', uuid: 'e7819ed8e7d3' })).toBe('can0 · e7819ed8e7d3')
+        expect(transportLabel({ type: 'serial', device: '/dev/serial/by-id/usb-Klipper' })).toBe(
+            '/dev/serial/by-id/usb-Klipper'
+        )
+    })
+
+    it('is null without a transport', () => {
+        expect(transportLabel(null)).toBeNull()
+    })
+})
+
+describe('stateLabelKey', () => {
+    it('maps every documented state to its locale key', () => {
+        expect(stateLabelKey('current')).toBe('Machine.FirmwarePanel.State.Current')
+        expect(stateLabelKey('update_available')).toBe('Machine.FirmwarePanel.State.UpdateAvailable')
+        expect(stateLabelKey('indeterminate')).toBe('Machine.FirmwarePanel.State.Indeterminate')
+        expect(stateLabelKey('externally_managed')).toBe('Machine.FirmwarePanel.State.ExternallyManaged')
+        expect(stateLabelKey('unsupported_legacy')).toBe('Machine.FirmwarePanel.State.UnsupportedLegacy')
+        expect(stateLabelKey('unsupported_mcu')).toBe('Machine.FirmwarePanel.State.UnsupportedMcu')
+        expect(stateLabelKey('not_identified')).toBe('Machine.FirmwarePanel.State.NotIdentified')
+        expect(stateLabelKey('not_responding')).toBe('Machine.FirmwarePanel.State.NotResponding')
+    })
+
+    it('is null for a state this version does not know', () => {
+        expect(stateLabelKey('future_state')).toBeNull()
     })
 })
