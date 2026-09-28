@@ -22,7 +22,7 @@ export const actions: ActionTree<SocketState, RootState> = {
 
         Vue.$socket.close()
         Vue.$socket.setUrl(state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket')
-        Vue.$socket.connect()
+        Vue.$socket.reconnect()
     },
 
     onOpen({ commit, dispatch, rootState }) {
