@@ -18,6 +18,7 @@ jimmyjon711 Maintainer from AFC
 jomik
 julianschill LED effects Maintainer
 jwueller
+manuelmuehlberger
 moggieuk Maintainer from Happy Hare
 mspi92
 neko-vecter
