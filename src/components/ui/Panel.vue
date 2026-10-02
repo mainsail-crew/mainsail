@@ -13,7 +13,7 @@
             <slot name="buttons-left" />
             <v-toolbar-title class="d-flex align-center">
                 <slot v-if="hasIconSlot" name="icon" />
-                <v-icon v-if="icon !== null && !hasIconSlot" left>{{ icon }}</v-icon>
+                <v-icon v-if="icon !== null && !hasIconSlot" class="panel-header-icon" left>{{ icon }}</v-icon>
                 <span v-if="title" class="subheading">{{ title }}</span>
             </v-toolbar-title>
             <slot name="buttons-title" />
