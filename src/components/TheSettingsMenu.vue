@@ -81,9 +81,11 @@ import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
 import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 import SettingsNavigationTab from '@/components/settings/SettingsNavigationTab.vue'
+import SettingsNotificationsTab from '@/components/settings/SettingsNotificationsTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
 import {
+    mdiBellRing,
     mdiCloseThick,
     mdiCodeTags,
     mdiCog,
@@ -123,6 +125,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
         SettingsTimelapseTab,
         SettingsMiscellaneousTab,
         SettingsNavigationTab,
+        SettingsNotificationsTab,
         SettingsHeightmapTab,
     },
 })
@@ -208,6 +211,15 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 title: this.$t('Settings.HeightmapTab.Heightmap'),
             },
         ]
+
+        // Shown on every device type: the subscribe controls inside still gate
+        // themselves to a push-capable browser, but the connected-device list is
+        // useful anywhere -- a desktop can drop a stale phone entry.
+        tabs.push({
+            icon: mdiBellRing,
+            name: 'notifications',
+            title: this.$t('Settings.NotificationsTab.Notifications'),
+        })
 
         if (this.moonrakerComponents.includes('timelapse')) {
             tabs.push({
