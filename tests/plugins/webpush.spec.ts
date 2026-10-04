@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
+    buildNotifyCfg,
     derivePublicKeyFromPem,
     generateVapidKeypair,
+    notifyCfgCodeEquals,
+    progressSourceFor,
     replaceConfigSection,
+    setNotifyCfgSetting,
     toSubscriptionJson,
     urlBase64ToUint8Array,
 } from '@/plugins/webpush'
@@ -118,6 +122,73 @@ describe('webpush', () => {
             const content = `[notifier webpush2]\nurl: other\n`
 
             expect(replaceConfigSection(content, header, section)).toBe(`${content}\n${section}\n`)
+        })
+    })
+
+    describe('progressSourceFor', () => {
+        it('measures by the slicer only when progress is shown by the slicer', () => {
+            expect(progressSourceFor('slicer')).toBe('slicer')
+        })
+
+        it('uses the file position for every mode the printer cannot measure itself', () => {
+            expect(progressSourceFor('file-relative')).toBe('file')
+            expect(progressSourceFor('file-absolute')).toBe('file')
+            expect(progressSourceFor('filament')).toBe('file')
+            expect(progressSourceFor(undefined)).toBe('file')
+        })
+    })
+
+    describe('buildNotifyCfg', () => {
+        it('fills every settings line with a value Klipper can parse', () => {
+            const cfg = buildNotifyCfg(25, ['extruder', 'mmu_entry_0'], 'slicer')
+
+            expect(cfg).toContain('variable_progress_interval: 25\n')
+            expect(cfg).toContain('variable_progress_source: "slicer"\n')
+            expect(cfg).toContain('variable_runout_sensors: "extruder,mmu_entry_0"\n')
+            expect(cfg).not.toMatch(/__[A-Z_]+__/)
+        })
+
+        it('reads the slicer progress only when display_status exists', () => {
+            const cfg = buildNotifyCfg(25, [], 'slicer')
+
+            // a printer without [display] or mainsail.cfg has no display_status,
+            // and reading it there would break the macro
+            expect(cfg).toContain('{% set use_slicer = source == "slicer" and "display_status" in printer %}')
+            expect(cfg).toContain(
+                '{% set progress = printer.display_status.progress if use_slicer else printer.virtual_sdcard.progress %}'
+            )
+        })
+    })
+
+    describe('notifyCfgCodeEquals', () => {
+        it('treats a different progress source as a settings-only change', () => {
+            expect(
+                notifyCfgCodeEquals(buildNotifyCfg(25, [], 'slicer'), buildNotifyCfg(10, ['extruder'], 'file'))
+            ).toBe(true)
+        })
+
+        it('sees a file without the progress source line as different code', () => {
+            const current = buildNotifyCfg(25, [], 'file')
+            const older = current.replace(/^variable_progress_source:.*\n/m, '')
+
+            expect(notifyCfgCodeEquals(current, older)).toBe(false)
+        })
+    })
+
+    describe('setNotifyCfgSetting', () => {
+        it('rewrites one settings line and leaves every other byte alone', () => {
+            const cfg = buildNotifyCfg(25, ['extruder'], 'file')
+
+            expect(setNotifyCfgSetting(cfg, 'progress_source', '"slicer"')).toBe(
+                buildNotifyCfg(25, ['extruder'], 'slicer')
+            )
+        })
+
+        it('leaves a file without that line unchanged', () => {
+            const older = buildNotifyCfg(25, [], 'file').replace(/^variable_progress_source:.*\n/m, '')
+
+            expect(setNotifyCfgSetting(older, 'progress_source', '"slicer"')).toBe(older)
+            expect(setNotifyCfgSetting('', 'progress_source', '"slicer"')).toBe('')
         })
     })
 

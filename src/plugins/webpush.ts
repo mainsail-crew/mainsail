@@ -7,6 +7,9 @@
  * an error.
  */
 
+import axios from 'axios'
+import { sha256 } from 'js-sha256'
+
 export interface WebPushSubscriptionJson {
     endpoint: string
     keys: {
@@ -210,7 +213,7 @@ export const replaceConfigSection = (content: string, header: string, section: s
 
 /**
  * The Klipper macro file Mainsail installs as webpush/notify.cfg, so push
- * notifications need no hand-placed config. Only the two [gcode_macro
+ * notifications need no hand-placed config. Only the three [gcode_macro
  * _NOTIFY_SETTINGS] variable_ lines vary; buildNotifyCfg fills them in.
  *
  * String.raw keeps Klipper's literal \n as two characters instead of a
@@ -237,13 +240,17 @@ gcode:
 
 [gcode_macro _NOTIFY_SETTINGS]
 variable_progress_interval: __PROGRESS_INTERVAL__
+variable_progress_source: __PROGRESS_SOURCE__
 variable_runout_sensors: __RUNOUT_SENSORS__
 gcode:
     # holds settings only, never called directly
 
 
 # Progress notifications. 100 means "completion only", which the
-# [notifier webpush] complete event already covers.
+# [notifier webpush] complete event already covers. Progress is measured the
+# way Mainsail shows it: "slicer" is the slicer's M73 value, which
+# display_status holds for the whole print; anything else is the file
+# position. A printer without display_status falls back to the file position.
 
 [gcode_macro _NOTIFY_PROGRESS_VARS]
 variable_last_step: -1
@@ -258,7 +265,10 @@ gcode:
     {% set last_step = printer["gcode_macro _NOTIFY_PROGRESS_VARS"].last_step|int %}
 
     {% if state == "printing" and interval > 0 and interval < 100 %}
-        {% set pct = (printer.virtual_sdcard.progress * 100)|int %}
+        {% set source = printer["gcode_macro _NOTIFY_SETTINGS"].progress_source|default("file")|string %}
+        {% set use_slicer = source == "slicer" and "display_status" in printer %}
+        {% set progress = printer.display_status.progress if use_slicer else printer.virtual_sdcard.progress %}
+        {% set pct = (progress * 100)|int %}
         {% set step = ((pct / interval)|int) * interval %}
         # 100% is deliberately left to the print-complete notification
         {% if step > last_step and step > 0 and step < 100 %}
@@ -329,18 +339,43 @@ gcode:
     UPDATE_DELAYED_GCODE ID=NOTIFY_RUNOUT_CHECK DURATION=15
 `
 
+export type NotifyProgressSource = 'slicer' | 'file'
+
+/**
+ * Maps Mainsail's print progress setting (Settings -> General) to what the
+ * printer-side macro can measure on its own, with no browser open. "slicer"
+ * is the M73 value. Both file modes become the file position: the relative
+ * one only drops the file header, which Klipper does not know the size of.
+ * "filament" needs the file's filament total, which Klipper does not have
+ * either, so it also falls back to the file position.
+ */
+export const progressSourceFor = (calcPrintProgress: string | undefined | null): NotifyProgressSource =>
+    calcPrintProgress === 'slicer' ? 'slicer' : 'file'
+
 /**
  * Renders the macro file for the current settings. The interval is a bare
- * integer; the sensor list is a double-quoted Klipper string literal, which
- * is what ast.literal_eval expects on the variable_ line.
+ * integer; the sensor list and the progress source are double-quoted Klipper
+ * string literals, which is what ast.literal_eval expects on a variable_ line.
  */
-export const buildNotifyCfg = (progressInterval: number, runoutSensors: string[]): string =>
-    NOTIFY_CFG_TEMPLATE.replace('__PROGRESS_INTERVAL__', String(Math.trunc(progressInterval))).replace(
-        '__RUNOUT_SENSORS__',
-        JSON.stringify(runoutSensors.join(','))
-    )
+export const buildNotifyCfg = (
+    progressInterval: number,
+    runoutSensors: string[],
+    progressSource: NotifyProgressSource
+): string =>
+    NOTIFY_CFG_TEMPLATE.replace('__PROGRESS_INTERVAL__', String(Math.trunc(progressInterval)))
+        .replace('__PROGRESS_SOURCE__', JSON.stringify(progressSource))
+        .replace('__RUNOUT_SENSORS__', JSON.stringify(runoutSensors.join(',')))
 
-const notifyCfgSettingsLine = /^(variable_(?:progress_interval|runout_sensors)):.*$/gm
+const notifyCfgSettingsLine = /^(variable_(?:progress_interval|progress_source|runout_sensors)):.*$/gm
+
+/**
+ * Sets one [gcode_macro _NOTIFY_SETTINGS] variable in an existing notify.cfg
+ * text, leaving every other byte alone. A file without that line comes back
+ * unchanged: it predates the setting, and its macro code is rewritten as a
+ * whole the next time the Notifications settings are opened.
+ */
+export const setNotifyCfgSetting = (content: string, name: string, literal: string): string =>
+    content.replace(new RegExp(`^variable_${name}:.*$`, 'm'), `variable_${name}: ${literal}`)
 
 /**
  * Compares two notify.cfg texts ignoring the settings lines. Equal means only
@@ -349,3 +384,36 @@ const notifyCfgSettingsLine = /^(variable_(?:progress_interval|runout_sensors)):
  */
 export const notifyCfgCodeEquals = (a: string, b: string): boolean =>
     a.replace(notifyCfgSettingsLine, '$1:') === b.replace(notifyCfgSettingsLine, '$1:')
+
+/** The Klipper macro file Mainsail owns, relative to Moonraker's config root. */
+export const notifyCfgPath = 'webpush/notify.cfg'
+
+/** Raw text of a file in Moonraker's config root; a missing file reads as empty. */
+export const readConfigFile = async (apiUrl: string, path: string): Promise<string> => {
+    try {
+        const response = await axios.get(`${apiUrl}/server/files/config/${path}`, {
+            params: { date: Date.now() },
+            responseType: 'text',
+            transformResponse: [(data) => data],
+        })
+
+        return typeof response.data === 'string' ? response.data : ''
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) return ''
+
+        throw error
+    }
+}
+
+export const writeConfigFile = async (apiUrl: string, path: string, content: string) => {
+    const filename = path.split('/').pop() ?? path
+    const directory = path.split('/').slice(0, -1).join('/')
+
+    const formData = new FormData()
+    formData.append('file', new Blob([content], { type: 'text/plain' }), filename)
+    formData.append('root', 'config')
+    formData.append('path', directory)
+    formData.append('checksum', sha256(content))
+
+    await axios.post(`${apiUrl}/server/files/upload`, formData)
+}

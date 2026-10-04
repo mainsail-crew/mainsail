@@ -142,11 +142,16 @@ import {
     isPushSupported,
     isStandalone,
     notifyCfgCodeEquals,
+    notifyCfgPath,
+    NotifyProgressSource,
+    progressSourceFor,
+    readConfigFile,
     replaceConfigSection,
     subscribe,
     toSubscriptionJson,
     unsubscribe,
     WebPushSubscriptionJson,
+    writeConfigFile,
 } from '@/plugins/webpush'
 
 const deviceNameStorageKey = 'mainsail.push.deviceName'
@@ -156,10 +161,8 @@ const deviceNameStorageKey = 'mainsail.push.deviceName'
 const notifierSectionHeader = '[notifier webpush]'
 const notifierSubscriber = 'webpush@example.com'
 
-// The Klipper macro file Mainsail owns, and the one line it guarantees in
-// printer.cfg so Klipper loads it.
-const notifyCfgPath = 'webpush/notify.cfg'
-const notifyCfgInclude = '[include webpush/notify.cfg]'
+// The one line Mainsail guarantees in printer.cfg so Klipper loads its macro file.
+const notifyCfgInclude = `[include ${notifyCfgPath}]`
 
 @Component({
     components: {
@@ -274,6 +277,11 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
             `SET_GCODE_VARIABLE MACRO=_NOTIFY_SETTINGS VARIABLE=progress_interval VALUE=${Math.trunc(newVal)}`
         )
         this.ensureKlipperMacros()
+    }
+
+    /** Progress is notified the way it is shown, per Settings -> General. */
+    get progressSource(): NotifyProgressSource {
+        return progressSourceFor(this.$store.state.gui.general?.calcPrintProgress)
     }
 
     get availableRunoutSensors(): string[] {
@@ -647,33 +655,12 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
     }
 
     /** Raw text of a file in the config root; a missing file reads as empty. */
-    async readConfigText(path: string): Promise<string> {
-        try {
-            const response = await axios.get(`${this.apiUrl}/server/files/config/${path}`, {
-                params: { date: Date.now() },
-                responseType: 'text',
-                transformResponse: [(data) => data],
-            })
-
-            return typeof response.data === 'string' ? response.data : ''
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.status === 404) return ''
-
-            throw error
-        }
+    readConfigText(path: string): Promise<string> {
+        return readConfigFile(this.apiUrl, path)
     }
 
-    async writeConfigText(path: string, content: string) {
-        const filename = path.split('/').pop() ?? path
-        const directory = path.split('/').slice(0, -1).join('/')
-
-        const formData = new FormData()
-        formData.append('file', new Blob([content], { type: 'text/plain' }), filename)
-        formData.append('root', 'config')
-        formData.append('path', directory)
-        formData.append('checksum', sha256(content))
-
-        await axios.post(`${this.apiUrl}/server/files/upload`, formData)
+    writeConfigText(path: string, content: string) {
+        return writeConfigFile(this.apiUrl, path, content)
     }
 
     /** Absolute path of Moonraker's config root, resolved once per component. */
@@ -761,7 +748,7 @@ export default class SettingsNotificationsTab extends Mixins(BaseMixin) {
                 return
             }
 
-            const wanted = buildNotifyCfg(this.progressInterval, this.runoutSensors)
+            const wanted = buildNotifyCfg(this.progressInterval, this.runoutSensors, this.progressSource)
             let codeChanged = false
 
             if (wanted !== existing) {
