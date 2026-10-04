@@ -66,6 +66,38 @@ jobs:
         shell: bash
         run: mv ./dist/mainsail.zip ./mainsail.zip
 
+      - name: GPG signature
+        shell: bash
+        env:
+          GPG_PRIVATE_KEY_BASE64: ${{ secrets.GPG_PRIVATE_KEY_BASE64 }}
+        run: |
+          set -euo pipefail
+      
+          # make temp home dir
+          export GNUPGHOME="$(mktemp -d)"
+          chmod 700 "$GNUPGHOME"
+      
+          # write base64 gpg key to private.key
+          echo "$GPG_PRIVATE_KEY_BASE64" | base64 --decode > "$GNUPGHOME/private.key"
+      
+          # import private.key
+          gpg --batch --import "$GNUPGHOME/private.key"
+      
+          # rm temp key
+          rm -f "$GNUPGHOME/private.key"
+      
+          # use key to sign
+          gpg \
+            --batch \
+            --yes \
+            --armor \
+            --detach-sign \
+            --output mainsail.zip.asc \
+            mainsail.zip
+      
+          # clean temp dir
+          rm -rf "$GNUPGHOME"
+          
       - name: Get latest tag
         id: latest_tag
         shell: bash
@@ -88,7 +120,9 @@ jobs:
           token: ${{ secrets.PAT }}
           name: v${{ github.event.inputs.version }}
           tag_name: v${{ github.event.inputs.version }}
-          files: ./mainsail.zip
+          files: |
+            ./mainsail.zip
+            ./mainsail.zip.asc
           body: ${{ steps.generate-changelog.outputs.content }}
 
       - name: Copy remote configs to dist
