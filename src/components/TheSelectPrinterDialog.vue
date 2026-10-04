@@ -471,15 +471,15 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
             (normPath.length > 0 ? `/${normPath}` : '') +
             '/websocket'
         this.$socket.setUrl(url)
-        this.$socket.connect()
+        this.$socket.reconnect()
     }
 
     reconnect() {
-        this.$store.dispatch('socket/setData', { connectingFailed: false })
-        this.$socket.connect()
+        this.$socket.reconnect()
     }
 
     switchToChangePrinter() {
+        this.$socket.close()
         this.$store.dispatch('socket/setData', { connectingFailed: false })
     }
 
