@@ -61,6 +61,7 @@
                         :file-extension="fileExtension"
                         class="codemirror"
                         :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
+                        @ready="restorePosition"
                         @lineChange="lineChanges" />
                     <div v-if="existsFileStructure && fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
@@ -184,6 +185,10 @@ import {
 } from '@mdi/js'
 import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
 import { ConfigFileSection } from '@/store/files/types'
+import type { EditorView } from '@codemirror/view'
+import { EditorPositionMemory } from '@/plugins/codemirror/EditorPositionMemory'
+
+const editorPositions = new EditorPositionMemory()
 
 @Component({
     components: { DevicesDialog, Panel, CodemirrorAsync },
@@ -392,6 +397,13 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     toggleFileStructure() {
         this.fileStructureSidebar = !this.fileStructureSidebar
+    }
+
+    restorePosition(view: EditorView) {
+        if (this.fileroot !== 'config') return
+
+        const key = JSON.stringify([this.$store.getters['socket/getUrl'], this.fileroot, this.filepath, this.filename])
+        editorPositions.restore(view, key)
     }
 
     cancelDownload() {
