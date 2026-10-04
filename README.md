@@ -76,6 +76,7 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 - **[Theming Support](https://docs.mainsail.xyz/features/theming):** _Customizable user interface including logos, backgrounds, and custom CSS_
 - **[Additional Sensors](https://docs.mainsail.xyz/quicktips/additional-sensors):** _Add extra sensors to the temperature graph_
 - **Exclude Objects:** _Exclude parts of your print <sup>(not officially supported by Klipper yet)</sup>_
+- **Push Notifications:** _Get a notification on your phone when a print finishes, even with the app closed_
 
 ## Help and Support
 

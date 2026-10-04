@@ -7,10 +7,21 @@ import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
 import { checker } from 'vite-plugin-checker'
 
 import path from 'path'
+import fs from 'fs'
+import { createHash } from 'crypto'
 import buildVersion from './src/plugins/build-version'
 import buildReleaseInfo from './src/plugins/build-release_info'
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import postcssNesting from 'postcss-nesting'
+
+// Workbox keeps importScripts targets out of the precache manifest, so the push
+// handlers get no revision of their own. Hashing their content into the URL is
+// what makes an edit to them produce a new sw.js and reach existing clients.
+const pushWorkerFile = 'push-sw.js'
+const pushWorkerHash = createHash('sha256')
+    .update(fs.readFileSync(path.resolve(__dirname, 'public', pushWorkerFile)))
+    .digest('hex')
+    .slice(0, 8)
 
 const PWAConfig: Partial<VitePWAOptions> = {
     registerType: 'autoUpdate',
@@ -50,6 +61,8 @@ const PWAConfig: Partial<VitePWAOptions> = {
     },
     workbox: {
         globPatterns: ['**/*.{js,css,html,woff,woff2,png,svg}'],
+        // adds the push/notificationclick handlers to the generated worker
+        importScripts: [`${pushWorkerFile}?v=${pushWorkerHash}`],
         navigateFallbackDenylist: [/^\/(access|api|printer|server|websocket)/, /^\/webcam[2-4]?/],
         runtimeCaching: [
             {
