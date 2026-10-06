@@ -479,6 +479,8 @@ import {
     OverlayPrintTimeSource,
 } from '@/store/gui/webcams/types'
 
+type WebcamExtraData = NonNullable<GuiWebcamStateWebcam['extra_data']>
+
 @Component({
     components: {
         SettingsRow,
@@ -534,102 +536,83 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get overlaysEnabled() {
-        return this.webcam.extra_data?.overlaysEnabled ?? false
+        return this.getExtraData('overlaysEnabled', false)
     }
 
     set overlaysEnabled(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlaysEnabled = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlaysEnabled', newVal)
     }
 
     get overlayShowExtruders() {
-        return this.webcam.extra_data?.overlayShowExtruders ?? false
+        return this.getExtraData('overlayShowExtruders', false)
     }
 
     set overlayShowExtruders(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowExtruders = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowExtruders', newVal)
     }
+
     get overlayShowHeatbed() {
-        return this.webcam.extra_data?.overlayShowHeatbed ?? false
+        return this.getExtraData('overlayShowHeatbed', false)
     }
 
     set overlayShowHeatbed(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowHeatbed = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowHeatbed', newVal)
     }
 
     get overlayShowFanSpeed() {
-        return this.webcam.extra_data?.overlayShowFanSpeed ?? false
+        return this.getExtraData('overlayShowFanSpeed', false)
     }
 
     set overlayShowFanSpeed(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowFanSpeed = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowFanSpeed', newVal)
     }
 
     get overlayShowPrintTime() {
-        return this.webcam.extra_data?.overlayShowPrintTime ?? false
+        return this.getExtraData('overlayShowPrintTime', false)
     }
 
     set overlayShowPrintTime(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowPrintTime = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowPrintTime', newVal)
     }
 
     get overlayShowEta() {
-        return this.webcam.extra_data?.overlayShowEta ?? false
+        return this.getExtraData('overlayShowEta', false)
     }
 
     set overlayShowEta(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowEta = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowEta', newVal)
     }
 
     get overlayShowEstimate() {
-        return this.webcam.extra_data?.overlayShowEstimate ?? false
+        return this.getExtraData('overlayShowEstimate', false)
     }
 
     set overlayShowEstimate(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowEstimate = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowEstimate', newVal)
     }
 
     get overlayShowFlowRate() {
-        return this.webcam.extra_data?.overlayShowFlowRate ?? false
+        return this.getExtraData('overlayShowFlowRate', false)
     }
 
     set overlayShowFlowRate(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowFlowRate = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowFlowRate', newVal)
     }
 
     get overlayShowSpeed() {
-        return this.webcam.extra_data?.overlayShowSpeed ?? false
+        return this.getExtraData('overlayShowSpeed', false)
     }
 
     set overlayShowSpeed(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowSpeed = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowSpeed', newVal)
     }
 
     get overlayShowLayerCount() {
-        return this.webcam.extra_data?.overlayShowLayerCount ?? false
+        return this.getExtraData('overlayShowLayerCount', false)
     }
 
     set overlayShowLayerCount(newVal: boolean) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayShowLayerCount = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayShowLayerCount', newVal)
     }
 
     get overlayExtrudersPosition() {
@@ -657,13 +640,11 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get overlayPrintTimeSource(): OverlayPrintTimeSource {
-        return this.webcam.extra_data?.overlayPrintTimeSource ?? DEFAULT_PRINT_TIME_SOURCE
+        return this.getExtraData('overlayPrintTimeSource', DEFAULT_PRINT_TIME_SOURCE)
     }
 
     set overlayPrintTimeSource(newVal: OverlayPrintTimeSource) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayPrintTimeSource = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayPrintTimeSource', newVal)
     }
 
     get overlayPrintTimePosition() {
@@ -683,13 +664,11 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get overlayEstimateSource(): OverlayEstimateSource {
-        return this.webcam.extra_data?.overlayEstimateSource ?? DEFAULT_ESTIMATE_SOURCE
+        return this.getExtraData('overlayEstimateSource', DEFAULT_ESTIMATE_SOURCE)
     }
 
     set overlayEstimateSource(newVal: OverlayEstimateSource) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayEstimateSource = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayEstimateSource', newVal)
     }
 
     get overlayEstimatePosition() {
@@ -725,13 +704,11 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     get overlayBackgroundColor() {
-        return this.webcam.extra_data?.overlayBackgroundColor ?? 'rgba(0, 0, 0, 0.7)'
+        return this.getExtraData('overlayBackgroundColor', 'rgba(0, 0, 0, 0.7)')
     }
 
     set overlayBackgroundColor(newVal: string) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData.overlayBackgroundColor = newVal
-        this.webcam.extra_data = extraData
+        this.setExtraData('overlayBackgroundColor', newVal)
     }
 
     updateOverlayBackgroundColor(
@@ -765,9 +742,15 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
     }
 
     private setOverlayPositionValue(key: OverlayPositionKey, value: OverlayPosition) {
-        const extraData = { ...(this.webcam.extra_data ?? {}) }
-        extraData[key] = value
-        this.webcam.extra_data = extraData
+        this.setExtraData(key, value)
+    }
+
+    private getExtraData<K extends keyof WebcamExtraData>(key: K, fallback: NonNullable<WebcamExtraData[K]>) {
+        return this.webcam.extra_data?.[key] ?? fallback
+    }
+
+    private setExtraData<K extends keyof WebcamExtraData>(key: K, value: WebcamExtraData[K]) {
+        this.webcam.extra_data = { ...(this.webcam.extra_data ?? {}), [key]: value }
     }
 
     get webcams() {
