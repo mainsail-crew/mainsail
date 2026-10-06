@@ -2,6 +2,7 @@
     <v-btn
         icon
         v-bind="$attrs"
+        :disabled="!active"
         :class="['overlay-position-btn', { 'overlay-position-btn--inactive': !active }]"
         v-on="{
             click: (e) => {
@@ -60,6 +61,5 @@ export default class OverlayPositionButton extends Vue {
 
 .overlay-position-btn--inactive {
     opacity: 0.3;
-    pointer-events: none;
 }
 </style>

@@ -432,7 +432,7 @@
                         </v-row>
                     </template>
                 </v-col>
-                <v-col class="col-12 col-sm-6 text-center position-sticky" style="top: 80px; align-self: flex-start">
+                <v-col class="col-12 col-sm-6 text-center position-sticky _webcam-preview-col">
                     <webcam-wrapper
                         v-if="showPreviewWebcam"
                         :webcam="previewWebcam"
@@ -734,19 +734,22 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         this.webcam.extra_data = extraData
     }
 
-    updateOverlayBackgroundColor(color: string | { rgba?: string; hex?: string }) {
+    updateOverlayBackgroundColor(
+        color: string | { rgba?: { r: number; g: number; b: number; a: number }; hexa?: string }
+    ) {
         if (typeof color === 'string') {
             this.overlayBackgroundColor = color
             return
         }
 
-        if (typeof color?.rgba === 'string') {
-            this.overlayBackgroundColor = color.rgba
+        const rgba = color?.rgba
+        if (rgba && typeof rgba === 'object') {
+            this.overlayBackgroundColor = `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`
             return
         }
 
-        if (typeof color?.hex === 'string') {
-            this.overlayBackgroundColor = color.hex
+        if (typeof color?.hexa === 'string') {
+            this.overlayBackgroundColor = color.hexa
         }
     }
 
@@ -1026,6 +1029,12 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 </script>
 
 <style scoped>
+/* offset below the app bar */
+._webcam-preview-col {
+    top: 80px;
+    align-self: flex-start;
+}
+
 ::v-deep ._transition svg {
     transition: transform 500ms;
 }

@@ -392,13 +392,16 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
         return this.resolveValue('flowRate', text)
     }
 
-    get live_velocity() {
-        return Math.abs(this.$store.state.printer.motion_report?.live_velocity?.toFixed(0)) ?? null
+    get liveVelocity(): number | null {
+        const velocity = this.$store.state.printer.motion_report?.live_velocity
+        if (typeof velocity !== 'number') return null
+
+        return Math.round(Math.abs(velocity))
     }
 
     get speedText() {
-        const speed = this.live_velocity
-        const text = speed !== null && !Number.isNaN(speed) ? `${speed} mm/s` : null
+        const speed = this.liveVelocity
+        const text = speed !== null ? `${speed} mm/s` : null
         return this.resolveValue('speed', text)
     }
 
@@ -605,12 +608,10 @@ export default class WebcamStatsOverlay extends Mixins(BaseMixin) {
 
 .overlay-block.overlay-top {
     top: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
 }
 
 .overlay-block.overlay-bottom {
     bottom: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
 }
 
 .overlay-block.overlay-top {
