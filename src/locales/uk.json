@@ -671,12 +671,6 @@
                 "Empty": "Порожньо"
             }
         },
-        "PowerControlPanel": {
-            "Error": "Помилка",
-            "Off": "ВИМК",
-            "On": "УВІМК",
-            "PowerControl": "Управління Живленням"
-        },
         "SpoolmanPanel": {
             "ChangeSpool": "Зміна шпулі",
             "DaysAgo": "{days} днів тому",
@@ -771,9 +765,7 @@
             "ShowNameInList": "Показувати {name} у списку",
             "State": "Стан",
             "Target": "Встановити",
-            "TemperaturesInChart": "Температура [°C]",
-            "TempTooHigh": "Температура занадто висока для{name}! (макс: {max})",
-            "TempTooLow": "Температура занадто низька для {name}! (мін: {min})"
+            "TemperaturesInChart": "Температура [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "абсолютні",

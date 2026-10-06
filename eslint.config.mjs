@@ -7,7 +7,15 @@ import globals from 'globals'
 
 export default defineConfigWithVueTs(
     {
-        ignores: ['dist/', 'dev-dist/', 'i18n-extract/', 'components.d.ts', 'cypress/'],
+        ignores: [
+            'dist/',
+            'dev-dist/',
+            'i18n-extract/',
+            'components.d.ts',
+            'cypress/',
+            'src/plugins/codemirror/lezer/*.parser.ts',
+            'src/plugins/codemirror/lezer/*.terms.ts',
+        ],
     },
 
     eslint.configs.recommended,
@@ -26,6 +34,13 @@ export default defineConfigWithVueTs(
                 ...globals.browser,
                 ...globals.es2021,
             },
+        },
+    },
+
+    {
+        files: ['scripts/**/*.js'],
+        languageOptions: {
+            globals: globals.node,
         },
     },
 

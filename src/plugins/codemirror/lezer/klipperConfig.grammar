@@ -1,0 +1,83 @@
+// Klipper printer.cfg grammar.
+// Structure only; the body of *_gcode: / enable: fields is captured as one
+// GcodeBody node (indentation-delimited, via the external tokenizer) and then
+// overlaid with jinja(base: gcode) through parseMixed (see index.ts).
+@external tokens gcodeBody from "./klipperConfig.tokens" { GcodeBody }
+// Klipper keys only exist at column 0; a ":" inside an indented/mid-line
+// value (e.g. "step_pin: EBBCan:PD0") must stay part of the value. Lezer
+// tokens can't anchor to line starts, so PropertyName is external.
+@external tokens propertyName from "./klipperConfig.tokens" { PropertyName }
+// "["/"{"/"]"/"}" inside a value (python literals in save_variables files:
+// "mmu_state_gate_status = [1, 1, 0]") are punctuation, not a section header.
+// The content stays flat StringValue/Number/Comma tokens - no json/array
+// parsing, highlighting doesn't need the structure.
+@external tokens valuePunctuation from "./klipperConfig.tokens" { ValuePunctuation }
+// A "," is only a separator inside a python/json literal ("[1, 2]", "{a: 1,
+// b: 2}"). In a prose value ("description: Cancel the actual, running print")
+// it belongs to the text, so the tokenizer emits StringComma there.
+@external tokens comma from "./klipperConfig.tokens" { Comma, StringComma }
+
+// Comments are skipped so an inline comment doesn't terminate a Property
+// (e.g. a "# EXP1 header" line inside a board_pins aliases: block).
+@skip { whitespace | Comment }
+
+@top ConfigFile { item* }
+
+item {
+  SectionHeader |
+  GcodeProperty |
+  Property
+}
+
+SectionHeader { "[" SectionType SectionName? "]" }
+SectionType { word }
+SectionName { word }
+
+Property { PropertyName value* }
+value { Number | Boolean | StringValue | QuotedString | Comma | StringComma | Operator | ValuePunctuation }
+StringValue { word }
+// @specialize (not a token rule) so only the whole word matches: "true" is a
+// Boolean, "true_x" stays a StringValue.
+Boolean { @specialize<word, "true" | "True" | "false" | "False"> }
+
+// No skipping between the key and its body, so the external tokenizer starts
+// right after the "gcode:" / "enable:" colon and can measure indentation.
+@skip {} {
+  GcodeProperty { GcodeKey GcodeBody }
+}
+
+@tokens {
+  whitespace { $[ \t\r\n]+ }
+
+  Comment { ("#" | ";") ![\n]* }
+
+  "[" "]"
+
+
+  Operator { "=" | "<" | ">" }
+
+  Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
+
+  // Quoted list/dict items ("mmu_state_gate_color = ['000000', '1e1e1e,']").
+  // Must be closed and single-line, otherwise an apostrophe in a prose value
+  // would swallow the rest; those stay part of a word.
+  QuotedString { '"' !["\n]* '"' | "'" !['\n]* "'" }
+
+  // gcode / enable keys -> gcode block. Mirrors the old /^(?:[A-Za-z]*_?gcode|enable):/
+  GcodeKey { $[A-Za-z]* "_"? "gcode" ":" | "enable" ":" }
+
+  // A word must contain at least one non-numeric char after an optional
+  // numeric prefix, so it never fully matches a pure number. That allows
+  // word to rank above Number ("5V" -> word, "0.5" -> Number). ":" is a
+  // word char so "EBBCan:PD0" / "50:10" stay single values. Multiple leading
+  // signs are allowed so CLI-style values ("--http-listen=0.0.0.0") stay one
+  // word instead of splitting at the second "-".
+  // A "," is never part of a word; it is tokenized separately (see the
+  // external comma tokenizer). Commas inside a quoted item ('1e1e1e,') are
+  // kept by QuotedString.
+  word { $[-+]* $[0-9.]* ![0-9.+\- \t\r\n#;\[\]{},=<>] ![ \t\r\n#;\[\]{},=<>]* }
+
+  // QuotedString over word so "'Black'," splits into string + separator
+  // instead of matching as one (longer) word.
+  @precedence { Comment, GcodeKey, QuotedString, word, Number }
+}

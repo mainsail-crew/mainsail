@@ -555,12 +555,6 @@
                 "Empty": "空"
             }
         },
-        "PowerControlPanel": {
-            "Error": "エラー",
-            "Off": "オフ",
-            "On": "オン",
-            "PowerControl": "電源コントロール"
-        },
         "StatusPanel": {
             "CancelPrint": "印刷取り消し",
             "ClearPrintStats": "印刷状態の表示クリア",
@@ -628,9 +622,7 @@
             "ShowNameInList": "一覧に{name}を表示",
             "State": "状態",
             "Target": "目標",
-            "TemperaturesInChart": "温度 [°C]",
-            "TempTooHigh": "{name}の温度が高すぎます! (最高: {max})",
-            "TempTooLow": "{name}の温度が低すぎます! (最低: {min})"
+            "TemperaturesInChart": "温度 [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "絶対",

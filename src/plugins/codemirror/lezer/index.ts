@@ -1,0 +1,105 @@
+// Lezer-based languages for the CodeMirror editor (replaces the old
+// StreamParser implementations).
+//
+//   klipperConfig()  ->  config structure; *_gcode:/enable: blocks are reparsed
+//                        as jinja(base: gcode) via parseMixed
+//   gcode()          ->  plain Klipper G-code (.gcode files)
+//
+// Grammars live in *.grammar and are precompiled to *.parser.ts by
+// `npm run build:grammars` (scripts/build-grammars.mjs).
+import { LRLanguage, LanguageSupport } from '@codemirror/language'
+import { styleTags, tags as t } from '@lezer/highlight'
+import { parseMixed } from '@lezer/common'
+import { parser as gcodeParserRaw } from './gcode.parser'
+import { parser as jinjaParserRaw } from './jinja.parser'
+import { parser as klipperConfigParserRaw } from './klipperConfig.parser'
+
+const gcodeParser = gcodeParserRaw.configure({
+    props: [
+        styleTags({
+            // same tag as MacroName: G1/M106 and TURN_OFF_HEATERS are both
+            // commands, and t.keyword would collide with the config-key blue
+            'Command MessageCommand': t.variableName,
+            MessageText: t.string,
+            // params like S0/T1 get the same color as macro param values (ENABLE=0)
+            'ParamWord BareParamWord': t.number,
+            Number: t.number,
+            String: t.string,
+            MacroName: t.variableName,
+            // unquoted param value (MACRO=TIMELAPSE_TAKE_FRAME) -> value color,
+            // not the command color; path rule so ParamValue's own token wins
+            ParamValue: t.string,
+            Operator: t.operator,
+            LineComment: t.lineComment,
+        }),
+    ],
+})
+
+const jinjaParser = jinjaParserRaw.configure({
+    props: [
+        styleTags({
+            Keyword: t.controlKeyword,
+            FilterName: t.function(t.variableName),
+            Pipe: t.operator,
+            // same as in the config grammar: number color, not the theme blue
+            Boolean: t.number,
+            StringLiteral: t.string,
+            Number: t.number,
+            VariableName: t.propertyName,
+            Operator: t.operator,
+            Comment: t.blockComment,
+            LineComment: t.lineComment,
+            // path rules: the same brace tokens build a Dict literal inside a tag
+            // ({% set m = {'a': 1} %}), those are punctuation, not tag delimiters
+            'Interpolation/InterpolationStart Interpolation/InterpolationEnd StatementStart StatementEnd': t.tagName,
+            'Dict/InterpolationStart Dict/InterpolationEnd': t.operator,
+        }),
+    ],
+    // overlay the gcode parser on the literal Text fragments between jinja tags
+    wrap: parseMixed((node) => (node.type.isTop ? { parser: gcodeParser, overlay: (n) => n.name === 'Text' } : null)),
+})
+
+const klipperConfigParser = klipperConfigParserRaw.configure({
+    props: [
+        styleTags({
+            SectionType: t.namespace,
+            SectionName: t.className,
+            // definition() so config keys can be styled darker than the
+            // plain propertyName used by jinja variables (see Codemirror.vue)
+            PropertyName: t.definition(t.propertyName),
+            GcodeKey: t.definition(t.propertyName),
+            Number: t.number,
+            'StringValue QuotedString StringComma': t.string,
+            // number tag, not t.bool: the base theme paints bools in the same
+            // blue as the config keys, and True/False is a value like 1/0
+            Boolean: t.number,
+            Operator: t.operator,
+            Comment: t.lineComment,
+            '[ ]': t.squareBracket,
+            // separators of a python/json literal get the bracket color
+            'ValuePunctuation Comma': t.bracket,
+        }),
+    ],
+    // reparse *_gcode:/enable: bodies as jinja(base: gcode)
+    wrap: parseMixed((node) => (node.name === 'GcodeBody' ? { parser: jinjaParser } : null)),
+})
+
+export const gcodeLanguage = LRLanguage.define({
+    name: 'gcode',
+    parser: gcodeParser,
+    languageData: { commentTokens: { line: ';' } },
+})
+
+export const klipperConfigLanguage = LRLanguage.define({
+    name: 'klipper-config',
+    parser: klipperConfigParser,
+    languageData: { commentTokens: { line: '#' } },
+})
+
+export function gcode() {
+    return new LanguageSupport(gcodeLanguage)
+}
+
+export function klipperConfig() {
+    return new LanguageSupport(klipperConfigLanguage)
+}

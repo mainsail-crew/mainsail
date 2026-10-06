@@ -50,7 +50,8 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
 
     updateMacroFromMacrogroup({ commit, dispatch }, payload) {
         commit('updateMacroFromMacrogroup', payload)
-        dispatch('groupUpload', payload.id)
+
+        if (!payload.skipUpload) dispatch('groupUpload', payload.id)
     },
 
     removeMacroFromMacrogroup({ commit, dispatch }, payload) {

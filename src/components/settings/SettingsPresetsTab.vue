@@ -62,7 +62,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     }
 
     edit(preset: GuiPresetsStatePreset) {
-        this.formPreset = { ...preset }
+        this.formPreset = structuredClone(preset)
         this.boolForm = true
     }
 }

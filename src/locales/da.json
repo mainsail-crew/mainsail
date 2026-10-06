@@ -671,12 +671,6 @@
                 "Empty": "Tom"
             }
         },
-        "PowerControlPanel": {
-            "Error": "Fejl",
-            "Off": "Sluk",
-            "On": "Tænd",
-            "PowerControl": "Strømstyring"
-        },
         "SpoolmanPanel": {
             "ChangeSpool": "Skift spool",
             "DaysAgo": "{days} dage siden",
@@ -771,9 +765,7 @@
             "ShowNameInList": "Vis {name} på liste",
             "State": "Status",
             "Target": "Indstillet",
-            "TemperaturesInChart": "Temperatur [°C]",
-            "TempTooHigh": "Temperaturen er for høj for {name}! (max: {max})",
-            "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})"
+            "TemperaturesInChart": "Temperatur [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "absolut",

@@ -1,0 +1,85 @@
+// Klipper-aware G-code grammar.
+// Flat token stream (no line structure) so it stays robust when used as the
+// `base` overlay of the Jinja parser, where the gcode text arrives in fragments
+// split around `{ ... }` / `{% ... %}` tags.
+// The unquoted value of NAME=VALUE, external so it only matches directly after
+// the "=" (see gcode.tokens.ts).
+@external tokens paramValue from "./gcode.tokens" { ParamValue }
+// The display text of M117/M118, external so it only matches on the same line
+// directly after that command (see gcode.tokens.ts).
+@external tokens messageText from "./gcode.tokens" { MessageText }
+// A parameter letter without a number, either standalone ("G28 X Y") or with a
+// jinja value behind it ("G0 X{...}", where the gcode fragment ends after the
+// letter). External because it needs the lookahead that keeps it from eating
+// the first letter of a macro name.
+@external tokens bareParamWord from "./gcode.tokens" { BareParamWord }
+
+@top Program { item* }
+
+@skip { spaces }
+
+item {
+  LineComment |
+  Message |
+  Param |
+  Command |
+  ParamWord |
+  BareParamWord |
+  Number |
+  String |
+  MacroName
+}
+
+// macro parameter: NAME=value. ParamValue keeps an unquoted word
+// (MACRO=TIMELAPSE_TAKE_FRAME) from getting the command color. Jinja values
+// (VALUE="{tl.macro}") are handled by the jinja parser above this one, which
+// splits the text around "{...}".
+Param { MacroName Operator value }
+value { String | Number | ParamWord | ParamValue }
+
+// split, so M117 keeps the command color and only its text is a string
+Message { MessageCommand MessageText? }
+
+@tokens {
+  spaces { $[ \t\r\n]+ }
+
+  // Klipper strips '#' and ';' comments at config-parse level, so both are
+  // valid line comments inside gcode blocks.
+  LineComment { ("#" | ";") ![\n]* }
+
+  num { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
+
+  // M117 (and M118) take the rest of the line as a display message.
+  MessageCommand { $[Mm] ("117" | "118") }
+
+  // G1, M104, _G28 ...
+  Command { "_"? $[GMgm] @digit (@digit | ".")* }
+
+  // every letter+number word is a parameter: X10 Y-5 Z0.2 E1.2 F3000 S200 T0
+  // P1000 ... (Command wins for G/M, see @precedence)
+  ParamWord { $[A-Za-z] num }
+
+  Number { num }
+
+  // bounded to a single line: an unclosed quote (e.g. the ' wrapping a jinja
+  // interpolation in MSG='{...}') must not swallow the following lines.
+  String { '"' !["\n]* '"'? | "'" !['\n]* "'"? }
+
+  // macro names and macro param keys: BED_MESH_CALIBRATE, PIN, VALUE ...
+  MacroName { $[A-Za-z_] $[A-Za-z0-9_]* }
+
+  Operator { "=" }
+
+  @precedence {
+    LineComment,
+    MessageCommand,
+    Command,
+    ParamWord,
+    Number,
+    String,
+    MacroName,
+    Operator
+  }
+}
+
+@detectDelim

@@ -2,6 +2,70 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [2.19.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.19.0) - 2026-08-27
+### Features
+
+- **logfiles**: Add mms.log file to the log files panel ([#2591](https://github.com/mainsail-crew/mainsail/pull/2591))
+- **logfiles**: Add AFC.log file to the log files panel ([#2590](https://github.com/mainsail-crew/mainsail/pull/2590))
+
+### Bug Fixes and Improvements
+
+- **afc**: Fix get laneName getter in StartPrintDialog ([#2641](https://github.com/mainsail-crew/mainsail/pull/2641))
+- **macros**: Prevent TypeError in printer/getMacros when configfile is missing ([#2617](https://github.com/mainsail-crew/mainsail/pull/2617))
+- **macros**: Keep the macro settings usable after clearing the search ([#2623](https://github.com/mainsail-crew/mainsail/pull/2623))
+- **macros**: Fix sorting function in macros expert mode ([#2625](https://github.com/mainsail-crew/mainsail/pull/2625))
+- **presets**: Fix edit/update preset function ([#2609](https://github.com/mainsail-crew/mainsail/pull/2609))
+
+### Performance
+
+- **console**: Optimize console rendering performance ([#2592](https://github.com/mainsail-crew/mainsail/pull/2592))
+- **heightmap**: Avoid full chart rebuild on scaleZMax change ([#2626](https://github.com/mainsail-crew/mainsail/pull/2626))
+
+### Refactor
+
+- **editor**: Replace StreamLanguage with lezer grammars ([#2553](https://github.com/mainsail-crew/mainsail/pull/2553))
+- **logfiles**: Refactor layout from log files panel ([#2589](https://github.com/mainsail-crew/mainsail/pull/2589))
+
+### Localization
+
+- **cz**: Update Czech translate file
+- **da**: Update Danish translate file
+- **de**: Update German translation file ([#2607](https://github.com/mainsail-crew/mainsail/pull/2607))
+- **en**: Update English translation file ([#2606](https://github.com/mainsail-crew/mainsail/pull/2606))
+- **es**: Update Spanish translate file
+- **fr**: Update French translate file
+- **hu**: Update Hungarian translate file
+- **it**: Update Italian translate file
+- **ja**: Update Japanese translate file
+- **ko**: Update Korean translate file
+- **nl**: Update Dutch translate file
+- **pl**: Update Polish translate file
+- **pt**: Update Portuguese translate file
+- **ru**: Update Russian translation files
+- **ru**: Update Russian translate file
+- **se**: Update Swedish translate file
+- **sl**: Update Slovenian translate file
+- **tr**: Update Turkish translation files
+- **tr**: Update Turkish translate file
+- **uk**: Update Ukrainian translate file
+- **zh**: Update Chinese (Simplified) translation file ([#2587](https://github.com/mainsail-crew/mainsail/pull/2587))
+- **zh**: Update Chinese (Simplified Han script) translate file
+- **zh_TW**: Update Chinese (Traditional Han script) translation files
+- **zh_TW**: Update Chinese (Traditional Han script) translate file
+
+### Other
+
+- **deps**: Bump dompurify from 3.4.11 to 3.4.12 ([#2601](https://github.com/mainsail-crew/mainsail/pull/2601))
+- **deps**: Bump linkify-it from 5.0.1 to 5.0.2 ([#2600](https://github.com/mainsail-crew/mainsail/pull/2600))
+- **deps**: Override brace-expansion to patched versions ([#2622](https://github.com/mainsail-crew/mainsail/pull/2622))
+- **deps**: Bump dompurify from 3.4.12 to 3.4.13 ([#2631](https://github.com/mainsail-crew/mainsail/pull/2631))
+- **deps-dev**: Bump postcss from 8.5.16 to 8.5.23 ([#2603](https://github.com/mainsail-crew/mainsail/pull/2603))
+- **deps-dev**: Bump fast-uri from 3.1.3 to 3.1.4 ([#2604](https://github.com/mainsail-crew/mainsail/pull/2604))
+- **deps-dev**: Bump fast-uri from 3.1.4 to 3.1.5 ([#2628](https://github.com/mainsail-crew/mainsail/pull/2628))
+- **deps-dev**: Bump js-yaml from 4.3.0 to 4.3.1 ([#2632](https://github.com/mainsail-crew/mainsail/pull/2632))
+- **gcodeviewer**: Upgrade sindarius/gcodeviewer to 3.7.18 ([#2638](https://github.com/mainsail-crew/mainsail/pull/2638))
+- **i18n**: Update i18n-extract script for single lang check ([#2608](https://github.com/mainsail-crew/mainsail/pull/2608))
+
 ## [2.18.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.18.2) - 2026-07-05
 ### Bug Fixes and Improvements
 

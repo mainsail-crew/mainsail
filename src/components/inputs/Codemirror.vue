@@ -14,35 +14,20 @@ import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
 import { EditorState, Prec } from '@codemirror/state'
 import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode'
-import { HighlightStyle, indentUnit, StreamLanguage, syntaxHighlighting } from '@codemirror/language'
-import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
-import { gcode } from '@/plugins/StreamParserGcode'
-import { KlipperDocsTooltip } from '@/plugins/KlipperDocsTooltip'
-import { insertTab, indentLess } from '@codemirror/commands'
+import { indentUnit, syntaxHighlighting } from '@codemirror/language'
+import { klipperConfig, gcode } from '@/plugins/codemirror/lezer'
+import { KlipperDocsTooltip } from '@/plugins/codemirror/KlipperDocsTooltip'
+import { indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
 import { css } from '@codemirror/lang-css'
-import { yaml, yamlLanguage } from '@codemirror/lang-yaml'
-import { tags } from '@lezer/highlight'
-
-const yamlDarkHighlightStyle = HighlightStyle.define(
-    [
-        {
-            tag: tags.definition(tags.propertyName),
-            color: '#dcdcaa',
-        },
-    ],
-    { scope: yamlLanguage, themeType: 'dark' }
-)
-
-const yamlLightHighlightStyle = HighlightStyle.define(
-    [
-        {
-            tag: tags.definition(tags.propertyName),
-            color: '#795e26',
-        },
-    ],
-    { scope: yamlLanguage, themeType: 'light' }
-)
+import { yaml } from '@codemirror/lang-yaml'
+import { insertSmartTab } from '@/plugins/codemirror/insertSmartTab'
+import {
+    klipperConfigDarkHighlightStyle,
+    klipperConfigLightHighlightStyle,
+    yamlDarkHighlightStyle,
+    yamlLightHighlightStyle,
+} from '@/plugins/codemirror/highlightStyles'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
@@ -108,7 +93,7 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
             this.vscodeTheme,
             indentUnit.of(' '.repeat(this.tabSize)),
             keymap.of([
-                { key: 'Tab', run: insertTab },
+                { key: 'Tab', run: insertSmartTab },
                 { key: 'Shift-Tab', run: indentLess },
             ]),
             EditorView.updateListener.of((update) => {
@@ -127,8 +112,13 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
             extensions.push(KlipperDocsTooltip(this.klipperConfigReference))
         }
 
-        if (['cfg', 'conf'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(klipper_config))
-        else if (['gcode'].includes(this.fileExtension)) extensions.push(StreamLanguage.define(gcode))
+        if (['cfg', 'conf'].includes(this.fileExtension))
+            extensions.push(
+                klipperConfig(),
+                Prec.highest(syntaxHighlighting(klipperConfigDarkHighlightStyle)),
+                Prec.highest(syntaxHighlighting(klipperConfigLightHighlightStyle))
+            )
+        else if (['gcode'].includes(this.fileExtension)) extensions.push(gcode())
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
         else if (['yaml', 'yml'].includes(this.fileExtension)) {
             extensions.push(

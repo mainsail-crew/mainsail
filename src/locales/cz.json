@@ -714,12 +714,6 @@
                 "Temperature": "Teplota"
             }
         },
-        "PowerControlPanel": {
-            "Error": "Chyba",
-            "Off": "Vypnuto",
-            "On": "Zapnuto",
-            "PowerControl": "Řízení napájení"
-        },
         "SpoolmanPanel": {
             "ActiveSpool": "Aktivní cívka",
             "ChangeSpool": "Změnit cívku",
@@ -821,8 +815,6 @@
             "State": "Stav",
             "Target": "Cíl",
             "TemperaturesInChart": "Teplota [°C]",
-            "TempTooHigh": "Teplota pro {name} je příliš vysoká! (max.: {max})",
-            "TempTooLow": "Teplota pro {name} je příliš nízká! (min.: {min})",
             "TurnHeaterOff": "Vypnout ohřívač"
         },
         "ToolheadControlPanel": {

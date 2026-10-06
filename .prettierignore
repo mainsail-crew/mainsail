@@ -3,3 +3,5 @@ dist/
 public/
 components.d.ts
 CHANGELOG.md
+src/plugins/codemirror/lezer/*.parser.ts
+src/plugins/codemirror/lezer/*.terms.ts

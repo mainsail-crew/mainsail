@@ -61,6 +61,7 @@
                         :file-extension="fileExtension"
                         class="codemirror"
                         :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
+                        @ready="restorePosition"
                         @lineChange="lineChanges" />
                     <div v-if="existsFileStructure && fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
@@ -75,7 +76,9 @@
                             <template #label="{ item }">
                                 <div
                                     class="cursor-pointer _structure-sidebar-item"
-                                    :class="item.type == 'item' ? 'ͼp' : 'ͼt'"
+                                    :class="
+                                        item.type == 'item' ? '_structure-sidebar-key' : '_structure-sidebar-section'
+                                    "
                                     @click="activeChangesItemClick">
                                     {{ item.name }}
                                 </div>
@@ -182,6 +185,10 @@ import {
 } from '@mdi/js'
 import DevicesDialog from '@/components/dialogs/DevicesDialog.vue'
 import { ConfigFileSection } from '@/store/files/types'
+import type { EditorView } from '@codemirror/view'
+import { EditorPositionMemory } from '@/plugins/codemirror/EditorPositionMemory'
+
+const editorPositions = new EditorPositionMemory()
 
 @Component({
     components: { DevicesDialog, Panel, CodemirrorAsync },
@@ -392,6 +399,13 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.fileStructureSidebar = !this.fileStructureSidebar
     }
 
+    restorePosition(view: EditorView) {
+        if (this.fileroot !== 'config') return
+
+        const key = JSON.stringify([this.$store.getters['socket/getUrl'], this.fileroot, this.filepath, this.filename])
+        editorPositions.restore(view, key)
+    }
+
     cancelDownload() {
         this.$store.dispatch('editor/cancelLoad')
     }
@@ -530,14 +544,41 @@ export default class TheEditor extends Mixins(BaseMixin) {
 }
 
 .structure-sidebar {
+    position: relative;
+    z-index: 1;
     width: 300px;
     overflow-y: auto;
     max-height: calc(100vh - 48px);
+    border-left: 1px solid #272727;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.35);
+    clip-path: inset(0 0 0 -12px);
 }
+
+html.theme--light .structure-sidebar {
+    border-left-color: rgba(0, 0, 0, 0.12);
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.12);
+}
+
 ._structure-sidebar-item {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+._structure-sidebar-section {
+    color: #4ec9b0;
+}
+
+._structure-sidebar-key {
+    color: #569cd6;
+}
+
+html.theme--light ._structure-sidebar-section {
+    color: #267f99;
+}
+
+html.theme--light ._structure-sidebar-key {
+    color: #0000ff;
 }
 
 ::v-deep .v-treeview-node__level + .v-treeview-node__level {

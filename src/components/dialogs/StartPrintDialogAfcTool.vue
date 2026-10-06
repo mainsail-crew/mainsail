@@ -44,7 +44,7 @@ import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
 import AfcMixin from '@/components/mixins/afc'
 import { mdiAlert, mdiCheckCircle, mdiChevronDown } from '@mdi/js'
-import { convertStringToArray, filamentWeightFormat } from '@/plugins/helpers'
+import { convertStringToArray, filamentWeightFormat, getFileFilamentColors } from '@/plugins/helpers'
 
 @Component
 export default class StartPrintDialogAfc extends Mixins(BaseMixin, AfcMixin) {
@@ -61,7 +61,7 @@ export default class StartPrintDialogAfc extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get fileFilament() {
-        const fileColors = this.file.filament_colors ?? []
+        const fileColors = getFileFilamentColors(this.file)
         const fileNames = convertStringToArray(this.file.filament_name ?? '')
         const fileTypes = convertStringToArray(this.file.filament_type ?? '')
         const fileWeights = this.file.filament_weights ?? []
@@ -76,12 +76,21 @@ export default class StartPrintDialogAfc extends Mixins(BaseMixin, AfcMixin) {
 
     get laneName() {
         const lanes = this.afc?.lanes ?? []
+        const toolNameLower = this.toolName.toLowerCase()
 
         return lanes.find((lane: string) => {
             const laneObject = this.getAfcLaneObject(lane)
-            const mappedTool = laneObject?.map?.toLowerCase()
+            const mappedTool = laneObject?.map ?? ''
 
-            return mappedTool === this.toolName.toLowerCase()
+            if (Array.isArray(mappedTool)) {
+                return mappedTool.some((t: string) => t.toLowerCase() === toolNameLower)
+            }
+
+            if (typeof mappedTool === 'string') {
+                return mappedTool.toLowerCase() === toolNameLower
+            }
+
+            return false
         })
     }
 

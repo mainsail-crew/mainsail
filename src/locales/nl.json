@@ -609,12 +609,6 @@
                 "Empty": "Leeg"
             }
         },
-        "PowerControlPanel": {
-            "Error": "Fout",
-            "Off": "Uit",
-            "On": "Aan",
-            "PowerControl": "Power Control"
-        },
         "StatusPanel": {
             "CancelPrint": "Annuleer print",
             "ClearPrintStats": "Wis print statistieken",
@@ -682,9 +676,7 @@
             "ShowNameInList": "Toon {name} in de lijst",
             "State": "Status",
             "Target": "Doel",
-            "TemperaturesInChart": "Temperatuur [°C]",
-            "TempTooHigh": "Temperatuur te hoog voor {name}! (max: {max})",
-            "TempTooLow": "Temperatuur te laag voor {name}! (min: {min})"
+            "TemperaturesInChart": "Temperatuur [°C]"
         },
         "ToolheadControlPanel": {
             "Absolute": "absoluut",

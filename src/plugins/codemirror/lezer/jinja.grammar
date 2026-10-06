@@ -1,0 +1,115 @@
+// Jinja templating as used by Klipper (gcode_macro).
+// Klipper configures jinja2.Environment('{%', '%}', '{', '}'):
+//   - statements use {% ... %}
+//   - EXPRESSIONS use SINGLE braces { ... }  (not {{ }} like stock jinja)
+//   - comments use {# ... #}
+// Text between tags is overlaid with the gcode parser via parseMixed (see index.ts).
+@top Template { (Text | Interpolation | StatementTag | Comment)* }
+
+@skip { space } {
+  Interpolation { InterpolationStart expr* InterpolationEnd }
+  StatementTag { StatementStart expr* StatementEnd }
+  // A "{" inside a tag is a dict/set literal ("{% set m = {'a': {'t': 1}} %}"),
+  // not a nested interpolation - without this the tag would end at the first
+  // "}" and the rest ("} %}") would fall back to text.
+  Dict { InterpolationStart expr* InterpolationEnd }
+  // Filter names are only function-like after a "|" pipe. Builtin names like
+  // max / min / list are ordinary variables anywhere else (e.g. {% set max = .. %}).
+  // Inside the skip block, so "| min" (with spaces) is a filter too.
+  Filter { Pipe FilterName }
+}
+
+expr {
+  Keyword |
+  Boolean |
+  Filter |
+  StringLiteral |
+  Number |
+  VariableName |
+  Operator |
+  LineComment |
+  Dict
+}
+
+
+FilterName { identifier }
+
+Keyword {
+  @specialize<identifier,
+    "if" | "elif" | "else" | "endif" |
+    "for" | "endfor" | "in" | "is" | "recursive" |
+    "and" | "or" | "not" |
+    "set" | "endset" | "macro" | "endmacro" | "call" | "endcall" |
+    "filter" | "endfilter" | "block" | "endblock" | "extends" |
+    "include" | "import" | "from" | "as" | "do" | "with" | "without" | "context" |
+    "loop" | "namespace">
+}
+
+Boolean {
+  @specialize<identifier, "true" | "false" | "True" | "False" | "none" | "None">
+}
+
+VariableName { identifier }
+
+@tokens {
+  space { $[ \t\r\n]+ }
+
+  InterpolationStart { "{" }
+  InterpolationEnd { "}" }
+  StatementStart { "{%" }
+  StatementEnd { "%}" }
+
+  // Text = any run that does not start a jinja tag. A bare "}" / "%}" outside a
+  // tag is just literal text (gcode), so only "{" breaks Text.
+  Text { ![{]+ }
+
+  Comment { "{#" blockCommentRest }
+  blockCommentRest { ![#]* "#"+ (![}#] ![#]* "#"+)* "}" }
+
+  // Klipper strips '#' / ';' comments at config-parse level, even inside
+  // multi-line {% ... %} statements, so they are valid line comments here too.
+  LineComment { ("#" | ";") ![\n]* }
+
+  Number { ("-" | "+")? (@digit+ ("." @digit*)? | "." @digit+) }
+
+  // Single-line form (quotes around a jinja tag are common in gcode text:
+  // VALUE="{tl.park}"), so an unclosed quote stays bounded to its line.
+  // Second form: a closed string may span lines (jinja lexes strings with
+  // DOTALL, e.g. a multi-line action_raise_error message) as long as it
+  // contains no braces - that keeps a stray quote from pairing up across
+  // jinja tags.
+  // ponytail: brace-free heuristic; needs a stack-aware external tokenizer if
+  // a multi-line message ever has to contain { or }.
+  StringLiteral {
+    '"' (!["\\\n] | "\\" _)* '"'? |
+    "'" (!['\\\n] | "\\" _)* "'"? |
+    '"' (!["\\{}] | "\\" _)* '"' |
+    "'" (!['\\{}] | "\\" _)* "'"
+  }
+
+  identifier { $[A-Za-z_] $[A-Za-z0-9_]* ("." $[A-Za-z_] $[A-Za-z0-9_]*)* }
+
+  // "." handles member access after a subscript/call, e.g. printer[x].enabled
+  // (plain dotted names like printer.toolhead.x are matched as one identifier).
+  Pipe { "|" }
+
+  Operator { "+" | "-" | "*" | "/" | "//" | "**" | "%" | "==" | "!=" | ">=" | "<=" | ">" | "<" | "=" | "~" | "," | "." | "(" | ")" | "[" | "]" | ":" }
+
+  @precedence {
+    Comment,
+    LineComment,
+    StatementStart,
+    InterpolationStart,
+    StatementEnd,
+    Number,
+    Operator,
+    identifier,
+    InterpolationEnd,
+    // Text before StringLiteral: outside a tag a quote is plain gcode text, so
+    // a multi-line string must not start there and swallow the lines below
+    // ("MSG=\"a={a}\"" on consecutive lines). Inside a tag Text is not valid,
+    // so StringLiteral still wins there.
+    Text,
+    StringLiteral
+  }
+}

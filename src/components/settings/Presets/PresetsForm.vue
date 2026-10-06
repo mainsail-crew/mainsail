@@ -139,10 +139,8 @@ export default class PresetsForm extends Mixins(BaseMixin) {
     }
 
     existsPresetName(name: string) {
-        return (
-            this.presets.findIndex(
-                (preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== this.preset.id
-            ) !== -1
+        return this.presets.some(
+            (preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== this.preset.id
         )
     }
 
@@ -156,9 +154,9 @@ export default class PresetsForm extends Mixins(BaseMixin) {
 
     savePreset() {
         let setValues = 0
-        for (const key of Object.keys(this.preset.values)) {
+        Object.keys(this.preset.values).forEach((key: string) => {
             if (this.preset.values[key].bool) setValues++
-        }
+        })
         if (this.preset.gcode.length) setValues++
 
         // stop here, when no values are set
@@ -167,15 +165,17 @@ export default class PresetsForm extends Mixins(BaseMixin) {
             return
         }
 
+        const values = structuredClone(this.preset)
+
         // create new preset, if id === null
         if (this.preset.id === null) {
-            this.$store.dispatch('gui/presets/store', { values: this.preset })
+            this.$store.dispatch('gui/presets/store', { values })
             this.closeForm()
             return
         }
 
         // update existing preset
-        this.$store.dispatch('gui/presets/update', { id: this.preset.id, values: this.preset })
+        this.$store.dispatch('gui/presets/update', { id: this.preset.id, values })
         this.closeForm()
     }
 }
