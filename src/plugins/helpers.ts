@@ -615,3 +615,28 @@ export function getFileFilamentColors(file: FileStateGcodefile): string[] {
 
     return file.filament_colors ?? []
 }
+
+/**
+ * Checks whether a string can be compiled into a regular expression.
+ *
+ * @param pattern - The regular expression source.
+ * @returns `true` if `new RegExp(pattern)` succeeds.
+ */
+export function isValidRegex(pattern: string): boolean {
+    try {
+        new RegExp(pattern)
+        return true
+    } catch {
+        return false
+    }
+}
+
+/**
+ * Compiles a list of regular expression sources, skipping any that are invalid.
+ *
+ * @param patterns - The regular expression sources.
+ * @returns The compiled expressions, in the same order, without the invalid ones.
+ */
+export function compileRegexPatterns(patterns: string[]): RegExp[] {
+    return patterns.filter(isValidRegex).map((pattern) => new RegExp(pattern))
+}

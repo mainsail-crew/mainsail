@@ -1463,6 +1463,10 @@
             "VariableFpsMinDescription": "Minimum variable FPS value"
         },
         "UiSettingsTab": {
+            "BackupFileFilters": "Backup file filters",
+            "BackupFileFiltersDescription": "Regular expressions matching filenames that are hidden in the Machine tab when \"Hide backup files\" is enabled. The greyed-out built-in expressions are always applied. Press Enter to add your own.",
+            "BackupFileFiltersInvalid": "Invalid regular expression: {pattern}",
+            "BackupFileFiltersReset": "Remove all custom expressions",
             "BedScrewsDialog": "Bed Screws Dialog",
             "BedScrewsDialogDescription": "Display helper dialog for BED_SCREWS_ADJUST.",
             "BigThumbnailBackground": "Large thumbnail background color",

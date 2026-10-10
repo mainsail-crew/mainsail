@@ -329,6 +329,48 @@
                     :dynamic-slot-width="true">
                     <v-switch v-model="hideOtherInstances" hide-details class="mt-0" />
                 </settings-row>
+                <v-divider class="my-2" />
+                <settings-row
+                    :title="$t('Settings.UiSettingsTab.BackupFileFilters')"
+                    :sub-title="$t('Settings.UiSettingsTab.BackupFileFiltersDescription')"
+                    :mobile-second-row="true">
+                    <div class="flex-grow-1">
+                        <div class="mb-1">
+                            <v-chip
+                                v-for="pattern in builtInBackupFileFilters"
+                                :key="pattern"
+                                small
+                                label
+                                disabled
+                                class="mr-1 mb-1">
+                                {{ pattern }}
+                            </v-chip>
+                        </div>
+                        <div class="d-flex align-center">
+                            <v-btn
+                                v-if="backupFileFilters.length"
+                                small
+                                text
+                                class="minwidth-0"
+                                :title="$t('Settings.UiSettingsTab.BackupFileFiltersReset')"
+                                @click="backupFileFilters = []">
+                                <v-icon small>{{ mdiRestart }}</v-icon>
+                            </v-btn>
+                            <v-combobox
+                                v-model="backupFileFilters"
+                                :rules="[backupFileFiltersRule]"
+                                multiple
+                                chips
+                                small-chips
+                                deletable-chips
+                                append-icon=""
+                                placeholder="^printer-.*\.bak$"
+                                hide-details="auto"
+                                dense
+                                outlined />
+                        </div>
+                    </div>
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -339,12 +381,18 @@ import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground, themes } from '@/store/variables'
+import {
+    builtInBackupFileFilters,
+    defaultLogoColor,
+    defaultPrimaryColor,
+    defaultBigThumbnailBackground,
+    themes,
+} from '@/store/variables'
 import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
 import ThemeMixin from '@/components/mixins/theme'
-import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
+import { clearColorObject, ColorPickerValue, isValidRegex } from '@/plugins/helpers'
 
 @Component({
     components: { SettingsRow },
@@ -354,6 +402,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     mdiTimerOutline = mdiTimerOutline
 
     defaultBigThumbnailBackground = defaultBigThumbnailBackground
+    builtInBackupFileFilters = builtInBackupFileFilters
 
     get mode() {
         return this.$store.state.gui.uiSettings.mode
@@ -711,6 +760,26 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
 
     set hideOtherInstances(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.hideOtherInstances', value: newVal })
+    }
+
+    get backupFileFilters(): string[] {
+        return this.$store.state.gui.uiSettings.backupFileFilters ?? []
+    }
+
+    set backupFileFilters(newVal: string[]) {
+        // trim, drop empty entries and duplicates
+        const value = [...new Set(newVal.map((pattern) => pattern.trim()).filter((pattern) => pattern.length))]
+
+        // never persist expressions that can't be compiled
+        if (value.some((pattern) => !isValidRegex(pattern))) return
+
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.backupFileFilters', value })
+    }
+
+    backupFileFiltersRule(patterns: string[]) {
+        const invalid = patterns.find((pattern) => !isValidRegex(pattern.trim()))
+
+        return invalid === undefined || this.$t('Settings.UiSettingsTab.BackupFileFiltersInvalid', { pattern: invalid })
     }
 
     @Debounce(500)

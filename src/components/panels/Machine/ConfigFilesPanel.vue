@@ -466,13 +466,13 @@
 import { Component, Mixins, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
-import { escapePath, formatFilesize, generateTimestamp, sortFiles } from '@/plugins/helpers'
+import { compileRegexPatterns, escapePath, formatFilesize, generateTimestamp, sortFiles } from '@/plugins/helpers'
 import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import axios from 'axios'
 import type { CancelTokenSource } from 'axios'
 import Panel from '@/components/ui/Panel.vue'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
-import { hiddenRootDirectories } from '@/store/variables'
+import { builtInBackupFileFilters, hiddenRootDirectories } from '@/store/variables'
 import {
     mdiFilePlus,
     mdiFileUpload,
@@ -783,18 +783,21 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         }
 
         if (this.hideBackupFiles) {
-            const klipperBackupFileMatcher = /^printer-\d{8}_\d{6}\.cfg$/
-            const crowsnestBackupFileMatcher = /^crowsnest\.conf\.\d{4}-\d{2}-\d{2}-\d{4}$/
+            const matchers = this.backupFileMatchers
 
-            files = files.filter(
-                (file) =>
-                    !file.filename.match(klipperBackupFileMatcher) &&
-                    !file.filename.match(crowsnestBackupFileMatcher) &&
-                    !file.filename.endsWith('.bkp')
-            )
+            files = files.filter((file) => !matchers.some((matcher) => matcher.test(file.filename)))
         }
 
         return files
+    }
+
+    get backupFileMatchers(): RegExp[] {
+        const patterns: string[] = [
+            ...builtInBackupFileFilters,
+            ...(this.$store.state.gui.uiSettings.backupFileFilters ?? []),
+        ]
+
+        return compileRegexPatterns(patterns)
     }
 
     get headers() {

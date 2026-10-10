@@ -34,6 +34,15 @@ export const additionalSensors = [
 ]
 
 /*
+ * Backup filename patterns that are always hidden by "Hide backup files"
+ */
+export const builtInBackupFileFilters = [
+    '^printer-\\d{8}_\\d{6}\\.cfg$',
+    '^crowsnest\\.conf\\.\\d{4}-\\d{2}-\\d{2}-\\d{4}$',
+    '\\.bkp$',
+]
+
+/*
  * List of valid gcode file extensions
  */
 export const validGcodeExtensions = ['.gcode', '.g', '.gco', '.ufp', '.nc']
