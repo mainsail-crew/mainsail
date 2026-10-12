@@ -17,6 +17,15 @@
                 :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
                 :title="title">
                 <template #buttons>
+                    <v-btn
+                        v-if="includeHistory.length"
+                        icon
+                        tile
+                        :title="$t('Editor.GoBack').toString()"
+                        :disabled="navigating || loaderBool"
+                        @click="goBack">
+                        <v-icon>{{ mdiArrowLeft }}</v-icon>
+                    </v-btn>
                     <v-btn text tile class="d-none d-md-flex" @click="dialogDevices = true">
                         <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
                         {{ $t('Editor.DeviceDialog') }}
@@ -55,12 +64,18 @@
                 <v-card-text class="pa-0 d-flex">
                     <codemirror-async
                         v-if="show"
+                        :key="fileroot + '/' + filepath + '/' + filename"
                         ref="editor"
                         v-model="sourcecode"
                         :name="filename"
                         :file-extension="fileExtension"
+                        :include-navigation="includeNavigation"
+                        :include-directory="filepath"
+                        :include-files="includeFiles"
+                        :read-only="navigating"
                         class="codemirror"
                         :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
+                        @openInclude="openInclude"
                         @ready="restorePosition"
                         @lineChange="lineChanges" />
                     <div v-if="existsFileStructure && fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
@@ -132,7 +147,7 @@
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogConfirmChange = false">
+                    <v-btn icon tile :disabled="navigating || loaderBool" @click="cancelConfirmation">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
@@ -146,20 +161,21 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
-                    <v-btn text @click="discardChanges">
+                    <v-btn text :disabled="navigating || loaderBool" @click="discardChanges">
                         {{ $t('Editor.DontSave') }}
                     </v-btn>
-                    <v-btn text color="primary" @click="save">
-                        {{ $t('Editor.SaveClose') }}
+                    <v-btn text color="primary" :disabled="navigating || loaderBool" @click="saveAndClose">
+                        {{ $t(pendingInclude ? 'Editor.SaveContinue' : 'Editor.SaveClose') }}
                     </v-btn>
-                    <template v-if="restartServiceNameExists">
-                        <v-btn text color="primary" @click="save(restartServiceName)">
+                    <template v-if="restartServiceNameExists && !pendingInclude">
+                        <v-btn text color="primary" :disabled="loaderBool" @click="save(restartServiceName)">
                             {{ $t('Editor.SaveRestart') }}
                         </v-btn>
                     </template>
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-overlay :value="navigating" :z-index="300"><v-progress-circular indeterminate /></v-overlay>
         <devices-dialog v-model="dialogDevices" />
     </div>
 </template>
@@ -172,6 +188,7 @@ import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
 import {
+    mdiArrowLeft,
     mdiClose,
     mdiCloseThick,
     mdiContentSave,
@@ -188,12 +205,29 @@ import { ConfigFileSection } from '@/store/files/types'
 import type { EditorView } from '@codemirror/view'
 import { EditorPositionMemory } from '@/plugins/codemirror/EditorPositionMemory'
 
+import axios from 'axios'
+import { resolveIncludePath } from '@/plugins/codemirror/configIncludes'
+
+interface IncludeFile {
+    path: string
+    permissions: string
+    size?: number
+}
+
+const INCLUDE_REQUEST_TIMEOUT = 30_000
+
 const editorPositions = new EditorPositionMemory()
 
 @Component({
     components: { DevicesDialog, Panel, CodemirrorAsync },
 })
 export default class TheEditor extends Mixins(BaseMixin) {
+    navigating = false
+    pendingInclude: IncludeFile | null = null
+    pendingIncludeFromHistory = false
+    includeFiles: string[] = []
+    includeHistory: IncludeFile[] = []
+
     dialogConfirmChange = false
     dialogDevices = false
     treeviewItemKeyProp = 'line' as const
@@ -202,11 +236,13 @@ export default class TheEditor extends Mixins(BaseMixin) {
     structureActiveChangedBySidebar: boolean = false
 
     formatFilesize = formatFilesize
+    private includeFilesRequest = 0
 
     /**
      * Icons
      */
     mdiCloseThick = mdiCloseThick
+    mdiArrowLeft = mdiArrowLeft
     mdiHelp = mdiHelp
     mdiContentSave = mdiContentSave
     mdiRestart = mdiRestart
@@ -218,6 +254,10 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiFormatListCheckbox = mdiFormatListCheckbox
 
     @Ref() readonly editor!: typeof Codemirror
+
+    get includeNavigation(): boolean {
+        return this.fileroot === 'config' && this.fileExtension === 'cfg'
+    }
 
     get changed() {
         return this.$store.state.editor.changed ?? false
@@ -395,6 +435,150 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return this.configFileStructure.length > 0
     }
 
+    @Watch('show')
+    resetNavigation(show: boolean) {
+        if (!show) {
+            this.cancelConfirmation()
+            this.includeFiles = []
+            this.includeHistory = []
+        } else if (this.includeNavigation) {
+            void this.loadIncludeFiles()
+        }
+    }
+
+    mounted() {
+        if (this.show && this.includeNavigation) void this.loadIncludeFiles()
+    }
+
+    @Watch('includeNavigation')
+    includeNavigationChanged(enabled: boolean) {
+        if (!enabled) this.includeFiles = []
+        else if (this.show) void this.loadIncludeFiles()
+    }
+
+    async loadIncludeFiles() {
+        const request = ++this.includeFilesRequest
+        this.includeFiles = []
+        try {
+            const response = await axios.get<{ result: IncludeFile[] }>(
+                this.$store.getters['socket/getUrl'] + '/server/files/list',
+                { params: { root: 'config' }, timeout: INCLUDE_REQUEST_TIMEOUT }
+            )
+            if (request !== this.includeFilesRequest || !this.show || !this.includeNavigation) return
+            this.includeFiles = response.data.result
+                .filter((file) => file.permissions.includes('r'))
+                .map((file) => file.path)
+        } catch {
+            return
+        }
+    }
+
+    async openInclude(include: string) {
+        if (this.navigating || this.loaderBool || !this.includeNavigation || this.dialogConfirmChange) return
+        const path = resolveIncludePath(this.filepath, include)
+        if (!path || path === [this.filepath, this.filename].filter(Boolean).join('/')) return
+
+        this.navigating = true
+        try {
+            const response = await axios.get<{ result: IncludeFile[] }>(
+                this.$store.getters['socket/getUrl'] + '/server/files/list',
+                { params: { root: 'config' }, timeout: INCLUDE_REQUEST_TIMEOUT }
+            )
+            const file = response.data.result.find((file) => file.path === path && file.permissions.includes('r'))
+            if (!file) {
+                this.$toast.error(this.$t('Editor.IncludeNotFound', { path: include }).toString())
+                return
+            }
+            if (this.confirmUnsavedChanges && this.changed && this.isWriteable) {
+                this.pendingInclude = file
+                this.pendingIncludeFromHistory = false
+                this.dialogConfirmChange = true
+                return
+            }
+            await this.navigateInclude(file)
+        } catch {
+            this.$toast.error(this.$t('Editor.FailedOpen', { filename: include }).toString())
+        } finally {
+            this.navigating = false
+        }
+    }
+
+    async navigateInclude(file: IncludeFile, save = false, recordHistory = true): Promise<boolean> {
+        this.navigating = true
+        try {
+            await this.$nextTick()
+            if (save) {
+                const saved = await this.$store.dispatch('editor/saveFile', {
+                    content: this.sourcecode,
+                    restartServiceName: null,
+                    timeout: INCLUDE_REQUEST_TIMEOUT,
+                })
+                if (!saved) return false
+            }
+            const previousFile = {
+                path: [this.filepath, this.filename].filter(Boolean).join('/'),
+                permissions: this.permissions,
+            }
+            const separator = file.path.lastIndexOf('/')
+            const opened = await this.$store.dispatch('editor/openFile', {
+                root: 'config',
+                path: file.path.slice(0, Math.max(0, separator)),
+                filename: file.path.slice(separator + 1),
+                permissions: file.permissions,
+                size: file.size,
+                timeout: INCLUDE_REQUEST_TIMEOUT,
+            })
+            if (!opened) return false
+            if (recordHistory) this.includeHistory.push(previousFile)
+            this.cancelConfirmation()
+            this.structureActive = []
+            this.structureOpen = []
+            return true
+        } finally {
+            this.navigating = false
+        }
+    }
+
+    async goBack() {
+        if (this.navigating || this.loaderBool || !this.includeHistory.length) return
+        const previousFile = this.includeHistory[this.includeHistory.length - 1]
+        if (this.confirmUnsavedChanges && this.changed && this.isWriteable) {
+            this.pendingInclude = previousFile
+            this.pendingIncludeFromHistory = true
+            this.dialogConfirmChange = true
+            return
+        }
+        if (await this.navigateInclude(previousFile, false, false)) this.includeHistory.pop()
+    }
+
+    cancelConfirmation() {
+        this.dialogConfirmChange = false
+        this.pendingInclude = null
+        this.pendingIncludeFromHistory = false
+    }
+
+    async continuePendingInclude(save: boolean) {
+        if (!this.pendingInclude) return
+        const file = this.pendingInclude
+        const fromHistory = this.pendingIncludeFromHistory
+        const opened = await this.navigateInclude(file, save, !fromHistory)
+        if (opened && fromHistory) this.includeHistory.pop()
+    }
+
+    async saveAndClose() {
+        if (this.navigating || this.loaderBool) return
+        if (this.pendingInclude) return this.continuePendingInclude(true)
+
+        const saved = await this.$store.dispatch('editor/saveFile', {
+            content: this.sourcecode,
+            restartServiceName: null,
+        })
+        if (saved) {
+            this.cancelConfirmation()
+            this.$store.dispatch('editor/close')
+        }
+    }
+
     toggleFileStructure() {
         this.fileStructureSidebar = !this.fileStructureSidebar
     }
@@ -411,15 +595,19 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     escClose() {
+        if (this.dialogConfirmChange || this.navigating) return
         if (this.escToClose) this.close()
     }
 
     close() {
+        if (this.navigating) return
         if (this.confirmUnsavedChanges) this.promptUnsavedChanges()
         else this.$store.dispatch('editor/close')
     }
 
     discardChanges() {
+        if (this.navigating || this.loaderBool) return
+        if (this.pendingInclude) return this.continuePendingInclude(false)
         this.dialogConfirmChange = false
         this.$store.dispatch('editor/close')
     }
@@ -430,6 +618,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     save(restartServiceName: string | null = null) {
+        if (this.navigating || this.loaderBool) return
         this.dialogConfirmChange = false
 
         this.$store.dispatch('editor/saveFile', {
