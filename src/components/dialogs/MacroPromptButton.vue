@@ -13,7 +13,7 @@ interface RGB {
     b: number;
 }
 
-const HEX_REGEX = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$|^([a-f\d])([a-f\d])([a-f\d])$/i;
+const HEX_REGEX = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$|^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 
 @Component({})
 export default class MacroPromptButton extends Mixins(BaseMixin) {
