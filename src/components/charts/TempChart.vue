@@ -1,14 +1,22 @@
 <template>
-    <e-chart
-        ref="tempchart"
-        v-observe-visibility="visibilityChanged"
-        :option="chartOptions"
-        :init-options="{ renderer: 'svg' }"
-        :autoresize="true"
-        :style="tempchartStyle"
-        class="w-100"
-        @mouseenter.native="hoverChart = true"
-        @mouseleave.native="hoverChart = false" />
+    <div>
+        <div
+            v-if="relativeToTarget && !hasRelativeTemperatures"
+            class="px-4 pt-2 text-caption text--secondary"
+            role="status">
+            {{ $t('Panels.TemperaturePanel.NoRelativeTemperatures') }}
+        </div>
+        <e-chart
+            ref="tempchart"
+            v-observe-visibility="visibilityChanged"
+            :option="chartOptions"
+            :init-options="{ renderer: 'svg' }"
+            :autoresize="true"
+            :style="tempchartStyle"
+            class="w-100"
+            @mouseenter.native="hoverChart = true"
+            @mouseleave.native="hoverChart = false" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -72,7 +80,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             yAxis: this.yAxis,
             media: this.media,
             dataset: {
-                source: [],
+                source: this.chartSource,
             },
             series: this.series,
         }
@@ -99,16 +107,25 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     get yAxis() {
         return [
             {
-                name: this.$t('Panels.TemperaturePanel.TemperaturesInChart'),
+                name: this.$t(
+                    this.relativeToTarget
+                        ? 'Panels.TemperaturePanel.RelativeTemperaturesInChart'
+                        : 'Panels.TemperaturePanel.TemperaturesInChart'
+                ),
                 type: 'value',
-                min: 0,
+                min: this.relativeToTarget
+                    ? (value: { min: number }) =>
+                          Number.isFinite(value.min) ? Math.min(99, Math.floor(value.min - 1)) : 95
+                    : 0,
                 max: (value: { max: number }) => {
+                    if (this.relativeToTarget)
+                        return Number.isFinite(value.max) ? Math.max(101, Math.ceil(value.max + 1)) : 105
                     if (!this.autoscale) return this.maxTemp
 
                     return Math.ceil((value.max + 5) / 20) * 20
                 },
-                minInterval: 20,
-                maxInterval: 100,
+                minInterval: this.relativeToTarget ? 0 : 20,
+                maxInterval: this.relativeToTarget ? Infinity : 100,
                 nameLocation: 'end',
                 nameGap: 5,
                 nameTextStyle: {
@@ -183,7 +200,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                     },
                     yAxis: [
                         {
-                            maxInterval: 50,
+                            maxInterval: this.relativeToTarget ? Infinity : 50,
                             axisLabel: {
                                 showMinLabel: false,
                                 showMaxLabel: true,
@@ -212,11 +229,58 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get series(): PrinterTempHistoryStateSerie[] {
-        return this.$store.state.printer.tempHistory.series ?? []
+        const series = this.$store.state.printer.tempHistory.series ?? []
+        if (!this.relativeToTarget) return series
+
+        return series.map((serie) => {
+            if (!serie.name.endsWith('-temperature') && !serie.name.endsWith('-target')) return serie
+
+            return { ...serie, encode: { ...serie.encode, y: `${serie.name}-relative` } }
+        })
     }
 
     get source(): PrinterTempHistoryStateSourceEntry[] {
         return this.$store.state.printer.tempHistory.source ?? []
+    }
+
+    get chartSource(): PrinterTempHistoryStateSourceEntry[] {
+        if (!this.relativeToTarget) return this.source
+
+        return this.source.map((entry) => {
+            const normalized = { ...entry }
+            Object.keys(entry)
+                .filter((key) => key.endsWith('-temperature'))
+                .forEach((key) => {
+                    const targetKey = `${key.slice(0, -12)}-target`
+                    const temperature = entry[key]
+                    const target = entry[targetKey]
+                    normalized[`${key}-relative`] =
+                        typeof temperature === 'number' && typeof target === 'number' && target > 0
+                            ? (temperature / target) * 100
+                            : null
+                })
+
+            Object.keys(entry)
+                .filter((key) => key.endsWith('-target'))
+                .forEach((key) => {
+                    const target = entry[key]
+                    normalized[`${key}-relative`] = typeof target === 'number' && target > 0 ? 100 : null
+                })
+
+            return normalized
+        })
+    }
+
+    get hasRelativeTemperatures(): boolean {
+        const names = this.series
+            .filter((serie) => serie.name.endsWith('-temperature') && this.selectedLegends[serie.name] !== false)
+            .map((serie) => `${serie.name}-relative`)
+
+        return this.chartSource.some((entry) => names.some((name) => typeof entry[name] === 'number'))
+    }
+
+    get relativeToTarget(): boolean {
+        return this.$store.state.gui.view.tempchart.relativeToTarget ?? false
     }
 
     get autoscale() {
@@ -316,16 +380,22 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             const seriesNameTemperature = `${baseSeriesName}-temperature`
             const seriesNameTarget = `${baseSeriesName}-target`
 
-            if (seriesNameTemperature in value) {
-                const temperatureValue = value[seriesNameTemperature]
-                outputRows += temperatureValue !== null ? temperatureValue.toFixed(1) : '--'
+            const temperature = value[seriesNameTemperature]
+            const target = value[seriesNameTarget]
+            if (this.relativeToTarget && typeof temperature === 'number' && typeof target === 'number' && target > 0) {
+                outputRows += `${((temperature / target) * 100).toFixed(1)}% (${temperature.toFixed(1)} / ${target.toFixed(1)}°C)`
+            } else {
+                if (seriesNameTemperature in value) {
+                    const temperatureValue = value[seriesNameTemperature]
+                    outputRows += temperatureValue !== null ? temperatureValue.toFixed(1) : '--'
+                }
+                if (seriesNameTarget in value) {
+                    outputRows += ' / '
+                    const targetValue = value[seriesNameTarget]
+                    outputRows += targetValue !== null ? targetValue.toFixed(1) : '--'
+                }
+                outputRows += '°C'
             }
-            if (seriesNameTarget in value) {
-                outputRows += ' / '
-                const targetValue = value[seriesNameTarget]
-                outputRows += targetValue !== null ? targetValue.toFixed(1) : '--'
-            }
-            outputRows += '°C'
 
             datasetTypesInPercents.forEach((attrKey) => {
                 const seriesName = `${baseSeriesName}-${attrKey}`
@@ -371,7 +441,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
 
         this.chart?.setOption({
             dataset: {
-                source: newVal,
+                source: this.chartSource,
             },
         })
 
