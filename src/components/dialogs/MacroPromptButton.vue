@@ -33,9 +33,10 @@ export default class MacroPromptButton extends Mixins(BaseMixin) {
     }
 
     get bgcolor() {
-        if (convertHexToRgb(this.rawColor) === null) return ''
-
         const hex = this.rawColor.replace(/^#/, '')
+
+        // only 3 or 6 digits are supported (no alpha), convertHexToRgb validates the characters
+        if (![3, 6].includes(hex.length) || convertHexToRgb(hex) === null) return ''
 
         // expand 3-digit shorthand (f00 -> ff0000), filamentTextColor only understands 6/8 digits
         return '#' + (hex.length === 3 ? hex.replace(/./g, '$&$&') : hex)
