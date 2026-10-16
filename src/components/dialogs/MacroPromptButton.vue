@@ -28,20 +28,17 @@ export default class MacroPromptButton extends Mixins(BaseMixin) {
         return this.splits[2]?.trim() ?? ''
     }
 
-    get rgbColor() {
-        return convertHexToRgb(this.rawColor)
-    }
-
     get vuetifyColor() {
-        return this.rgbColor ? '' : this.rawColor
+        return this.bgcolor ? '' : this.rawColor
     }
 
     get bgcolor() {
-        if (!this.rgbColor) return ''
+        if (convertHexToRgb(this.rawColor) === null) return ''
 
-        const { r, g, b } = this.rgbColor
+        const hex = this.rawColor.replace(/^#/, '')
 
-        return '#' + [r, g, b].map((channel) => channel.toString(16).padStart(2, '0')).join('')
+        // expand 3-digit shorthand (f00 -> ff0000), filamentTextColor only understands 6/8 digits
+        return '#' + (hex.length === 3 ? hex.replace(/./g, '$&$&') : hex)
     }
 
     get textcolor() {
