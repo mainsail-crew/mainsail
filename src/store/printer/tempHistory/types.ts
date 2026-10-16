@@ -27,6 +27,18 @@ export interface PrinterTempHistoryStateSerie {
         opacity: number
     }
     showSymbol: boolean
+    axisPointer?: {
+        show: boolean
+    }
+    markPoint?: {
+        symbol: string
+        symbolSize: number
+        label: { show: boolean }
+        itemStyle: {
+            color: string
+        }
+        data: { coord: [Date, number] }[]
+    }
     emphasis: {
         lineStyle: {
             color: string

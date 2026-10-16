@@ -32,18 +32,13 @@ import { mdiClock } from '@mdi/js'
 import { datasetTypesInPercents } from '@/store/variables'
 import ThemeMixin from '../mixins/theme'
 
-interface TempChartTooltipPosition {
-    top: number
-    left?: number
-    right?: number
-}
-
 @Component
 export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     @Ref('tempchart') readonly tempchart!: EChartRef | undefined
 
     hoverChart = false
     isVisible = true
+    displayedSource: PrinterTempHistoryStateSourceEntry[] = this.$store.state.printer.tempHistory.source ?? []
 
     get chartOptions(): ECBasicOption {
         return {
@@ -115,11 +110,11 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                 type: 'value',
                 min: this.relativeToTarget
                     ? (value: { min: number }) =>
-                          Number.isFinite(value.min) ? Math.min(99, Math.floor(value.min - 1)) : 95
+                          Number.isFinite(value.min) ? Math.min(99, Math.floor(value.min - 1)) : 90
                     : 0,
                 max: (value: { max: number }) => {
                     if (this.relativeToTarget)
-                        return Number.isFinite(value.max) ? Math.max(101, Math.ceil(value.max + 1)) : 105
+                        return Number.isFinite(value.max) ? Math.max(101, Math.ceil(value.max + 1)) : 110
                     if (!this.autoscale) return this.maxTemp
 
                     return Math.ceil((value.max + 5) / 20) * 20
@@ -231,11 +226,31 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     get series(): PrinterTempHistoryStateSerie[] {
         const series = this.$store.state.printer.tempHistory.series ?? []
         if (!this.relativeToTarget) return series
+        const segmentEndpoints = this.relativeSegmentEndpoints
 
         return series.map((serie) => {
             if (!serie.name.endsWith('-temperature') && !serie.name.endsWith('-target')) return serie
 
-            return { ...serie, encode: { ...serie.encode, y: `${serie.name}-relative` } }
+            const endpoints = segmentEndpoints[serie.name]
+
+            return {
+                ...serie,
+                encode: { ...serie.encode, y: `${serie.name}-relative` },
+                ...(serie.name.endsWith('-target') ? { axisPointer: { show: false } } : {}),
+                ...(endpoints?.length
+                    ? {
+                          markPoint: {
+                              symbol: 'circle',
+                              symbolSize: 7,
+                              label: { show: false },
+                              itemStyle: {
+                                  color: serie.lineStyle.color,
+                              },
+                              data: endpoints,
+                          },
+                      }
+                    : {}),
+            }
         })
     }
 
@@ -244,9 +259,9 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get chartSource(): PrinterTempHistoryStateSourceEntry[] {
-        if (!this.relativeToTarget) return this.source
+        if (!this.relativeToTarget) return this.displayedSource
 
-        return this.source.map((entry) => {
+        return this.displayedSource.map((entry) => {
             const normalized = { ...entry }
             Object.keys(entry)
                 .filter((key) => key.endsWith('-temperature'))
@@ -277,6 +292,28 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             .map((serie) => `${serie.name}-relative`)
 
         return this.chartSource.some((entry) => names.some((name) => typeof entry[name] === 'number'))
+    }
+
+    get relativeSegmentEndpoints(): Record<string, { coord: [Date, number] }[]> {
+        const source = this.chartSource
+        const temperatureSeries = (this.$store.state.printer.tempHistory.series ?? []).filter(
+            (serie) => serie.name.endsWith('-temperature') && this.selectedLegends[serie.name] !== false
+        )
+        const endpoints: Record<string, { coord: [Date, number] }[]> = {}
+
+        temperatureSeries.forEach((serie) => {
+            const relativeName = `${serie.name}-relative`
+            endpoints[serie.name] = source.flatMap((entry, index) => {
+                const value = entry[relativeName]
+                if (typeof value !== 'number') return []
+
+                const startsAfterGap = index > 0 && typeof source[index - 1][relativeName] !== 'number'
+                const endsBeforeGap = index < source.length - 1 && typeof source[index + 1][relativeName] !== 'number'
+                return startsAfterGap || endsBeforeGap ? [{ coord: [entry.date, value] as [Date, number] }] : []
+            })
+        })
+
+        return endpoints
     }
 
     get relativeToTarget(): boolean {
@@ -333,14 +370,23 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         this.isVisible = isVisible
     }
 
-    // tooltip will be fixed on the right if mouse hovering on the left,
-    // and on the left if hovering on the right.
+    // Prefer below the cursor, then beside it, keeping a small gap.
     tooltipPosition: TooltipPositionCallback = (point, _params, _el, _rect, size) => {
-        const position: TempChartTooltipPosition = { top: 60 }
-        const side: 'left' | 'right' = point[0] < size.viewSize[0] / 2 ? 'left' : 'right'
-        position[side] = 5
+        const [viewWidth, viewHeight] = size.viewSize
+        const [tooltipWidth, tooltipHeight] = size.contentSize
+        const margin = 8
+        const gap = 20
+        const clamp = (value: number, max: number) => Math.max(margin, Math.min(value, max - tooltipHeight - margin))
+        const left = Math.max(margin, Math.min(point[0] + gap, viewWidth - tooltipWidth - margin))
+        const below = point[1] + gap
 
-        return position
+        if (below + tooltipHeight <= viewHeight - margin) return [left, below]
+
+        const centeredTop = clamp(point[1] - tooltipHeight / 2, viewHeight)
+        if (point[0] + gap + tooltipWidth <= viewWidth - margin) return [point[0] + gap, centeredTop]
+        if (point[0] - gap - tooltipWidth >= margin) return [point[0] - gap - tooltipWidth, centeredTop]
+
+        return [left, clamp(point[1] - tooltipHeight - gap, viewHeight)]
     }
 
     tooltipFormatter(params: TopLevelFormatterParams): string {
@@ -427,23 +473,15 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         return header + outputRows
     }
 
-    @Watch('selectedLegends')
-    selectedLegendsChanged(newVal: Record<string, boolean>) {
-        if (this.chart?.isDisposed() === true) return
-
-        this.chart?.setOption({ legend: { selected: newVal } })
-    }
-
     @Watch('source')
-    sourceChanged(newVal: PrinterTempHistoryStateSourceEntry[]) {
+    @Watch('hoverChart')
+    @Watch('isVisible')
+    sourceChanged() {
         // break if the chart isn't initialized or not visible or is hovered
         if (!this.chart || !this.isVisible || this.hoverChart) return
 
-        this.chart?.setOption({
-            dataset: {
-                source: this.chartSource,
-            },
-        })
+        const newVal = this.source
+        this.displayedSource = newVal
 
         const limitDate = new Date(Date.now() - this.maxHistory * 1000)
         const newSource = newVal.filter((entry: PrinterTempHistoryStateSourceEntry) => {
