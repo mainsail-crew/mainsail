@@ -474,15 +474,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     @Watch('source')
-    @Watch('hoverChart')
-    @Watch('isVisible')
-    sourceChanged() {
-        // break if the chart isn't initialized or not visible or is hovered
-        if (!this.chart || !this.isVisible || this.hoverChart) return
-
-        const newVal = this.source
-        this.displayedSource = newVal
-
+    sourceChanged(newVal: PrinterTempHistoryStateSourceEntry[]) {
         const limitDate = new Date(Date.now() - this.maxHistory * 1000)
         const newSource = newVal.filter((entry: PrinterTempHistoryStateSourceEntry) => {
             return entry.date >= limitDate
@@ -496,6 +488,17 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                 { action: 'printer/tempHistory/init' }
             )
         }
+
+        this.updateDisplayedSource()
+    }
+
+    @Watch('hoverChart')
+    @Watch('isVisible')
+    updateDisplayedSource() {
+        // break if the chart isn't initialized or not visible or is hovered
+        if (!this.chart || !this.isVisible || this.hoverChart) return
+
+        this.displayedSource = this.source
     }
 }
 </script>
