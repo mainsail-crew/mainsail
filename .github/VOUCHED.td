@@ -15,6 +15,7 @@
 bigtreetech
 ghzserg
 hannott
+jacrob32
 jimmyjon711 Maintainer from AFC
 jomik
 julianschill LED effects Maintainer
