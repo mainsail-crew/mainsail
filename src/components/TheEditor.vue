@@ -12,16 +12,13 @@
             @keydown.meta.shift.s.prevent="restartServiceNameExists && save(restartServiceName)"
             @keydown.ctrl.s.prevent="save(null)"
             @keydown.meta.s.prevent="save(null)">
-            <panel
-                card-class="editor-dialog"
-                :icon="isWriteable && !markdownPreview ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
-                :title="title">
+            <panel card-class="editor-dialog" :icon="editorIcon" :title="title">
                 <template #buttons>
                     <v-btn v-if="isMarkdown && isWriteable" text tile @click="markdownEditing = !markdownEditing">
                         <v-icon small class="mr-1">
-                            {{ markdownPreview ? mdiFileDocumentEditOutline : mdiFileDocumentOutline }}
+                            {{ markdownToggleIcon }}
                         </v-icon>
-                        {{ $t(markdownPreview ? 'Editor.Edit' : 'Editor.Preview') }}
+                        {{ markdownToggleLabel }}
                     </v-btn>
                     <v-btn text tile class="d-none d-md-flex" @click="dialogDevices = true">
                         <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
@@ -59,18 +56,19 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pa-0 d-flex">
-                    <markdown-preview v-if="show && markdownPreview" :source="sourcecode" :source-url="sourceUrl" />
-                    <codemirror-async
-                        v-if="show"
-                        v-show="!markdownPreview"
-                        ref="editor"
-                        v-model="sourcecode"
-                        :name="filename"
-                        :file-extension="fileExtension"
-                        class="codemirror"
-                        :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
-                        @ready="restorePosition"
-                        @lineChange="lineChanges" />
+                    <keep-alive v-if="show">
+                        <markdown-preview v-if="markdownPreview" :source="sourcecode" :source-url="sourceUrl" />
+                        <codemirror-async
+                            v-else
+                            ref="editor"
+                            v-model="sourcecode"
+                            :name="filename"
+                            :file-extension="fileExtension"
+                            class="codemirror"
+                            :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
+                            @ready="restorePosition"
+                            @lineChange="lineChanges" />
+                    </keep-alive>
                     <div v-if="existsFileStructure && fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
                             activatable
@@ -275,6 +273,18 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     get markdownPreview() {
         return this.isMarkdown && (!this.markdownEditing || !this.isWriteable)
+    }
+
+    get editorIcon(): string {
+        return this.isWriteable && !this.markdownPreview ? this.mdiFileDocumentEditOutline : this.mdiFileDocumentOutline
+    }
+
+    get markdownToggleIcon(): string {
+        return this.markdownPreview ? this.mdiFileDocumentEditOutline : this.mdiFileDocumentOutline
+    }
+
+    get markdownToggleLabel() {
+        return this.$t(this.markdownPreview ? 'Editor.Edit' : 'Editor.Preview')
     }
 
     get sourceUrl() {
