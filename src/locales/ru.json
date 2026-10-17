@@ -678,6 +678,7 @@
             "Unloading": "Выгрузка",
             "UnloadLane": "Выгрузить нить",
             "Weight": "Масса",
+            "WeightRemaining": "{weight}г осталось",
             "WeightSubtitle": "Вес филамента в граммах (без катушки).",
             "WeightUsed": "использавано {weight}г"
         },
@@ -803,6 +804,7 @@
             "Drying": "Сушка",
             "DryingCancelled": "Сушка отменена",
             "DryingComplete": "Сушка завершена",
+            "DryingQueued": "Очередь на сушку",
             "EditGateMap": "Редактировать филамент",
             "EditGateMapTitle": "Редактировать филамент (карта затвора)",
             "EditTtgMap": "Карта инструментов",
