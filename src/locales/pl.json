@@ -77,7 +77,7 @@
             "Complete": "Zakończono - {filename}",
             "Error": "BŁĄD",
             "Pause": "Pauza",
-            "PrinterOff": "Drukarka WYŁ.",
+            "PrinterOff": "Drukarka jest wyłączona",
             "Printing": "{percent}% Drukowanie - {filename}",
             "PrintingETA": "{percent}% Drukowanie - Koniec: {eta} - {filename}"
         },
@@ -649,7 +649,7 @@
             "KlipperLog": "Log Klipper'a",
             "MoonrakerCannotConnect": "Moonraker nie może połączyć się z Klipperem!",
             "MoonrakerLog": "Log Moonraker'a",
-            "PowerOn": "Włączone",
+            "PowerOn": "Włącz drukarkę",
             "PrinterSwitchedOff": "Drukarka jest wyłączona",
             "PrinterSwitchedOffDescription": "Drukarka jest obecnie wyłączona i Klipper nie może się z nią połączyć. Aby włączyć drukarkę, kliknij poniższy przycisk:",
             "Restart": "Ponowne uruchomienie",
@@ -943,7 +943,7 @@
         "Edit": "Edytuj",
         "EditorTab": {
             "ConfirmUnsavedChanges": "Potwierdź, aby zapisać lub anulować niezapisane zmiany",
-            "ConfirmUnsavedChangesDescription": "Jeżeli włączone, edytor wymaga potwierdzenia zapisania zmian lub anulowania. Jeżeli wyłączone, edytor nie wymaga potwierdzenia.",
+            "ConfirmUnsavedChangesDescription": "Po włączeniu tej opcji edytor wymaga potwierdzenia zapisania lub odrzucenia wprowadzonych zmian. Po wyłączeniu zmiany są odrzucane bez potwierdzenia.",
             "Editor": "Edytor",
             "KlipperRestartMethod": "Metoda restartu Klippera",
             "KlipperRestartMethodDescription": "Wybierz która metoda ponownego uruchomienia ma być używana podczas 'Zapisz i Uruchom ponownie' podczas edytowania plików konfiguracyjnych Klippera.",
