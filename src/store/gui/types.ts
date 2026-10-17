@@ -53,6 +53,10 @@ export interface GuiState {
         tabSize: number
         fileStructureSidebar: boolean
     }
+    gcodePreview: {
+        showPrintPreview: boolean
+        showMovePath: boolean
+    }
     gcodeViewer: {
         extruderColors: string[]
         gridColor: string

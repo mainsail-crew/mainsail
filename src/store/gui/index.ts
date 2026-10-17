@@ -126,6 +126,10 @@ export const getDefaultState = (): GuiState => {
             tabSize: 2,
             fileStructureSidebar: true,
         },
+        gcodePreview: {
+            showPrintPreview: true,
+            showMovePath: false,
+        },
         gcodeViewer: {
             extruderColors: ['#E76F51FF', '#F4A261FF', '#E9C46AFF', '#2A9D8FFF', '#264653FF'],
             gridColor: '#B3B3B3',
