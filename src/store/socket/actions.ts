@@ -14,19 +14,15 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setData', payload)
     },
 
-    async setSocket({ commit, state }, payload) {
+    setSocket({ commit, state }, payload) {
         commit('setData', payload)
 
-        if ('$socket' in Vue.prototype) {
-            const normPath = payload.path.replaceAll(/(^\/*)|(\/*$)/g, '')
-            const path = normPath.length > 0 ? `/${normPath}` : ''
+        const normPath = payload.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+        const path = normPath.length > 0 ? `/${normPath}` : ''
 
-            await Vue.prototype.$socket.close()
-            await Vue.prototype.$socket.setUrl(
-                state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket'
-            )
-            await Vue.prototype.$socket.connect()
-        }
+        Vue.$socket.close()
+        Vue.$socket.setUrl(state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket')
+        Vue.$socket.reconnect()
     },
 
     onOpen({ commit, dispatch, rootState }) {
