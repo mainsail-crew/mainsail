@@ -1,14 +1,22 @@
 <template>
-    <e-chart
-        ref="tempchart"
-        v-observe-visibility="visibilityChanged"
-        :option="chartOptions"
-        :init-options="{ renderer: 'svg' }"
-        :autoresize="true"
-        :style="tempchartStyle"
-        class="w-100"
-        @mouseenter.native="hoverChart = true"
-        @mouseleave.native="hoverChart = false" />
+    <div>
+        <div
+            v-if="relativeToTarget && !hasRelativeTemperatures"
+            class="px-4 pt-2 text-caption text--secondary"
+            role="status">
+            {{ $t('Panels.TemperaturePanel.NoRelativeTemperatures') }}
+        </div>
+        <e-chart
+            ref="tempchart"
+            v-observe-visibility="visibilityChanged"
+            :option="chartOptions"
+            :init-options="{ renderer: 'svg' }"
+            :autoresize="true"
+            :style="tempchartStyle"
+            class="w-100"
+            @mouseenter.native="hoverChart = true"
+            @mouseleave.native="hoverChart = false" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -24,18 +32,13 @@ import { mdiClock } from '@mdi/js'
 import { datasetTypesInPercents } from '@/store/variables'
 import ThemeMixin from '../mixins/theme'
 
-interface TempChartTooltipPosition {
-    top: number
-    left?: number
-    right?: number
-}
-
 @Component
 export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     @Ref('tempchart') readonly tempchart!: EChartRef | undefined
 
     hoverChart = false
     isVisible = true
+    displayedSource: PrinterTempHistoryStateSourceEntry[] = this.$store.state.printer.tempHistory.source ?? []
 
     get chartOptions(): ECBasicOption {
         return {
@@ -72,7 +75,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             yAxis: this.yAxis,
             media: this.media,
             dataset: {
-                source: [],
+                source: this.chartSource,
             },
             series: this.series,
         }
@@ -99,16 +102,25 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     get yAxis() {
         return [
             {
-                name: this.$t('Panels.TemperaturePanel.TemperaturesInChart'),
+                name: this.$t(
+                    this.relativeToTarget
+                        ? 'Panels.TemperaturePanel.RelativeTemperaturesInChart'
+                        : 'Panels.TemperaturePanel.TemperaturesInChart'
+                ),
                 type: 'value',
-                min: 0,
+                min: this.relativeToTarget
+                    ? (value: { min: number }) =>
+                          Number.isFinite(value.min) ? Math.min(99, Math.floor(value.min - 1)) : 90
+                    : 0,
                 max: (value: { max: number }) => {
+                    if (this.relativeToTarget)
+                        return Number.isFinite(value.max) ? Math.max(101, Math.ceil(value.max + 1)) : 110
                     if (!this.autoscale) return this.maxTemp
 
                     return Math.ceil((value.max + 5) / 20) * 20
                 },
-                minInterval: 20,
-                maxInterval: 100,
+                minInterval: this.relativeToTarget ? 0 : 20,
+                maxInterval: this.relativeToTarget ? Infinity : 100,
                 nameLocation: 'end',
                 nameGap: 5,
                 nameTextStyle: {
@@ -183,7 +195,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                     },
                     yAxis: [
                         {
-                            maxInterval: 50,
+                            maxInterval: this.relativeToTarget ? Infinity : 50,
                             axisLabel: {
                                 showMinLabel: false,
                                 showMaxLabel: true,
@@ -212,11 +224,100 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get series(): PrinterTempHistoryStateSerie[] {
-        return this.$store.state.printer.tempHistory.series ?? []
+        const series = this.$store.state.printer.tempHistory.series ?? []
+        if (!this.relativeToTarget) return series
+        const segmentEndpoints = this.relativeSegmentEndpoints
+
+        return series.map((serie) => {
+            if (!serie.name.endsWith('-temperature') && !serie.name.endsWith('-target')) return serie
+
+            const endpoints = segmentEndpoints[serie.name]
+
+            return {
+                ...serie,
+                encode: { ...serie.encode, y: `${serie.name}-relative` },
+                ...(serie.name.endsWith('-target') ? { axisPointer: { show: false } } : {}),
+                ...(endpoints?.length
+                    ? {
+                          markPoint: {
+                              symbol: 'circle',
+                              symbolSize: 7,
+                              label: { show: false },
+                              itemStyle: {
+                                  color: serie.lineStyle.color,
+                              },
+                              data: endpoints,
+                          },
+                      }
+                    : {}),
+            }
+        })
     }
 
     get source(): PrinterTempHistoryStateSourceEntry[] {
         return this.$store.state.printer.tempHistory.source ?? []
+    }
+
+    get chartSource(): PrinterTempHistoryStateSourceEntry[] {
+        if (!this.relativeToTarget) return this.displayedSource
+
+        return this.displayedSource.map((entry) => {
+            const normalized = { ...entry }
+            Object.keys(entry)
+                .filter((key) => key.endsWith('-temperature'))
+                .forEach((key) => {
+                    const targetKey = `${key.slice(0, -12)}-target`
+                    const temperature = entry[key]
+                    const target = entry[targetKey]
+                    normalized[`${key}-relative`] =
+                        typeof temperature === 'number' && typeof target === 'number' && target > 0
+                            ? (temperature / target) * 100
+                            : null
+                })
+
+            Object.keys(entry)
+                .filter((key) => key.endsWith('-target'))
+                .forEach((key) => {
+                    const target = entry[key]
+                    normalized[`${key}-relative`] = typeof target === 'number' && target > 0 ? 100 : null
+                })
+
+            return normalized
+        })
+    }
+
+    get hasRelativeTemperatures(): boolean {
+        const names = this.series
+            .filter((serie) => serie.name.endsWith('-temperature') && this.selectedLegends[serie.name] !== false)
+            .map((serie) => `${serie.name}-relative`)
+
+        return this.chartSource.some((entry) => names.some((name) => typeof entry[name] === 'number'))
+    }
+
+    get relativeSegmentEndpoints(): Record<string, { coord: [Date, number] }[]> {
+        const source = this.chartSource
+        const temperatureSeries = (this.$store.state.printer.tempHistory.series ?? []).filter(
+            (serie) => serie.name.endsWith('-temperature') && this.selectedLegends[serie.name] !== false
+        )
+        const endpoints: Record<string, { coord: [Date, number] }[]> = {}
+
+        temperatureSeries.forEach((serie) => {
+            const relativeName = `${serie.name}-relative`
+            endpoints[serie.name] = source.flatMap((entry, index) => {
+                const value = entry[relativeName]
+                if (typeof value !== 'number') return []
+
+                const startsAfterGap = index > 0 && typeof source[index - 1][relativeName] !== 'number'
+                const endsBeforeGap = index < source.length - 1 && typeof source[index + 1][relativeName] !== 'number'
+                return startsAfterGap || endsBeforeGap ? [{ coord: [entry.date, value] as [Date, number] }] : []
+            })
+        })
+
+        return endpoints
+    }
+
+    get relativeToTarget(): boolean {
+        return this.$store.state.gui.view.tempchart.relativeToTarget ?? false
     }
 
     get autoscale() {
@@ -269,14 +370,23 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         this.isVisible = isVisible
     }
 
-    // tooltip will be fixed on the right if mouse hovering on the left,
-    // and on the left if hovering on the right.
+    // Prefer below the cursor, then beside it, keeping a small gap.
     tooltipPosition: TooltipPositionCallback = (point, _params, _el, _rect, size) => {
-        const position: TempChartTooltipPosition = { top: 60 }
-        const side: 'left' | 'right' = point[0] < size.viewSize[0] / 2 ? 'left' : 'right'
-        position[side] = 5
+        const [viewWidth, viewHeight] = size.viewSize
+        const [tooltipWidth, tooltipHeight] = size.contentSize
+        const margin = 8
+        const gap = 20
+        const clamp = (value: number, max: number) => Math.max(margin, Math.min(value, max - tooltipHeight - margin))
+        const left = Math.max(margin, Math.min(point[0] + gap, viewWidth - tooltipWidth - margin))
+        const below = point[1] + gap
 
-        return position
+        if (below + tooltipHeight <= viewHeight - margin) return [left, below]
+
+        const centeredTop = clamp(point[1] - tooltipHeight / 2, viewHeight)
+        if (point[0] + gap + tooltipWidth <= viewWidth - margin) return [point[0] + gap, centeredTop]
+        if (point[0] - gap - tooltipWidth >= margin) return [point[0] - gap - tooltipWidth, centeredTop]
+
+        return [left, clamp(point[1] - tooltipHeight - gap, viewHeight)]
     }
 
     tooltipFormatter(params: TopLevelFormatterParams): string {
@@ -316,16 +426,22 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
             const seriesNameTemperature = `${baseSeriesName}-temperature`
             const seriesNameTarget = `${baseSeriesName}-target`
 
-            if (seriesNameTemperature in value) {
-                const temperatureValue = value[seriesNameTemperature]
-                outputRows += temperatureValue !== null ? temperatureValue.toFixed(1) : '--'
+            const temperature = value[seriesNameTemperature]
+            const target = value[seriesNameTarget]
+            if (this.relativeToTarget && typeof temperature === 'number' && typeof target === 'number' && target > 0) {
+                outputRows += `${((temperature / target) * 100).toFixed(1)}% (${temperature.toFixed(1)} / ${target.toFixed(1)}°C)`
+            } else {
+                if (seriesNameTemperature in value) {
+                    const temperatureValue = value[seriesNameTemperature]
+                    outputRows += temperatureValue !== null ? temperatureValue.toFixed(1) : '--'
+                }
+                if (seriesNameTarget in value) {
+                    outputRows += ' / '
+                    const targetValue = value[seriesNameTarget]
+                    outputRows += targetValue !== null ? targetValue.toFixed(1) : '--'
+                }
+                outputRows += '°C'
             }
-            if (seriesNameTarget in value) {
-                outputRows += ' / '
-                const targetValue = value[seriesNameTarget]
-                outputRows += targetValue !== null ? targetValue.toFixed(1) : '--'
-            }
-            outputRows += '°C'
 
             datasetTypesInPercents.forEach((attrKey) => {
                 const seriesName = `${baseSeriesName}-${attrKey}`
@@ -357,24 +473,8 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
         return header + outputRows
     }
 
-    @Watch('selectedLegends')
-    selectedLegendsChanged(newVal: Record<string, boolean>) {
-        if (this.chart?.isDisposed() === true) return
-
-        this.chart?.setOption({ legend: { selected: newVal } })
-    }
-
     @Watch('source')
     sourceChanged(newVal: PrinterTempHistoryStateSourceEntry[]) {
-        // break if the chart isn't initialized or not visible or is hovered
-        if (!this.chart || !this.isVisible || this.hoverChart) return
-
-        this.chart?.setOption({
-            dataset: {
-                source: newVal,
-            },
-        })
-
         const limitDate = new Date(Date.now() - this.maxHistory * 1000)
         const newSource = newVal.filter((entry: PrinterTempHistoryStateSourceEntry) => {
             return entry.date >= limitDate
@@ -388,6 +488,17 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
                 { action: 'printer/tempHistory/init' }
             )
         }
+
+        this.updateDisplayedSource()
+    }
+
+    @Watch('hoverChart')
+    @Watch('isVisible')
+    updateDisplayedSource() {
+        // break if the chart isn't initialized or not visible or is hovered
+        if (!this.chart || !this.isVisible || this.hoverChart) return
+
+        this.displayedSource = this.source
     }
 }
 </script>

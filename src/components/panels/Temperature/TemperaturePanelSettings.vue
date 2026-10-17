@@ -29,7 +29,15 @@
             </v-list-item>
             <v-list-item class="minHeight36">
                 <v-checkbox
+                    v-model="relativeToTarget"
+                    class="mt-0"
+                    hide-details
+                    :label="$t('Panels.TemperaturePanel.RelativeToTarget')" />
+            </v-list-item>
+            <v-list-item class="minHeight36">
+                <v-checkbox
                     v-model="autoscaleTempchart"
+                    :disabled="relativeToTarget"
                     class="mt-0"
                     hide-details
                     :label="$t('Panels.TemperaturePanel.AutoscaleChart')" />
@@ -54,6 +62,14 @@ export default class TemperaturePanelSettings extends Mixins(BaseMixin) {
 
     set boolTempchart(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.boolTempchart', value: newVal })
+    }
+
+    get relativeToTarget(): boolean {
+        return this.$store.state.gui.view.tempchart.relativeToTarget ?? false
+    }
+
+    set relativeToTarget(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.relativeToTarget', value: newVal })
     }
 
     get autoscaleTempchart(): boolean {
