@@ -121,7 +121,7 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
             )
         else if (['gcode'].includes(this.fileExtension)) extensions.push(gcode())
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
-        else if (this.fileExtension.toLowerCase() === 'md') extensions.push(markdown())
+        else if (['md'].includes(this.fileExtension)) extensions.push(markdown())
         else if (['yaml', 'yml'].includes(this.fileExtension)) {
             extensions.push(
                 yaml(),
