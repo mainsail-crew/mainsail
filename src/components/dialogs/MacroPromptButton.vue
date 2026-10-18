@@ -4,9 +4,9 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { TinyColor } from '@ctrl/tinycolor'
 import BaseMixin from '@/components/mixins/base'
 import { ServerStateEventPrompt } from '@/store/server/types'
-import { convertHexToRgb, filamentTextColor } from '@/plugins/helpers'
 
 @Component({})
 export default class MacroPromptButton extends Mixins(BaseMixin) {
@@ -28,31 +28,36 @@ export default class MacroPromptButton extends Mixins(BaseMixin) {
         return this.splits[2]?.trim() ?? ''
     }
 
+    /**
+     * Any color TinyColor can parse (HEX with or without "#", CSS names, rgb(), hsl(), ...)
+     * is used as such. Anything else is kept as a Vuetify theme color name (primary, error, ...).
+     */
+    get tinyColor(): TinyColor | null {
+        if (!this.rawColor) return null
+
+        const color = new TinyColor(this.rawColor)
+
+        return color.isValid ? color : null
+    }
+
     get vuetifyColor() {
-        return this.bgcolor ? '' : this.rawColor
+        return this.tinyColor ? '' : this.rawColor
     }
 
     get bgcolor() {
-        const hex = this.rawColor.replace(/^#/, '')
-
-        // only 3 or 6 digits are supported (no alpha), convertHexToRgb validates the characters
-        if (![3, 6].includes(hex.length) || convertHexToRgb(hex) === null) return ''
-
-        // expand 3-digit shorthand (f00 -> ff0000), filamentTextColor only understands 6/8 digits
-        return '#' + (hex.length === 3 ? hex.replace(/./g, '$&$&') : hex)
+        return this.tinyColor?.toHexString() ?? ''
     }
 
     get textcolor() {
-        return this.bgcolor ? filamentTextColor(this.bgcolor) : ''
+        if (!this.tinyColor) return ''
+
+        return this.tinyColor.isLight() ? '#212121' : '#ffffff'
     }
 
     get computedStyle() {
-        if (!this.bgcolor) return {}
+        if (!this.tinyColor) return ''
 
-        return {
-            backgroundColor: this.bgcolor,
-            color: this.textcolor,
-        }
+        return `background-color: ${this.bgcolor} !important; color: ${this.textcolor} !important;`
     }
 
     sendCommand() {
