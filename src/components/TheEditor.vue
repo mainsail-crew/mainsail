@@ -284,7 +284,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get markdownToggleLabel() {
-        return this.$t(this.markdownPreview ? 'Editor.Edit' : 'Editor.Preview')
+        return this.markdownPreview ? this.$t('Editor.Edit') : this.$t('Editor.Preview')
     }
 
     get sourceUrl() {
