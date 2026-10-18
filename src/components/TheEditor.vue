@@ -57,9 +57,8 @@
                 </template>
                 <v-card-text class="pa-0 d-flex">
                     <keep-alive v-if="show">
-                        <markdown-preview v-if="markdownPreview" :source="sourcecode" :source-url="sourceUrl" />
                         <codemirror-async
-                            v-else
+                            v-if="!markdownPreview"
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
@@ -68,6 +67,7 @@
                             :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
                             @ready="restorePosition"
                             @lineChange="lineChanges" />
+                        <markdown-preview v-else :source="sourcecode" :source-url="sourceUrl" />
                     </keep-alive>
                     <div v-if="existsFileStructure && fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
