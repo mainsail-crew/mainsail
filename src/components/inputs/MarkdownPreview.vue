@@ -42,7 +42,7 @@ export default class MarkdownPreview extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .markdown-preview {
     width: 100%;
     height: calc(100vh - 48px);
@@ -50,57 +50,59 @@ export default class MarkdownPreview extends Vue {
     overflow-wrap: anywhere;
     font-size: 16px;
     line-height: 1.6;
-}
 
-.markdown-preview ::v-deep h1,
-.markdown-preview ::v-deep h2,
-.markdown-preview ::v-deep h3,
-.markdown-preview ::v-deep h4,
-.markdown-preview ::v-deep h5,
-.markdown-preview ::v-deep h6 {
-    margin-bottom: 16px;
-    line-height: 1.3;
-}
+    ::v-deep {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
 
-.markdown-preview ::v-deep ul,
-.markdown-preview ::v-deep ol {
-    margin-bottom: 16px;
-}
+        ul,
+        ol {
+            margin-bottom: 16px;
+        }
 
-.markdown-preview ::v-deep img {
-    max-width: 100%;
-    height: auto;
-}
+        img {
+            max-width: 100%;
+            height: auto;
+        }
 
-.markdown-preview ::v-deep pre {
-    overflow-x: auto;
-    padding: 16px;
-    margin-bottom: 16px;
-    background: var(--v-toolbar-base);
-    border-radius: 4px;
-}
+        pre {
+            overflow-x: auto;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: var(--v-toolbar-base);
+            border-radius: 4px;
 
-.markdown-preview ::v-deep pre code {
-    padding: 0;
-    background: transparent;
-    color: inherit;
-}
+            code {
+                padding: 0;
+                background: transparent;
+                color: inherit;
+            }
+        }
 
-.markdown-preview ::v-deep blockquote {
-    border-left: 4px solid var(--v-primary-base);
-    padding-left: 16px;
-}
+        blockquote {
+            border-left: 4px solid var(--v-primary-base);
+            padding-left: 16px;
+        }
 
-.markdown-preview ::v-deep table {
-    display: block;
-    overflow-x: auto;
-    border-collapse: collapse;
-    margin-bottom: 16px;
-}
+        table {
+            display: block;
+            overflow-x: auto;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
 
-.markdown-preview ::v-deep th,
-.markdown-preview ::v-deep td {
-    border: 1px solid var(--v-secondary-base);
-    padding: 8px 16px;
+        th,
+        td {
+            border: 1px solid var(--v-secondary-base);
+            padding: 8px 16px;
+        }
+    }
 }
 </style>
