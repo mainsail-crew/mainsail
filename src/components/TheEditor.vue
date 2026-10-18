@@ -258,7 +258,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get fileExtension() {
-        if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1)
+        if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1).toLowerCase()
 
         return ''
     }
@@ -268,7 +268,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get isMarkdown() {
-        return this.fileExtension.toLowerCase() === 'md'
+        return this.fileExtension === 'md'
     }
 
     get markdownPreview() {
