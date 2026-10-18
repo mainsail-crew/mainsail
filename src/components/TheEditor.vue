@@ -292,16 +292,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return `${this.$store.getters['socket/getUrl']}/server/files/${escapePath(path)}`
     }
 
-    @Watch('show')
-    showChanged() {
-        this.markdownEditing = false
-    }
-
-    @Watch('sourceUrl')
-    sourceUrlChanged() {
-        this.markdownEditing = false
-    }
-
     get permissions(): string {
         return this.$store.state.editor.permissions ?? 'r'
     }
@@ -531,6 +521,11 @@ export default class TheEditor extends Mixins(BaseMixin) {
         }
 
         window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+    }
+
+    @Watch('show')
+    showChanged() {
+        this.markdownEditing = false
     }
 }
 </script>
