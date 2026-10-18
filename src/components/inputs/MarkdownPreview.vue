@@ -10,11 +10,8 @@ import { marked } from 'marked'
 
 @Component
 export default class MarkdownPreview extends Vue {
-    @Prop({ type: String, required: true, default: '' })
-    declare readonly source: string
-
-    @Prop({ type: String, required: true, default: '' })
-    declare readonly sourceUrl: string
+    @Prop({ type: String, required: true }) readonly source!: string
+    @Prop({ type: String, required: true }) readonly sourceUrl!: string
 
     get renderedMarkdown(): string {
         const html = marked.parse(this.source, { async: false, gfm: true })
