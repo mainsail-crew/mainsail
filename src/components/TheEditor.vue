@@ -14,15 +14,15 @@
             @keydown.meta.s.prevent="save(null)">
             <panel card-class="editor-dialog" :icon="editorIcon" :title="title">
                 <template #buttons>
+                    <v-btn v-if="!markdownPreview" text tile class="d-none d-md-flex" @click="dialogDevices = true">
+                        <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
+                        {{ $t('Editor.DeviceDialog') }}
+                    </v-btn>
                     <v-btn v-if="isMarkdown && isWriteable" text tile @click="markdownEditing = !markdownEditing">
                         <v-icon small class="mr-1">
                             {{ markdownToggleIcon }}
                         </v-icon>
                         {{ markdownToggleLabel }}
-                    </v-btn>
-                    <v-btn text tile class="d-none d-md-flex" @click="dialogDevices = true">
-                        <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
-                        {{ $t('Editor.DeviceDialog') }}
                     </v-btn>
                     <v-btn
                         v-if="restartServiceName === 'klipper'"
