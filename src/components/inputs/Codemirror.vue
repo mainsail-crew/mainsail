@@ -19,6 +19,7 @@ import { klipperConfig, gcode } from '@/plugins/codemirror/lezer'
 import { KlipperDocsTooltip } from '@/plugins/codemirror/KlipperDocsTooltip'
 import { indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
+import { markdown } from '@codemirror/lang-markdown'
 import { css } from '@codemirror/lang-css'
 import { yaml } from '@codemirror/lang-yaml'
 import { insertSmartTab } from '@/plugins/codemirror/insertSmartTab'
@@ -120,6 +121,7 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
             )
         else if (['gcode'].includes(this.fileExtension)) extensions.push(gcode())
         else if (['json'].includes(this.fileExtension)) extensions.push(json())
+        else if (['md'].includes(this.fileExtension)) extensions.push(markdown())
         else if (['yaml', 'yml'].includes(this.fileExtension)) {
             extensions.push(
                 yaml(),

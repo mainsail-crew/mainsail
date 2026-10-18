@@ -12,14 +12,17 @@
             @keydown.meta.shift.s.prevent="restartServiceNameExists && save(restartServiceName)"
             @keydown.ctrl.s.prevent="save(null)"
             @keydown.meta.s.prevent="save(null)">
-            <panel
-                card-class="editor-dialog"
-                :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
-                :title="title">
+            <panel card-class="editor-dialog" :icon="editorIcon" :title="title">
                 <template #buttons>
-                    <v-btn text tile class="d-none d-md-flex" @click="dialogDevices = true">
+                    <v-btn v-if="!markdownPreview" text tile class="d-none d-md-flex" @click="dialogDevices = true">
                         <v-icon small class="mr-1">{{ mdiUsb }}</v-icon>
                         {{ $t('Editor.DeviceDialog') }}
+                    </v-btn>
+                    <v-btn v-if="isMarkdown && isWriteable" text tile @click="markdownEditing = !markdownEditing">
+                        <v-icon small class="mr-1">
+                            {{ markdownToggleIcon }}
+                        </v-icon>
+                        {{ markdownToggleLabel }}
                     </v-btn>
                     <v-btn
                         v-if="restartServiceName === 'klipper'"
@@ -45,7 +48,7 @@
                         <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
-                    <v-btn v-if="isWriteable" icon tile @click="save(null)">
+                    <v-btn v-if="isWriteable && !markdownPreview" icon tile @click="save(null)">
                         <v-icon>{{ mdiContentSave }}</v-icon>
                     </v-btn>
                     <v-btn icon tile @click="close">
@@ -53,16 +56,19 @@
                     </v-btn>
                 </template>
                 <v-card-text class="pa-0 d-flex">
-                    <codemirror-async
-                        v-if="show"
-                        ref="editor"
-                        v-model="sourcecode"
-                        :name="filename"
-                        :file-extension="fileExtension"
-                        class="codemirror"
-                        :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
-                        @ready="restorePosition"
-                        @lineChange="lineChanges" />
+                    <keep-alive v-if="show">
+                        <codemirror-async
+                            v-if="!markdownPreview"
+                            ref="editor"
+                            v-model="sourcecode"
+                            :name="filename"
+                            :file-extension="fileExtension"
+                            class="codemirror"
+                            :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
+                            @ready="restorePosition"
+                            @lineChange="lineChanges" />
+                        <markdown-preview v-else :source="sourcecode" :source-url="sourceUrl" />
+                    </keep-alive>
                     <div v-if="existsFileStructure && fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
                             activatable
@@ -167,7 +173,7 @@
 <script lang="ts">
 import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { capitalize, escapePath, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
@@ -191,11 +197,17 @@ import { EditorPositionMemory } from '@/plugins/codemirror/EditorPositionMemory'
 const editorPositions = new EditorPositionMemory()
 
 @Component({
-    components: { DevicesDialog, Panel, CodemirrorAsync },
+    components: {
+        DevicesDialog,
+        Panel,
+        CodemirrorAsync,
+        MarkdownPreview: () => import('@/components/inputs/MarkdownPreview.vue'),
+    },
 })
 export default class TheEditor extends Mixins(BaseMixin) {
     dialogConfirmChange = false
     dialogDevices = false
+    markdownEditing = false
     treeviewItemKeyProp = 'line' as const
     structureActive: number[] = []
     structureOpen: number[] = []
@@ -246,13 +258,38 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get fileExtension() {
-        if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1)
+        if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1).toLowerCase()
 
         return ''
     }
 
     get fileroot() {
         return this.$store.state.editor.fileroot ?? 'gcodes'
+    }
+
+    get isMarkdown() {
+        return this.fileExtension === 'md'
+    }
+
+    get markdownPreview() {
+        return this.isMarkdown && (!this.markdownEditing || !this.isWriteable)
+    }
+
+    get editorIcon(): string {
+        return this.isWriteable && !this.markdownPreview ? this.mdiFileDocumentEditOutline : this.mdiFileDocumentOutline
+    }
+
+    get markdownToggleIcon(): string {
+        return this.markdownPreview ? this.mdiFileDocumentEditOutline : this.mdiFileDocumentOutline
+    }
+
+    get markdownToggleLabel() {
+        return this.markdownPreview ? this.$t('Editor.Edit') : this.$t('Editor.Preview')
+    }
+
+    get sourceUrl() {
+        const path = [this.fileroot, this.filepath, this.filename].filter(Boolean).join('/')
+        return `${this.$store.getters['socket/getUrl']}/server/files/${escapePath(path)}`
     }
 
     get permissions(): string {
@@ -430,6 +467,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     save(restartServiceName: string | null = null) {
+        if (!this.isWriteable) return
+
         this.dialogConfirmChange = false
 
         this.$store.dispatch('editor/saveFile', {
@@ -482,6 +521,11 @@ export default class TheEditor extends Mixins(BaseMixin) {
         }
 
         window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+    }
+
+    @Watch('show')
+    showChanged() {
+        this.markdownEditing = false
     }
 }
 </script>
