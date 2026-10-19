@@ -92,6 +92,11 @@ export const getters: GetterTree<GuiState, RootState> = {
             allPanels = allPanels.filter((name) => name !== 'afc')
         }
 
+        // remove medusahc panel, if no MedusaHC module exists in Klipper
+        if (!rootState.printer?.medusahc) {
+            allPanels = allPanels.filter((name) => name !== 'medusahc')
+        }
+
         // remove mmu panel, if no Happy Hare exists in Klipper
         if (!rootState.printer?.mmu) {
             allPanels = allPanels.filter((name) => name !== 'mmu')

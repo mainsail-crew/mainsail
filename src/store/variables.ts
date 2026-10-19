@@ -115,6 +115,7 @@ export const allDashboardPanels = [
     'macros',
     'led-effects',
     'machine-settings',
+    'medusahc',
     'miniconsole',
     'miscellaneous',
     'spoolman',

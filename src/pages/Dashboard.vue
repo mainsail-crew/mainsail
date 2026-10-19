@@ -90,6 +90,7 @@ import LedEffectsPanel from '@/components/panels/LedEffectsPanel.vue'
 import MachineSettingsPanel from '@/components/panels/MachineSettingsPanel.vue'
 import MacrogroupPanel from '@/components/panels/MacrogroupPanel.vue'
 import MacrosPanel from '@/components/panels/MacrosPanel.vue'
+import MedusahcPanel from '@/components/panels/MedusahcPanel.vue'
 import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
@@ -109,6 +110,7 @@ import WebcamPanel from '@/components/panels/WebcamPanel.vue'
         MachineSettingsPanel,
         MacrogroupPanel,
         MacrosPanel,
+        MedusahcPanel,
         MiniconsolePanel,
         MinSettingsPanel,
         MiscellaneousPanel,

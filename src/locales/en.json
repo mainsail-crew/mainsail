@@ -752,6 +752,30 @@
             "Headline": "Macros",
             "Send": "send"
         },
+        "MedusahcPanel": {
+            "CleanNozzle": "Clean nozzle",
+            "Detected": "Detected",
+            "DockEmpty": "Dock empty",
+            "DropTool": "Drop tool",
+            "Empty": "Empty",
+            "Headline": "MedusaHC",
+            "HeadSensor": "Toolhead sensor",
+            "InDock": "In dock",
+            "Mounted": "Mounted",
+            "NoHeadSensor": "No toolhead sensor configured",
+            "None": "None",
+            "NoSpoolAssigned": "No spool assigned - click to select one",
+            "OnToolhead": "On toolhead",
+            "Operations": {
+                "changing": "Changing tool",
+                "dropping": "Dropping",
+                "idle": "Idle",
+                "picking": "Picking up"
+            },
+            "Toolhead": "Toolhead",
+            "Unknown": "Unknown",
+            "WeightRemainingUsed": "{remaining}g remaining | {used}g used"
+        },
         "MiniconsolePanel": {
             "Autoscroll": "Autoscroll",
             "Headline": "Console",
