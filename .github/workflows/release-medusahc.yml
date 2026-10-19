@@ -1,0 +1,40 @@
+# Release workflow for the MedusaHC fork.
+#
+# Moonraker's update_manager (type: web) installs the mainsail.zip asset of the
+# latest GitHub release of the configured repo. Pushing a tag such as
+# v2.19.0-mhc.1 builds Mainsail and publishes that release.
+name: Release (MedusaHC fork)
+
+on:
+  push:
+    tags:
+      - 'v*-mhc*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch repo
+        uses: actions/checkout@v4
+
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/mainsail.zip
+          generate_release_notes: true
+          make_latest: true
