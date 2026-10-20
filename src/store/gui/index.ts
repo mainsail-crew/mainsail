@@ -20,6 +20,7 @@ import { miscellaneous } from '@/store/gui/miscellaneous'
 import { navigation } from '@/store/gui/navigation'
 import { notifications } from '@/store/gui/notifications'
 import { presets } from '@/store/gui/presets'
+import { push } from '@/store/gui/push'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { maintenance } from '@/store/gui/maintenance'
 import { webcams } from '@/store/gui/webcams'
@@ -338,6 +339,7 @@ export const gui: Module<GuiState, RootState> = {
         navigation,
         notifications,
         presets,
+        push,
         remoteprinters,
         webcams,
         heightmap,
