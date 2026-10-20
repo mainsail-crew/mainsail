@@ -9,6 +9,10 @@ interface EditorPosition {
 export class EditorPositionMemory {
     private positions = new Map<string, EditorPosition>()
 
+    remember(view: EditorView, key: string): void {
+        this.positions.set(key, { selection: view.state.selection, scroll: view.scrollSnapshot() })
+    }
+
     restore(view: EditorView, key: string): void {
         const position = this.positions.get(key)
         const remember = () => {
