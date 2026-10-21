@@ -27,6 +27,9 @@ export interface PrinterTempHistoryStateSerie {
         opacity: number
     }
     showSymbol: boolean
+    axisPointer?: {
+        show: boolean
+    }
     emphasis: {
         lineStyle: {
             color: string

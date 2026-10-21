@@ -187,6 +187,7 @@ export interface GuiState {
             hideMcuHostSensors: boolean
             hideMonitors: boolean
             autoscale: boolean
+            relativeToTarget: boolean
             datasetSettings: Record<string, Record<string, unknown>>
         }
         timelapse: {
