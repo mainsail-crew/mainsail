@@ -13,14 +13,14 @@ export const getDefaultState = (): EditorState => {
         fileroot: '',
         filepath: '',
         sourcecode: '',
-        loaderBool: false,
-        loaderProgress: {
+        loader: {
+            isLoading: false,
             direction: 'downloading',
+            filename: '',
             loaded: 0,
             total: 0,
             speed: '',
         },
-        cancelToken: null,
         loadedHash: '',
         changed: false,
     }

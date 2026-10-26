@@ -1,5 +1,3 @@
-import { CancelTokenSource } from 'axios'
-
 export interface EditorState {
     bool: boolean
     filename: string
@@ -7,14 +5,22 @@ export interface EditorState {
     permissions: string
     filepath: string
     sourcecode: string
-    loaderBool: boolean
-    loaderProgress: {
+    loader: {
+        isLoading: boolean
         direction: 'downloading' | 'uploading'
+        filename: string
         loaded: number
         total: number
         speed: string
     }
-    cancelToken: CancelTokenSource | null
     loadedHash: string
     changed: boolean
+}
+
+export interface EditorOpenFilePayload {
+    root: string
+    path: string
+    filename: string
+    size: number
+    permissions: string
 }

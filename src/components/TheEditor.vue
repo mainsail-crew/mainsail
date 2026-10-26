@@ -97,24 +97,20 @@
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar v-model="loaderBool" :timeout="-1" fixed right bottom>
+        <v-snackbar :value="loader.isLoading" :timeout="-1" fixed right bottom>
             <div>
                 {{ snackbarHeadline }}
                 <br />
-                <strong>{{ filename }}</strong>
+                <strong>{{ loader.filename }}</strong>
             </div>
-            <template v-if="loaderProgress.total > 0">
-                <span class="mr-1">
-                    ({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})
-                </span>
-                {{ Math.round((100 * loaderProgress.loaded) / loaderProgress.total) }} % @ {{ loaderProgress.speed }}/s
+            <template v-if="loader.total > 0">
+                <span class="mr-1">({{ formatFilesize(loader.loaded) }}/{{ formatFilesize(loader.total) }})</span>
+                {{ Math.round((100 * loader.loaded) / loader.total) }} % @ {{ loader.speed }}/s
                 <br />
-                <v-progress-linear
-                    class="mt-2"
-                    :value="(100 * loaderProgress.loaded) / loaderProgress.total"></v-progress-linear>
+                <v-progress-linear class="mt-2" :value="(100 * loader.loaded) / loader.total" />
             </template>
             <template v-else>
-                <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
+                <v-progress-linear class="mt-2" indeterminate />
             </template>
             <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" tile @click="cancelDownload">
@@ -265,17 +261,13 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.$store.dispatch('editor/updateSourcecode', newVal)
     }
 
-    get loaderBool() {
-        return this.$store.state.editor.loaderBool ?? false
-    }
-
-    get loaderProgress() {
-        return this.$store.state.editor.loaderProgress ?? {}
+    get loader() {
+        return this.$store.state.editor.loader ?? {}
     }
 
     get snackbarHeadline() {
         let directionUppercase = this.$t('Editor.Downloading')
-        if (this.loaderProgress.direction) directionUppercase = capitalize(this.loaderProgress.direction)
+        if (this.loader.direction) directionUppercase = capitalize(this.loader.direction)
 
         return this.$t(`Editor.${directionUppercase}`)
     }
@@ -479,14 +471,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     @Watch('changed')
     changedChanged(newVal: boolean) {
-        if (!this.confirmUnsavedChanges) return
-
-        if (newVal) {
-            window.addEventListener('beforeunload', windowBeforeUnloadFunction)
+        if (!newVal) {
+            window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
             return
         }
 
-        window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+        if (this.confirmUnsavedChanges) window.addEventListener('beforeunload', windowBeforeUnloadFunction)
     }
 }
 </script>

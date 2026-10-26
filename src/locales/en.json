@@ -231,6 +231,7 @@
         "DeviceDialog": "Devices",
         "DontSave": "Don't save",
         "Downloading": "Downloading",
+        "FailedLoad": "{filename} could not be loaded!",
         "FailedSave": "{filename} could not be uploaded!",
         "FileReadOnly": "read-only",
         "FileStructure": "File Structure",
