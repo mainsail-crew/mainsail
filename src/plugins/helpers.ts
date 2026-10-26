@@ -14,6 +14,7 @@ import {
 } from '@mdi/js'
 import Vue from 'vue'
 import { VColorPickerColor } from '@/types/vuetify'
+import { sha256 } from 'js-sha256'
 
 export const isRecord = (value: unknown): value is Record<string, unknown> => {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -615,4 +616,15 @@ export function toggleArrayItem<T>(array: T[], item: T): T[] {
     else result.splice(index, 1)
 
     return result
+}
+
+/**
+ * Computes an SHA-256 hash of the given editor content, normalizing line endings to Unix-style (`\n`).
+ *
+ * Because the used editor converts all Windows-Style line endings with unix ones on load,
+ * the hash is computed with the source always having unix-style line endings.
+ * https://github.com/codemirror/CodeMirror/issues/3395
+ */
+export function hashEditorContent(content: string): string {
+    return sha256(content.replace(/(?:\r\n|\r|\n)/g, '\n'))
 }

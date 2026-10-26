@@ -97,7 +97,7 @@
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar v-model="loaderBool" :timeout="-1" fixed right bottom>
+        <v-snackbar v-model="isLoading" :timeout="-1" fixed right bottom>
             <div>
                 {{ snackbarHeadline }}
                 <br />
@@ -265,8 +265,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.$store.dispatch('editor/updateSourcecode', newVal)
     }
 
-    get loaderBool() {
-        return this.$store.state.editor.loaderBool ?? false
+    get isLoading() {
+        return this.$store.state.editor.isLoading ?? false
     }
 
     get loaderProgress() {
@@ -479,14 +479,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     @Watch('changed')
     changedChanged(newVal: boolean) {
-        if (!this.confirmUnsavedChanges) return
-
-        if (newVal) {
-            window.addEventListener('beforeunload', windowBeforeUnloadFunction)
+        if (!newVal) {
+            window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
             return
         }
 
-        window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+        if (this.confirmUnsavedChanges) window.addEventListener('beforeunload', windowBeforeUnloadFunction)
     }
 }
 </script>
