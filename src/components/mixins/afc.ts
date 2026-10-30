@@ -175,16 +175,7 @@ export default class AfcMixin extends Vue {
     getAfcLaneInfo(laneName: string): AfcSpoolLaneInfo {
         const lane = this.getAfcLaneObject(laneName)
         const spoolId: number | undefined = lane?.spool_id ?? undefined
-        // active_spool is kept live via websocket, unlike the static spools list
-        const activeSpool: ServerSpoolmanStateSpool | null = this.$store.state.server.spoolman?.active_spool ?? null
-        const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools || []
-        let spool: ServerSpoolmanStateSpool | null = null
-        if (spoolId) {
-            spool =
-                activeSpool?.id === spoolId
-                    ? activeSpool
-                    : (spools.find((s: ServerSpoolmanStateSpool) => s.id === spoolId) ?? null)
-        }
+        const spool = this.getAfcSpool(spoolId)
 
         // Use base mixin's spoolManagerUrl if available, otherwise build from store
         const spoolmanBase: string | undefined = this.$store.state.server.config.config?.spoolman?.server ?? undefined
@@ -211,6 +202,18 @@ export default class AfcMixin extends Vue {
             bedTemp: spool?.filament?.settings_bed_temp,
             spoolUrl,
         }
+    }
+
+    // Looks up a spoolman spool by id, preferring active_spool since it is kept
+    // live via websocket, unlike the static spools list
+    getAfcSpool(spoolId: number | undefined): ServerSpoolmanStateSpool | null {
+        if (!spoolId) return null
+
+        const activeSpool: ServerSpoolmanStateSpool | null = this.$store.state.server.spoolman?.active_spool ?? null
+        if (activeSpool?.id === spoolId) return activeSpool
+
+        const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools || []
+        return spools.find((s: ServerSpoolmanStateSpool) => s.id === spoolId) ?? null
     }
 
     // Color decision order: td1_color (when enabled) -> spoolman color_hex -> lane color from AFC
