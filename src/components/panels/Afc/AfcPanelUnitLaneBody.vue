@@ -2,7 +2,7 @@
     <div>
         <v-row class="my-3">
             <v-col class="pl-6 pr-0 pt-0 pb-0 d-flex flex-column">
-                <v-tooltip top>
+                <v-tooltip :disabled="tooltipDisabled" top>
                     <template #activator="{ on, attr }">
                         <span class="d-flex align-center justify-center" v-bind="attr" v-on="on">
                             <afc-filament-reel
@@ -95,16 +95,12 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return Number(this.lane.spool_id || '0')
     }
 
+    get tooltipDisabled(): boolean {
+        return this.spoolId === 0
+    }
+
     get spool(): ServerSpoolmanStateSpool | null {
-        if (this.spoolId === 0) return null
-
-        // active_spool is kept live via websocket, unlike the static spools list below
-        const activeSpool = this.$store.state.server.spoolman?.active_spool
-        if (activeSpool?.id === this.spoolId) return activeSpool
-
-        const spools = this.$store.state.server.spoolman?.spools || []
-
-        return spools.find((spool: ServerSpoolmanStateSpool) => spool.id === this.spoolId) || null
+        return this.getAfcSpool(this.spoolId)
     }
 
     get spoolFilamentHeadline(): string {
@@ -114,10 +110,8 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return array.join(' | ')
     }
 
-    get spoolColor() {
-        if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
-
-        return this.lane.color || '#000000'
+    get spoolColor(): string {
+        return this.getAfcLaneColor(this.name, this.spool)
     }
 
     get spoolRemainingWeight(): number | undefined {
@@ -130,33 +124,16 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return `${Math.round(this.spoolRemainingWeight)}g`
     }
 
-    get spoolFullWeight(): number | undefined {
-        return this.spool?.initial_weight ?? this.lane.initial_weight ?? undefined
+    get spoolFullWeight(): number {
+        return this.getAfcLaneFullWeight(this.name, this.spool)
     }
 
     get spoolWeightsOutput(): string | undefined {
-        if (this.spoolRemainingWeight === undefined) return undefined
-
-        const array = [
-            this.$t('Panels.AfcPanel.WeightRemaining', {
-                weight: Math.round(this.spoolRemainingWeight ?? 0),
-            }).toString(),
-        ]
-
-        if (this.spoolUsedWeight !== undefined) {
-            array.push(
-                this.$t('Panels.AfcPanel.WeightUsed', { weight: Math.round(this.spoolUsedWeight ?? 0) }).toString()
-            )
-        }
-
-        return array.join(' | ')
+        return this.buildAfcWeightsOutput(this.spoolRemainingWeight, this.spoolUsedWeight)
     }
 
-    get spoolPercent() {
-        if (this.spoolRemainingWeight === undefined || this.spoolFullWeight === undefined) return 100
-        if (this.spoolFullWeight === 0) return 100
-
-        return Math.round((this.spoolRemainingWeight / this.spoolFullWeight) * 100)
+    get spoolPercent(): number {
+        return this.getAfcSpoolPercent(this.spoolRemainingWeight, this.spoolFullWeight)
     }
 
     get spoolMaterial(): string {
@@ -168,11 +145,7 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolMaterialDetails(): string {
-        const array = [this.spoolMaterialOutput]
-        if (this.spoolExtruderTemp !== undefined) array.push(`${this.spoolExtruderTemp}°C`)
-        if (this.spoolBedTemp !== undefined) array.push(`${this.spoolBedTemp}°C`)
-
-        return array.join(' | ')
+        return this.buildAfcMaterialDetails(this.spoolMaterial, this.spoolExtruderTemp, this.spoolBedTemp)
     }
 
     get spoolFilamentVendor(): string | undefined {
@@ -180,13 +153,11 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolFilamentName(): string {
-        return this.spool?.filament?.name || this.lane.filament_name || 'Unknown'
+        return this.spool?.filament?.name || this.lane.filament_name || ''
     }
 
     get spoolUrl(): string | undefined {
-        if (!this.spoolManagerUrl || !this.spoolId) return undefined
-
-        return `${this.spoolManagerUrl.replace(/\/$/, '')}/spool/show/${this.spoolId}`
+        return this.getAfcSpoolUrl(this.spoolId)
     }
 
     get spoolExtruderTemp(): number | undefined {
@@ -199,10 +170,6 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
 
     get spoolUsedWeight(): number | undefined {
         return this.spool?.used_weight
-    }
-
-    get showTd1Color(): boolean {
-        return this.$store.state.gui.view.afc?.showTd1Color ?? true
     }
 
     get hasTd() {
