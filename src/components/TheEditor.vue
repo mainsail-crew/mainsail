@@ -67,7 +67,7 @@
                             :class="{ withSidebar: existsFileStructure && fileStructureSidebar }"
                             @ready="restorePosition"
                             @lineChange="lineChanges" />
-                        <markdown-preview v-else :source="sourcecode" :source-url="sourceUrl" />
+                        <markdown-preview-async v-else :source="sourcecode" :source-url="sourceUrl" />
                     </keep-alive>
                     <div v-if="existsFileStructure && fileStructureSidebar" class="d-none d-md-flex structure-sidebar">
                         <v-treeview
@@ -201,7 +201,7 @@ const editorPositions = new EditorPositionMemory()
         DevicesDialog,
         Panel,
         CodemirrorAsync,
-        MarkdownPreview: () => import('@/components/inputs/MarkdownPreview.vue'),
+        MarkdownPreviewAsync: () => import('@/components/inputs/MarkdownPreview.vue'),
     },
 })
 export default class TheEditor extends Mixins(BaseMixin) {
