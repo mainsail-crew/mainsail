@@ -7,9 +7,9 @@ import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
 import { checker } from 'vite-plugin-checker'
 
 import path from 'path'
-import buildVersion from './src/plugins/build-version'
-import buildReleaseInfo from './src/plugins/build-release_info'
-import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
+import buildVersion from './src/plugins/build-version.ts'
+import buildReleaseInfo from './src/plugins/build-release_info.ts'
+import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 import postcssNesting from 'postcss-nesting'
 
 const PWAConfig: Partial<VitePWAOptions> = {
@@ -83,7 +83,7 @@ export default defineConfig({
         version(),
         checker({
             typescript: {
-                root: path.resolve(__dirname),
+                root: path.resolve(import.meta.dirname),
                 buildMode: false,
             },
         }),
@@ -131,7 +131,7 @@ export default defineConfig({
     envPrefix: 'VUE_',
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src'),
+            '@': path.resolve(import.meta.dirname, './src'),
             stream: 'stream-browserify',
             events: 'events',
         },
