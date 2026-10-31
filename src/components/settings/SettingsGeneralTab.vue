@@ -65,6 +65,13 @@ import SettingsGeneralTabBackupDatabase from '@/components/settings/General/Gene
 import SettingsGeneralTabRestoreDatabase from '@/components/settings/General/GeneralRestore.vue'
 import SettingsGeneralTabResetDatabase from '@/components/settings/General/GeneralReset.vue'
 import SettingsGeneralDatabase from '@/components/mixins/settingsGeneralDatabase'
+import {
+    notifyCfgPath,
+    progressSourceFor,
+    readConfigFile,
+    setNotifyCfgSetting,
+    writeConfigFile,
+} from '@/plugins/webpush'
 
 @Component({
     components: {
@@ -200,6 +207,34 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin, SettingsGenera
 
     set calcPrintProgress(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'general.calcPrintProgress', value: newVal })
+        this.syncNotifyProgressSource(newVal)
+    }
+
+    /**
+     * Progress push notifications measure progress the way it is shown here.
+     * Applied live when the loaded notification macros know the setting, and
+     * written into notify.cfg so it survives a Klipper restart. Older macros
+     * without it are replaced as a whole when the Notifications tab next opens.
+     */
+    async syncNotifyProgressSource(calcPrintProgress: string) {
+        const settings = this.$store.state.printer?.['gcode_macro _NOTIFY_SETTINGS']
+        if (!settings || !('progress_source' in settings)) return
+
+        const source = progressSourceFor(calcPrintProgress)
+        try {
+            // klipper strips one level of quotes before ast.literal_eval, so the
+            // value has to arrive with its quotes escaped
+            await this.$store.dispatch(
+                'printer/sendGcode',
+                `SET_GCODE_VARIABLE MACRO=_NOTIFY_SETTINGS VARIABLE=progress_source VALUE=\\"${source}\\"`
+            )
+
+            const existing = await readConfigFile(this.apiUrl, notifyCfgPath)
+            const next = setNotifyCfgSetting(existing, 'progress_source', JSON.stringify(source))
+            if (next !== existing) await writeConfigFile(this.apiUrl, notifyCfgPath, next)
+        } catch (error: unknown) {
+            window.console.error('saving the notification progress source failed:', error)
+        }
     }
 
     get calcEstimateItems() {
