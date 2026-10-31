@@ -43,12 +43,12 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('updateCancelTokenSource', source)
         commit('updateLoaderState', true)
 
-        commit('setFilename', payload.filename)
-        commit('setPermissions', payload.permissions)
+        if (!state.bool) commit('setFilename', payload.filename)
 
-        axios
+        return axios
             .get(url, {
                 cancelToken: source.token,
+                timeout: payload.timeout,
                 onDownloadProgress: (progressEvent) =>
                     dispatch('downloadProgress', {
                         progressEvent,
@@ -59,23 +59,31 @@ export const actions: ActionTree<EditorState, RootState> = {
             })
             .then((res) => res.data.text())
             .then((file) => {
+                source.token.throwIfRequested()
+                commit('setPermissions', payload.permissions)
                 commit('openFile', {
                     filename: payload.filename,
                     fileroot: payload.root,
                     filepath: path,
                     file,
                 })
+                return true
+            })
+            .catch((error) => {
+                if (!axios.isCancel(error))
+                    Vue.$toast.error(i18n.t('Editor.FailedOpen', { filename: payload.filename }).toString())
+                return false
             })
             .finally(() => {
-                setTimeout(() => {
-                    dispatch('clearLoader')
-                }, 100)
+                if (state.cancelToken !== source) return
+                commit('updateCancelTokenSource', null)
+                dispatch('clearLoader')
             })
     },
 
     async saveFile(
         { state, commit, getters, rootGetters, dispatch },
-        payload: { content: string; restartServiceName: string | null }
+        payload: { content: string; restartServiceName: string | null; timeout?: number }
     ) {
         const content = new Blob([payload.content], { type: 'text/plain' })
         const formData = new FormData()
@@ -91,9 +99,10 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('updateCancelTokenSource', source)
         commit('updateLoaderState', true)
 
-        axios
+        return axios
             .post(url, formData, {
                 cancelToken: source.token,
+                timeout: payload.timeout,
                 onUploadProgress: (progressEvent) =>
                     dispatch('downloadProgress', {
                         progressEvent,
@@ -119,11 +128,13 @@ export const actions: ActionTree<EditorState, RootState> = {
                 commit('updateLoadedHash', payload.content)
 
                 if (payload.restartServiceName !== null) dispatch('close')
+                return true
             })
             .catch((error) => {
                 window.console.log(error.response?.data.error)
                 dispatch('clearLoader')
                 Vue.$toast.error(i18n.t('Editor.FailedSave', { filename: state.filename }).toString())
+                return false
             })
     },
 
