@@ -1,5 +1,6 @@
-import Vue from 'vue'
 import Component from 'vue-class-component'
+import { Mixins } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
 export interface AfcSpoolLaneInfo {
@@ -23,7 +24,7 @@ export interface AfcSpoolLaneInfo {
 const AFC_DEFAULT_SPOOL_WEIGHT = 1000
 
 @Component
-export default class AfcMixin extends Vue {
+export default class AfcMixin extends Mixins(BaseMixin) {
     get afcExists() {
         return 'AFC' in this.$store.state.printer
     }
@@ -177,8 +178,8 @@ export default class AfcMixin extends Vue {
         const spoolId: number | undefined = lane?.spool_id ?? undefined
         const spool = this.getAfcSpool(spoolId)
 
-        // Use base mixin's spoolManagerUrl if available, otherwise build from store
-        const spoolmanBase: string | undefined = this.$store.state.server.config.config?.spoolman?.server ?? undefined
+        // spoolManagerUrl swaps a localhost/loopback host for the printer's hostname so remote browsers can reach it
+        const spoolmanBase: string | undefined = this.spoolManagerUrl
         const spoolUrl =
             spoolmanBase && spoolId ? `${spoolmanBase.replace(/\/$/, '')}/spool/show/${spoolId}` : undefined
 
