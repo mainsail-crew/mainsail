@@ -293,6 +293,7 @@ export const getDefaultState = (): GuiState => {
                 hideMcuHostSensors: false,
                 hideMonitors: false,
                 autoscale: false,
+                relativeToTarget: false,
                 datasetSettings: {},
             },
             timelapse: {
