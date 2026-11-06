@@ -21,7 +21,14 @@
             <v-card-actions>
                 <v-tooltip v-if="afcExists" top>
                     <template #activator="{ on, attrs }">
-                        <v-btn icon color="primary" v-bind="attrs" @click="afcAutoMap(file)" v-on="on">
+                        <v-btn
+                            icon
+                            color="primary"
+                            :aria-label="$t('Dialogs.StartPrint.Afc.AutoMap')"
+                            :disabled="printerIsPrinting || !klipperReadyForGui"
+                            v-bind="attrs"
+                            @click="afcAutoMap(file)"
+                            v-on="on">
                             <v-icon>{{ mdiAutoFix }}</v-icon>
                         </v-btn>
                     </template>
