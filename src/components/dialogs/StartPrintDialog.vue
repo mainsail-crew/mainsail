@@ -25,7 +25,7 @@
                             icon
                             color="primary"
                             :aria-label="$t('Dialogs.StartPrint.Afc.AutoMap')"
-                            :disabled="printerIsPrinting || !klipperReadyForGui"
+                            :disabled="printerIsPrinting || !klipperReadyForGui || !file.filament_weights?.length"
                             v-bind="attrs"
                             @click="afcAutoMap(file)"
                             v-on="on">
