@@ -194,6 +194,7 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Otomatik eşleme",
                 "FilamentTypeMismatch": "G-kodundaki ({file}) filament tipi, seçilen filament tipiyle ({lane}) eşleşmiyor.",
                 "FilamentWeightNotEnough": "Seçilen şeritte ({lane}) yeterli filament yok. Gerekli: {required}, Mevcut: {available}."
             },

@@ -181,6 +181,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Automatisk tildeling"
+            },
             "DoYouWantToStartFilename": "Vil du begynde at printe: {filename}?",
             "DoYouWantToStartFilenameFilament": "Vil du begynde at printe {filename} med dette filament?",
             "Headline": "Start print",

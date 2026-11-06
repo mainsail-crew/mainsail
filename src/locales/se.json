@@ -153,6 +153,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Automatisk tilldelning"
+            },
             "DoYouWantToStartFilename": "Vill du starta {filename}?",
             "DoYouWantToStartFilenameFilament": "Vill du starta {filename} med följande filament?",
             "Headline": "Starta jobb",

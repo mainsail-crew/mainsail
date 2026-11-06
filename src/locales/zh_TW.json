@@ -194,6 +194,7 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "自動匹配",
                 "FilamentTypeMismatch": "G-Code 中的耗材類型 ({file}) 與所選通道的耗材類型 ({lane}) 不符。",
                 "FilamentWeightNotEnough": "所選通道 ({lane}) 的耗材不足。需要：{required}，目前可用：{available}。"
             },

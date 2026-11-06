@@ -181,6 +181,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Автопідбір"
+            },
             "DoYouWantToStartFilename": "Ви хочете роздрукувати {filename}?",
             "DoYouWantToStartFilenameFilament": "Хочете почати друк {filename} з наявного філаменту?",
             "Headline": "Почати друк",

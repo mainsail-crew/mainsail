@@ -194,6 +194,7 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Automatikus hozzárendelés",
                 "FilamentTypeMismatch": "A ({file}) G-Code állományban szereplő filament típus nem egyezik a kiválasztott ({lane}) filament típussal .",
                 "FilamentWeightNotEnough": "Nincs elegendő filament a kiválasztott csatornában ({lane}). Szükséges: {required}, rendelkezésre áll: {available}."
             },

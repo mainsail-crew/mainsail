@@ -142,6 +142,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "자동 매핑"
+            },
             "DoYouWantToStartFilename": "{filename} 파일을 출력 하시겠습니까?",
             "Headline": "출력 시작 확인",
             "Print": "출력 시작",

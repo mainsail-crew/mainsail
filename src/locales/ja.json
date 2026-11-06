@@ -142,6 +142,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "自動割り当て"
+            },
             "DoYouWantToStartFilename": "{filename}の印刷を開始しますか？",
             "Headline": "ジョブ開始",
             "Print": "印刷",

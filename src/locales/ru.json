@@ -194,6 +194,7 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Автоподбор",
                 "FilamentTypeMismatch": "Выбраный в G-Коде ({file}) филамент на соответствует выбраному ({lane}).",
                 "FilamentWeightNotEnough": "Не достаточно филамента ({lane}). Требуется: {required}, Доступно: {available}."
             },

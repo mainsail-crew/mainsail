@@ -182,6 +182,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Automatisch toewijzen"
+            },
             "DoYouWantToStartFilename": "Wil je {filename} starten?",
             "Headline": "Start print",
             "Print": "print",

@@ -164,6 +164,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Attribution automatique"
+            },
             "DoYouWantToStartFilename": "Voulez-vous commencer {filename}?",
             "DoYouWantToStartFilenameFilament": "Voulez-vous démarrer {filename} avec le filament suivant?",
             "Headline": "Démarrage Impression",

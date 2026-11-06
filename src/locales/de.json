@@ -194,6 +194,7 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Automatische Zuordnung",
                 "FilamentTypeMismatch": "Die Filament Typ im G-Code {{file}} stimmt nicht überein zum ausgewählten Filament Typ {{lane}}.",
                 "FilamentWeightNotEnough": "Nicht genug Filament in der ausgewählte Linie ({lane}). Benötigt: {required}, Verfügbar: {available}."
             },

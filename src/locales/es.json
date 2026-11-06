@@ -192,6 +192,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Asignación automática"
+            },
             "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
             "DoYouWantToStartFilenameFilament": "¿Quieres iniciar {filename} con el siguiente filamento?",
             "Headline": "Iniciar trabajo",

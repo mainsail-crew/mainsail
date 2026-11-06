@@ -193,6 +193,9 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Automatické přiřazení"
+            },
             "DoYouWantToStartFilename": "Chcete začít tisk {filename}?",
             "DoYouWantToStartFilenameFilament": "Chcete spustit {filename} s následujícím filamentem?",
             "Headline": "Začít tisk",

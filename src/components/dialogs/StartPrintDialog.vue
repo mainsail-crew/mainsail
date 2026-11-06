@@ -19,6 +19,14 @@
             <start-print-dialog-timelapse v-if="existsTimelapse" />
             <v-divider v-if="showDivider" class="my-0" />
             <v-card-actions>
+                <v-tooltip v-if="afcExists" top>
+                    <template #activator="{ on, attrs }">
+                        <v-btn icon color="primary" v-bind="attrs" @click="afcAutoMap(file)" v-on="on">
+                            <v-icon>{{ mdiAutoFix }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>{{ $t('Dialogs.StartPrint.Afc.AutoMap') }}</span>
+                </v-tooltip>
                 <v-spacer />
                 <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
                 <v-btn
@@ -38,7 +46,7 @@ import { Component, Mixins, Prop, VModel, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FileStateGcodefile } from '@/store/files/types'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import { mdiPrinter3d } from '@mdi/js'
+import { mdiAutoFix, mdiPrinter3d } from '@mdi/js'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import AfcMixin from '@/components/mixins/afc'
 
@@ -47,6 +55,7 @@ import AfcMixin from '@/components/mixins/afc'
 })
 export default class StartPrintDialog extends Mixins(BaseMixin, AfcMixin) {
     mdiPrinter3d = mdiPrinter3d
+    mdiAutoFix = mdiAutoFix
 
     @VModel({ type: Boolean }) showDialog!: boolean
     @Prop({ required: true, default: '' }) readonly currentPath!: string

@@ -194,6 +194,7 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Automatyczne przypisanie",
                 "FilamentTypeMismatch": "Typ filamentu w G-Code ({file}) nie pasuje do wybranego typu filamentu ({lane}).",
                 "FilamentWeightNotEnough": "Za mało filamentu w wybranym torze ({lane}). Wymagane: {required}, Dostępne: {available}."
             },
