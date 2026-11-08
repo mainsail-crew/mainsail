@@ -164,7 +164,8 @@ export default class AfcMixin extends Vue {
         }
     }
 
-    // Map each used tool to the closest loaded lane: same material first, then by color.
+    // Map each used tool to the closest loaded lane: same material first, then by color,
+    // then the lane the tool is already mapped to (keeps results deterministic without color data).
     // Lanes are assigned once, so the resulting SET_MAP sequence is order independent.
     afcAutoMap(file: FileStateGcodefile) {
         const fileColors = getFileFilamentColors(file)
@@ -173,22 +174,29 @@ export default class AfcMixin extends Vue {
 
         const lanes = this.afcLanes
             .map((lane) => ({ lane, object: this.getAfcLaneObject(lane) }))
-            .filter(({ object }) => object.load && object.prep && object.color)
+            .filter(({ object }) => object.load && object.prep)
+
+        const isMapped = (lane: string, tool: number) => {
+            const map = this.getAfcLaneObject(lane).map
+            const tools: string[] = Array.isArray(map) ? map : [map]
+            return tools.some((t) => t?.toLowerCase() === `t${tool}`)
+        }
 
         const pairs = usedTools
             .flatMap((tool) => {
                 const color = fileColors[tool]
-                if (!color) return []
                 const type = (fileTypes[tool] ?? '').toLowerCase()
-                const [l1, a1, b1] = hexToLab(color)
+                const lab1 = color ? hexToLab(color) : undefined
 
                 return lanes.map(({ lane, object }) => {
-                    const [l2, a2, b2] = hexToLab(object.color)
+                    const lab2 = object.color ? hexToLab(object.color) : undefined
                     const mismatch = type && (object.material ?? '').toLowerCase() !== type ? 1 : 0
-                    return { tool, lane, mismatch, distance: Math.hypot(l1 - l2, a1 - a2, b1 - b2) }
+                    const distance =
+                        lab1 && lab2 ? Math.hypot(lab1[0] - lab2[0], lab1[1] - lab2[1], lab1[2] - lab2[2]) : Infinity
+                    return { tool, lane, mismatch, distance, current: isMapped(lane, tool) ? 0 : 1 }
                 })
             })
-            .sort((a, b) => a.mismatch - b.mismatch || a.distance - b.distance)
+            .sort((a, b) => a.mismatch - b.mismatch || a.distance - b.distance || a.current - b.current)
 
         const usedLanes = new Set<string>()
         const mapped = new Set<number>()
@@ -199,11 +207,8 @@ export default class AfcMixin extends Vue {
             mapped.add(tool)
             usedLanes.add(lane)
 
-            const map = this.getAfcLaneObject(lane).map
-            const toolName = `T${tool}`
-            const tools: string[] = Array.isArray(map) ? map : [map]
-            if (!tools.some((t) => t?.toLowerCase() === toolName.toLowerCase())) {
-                gcode.push(`SET_MAP LANE=${lane} MAP=${toolName}`)
+            if (!isMapped(lane, tool)) {
+                gcode.push(`SET_MAP LANE=${lane} MAP=T${tool}`)
             }
         }
 
