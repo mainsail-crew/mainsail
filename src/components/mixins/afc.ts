@@ -6,8 +6,10 @@ import { TinyColor } from '@ctrl/tinycolor'
 import { convertStringToArray, getFileFilamentColors } from '@/plugins/helpers'
 
 // sRGB hex -> CIE Lab (D65), used for perceptual color distance
-const hexToLab = (hex: string): [number, number, number] => {
-    const { r, g, b } = new TinyColor(hex).toRgb()
+const hexToLab = (hex: string): [number, number, number] | undefined => {
+    const color = new TinyColor(hex)
+    if (!color.isValid) return undefined
+    const { r, g, b } = color.toRgb()
     const lin = (c: number) => ((c /= 255) > 0.04045 ? ((c + 0.055) / 1.055) ** 2.4 : c / 12.92)
     const [lr, lg, lb] = [lin(r), lin(g), lin(b)]
     const f = (t: number) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116)
