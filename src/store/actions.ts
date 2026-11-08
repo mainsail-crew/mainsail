@@ -8,6 +8,7 @@ export const actions: ActionTree<RootState, RootState> = {
     },
 
     changePrinter({ dispatch, getters }, payload) {
+        dispatch('editor/reset')
         dispatch('files/reset')
         dispatch('gui/reset')
         dispatch('printer/reset')
