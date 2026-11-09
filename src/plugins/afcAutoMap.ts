@@ -46,7 +46,7 @@ export function hexToLab(hex?: string): [number, number, number] | undefined {
     return [116 * y - 16, 500 * (x - y), 200 * (y - z)]
 }
 
-// Same rule as the dialog's material warning (isFilamentTypeValid); an unknown type on either side is a mismatch
+// Like the dialog's material warning (isFilamentTypeValid), except that an unknown type on either side is a mismatch
 function isMaterialMismatch(file?: string, lane?: string) {
     const fileType = (file || '--').toLowerCase()
     const laneType = (lane || '--').toLowerCase()
