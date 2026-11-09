@@ -189,6 +189,10 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Atribuição automática",
+                "AutoMapNoLanes": "Nenhuma lane com filamento carregado",
+                "AutoMapUnchanged": "As lanes já correspondem ao ficheiro",
+                "AutoMapUnmapped": "Não resta lane carregada para {tools}",
                 "FilamentTypeMismatch": "O tipo de filamento no arquivo G-Code {file} não corresponde ao tipo selecionado em {lane}.",
                 "FilamentWeightNotEnough": "Não há filamento suficiente na linha selecionada ({lane}). Requer: {required}, Disponível: {available}."
             },

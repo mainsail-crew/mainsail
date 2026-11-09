@@ -164,6 +164,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Attribution automatique",
+                "AutoMapNoLanes": "Aucune voie avec filament chargé",
+                "AutoMapUnchanged": "Les voies correspondent déjà au fichier",
+                "AutoMapUnmapped": "Plus de voie chargée pour {tools}"
+            },
             "DoYouWantToStartFilename": "Voulez-vous commencer {filename}?",
             "DoYouWantToStartFilenameFilament": "Voulez-vous démarrer {filename} avec le filament suivant?",
             "Headline": "Démarrage Impression",

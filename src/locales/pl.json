@@ -194,6 +194,10 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Automatyczne przypisanie",
+                "AutoMapNoLanes": "Brak toru z załadowanym filamentem",
+                "AutoMapUnchanged": "Tory już pasują do pliku",
+                "AutoMapUnmapped": "Brak załadowanego toru dla {tools}",
                 "FilamentTypeMismatch": "Typ filamentu w G-Code ({file}) nie pasuje do wybranego typu filamentu ({lane}).",
                 "FilamentWeightNotEnough": "Za mało filamentu w wybranym torze ({lane}). Wymagane: {required}, Dostępne: {available}."
             },

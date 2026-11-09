@@ -194,6 +194,10 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "自動匹配",
+                "AutoMapNoLanes": "沒有已裝載耗材的通道",
+                "AutoMapUnchanged": "通道已與檔案相符",
+                "AutoMapUnmapped": "沒有剩餘的已裝載通道可用於 {tools}",
                 "FilamentTypeMismatch": "G-Code 中的耗材類型 ({file}) 與所選通道的耗材類型 ({lane}) 不符。",
                 "FilamentWeightNotEnough": "所選通道 ({lane}) 的耗材不足。需要：{required}，目前可用：{available}。"
             },

@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import { FileStateGcodefile } from '@/store/files/types'
+import { convertStringToArray, getFileFilamentColors } from '@/plugins/helpers'
+import { autoMap, AutoMapLane, AutoMapTool } from '@/plugins/afcAutoMap'
 
 @Component
 export default class AfcMixin extends Vue {
@@ -146,6 +149,67 @@ export default class AfcMixin extends Vue {
             name: spool?.filament?.name ?? '--',
             type: lane?.material ?? '--',
             weight: lane?.weight ?? 0,
+        }
+    }
+
+    // Map used tools to loaded lanes with the lowest total cost (see plugins/afcAutoMap)
+    afcAutoMap(file: FileStateGcodefile) {
+        const fileColors = getFileFilamentColors(file)
+        const fileTypes = convertStringToArray(file.filament_type ?? '')
+        const usedTools = (file.filament_weights ?? []).flatMap((weight, tool) => (weight > 0 ? [tool] : []))
+        if (!usedTools.length) return
+
+        const isMapped = (lane: string, tool: number) => {
+            const map = this.getAfcLaneObject(lane).map
+            const tools: string[] = Array.isArray(map) ? map : [map]
+            return tools.some((t) => t?.toLowerCase() === `t${tool}`)
+        }
+
+        const tools: AutoMapTool[] = usedTools.map((tool) => ({
+            tool,
+            color: fileColors[tool],
+            material: fileTypes[tool],
+            weight: file.filament_weights?.[tool],
+        }))
+
+        const lanes: AutoMapLane[] = this.afcLanes
+            .map((lane) => ({ lane, object: this.getAfcLaneObject(lane) }))
+            .filter(({ object }) => object.load && object.prep)
+            .map(({ lane, object }) => ({
+                lane,
+                color: object.color,
+                material: object.material,
+                weight: object.weight,
+                current: usedTools.reduce<boolean[]>((acc, tool) => {
+                    acc[tool] = isMapped(lane, tool)
+                    return acc
+                }, []),
+            }))
+
+        if (!lanes.length) {
+            this.$toast.warning(this.$t('Dialogs.StartPrint.Afc.AutoMapNoLanes').toString())
+            return
+        }
+
+        const mapping = autoMap(tools, lanes)
+        const unmapped = tools.filter(({ tool }) => !mapping.has(tool)).map(({ tool }) => `T${tool}`)
+
+        const gcode = [...mapping]
+            .filter(([tool, lane]) => !isMapped(lane, tool))
+            .map(([tool, lane]) => `SET_MAP LANE=${lane} MAP=T${tool}`)
+
+        if (gcode.length) {
+            const script = gcode.join('\n')
+            this.$store.dispatch('server/addEvent', { message: script, type: 'command' })
+            this.$socket.emit('printer.gcode.script', { script })
+        }
+
+        if (unmapped.length) {
+            this.$toast.warning(
+                this.$t('Dialogs.StartPrint.Afc.AutoMapUnmapped', { tools: unmapped.join(', ') }).toString()
+            )
+        } else if (!gcode.length) {
+            this.$toast.success(this.$t('Dialogs.StartPrint.Afc.AutoMapUnchanged').toString())
         }
     }
 

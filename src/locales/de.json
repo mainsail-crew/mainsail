@@ -194,6 +194,10 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Automatische Zuordnung",
+                "AutoMapNoLanes": "Keine Lane mit geladenem Filament",
+                "AutoMapUnchanged": "Lanes passen bereits zur Datei",
+                "AutoMapUnmapped": "Keine geladene Lane mehr für {tools}",
                 "FilamentTypeMismatch": "Die Filament Typ im G-Code {{file}} stimmt nicht überein zum ausgewählten Filament Typ {{lane}}.",
                 "FilamentWeightNotEnough": "Nicht genug Filament in der ausgewählte Linie ({lane}). Benötigt: {required}, Verfügbar: {available}."
             },

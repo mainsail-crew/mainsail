@@ -194,6 +194,10 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Auto-map",
+                "AutoMapNoLanes": "No lane with filament loaded",
+                "AutoMapUnchanged": "Lanes already match the file",
+                "AutoMapUnmapped": "No loaded lane left for {tools}",
                 "FilamentTypeMismatch": "Filament type in the G-Code ({file}) does not match the selected filament type ({lane}).",
                 "FilamentWeightNotEnough": "Not enough filament in the selected lane ({lane}). Required: {required}, Available: {available}."
             },

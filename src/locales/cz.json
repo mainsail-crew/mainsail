@@ -193,6 +193,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Automatické přiřazení",
+                "AutoMapNoLanes": "Žádná zaváděná lane s filamentem",
+                "AutoMapUnchanged": "Lane už odpovídají souboru",
+                "AutoMapUnmapped": "Pro {tools} nezbývá zavedená lane"
+            },
             "DoYouWantToStartFilename": "Chcete začít tisk {filename}?",
             "DoYouWantToStartFilenameFilament": "Chcete spustit {filename} s následujícím filamentem?",
             "Headline": "Začít tisk",
