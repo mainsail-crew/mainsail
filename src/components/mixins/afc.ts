@@ -2,22 +2,8 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import { FileStateGcodefile } from '@/store/files/types'
-import { TinyColor } from '@ctrl/tinycolor'
 import { convertStringToArray, getFileFilamentColors } from '@/plugins/helpers'
-
-// sRGB hex -> CIE Lab (D65), used for perceptual color distance
-const hexToLab = (hex: string): [number, number, number] | undefined => {
-    const color = new TinyColor(hex)
-    if (!color.isValid) return undefined
-    const { r, g, b } = color.toRgb()
-    const lin = (c: number) => ((c /= 255) > 0.04045 ? ((c + 0.055) / 1.055) ** 2.4 : c / 12.92)
-    const [lr, lg, lb] = [lin(r), lin(g), lin(b)]
-    const f = (t: number) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116)
-    const x = f((lr * 0.4124 + lg * 0.3576 + lb * 0.1805) / 0.95047)
-    const y = f(lr * 0.2126 + lg * 0.7152 + lb * 0.0722)
-    const z = f((lr * 0.0193 + lg * 0.1192 + lb * 0.9505) / 1.08883)
-    return [116 * y - 16, 500 * (x - y), 200 * (y - z)]
-}
+import { autoMap, AutoMapLane, AutoMapTool } from '@/plugins/afcAutoMap'
 
 @Component
 export default class AfcMixin extends Vue {
@@ -166,17 +152,12 @@ export default class AfcMixin extends Vue {
         }
     }
 
-    // Map each used tool to the closest loaded lane: same material first, then by color,
-    // then the lane the tool is already mapped to (keeps results deterministic without color data).
-    // Lanes are assigned once, so the resulting SET_MAP sequence is order independent.
+    // Map used tools to loaded lanes with the lowest total cost (see plugins/afcAutoMap)
     afcAutoMap(file: FileStateGcodefile) {
         const fileColors = getFileFilamentColors(file)
         const fileTypes = convertStringToArray(file.filament_type ?? '')
         const usedTools = (file.filament_weights ?? []).flatMap((weight, tool) => (weight > 0 ? [tool] : []))
-
-        const lanes = this.afcLanes
-            .map((lane) => ({ lane, object: this.getAfcLaneObject(lane) }))
-            .filter(({ object }) => object.load && object.prep)
+        if (!usedTools.length) return
 
         const isMapped = (lane: string, tool: number) => {
             const map = this.getAfcLaneObject(lane).map
@@ -184,41 +165,52 @@ export default class AfcMixin extends Vue {
             return tools.some((t) => t?.toLowerCase() === `t${tool}`)
         }
 
-        const pairs = usedTools
-            .flatMap((tool) => {
-                const color = fileColors[tool]
-                const type = (fileTypes[tool] ?? '').toLowerCase()
-                const lab1 = color ? hexToLab(color) : undefined
+        const tools: AutoMapTool[] = usedTools.map((tool) => ({
+            tool,
+            color: fileColors[tool],
+            material: fileTypes[tool],
+            weight: file.filament_weights?.[tool],
+        }))
 
-                return lanes.map(({ lane, object }) => {
-                    const lab2 = object.color ? hexToLab(object.color) : undefined
-                    const mismatch = type && (object.material ?? '').toLowerCase() !== type ? 1 : 0
-                    const distance =
-                        lab1 && lab2 ? Math.hypot(lab1[0] - lab2[0], lab1[1] - lab2[1], lab1[2] - lab2[2]) : Infinity
-                    return { tool, lane, mismatch, distance, current: isMapped(lane, tool) ? 0 : 1 }
-                })
-            })
-            .sort((a, b) => a.mismatch - b.mismatch || a.distance - b.distance || a.current - b.current)
+        const lanes: AutoMapLane[] = this.afcLanes
+            .map((lane) => ({ lane, object: this.getAfcLaneObject(lane) }))
+            .filter(({ object }) => object.load && object.prep)
+            .map(({ lane, object }) => ({
+                lane,
+                color: object.color,
+                material: object.material,
+                weight: object.weight,
+                current: usedTools.reduce<boolean[]>((acc, tool) => {
+                    acc[tool] = isMapped(lane, tool)
+                    return acc
+                }, []),
+            }))
 
-        const usedLanes = new Set<string>()
-        const mapped = new Set<number>()
-        const gcode: string[] = []
-
-        for (const { tool, lane } of pairs) {
-            if (mapped.has(tool) || usedLanes.has(lane)) continue
-            mapped.add(tool)
-            usedLanes.add(lane)
-
-            if (!isMapped(lane, tool)) {
-                gcode.push(`SET_MAP LANE=${lane} MAP=T${tool}`)
-            }
+        if (!lanes.length) {
+            this.$toast.warning(this.$t('Dialogs.StartPrint.Afc.AutoMapNoLanes').toString())
+            return
         }
 
-        if (gcode.length === 0) return
+        const mapping = autoMap(tools, lanes)
+        const unmapped = tools.filter(({ tool }) => !mapping.has(tool)).map(({ tool }) => `T${tool}`)
 
-        const script = gcode.join('\n')
-        this.$store.dispatch('server/addEvent', { message: script, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script })
+        const gcode = [...mapping]
+            .filter(([tool, lane]) => !isMapped(lane, tool))
+            .map(([tool, lane]) => `SET_MAP LANE=${lane} MAP=T${tool}`)
+
+        if (gcode.length) {
+            const script = gcode.join('\n')
+            this.$store.dispatch('server/addEvent', { message: script, type: 'command' })
+            this.$socket.emit('printer.gcode.script', { script })
+        }
+
+        if (unmapped.length) {
+            this.$toast.warning(
+                this.$t('Dialogs.StartPrint.Afc.AutoMapUnmapped', { tools: unmapped.join(', ') }).toString()
+            )
+        } else if (!gcode.length) {
+            this.$toast.success(this.$t('Dialogs.StartPrint.Afc.AutoMapUnchanged').toString())
+        }
     }
 
     getAfcExtruderObject(extruder: string) {

@@ -195,6 +195,9 @@
         "StartPrint": {
             "Afc": {
                 "AutoMap": "Samodejna dodelitev",
+                "AutoMapNoLanes": "Ni lane z naloženim filamentom",
+                "AutoMapUnchanged": "Lane že ustrezajo datoteki",
+                "AutoMapUnmapped": "Ni več naložene lane za {tools}",
                 "FilamentTypeMismatch": "Tip filamenta v G-kodi ({file}) se ne ujema z izbranim tipom ({lane}).",
                 "FilamentWeightNotEnough": "V izbrani liniji ({lane}) ni dovolj filamenta. Potrebno: {required}, na voljo: {available}."
             },

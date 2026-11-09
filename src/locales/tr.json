@@ -195,6 +195,9 @@
         "StartPrint": {
             "Afc": {
                 "AutoMap": "Otomatik eşleme",
+                "AutoMapNoLanes": "Filament yüklü hat yok",
+                "AutoMapUnchanged": "Hatlar zaten dosyayla eşleşiyor",
+                "AutoMapUnmapped": "{tools} için yüklü hat kalmadı",
                 "FilamentTypeMismatch": "G-kodundaki ({file}) filament tipi, seçilen filament tipiyle ({lane}) eşleşmiyor.",
                 "FilamentWeightNotEnough": "Seçilen şeritte ({lane}) yeterli filament yok. Gerekli: {required}, Mevcut: {available}."
             },

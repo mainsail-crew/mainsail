@@ -143,7 +143,10 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
-                "AutoMap": "自動割り当て"
+                "AutoMap": "自動割り当て",
+                "AutoMapNoLanes": "フィラメントが装填されたレーンがありません",
+                "AutoMapUnchanged": "レーンはすでにファイルと一致しています",
+                "AutoMapUnmapped": "{tools} に割り当てられる装填済みレーンがありません"
             },
             "DoYouWantToStartFilename": "{filename}の印刷を開始しますか？",
             "Headline": "ジョブ開始",

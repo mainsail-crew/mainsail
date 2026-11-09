@@ -195,6 +195,9 @@
         "StartPrint": {
             "Afc": {
                 "AutoMap": "Автоподбор",
+                "AutoMapNoLanes": "Нет lane с загруженным филаментом",
+                "AutoMapUnchanged": "Lane уже соответствуют файлу",
+                "AutoMapUnmapped": "Не осталось загруженной lane для {tools}",
                 "FilamentTypeMismatch": "Выбраный в G-Коде ({file}) филамент на соответствует выбраному ({lane}).",
                 "FilamentWeightNotEnough": "Не достаточно филамента ({lane}). Требуется: {required}, Доступно: {available}."
             },
