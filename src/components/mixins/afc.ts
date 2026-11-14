@@ -1,9 +1,13 @@
-import Vue from 'vue'
 import Component from 'vue-class-component'
+import { Mixins } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 
+// AFC's default full-spool weight (g) when no initial_weight is tracked (e.g. no Spoolman spool)
+const AFC_DEFAULT_SPOOL_WEIGHT = 1000
+
 @Component
-export default class AfcMixin extends Vue {
+export default class AfcMixin extends Mixins(BaseMixin) {
     get afcExists() {
         return 'AFC' in this.$store.state.printer
     }
@@ -149,6 +153,52 @@ export default class AfcMixin extends Vue {
         }
     }
 
+    // Looks up a spoolman spool by id, preferring active_spool since it is kept
+    // live via websocket, unlike the static spools list
+    getAfcSpool(spoolId: number | undefined): ServerSpoolmanStateSpool | null {
+        if (!spoolId) return null
+
+        const activeSpool: ServerSpoolmanStateSpool | null = this.$store.state.server.spoolman?.active_spool ?? null
+        if (activeSpool?.id === spoolId) return activeSpool
+
+        const spools: ServerSpoolmanStateSpool[] = this.$store.state.server.spoolman?.spools || []
+        return spools.find((s: ServerSpoolmanStateSpool) => s.id === spoolId) ?? null
+    }
+
+    // Link to the spool in Spoolman. spoolManagerUrl swaps a localhost/loopback host
+    // for the printer's hostname so remote browsers can reach it
+    getAfcSpoolUrl(spoolId: number | undefined): string | undefined {
+        if (!this.spoolManagerUrl || !spoolId) return undefined
+
+        return `${this.spoolManagerUrl.replace(/\/$/, '')}/spool/show/${spoolId}`
+    }
+
+    // Color decision order: td1_color (when enabled) -> spoolman color_hex -> lane color from AFC
+    getAfcLaneColor(laneName: string, spool: ServerSpoolmanStateSpool | null): string {
+        const lane = this.getAfcLaneObject(laneName)
+        const afcShowTd1Color: boolean = this.$store.state.gui.view.afc?.showTd1Color ?? false
+
+        if (this.afc?.td1_present && lane?.td1_color && afcShowTd1Color) return `#${lane.td1_color}`
+        if (spool?.filament?.color_hex) return `#${spool.filament.color_hex.replace(/^#/, '')}`
+
+        return lane?.color || ''
+    }
+
+    // Full weight prefers the spoolman value, then the AFC lane value, then AFC's default spool weight
+    getAfcLaneFullWeight(laneName: string, spool: ServerSpoolmanStateSpool | null): number {
+        const lane = this.getAfcLaneObject(laneName)
+
+        return spool?.initial_weight ?? lane?.initial_weight ?? AFC_DEFAULT_SPOOL_WEIGHT
+    }
+
+    getAfcSpoolPercent(remainingWeight: number | undefined, fullWeight: number): number {
+        if (remainingWeight === undefined || fullWeight <= 0) return 100
+
+        // Clamping to 100 just in case remainingWeight is greater than fullWeight
+        // as this could exceed 100
+        return Math.min(100, Math.round((remainingWeight / fullWeight) * 100))
+    }
+
     getAfcExtruderObject(extruder: string) {
         const key_extruder = `AFC_extruder ${extruder}`
         return this.getPrinterObject(key_extruder) ?? {}
@@ -167,5 +217,35 @@ export default class AfcMixin extends Vue {
     getAfcHubObject(hub: string) {
         const key = `AFC_hub ${hub}`
         return this.getPrinterObject(key) ?? {}
+    }
+
+    // Builds "material | extruder temp | bed temp" display string, skipping missing temps
+    buildAfcMaterialDetails(material: string, extruderTemp: number | undefined, bedTemp: number | undefined): string {
+        const parts = [material || '--']
+        if (extruderTemp !== undefined) parts.push(`${extruderTemp}°C`)
+        if (bedTemp !== undefined) parts.push(`${bedTemp}°C`)
+
+        return parts.join(' | ')
+    }
+
+    // Builds translated "remaining | used" weight display string, or undefined when remaining weight is unknown
+    buildAfcWeightsOutput(remainingWeight: number | undefined, usedWeight: number | undefined): string | undefined {
+        if (remainingWeight === undefined) return undefined
+
+        const parts = [
+            this.$t('Panels.AfcPanel.WeightRemaining', {
+                weight: Math.round(remainingWeight),
+            }).toString(),
+        ]
+
+        if (usedWeight !== undefined) {
+            parts.push(
+                this.$t('Panels.AfcPanel.WeightUsed', {
+                    weight: Math.round(usedWeight),
+                }).toString()
+            )
+        }
+
+        return parts.join(' | ')
     }
 }
