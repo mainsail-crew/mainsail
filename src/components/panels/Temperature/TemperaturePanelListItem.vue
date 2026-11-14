@@ -92,6 +92,7 @@ import {
 } from '@mdi/js'
 import { additionalSensors, opacityHeaterActive, opacityHeaterInactive } from '@/store/variables'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
+import { GuiPresetsHeaterPreset } from '@/store/gui/presets/types'
 
 @Component
 export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
@@ -275,7 +276,7 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
         return ''
     }
 
-    get presets() {
+    get presets(): GuiPresetsHeaterPreset[] {
         return this.$store.getters['gui/presets/getPresetsFromHeater']({ name: this.objectName }) ?? []
     }
 

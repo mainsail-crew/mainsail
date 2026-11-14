@@ -17,3 +17,8 @@ export interface GuiPresetsStatePreset {
         }
     }
 }
+
+export interface GuiPresetsHeaterPreset {
+    value: number
+    text: string
+}

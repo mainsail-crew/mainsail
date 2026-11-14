@@ -26,14 +26,12 @@ import { capitalize, convertName } from '@/plugins/helpers'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import TempChart from '@/components/charts/TempChart.vue'
-import TemperatureInput from '@/components/inputs/TemperatureInput.vue'
 import Panel from '@/components/ui/Panel.vue'
-import Responsive from '@/components/ui/Responsive.vue'
 import { mdiCloseThick, mdiThermometerLines } from '@mdi/js'
 import TemperaturePanelPresets from '@/components/panels/Temperature/TemperaturePanelPresets.vue'
 
 @Component({
-    components: { Panel, TempChart, TemperatureInput, Responsive, TemperaturePanelPresets },
+    components: { Panel, TempChart, TemperaturePanelPresets },
 })
 export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     mdiCloseThick = mdiCloseThick
