@@ -12,10 +12,11 @@ import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
 import { basicSetup } from 'codemirror'
 import { EditorView, keymap } from '@codemirror/view'
-import { EditorState, Prec } from '@codemirror/state'
+import { Compartment, EditorState, Prec } from '@codemirror/state'
 import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode'
 import { indentUnit, syntaxHighlighting } from '@codemirror/language'
 import { klipperConfig, gcode } from '@/plugins/codemirror/lezer'
+import { KlipperIncludeLinks } from '@/plugins/codemirror/KlipperIncludeLinks'
 import { KlipperDocsTooltip } from '@/plugins/codemirror/KlipperDocsTooltip'
 import { indentLess } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
@@ -50,6 +51,45 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
     @Prop({ required: false, default: '' })
     declare readonly fileExtension: string
 
+    @Prop({ type: Boolean, default: false })
+    declare readonly includeNavigation: boolean
+
+    @Prop({ type: String, default: '' })
+    declare readonly includeDirectory: string
+
+    @Prop({ type: Array, default: () => [] })
+    declare readonly includeFiles: string[]
+
+    @Prop({ type: Boolean, default: false })
+    declare readonly readOnly: boolean
+
+    private editability = new Compartment()
+    private includeLinks = new Compartment()
+
+    @Watch('readOnly')
+    readOnlyChanged() {
+        this.cminstance?.dispatch({ effects: this.editability.reconfigure(this.editabilityExtensions) })
+    }
+
+    get editabilityExtensions() {
+        return [EditorState.readOnly.of(this.readOnly), EditorView.editable.of(!this.readOnly)]
+    }
+
+    get includeLinkExtensions() {
+        if (!this.includeNavigation) return []
+        return KlipperIncludeLinks(
+            (path) => this.$emit('openInclude', path),
+            this.$t('Editor.OpenInclude').toString(),
+            this.includeDirectory,
+            new Set(this.includeFiles)
+        )
+    }
+
+    @Watch('includeFiles')
+    includeLinksChanged() {
+        this.cminstance?.dispatch({ effects: this.includeLinks.reconfigure(this.includeLinkExtensions) })
+    }
+
     @Watch('value')
     valueChanged(newVal: string) {
         const cm_value = this.cminstance?.state?.doc.toString()
@@ -73,12 +113,11 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
     initialize() {
         this.codemirror = new EditorView({
             parent: this.editor,
+            state: EditorState.create({ doc: this.code || this.value || this.content, extensions: this.cmExtensions }),
         })
         this.cminstance = this.codemirror
 
         this.$nextTick(() => {
-            this.setCmValue(this.code || this.value || this.content)
-
             this.$emit('ready', this.codemirror)
         })
     }
@@ -91,6 +130,8 @@ export default class Codemirror extends Mixins(BaseMixin, ThemeMixin) {
         const extensions = [
             EditorView.theme({}, { dark: this.themeMode === 'dark' }),
             basicSetup,
+            this.editability.of(this.editabilityExtensions),
+            this.includeLinks.of(this.includeLinkExtensions),
             this.vscodeTheme,
             indentUnit.of(' '.repeat(this.tabSize)),
             keymap.of([
