@@ -273,7 +273,7 @@ export default class TempChart extends Mixins(BaseMixin, ThemeMixin) {
     // and on the left if hovering on the right.
     tooltipPosition: TooltipPositionCallback = (point, _params, _el, _rect, size) => {
         const position: TempChartTooltipPosition = { top: 60 }
-        const side: 'left' | 'right' = point[0] < size.viewSize[0] / 2 ? 'left' : 'right'
+        const side: 'left' | 'right' = point[0] < size.viewSize[0] / 2 ? 'right' : 'left'
         position[side] = 5
 
         return position
