@@ -182,6 +182,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Automatisch toewijzen",
+                "AutoMapNoLanes": "Geen lane met geladen filament",
+                "AutoMapUnchanged": "Lanes komen al overeen met het bestand",
+                "AutoMapUnmapped": "Geen geladen lane meer over voor {tools}"
+            },
             "DoYouWantToStartFilename": "Wil je {filename} starten?",
             "Headline": "Start print",
             "Print": "print",

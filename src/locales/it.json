@@ -192,6 +192,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Assegnazione automatica",
+                "AutoMapNoLanes": "Nessuna lane con filamento caricato",
+                "AutoMapUnchanged": "Le lane corrispondono già al file",
+                "AutoMapUnmapped": "Nessuna lane caricata rimasta per {tools}"
+            },
             "DoYouWantToStartFilename": "Vuoi cominciare {filename}?",
             "DoYouWantToStartFilenameFilament": "Vuoi cominciare {filename} con il seguente filamento?",
             "Headline": "Inizio Lavoro",

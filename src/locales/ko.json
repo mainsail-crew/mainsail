@@ -142,6 +142,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "자동 매핑",
+                "AutoMapNoLanes": "필라멘트가 로드된 레인이 없습니다",
+                "AutoMapUnchanged": "레인이 이미 파일과 일치합니다",
+                "AutoMapUnmapped": "{tools}에 할당할 로드된 레인이 없습니다"
+            },
             "DoYouWantToStartFilename": "{filename} 파일을 출력 하시겠습니까?",
             "Headline": "출력 시작 확인",
             "Print": "출력 시작",
