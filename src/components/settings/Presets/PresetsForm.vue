@@ -22,7 +22,7 @@
                     <settings-row :title="converNameObject(key)">
                         <v-checkbox v-model="value.bool" hide-details class="shrink mt-0" />
                         <v-text-field
-                            v-model="value.value"
+                            v-model.number="value.value"
                             hide-details="auto"
                             :rules="[rules.invalid]"
                             type="number"

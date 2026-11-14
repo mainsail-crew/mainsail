@@ -1050,6 +1050,8 @@
             "State": "Status",
             "Target": "Ziel",
             "TemperaturesInChart": "Temperatur [°C]",
+            "TempTooHigh": "Temperatur von {name} zu hoch! (max: {max})",
+            "TempTooLow": "Temperatur von {name} zu niedrig! (min: {min})",
             "TurnHeaterOff": "Heizung ausschalten"
         },
         "ToolheadControlPanel": {

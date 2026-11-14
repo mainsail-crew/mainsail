@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { GuiPresetsState, GuiPresetsStatePreset } from '@/store/gui/presets/types'
+import { GuiPresetsHeaterPreset, GuiPresetsState, GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 
@@ -20,43 +20,32 @@ export const getters: GetterTree<GuiPresetsState, RootState> = {
         return caseInsensitiveSort(presets, 'name')
     },
 
-    getPresetsFromHeater: (state) => (payload: { name: string }) => {
-        interface preset {
-            value: number
-            text: string
-        }
+    getPresetsFromHeater:
+        (state) =>
+        (payload: { name: string }): GuiPresetsHeaterPreset[] => {
+            const output: GuiPresetsHeaterPreset[] = [{ value: 0, text: '0 °C' }]
 
-        const output: preset[] = []
+            // return only 0 entry, if there is no presets set
+            if (!('presets' in state)) return output
 
-        output.push({
-            value: 0,
-            text: '0 °C',
-        })
+            Object.values(state.presets).forEach((preset) => {
+                const heater = preset.values[payload.name]
+                if (!heater?.bool) return
 
-        // return only 0 entry, if there is no presets set
-        if (!('presets' in state)) return output
+                const value = Number(heater.value ?? 0)
+                if (isNaN(value)) return
 
-        Object.keys(state.presets).forEach((id: string) => {
-            const preset = state.presets[id]
+                const existsAlready = output.some((entry) => entry.value === value)
+                if (existsAlready) return
 
-            if (
-                preset.values[payload.name]?.bool &&
-                output.findIndex(
-                    (entry: preset) => entry.value === parseFloat(preset.values[payload.name]?.value?.toString() ?? '0')
-                ) === -1
-            ) {
-                output.push({
-                    value: Number(preset.values[payload.name].value),
-                    text: preset.values[payload.name].value + ' °C',
-                })
-            }
-        })
+                output.push({ value, text: `${value} °C` })
+            })
 
-        return output.sort((a: preset, b: preset) => {
-            if (a.value > b.value) return -1
-            if (a.value < b.value) return 1
+            return output.sort((a, b) => {
+                if (a.value > b.value) return -1
+                if (a.value < b.value) return 1
 
-            return 0
-        })
-    },
+                return 0
+            })
+        },
 }

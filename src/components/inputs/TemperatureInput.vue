@@ -31,7 +31,7 @@
             <v-list dense class="py-0">
                 <v-list-item
                     v-for="preset of presets"
-                    :key="preset.index"
+                    :key="preset.value"
                     link
                     style="min-height: 32px"
                     @click="doSend(`${command} ${attributeName}=${name} TARGET=${preset.value}`)">
@@ -54,6 +54,7 @@ import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import { mdiSnowflake, mdiFire, mdiMenuDown } from '@mdi/js'
+import { GuiPresetsHeaterPreset } from '@/store/gui/presets/types'
 
 @Component
 export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
@@ -63,14 +64,14 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
 
     value: number | string = 0
 
-    @Prop({ type: String, required: true }) declare readonly name: string
-    @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
-    @Prop({ type: Number, required: true }) declare readonly min_temp: number
-    @Prop({ type: Number, required: true }) declare readonly max_temp: number
-    @Prop({ type: String, required: true }) declare readonly command: string
-    @Prop({ type: String, required: true }) declare readonly attributeName: string
-    @Prop({ type: Array, default: [] }) declare presets: number[]
-    @Prop({ type: Number, default: 3 }) declare readonly inputDigits: number
+    @Prop({ type: String, required: true }) readonly name!: string
+    @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
+    @Prop({ type: Number, required: true }) readonly min_temp!: number
+    @Prop({ type: Number, required: true }) readonly max_temp!: number
+    @Prop({ type: String, required: true }) readonly command!: string
+    @Prop({ type: String, required: true }) readonly attributeName!: string
+    @Prop({ type: Array, default: () => [] }) readonly presets!: GuiPresetsHeaterPreset[]
+    @Prop({ type: Number, default: 3 }) readonly inputDigits!: number
 
     get inputStyle() {
         const PER_DIGIT = 10
@@ -96,16 +97,20 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
 
         if (temp > this.max_temp) {
             this.value = this.target
-            const key = 'Panels.TemperaturePanel.TempTooHigh'
-            const msg = this.$t(key, { name: this.name, max: this.max_temp }).toString()
+            const msg = this.$t('Panels.TemperaturePanel.TempTooHigh', {
+                name: this.name,
+                max: this.max_temp,
+            }).toString()
             this.$toast.error(msg)
             return
         }
 
         if (temp < this.min_temp && temp !== 0) {
             this.value = this.target
-            const key = 'Panels.TemperaturePanel.TempTooLow'
-            const msg = this.$t(key, { name: this.name, min: this.min_temp }).toString()
+            const msg = this.$t('Panels.TemperaturePanel.TempTooLow', {
+                name: this.name,
+                min: this.min_temp,
+            }).toString()
             this.$toast.error(msg)
             return
         }
@@ -116,7 +121,7 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
         this.doSend(`${this.command} ${this.attributeName}=${this.name} TARGET=${temp}`)
     }
 
-    mounted() {
+    mounted(): void {
         this.value = this.target
     }
 
