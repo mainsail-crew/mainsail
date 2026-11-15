@@ -120,6 +120,97 @@
                                 :label="$t('Settings.WebcamsTab.HideFps')" />
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-col class="pt-0 pb-2">
+                            <div class="v-label v-label--active text-subtitle-1">
+                                {{ $t('Settings.WebcamsTab.OverlayTitle') }}
+                            </div>
+                        </v-col>
+                    </v-row>
+                    <v-row class="mt-0 overlay-config-row" align="center">
+                        <v-col class="py-0" cols="6">
+                            <v-checkbox
+                                v-model="overlaysEnabled"
+                                class="mt-1"
+                                hide-details
+                                :label="$t('Settings.WebcamsTab.Enable')" />
+                        </v-col>
+
+                        <v-col class="py-0" cols="6">
+                            <div v-if="overlaysEnabled" class="d-flex align-center">
+                                <v-menu bottom left offset-y :close-on-content-click="false">
+                                    <template #activator="{ on, attrs }">
+                                        <v-btn
+                                            v-bind="attrs"
+                                            class="minwidth-0 px-5"
+                                            small
+                                            elevation="1"
+                                            :style="{ backgroundColor: overlayBackgroundColor }"
+                                            v-on="on" />
+                                    </template>
+                                    <v-color-picker
+                                        :value="overlayBackgroundColor"
+                                        mode="rgba"
+                                        hide-mode-switch
+                                        @update:color="updateOverlayBackgroundColor" />
+                                </v-menu>
+                                <span class="ml-3">{{ $t('Settings.WebcamsTab.OverlayBackgroundColor') }}</span>
+                            </div>
+                        </v-col>
+                    </v-row>
+                    <template v-if="overlaysEnabled">
+                        <template v-for="group in overlayItemGroups">
+                            <v-row :key="`${group.key}-caption`" class="mt-2 mb-0">
+                                <v-col class="pb-0">
+                                    <v-divider />
+                                    <span class="caption text--secondary text-uppercase">
+                                        {{ $t(group.caption) }}
+                                    </span>
+                                </v-col>
+                            </v-row>
+                            <template v-for="item in group.items">
+                                <v-row :key="item.key" class="mt-0 overlay-config-row" align="center">
+                                    <v-col class="py-0" cols="9">
+                                        <v-checkbox
+                                            :input-value="item.config.enabled"
+                                            class="mt-1"
+                                            hide-details
+                                            @change="setOverlayItem(item.key, { enabled: !!$event })">
+                                            <template #label>
+                                                <v-icon small class="mr-1">{{ item.icon }}</v-icon>
+                                                {{ $t(item.settingsLabel) }}
+                                            </template>
+                                        </v-checkbox>
+                                    </v-col>
+                                    <v-col class="py-0 d-flex justify-end" cols="3">
+                                        <overlay-position-button
+                                            :active="item.config.enabled"
+                                            :value="item.config.position"
+                                            @change="setOverlayItem(item.key, { position: $event })" />
+                                    </v-col>
+                                </v-row>
+                                <v-row
+                                    v-if="item.sources && item.config.enabled"
+                                    :key="`${item.key}-source`"
+                                    class="overlay-config-row">
+                                    <v-col class="py-0" cols="12">
+                                        <v-radio-group
+                                            :value="item.config.source"
+                                            class="mt-0 ml-4"
+                                            hide-details
+                                            @change="setOverlayItem(item.key, { source: $event })">
+                                            <v-radio
+                                                v-for="source in item.sources"
+                                                :key="source.value"
+                                                :label="$t(source.label)"
+                                                :value="source.value"
+                                                color="primary" />
+                                        </v-radio-group>
+                                    </v-col>
+                                </v-row>
+                            </template>
+                        </template>
+                    </template>
                     <v-row v-if="hasAudioOption">
                         <v-col class="pt-1 pb-3">
                             <v-checkbox
@@ -152,7 +243,7 @@
                                 :label="$t('Settings.WebcamsTab.Vertically')" />
                         </v-col>
                     </v-row>
-                    <template v-if="nozzleCrosshairAvialable">
+                    <template v-if="nozzleCrosshairAvailable">
                         <v-row>
                             <v-col class="pt-3 pb-3">
                                 <div class="v-label v-label--active text-subtitle-1">
@@ -204,8 +295,13 @@
                         </v-row>
                     </template>
                 </v-col>
-                <v-col class="col-12 col-sm-6 text-center" align-self="center">
-                    <webcam-wrapper v-if="showPreviewWebcam" :webcam="previewWebcam" page="settings" />
+                <v-col class="col-12 col-sm-6 text-center position-sticky _webcam-preview-col">
+                    <webcam-wrapper
+                        v-if="showPreviewWebcam"
+                        :webcam="previewWebcam"
+                        page="settings"
+                        overlay-display-mode="dummy"
+                        :font-size-override="8" />
                 </v-col>
             </v-row>
         </v-card-text>
@@ -220,13 +316,26 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import OverlayPositionButton from '@/components/settings/Webcams/OverlayPositionButton.vue'
 import { mdiDelete, mdiPencil, mdiMenuDown } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import {
+    GuiWebcamStateWebcam,
+    OverlayItemConfig,
+    OverlayItemKey,
+    WebcamOverlaysConfig,
+} from '@/store/gui/webcams/types'
+import {
+    DEFAULT_OVERLAY_BACKGROUND,
+    OVERLAY_ITEMS,
+    OverlayItemDefinition,
+    resolveOverlayItem,
+} from '@/components/webcams/overlayItems'
 
 @Component({
     components: {
         SettingsRow,
+        OverlayPositionButton,
     },
 })
 export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
@@ -259,6 +368,77 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
             return true
         },
+    }
+
+    get overlays(): WebcamOverlaysConfig {
+        return this.webcam.extra_data?.overlays ?? { enabled: false }
+    }
+
+    /** OVERLAY_ITEMS split into the 'always' and 'print' sections, each item merged with its stored config. */
+    get overlayItemGroups() {
+        const groups: { key: OverlayItemDefinition['group']; caption: string }[] = [
+            { key: 'always', caption: 'Settings.WebcamsTab.AlwaysVisibleItems' },
+            { key: 'print', caption: 'Settings.WebcamsTab.VisibleDuringPrint' },
+        ]
+
+        return groups.map((group) => ({
+            ...group,
+            items: OVERLAY_ITEMS.filter((item) => item.group === group.key).map((item) => ({
+                ...item,
+                config: resolveOverlayItem(this.overlays, item.key),
+            })),
+        }))
+    }
+
+    get overlaysEnabled() {
+        return this.overlays.enabled
+    }
+
+    set overlaysEnabled(newVal: boolean) {
+        this.setOverlays({ enabled: newVal })
+    }
+
+    get overlayBackgroundColor() {
+        return this.overlays.backgroundColor ?? DEFAULT_OVERLAY_BACKGROUND
+    }
+
+    set overlayBackgroundColor(newVal: string) {
+        this.setOverlays({ backgroundColor: newVal })
+    }
+
+    /** Shallow-merges `patch` into `extra_data.overlays`; reassigns the objects so the preview watcher fires. */
+    setOverlays(patch: Partial<WebcamOverlaysConfig>) {
+        this.webcam.extra_data = {
+            ...(this.webcam.extra_data ?? {}),
+            overlays: { ...this.overlays, ...patch },
+        }
+    }
+
+    /** Merges `patch` into one item's config; unset fields are filled from defaults so the stored item is complete. */
+    setOverlayItem(key: OverlayItemKey, patch: Partial<OverlayItemConfig>) {
+        const current = resolveOverlayItem(this.overlays, key)
+        const items = { ...(this.overlays.items ?? {}), [key]: { ...current, ...patch } }
+
+        this.setOverlays({ items })
+    }
+
+    updateOverlayBackgroundColor(
+        color: string | { rgba?: { r: number; g: number; b: number; a: number }; hexa?: string }
+    ) {
+        if (typeof color === 'string') {
+            this.overlayBackgroundColor = color
+            return
+        }
+
+        const rgba = color?.rgba
+        if (rgba && typeof rgba === 'object') {
+            this.overlayBackgroundColor = `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`
+            return
+        }
+
+        if (typeof color?.hexa === 'string') {
+            this.overlayBackgroundColor = color.hexa
+        }
     }
 
     get webcams() {
@@ -409,7 +589,7 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         this.webcam.extra_data!.enableAudio = newVal
     }
 
-    get nozzleCrosshairAvialable() {
+    get nozzleCrosshairAvailable() {
         return ['mjpegstreamer', 'mjpegstreamer-adaptive', 'webrtc-camerastreamer'].includes(this.webcam.service)
     }
 
@@ -520,6 +700,12 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 </script>
 
 <style scoped>
+/* offset below the app bar */
+._webcam-preview-col {
+    top: 80px;
+    align-self: flex-start;
+}
+
 ::v-deep ._transition svg {
     transition: transform 500ms;
 }
@@ -547,5 +733,9 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
 
 ._webcam-settings-name-field ::v-deep .v-text-field__details {
     margin-bottom: -12px !important;
+}
+
+.overlay-config-row {
+    margin-bottom: 8px;
 }
 </style>
