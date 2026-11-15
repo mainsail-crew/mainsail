@@ -3,24 +3,24 @@ export interface GuiWebcamState {
 }
 
 export type OverlayPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
-export type WebcamOverlayDisplayMode = 'auto' | 'all' | 'hidden' | 'dummy'
+export type WebcamOverlayDisplayMode = 'auto' | 'hidden' | 'dummy'
 
-export type OverlayPositionKey =
-    | 'overlayExtrudersPosition'
-    | 'overlayHeatbedPosition'
-    | 'overlayFanSpeedPosition'
-    | 'overlayPrintTimePosition'
-    | 'overlayEstimatePosition'
-    | 'overlayEtaPosition'
-    | 'overlayFlowRatePosition'
-    | 'overlaySpeedPosition'
-    | 'overlayLayerCountPosition'
+export type OverlayItemKey =
+    'extruders' | 'heatbed' | 'fan' | 'speed' | 'flowRate' | 'printTime' | 'estimate' | 'layerCount' | 'eta'
 
-export type OverlayPrintTimeSource = 'current' | 'total'
-export type OverlayEstimateSource = 'avg' | 'slicer'
+/** `source` selects the data variant for items that offer one (printTime: current|total, estimate: avg|slicer). */
+export interface OverlayItemConfig {
+    enabled: boolean
+    position: OverlayPosition
+    source?: string
+}
 
-export const DEFAULT_PRINT_TIME_SOURCE: OverlayPrintTimeSource = 'current'
-export const DEFAULT_ESTIMATE_SOURCE: OverlayEstimateSource = 'avg'
+export interface WebcamOverlaysConfig {
+    enabled: boolean
+    /** Any CSS color; alpha 0 renders no background. */
+    backgroundColor?: string
+    items?: Partial<Record<OverlayItemKey, OverlayItemConfig>>
+}
 
 export interface GuiWebcamStateWebcam {
     name: string
@@ -53,29 +53,7 @@ export interface GuiWebcamStateWebcam {
         nozzleCrosshair?: boolean
         nozzleCrosshairColor?: string
         nozzleCrosshairSize?: number
-        overlaysEnabled?: boolean
-        overlayShowExtruders?: boolean
-        overlayShowHeatbed?: boolean
-        overlayShowFanSpeed?: boolean
-        overlayShowPrintTime?: boolean
-        overlayShowEta?: boolean
-        overlayShowEstimate?: boolean
-        overlayShowFlowRate?: boolean
-        overlayShowSpeed?: boolean
-        overlayShowLayerCount?: boolean
-        overlayPosition?: OverlayPosition
-        overlayExtrudersPosition?: OverlayPosition
-        overlayHeatbedPosition?: OverlayPosition
-        overlayFanSpeedPosition?: OverlayPosition
-        overlayPrintTimePosition?: OverlayPosition
-        overlayEtaPosition?: OverlayPosition
-        overlayEstimatePosition?: OverlayPosition
-        overlayFlowRatePosition?: OverlayPosition
-        overlaySpeedPosition?: OverlayPosition
-        overlayLayerCountPosition?: OverlayPosition
-        overlayBackgroundColor?: string
-        overlayPrintTimeSource?: OverlayPrintTimeSource
-        overlayEstimateSource?: OverlayEstimateSource
+        overlays?: WebcamOverlaysConfig
     }
     source?: 'config' | 'database'
 }

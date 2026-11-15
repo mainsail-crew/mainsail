@@ -8,11 +8,11 @@
                         <v-col class="d-flex">
                             <v-item-group>
                                 <v-menu v-model="selectIcon" :offset-y="true" title="Icon">
-                                    <template #activator="{ on, attrs: attributes }">
+                                    <template #activator="{ on, attrs }">
                                         <v-btn
                                             class="px-2 mr-2 _transition _menu-button"
                                             color="transparent"
-                                            v-bind="attributes"
+                                            v-bind="attrs"
                                             elevation="0"
                                             :ripple="false"
                                             v-on="on">
@@ -159,194 +159,57 @@
                         </v-col>
                     </v-row>
                     <template v-if="overlaysEnabled">
-                        <v-row class="mt-2 mb-0">
-                            <v-col class="pb-0">
-                                <v-divider />
-                                <span class="caption text--secondary text-uppercase">
-                                    {{ $t('Settings.WebcamsTab.AlwaysVisibleItems') }}
-                                </span>
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowExtruders" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('extruders') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowExtruders') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowExtruders"
-                                    :value="overlayExtrudersPosition"
-                                    @change="overlayExtrudersPosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowHeatbed" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('heatbed') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowHeatbed') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowHeatbed"
-                                    :value="overlayHeatbedPosition"
-                                    @change="overlayHeatbedPosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowFanSpeed" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('fan') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowFanSpeed') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowFanSpeed"
-                                    :value="overlayFanSpeedPosition"
-                                    @change="overlayFanSpeedPosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowSpeed" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('speed') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowSpeed') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowSpeed"
-                                    :value="overlaySpeedPosition"
-                                    @change="overlaySpeedPosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-2 mb-0">
-                            <v-col class="pb-0">
-                                <v-divider />
-                                <span class="caption text--secondary text-uppercase">
-                                    {{ $t('Settings.WebcamsTab.VisibleDuringPrint') }}
-                                </span>
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowFlowRate" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('flowRate') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowFlowRate') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowFlowRate"
-                                    :value="overlayFlowRatePosition"
-                                    @change="overlayFlowRatePosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowPrintTime" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('printTime') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowPrintTime') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowPrintTime"
-                                    :value="overlayPrintTimePosition"
-                                    @change="overlayPrintTimePosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row v-if="overlayShowPrintTime" class="overlay-config-row">
-                            <v-col class="py-0" cols="12">
-                                <v-radio-group v-model="overlayPrintTimeSource" class="mt-0 ml-4" hide-details>
-                                    <v-radio
-                                        :label="$t('Settings.WebcamsTab.OverlayPrintTimeCurrent')"
-                                        value="current"
-                                        color="primary" />
-                                    <v-radio
-                                        :label="$t('Settings.WebcamsTab.OverlayPrintTimeTotal')"
-                                        value="total"
-                                        color="primary" />
-                                </v-radio-group>
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowEstimate" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('estimate') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowEstimate') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowEstimate"
-                                    :value="overlayEstimatePosition"
-                                    @change="overlayEstimatePosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row v-if="overlayShowEstimate" class="overlay-config-row">
-                            <v-col class="py-0" cols="12">
-                                <v-radio-group v-model="overlayEstimateSource" class="mt-0 ml-4" hide-details>
-                                    <v-radio
-                                        :label="$t('Settings.WebcamsTab.OverlayEstimateAvg')"
-                                        value="avg"
-                                        color="primary" />
-                                    <v-radio
-                                        :label="$t('Settings.WebcamsTab.OverlayEstimateSlicer')"
-                                        value="slicer"
-                                        color="primary" />
-                                </v-radio-group>
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowLayerCount" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('layerCount') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowLayerCount') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowLayerCount"
-                                    :value="overlayLayerCountPosition"
-                                    @change="overlayLayerCountPosition = $event" />
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0 overlay-config-row" align="center">
-                            <v-col class="py-0" cols="9">
-                                <v-checkbox v-model="overlayShowEta" class="mt-1" hide-details>
-                                    <template #label>
-                                        <v-icon small class="mr-1">{{ getOverlayIcon('eta') }}</v-icon>
-                                        {{ $t('Settings.WebcamsTab.OverlayShowEta') }}
-                                    </template>
-                                </v-checkbox>
-                            </v-col>
-                            <v-col class="py-0 d-flex justify-end" cols="3">
-                                <overlay-position-button
-                                    :active="overlayShowEta"
-                                    :value="overlayEtaPosition"
-                                    @change="overlayEtaPosition = $event" />
-                            </v-col>
-                        </v-row>
+                        <template v-for="group in overlayItemGroups">
+                            <v-row :key="`${group.key}-caption`" class="mt-2 mb-0">
+                                <v-col class="pb-0">
+                                    <v-divider />
+                                    <span class="caption text--secondary text-uppercase">
+                                        {{ $t(group.caption) }}
+                                    </span>
+                                </v-col>
+                            </v-row>
+                            <template v-for="item in group.items">
+                                <v-row :key="item.key" class="mt-0 overlay-config-row" align="center">
+                                    <v-col class="py-0" cols="9">
+                                        <v-checkbox
+                                            :input-value="item.config.enabled"
+                                            class="mt-1"
+                                            hide-details
+                                            @change="setOverlayItem(item.key, { enabled: !!$event })">
+                                            <template #label>
+                                                <v-icon small class="mr-1">{{ item.icon }}</v-icon>
+                                                {{ $t(item.settingsLabel) }}
+                                            </template>
+                                        </v-checkbox>
+                                    </v-col>
+                                    <v-col class="py-0 d-flex justify-end" cols="3">
+                                        <overlay-position-button
+                                            :active="item.config.enabled"
+                                            :value="item.config.position"
+                                            @change="setOverlayItem(item.key, { position: $event })" />
+                                    </v-col>
+                                </v-row>
+                                <v-row
+                                    v-if="item.sources && item.config.enabled"
+                                    :key="`${item.key}-source`"
+                                    class="overlay-config-row">
+                                    <v-col class="py-0" cols="12">
+                                        <v-radio-group
+                                            :value="item.config.source"
+                                            class="mt-0 ml-4"
+                                            hide-details
+                                            @change="setOverlayItem(item.key, { source: $event })">
+                                            <v-radio
+                                                v-for="source in item.sources"
+                                                :key="source.value"
+                                                :label="$t(source.label)"
+                                                :value="source.value"
+                                                color="primary" />
+                                        </v-radio-group>
+                                    </v-col>
+                                </v-row>
+                            </template>
+                        </template>
                     </template>
                     <v-row v-if="hasAudioOption">
                         <v-col class="pt-1 pb-3">
@@ -454,32 +317,20 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import OverlayPositionButton from '@/components/settings/Webcams/OverlayPositionButton.vue'
-import {
-    mdiCalendarClock,
-    mdiClockOutline,
-    mdiFan,
-    mdiLayersTriple,
-    mdiPrinter3dNozzle,
-    mdiProgressClock,
-    mdiRadiator,
-    mdiSpeedometer,
-    mdiWaterPercent,
-    mdiDelete,
-    mdiPencil,
-    mdiMenuDown,
-} from '@mdi/js'
+import { mdiDelete, mdiPencil, mdiMenuDown } from '@mdi/js'
 import WebcamMixin from '@/components/mixins/webcam'
 import {
-    DEFAULT_ESTIMATE_SOURCE,
-    DEFAULT_PRINT_TIME_SOURCE,
     GuiWebcamStateWebcam,
-    OverlayEstimateSource,
-    OverlayPosition,
-    OverlayPositionKey,
-    OverlayPrintTimeSource,
+    OverlayItemConfig,
+    OverlayItemKey,
+    WebcamOverlaysConfig,
 } from '@/store/gui/webcams/types'
-
-type WebcamExtraData = NonNullable<GuiWebcamStateWebcam['extra_data']>
+import {
+    DEFAULT_OVERLAY_BACKGROUND,
+    OVERLAY_ITEMS,
+    OverlayItemDefinition,
+    resolveOverlayItem,
+} from '@/components/webcams/overlayItems'
 
 @Component({
     components: {
@@ -519,196 +370,56 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         },
     }
 
-    overlayIcons = {
-        extruders: mdiPrinter3dNozzle,
-        heatbed: mdiRadiator,
-        fan: mdiFan,
-        printTime: mdiClockOutline,
-        estimate: mdiProgressClock,
-        flowRate: mdiWaterPercent,
-        speed: mdiSpeedometer,
-        layerCount: mdiLayersTriple,
-        eta: mdiCalendarClock,
+    get overlays(): WebcamOverlaysConfig {
+        return this.webcam.extra_data?.overlays ?? { enabled: false }
     }
 
-    getOverlayIcon(key: keyof typeof this.overlayIcons) {
-        return this.overlayIcons[key]
+    /** OVERLAY_ITEMS split into the 'always' and 'print' sections, each item merged with its stored config. */
+    get overlayItemGroups() {
+        const groups: { key: OverlayItemDefinition['group']; caption: string }[] = [
+            { key: 'always', caption: 'Settings.WebcamsTab.AlwaysVisibleItems' },
+            { key: 'print', caption: 'Settings.WebcamsTab.VisibleDuringPrint' },
+        ]
+
+        return groups.map((group) => ({
+            ...group,
+            items: OVERLAY_ITEMS.filter((item) => item.group === group.key).map((item) => ({
+                ...item,
+                config: resolveOverlayItem(this.overlays, item.key),
+            })),
+        }))
     }
 
     get overlaysEnabled() {
-        return this.getExtraData('overlaysEnabled', false)
+        return this.overlays.enabled
     }
 
     set overlaysEnabled(newVal: boolean) {
-        this.setExtraData('overlaysEnabled', newVal)
-    }
-
-    get overlayShowExtruders() {
-        return this.getExtraData('overlayShowExtruders', false)
-    }
-
-    set overlayShowExtruders(newVal: boolean) {
-        this.setExtraData('overlayShowExtruders', newVal)
-    }
-
-    get overlayShowHeatbed() {
-        return this.getExtraData('overlayShowHeatbed', false)
-    }
-
-    set overlayShowHeatbed(newVal: boolean) {
-        this.setExtraData('overlayShowHeatbed', newVal)
-    }
-
-    get overlayShowFanSpeed() {
-        return this.getExtraData('overlayShowFanSpeed', false)
-    }
-
-    set overlayShowFanSpeed(newVal: boolean) {
-        this.setExtraData('overlayShowFanSpeed', newVal)
-    }
-
-    get overlayShowPrintTime() {
-        return this.getExtraData('overlayShowPrintTime', false)
-    }
-
-    set overlayShowPrintTime(newVal: boolean) {
-        this.setExtraData('overlayShowPrintTime', newVal)
-    }
-
-    get overlayShowEta() {
-        return this.getExtraData('overlayShowEta', false)
-    }
-
-    set overlayShowEta(newVal: boolean) {
-        this.setExtraData('overlayShowEta', newVal)
-    }
-
-    get overlayShowEstimate() {
-        return this.getExtraData('overlayShowEstimate', false)
-    }
-
-    set overlayShowEstimate(newVal: boolean) {
-        this.setExtraData('overlayShowEstimate', newVal)
-    }
-
-    get overlayShowFlowRate() {
-        return this.getExtraData('overlayShowFlowRate', false)
-    }
-
-    set overlayShowFlowRate(newVal: boolean) {
-        this.setExtraData('overlayShowFlowRate', newVal)
-    }
-
-    get overlayShowSpeed() {
-        return this.getExtraData('overlayShowSpeed', false)
-    }
-
-    set overlayShowSpeed(newVal: boolean) {
-        this.setExtraData('overlayShowSpeed', newVal)
-    }
-
-    get overlayShowLayerCount() {
-        return this.getExtraData('overlayShowLayerCount', false)
-    }
-
-    set overlayShowLayerCount(newVal: boolean) {
-        this.setExtraData('overlayShowLayerCount', newVal)
-    }
-
-    get overlayExtrudersPosition() {
-        return this.getOverlayPositionValue('overlayExtrudersPosition')
-    }
-
-    set overlayExtrudersPosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayExtrudersPosition', newVal)
-    }
-
-    get overlayHeatbedPosition() {
-        return this.getOverlayPositionValue('overlayHeatbedPosition')
-    }
-
-    set overlayHeatbedPosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayHeatbedPosition', newVal)
-    }
-
-    get overlayFanSpeedPosition() {
-        return this.getOverlayPositionValue('overlayFanSpeedPosition')
-    }
-
-    set overlayFanSpeedPosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayFanSpeedPosition', newVal)
-    }
-
-    get overlayPrintTimeSource(): OverlayPrintTimeSource {
-        return this.getExtraData('overlayPrintTimeSource', DEFAULT_PRINT_TIME_SOURCE)
-    }
-
-    set overlayPrintTimeSource(newVal: OverlayPrintTimeSource) {
-        this.setExtraData('overlayPrintTimeSource', newVal)
-    }
-
-    get overlayPrintTimePosition() {
-        return this.getOverlayPositionValue('overlayPrintTimePosition')
-    }
-
-    set overlayPrintTimePosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayPrintTimePosition', newVal)
-    }
-
-    get overlayEtaPosition() {
-        return this.getOverlayPositionValue('overlayEtaPosition')
-    }
-
-    set overlayEtaPosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayEtaPosition', newVal)
-    }
-
-    get overlayEstimateSource(): OverlayEstimateSource {
-        return this.getExtraData('overlayEstimateSource', DEFAULT_ESTIMATE_SOURCE)
-    }
-
-    set overlayEstimateSource(newVal: OverlayEstimateSource) {
-        this.setExtraData('overlayEstimateSource', newVal)
-    }
-
-    get overlayEstimatePosition() {
-        return this.getOverlayPositionValue('overlayEstimatePosition')
-    }
-
-    set overlayEstimatePosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayEstimatePosition', newVal)
-    }
-
-    get overlayFlowRatePosition() {
-        return this.getOverlayPositionValue('overlayFlowRatePosition')
-    }
-
-    set overlayFlowRatePosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayFlowRatePosition', newVal)
-    }
-
-    get overlaySpeedPosition() {
-        return this.getOverlayPositionValue('overlaySpeedPosition')
-    }
-
-    set overlaySpeedPosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlaySpeedPosition', newVal)
-    }
-
-    get overlayLayerCountPosition() {
-        return this.getOverlayPositionValue('overlayLayerCountPosition')
-    }
-
-    set overlayLayerCountPosition(newVal: OverlayPosition) {
-        this.setOverlayPositionValue('overlayLayerCountPosition', newVal)
+        this.setOverlays({ enabled: newVal })
     }
 
     get overlayBackgroundColor() {
-        return this.getExtraData('overlayBackgroundColor', 'rgba(0, 0, 0, 0.7)')
+        return this.overlays.backgroundColor ?? DEFAULT_OVERLAY_BACKGROUND
     }
 
     set overlayBackgroundColor(newVal: string) {
-        this.setExtraData('overlayBackgroundColor', newVal)
+        this.setOverlays({ backgroundColor: newVal })
+    }
+
+    /** Shallow-merges `patch` into `extra_data.overlays`; reassigns the objects so the preview watcher fires. */
+    setOverlays(patch: Partial<WebcamOverlaysConfig>) {
+        this.webcam.extra_data = {
+            ...(this.webcam.extra_data ?? {}),
+            overlays: { ...this.overlays, ...patch },
+        }
+    }
+
+    /** Merges `patch` into one item's config; unset fields are filled from defaults so the stored item is complete. */
+    setOverlayItem(key: OverlayItemKey, patch: Partial<OverlayItemConfig>) {
+        const current = resolveOverlayItem(this.overlays, key)
+        const items = { ...(this.overlays.items ?? {}), [key]: { ...current, ...patch } }
+
+        this.setOverlays({ items })
     }
 
     updateOverlayBackgroundColor(
@@ -728,29 +439,6 @@ export default class WebcamForm extends Mixins(BaseMixin, WebcamMixin) {
         if (typeof color?.hexa === 'string') {
             this.overlayBackgroundColor = color.hexa
         }
-    }
-
-    private getOverlayPositionValue(key: OverlayPositionKey): OverlayPosition {
-        const extraData = (this.webcam.extra_data ?? {}) as Record<string, OverlayPosition | undefined>
-        const storedPosition = extraData[key]
-        if (storedPosition) return storedPosition
-
-        const defaultPosition = extraData.overlayPosition
-        if (defaultPosition) return defaultPosition
-
-        return 'bottom-left'
-    }
-
-    private setOverlayPositionValue(key: OverlayPositionKey, value: OverlayPosition) {
-        this.setExtraData(key, value)
-    }
-
-    private getExtraData<K extends keyof WebcamExtraData>(key: K, fallback: NonNullable<WebcamExtraData[K]>) {
-        return this.webcam.extra_data?.[key] ?? fallback
-    }
-
-    private setExtraData<K extends keyof WebcamExtraData>(key: K, value: WebcamExtraData[K]) {
-        this.webcam.extra_data = { ...(this.webcam.extra_data ?? {}), [key]: value }
     }
 
     get webcams() {

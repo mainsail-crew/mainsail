@@ -4,12 +4,7 @@
         v-bind="$attrs"
         :disabled="!active"
         :class="['overlay-position-btn', { 'overlay-position-btn--inactive': !active }]"
-        v-on="{
-            click: (e) => {
-                e.preventDefault()
-                cyclePosition()
-            },
-        }">
+        @click.prevent="cyclePosition">
         <v-icon>{{ icon }}</v-icon>
     </v-btn>
 </template>
@@ -41,12 +36,8 @@ export default class OverlayPositionButton extends Vue {
         }
     }
 
+    /** Emits `change` with the next corner, clockwise. */
     cyclePosition() {
-        if (!this.active) {
-            this.$emit('change', this.value)
-            return
-        }
-
         const currentIndex = this.positions.indexOf(this.value)
         const nextValue = this.positions[(currentIndex + 1) % this.positions.length]
         this.$emit('change', nextValue)
