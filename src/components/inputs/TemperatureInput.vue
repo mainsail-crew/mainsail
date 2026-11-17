@@ -118,7 +118,8 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
         // don't send a command if the temperature is unchanged
         if (this.target === temp) return
 
-        this.doSend(`${this.command} ${this.attributeName}=${this.name} TARGET=${temp}`)
+        const name = this.name.includes(' ') ? `"${this.name}"` : this.name
+        this.doSend(`${this.command} ${this.attributeName}=${name} TARGET=${temp}`)
     }
 
     mounted(): void {
