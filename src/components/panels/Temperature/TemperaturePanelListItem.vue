@@ -124,10 +124,10 @@ export default class TemperaturePanelListItem extends Mixins(BaseMixin) {
     }
 
     get name() {
-        const splits = this.objectName.split(' ')
-        if (splits.length === 1) return this.objectName
+        const pos = this.objectName.indexOf(' ')
+        if (pos === -1) return this.objectName
 
-        return splits[1]
+        return this.objectName.substring(pos + 1)
     }
 
     get formatName() {

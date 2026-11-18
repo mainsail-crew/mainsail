@@ -34,7 +34,7 @@
                     :key="preset.value"
                     link
                     style="min-height: 32px"
-                    @click="doSend(`${command} ${attributeName}=${name} TARGET=${preset.value}`)">
+                    @click="sendTempCommand(preset.value)">
                     <div class="_preset">
                         <v-icon v-if="preset.value === 0" else color="primary" small class="_preset-icon">
                             {{ mdiSnowflake }}
@@ -118,7 +118,12 @@ export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
         // don't send a command if the temperature is unchanged
         if (this.target === temp) return
 
-        this.doSend(`${this.command} ${this.attributeName}=${this.name} TARGET=${temp}`)
+        this.sendTempCommand(temp)
+    }
+
+    sendTempCommand(temp: number): void {
+        const name = this.name.includes(' ') ? `"${this.name}"` : this.name
+        this.doSend(`${this.command} ${this.attributeName}=${name} TARGET=${temp}`)
     }
 
     mounted(): void {
