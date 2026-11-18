@@ -9,7 +9,8 @@
                     :target="target"
                     :class="itemClass"
                     v-bind="attrs"
-                    v-on="on">
+                    v-on="on"
+                    @click="onClick">
                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
                         <v-icon>{{ icon }}</v-icon>
                     </v-list-item-icon>
@@ -68,6 +69,15 @@ export default class SidebarItem extends Mixins(BaseMixin) {
         if (this.item.target === '_blank' || !this.item.to) return false
 
         return this.$route.path === this.item.to
+    }
+
+    // A link that opens in a new tab keeps the focus in this tab, so the
+    // item stays highlighted when the user comes back. Drop the focus.
+    onClick(event: MouseEvent) {
+        if (this.target !== '_blank') return
+
+        const element = event.currentTarget as HTMLElement | null
+        element?.blur()
     }
 
     get itemClass() {
