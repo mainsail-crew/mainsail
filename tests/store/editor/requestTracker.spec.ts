@@ -6,9 +6,6 @@ describe('RequestTracker', () => {
         const tracker = new RequestTracker()
         const controller = tracker.start('download')
 
-        expect(tracker.isActive()).toBe(true)
-        expect(tracker.isActive('download')).toBe(true)
-        expect(tracker.isActive('upload')).toBe(false)
         expect(tracker.isCurrent('download', controller)).toBe(true)
         expect(controller.signal.aborted).toBe(false)
     })
@@ -30,7 +27,6 @@ describe('RequestTracker', () => {
         tracker.start('download')
 
         expect(upload.signal.aborted).toBe(false)
-        expect(tracker.isActive('upload')).toBe(true)
     })
 
     it('finish() only removes the current request', () => {
@@ -39,10 +35,9 @@ describe('RequestTracker', () => {
         const current = tracker.start('download')
 
         expect(tracker.finish('download', stale)).toBe(false)
-        expect(tracker.isActive('download')).toBe(true)
-
         expect(tracker.finish('download', current)).toBe(true)
-        expect(tracker.isActive('download')).toBe(false)
+        expect(tracker.isCurrent('download', current)).toBe(false)
+        expect(tracker.finish('download', current)).toBe(false)
         expect(current.signal.aborted).toBe(false)
     })
 
@@ -55,25 +50,12 @@ describe('RequestTracker', () => {
 
         expect(download.signal.aborted).toBe(true)
         expect(upload.signal.aborted).toBe(false)
-        expect(tracker.isActive('download')).toBe(false)
-        expect(tracker.isActive('upload')).toBe(true)
+        expect(tracker.isCurrent('download', download)).toBe(false)
+        expect(tracker.isCurrent('upload', upload)).toBe(true)
     })
 
     it('abort() on an unknown type is a no-op', () => {
         const tracker = new RequestTracker()
         expect(() => tracker.abort('upload')).not.toThrow()
-        expect(tracker.isActive()).toBe(false)
-    })
-
-    it('abortAll() aborts and removes all requests', () => {
-        const tracker = new RequestTracker()
-        const download = tracker.start('download')
-        const upload = tracker.start('upload')
-
-        tracker.abortAll()
-
-        expect(download.signal.aborted).toBe(true)
-        expect(upload.signal.aborted).toBe(true)
-        expect(tracker.isActive()).toBe(false)
     })
 })

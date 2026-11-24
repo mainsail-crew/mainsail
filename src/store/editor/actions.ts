@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex'
-import { EditorOpenFilePayload, EditorState } from '@/store/editor/types'
+import { EditorOpenFilePayload, EditorRequestType, EditorState } from '@/store/editor/types'
 import { editorRequests } from './requestTracker'
 import { RootState } from '@/store/types'
 import axios from 'axios'
@@ -26,13 +26,14 @@ export const actions: ActionTree<EditorState, RootState> = {
         const fullFilepath = fullFilepathArray.join('/')
         const url = `${rootGetters['socket/getUrl']}/server/files/${escapePath(fullFilepath)}?${Date.now()}`
         const controller = editorRequests.start('download')
-        commit('startLoader', { direction: 'downloading', filename: payload.filename })
+        commit('startLoader', { type: 'download', filename: payload.filename })
 
         try {
             const response = await axios.get<Blob>(url, {
                 signal: controller.signal,
                 onDownloadProgress: (progressEvent): void =>
                     commit('updateLoaderProgress', {
+                        type: 'download',
                         loaded: progressEvent.loaded,
                         speed: formatFilesize(progressEvent.rate ?? 0),
                         total: payload.size ?? 0,
@@ -56,8 +57,8 @@ export const actions: ActionTree<EditorState, RootState> = {
             logError(error)
             Vue.$toast.error(i18n.t('Editor.FailedLoad', { filename: payload.filename }).toString())
         } finally {
-            if (editorRequests.finish('download', controller) && !editorRequests.isActive()) {
-                commit('resetLoader')
+            if (editorRequests.finish('download', controller)) {
+                commit('resetLoader', 'download')
             }
         }
     },
@@ -77,13 +78,14 @@ export const actions: ActionTree<EditorState, RootState> = {
 
         const url = rootGetters['socket/getUrl'] + '/server/files/upload'
         const controller = editorRequests.start('upload')
-        commit('startLoader', { direction: 'uploading', filename })
+        commit('startLoader', { type: 'upload', filename })
 
         try {
             const response = await axios.post<{ item: { path: string } }>(url, formData, {
                 signal: controller.signal,
                 onUploadProgress: (progressEvent) =>
                     commit('updateLoaderProgress', {
+                        type: 'upload',
                         loaded: progressEvent.loaded,
                         speed: formatFilesize(progressEvent.rate ?? 0),
                         total: progressEvent.total ?? 0,
@@ -114,23 +116,25 @@ export const actions: ActionTree<EditorState, RootState> = {
             logError(error)
             Vue.$toast.error(i18n.t('Editor.FailedSave', { filename }).toString())
         } finally {
-            if (editorRequests.finish('upload', controller) && !editorRequests.isActive()) {
-                commit('resetLoader')
+            if (editorRequests.finish('upload', controller)) {
+                commit('resetLoader', 'upload')
             }
         }
     },
 
-    cancelLoad({ commit }): void {
-        if (!editorRequests.isActive()) return
+    cancelLoad({ commit }, type?: EditorRequestType): void {
+        const types: EditorRequestType[] = type ? [type] : ['download', 'upload']
 
-        editorRequests.abortAll()
-        commit('resetLoader')
+        for (const t of types) {
+            editorRequests.abort(t)
+            commit('resetLoader', t)
+        }
     },
 
     close({ commit }): void {
         editorRequests.abort('download')
         commit('closeEditor')
-        if (!editorRequests.isActive()) commit('resetLoader')
+        commit('resetLoader', 'download')
     },
 
     updateSourcecode({ commit }, content: string): void {

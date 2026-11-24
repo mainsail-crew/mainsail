@@ -97,27 +97,6 @@
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar :value="loader.isLoading" :timeout="-1" fixed right bottom>
-            <div>
-                {{ snackbarHeadline }}
-                <br />
-                <strong>{{ loader.filename }}</strong>
-            </div>
-            <template v-if="loader.total > 0">
-                <span class="mr-1">({{ formatFilesize(loader.loaded) }}/{{ formatFilesize(loader.total) }})</span>
-                {{ Math.round((100 * loader.loaded) / loader.total) }} % @ {{ loader.speed }}/s
-                <br />
-                <v-progress-linear class="mt-2" :value="(100 * loader.loaded) / loader.total" />
-            </template>
-            <template v-else>
-                <v-progress-linear class="mt-2" indeterminate />
-            </template>
-            <template #action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" style="min-width: auto" tile @click="cancelDownload">
-                    <v-icon class="0">{{ mdiClose }}</v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
         <v-dialog v-model="dialogConfirmChange" persistent :width="600">
             <panel
                 card-class="editor-confirm-change-dialog"
@@ -160,13 +139,12 @@
 <script lang="ts">
 import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { capitalize, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { klipperRepos } from '@/store/variables'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
 import {
-    mdiClose,
     mdiCloseThick,
     mdiContentSave,
     mdiFileDocumentOutline,
@@ -191,8 +169,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     structureOpen: number[] = []
     structureActiveChangedBySidebar: boolean = false
 
-    formatFilesize = formatFilesize
-
     /**
      * Icons
      */
@@ -200,7 +176,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiHelp = mdiHelp
     mdiContentSave = mdiContentSave
     mdiRestart = mdiRestart
-    mdiClose = mdiClose
     mdiHelpCircle = mdiHelpCircle
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
@@ -259,17 +234,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     set sourcecode(newVal) {
         this.$store.dispatch('editor/updateSourcecode', newVal)
-    }
-
-    get loader() {
-        return this.$store.state.editor.loader ?? {}
-    }
-
-    get snackbarHeadline() {
-        let directionUppercase = this.$t('Editor.Downloading')
-        if (this.loader.direction) directionUppercase = capitalize(this.loader.direction)
-
-        return this.$t(`Editor.${directionUppercase}`)
     }
 
     get availableServices() {
@@ -401,10 +365,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     toggleFileStructure() {
         this.fileStructureSidebar = !this.fileStructureSidebar
-    }
-
-    cancelDownload() {
-        this.$store.dispatch('editor/cancelLoad')
     }
 
     escClose() {

@@ -1,9 +1,17 @@
-import { EditorState } from '@/store/editor/types'
+import { EditorLoader, EditorState } from '@/store/editor/types'
 import { Module } from 'vuex'
 import { actions } from '@/store/editor/actions'
 import { mutations } from '@/store/editor/mutations'
 import { getters } from '@/store/editor/getters'
 import { RootState } from '@/store/types'
+
+export const getDefaultLoader = (): EditorLoader => ({
+    isLoading: false,
+    filename: '',
+    loaded: 0,
+    total: 0,
+    speed: '',
+})
 
 export const getDefaultState = (): EditorState => {
     return {
@@ -13,13 +21,9 @@ export const getDefaultState = (): EditorState => {
         fileroot: '',
         filepath: '',
         sourcecode: '',
-        loader: {
-            isLoading: false,
-            direction: 'downloading',
-            filename: '',
-            loaded: 0,
-            total: 0,
-            speed: '',
+        loaders: {
+            download: getDefaultLoader(),
+            upload: getDefaultLoader(),
         },
         loadedHash: '',
         changed: false,

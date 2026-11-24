@@ -1,6 +1,6 @@
-import { getDefaultState } from './index'
+import { getDefaultLoader, getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { EditorState } from '@/store/editor/types'
+import { EditorLoaderProgress, EditorRequestType, EditorState } from '@/store/editor/types'
 import Vue from 'vue'
 import { hashEditorContent } from '@/plugins/helpers'
 
@@ -9,16 +9,16 @@ export const mutations: MutationTree<EditorState> = {
         Object.assign(state, getDefaultState())
     },
 
-    startLoader(state, payload: Pick<EditorState['loader'], 'direction' | 'filename'>): void {
-        Vue.set(state, 'loader', { ...getDefaultState().loader, ...payload, isLoading: true })
+    startLoader(state, { type, filename }: { type: EditorRequestType; filename: string }): void {
+        Vue.set(state.loaders, type, { ...getDefaultLoader(), filename, isLoading: true })
     },
 
-    updateLoaderProgress(state, progress: Pick<EditorState['loader'], 'loaded' | 'total' | 'speed'>): void {
-        Vue.set(state, 'loader', { ...state.loader, ...progress })
+    updateLoaderProgress(state, { type, ...progress }: { type: EditorRequestType } & EditorLoaderProgress): void {
+        Vue.set(state.loaders, type, { ...state.loaders[type], ...progress })
     },
 
-    resetLoader(state): void {
-        Vue.set(state, 'loader', getDefaultState().loader)
+    resetLoader(state, type: EditorRequestType): void {
+        Vue.set(state.loaders, type, getDefaultLoader())
     },
 
     openFile(
@@ -59,7 +59,7 @@ export const mutations: MutationTree<EditorState> = {
 
     closeEditor(state): void {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { loader, ...editorDefaults } = getDefaultState()
+        const { loaders, ...editorDefaults } = getDefaultState()
         Object.assign(state, editorDefaults)
     },
 }
