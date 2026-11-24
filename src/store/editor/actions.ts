@@ -1,157 +1,144 @@
 import { ActionTree } from 'vuex'
-import { EditorState } from '@/store/editor/types'
+import { EditorOpenFilePayload, EditorRequestType, EditorState } from '@/store/editor/types'
+import { editorRequests } from './requestTracker'
 import { RootState } from '@/store/types'
-import axios, { AxiosProgressEvent } from 'axios'
+import axios from 'axios'
 import { sha256 } from 'js-sha256'
 import Vue from 'vue'
 import i18n from '@/plugins/i18n'
-import { escapePath, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { escapePath, formatFilesize, hashEditorContent } from '@/plugins/helpers'
+
+const LOG_PREFIX = '[EDITOR]'
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
 
 export const actions: ActionTree<EditorState, RootState> = {
-    reset({ commit }) {
+    reset({ commit, dispatch }): void {
+        dispatch('cancelLoad')
         commit('reset')
     },
 
-    downloadProgress(
-        { commit },
-        payload: { progressEvent: AxiosProgressEvent; direction: string; filesize: number | null }
-    ) {
-        commit('updateLoader', {
-            direction: payload.direction,
-            speed: formatFilesize(payload.progressEvent.rate ?? 0),
-            loaded: payload.progressEvent.loaded,
-            total: payload.filesize ?? payload.progressEvent.total,
-        })
-    },
-
-    openFile({ state, dispatch, commit, rootGetters }, payload) {
-        const fullFilepathArray = []
-        fullFilepathArray.push(payload.root)
-        let path = payload.path
-        if (path.slice(0, 1) === '/') path = path.slice(1)
-        if (path.slice(-1) === '/') path = path.slice(0, -1)
+    async openFile({ commit, rootGetters }, payload: EditorOpenFilePayload): Promise<void> {
+        const fullFilepathArray = [payload.root]
+        const path = payload.path.replace(/^\/+|\/+$/g, '')
         if (path !== '') fullFilepathArray.push(path)
         fullFilepathArray.push(payload.filename)
 
         const fullFilepath = fullFilepathArray.join('/')
-        const url = rootGetters['socket/getUrl'] + '/server/files/' + escapePath(fullFilepath) + `?${Date.now()}`
+        const url = `${rootGetters['socket/getUrl']}/server/files/${escapePath(fullFilepath)}?${Date.now()}`
+        const controller = editorRequests.start('download')
+        commit('startLoader', { type: 'download', filename: payload.filename })
 
-        if (state.cancelToken) dispatch('cancelLoad')
-
-        const CancelToken = axios.CancelToken
-        const source = CancelToken.source()
-        commit('updateCancelTokenSource', source)
-        commit('updateLoaderState', true)
-
-        commit('setFilename', payload.filename)
-        commit('setPermissions', payload.permissions)
-
-        axios
-            .get(url, {
-                cancelToken: source.token,
-                onDownloadProgress: (progressEvent) =>
-                    dispatch('downloadProgress', {
-                        progressEvent,
-                        direction: 'downloading',
-                        filesize: payload.size,
+        try {
+            const response = await axios.get<Blob>(url, {
+                signal: controller.signal,
+                onDownloadProgress: (progressEvent): void =>
+                    commit('updateLoaderProgress', {
+                        type: 'download',
+                        loaded: progressEvent.loaded,
+                        speed: formatFilesize(progressEvent.rate ?? 0),
+                        total: payload.size ?? 0,
                     }),
                 responseType: 'blob',
             })
-            .then((res) => res.data.text())
-            .then((file) => {
-                commit('openFile', {
-                    filename: payload.filename,
-                    fileroot: payload.root,
-                    filepath: path,
-                    file,
-                })
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    dispatch('clearLoader')
-                }, 100)
-            })
-    },
 
-    async saveFile(
-        { state, commit, getters, rootGetters, dispatch },
-        payload: { content: string; restartServiceName: string | null }
-    ) {
-        const content = new Blob([payload.content], { type: 'text/plain' })
-        const formData = new FormData()
-        formData.append('file', content, state.filename)
-        formData.append('root', state.fileroot)
-        formData.append('path', state.filepath)
-        formData.append('checksum', sha256(payload.content))
+            const content = await response.data.text()
+            if (!editorRequests.isCurrent('download', controller)) return
 
-        const url = rootGetters['socket/getUrl'] + '/server/files/upload'
-        if (state.cancelToken) dispatch('cancelLoad')
-        const CancelToken = axios.CancelToken
-        const source = CancelToken.source()
-        commit('updateCancelTokenSource', source)
-        commit('updateLoaderState', true)
-
-        axios
-            .post(url, formData, {
-                cancelToken: source.token,
-                onUploadProgress: (progressEvent) =>
-                    dispatch('downloadProgress', {
-                        progressEvent,
-                        direction: 'uploading',
-                        filesize: null,
-                    }),
+            commit('openFile', {
+                filename: payload.filename,
+                fileroot: payload.root,
+                permissions: payload.permissions,
+                filepath: path,
+                file: content,
             })
-            .then((response) => {
-                return response.data
-            })
-            .then((data) => {
-                dispatch('clearLoader')
-                Vue.$toast.success(i18n.t('Editor.SuccessfullySaved', { filename: data.item.path }).toString())
-                if (payload.restartServiceName === 'klipper') {
-                    const klipperRestartMethod = getters['getKlipperRestartMethod']
-                    Vue.$socket.emit('printer.gcode.script', { script: klipperRestartMethod })
-                } else if (payload.restartServiceName === 'moonraker') {
-                    Vue.$socket.emit('server.restart', {})
-                } else if (payload.restartServiceName !== null) {
-                    Vue.$socket.emit('machine.services.restart', { service: payload.restartServiceName })
-                }
+        } catch (error) {
+            if (axios.isCancel(error)) return
 
-                commit('updateLoadedHash', payload.content)
-
-                if (payload.restartServiceName !== null) dispatch('close')
-            })
-            .catch((error) => {
-                window.console.log(error.response?.data.error)
-                dispatch('clearLoader')
-                Vue.$toast.error(i18n.t('Editor.FailedSave', { filename: state.filename }).toString())
-            })
-    },
-
-    cancelLoad({ state, commit, dispatch }) {
-        if (state.cancelToken) {
-            state.cancelToken.cancel('User canceled upload/download')
-            commit('updateCancelTokenSource', null)
-            dispatch('clearLoader')
+            logError(error)
+            Vue.$toast.error(i18n.t('Editor.FailedLoad', { filename: payload.filename }).toString())
+        } finally {
+            if (editorRequests.finish('download', controller)) {
+                commit('resetLoader', 'download')
+            }
         }
     },
 
-    clearLoader({ commit }) {
-        commit('updateLoaderState', false)
-        commit('updateLoader', {
-            direction: 'downloading',
-            loaded: 0,
-            total: 0,
-            speed: '',
-        })
+    async saveFile(
+        { state, commit, dispatch, rootGetters, rootState },
+        payload: { content: string; restartServiceName: string | null }
+    ): Promise<void> {
+        const { filename, fileroot, filepath } = state
+
+        const content = new Blob([payload.content], { type: 'text/plain' })
+        const formData = new FormData()
+        formData.append('file', content, filename)
+        formData.append('root', fileroot)
+        formData.append('path', filepath)
+        formData.append('checksum', sha256(payload.content))
+
+        const url = rootGetters['socket/getUrl'] + '/server/files/upload'
+        const controller = editorRequests.start('upload')
+        commit('startLoader', { type: 'upload', filename })
+
+        try {
+            const response = await axios.post<{ item: { path: string } }>(url, formData, {
+                signal: controller.signal,
+                onUploadProgress: (progressEvent) =>
+                    commit('updateLoaderProgress', {
+                        type: 'upload',
+                        loaded: progressEvent.loaded,
+                        speed: formatFilesize(progressEvent.rate ?? 0),
+                        total: progressEvent.total ?? 0,
+                    }),
+            })
+            if (!editorRequests.isCurrent('upload', controller)) return
+
+            Vue.$toast.success(i18n.t('Editor.SuccessfullySaved', { filename: response.data.item.path }).toString())
+
+            if (payload.restartServiceName === 'klipper') {
+                const klipperRestartMethod = rootState.gui?.editor?.klipperRestartMethod ?? 'FIRMWARE_RESTART'
+                Vue.$socket.emit('printer.gcode.script', { script: klipperRestartMethod })
+            } else if (payload.restartServiceName === 'moonraker') {
+                Vue.$socket.emit('server.restart', {})
+            } else if (payload.restartServiceName !== null) {
+                Vue.$socket.emit('machine.services.restart', { service: payload.restartServiceName })
+            }
+
+            // The editor may have been closed or switched to another file while uploading
+            const isSameFile = state.filename === filename && state.fileroot === fileroot && state.filepath === filepath
+            if (isSameFile) {
+                commit('updateLoadedHash', hashEditorContent(payload.content))
+
+                if (payload.restartServiceName !== null) dispatch('close')
+            }
+        } catch (error) {
+            if (axios.isCancel(error)) return
+
+            logError(error)
+            Vue.$toast.error(i18n.t('Editor.FailedSave', { filename }).toString())
+        } finally {
+            if (editorRequests.finish('upload', controller)) {
+                commit('resetLoader', 'upload')
+            }
+        }
     },
 
-    close({ commit }) {
-        commit('reset')
+    cancelLoad({ commit }, type?: EditorRequestType): void {
+        const types: EditorRequestType[] = type ? [type] : ['download', 'upload']
 
-        window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+        for (const t of types) {
+            editorRequests.abort(t)
+            commit('resetLoader', t)
+        }
     },
 
-    updateSourcecode({ commit }, payload) {
-        commit('updateSourcecode', payload)
+    close({ commit }): void {
+        editorRequests.abort('download')
+        commit('closeEditor')
+        commit('resetLoader', 'download')
+    },
+
+    updateSourcecode({ commit }, content: string): void {
+        commit('updateSourcecode', content)
     },
 }

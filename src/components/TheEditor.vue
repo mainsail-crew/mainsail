@@ -106,31 +106,6 @@
                 </v-card-text>
             </panel>
         </v-dialog>
-        <v-snackbar v-model="loaderBool" :timeout="-1" fixed right bottom>
-            <div>
-                {{ snackbarHeadline }}
-                <br />
-                <strong>{{ filename }}</strong>
-            </div>
-            <template v-if="loaderProgress.total > 0">
-                <span class="mr-1">
-                    ({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})
-                </span>
-                {{ Math.round((100 * loaderProgress.loaded) / loaderProgress.total) }} % @ {{ loaderProgress.speed }}/s
-                <br />
-                <v-progress-linear
-                    class="mt-2"
-                    :value="(100 * loaderProgress.loaded) / loaderProgress.total"></v-progress-linear>
-            </template>
-            <template v-else>
-                <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
-            </template>
-            <template #action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" style="min-width: auto" tile @click="cancelDownload">
-                    <v-icon class="0">{{ mdiClose }}</v-icon>
-                </v-btn>
-            </template>
-        </v-snackbar>
         <v-dialog v-model="dialogConfirmChange" persistent :width="600">
             <panel
                 card-class="editor-confirm-change-dialog"
@@ -173,12 +148,11 @@
 <script lang="ts">
 import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { capitalize, escapePath, formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { escapePath, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
 import {
-    mdiClose,
     mdiCloseThick,
     mdiContentSave,
     mdiFileDocumentOutline,
@@ -213,8 +187,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     structureOpen: number[] = []
     structureActiveChangedBySidebar: boolean = false
 
-    formatFilesize = formatFilesize
-
     /**
      * Icons
      */
@@ -222,7 +194,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiHelp = mdiHelp
     mdiContentSave = mdiContentSave
     mdiRestart = mdiRestart
-    mdiClose = mdiClose
     mdiHelpCircle = mdiHelpCircle
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
@@ -306,21 +277,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     set sourcecode(newVal) {
         this.$store.dispatch('editor/updateSourcecode', newVal)
-    }
-
-    get loaderBool() {
-        return this.$store.state.editor.loaderBool ?? false
-    }
-
-    get loaderProgress() {
-        return this.$store.state.editor.loaderProgress ?? {}
-    }
-
-    get snackbarHeadline() {
-        let directionUppercase = this.$t('Editor.Downloading')
-        if (this.loaderProgress.direction) directionUppercase = capitalize(this.loaderProgress.direction)
-
-        return this.$t(`Editor.${directionUppercase}`)
     }
 
     get availableServices() {
@@ -443,10 +399,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
         editorPositions.restore(view, key)
     }
 
-    cancelDownload() {
-        this.$store.dispatch('editor/cancelLoad')
-    }
-
     escClose() {
         if (this.escToClose) this.close()
     }
@@ -513,14 +465,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     @Watch('changed')
     changedChanged(newVal: boolean) {
-        if (!this.confirmUnsavedChanges) return
-
-        if (newVal) {
-            window.addEventListener('beforeunload', windowBeforeUnloadFunction)
+        if (!newVal) {
+            window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
             return
         }
 
-        window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+        if (this.confirmUnsavedChanges) window.addEventListener('beforeunload', windowBeforeUnloadFunction)
     }
 
     @Watch('show')

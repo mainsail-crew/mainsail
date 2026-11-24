@@ -11,6 +11,7 @@
             <the-service-worker />
             <the-update-dialog />
             <the-editor />
+            <the-editor-transfer-snackbar />
             <the-timelapse-rendering-snackbar />
             <the-fullscreen-upload />
             <the-upload-snackbar />
@@ -31,6 +32,7 @@ import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
+import TheEditorTransferSnackbar from '@/components/TheEditorTransferSnackbar.vue'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
 import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
@@ -51,6 +53,7 @@ import { AppRoute } from '@/routes'
         TheMacroPrompt,
         TheTimelapseRenderingSnackbar,
         TheEditor,
+        TheEditorTransferSnackbar,
         TheSelectPrinterDialog,
         TheConnectingDialog,
         TheUpdateDialog,
