@@ -105,11 +105,12 @@ export const actions: ActionTree<EditorState, RootState> = {
             }
 
             // The editor may have been closed or switched to another file while uploading
-            if (state.filename === filename && state.fileroot === fileroot && state.filepath === filepath) {
+            const isSameFile = state.filename === filename && state.fileroot === fileroot && state.filepath === filepath
+            if (isSameFile) {
                 commit('updateLoadedHash', hashEditorContent(payload.content))
-            }
 
-            if (payload.restartServiceName !== null) dispatch('close')
+                if (payload.restartServiceName !== null) dispatch('close')
+            }
         } catch (error) {
             if (axios.isCancel(error)) return
 
