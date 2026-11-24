@@ -13,8 +13,14 @@ export const mutations: MutationTree<EditorState> = {
         Vue.set(state.loaders, type, { ...getDefaultLoader(), filename, isLoading: true })
     },
 
-    updateLoaderProgress(state, { type, ...progress }: { type: EditorRequestType } & EditorLoaderProgress): void {
-        Vue.set(state.loaders, type, { ...state.loaders[type], ...progress })
+    updateLoaderProgress(
+        state,
+        { type, loaded, total, speed }: { type: EditorRequestType } & EditorLoaderProgress
+    ): void {
+        const loader = state.loaders[type]
+        loader.loaded = loaded
+        loader.total = total
+        loader.speed = speed
     },
 
     resetLoader(state, type: EditorRequestType): void {
