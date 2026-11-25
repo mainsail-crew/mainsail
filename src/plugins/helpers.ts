@@ -189,6 +189,39 @@ export const formatPrintTime = (totalSeconds: number, boolDays = true): string =
     return output.join(' ')
 }
 
+const MS_PER_DAY = 86_400_000
+
+/**
+ * Formats an ETA timestamp as clock time ('16:05', '04:05 PM'). Appends the number of days
+ * if the ETA is not today ('01:00 +1'). Returns '--' if the ETA is not in the future.
+ */
+export const formatEta = (eta: number, hours12Format = false): string => {
+    const now = new Date()
+    const etaDate = new Date(eta)
+    if (etaDate <= now) return '--'
+
+    const hours = etaDate.getHours()
+    const minutes = etaDate.getMinutes()
+
+    let displayHour = hours
+    let amPm = ''
+
+    if (hours12Format) {
+        amPm = hours >= 12 ? ' PM' : ' AM'
+        displayHour = hours % 12 || 12
+    }
+
+    const output = `${String(displayHour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${amPm}`
+
+    now.setHours(0, 0, 0, 0)
+    etaDate.setHours(0, 0, 0, 0)
+    const dayDiff = Math.round((etaDate.getTime() - now.getTime()) / MS_PER_DAY)
+
+    if (dayDiff > 0) return `${output} +${dayDiff}`
+
+    return output
+}
+
 export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
     const sortBySingle = sortBy.length ? sortBy[0] : 'filename'
     const sortDescSingle = sortDesc[0]
