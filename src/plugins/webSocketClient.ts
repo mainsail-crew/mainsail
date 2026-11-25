@@ -2,30 +2,37 @@ import { Store } from 'vuex'
 import _Vue from 'vue'
 import { RootState } from '@/store/types'
 import { initableServerComponents } from '@/store/variables'
-import type { RPCMethods, RPCParams, RPCResult, JsonRpcError, JsonRpcResponse } from '@/types/moonraker'
-
-const HEARTBEAT_TIMEOUT = 10_000
-const MAX_RECONNECT_DELAY = 30_000
+import { isJsonRpcError } from '@/types/moonraker'
+import type { RPCMethods, RPCParams, RPCResult } from '@/types/moonraker'
+import { JsonRpcSocket, WebSocketClosedError } from '@/plugins/jsonRpcSocket'
 
 export class WebSocketClient {
-    private url: string
-    private instance: WebSocket | null = null
-    private readonly maxReconnects: number
-    private readonly reconnectInterval: number
-    private reconnects = 0
-    private reconnectTimer: number | null = null
-    private messageId: number = 0
+    private readonly socket: JsonRpcSocket
     private readonly store: Store<RootState>
-    private waits: Wait[] = []
-    private heartbeatTimer: number | null = null
-    private autoReconnect: boolean = false
 
     constructor(options: WebSocketPluginOptions) {
-        this.url = options.url
-        this.maxReconnects = options.maxReconnects ?? 5
-        this.reconnectInterval = options.reconnectInterval ?? 1_000
         this.store = options.store
+        this.socket = new JsonRpcSocket(
+            {
+                url: options.url,
+                maxReconnects: options.maxReconnects ?? 5,
+                reconnectInterval: options.reconnectInterval ?? 1000,
+                heartbeatTimeout: 10000,
+            },
+            {
+                onOpen: () => this.store.dispatch('socket/onOpen'),
+                onReconnecting: () =>
+                    this.store.dispatch('socket/setData', {
+                        isConnected: false,
+                        isConnecting: true,
+                        connectingFailed: false,
+                    }),
+                onClose: (event) => this.store.dispatch('socket/onClose', event),
+                onNotification: (notification) => this.store.dispatch('socket/onMessage', notification),
+            }
+        )
 
+        // the browser may suspend or kill the connection in background tabs or on network changes
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') this.reconnectIfDisconnected()
         })
@@ -33,315 +40,109 @@ export class WebSocketClient {
     }
 
     setUrl(url: string): void {
-        this.url = url
-    }
-
-    private handleMessage(data: JsonRpcResponse): void {
-        const wait = this.getWaitById(data.id)
-
-        // reject promise if it exists
-        if (data.error && wait?.reject) {
-            wait.reject(data.error)
-            this.removeWaitById(wait.id)
-            return
-        }
-
-        // report error messages
-        if (data.error?.message) {
-            // only report errors, if not disconnected and no init component
-            if (data.error?.message !== 'Klippy Disconnected') {
-                window.console.error(`Response Error: ${data.error.message} (${wait?.action ?? 'no action'})`)
-            }
-
-            if (wait) {
-                const modulename = wait.action?.split('/')[1] ?? null
-
-                // TODO: remove after converting to async init server components
-                if (
-                    modulename &&
-                    wait.action?.startsWith('server/') &&
-                    initableServerComponents.includes(modulename) &&
-                    this.store.state.socket?.initializationList.length
-                ) {
-                    const component = wait.action.replace('server/', '').split('/')[0]
-                    window.console.error(`init server component ${component} failed`)
-                    this.store.dispatch('server/addFailedInitComponent', component)
-                    this.store.dispatch('socket/removeInitComponent', `server/${component}/`)
-                }
-
-                this.removeWaitById(wait.id)
-            }
-
-            return
-        }
-
-        // pass it to socket/onMessage if no wait exists
-        if (!wait) {
-            this.store.dispatch('socket/onMessage', data)
-            return
-        }
-
-        // resolve promise if it exists
-        if (wait.resolve) wait.resolve(data.result ?? {})
-
-        // pass result to action
-        if (wait.action) {
-            let result = data.result
-            if (result === 'ok') result = { result }
-            if (typeof result === 'string') result = { result }
-
-            const payload: Record<string, unknown> = {}
-            if (wait.actionPayload) Object.assign(payload, wait.actionPayload)
-            Object.assign(payload, { requestParams: wait.params })
-            Object.assign(payload, result as Record<string, unknown>)
-            this.store.dispatch(wait.action, payload)
-        }
-
-        this.removeWaitById(wait.id)
+        this.socket.setUrl(url)
     }
 
     connect(): void {
-        this.store.dispatch('socket/setData', {
-            isConnecting: true,
-        })
-
-        this.dropInstance()
-        this.clearReconnectTimer()
-        this.autoReconnect = true
-        this.instance = new WebSocket(this.url)
-
-        this.instance.onopen = () => {
-            this.reconnects = 0
-            this.heartbeat()
-            this.store.dispatch('socket/onOpen')
-        }
-
-        this.instance.onclose = () => {
-            this.clearHeartbeat()
-            this.rejectPendingWaits()
-
-            if (!this.autoReconnect) {
-                this.store.dispatch('socket/onClose')
-                return
-            }
-
-            this.scheduleReconnect()
-        }
-
-        this.instance.onerror = () => {
-            this.instance?.close()
-        }
-
-        this.instance.onmessage = (msg) => {
-            // websocket is alive
-            this.heartbeat()
-
-            const data = JSON.parse(msg.data)
-            if (Array.isArray(data)) {
-                for (const message of data) {
-                    this.handleMessage(message)
-                }
-
-                return
-            }
-
-            this.handleMessage(data)
-        }
+        this.store.dispatch('socket/setData', { isConnecting: true, connectingFailed: false })
+        this.socket.connect()
     }
 
-    close(): void {
-        this.autoReconnect = false
-        this.clearReconnectTimer()
-        this.clearHeartbeat()
-        this.instance?.close()
-    }
-
+    /** Connects again with the full number of reconnect attempts, e.g. after "try again" or a printer switch. */
     reconnect(): void {
-        this.reconnects = 0
-        this.store.dispatch('socket/setData', { connectingFailed: false })
         this.connect()
     }
 
+    close(): void {
+        this.socket.close()
+    }
+
     private reconnectIfDisconnected(): void {
-        if (!this.autoReconnect) return
+        if (!this.socket.reconnectIfDisconnected()) return
 
-        const state = this.instance?.readyState
-        if (state === WebSocket.OPEN || state === WebSocket.CONNECTING) return
-
-        this.reconnect()
-    }
-
-    private getWaitById(id: number | undefined): Wait | undefined {
-        if (id === undefined) return undefined
-
-        return this.waits.find((wait: Wait) => wait.id === id)
-    }
-
-    private removeWaitById(id: number): void {
-        const index = this.waits.findIndex((wait: Wait) => wait.id === id)
-        if (index === -1) return
-
-        const wait = this.waits[index]
-        if (wait.loading) this.store.dispatch('socket/removeLoading', { name: wait.loading })
-        this.waits.splice(index, 1)
-    }
-
-    emit(method: string, params: Params, options: EmitOptions = {}): void {
-        if (this.instance?.readyState !== WebSocket.OPEN) return
-
-        const id = this.messageId++
-        this.waits.push({
-            id: id,
-            params: params,
-            action: options.action ?? null,
-            actionPayload: options.actionPayload ?? {},
-            loading: options.loading ?? null,
-        })
-
-        if (options.loading) this.store.dispatch('socket/addLoading', { name: options.loading })
-
-        this.instance.send(
-            JSON.stringify({
-                jsonrpc: '2.0',
-                method,
-                params,
-                id,
-            })
-        )
+        this.store.dispatch('socket/setData', { isConnecting: true, connectingFailed: false })
     }
 
     emitAndWait<M extends RPCMethods>(
         method: M,
         params?: RPCParams<M>,
-        options: EmitOptionsWithTimeout = {}
+        options: EmitAndWaitOptions = {}
     ): Promise<RPCResult<M>> {
-        return new Promise<RPCResult<M>>((resolve, reject) => {
-            if (this.instance?.readyState !== WebSocket.OPEN) {
-                reject(new Error('WebSocket is not connected'))
-                return
-            }
+        const request = this.socket.request(method, params, { timeout: options.timeout })
+        if (options.loading) this.trackLoading(request, options.loading)
 
-            const id = this.messageId++
-            let timeoutId: number | null = null
-            if (options.timeout) {
-                timeoutId = window.setTimeout(() => {
-                    this.removeWaitById(id)
-                    reject(new WebSocketTimeoutError(`Timeout: ${method}`))
-                }, options.timeout)
-            }
+        return request
+    }
 
-            this.waits.push({
-                id: id,
-                params: params,
-                action: options.action ?? null,
-                actionPayload: options.actionPayload ?? {},
-                loading: options.loading ?? null,
-                resolve: (value) => {
-                    if (timeoutId) clearTimeout(timeoutId)
-                    resolve(value as RPCResult<M>)
-                },
-                reject: (reason) => {
-                    if (timeoutId) clearTimeout(timeoutId)
-                    reject(reason)
-                },
-            })
+    emit(method: string, params: Params = {}, options: EmitOptions = {}): void {
+        if (!this.socket.isOpen) return
 
-            if (options.loading) this.store.dispatch('socket/addLoading', { name: options.loading })
-
-            this.instance.send(
-                JSON.stringify({
-                    jsonrpc: '2.0',
-                    method,
-                    params,
-                    id,
-                })
-            )
-        })
+        this.handleRequest(this.socket.call(method, params), params, options)
     }
 
     emitBatch(messages: BatchMessage[]): void {
-        if (messages.length === 0) return
-        if (this.instance?.readyState !== WebSocket.OPEN) return
+        if (messages.length === 0 || !this.socket.isOpen) return
 
-        const body = []
-        for (const { method, params, emitOptions = {} } of messages) {
-            const id = this.messageId++
-            this.waits.push({
-                id: id,
-                params: params,
-                action: emitOptions.action ?? null,
-                actionPayload: emitOptions.actionPayload ?? {},
-                loading: emitOptions.loading ?? null,
-            })
-
-            if (emitOptions.loading) this.store.dispatch('socket/addLoading', { name: emitOptions.loading })
-            body.push({
-                jsonrpc: '2.0',
-                method,
-                params,
-                id,
-            })
-        }
-
-        this.instance.send(JSON.stringify(body))
+        const requests = this.socket.batch(messages.map(({ method, params }) => ({ method, params })))
+        requests.forEach((request, index) => {
+            const { params, emitOptions } = messages[index]
+            this.handleRequest(request, params, emitOptions)
+        })
     }
 
-    private heartbeat(): void {
-        this.clearHeartbeat()
-        this.heartbeatTimer = window.setTimeout(() => {
-            if (this.instance?.readyState !== WebSocket.OPEN) return
+    private trackLoading(request: Promise<unknown>, name: string): void {
+        this.store.dispatch('socket/addLoading', { name })
 
-            this.dropInstance()
-            this.scheduleReconnect()
-        }, HEARTBEAT_TIMEOUT)
+        const remove = () => this.store.dispatch('socket/removeLoading', { name })
+        request.then(remove, remove)
     }
 
-    private clearHeartbeat(): void {
-        if (this.heartbeatTimer) clearTimeout(this.heartbeatTimer)
+    private handleRequest(request: Promise<unknown>, params: Params, options: EmitOptions = {}): void {
+        const { action = null, actionPayload = {}, loading = null } = options
+        if (loading) this.trackLoading(request, loading)
 
-        this.heartbeatTimer = null
+        request.then(
+            (result) => {
+                if (action) this.store.dispatch(action, buildActionPayload(result, params, actionPayload))
+            },
+            (error) => this.handleError(error, action)
+        )
     }
 
-    private scheduleReconnect(): void {
-        if (this.reconnectTimer) return
-        if (this.reconnects >= this.maxReconnects) {
-            this.store.dispatch('socket/onClose')
+    private handleError(error: unknown, action: string | null): void {
+        // connection loss is shown by the connecting dialog, no need to log every request
+        if (error instanceof WebSocketClosedError) return
+
+        if (!isJsonRpcError(error)) {
+            window.console.error(error)
             return
         }
 
-        const delay = Math.min(this.reconnectInterval * 2 ** this.reconnects, MAX_RECONNECT_DELAY)
-        this.reconnects++
-        this.store.dispatch('socket/setData', { isConnected: false, isConnecting: true, connectingFailed: false })
-        this.reconnectTimer = window.setTimeout(() => {
-            this.reconnectTimer = null
-            this.connect()
-        }, delay)
+        if (error.message !== 'Klippy Disconnected') {
+            window.console.error(`Response Error: ${error.message} (${action ?? 'no action'})`)
+        }
+
+        // TODO: remove after converting to async init server components
+        const component = action?.startsWith('server/') ? action.split('/')[1] : null
+        if (
+            !component ||
+            !initableServerComponents.includes(component) ||
+            !this.store.state.socket?.initializationList.length
+        )
+            return
+
+        window.console.error(`init server component ${component} failed`)
+        this.store.dispatch('server/addFailedInitComponent', component)
+        this.store.dispatch('socket/removeInitComponent', `server/${component}/`)
     }
+}
 
-    private clearReconnectTimer(): void {
-        if (this.reconnectTimer) clearTimeout(this.reconnectTimer)
+/** Builds the payload for callback actions: actionPayload + requestParams + result. */
+const buildActionPayload = (result: unknown, params: Params, actionPayload: Params): Record<string, unknown> => {
+    // string results (e.g. 'ok') are wrapped, so actions can always read `payload.result`
+    const normalized = typeof result === 'string' ? { result } : result
 
-        this.reconnectTimer = null
-    }
-
-    private dropInstance(): void {
-        if (!this.instance) return
-
-        this.instance.onopen = this.instance.onclose = this.instance.onerror = this.instance.onmessage = null
-        this.instance.close()
-        this.instance = null
-        this.clearHeartbeat()
-        this.rejectPendingWaits()
-    }
-
-    private rejectPendingWaits(): void {
-        this.waits.forEach((wait) => {
-            if (wait.loading) this.store.dispatch('socket/removeLoading', { name: wait.loading })
-            wait.reject?.(new Error('WebSocket connection lost'))
-        })
-
-        this.waits = []
-    }
+    return { ...actionPayload, requestParams: params, ...(normalized as Record<string, unknown>) }
 }
 
 export function WebSocketPlugin(Vue: typeof _Vue, options: WebSocketPluginOptions): void {
@@ -363,16 +164,6 @@ export interface BatchMessage {
     emitOptions: EmitOptions
 }
 
-interface Wait {
-    id: number
-    params: unknown
-    action?: string | null
-    actionPayload?: Params
-    loading?: string | null
-    resolve?: (value: unknown) => void
-    reject?: (reason?: JsonRpcError | Error) => void
-}
-
 type Params = object
 
 interface EmitOptions {
@@ -381,13 +172,7 @@ interface EmitOptions {
     loading?: string | null
 }
 
-interface EmitOptionsWithTimeout extends EmitOptions {
+interface EmitAndWaitOptions {
+    loading?: string | null
     timeout?: number
-}
-
-export class WebSocketTimeoutError extends Error {
-    constructor(method: string) {
-        super(`Timeout: ${method}`)
-        this.name = 'WebSocketTimeoutError'
-    }
 }
