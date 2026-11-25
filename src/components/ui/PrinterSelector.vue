@@ -9,14 +9,14 @@
         <v-list dense>
             <v-list-item
                 v-for="printer in printers"
-                :key="printer._namespace"
+                :key="printer.id"
                 two-line
                 :disabled="!printer.socket.isConnected"
                 link
                 @click="changePrinter(printer)">
                 <v-list-item-content>
-                    <v-list-item-title>{{ getPrinterName(printer._namespace) }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ getPrinterDescription(printer) }}</v-list-item-subtitle>
+                    <v-list-item-title>{{ getPrinterName(printer.id) }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ getPrinterStatus(printer.id) }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-list>
@@ -44,12 +44,12 @@ export default class PrinterSelector extends Mixins(BaseMixin) {
         )
     }
 
-    get printers() {
-        return this.$store.getters['farm/getPrinters']
+    get printers(): FarmPrinterState[] {
+        return this.$store.getters['farm/printers']
     }
 
-    get countPrinters() {
-        return this.$store.getters['farm/countPrinters']
+    get countPrinters(): number {
+        return this.$store.getters['farm/printerCount']
     }
 
     get currentPage() {
@@ -60,18 +60,18 @@ export default class PrinterSelector extends Mixins(BaseMixin) {
         router.push('/allPrinters')
     }
 
-    getPrinterName(namespace: string) {
-        return this.$store.getters['farm/' + namespace + '/getPrinterName']
+    getPrinterName(id: string): string {
+        return this.$store.getters[`farm/${id}/printerName`]
     }
 
-    getPrinterDescription(printer: FarmPrinterState) {
-        return this.$store.getters['farm/' + printer._namespace + '/getStatus']
+    getPrinterStatus(id: string): string {
+        return this.$store.getters[`farm/${id}/statusText`]
     }
 
     changePrinter(printer: FarmPrinterState) {
-        if (printer.socket.isConnected) {
-            this.$store.dispatch('changePrinter', { printer: printer._namespace })
-        }
+        if (!printer.socket.isConnected) return
+
+        this.$store.dispatch('changePrinter', { printer: printer.id })
     }
 }
 </script>

@@ -266,7 +266,6 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from './mixins/base'
-import { FarmPrinterState } from '@/store/farm/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
 import {
@@ -398,8 +397,8 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         else return this.$t('SelectPrinterDialog.SelectPrinter')
     }
 
-    getPrinterName(namespace: string) {
-        return this.$store.getters['farm/getPrinterName'](namespace)
+    getPrinterName(id: string): string {
+        return this.$store.getters['farm/printerName'](id)
     }
 
     createPrinter() {
@@ -452,19 +451,20 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         this.dialogEditPrinter.bool = false
     }
 
-    connect(printer: FarmPrinterState) {
+    connect(printer: GuiRemoteprintersStatePrinter) {
+        const path = printer.path ?? ''
         this.$store.dispatch('socket/setData', {
-            hostname: printer.socket.hostname,
-            port: printer.socket.port,
-            path: printer.socket.path,
+            hostname: printer.hostname,
+            port: printer.port,
+            path,
         })
-        const normPath = printer.socket.path.replaceAll(/(^\/*)|(\/*$)/g, '')
+        const normPath = path.replaceAll(/(^\/*)|(\/*$)/g, '')
         const url =
             this.protocol +
             '://' +
-            printer.socket.hostname +
+            printer.hostname +
             ':' +
-            printer.socket.port +
+            printer.port +
             (normPath.length > 0 ? `/${normPath}` : '') +
             '/websocket'
         this.$socket.setUrl(url)

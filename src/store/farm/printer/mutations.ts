@@ -1,91 +1,61 @@
-import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import {
+    FarmPrinterKlippyState,
+    FarmPrinterSettings,
+    FarmPrinterState,
+    FarmPrinterStateCurrentFile,
+    FarmPrinterStateData,
+    FarmPrinterStateMainsail,
+    FarmPrinterStateSocket,
+} from '@/store/farm/printer/types'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<FarmPrinterState> = {
-    reset(state) {
+    reset(state): void {
         Object.assign(state, getDefaultState())
     },
 
-    resetData(state) {
-        Object.assign(state.data, getDefaultState().data)
+    setId(state, id: string): void {
+        state.id = id
     },
 
-    setSocketData(state, payload) {
-        if ('status' in payload) payload = payload.status
-        if ('requestParams' in payload) delete payload.requestParams
-        if ('_namespace' in payload) {
-            Vue.set(state, '_namespace', payload._namespace)
-            delete payload._namespace
-        }
-
-        Object.entries(payload).forEach(([key, value]) => {
-            Vue.set(state.socket, key, value)
-        })
+    setSocket(state, payload: Partial<FarmPrinterStateSocket>): void {
+        Object.assign(state.socket, payload)
     },
 
-    setData(state, payload) {
-        if ('requestParams' in payload) delete payload.requestParams
-
-        Object.entries(payload).forEach(([key, value]) => {
-            if (typeof value === 'object') {
-                Vue.set(state.data, key, {
-                    ...state.data[key],
-                    ...value,
-                })
-            } else Vue.set(state.data, key, value)
-        })
+    setKlippyState(state, klippyState: FarmPrinterKlippyState): void {
+        state.klippyState = klippyState
     },
 
-    setSettings(state, payload) {
-        Vue.set(state, 'settings', {
-            ...state.settings,
-            ...payload,
-        })
+    resetData(state): void {
+        state.data = {}
+        state.currentFile = null
     },
 
-    addWsData(state, payload) {
-        const wsData = [...state.socket.wsData]
-        wsData.push(payload)
-
-        Vue.set(state.socket, 'wsData', wsData)
+    /** Merges a (partial) status update into the subscribed objects. */
+    setData(state, payload: FarmPrinterStateData): void {
+        setDataDeep(state.data, payload)
     },
 
-    removeWsData(state, index) {
-        const wsData = [...state.socket.wsData]
-        wsData.splice(index, 1)
-
-        Vue.set(state.socket, 'wsData', wsData)
+    setCurrentFile(state, file: FarmPrinterStateCurrentFile | null): void {
+        state.currentFile = file
     },
 
-    setKlippyConnected(state, payload) {
-        Vue.set(state.server, 'klippy_connected', payload)
+    setThemeFiles(state, files: string[]): void {
+        state.themeFiles = files
     },
 
-    setCurrentFile(state, payload) {
-        if ('requestParams' in payload) delete payload.requestParams
-        Vue.set(state, 'current_file', payload)
+    setMainsail(state, mainsail: FarmPrinterStateMainsail): void {
+        state.mainsail = mainsail
     },
 
-    setConfigDir(state, payload) {
-        Object.values(payload as Record<string, { path?: string }>).forEach((file) => {
-            if (file.path?.startsWith('.theme/')) {
-                state.theme_files.push(file.path)
-            }
-        })
+    setWebcams(state, webcams: GuiWebcamStateWebcam[]): void {
+        state.webcams = webcams
     },
 
-    setDatabases(state, payload) {
-        Vue.set(state, 'databases', payload)
-    },
-
-    setMainsailData(state, payload) {
-        setDataDeep(state.data.gui, payload)
-    },
-
-    setWebcamsData(state, payload) {
-        Vue.set(state.data, 'webcams', payload)
+    setSettings(state, settings: FarmPrinterSettings): void {
+        state.settings = { ...state.settings, ...settings }
     },
 }

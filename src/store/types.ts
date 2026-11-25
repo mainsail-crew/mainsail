@@ -3,6 +3,7 @@ import { ServerState } from '@/store/server/types'
 import { PrinterState } from '@/store/printer/types'
 import { GuiState } from '@/store/gui/types'
 import { EditorState } from '@/store/editor/types'
+import { FarmState } from '@/store/farm/types'
 
 export interface RootState {
     packageVersion: string
@@ -16,6 +17,7 @@ export interface RootState {
     printer?: PrinterState
     server?: ServerState
     editor?: EditorState
+    farm?: FarmState
 }
 
 export interface RootStateDependency {

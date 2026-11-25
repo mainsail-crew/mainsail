@@ -2,10 +2,19 @@ import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import { GuiRemoteprintersState, GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import { FarmRegisterPrinterPayload, FarmUpdatePrinterPayload } from '@/store/farm/types'
 
 const LOG_PREFIX = '[GUI][REMOTEPRINTERS]'
 const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
 const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
+const toFarmPrinter = (id: string, printer: GuiRemoteprintersStatePrinter): FarmRegisterPrinterPayload => ({
+    id,
+    hostname: printer.hostname ?? '',
+    port: printer.port ?? 7125,
+    path: printer.path ?? '',
+    settings: printer.settings ?? {},
+})
 
 export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     reset({ commit, dispatch, state }): void {
@@ -21,17 +30,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
 
         Object.entries(payload).forEach(([id, value]) => {
             commit('save', { id, value })
-            dispatch(
-                'farm/registerPrinter',
-                {
-                    id,
-                    hostname: value.hostname ?? '',
-                    port: value.port ?? 7125,
-                    path: value.path ?? '',
-                    settings: value.settings ?? {},
-                },
-                { root: true }
-            )
+            dispatch('farm/registerPrinter', toFarmPrinter(id, value), { root: true })
         })
     },
 
@@ -110,17 +109,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         const id = uuidv4()
 
         await dispatch('upload', { id, value })
-        dispatch(
-            'farm/registerPrinter',
-            {
-                id,
-                hostname: value.hostname ?? '',
-                port: value.port ?? 7125,
-                path: value.path ?? '',
-                name: value.name,
-            },
-            { root: true }
-        )
+        dispatch('farm/registerPrinter', toFarmPrinter(id, value), { root: true })
     },
 
     async update(
@@ -138,7 +127,9 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         await dispatch('upload', { id, value: printer })
 
         if (needUpdateFarmPrinter) {
-            dispatch('farm/updatePrinter', { id, value: printer }, { root: true })
+            const { hostname, port, path } = toFarmPrinter(id, printer)
+            const farmPayload: FarmUpdatePrinterPayload = { id, hostname, port, path }
+            dispatch('farm/updatePrinter', farmPayload, { root: true })
         }
     },
 
