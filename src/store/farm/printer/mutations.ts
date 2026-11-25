@@ -11,6 +11,7 @@ import {
 } from '@/store/farm/printer/types'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { setDataDeep } from '@/plugins/helpers'
+import Vue from 'vue'
 
 export const mutations: MutationTree<FarmPrinterState> = {
     reset(state): void {
@@ -18,20 +19,20 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setId(state, id: string): void {
-        state.id = id
+        Vue.set(state, 'id', id)
     },
 
     setSocket(state, payload: Partial<FarmPrinterStateSocket>): void {
-        Object.assign(state.socket, payload)
+        Object.entries(payload).forEach(([key, value]) => Vue.set(state.socket, key, value))
     },
 
     setKlippyState(state, klippyState: FarmPrinterKlippyState): void {
-        state.klippyState = klippyState
+        Vue.set(state, 'klippyState', klippyState)
     },
 
     resetData(state): void {
-        state.data = {}
-        state.currentFile = null
+        Vue.set(state, 'data', {})
+        Vue.set(state, 'currentFile', null)
     },
 
     /** Merges a (partial) status update into the subscribed objects. */
@@ -40,22 +41,22 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setCurrentFile(state, file: FarmPrinterStateCurrentFile | null): void {
-        state.currentFile = file
+        Vue.set(state, 'currentFile', file)
     },
 
     setThemeFiles(state, files: string[]): void {
-        state.themeFiles = files
+        Vue.set(state, 'themeFiles', files)
     },
 
     setMainsail(state, mainsail: FarmPrinterStateMainsail): void {
-        state.mainsail = mainsail
+        Vue.set(state, 'mainsail', mainsail)
     },
 
     setWebcams(state, webcams: GuiWebcamStateWebcam[]): void {
-        state.webcams = webcams
+        Vue.set(state, 'webcams', webcams)
     },
 
     setSettings(state, settings: FarmPrinterSettings): void {
-        state.settings = { ...state.settings, ...settings }
+        Vue.set(state, 'settings', { ...state.settings, ...settings })
     },
 }
