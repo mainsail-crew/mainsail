@@ -16,14 +16,11 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setData', payload)
     },
 
-    setSocket({ commit, state }, payload) {
+    setSocket({ commit, getters }, payload: { hostname: string; port: number; path: string }): void {
         commit('setData', payload)
 
-        const normPath = payload.path.replaceAll(/(^\/*)|(\/*$)/g, '')
-        const path = normPath.length > 0 ? `/${normPath}` : ''
-
         Vue.$socket.close()
-        Vue.$socket.setUrl(state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket')
+        Vue.$socket.setUrl(getters.getWebsocketUrl)
         Vue.$socket.reconnect()
     },
 

@@ -8,7 +8,7 @@ export const getters: GetterTree<GuiRemoteprintersState, RootState> = {
         const printers: GuiRemoteprintersStatePrinter[] = []
 
         Object.keys(state.printers).forEach((id: string) => {
-            const socket = { ...rootGetters['farm/getPrinterSocketState'](id) }
+            const socket = { ...rootGetters['farm/printerSocket'](id) }
 
             printers.push({ ...state.printers[id], id, socket })
         })

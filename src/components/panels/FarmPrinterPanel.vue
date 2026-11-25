@@ -2,7 +2,7 @@
     <panel
         ref="panel"
         :icon="mdiPrinter3d"
-        :title="printer_name"
+        :title="printerName"
         card-class="farmprinter-panel"
         :class="panelClass"
         :loading="printer.socket.isConnecting"
@@ -25,7 +25,7 @@
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-item
-                        v-for="webcam of printer_webcams"
+                        v-for="webcam of webcams"
                         :key="webcam.name"
                         link
                         @click="currentCamName = webcam.name">
@@ -42,7 +42,7 @@
         <v-hover>
             <template #default="{ hover }">
                 <div>
-                    <v-img ref="imageDiv" :height="imageHeight" :src="printer_image" class="d-flex align-end">
+                    <v-img ref="imageDiv" :height="imageHeight" :src="image" class="d-flex align-end">
                         <div
                             v-if="
                                 printer.socket.isConnected &&
@@ -51,46 +51,37 @@
                                 'service' in currentWebcam
                             "
                             class="webcamContainer">
-                            <webcam-wrapper :webcam="currentWebcam" :printer-url="printerUrl" :show-fps="false" />
+                            <webcam-wrapper :webcam="currentWebcam" :printer-url="webUrl" :show-fps="false" />
                         </div>
                         <v-card-title
                             class="white--text py-2"
                             style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)">
                             <v-row>
                                 <v-col class="col-auto pr-0 d-flex align-center" style="width: 58px">
-                                    <img
-                                        v-if="printer_logo"
-                                        :src="printer_logo"
-                                        style="width: 100%"
-                                        class="my-auto"
-                                        alt="Logo" />
-                                    <mainsail-logo
-                                        v-else
-                                        :color="printerLogoColor"
-                                        style="width: 100%"
-                                        class="my-auto" />
+                                    <img v-if="logoUrl" :src="logoUrl" style="width: 100%" class="my-auto" alt="Logo" />
+                                    <mainsail-logo v-else :color="logoColor" style="width: 100%" class="my-auto" />
                                 </v-col>
                                 <v-col class="col" style="width: 100px">
-                                    <h3 class="font-weight-regular">{{ printer_status }}</h3>
+                                    <h3 class="font-weight-regular">{{ statusText }}</h3>
                                     <span
-                                        v-if="printer_current_filename !== ''"
+                                        v-if="currentFilename !== ''"
                                         class="subtitle-2 text-truncate px-0 text--disabled d-block">
                                         <v-icon small class="mr-1">{{ mdiFileOutline }}</v-icon>
-                                        {{ printer_current_filename }}
+                                        {{ currentFilename }}
                                     </span>
                                 </v-col>
                             </v-row>
                         </v-card-title>
                     </v-img>
-                    <v-card-text v-if="printer_preview.length" class="px-0 py-2">
+                    <v-card-text v-if="previewItems.length" class="px-0 py-2">
                         <v-container class="py-0">
                             <v-row>
                                 <v-col
-                                    v-for="object in printer_preview"
-                                    :key="object.name"
-                                    :class="object.name === 'ETA' ? 'col-auto' : 'col' + ' px-2'">
-                                    <strong class="d-block text-center">{{ object.name }}</strong>
-                                    <span class="d-block text-center">{{ object.value }}</span>
+                                    v-for="item in previewItems"
+                                    :key="item.name"
+                                    :class="item.name === 'ETA' ? 'col-auto' : 'col' + ' px-2'">
+                                    <strong class="d-block text-center">{{ item.name }}</strong>
+                                    <span class="d-block text-center">{{ item.value }}</span>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -115,7 +106,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Ref, Vue } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import { FarmPrinterState, FarmPrinterTemperature } from '@/store/farm/printer/types'
+import { formatEta } from '@/plugins/helpers'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
@@ -146,79 +138,92 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
     @Ref() readonly imageDiv!: Vue
     @Ref() readonly panel!: Vue
 
-    get printerUrl() {
-        const thisUrl = window.location.href.split('/')
-        const protocol = thisUrl[0]
-
-        let url = protocol + '//' + this.printer.socket.hostname
-        if (80 !== this.printer.socket.webPort) url += ':' + this.printer.socket.webPort
-
-        return url
+    get farmNamespace(): string {
+        return `farm/${this.printer.id}`
     }
 
-    get isCurrentPrinter() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/isCurrentPrinter']
+    get webUrl(): string {
+        return this.$store.getters[`${this.farmNamespace}/webUrl`]
     }
 
-    get currentCamName() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getSetting']('currentCamName', 'off')
+    get isCurrentPrinter(): boolean {
+        return this.$store.getters[`${this.farmNamespace}/isCurrentPrinter`]
     }
 
-    set currentCamName(newVal) {
-        this.$store.dispatch('farm/' + this.printer._namespace + '/setSettings', { currentCamName: newVal })
+    get currentCamName(): string {
+        return this.$store.getters[`${this.farmNamespace}/currentCamName`]
     }
 
-    get printer_name() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterName']
+    set currentCamName(newVal: string) {
+        this.$store.dispatch(`${this.farmNamespace}/saveSettings`, { currentCamName: newVal })
     }
 
-    get printer_status() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getStatus']
+    get printerName(): string {
+        return this.$store.getters[`${this.farmNamespace}/printerName`]
     }
 
-    get printer_current_filename() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getCurrentFilename']
+    get statusText(): string {
+        return this.$store.getters[`${this.farmNamespace}/statusText`]
     }
 
-    get printer_image() {
+    get currentFilename(): string {
+        return this.$store.getters[`${this.farmNamespace}/currentFilename`]
+    }
+
+    get image(): string {
         if (this.currentWebcam) return this.sidebarBgImage
 
-        return this.$store.getters['farm/' + this.printer._namespace + '/getImage'] ?? this.sidebarBgImage
+        return this.$store.getters[`${this.farmNamespace}/thumbnailUrl`] ?? this.sidebarBgImage
     }
 
-    get printer_logo() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getLogo']
+    get logoUrl(): string | null {
+        return this.$store.getters[`${this.farmNamespace}/logoUrl`]
     }
 
-    get printerLogoColor() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getLogoColor']
+    get logoColor(): string {
+        return this.$store.getters[`${this.farmNamespace}/logoColor`]
     }
 
-    get printer_position() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPosition']
+    get temperatures(): FarmPrinterTemperature[] {
+        return this.$store.getters[`${this.farmNamespace}/temperatures`]
     }
 
-    get printer_preview() {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterPreview']
+    get showEta(): boolean {
+        return (
+            this.$store.getters[`${this.farmNamespace}/isPrinting`] &&
+            this.$store.getters[`${this.farmNamespace}/progress`] > 0
+        )
     }
 
-    get showWebcamSwitch() {
-        if (this.printer_webcams.length == 0) return false
+    get previewItems(): { name: string; value: string }[] {
+        const items = this.temperatures.map((item) => ({
+            name: item.name,
+            value:
+                item.target === null
+                    ? `${item.temperature.toFixed(0)}°`
+                    : `${item.temperature.toFixed(0)}° / ${item.target.toFixed(0)}°`,
+        }))
+
+        if (this.showEta) {
+            const eta = this.$store.getters[`${this.farmNamespace}/eta`]
+            items.push({ name: 'ETA', value: formatEta(eta, this.hours12Format) })
+        }
+
+        return items
+    }
+
+    get showWebcamSwitch(): boolean {
+        if (this.webcams.length === 0) return false
 
         return this.printer.socket.isConnected
     }
 
-    get printer_webcams(): GuiWebcamStateWebcam[] {
-        return this.$store.getters['farm/' + this.printer._namespace + '/getPrinterWebcams']
+    get webcams(): GuiWebcamStateWebcam[] {
+        return this.$store.getters[`${this.farmNamespace}/webcams`]
     }
 
     get currentWebcam(): GuiWebcamStateWebcam | null {
-        const currentCam = this.printer_webcams?.find(
-            (webcam: GuiWebcamStateWebcam) => webcam.name === this.currentCamName
-        )
-        if (currentCam) return currentCam
-
-        return null
+        return this.webcams.find((webcam) => webcam.name === this.currentCamName) ?? null
     }
 
     get panelClass(): string[] {
@@ -232,12 +237,12 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin, ThemeMixin, Webc
     clickPrinter() {
         // If the printer is already connected, just switch to it
         if (this.printer.socket.isConnected) {
-            this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
+            this.$store.dispatch('changePrinter', { printer: this.printer.id })
             return
         }
 
         // Otherwise, reconnect to the printer
-        this.$store.dispatch('farm/' + this.printer._namespace + '/reconnect')
+        this.$store.dispatch(`${this.farmNamespace}/connect`)
     }
 
     mounted() {

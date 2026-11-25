@@ -23,7 +23,7 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
     private customNaviLinks: NaviPoint[] = []
 
     get countPrinters() {
-        return this.$store.getters['farm/countPrinters']
+        return this.$store.getters['farm/printerCount']
     }
 
     get routesNaviPoints(): NaviPoint[] {

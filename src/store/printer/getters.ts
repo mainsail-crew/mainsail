@@ -15,7 +15,7 @@ import {
     PrinterTempSensorObject,
     McuTempSensorEntry,
 } from '@/store/printer/types'
-import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
+import { caseInsensitiveSort, formatEta, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<PrinterState, RootState> = {
@@ -697,34 +697,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getEstimatedTimeETAFormat: (state, getters, rootState, rootGetters) => {
-        const hours12Format = rootGetters['gui/getHours12Format'] ?? false
-        const eta = getters['getEstimatedTimeETA']
-
-        const now = new Date()
-        const etaDate = new Date(eta)
-        if (etaDate <= now) return '--'
-
-        const hours = etaDate.getHours()
-        const minutes = etaDate.getMinutes()
-
-        let displayHour = hours
-        let amPm = ''
-
-        if (hours12Format) {
-            amPm = hours >= 12 ? ' PM' : ' AM'
-            displayHour = hours % 12 || 12
-        }
-
-        const output = `${String(displayHour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${amPm}`
-
-        const MS_PER_DAY = 86_400_000
-        now.setHours(0, 0, 0, 0)
-        etaDate.setHours(0, 0, 0, 0)
-        const dayDiff = Math.round((etaDate.getTime() - now.getTime()) / MS_PER_DAY)
-
-        if (dayDiff > 0) return `${output} +${dayDiff}`
-
-        return output
+        return formatEta(getters['getEstimatedTimeETA'], rootGetters['gui/getHours12Format'] ?? false)
     },
 
     getKinematics: (state) => {
