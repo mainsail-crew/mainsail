@@ -61,10 +61,6 @@ export const toastError = (error: unknown): void => {
     Vue.$toast.error(getErrorMessage(error))
 }
 
-export const toastSuccess = (key: string, filename: string): void => {
-    Vue.$toast.success(i18n.t(key, { filename }).toString())
-}
-
 /*
  * Paths
  *

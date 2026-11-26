@@ -23,7 +23,6 @@ import {
     splitPath,
     stripRoot,
     toastError,
-    toastSuccess,
     uploadFile,
     uploadRequests,
 } from '@/store/files/helpers'
@@ -242,7 +241,7 @@ export const actions: ActionTree<FileState, RootState> = {
             const metadata = await Vue.$socket.emitAndWait('server.files.metascan', { filename })
             await dispatch('storeMetadata', metadata)
 
-            toastSuccess('Files.ScanMetaSuccess', filename)
+            Vue.$toast.success(i18n.t('Files.ScanMetaSuccess', { filename }).toString())
         } catch (error) {
             toastError(error)
         }
@@ -263,7 +262,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
         try {
             await Vue.$socket.emitAndWait('server.files.post_directory', { path: normalized })
-            toastSuccess('Files.SuccessfullyCreated', splitPath(normalized).name)
+            Vue.$toast.success(i18n.t('Files.SuccessfullyCreated', { filename: splitPath(normalized).name }).toString())
 
             return true
         } catch (error) {
@@ -278,7 +277,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
         try {
             await Vue.$socket.emitAndWait('server.files.delete_directory', { path: normalized, force: true })
-            toastSuccess('Files.SuccessfullyDeleted', splitPath(normalized).name)
+            Vue.$toast.success(i18n.t('Files.SuccessfullyDeleted', { filename: splitPath(normalized).name }).toString())
 
             return true
         } catch (error) {
@@ -293,7 +292,9 @@ export const actions: ActionTree<FileState, RootState> = {
 
         try {
             await Vue.$socket.emitAndWait('server.files.delete_file', { path: normalized })
-            if (!payload.silent) toastSuccess('Files.SuccessfullyDeleted', splitPath(normalized).name)
+            if (payload.silent) return true
+
+            Vue.$toast.success(i18n.t('Files.SuccessfullyDeleted', { filename: splitPath(normalized).name }).toString())
 
             return true
         } catch (error) {
@@ -311,8 +312,12 @@ export const actions: ActionTree<FileState, RootState> = {
             await Vue.$socket.emitAndWait('server.files.move', { source, dest })
             if (payload.silent) return true
 
+            const filename = splitPath(dest).name
             const isRename = splitPath(source).dir === splitPath(dest).dir
-            toastSuccess(isRename ? 'Files.SuccessfullyRenamed' : 'Files.SuccessfullyMoved', splitPath(dest).name)
+            const message = isRename
+                ? i18n.t('Files.SuccessfullyRenamed', { filename })
+                : i18n.t('Files.SuccessfullyMoved', { filename })
+            Vue.$toast.success(message.toString())
 
             return true
         } catch (error) {
@@ -380,7 +385,7 @@ export const actions: ActionTree<FileState, RootState> = {
                     commit('setUpload', progress)
                 )
 
-                if (filename !== null) toastSuccess('Files.SuccessfullyUploaded', filename)
+                if (filename !== null) Vue.$toast.success(i18n.t('Files.SuccessfullyUploaded', { filename }).toString())
             }
         } finally {
             if (uploadRequests.finish('upload', controller)) commit('resetUpload')
