@@ -64,7 +64,7 @@ export const getters: GetterTree<FileState, RootState> = {
      * @param path path relative to the gcodes root
      */
     getGcodeFile:
-        (state, getters, rootState, rootGetters) =>
+        (state, _getters, rootState, rootGetters) =>
         (path: string): FileStateGcodefile | null => {
             const normalized = normalizePath(path)
             const { dir, name } = splitPath(joinPath(GCODES_ROOT, normalized))
@@ -79,7 +79,7 @@ export const getters: GetterTree<FileState, RootState> = {
      * @param path path relative to the gcodes root
      */
     getGcodeFiles:
-        (state, getters, rootState, rootGetters) =>
+        (state, _getters, rootState, rootGetters) =>
         (path: string): FileStateGcodefile[] => {
             const dirPath = normalizePath(path)
             const directory = state.directories[joinPath(GCODES_ROOT, dirPath)]
@@ -100,7 +100,7 @@ export const getters: GetterTree<FileState, RootState> = {
      * Returns all gcode files of the gcodes root and its subdirectories.
      * The filename is the path relative to the gcodes root.
      */
-    getAllGcodes: (state, getters, rootState, rootGetters): FileStateGcodefile[] => {
+    getAllGcodes: (state, _getters, rootState, rootGetters): FileStateGcodefile[] => {
         const build = createGcodeFileBuilder(state, rootState, rootGetters)
         const output: FileStateGcodefile[] = []
 
