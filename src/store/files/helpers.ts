@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
+import type { Commit } from 'vuex'
 import i18n from '@/plugins/i18n'
-import { RequestTracker } from '@/store/editor/requestTracker'
 import { hiddenDirectories, themeDir, validGcodeExtensions } from '@/store/variables'
 import { isJsonRpcError } from '@/types/moonraker'
 import type { RootState } from '@/store/types'
@@ -258,8 +258,22 @@ export const createGcodeFileBuilder = (
  * Uploads
  */
 
-/** Tracks the running upload batch, so it can be cancelled. */
-export const uploadRequests = new RequestTracker<'upload'>()
+export interface UploadQueue {
+    /** Files of the batch. Files of later uploads are appended while the batch is running. */
+    items: FileUploadItem[]
+    controller: AbortController
+    /** Resolves when all files of the batch are uploaded, failed or cancelled */
+    done: Promise<void>
+}
+
+/** The running upload batch. Kept outside of Vuex, because AbortController is not serializable. */
+export const uploadQueue: { current: UploadQueue | null } = { current: null }
+
+/** Cancels the running upload batch, including all files that are not uploaded yet. */
+export const abortUploadQueue = (): void => {
+    uploadQueue.current?.controller.abort()
+    uploadQueue.current = null
+}
 
 /** Uploads a file. Returns the filename on success, or null on failure or cancellation. */
 export const uploadFile = async (
@@ -286,5 +300,31 @@ export const uploadFile = async (
         logError(`cannot upload ${item.file.name}:`, error)
         Vue.$toast.error(i18n.t('FullscreenUpload.CannotUploadFile').toString())
         return null
+    }
+}
+
+/** Uploads the files of an upload batch, including files that are appended while it is running. */
+export const runUploadQueue = async (queue: UploadQueue, apiUrl: string, commit: Commit): Promise<void> => {
+    commit('setUpload', { currentNumber: 0, maxNumber: queue.items.length })
+
+    try {
+        // the length is read in every iteration, so appended files are uploaded too
+        for (let index = 0; index < queue.items.length; index++) {
+            if (queue.controller.signal.aborted) break
+
+            const item = queue.items[index]
+            commit('setUpload', { show: true, currentNumber: index + 1, filename: item.file.name, percent: 0 })
+            const filename = await uploadFile(apiUrl, item, queue.controller.signal, (progress) =>
+                commit('setUpload', progress)
+            )
+
+            if (filename !== null) Vue.$toast.success(i18n.t('Files.SuccessfullyUploaded', { filename }).toString())
+        }
+    } finally {
+        // after a cancel, a new batch could already be running
+        if (uploadQueue.current === queue) {
+            uploadQueue.current = null
+            commit('resetUpload')
+        }
     }
 }

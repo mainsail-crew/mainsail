@@ -1,8 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
+import axios from 'axios'
 import { files, getDefaultState } from '@/store/files'
-import type { FileState } from '@/store/files/types'
+import { abortUploadQueue } from '@/store/files/helpers'
+import type { FileState, FileUploadItem } from '@/store/files/types'
 import type { FileDirectoryResponse, FileListChangedNotification } from '@/types/moonraker/FileManagerRPC'
 
 vi.mock('@/plugins/i18n', () => ({
@@ -332,5 +334,119 @@ describe('files/actions', () => {
             dest: 'config/my files.zip',
         })
         expect(windowStub.open).toHaveBeenCalledWith('http://printer/server/files/config/my%20files.zip')
+    })
+
+    describe('uploadFiles', () => {
+        type PendingUpload = { name: string; resolve: () => void; signal: AbortSignal }
+        let pending: PendingUpload[]
+
+        const upload = (name: string, root: FileUploadItem['root'] = 'gcodes'): FileUploadItem => ({
+            file: new File(['x'], name),
+            root,
+            path: '',
+        })
+
+        // resolves the oldest pending upload and waits until the next one has started (if any)
+        const finishNext = async () => {
+            pending.shift()?.resolve()
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        }
+
+        const trackLoadings = (store: Store<unknown>) => {
+            const loadings: string[] = []
+            store.subscribeAction((action) => {
+                if (action.type === 'socket/addLoading') loadings.push(`+${action.payload.name}`)
+                if (action.type === 'socket/removeLoading') loadings.push(`-${action.payload.name}`)
+            })
+
+            return loadings
+        }
+
+        beforeEach(() => {
+            pending = []
+            vi.spyOn(axios, 'post').mockImplementation((_url, data, config) => {
+                const name = ((data as FormData).get('file') as File).name
+                const signal = config?.signal as AbortSignal
+
+                return new Promise((resolve, reject) => {
+                    signal.addEventListener('abort', () => reject(new axios.Cancel('aborted')))
+                    pending.push({ name, signal, resolve: () => resolve({ data: { item: { path: name } } }) })
+                })
+            })
+        })
+
+        afterEach(() => {
+            // a failed test must not leave a running upload behind for the next tests
+            abortUploadQueue()
+            vi.restoreAllMocks()
+        })
+
+        it('appends files to a running upload instead of cancelling it', async () => {
+            const store = createStore()
+            const loadings = trackLoadings(store)
+
+            const first = store.dispatch('files/uploadFiles', {
+                files: [upload('a.gcode'), upload('b.gcode')],
+                loading: 'gcodeUpload',
+            })
+            await vi.waitFor(() => expect(pending.map((entry) => entry.name)).toEqual(['a.gcode']))
+
+            const second = store.dispatch('files/uploadFiles', {
+                files: [upload('printer.cfg', 'config')],
+                loading: 'configFileUpload',
+            })
+            await vi.waitFor(() => expect(filesState(store).upload.maxNumber).toBe(3))
+            expect(pending[0].signal.aborted).toBe(false)
+
+            await finishNext()
+            expect(filesState(store).upload).toMatchObject({ currentNumber: 2, filename: 'b.gcode' })
+            await finishNext()
+            expect(filesState(store).upload).toMatchObject({ currentNumber: 3, filename: 'printer.cfg' })
+            await finishNext()
+            await Promise.all([first, second])
+
+            expect(toast.success).toHaveBeenCalledTimes(3)
+            expect(filesState(store).upload).toEqual(getDefaultState().upload)
+            expect(loadings.sort()).toEqual(['+configFileUpload', '+gcodeUpload', '-configFileUpload', '-gcodeUpload'])
+        })
+
+        it('cancels the running upload with all appended files', async () => {
+            const store = createStore()
+            const loadings = trackLoadings(store)
+
+            const first = store.dispatch('files/uploadFiles', { files: [upload('a.gcode')], loading: 'gcodeUpload' })
+            await vi.waitFor(() => expect(pending).toHaveLength(1))
+            const second = store.dispatch('files/uploadFiles', { files: [upload('b.gcode')], loading: 'gcodeUpload' })
+            await vi.waitFor(() => expect(filesState(store).upload.maxNumber).toBe(2))
+
+            await store.dispatch('files/cancelUpload')
+            await Promise.all([first, second])
+
+            expect(axios.post).toHaveBeenCalledTimes(1)
+            expect(toast.success).not.toHaveBeenCalled()
+            expect(toast.error).not.toHaveBeenCalled()
+            expect(filesState(store).upload).toEqual(getDefaultState().upload)
+            expect(loadings).toEqual(['+gcodeUpload', '+gcodeUpload', '-gcodeUpload', '-gcodeUpload'])
+        })
+
+        it('starts a new upload after a cancel without being reset by the cancelled one', async () => {
+            const store = createStore()
+
+            const cancelled = store.dispatch('files/uploadFiles', { files: [upload('a.gcode')] })
+            await vi.waitFor(() => expect(pending).toHaveLength(1))
+            await store.dispatch('files/cancelUpload')
+
+            const next = store.dispatch('files/uploadFiles', { files: [upload('b.gcode')] })
+            await cancelled
+            await vi.waitFor(() => expect(pending.map((entry) => entry.name)).toEqual(['a.gcode', 'b.gcode']))
+            expect(filesState(store).upload).toMatchObject({ show: true, filename: 'b.gcode', maxNumber: 1 })
+
+            pending.shift()
+            await finishNext()
+            await next
+
+            expect(toast.success).toHaveBeenCalledTimes(1)
+            expect(filesState(store).upload).toEqual(getDefaultState().upload)
+        })
     })
 })

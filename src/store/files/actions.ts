@@ -23,8 +23,10 @@ import {
     splitPath,
     stripRoot,
     toastError,
-    uploadFile,
-    uploadRequests,
+    UploadQueue,
+    abortUploadQueue,
+    runUploadQueue,
+    uploadQueue,
 } from '@/store/files/helpers'
 import { isJsonRpcError } from '@/types/moonraker'
 import type {
@@ -35,7 +37,7 @@ import type {
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }): void {
-        uploadRequests.abort('upload')
+        abortUploadQueue()
         commit('reset')
     },
 
@@ -364,6 +366,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
     /**
      * Uploads files one after another and shows the progress in the upload snackbar.
+     * If an upload is already running, the files are appended to it. Resolves when the files are uploaded.
      * @param payload.loading name of the loading state while uploading
      */
     async uploadFiles(
@@ -372,29 +375,32 @@ export const actions: ActionTree<FileState, RootState> = {
     ): Promise<void> {
         if (payload.files.length === 0) return
 
-        const controller = uploadRequests.start('upload')
         if (payload.loading) await dispatch('socket/addLoading', { name: payload.loading }, { root: true })
-        commit('setUpload', { currentNumber: 0, maxNumber: payload.files.length })
 
         try {
-            for (const [index, item] of payload.files.entries()) {
-                if (controller.signal.aborted) break
-
-                commit('setUpload', { show: true, currentNumber: index + 1, filename: item.file.name, percent: 0 })
-                const filename = await uploadFile(rootGetters['socket/getUrl'], item, controller.signal, (progress) =>
-                    commit('setUpload', progress)
-                )
-
-                if (filename !== null) Vue.$toast.success(i18n.t('Files.SuccessfullyUploaded', { filename }).toString())
+            const running = uploadQueue.current
+            if (running) {
+                running.items.push(...payload.files)
+                commit('setUpload', { maxNumber: running.items.length })
+                await running.done
+                return
             }
+
+            const queue: UploadQueue = {
+                items: [...payload.files],
+                controller: new AbortController(),
+                done: Promise.resolve(),
+            }
+            uploadQueue.current = queue
+            queue.done = runUploadQueue(queue, rootGetters['socket/getUrl'], commit)
+            await queue.done
         } finally {
-            if (uploadRequests.finish('upload', controller)) commit('resetUpload')
             if (payload.loading) await dispatch('socket/removeLoading', { name: payload.loading }, { root: true })
         }
     },
 
     cancelUpload({ commit }): void {
-        uploadRequests.abort('upload')
+        abortUploadQueue()
         commit('resetUpload')
     },
 
