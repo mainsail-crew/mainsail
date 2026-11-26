@@ -118,12 +118,12 @@ export default class AfcFilamentReel extends Mixins(BaseMixin) {
         const count = colors.length
         if (count < 2) return []
 
-        // coaxial: hard edges between the color bands
+        // coaxial: each color solid at the center of its band, blending into the next
         if (this.isCoaxial) {
-            return colors.flatMap((color, i) => [
-                { offset: `${(i / count) * 100}%`, color },
-                { offset: `${((i + 1) / count) * 100}%`, color },
-            ])
+            return colors.map((color, i) => ({
+                offset: `${((i + 0.5) / count) * 100}%`,
+                color,
+            }))
         }
 
         // longitudinal: smooth transition between the colors
