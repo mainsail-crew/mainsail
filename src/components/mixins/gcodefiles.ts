@@ -75,19 +75,6 @@ export default class GcodefilesMixin extends Vue {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.orderMetadataColumns', value: newVal })
     }
 
-    get fixedHeaders(): tableColumnSetting[] {
-        return [
-            { text: '', value: '', visible: true, sortable: false },
-            {
-                text: this.$t('Files.Name').toString(),
-                value: 'filename',
-                visible: true,
-                class: 'text-no-wrap',
-            },
-            { text: '', value: 'status', visible: true, class: 'text-no-wrap', sortable: false },
-        ]
-    }
-
     get configurableHeaders() {
         const headers: tableColumnSetting[] = [
             {
@@ -250,14 +237,6 @@ export default class GcodefilesMixin extends Vue {
         newVal.forEach((row: tableColumnSetting) => orderArray.push(row.value))
 
         this.orderMetadataColumns = orderArray
-    }
-
-    get headers() {
-        return [...this.fixedHeaders, ...this.configurableHeaders]
-    }
-
-    get filteredHeaders() {
-        return this.headers.filter((header) => header.visible)
     }
 
     get tableColumns() {
