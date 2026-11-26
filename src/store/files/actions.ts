@@ -214,6 +214,9 @@ export const actions: ActionTree<FileState, RootState> = {
             return applyDirectory(context, normalized, response)
         } catch (error) {
             logError(`cannot load directory ${normalized}:`, getErrorMessage(error))
+
+            // Moonraker rejects directories that don't exist (anymore)
+            if (isJsonRpcError(error)) context.commit('removeDirectoryTree', normalized)
             return null
         }
     },

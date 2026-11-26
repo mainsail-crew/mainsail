@@ -125,11 +125,17 @@ describe('files/actions', () => {
         expect(state.metadata).toEqual({})
     })
 
-    it('returns null if a directory cannot be loaded', async () => {
+    it('returns null and removes a directory that cannot be loaded', async () => {
         const store = createStore()
+        responders['server.files.get_directory'] = () => directoryResponse()
+        await store.dispatch('files/loadDirectory', 'missing')
+        responders['server.files.get_directory'] = () => {
+            throw { code: 400, message: 'Directory does not exist' }
+        }
 
         await expect(store.dispatch('files/loadDirectory', 'missing')).resolves.toBeNull()
         expect(windowStub.console.error).toHaveBeenCalled()
+        expect(filesState(store).directories).toEqual({})
     })
 
     afterEach(() => {
