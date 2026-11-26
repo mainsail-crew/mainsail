@@ -59,9 +59,9 @@ export default class GcodefilesDuplicateFileDialog extends Mixins(BaseMixin, Gco
     }
 
     duplicateFileAction() {
-        this.$socket.emit('server.files.copy', {
-            source: 'gcodes' + this.currentPath + '/' + this.item.filename,
-            dest: 'gcodes' + this.currentPath + '/' + this.name,
+        this.$store.dispatch('files/copy', {
+            source: `gcodes${this.currentPath}/${this.item.filename}`,
+            dest: `gcodes${this.currentPath}/${this.name}`,
         })
 
         this.closePrompt()

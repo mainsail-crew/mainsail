@@ -17,8 +17,7 @@
         :search="search"
         :custom-filter="advancedSearch"
         mobile-breakpoint="0"
-        show-select
-        @current-items="refreshMetadata">
+        show-select>
         <template #no-data>
             <div class="text-center">{{ $t('Files.Empty') }}</div>
         </template>
@@ -47,7 +46,6 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { sortFiles } from '@/plugins/helpers'
-import { FileStateGcodefile } from '@/store/files/types'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import GcodefilesPanelTableRowBack from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowBack.vue'
 import GcodefilesPanelTableRowDirectory from '@/components/panels/Gcodefiles/GcodefilesPanelTableRowDirectory.vue'
@@ -102,16 +100,6 @@ export default class GcodefilesPanelTable extends Mixins(BaseMixin, GcodefilesMi
         }
 
         return true
-    }
-
-    refreshMetadata(data: FileStateGcodefile[]) {
-        const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
-        this.$store.dispatch(
-            'files/requestMetadata',
-            items.map((file: FileStateGcodefile) => ({
-                filename: 'gcodes' + this.currentPath + '/' + file.filename,
-            }))
-        )
     }
 }
 </script>

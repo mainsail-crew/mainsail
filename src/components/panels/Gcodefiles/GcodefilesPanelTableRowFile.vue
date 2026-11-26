@@ -252,9 +252,7 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
     }
 
     scanMeta() {
-        this.$store.dispatch('files/scanMetadata', {
-            filename: 'gcodes' + this.currentPath + '/' + this.item.filename,
-        })
+        this.$store.dispatch('files/scanMetadata', this.item.full_filename)
     }
 
     downloadFile() {
@@ -275,11 +273,7 @@ export default class GcodefilesPanelTableRowFile extends Mixins(BaseMixin, Contr
     }
 
     deleteFile() {
-        this.$socket.emit(
-            'server.files.delete_file',
-            { path: 'gcodes' + this.currentPath + '/' + this.item.filename },
-            { action: 'files/getDeleteFile' }
-        )
+        this.$store.dispatch('files/deleteFile', { path: `gcodes/${this.item.full_filename}` })
     }
 
     onDragStart(e: DragEvent) {

@@ -61,11 +61,7 @@ export default class GcodefilesCreateDirectoryDialog extends Mixins(BaseMixin, G
     }
 
     createDirectoryAction() {
-        this.$socket.emit(
-            'server.files.post_directory',
-            { path: 'gcodes' + this.currentPath + '/' + this.name },
-            { action: 'files/getCreateDir' }
-        )
+        this.$store.dispatch('files/createDirectory', `gcodes${this.currentPath}/${this.name}`)
 
         this.closePrompt()
     }

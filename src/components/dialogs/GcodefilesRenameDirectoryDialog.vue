@@ -63,14 +63,10 @@ export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, G
     }
 
     renameDirectoryAction() {
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: 'gcodes' + this.currentPath + '/' + this.item.filename,
-                dest: 'gcodes' + this.currentPath + '/' + this.name,
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', {
+            source: `gcodes${this.currentPath}/${this.item.filename}`,
+            dest: `gcodes${this.currentPath}/${this.name}`,
+        })
 
         this.closePrompt()
     }

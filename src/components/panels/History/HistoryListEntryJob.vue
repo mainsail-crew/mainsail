@@ -127,7 +127,8 @@ import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanel
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
-import { FileStateFileThumbnail, FileStateGcodefile } from '@/store/files/types'
+import { FileStateGcodefile } from '@/store/files/types'
+import type { GcodeThumbnail } from '@/types/moonraker/FileManagerRPC'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import {
@@ -192,7 +193,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
 
     get file(): FileStateGcodefile | undefined {
-        return this.$store.getters['files/getFile']('gcodes/' + this.item.filename) ?? undefined
+        return this.$store.getters['files/getGcodeFile'](this.item.filename) ?? undefined
     }
 
     get currentPath(): string {
@@ -336,7 +337,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         }
     }
 
-    createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
+    createThumbnailUrl(thumbnail: GcodeThumbnail) {
         let relative_url = ''
         if (this.item.filename.lastIndexOf('/') !== -1) {
             relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/') + 1)

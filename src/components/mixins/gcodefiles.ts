@@ -1,6 +1,6 @@
 import { Component } from 'vue-property-decorator'
 import Vue from 'vue'
-import { FileStateFile } from '@/store/files/types'
+import { FileStateGcodefile } from '@/store/files/types'
 
 export interface tableColumnSetting {
     text: string
@@ -49,8 +49,14 @@ export default class GcodefilesMixin extends Vue {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showPrintedFiles', value: newVal })
     }
 
-    get files() {
-        return this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
+    get files(): FileStateGcodefile[] {
+        const files: FileStateGcodefile[] = this.$store.getters['files/getGcodeFiles'](this.currentPath)
+
+        return files.filter((file) => {
+            if (!this.showHiddenFiles && (file.filename === 'thumbs' || file.filename.startsWith('.'))) return false
+
+            return this.showPrintedFiles || file.count_printed === 0
+        })
     }
 
     get hideMetadataColumns() {
@@ -258,15 +264,15 @@ export default class GcodefilesMixin extends Vue {
         return this.configurableHeaders.filter((column) => column.visible)
     }
 
-    get selectedFiles() {
+    get selectedFiles(): FileStateGcodefile[] {
         return this.$store.state.gui.view.gcodefiles.selectedFiles ?? []
     }
 
-    set selectedFiles(newVal) {
+    set selectedFiles(newVal: FileStateGcodefile[]) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.selectedFiles', value: newVal })
     }
 
     existsFilename(name: string) {
-        return this.files.findIndex((file: FileStateFile) => file.filename === name) >= 0
+        return this.files.some((file) => file.filename === name)
     }
 }

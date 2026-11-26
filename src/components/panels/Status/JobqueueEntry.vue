@@ -74,7 +74,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
     showChangeCountDialog = false
 
     get description() {
-        if (!this.job?.metadata?.metadataPulled) return false
+        if (!this.job?.metadata?.hasMetadata) return false
 
         const filamentArray = []
         let filament = '--'

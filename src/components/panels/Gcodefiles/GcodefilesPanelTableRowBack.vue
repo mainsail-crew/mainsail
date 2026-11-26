@@ -47,14 +47,7 @@ export default class GcodefilesPanelTableRowBack extends Mixins(BaseMixin, Gcode
         const source = [this.currentPath, dragFilename].join('/')
         const dest = [this.currentPath, '..', dragFilename].join('/')
 
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: 'gcodes' + source,
-                dest: 'gcodes' + dest,
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', { source: `gcodes${source}`, dest: `gcodes${dest}` })
     }
 
     // this function is important to disable the browser default function to activate the onDrop function

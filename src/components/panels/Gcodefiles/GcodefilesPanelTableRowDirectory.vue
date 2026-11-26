@@ -102,11 +102,7 @@ export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, 
     }
 
     deleteDirectory() {
-        this.$socket.emit(
-            'server.files.delete_directory',
-            { path: 'gcodes' + this.currentPath + '/' + this.item.filename, force: true },
-            { action: 'files/getDeleteDir' }
-        )
+        this.$store.dispatch('files/deleteDirectory', `gcodes/${this.item.full_filename}`)
     }
 
     onDrop(e: DragEvent) {
@@ -118,14 +114,7 @@ export default class GcodefilesPanelTableRowDirectory extends Mixins(BaseMixin, 
         const source = [this.currentPath, dragFilename].join('/')
         const dest = [this.currentPath, this.item.filename, dragFilename].join('/')
 
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: 'gcodes' + source,
-                dest: 'gcodes' + dest,
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', { source: `gcodes${source}`, dest: `gcodes${dest}` })
     }
 
     // this function is important to disable the browser default function to activate the onDrop function

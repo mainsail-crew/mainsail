@@ -139,7 +139,7 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     get existsMetadata() {
-        return this.item?.metadataPulled ?? false
+        return this.item?.hasMetadata ?? false
     }
 
     get description() {
@@ -224,11 +224,7 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     removeFile() {
-        this.$socket.emit(
-            'server.files.delete_file',
-            { path: 'gcodes/' + this.item.filename },
-            { action: 'files/getDeleteFile' }
-        )
+        this.$store.dispatch('files/deleteFile', { path: `gcodes/${this.item.full_filename}` })
     }
 
     mounted() {

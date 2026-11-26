@@ -35,6 +35,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { FileStateGcodefile } from '@/store/files/types'
+import { splitPath } from '@/store/files/paths'
 
 @Component({
     components: { Panel },
@@ -54,19 +55,28 @@ export default class GcodefilesRenameFileDialog extends Mixins(BaseMixin, Gcodef
         (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
 
+    get directory() {
+        return splitPath(this.item.full_filename).dir
+    }
+
+    get basename() {
+        return splitPath(this.item.full_filename).name
+    }
+
+    // the file can be in another directory than the one shown in the gcode files panel
+    existsFilename(name: string) {
+        return this.$store.getters['files/getFile'](`gcodes/${this.directory}/${name}`) !== null
+    }
+
     updateIsInvalidName(value: boolean) {
         this.isInvalidName = value
     }
 
     renameFileAction() {
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: 'gcodes' + this.currentPath + '/' + this.item.filename,
-                dest: 'gcodes' + this.currentPath + '/' + this.name,
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', {
+            source: `gcodes/${this.item.full_filename}`,
+            dest: `gcodes/${this.directory}/${this.name}`,
+        })
 
         this.showDialog = false
     }
@@ -75,7 +85,7 @@ export default class GcodefilesRenameFileDialog extends Mixins(BaseMixin, Gcodef
     onShowDialogChanged(newVal: boolean) {
         if (!newVal) return
 
-        this.name = this.item.filename
+        this.name = this.basename
         this.isInvalidName = true
 
         setTimeout(() => {
