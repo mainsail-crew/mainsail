@@ -233,6 +233,7 @@
         "ChamberTemp": "Oda Sıcaklığı.",
         "Count": "Say",
         "Create": "Oluştur",
+        "CreateFile": "Dosya Oluştur",
         "CreateNewDirectory": "Yeni Dizin oluştur",
         "CurrentPath": "Mevcut yol",
         "Delete": "Sil",
@@ -290,6 +291,7 @@
         "SuccessfullyRenamed": "{filename} başarıyla yeniden adlandırıldı.",
         "SuccessfullyUploaded": "{filename} yükleme başarılı!",
         "Total": "Toplam",
+        "UploadFile": "Dosya Yükleme",
         "UploadNewGcode": "Yeni G-Kod yükle",
         "Used": "Kullanılmış",
         "View3D": "3D Görüntüle"

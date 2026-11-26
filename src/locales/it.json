@@ -227,6 +227,7 @@
         "ChamberTemp": "Temp. Chamber",
         "Count": "Conteggio",
         "Create": "Crea",
+        "CreateFile": "Crea File",
         "CreateNewDirectory": "Crea nuova Directory",
         "CurrentPath": "Percorso corrente",
         "Delete": "Elimina",
@@ -283,6 +284,7 @@
         "SuccessfullyRenamed": "{filename} rinominato con successo.",
         "SuccessfullyUploaded": "Caricamento di {filename} riuscito!",
         "Total": "Totale",
+        "UploadFile": "Carica un File",
         "UploadNewGcode": "Carica nuovo G-Code",
         "Used": "Utilizzato",
         "View3D": "Vista 3D"

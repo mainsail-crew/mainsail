@@ -186,6 +186,7 @@
         "ChamberTemp": "Kammartemp.",
         "Count": "Räkna",
         "Create": "Skapa",
+        "CreateFile": "Skapa fil",
         "CreateNewDirectory": "Skapa ny katalog",
         "CurrentPath": "Nuvarande sökväg",
         "Delete": "Radera",
@@ -242,6 +243,7 @@
         "SuccessfullyRenamed": "{filename} har bytt namn.",
         "SuccessfullyUploaded": "Uppladdningen av {filename} lyckades!",
         "Total": "Sammanlagt",
+        "UploadFile": "Ladda upp fil",
         "UploadNewGcode": "Ladda upp ny G-Code",
         "Used": "Använt",
         "View3D": "Visa 3D"

@@ -253,6 +253,7 @@
         "ChamberTemp": "Kammer Temp.",
         "Count": "Anzahl",
         "Create": "Erstellen",
+        "CreateFile": "Datei erstellen",
         "CreateNewDirectory": "Ordner erstellen",
         "CurrentPath": "Aktueller Pfad",
         "Delete": "Löschen",
@@ -310,6 +311,7 @@
         "SuccessfullyRenamed": "{filename} erfolgreich umbenannt.",
         "SuccessfullyUploaded": "Hochladen von {filename} erfolgreich!",
         "Total": "Gesamt",
+        "UploadFile": "Datei hochladen",
         "UploadNewGcode": "G-Code hochladen",
         "Used": "Belegt",
         "View3D": "3D Betrachtung"

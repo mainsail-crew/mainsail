@@ -228,6 +228,7 @@
         "ChamberTemp": "Teplota komory",
         "Count": "Počet",
         "Create": "Vytvořit",
+        "CreateFile": "Vytvořit soubor",
         "CreateNewDirectory": "Vytvořit nový adresář",
         "CurrentPath": "Aktuální cesta",
         "Delete": "Smazat",
@@ -285,6 +286,7 @@
         "SuccessfullyRenamed": "Úspěšně přejmenován soubor {filename}.",
         "SuccessfullyUploaded": "Nahrávání souboru {filename} úspěšné!",
         "Total": "Celkem",
+        "UploadFile": "Nahrát soubor",
         "UploadNewGcode": "Nahrát nový G-Code",
         "Used": "Použito",
         "View3D": "Zobrazit 3D"

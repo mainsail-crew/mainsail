@@ -232,6 +232,7 @@
         "ChamberTemp": "Temp. komory",
         "Count": "Ilość",
         "Create": "Stwórz",
+        "CreateFile": "Nowy plik",
         "CreateNewDirectory": "Stwórz nowy katalog",
         "CurrentPath": "Aktualna ścieżka",
         "Delete": "Usuń",
@@ -289,6 +290,7 @@
         "SuccessfullyRenamed": "Pomyślnie zmieniono nazwę {filename}.",
         "SuccessfullyUploaded": "Wgranie {filename} zakończono pomyślnie!",
         "Total": "Łącznie",
+        "UploadFile": "Wgraj plik",
         "UploadNewGcode": "Wgraj nowy G-Code",
         "Used": "Użyte",
         "View3D": "Zobacz w 3D"

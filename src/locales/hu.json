@@ -233,6 +233,7 @@
         "ChamberTemp": "Kamra hőmérs.",
         "Count": "Számol",
         "Create": "Létrehoz",
+        "CreateFile": "Fájl létrehozása",
         "CreateNewDirectory": "Új mappa létrehozása",
         "CurrentPath": "Jelenlegi útvonal",
         "Delete": "Törlés",
@@ -290,6 +291,7 @@
         "SuccessfullyRenamed": "Sikeresen átnevezve: {filename}.",
         "SuccessfullyUploaded": "Sikeres feltöltés: {filename}!",
         "Total": "Összesen",
+        "UploadFile": "Fájl feltöltése",
         "UploadNewGcode": "Új Gcode feltöltése",
         "Used": "Felhasznált",
         "View3D": "3D nézet"

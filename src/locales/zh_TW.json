@@ -233,6 +233,7 @@
         "ChamberTemp": "艙室溫度",
         "Count": "數量",
         "Create": "建立",
+        "CreateFile": "建立檔案",
         "CreateNewDirectory": "建立新目錄",
         "CurrentPath": "目前路徑",
         "Delete": "刪除",
@@ -290,6 +291,7 @@
         "SuccessfullyRenamed": "已成功重新命名 {filename}。",
         "SuccessfullyUploaded": "{filename} 上傳成功！",
         "Total": "總計",
+        "UploadFile": "上傳檔案",
         "UploadNewGcode": "上傳新 G-Code",
         "Used": "已使用",
         "View3D": "3D 檢視"

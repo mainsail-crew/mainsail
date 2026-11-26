@@ -197,6 +197,7 @@
         "ChamberTemp": "Température chambre",
         "Count": "Nombre",
         "Create": "Créer",
+        "CreateFile": "Créer un fichier",
         "CreateNewDirectory": "Créer un nouveau répertoire",
         "CurrentPath": "Répertoire actuel",
         "Delete": "Supprimer",
@@ -253,6 +254,7 @@
         "SuccessfullyRenamed": "{filename} renommé avec succès.",
         "SuccessfullyUploaded": "Chargement de {filename} réussi!",
         "Total": "Total",
+        "UploadFile": "Charger le fichier",
         "UploadNewGcode": "Charger un nouveau G-Code",
         "Used": "Utilisé",
         "View3D": "Vue 3D"

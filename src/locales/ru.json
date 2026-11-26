@@ -233,6 +233,7 @@
         "ChamberTemp": "Температура в камере.",
         "Count": "Количество",
         "Create": "Создать",
+        "CreateFile": "Создать файл",
         "CreateNewDirectory": "Создать папку",
         "CurrentPath": "Текущий путь",
         "Delete": "Удалить",
@@ -290,6 +291,7 @@
         "SuccessfullyRenamed": "{filename} успешно переименован.",
         "SuccessfullyUploaded": "{filename} успешно загружен!",
         "Total": "Всего",
+        "UploadFile": "Загрузить файл",
         "UploadNewGcode": "Загрузить G-код",
         "Used": "Занято",
         "View3D": "Предпросмотр в 3D"

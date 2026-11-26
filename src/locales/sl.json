@@ -232,6 +232,7 @@
         "ChamberTemp": "Temp. komore",
         "Count": "Število",
         "Create": "Ustvari",
+        "CreateFile": "Ustvari datoteko",
         "CreateNewDirectory": "Ustvari novo mapo",
         "CurrentPath": "Trenutna pot",
         "Delete": "Izbriši",
@@ -289,6 +290,7 @@
         "SuccessfullyRenamed": "Uspešno preimenovano: {filename}.",
         "SuccessfullyUploaded": "Nalaganje datoteke {filename} uspešno!",
         "Total": "Skupaj",
+        "UploadFile": "Naloži datoteko",
         "UploadNewGcode": "Naloži G-kodo",
         "Used": "Uporabljeno",
         "View3D": "3D predogled"

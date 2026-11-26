@@ -233,6 +233,7 @@
         "ChamberTemp": "仓室温度",
         "Count": "数量",
         "Create": "创建",
+        "CreateFile": "新建文件",
         "CreateNewDirectory": "创建新文件夹",
         "CurrentPath": "当前目录",
         "Delete": "删除文件",
@@ -290,6 +291,7 @@
         "SuccessfullyRenamed": "成功修改名称{filename}。",
         "SuccessfullyUploaded": "成功上传{filename}！",
         "Total": "合计",
+        "UploadFile": "上传文件",
         "UploadNewGcode": "上传新的G-Code",
         "Used": "已使用",
         "View3D": "3D预览"

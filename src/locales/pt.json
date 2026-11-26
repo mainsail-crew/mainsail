@@ -227,6 +227,7 @@
         "ChamberTemp": "Temp. Câmara.",
         "Count": "Contagem",
         "Create": "Criar",
+        "CreateFile": "Criar arquivo",
         "CreateNewDirectory": "Criar novo diretório",
         "CurrentPath": "Caminho atual",
         "Delete": "Excluir",
@@ -284,6 +285,7 @@
         "SuccessfullyRenamed": "Renomeado com sucesso {filename}.",
         "SuccessfullyUploaded": "Sucesso no uploado do {filename}!",
         "Total": "Total",
+        "UploadFile": "Subir arquivo",
         "UploadNewGcode": "Upload novo G-Code",
         "Used": "Usado",
         "View3D": "Ver 3D"

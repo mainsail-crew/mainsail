@@ -215,6 +215,7 @@
         "ChamberTemp": "Indelukke temperatur.",
         "Count": "Tæl",
         "Create": "Opret",
+        "CreateFile": "Ny Fil",
         "CreateNewDirectory": "Ny mappe",
         "CurrentPath": "Du er her",
         "Delete": "Slet",
@@ -271,6 +272,7 @@
         "SuccessfullyRenamed": "{filename} omdøbt.",
         "SuccessfullyUploaded": "Upload af {filename} udført!",
         "Total": "Total",
+        "UploadFile": "Upload Fil",
         "UploadNewGcode": "Upload ny G-Code",
         "Used": "Brugt",
         "View3D": "Vis i 3D"

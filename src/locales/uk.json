@@ -215,6 +215,7 @@
         "ChamberTemp": "t° Камери.",
         "Count": "Кількість",
         "Create": "Створити",
+        "CreateFile": "Створити Файл",
         "CreateNewDirectory": "Створити нову теку",
         "CurrentPath": "Директорія",
         "Delete": "Видалити",
@@ -271,6 +272,7 @@
         "SuccessfullyRenamed": "Успішно перейменований {filename}.",
         "SuccessfullyUploaded": "Завантаження {filename} успішне!",
         "Total": "Загально",
+        "UploadFile": "Завантажити Файл",
         "UploadNewGcode": "Завантажте новий G-код",
         "Used": "Використано",
         "View3D": "Переглянути 3D"

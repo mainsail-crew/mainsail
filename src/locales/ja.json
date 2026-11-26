@@ -174,6 +174,7 @@
         "ChamberTemp": "チャンバー温度",
         "Count": "回数",
         "Create": "作成",
+        "CreateFile": "ファイル作成",
         "CreateNewDirectory": "新規ディレクトリの作成",
         "CurrentPath": "現在のパス",
         "Delete": "削除",
@@ -225,6 +226,7 @@
         "SuccessfullyRenamed": "{filename}の名前が変更されました。",
         "SuccessfullyUploaded": "{filename}がアップロードされました!",
         "Total": "総計",
+        "UploadFile": "ファイルをアップロードする",
         "UploadNewGcode": "新しいGコードファイルをアップロード",
         "Used": "使用済み",
         "View3D": "3Dビュー"

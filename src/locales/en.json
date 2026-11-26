@@ -258,6 +258,7 @@
         "ChamberTemp": "Chamber Temp.",
         "Count": "Count",
         "Create": "Create",
+        "CreateFile": "Create File",
         "CreateNewDirectory": "Create new Directory",
         "CurrentPath": "Current path",
         "Delete": "Delete",
@@ -315,6 +316,7 @@
         "SuccessfullyRenamed": "Successfully renamed {filename}.",
         "SuccessfullyUploaded": "Upload of {filename} successful!",
         "Total": "Total",
+        "UploadFile": "Upload File",
         "UploadNewGcode": "Upload new G-Code",
         "Used": "Used",
         "View3D": "View 3D"

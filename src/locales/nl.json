@@ -215,6 +215,7 @@
         "ChamberTemp": "Kamer Temp.",
         "Count": "Aantal",
         "Create": "Creëer",
+        "CreateFile": "Maak bestand",
         "CreateNewDirectory": "Creëer nieuwe Map",
         "CurrentPath": "Huidige pad",
         "Delete": "Verwijder",
@@ -267,6 +268,7 @@
         "SuccessfullyRenamed": "{filename} succesvol hernoemd.",
         "SuccessfullyUploaded": "Upload van {filename} succesvol!",
         "Total": "Totaal",
+        "UploadFile": "Upload bestand",
         "UploadNewGcode": "Upload nieuwe G-Code",
         "Used": "Gebruikt",
         "View3D": "Bekijk in 3D"

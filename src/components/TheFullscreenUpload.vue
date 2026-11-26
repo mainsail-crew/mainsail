@@ -12,6 +12,7 @@ import Component from 'vue-class-component'
 import { validGcodeExtensions } from '@/store/variables'
 import { mdiTrayArrowDown } from '@mdi/js'
 import { FileUploadItem } from '@/store/files/types'
+import { getUploadLoadingName } from '@/store/files/helpers'
 
 @Component
 export default class TheFullscreenUpload extends Mixins(BaseMixin) {
@@ -86,7 +87,16 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
             return { file, path, root: isGcode ? 'gcodes' : 'config' }
         })
 
-        await this.$store.dispatch('files/uploadFiles', { files, loading: 'gcodeUpload' })
+        // the loading state belongs to the root, so the upload button of its file browser shows it
+        const roots = [...new Set(files.map((item) => item.root))]
+        await Promise.all(
+            roots.map((root) =>
+                this.$store.dispatch('files/uploadFiles', {
+                    files: files.filter((item) => item.root === root),
+                    loading: getUploadLoadingName(root),
+                })
+            )
+        )
     }
 }
 </script>
