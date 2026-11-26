@@ -344,15 +344,13 @@ export const actions: ActionTree<FileState, RootState> = {
      * Creates a zip archive and downloads it.
      * @param payload.items paths of files and directories, starting with the root
      * @param payload.dest path of the archive, starting with a writable root
-     * @param payload.loading name of the loading state while the archive is created
      */
-    async downloadZip({ rootGetters }, payload: { items: string[]; dest: string; loading?: string }): Promise<void> {
+    async downloadZip({ rootGetters }, payload: { items: string[]; dest: string }): Promise<void> {
         try {
-            const { destination } = await Vue.$socket.emitAndWait(
-                'server.files.zip',
-                { items: payload.items.map(normalizePath), dest: normalizePath(payload.dest) },
-                { loading: payload.loading }
-            )
+            const { destination } = await Vue.$socket.emitAndWait('server.files.zip', {
+                items: payload.items.map(normalizePath),
+                dest: normalizePath(payload.dest),
+            })
 
             window.open(
                 `${rootGetters['socket/getUrl']}/server/files/${destination.root}/${escapePath(destination.path)}`

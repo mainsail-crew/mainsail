@@ -304,11 +304,10 @@ describe('files/actions', () => {
 
         await store.dispatch('files/downloadZip', { items: ['/gcodes/sub'], dest: 'config/my files.zip' })
 
-        expect(emitAndWait).toHaveBeenCalledWith(
-            'server.files.zip',
-            { items: ['gcodes/sub'], dest: 'config/my files.zip' },
-            { loading: undefined }
-        )
+        expect(emitAndWait).toHaveBeenCalledWith('server.files.zip', {
+            items: ['gcodes/sub'],
+            dest: 'config/my files.zip',
+        })
         expect(windowStub.open).toHaveBeenCalledWith('http://printer/server/files/config/my%20files.zip')
     })
 })

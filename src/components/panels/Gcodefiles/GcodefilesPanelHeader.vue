@@ -17,7 +17,7 @@
                 :title="$t('Files.Download')"
                 color="primary"
                 class="px-2 minwidth-0 ml-3"
-                :loading="loadings.includes('gcodeDownloadZip')"
+                :loading="isDownloadingZip"
                 @click="downloadSelectedFiles">
                 <v-icon>{{ mdiCloudDownload }}</v-icon>
             </v-btn>
@@ -86,6 +86,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
 
     showCreateDirectoryDialog = false
     showDeleteSelectedDialog = false
+    isDownloadingZip = false
 
     @Ref('fileUpload') fileUpload!: HTMLInputElement
 
@@ -103,7 +104,7 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
         return this.$t('Files.DeleteSelectedQuestion', { count: this.selectedFiles.length }).toString()
     }
 
-    downloadSelectedFiles() {
+    async downloadSelectedFiles() {
         if (this.selectedFiles.length === 1 && !this.selectedFiles[0].isDirectory) {
             const filepath = `${this.currentPath}/${this.selectedFiles[0].filename}`
             const href = `${this.apiUrl}/server/files/gcodes${escapePath(filepath)}`
@@ -113,11 +114,12 @@ export default class GcodefilesPanelHeader extends Mixins(BaseMixin, GcodefilesM
             return
         }
 
-        this.$store.dispatch('files/downloadZip', {
+        this.isDownloadingZip = true
+        await this.$store.dispatch('files/downloadZip', {
             items: this.selectedFiles.map((file) => `gcodes/${file.full_filename}`),
             dest: `config/gcodes-${generateTimestamp()}.zip`,
-            loading: 'gcodeDownloadZip',
         })
+        this.isDownloadingZip = false
 
         this.selectedFiles = []
     }

@@ -23,7 +23,7 @@
                             :title="$t('Timelapse.Download')"
                             color="primary"
                             class="px-2 minwidth-0 ml-3"
-                            :loading="loadings.includes('timelapseDownloadZip')"
+                            :loading="isDownloadingZip"
                             @click="downloadSelectedFiles">
                             <v-icon>{{ mdiCloudDownload }}</v-icon>
                         </v-btn>
@@ -493,6 +493,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     private deleteDialog = false
     private deleteSelectedDialog = false
+    private isDownloadingZip = false
 
     private isInvalidName = true
     private nameInputRules = [
@@ -728,16 +729,15 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             const filenameJpg = `${file.filename.slice(0, file.filename.lastIndexOf('.'))}.jpg`
             if (this.files.some((f) => f.filename === filenameJpg)) items.push(`${this.currentPath}/${filenameJpg}`)
         })
-        this.selectedFiles = []
 
         const date = new Date()
         const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
-        await this.$store.dispatch('files/downloadZip', {
-            items,
-            dest: `timelapse/timelapse-${timestamp}.zip`,
-            loading: 'timelapseDownloadZip',
-        })
+        this.isDownloadingZip = true
+        await this.$store.dispatch('files/downloadZip', { items, dest: `timelapse/timelapse-${timestamp}.zip` })
+        this.isDownloadingZip = false
+
+        this.selectedFiles = []
     }
 
     renameFile(item: FileStateFile) {

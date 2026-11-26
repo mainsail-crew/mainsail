@@ -23,10 +23,10 @@
                         <input ref="fileUpload" type="file" style="display: none" multiple @change="uploadFile" />
                         <v-btn
                             v-for="button in filteredToolbarButtons"
-                            :key="button.loadingName"
+                            :key="button.icon"
                             class="px-2 minwidth-0 ml-3"
                             :color="button.color"
-                            :loading="button.loadingName !== null && loadings.includes(button.loadingName)"
+                            :loading="button.loading"
                             @click="button.click">
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
@@ -674,6 +674,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
     deleteDialog = false
     deleteSelectedDialog = false
+    isDownloadingZip = false
 
     isInvalidName = true
     nameInputRules = [
@@ -699,7 +700,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
                 text: this.$t('Machine.ConfigFilesPanel.Download'),
                 color: 'primary',
                 icon: mdiCloudDownload,
-                loadingName: 'configDownloadZip',
+                loading: this.isDownloadingZip,
                 onlyWriteable: false,
                 condition: this.selectedFiles.length > 0,
                 click: () => {
@@ -710,7 +711,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
                 text: this.$t('Buttons.Delete'),
                 color: 'error',
                 icon: mdiDelete,
-                loadingName: null,
+                loading: false,
                 onlyWriteable: true,
                 condition: this.selectedFiles.length > 0,
                 click: () => {
@@ -721,7 +722,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
                 text: this.$t('Machine.ConfigFilesPanel.UploadFile'),
                 color: this.machineButtonCol,
                 icon: mdiFileUpload,
-                loadingName: null,
+                loading: false,
                 onlyWriteable: true,
                 condition: true,
                 click: this.uploadFileButton,
@@ -730,7 +731,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
                 text: this.$t('Machine.ConfigFilesPanel.CreateFile'),
                 color: this.machineButtonCol,
                 icon: mdiFilePlus,
-                loadingName: null,
+                loading: false,
                 onlyWriteable: true,
                 condition: true,
                 click: this.createFile,
@@ -739,7 +740,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
                 text: this.$t('Machine.ConfigFilesPanel.CreateDirectory'),
                 color: this.machineButtonCol,
                 icon: mdiFolderPlus,
-                loadingName: null,
+                loading: false,
                 onlyWriteable: true,
                 condition: true,
                 click: this.createDirectory,
@@ -748,7 +749,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
                 text: this.$t('Machine.ConfigFilesPanel.RefreshDirectory'),
                 color: this.machineButtonCol,
                 icon: mdiRefresh,
-                loadingName: null,
+                loading: false,
                 onlyWriteable: false,
                 condition: true,
                 click: this.refreshFileList,
@@ -1019,14 +1020,14 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             return
         }
 
-        const items = this.selectedFiles.map((file) => `${this.absolutePath}/${file.filename}`)
-        this.selectedFiles = []
-
+        this.isDownloadingZip = true
         await this.$store.dispatch('files/downloadZip', {
-            items,
+            items: this.selectedFiles.map((file) => `${this.absolutePath}/${file.filename}`),
             dest: `config/${this.root}-${generateTimestamp()}.zip`,
-            loading: 'configDownloadZip',
         })
+        this.isDownloadingZip = false
+
+        this.selectedFiles = []
     }
 
     createDirectory() {
