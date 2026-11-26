@@ -295,6 +295,20 @@ describe('files/actions', () => {
         expect(toast.error).toHaveBeenCalledWith('Method not found: server.files.delete_file')
     })
 
+    it('rolls over logs and shows the results', async () => {
+        const store = createStore()
+        responders['server.logs.rollover'] = (params) =>
+            params.application === 'klipper'
+                ? { rolled_over: ['klipper'], failed: {} }
+                : { rolled_over: [], failed: { moonraker: 'error' } }
+
+        await store.dispatch('files/rolloverLogs', ['klipper', 'moonraker'])
+
+        expect(emitAndWait).toHaveBeenCalledWith('server.logs.rollover', { application: 'klipper' })
+        expect(toast.success).toHaveBeenCalledWith(expect.stringContaining('RolloverToastSuccessful'))
+        expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('RolloverToastFailed'))
+    })
+
     it('downloads a zip archive', async () => {
         const store = createStore()
         responders['server.files.zip'] = () => ({

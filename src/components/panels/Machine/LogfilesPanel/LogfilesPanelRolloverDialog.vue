@@ -34,7 +34,7 @@
                 <v-btn text @click="closeDialog">
                     {{ $t('Buttons.Cancel') }}
                 </v-btn>
-                <v-btn color="primary" text @click="btnRolloverLogs">
+                <v-btn color="primary" text :loading="isRollingOver" @click="btnRolloverLogs">
                     {{ $t('Machine.LogfilesPanel.Accept') }}
                 </v-btn>
             </v-card-actions>
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, VModel, Watch } from 'vue-property-decorator'
+import { Component, Mixins, VModel } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiFileSyncOutline } from '@mdi/js'
@@ -64,22 +64,17 @@ export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
     @VModel({ type: Boolean }) showDialog!: boolean
 
     selectedRolloverLogs: FileRolloverApplication[] = []
+    isRollingOver = false
 
-    get loadingRolloverLogs() {
-        return this.loadings.filter((log) => log?.startsWith('rolloverLog_')).length > 0
-    }
-
-    @Watch('loadingRolloverLogs')
-    loadingRolloverLogsChanged(newVal: boolean) {
-        if (newVal) this.closeDialog()
-    }
-
-    btnRolloverLogs() {
+    async btnRolloverLogs() {
         if (this.selectedRolloverLogs.length === 0) return
 
-        this.$store.dispatch('files/rolloverLogs', this.selectedRolloverLogs)
+        this.isRollingOver = true
+        await this.$store.dispatch('files/rolloverLogs', this.selectedRolloverLogs)
+        this.isRollingOver = false
 
         this.selectedRolloverLogs = []
+        this.closeDialog()
     }
 
     closeDialog() {

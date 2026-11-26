@@ -400,11 +400,7 @@ export const actions: ActionTree<FileState, RootState> = {
         await Promise.all(
             applications.map(async (application) => {
                 try {
-                    const result = await Vue.$socket.emitAndWait(
-                        'server.logs.rollover',
-                        { application },
-                        { loading: `rolloverLog_${application}` }
-                    )
+                    const result = await Vue.$socket.emitAndWait('server.logs.rollover', { application })
 
                     result.rolled_over.forEach((name) => {
                         Vue.$toast.success(i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }).toString())

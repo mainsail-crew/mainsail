@@ -12,7 +12,6 @@
                         tile
                         color="primary"
                         :ripple="true"
-                        :loading="loadings.includes('loadingBtnRolloverLogs')"
                         :disabled="['printing', 'paused'].includes(printer_state)"
                         v-bind="attrs"
                         v-on="on"
