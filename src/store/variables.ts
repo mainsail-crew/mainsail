@@ -133,7 +133,6 @@ export const excludeKeys = [
     'view.timelapse.currentPath',
     'view.timelapse.selectedFiles',
     'view.history.selectedJobs',
-    'view.blockFileUpload',
     'view.configfiles.selectedFiles',
     'view.configfiles.rootPath',
     'view.configfiles.currentPath',
