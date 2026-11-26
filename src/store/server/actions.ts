@@ -62,10 +62,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             await dispatch('initProcStats')
             await dispatch('initDatabases')
 
-            if (registeredDirectories.length) {
-                // TODO: convert to async module initialization
-                dispatch('files/initRootDirs', registeredDirectories, { root: true })
-            }
+            await dispatch('files/init', registeredDirectories, { root: true })
 
             await dispatch('gui/init', null, { root: true })
 

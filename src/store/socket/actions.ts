@@ -73,11 +73,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_filelist_changed':
-                dispatch('files/filelist_changed', payload.params[0], { root: true })
-                break
-
-            case 'notify_metadata_update':
-                commit('files/setMetadata', payload.params[0], { root: true })
+                dispatch('files/onFilelistChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_power_changed':
