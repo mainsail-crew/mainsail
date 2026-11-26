@@ -61,22 +61,6 @@ export const setDataDeep = (currentState: unknown, payload: unknown): void => {
     })
 }
 
-export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
-    if (folder !== undefined && folder !== null && dirArray.length) {
-        const parent = folder?.find((element: FileStateFile) => element.isDirectory && element.filename === dirArray[0])
-        if (parent) {
-            dirArray.shift()
-
-            if (parent.childrens && dirArray.length) return findDirectory(parent.childrens, dirArray)
-            else if (parent.childrens) return parent.childrens
-        }
-
-        return folder
-    }
-
-    return null
-}
-
 export const caseInsensitiveSort = <T extends object>(values: T[], ...orderTypes: (keyof T)[]): T[] => {
     return values.sort((a, b) => {
         for (const orderType of orderTypes) {
@@ -222,7 +206,7 @@ export const formatEta = (eta: number, hours12Format = false): string => {
     return output
 }
 
-export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
+export const sortFiles = <T extends FileStateFile>(items: T[] | null, sortBy: string[], sortDesc: boolean[]): T[] => {
     const sortBySingle = sortBy.length ? sortBy[0] : 'filename'
     const sortDescSingle = sortDesc[0]
 
@@ -232,9 +216,9 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
 
     if (items !== null) {
         // Sort by index
-        items.sort((a: FileStateFile, b: FileStateFile) => {
-            const valueA = a[sortBySingle]
-            const valueB = b[sortBySingle]
+        items.sort((a: T, b: T) => {
+            const valueA = (a as unknown as Record<string, unknown>)[sortBySingle]
+            const valueB = (b as unknown as Record<string, unknown>)[sortBySingle]
 
             if (valueA === valueB) return 0
             if (valueA === null || valueA === undefined) return -1
@@ -263,9 +247,7 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
         if (sortDescSingle) items.reverse()
 
         // Then make sure directories come first
-        items.sort((a: FileStateFile, b: FileStateFile) =>
-            a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1
-        )
+        items.sort((a: T, b: T) => (a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1))
     }
 
     return items ?? []

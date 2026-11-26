@@ -1,67 +1,89 @@
-import { CancelTokenSource } from 'axios'
+import type { FileDiskUsage, FilePermission, GcodeMetadata } from '@/types/moonraker/FileManagerRPC'
 
 export interface FileState {
-    filetree: FileStateFile[]
-    upload: {
-        show: boolean
-        filename: string
-        currentNumber: number
-        maxNumber: number
-        cancelTokenSource: CancelTokenSource | null
-        percent: number
-        speed: number
-    }
+    /** Permissions of the registered roots, keyed by the root name */
+    roots: Record<string, FilePermission>
+    /** Loaded directories, keyed by their normalized path including the root, e.g. 'gcodes/subdir' */
+    directories: Record<string, FileStateDirectory>
+    /** Metadata of gcode files, keyed by the path relative to the gcodes root, e.g. 'subdir/file.gcode' */
+    metadata: Record<string, GcodeMetadata>
+    upload: FileStateUpload
 }
 
+/**
+ * Content of a loaded directory. Directory objects are frozen and replaced on every change,
+ * so Vue doesn't need to observe every single entry.
+ */
+export interface FileStateDirectory {
+    /** Subdirectories, keyed by their name */
+    dirs: Readonly<Record<string, FileStateEntry>>
+    /** Files, keyed by their name */
+    files: Readonly<Record<string, FileStateEntry>>
+    /** Disk usage of the storage of the directory */
+    disk_usage: FileDiskUsage | null
+}
+
+export interface FileStateEntry {
+    name: string
+    /** Last modified date as a unix timestamp in seconds */
+    modified: number
+    size: number
+    permissions: FilePermission
+}
+
+export interface FileStateUpload {
+    show: boolean
+    filename: string
+    currentNumber: number
+    maxNumber: number
+    percent: number
+    speed: number
+}
+
+export interface FileUploadItem {
+    file: File
+    root: 'gcodes' | 'config'
+    /** Directory relative to the root */
+    path: string
+}
+
+/**
+ * File or directory of a directory listing, as used by the file browsers.
+ */
 export interface FileStateFile {
     isDirectory: boolean
     filename: string
     modified: Date
-    permissions: string
-    childrens?: FileStateFile[]
-    disk_usage?: FileStateDiskUsage
-    print_start_time?: Date | null
-    uuid?: string | null
-    job_id?: string | null
-    estimated_time?: number
-    extruder_colors?: string[]
-    filament_change_count?: number
-    filament_colors?: string[]
-    filament_name?: string
-    filament_temps?: number[]
-    filament_total?: number
-    filament_type?: string
-    filament_weight_total?: number
-    filament_weights?: number[]
-    first_layer_height?: number
-    first_layer_bed_temp?: number
-    first_layer_extr_temp?: number
-    gcode_start_byte?: number
-    gcode_end_byte?: number
-    layer_height?: number
-    mmu_print?: number
-    object_height?: number
-    referenced_tools?: number[]
-    slicer?: string
-    slicer_version?: string
-    thumbnails?: FileStateFileThumbnail[]
-    metadataPulled?: boolean
-    metadataRequested?: boolean
-    size?: number
-    [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
+    size: number
+    permissions: FilePermission
 }
 
-export interface FileStateGcodefile extends FileStateFile {
+/**
+ * Directory listing returned by the getDirectory getter.
+ */
+export interface FileStateDirectoryListing {
+    path: string
+    permissions: FilePermission
+    disk_usage: FileDiskUsage | null
+    items: FileStateFile[]
+}
+
+/**
+ * Gcode file (or directory in the gcodes root) with its metadata and print history.
+ */
+export interface FileStateGcodefile
+    extends FileStateFile, Partial<Omit<GcodeMetadata, 'filename' | 'modified' | 'size'>> {
+    /** Path relative to the gcodes root */
     full_filename: string
+    hasMetadata: boolean
     preheat_gcode: string | null
     count_printed: number
+    last_status: string | null
+    last_start_time: Date | null
     last_end_time: Date | null
     last_filament_used: number | null
     last_print_duration: number | null
-    last_status: string | null
-    last_start_time: Date | null
     last_total_duration: number | null
-    [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface FileStateGcodefileFilament {
@@ -69,46 +91,6 @@ export interface FileStateGcodefileFilament {
     name: string
     type: string
     weight: number
-}
-
-export interface FileStateDiskUsage {
-    free: number
-    total: number
-    used: number
-}
-
-export interface FileStateRootInfo {
-    name: string
-    permissions: string
-}
-
-export interface FileStateFileThumbnail {
-    width: number
-    height: number
-    size: number
-    relative_path: string
-}
-
-export interface ApiGetDirectoryReturn {
-    dirs: ApiGetDirectoryReturnDir[]
-    files: ApiGetDirectoryReturnFile[]
-    disk_usage: FileStateDiskUsage
-    root_info?: FileStateRootInfo
-    requestParams?: Record<string, unknown>
-}
-
-export interface ApiGetDirectoryReturnDir {
-    modified: number
-    size: number
-    dirname: string
-    permissions: string
-}
-
-export interface ApiGetDirectoryReturnFile {
-    modified: number
-    size: number
-    filename: string
-    permissions: string
 }
 
 export interface ConfigFileKey {

@@ -9,7 +9,7 @@ import { FileStateGcodefile } from '@/store/files/types'
 @Component
 export default class GcodefilesPanelTableRowFileMetadataFilamentStrings extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
-    @Prop({ type: String, required: true }) readonly column!: string
+    @Prop({ type: String, required: true }) readonly column!: 'filament_name' | 'filament_type'
 
     get value() {
         return this.item[this.column] ?? null
