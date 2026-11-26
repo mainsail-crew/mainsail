@@ -2,6 +2,21 @@ import { GetterTree } from 'vuex'
 import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
 import { RootState } from '@/store/types'
 
+interface PrintJobIndex {
+    byUuid: Map<string, ServerHistoryStateJob[]>
+    byFile: Map<string, ServerHistoryStateJob[]>
+    byJobId: Map<string, ServerHistoryStateJob>
+}
+
+/** Key to find the jobs of a file without uuid. `modified` is in milliseconds. */
+const getFileKey = (size: number, modified: number) => `${size}-${modified}`
+
+const pushToIndex = (index: Map<string, ServerHistoryStateJob[]>, key: string, job: ServerHistoryStateJob) => {
+    const jobs = index.get(key)
+    if (jobs) jobs.push(job)
+    else index.set(key, [job])
+}
+
 export const getters: GetterTree<ServerHistoryState, RootState> = {
     getTotalPrintTime(state) {
         let output = 0
@@ -76,8 +91,24 @@ export const getters: GetterTree<ServerHistoryState, RootState> = {
         return state.jobs.find((job) => job.job_id === job_id)
     },
 
+    // the gcode files list looks up the jobs of every file, so the jobs are indexed once
+    getPrintJobIndex(state): PrintJobIndex {
+        const index: PrintJobIndex = { byUuid: new Map(), byFile: new Map(), byJobId: new Map() }
+
+        state.jobs.forEach((job) => {
+            index.byJobId.set(job.job_id, job)
+            if (job.metadata?.uuid) pushToIndex(index.byUuid, job.metadata.uuid, job)
+            if (job.metadata?.size === undefined) return
+
+            const modified = Math.round((job.metadata.modified ?? 0) * 1000)
+            pushToIndex(index.byFile, getFileKey(job.metadata.size, modified), job)
+        })
+
+        return index
+    },
+
     getPrintJobsForGcodes:
-        (state) =>
+        (state, getters) =>
         (
             filename: string,
             modified: number,
@@ -85,19 +116,18 @@ export const getters: GetterTree<ServerHistoryState, RootState> = {
             uuid: string | null,
             job_id: string | null
         ): ServerHistoryStateJob[] => {
-            if (state.jobs.length === 0) return []
+            const index: PrintJobIndex = getters.getPrintJobIndex
 
             // find jobs via file uuid
-            if (uuid) return state.jobs.filter((job) => job.metadata?.uuid === uuid)
+            if (uuid) return index.byUuid.get(uuid) ?? []
 
             // find jobs via metadata
-            const jobs = state.jobs.filter((job) => {
-                return job.metadata?.size === filesize && Math.round((job.metadata?.modified ?? 0) * 1000) === modified
-            })
+            const jobs = index.byFile.get(getFileKey(filesize, modified)) ?? []
             if (jobs.length) return jobs
-            if (job_id) return jobs.filter((job) => job.job_id === job_id)
 
-            return []
+            // find the last job of the file
+            const job = job_id ? index.byJobId.get(job_id) : undefined
+            return job ? [job] : []
         },
 
     getPrintStatusByFilename: (state) => (filename: string, modified: number) => {
