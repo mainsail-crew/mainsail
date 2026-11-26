@@ -261,6 +261,7 @@ export const actions: ActionTree<FileState, RootState> = {
                 setEntry(context, path, 'dirs', item)
                 // a copied directory already contains files
                 if (isGcodesRoot) await dispatch('loadDirectoryTree', path)
+                else if (path === THEME_DIR) await dispatch('loadDirectory', THEME_DIR)
                 break
 
             case 'delete_dir':
@@ -306,6 +307,7 @@ export const actions: ActionTree<FileState, RootState> = {
         }
 
         if (isDestGcodes && !(isSourceGcodes && wasLoaded)) await dispatch('loadDirectoryTree', dest)
+        else if (dest === THEME_DIR && !wasLoaded) await dispatch('loadDirectory', THEME_DIR)
     },
 
     async onRootUpdated({ commit, dispatch }, root: string): Promise<void> {

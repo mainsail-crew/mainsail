@@ -229,6 +229,15 @@ describe('files/actions', () => {
             expect(filesState(store).directories['gcodes/sub']).toBeDefined()
         })
 
+        it('loads the theme directory when it is created', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectory', 'config')
+
+            await notify(store, { action: 'create_dir', item: item('config', '.theme') })
+
+            expect(Object.keys(filesState(store).directories['config/.theme'].files)).toEqual(['custom.css'])
+        })
+
         it('reloads a root after a root update', async () => {
             const store = createStore()
             await store.dispatch('files/loadDirectoryTree', 'gcodes')
