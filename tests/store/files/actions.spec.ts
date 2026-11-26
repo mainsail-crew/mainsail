@@ -1,0 +1,299 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import Vue from 'vue'
+import Vuex, { Store } from 'vuex'
+import { files, getDefaultState } from '@/store/files'
+import type { FileState } from '@/store/files/types'
+import type { FileDirectoryResponse, FileListChangedNotification } from '@/types/moonraker/FileManagerRPC'
+
+vi.mock('@/plugins/i18n', () => ({
+    default: { t: (key: string, values?: Record<string, unknown>) => `${key} ${JSON.stringify(values ?? {})}` },
+}))
+
+Vue.use(Vuex)
+
+type Responder = (params: Record<string, unknown>) => unknown
+
+const directoryResponse = (
+    dirs: string[] = [],
+    filesList: Record<string, unknown>[] = [],
+    root = 'gcodes'
+): FileDirectoryResponse =>
+    ({
+        dirs: dirs.map((dirname) => ({ dirname, modified: 1, size: 4096, permissions: 'rw' })),
+        files: filesList.map((file) => ({ modified: 1, size: 10, permissions: 'rw', ...file })),
+        disk_usage: { total: 100, used: 40, free: 60 },
+        root_info: { name: root, permissions: 'rw' },
+    }) as FileDirectoryResponse
+
+let responders: Record<string, Responder>
+const emitAndWait = vi.fn(async (method: string, params: Record<string, unknown> = {}) => {
+    const responder = responders[method]
+    if (!responder) throw { code: -32601, message: `Method not found: ${method}` }
+
+    return responder(params)
+})
+const toast = { success: vi.fn(), error: vi.fn() }
+const windowStub = { console: { error: vi.fn(), debug: vi.fn() }, open: vi.fn() }
+
+const createStore = () =>
+    new Store({
+        modules: {
+            files: { ...files, state: getDefaultState() },
+            printer: {
+                namespaced: true,
+                state: { print_stats: { filename: '' }, current_file: {} },
+                mutations: {
+                    clearCurrentFile: (state) => (state.current_file = {}),
+                    setData: (state, payload) => Object.assign(state, payload),
+                },
+            },
+            server: {
+                namespaced: true,
+                actions: { addRootDirectory: vi.fn() },
+            },
+            socket: {
+                namespaced: true,
+                getters: { getUrl: () => 'http://printer' },
+                actions: { addLoading: vi.fn(), removeLoading: vi.fn() },
+            },
+        },
+    })
+
+const filesState = (store: Store<unknown>) => (store.state as { files: FileState }).files
+
+const notify = (store: Store<unknown>, payload: Partial<FileListChangedNotification>) =>
+    store.dispatch('files/onFilelistChanged', payload)
+
+const item = (root: string, path: string) => ({ root, path, modified: 5, size: 20, permissions: 'rw' as const })
+
+describe('files/actions', () => {
+    beforeEach(() => {
+        emitAndWait.mockClear()
+        toast.success.mockClear()
+        toast.error.mockClear()
+        Vue.$socket = { emitAndWait } as unknown as typeof Vue.$socket
+        Vue.$toast = toast as unknown as typeof Vue.$toast
+        vi.stubGlobal('window', windowStub)
+
+        responders = {
+            'server.files.get_directory': (params) => {
+                switch (params.path) {
+                    case 'gcodes':
+                        return directoryResponse(
+                            ['sub', '.git'],
+                            [{ filename: 'a.gcode', estimated_time: 100 }, { filename: 'b.gcode' }]
+                        )
+                    case 'gcodes/sub':
+                        return directoryResponse([], [{ filename: 'c.gcode', estimated_time: 200 }])
+                    case 'config':
+                        return directoryResponse(['.theme'], [{ filename: 'printer.cfg' }], 'config')
+                    case 'config/.theme':
+                        return directoryResponse([], [{ filename: 'custom.css' }], 'config')
+                    default:
+                        throw { code: 400, message: 'Directory does not exist' }
+                }
+            },
+            'server.files.metadata': (params) => ({ filename: params.filename, modified: 5, size: 20, uuid: 'x' }),
+        }
+    })
+
+    it('loads the config root with the theme and the complete gcodes root on init', async () => {
+        const store = createStore()
+
+        await store.dispatch('files/init', ['gcodes', 'config', 'logs'])
+        await vi.waitFor(() => expect(filesState(store).directories['gcodes/sub']).toBeDefined())
+
+        const state = filesState(store)
+        expect(Object.keys(state.directories).sort()).toEqual(['config', 'config/.theme', 'gcodes', 'gcodes/sub'])
+        expect(Object.keys(state.directories.gcodes.dirs)).toEqual(['sub'])
+        expect(Object.keys(state.metadata).sort()).toEqual(['a.gcode', 'sub/c.gcode'])
+        expect(state.metadata['sub/c.gcode'].estimated_time).toBe(200)
+        expect(state.roots).toEqual({ gcodes: 'rw', config: 'rw' })
+        expect(emitAndWait).toHaveBeenCalledWith('server.files.get_directory', { path: 'gcodes', extended: true })
+        expect(emitAndWait).toHaveBeenCalledWith('server.files.get_directory', { path: 'config', extended: false })
+    })
+
+    it('removes directories and metadata that do not exist anymore on reload', async () => {
+        const store = createStore()
+        await store.dispatch('files/loadDirectoryTree', 'gcodes')
+
+        responders['server.files.get_directory'] = () => directoryResponse([], [{ filename: 'b.gcode' }])
+        await store.dispatch('files/loadDirectory', 'gcodes')
+
+        const state = filesState(store)
+        expect(Object.keys(state.directories)).toEqual(['gcodes'])
+        expect(state.metadata).toEqual({})
+    })
+
+    it('returns null if a directory cannot be loaded', async () => {
+        const store = createStore()
+
+        await expect(store.dispatch('files/loadDirectory', 'missing')).resolves.toBeNull()
+        expect(windowStub.console.error).toHaveBeenCalled()
+    })
+
+    afterEach(() => {
+        vi.unstubAllGlobals()
+    })
+
+    describe('onFilelistChanged', () => {
+        it('adds a created gcode file and loads its metadata', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectoryTree', 'gcodes')
+
+            await notify(store, { action: 'create_file', item: item('gcodes', 'sub/new.gcode') })
+
+            const state = filesState(store)
+            expect(state.directories['gcodes/sub'].files['new.gcode']).toEqual({
+                name: 'new.gcode',
+                modified: 5,
+                size: 20,
+                permissions: 'rw',
+            })
+            expect(state.metadata['sub/new.gcode'].uuid).toBe('x')
+        })
+
+        it('ignores files in directories that are not loaded', async () => {
+            const store = createStore()
+
+            await notify(store, { action: 'create_file', item: item('config', 'printer.cfg') })
+
+            expect(filesState(store).directories).toEqual({})
+            expect(emitAndWait).not.toHaveBeenCalled()
+        })
+
+        it('deletes a file with its metadata', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectoryTree', 'gcodes')
+
+            await notify(store, { action: 'delete_file', item: item('gcodes', 'a.gcode') })
+
+            const state = filesState(store)
+            expect(state.directories.gcodes.files['a.gcode']).toBeUndefined()
+            expect(state.metadata['a.gcode']).toBeUndefined()
+        })
+
+        it('moves a file and loads the metadata again', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectoryTree', 'gcodes')
+
+            await notify(store, {
+                action: 'move_file',
+                item: item('gcodes', 'sub/a.gcode'),
+                source_item: { root: 'gcodes', path: 'a.gcode' },
+            })
+
+            const state = filesState(store)
+            expect(state.directories.gcodes.files['a.gcode']).toBeUndefined()
+            expect(state.directories['gcodes/sub'].files['a.gcode']).toBeDefined()
+            expect(state.metadata['a.gcode']).toBeUndefined()
+            expect(state.metadata['sub/a.gcode']).toBeDefined()
+        })
+
+        it('deletes a directory with its subdirectories and metadata', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectoryTree', 'gcodes')
+
+            await notify(store, { action: 'delete_dir', item: item('gcodes', 'sub') })
+
+            const state = filesState(store)
+            expect(Object.keys(state.directories)).toEqual(['gcodes'])
+            expect(state.directories.gcodes.dirs).toEqual({})
+            expect(Object.keys(state.metadata)).toEqual(['a.gcode'])
+        })
+
+        it('moves a directory with its subdirectories and metadata', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectoryTree', 'gcodes')
+            emitAndWait.mockClear()
+
+            await notify(store, {
+                action: 'move_dir',
+                item: item('gcodes', 'renamed'),
+                source_item: { root: 'gcodes', path: 'sub' },
+            })
+
+            const state = filesState(store)
+            expect(Object.keys(state.directories).sort()).toEqual(['gcodes', 'gcodes/renamed'])
+            expect(Object.keys(state.directories.gcodes.dirs)).toEqual(['renamed'])
+            expect(state.metadata['renamed/c.gcode'].filename).toBe('renamed/c.gcode')
+            expect(emitAndWait).not.toHaveBeenCalled()
+        })
+
+        it('loads a created directory in the gcodes root', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectory', 'gcodes')
+
+            await notify(store, { action: 'create_dir', item: item('gcodes', 'sub') })
+
+            expect(filesState(store).directories['gcodes/sub']).toBeDefined()
+        })
+
+        it('reloads a root after a root update', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectoryTree', 'gcodes')
+            responders['server.files.get_directory'] = () => directoryResponse([], [])
+
+            await notify(store, { action: 'root_update', item: item('gcodes', '') })
+
+            const state = filesState(store)
+            expect(Object.keys(state.directories)).toEqual(['gcodes'])
+            expect(state.metadata).toEqual({})
+        })
+    })
+
+    it('updates the current print file when its metadata is loaded', async () => {
+        const store = createStore()
+        ;(store.state as unknown as { printer: { print_stats: { filename: string } } }).printer.print_stats.filename =
+            'a.gcode'
+
+        await store.dispatch('files/fetchMetadata', 'a.gcode')
+
+        expect((store.state as unknown as { printer: { current_file: unknown } }).printer.current_file).toEqual({
+            filename: 'a.gcode',
+            modified: 5,
+            size: 20,
+            uuid: 'x',
+        })
+    })
+
+    it('shows a rename toast when moving inside the same directory', async () => {
+        const store = createStore()
+        responders['server.files.move'] = () => ({})
+
+        await expect(store.dispatch('files/move', { source: '/gcodes/a.gcode', dest: 'gcodes/b.gcode' })).resolves.toBe(
+            true
+        )
+
+        expect(emitAndWait).toHaveBeenCalledWith('server.files.move', {
+            source: 'gcodes/a.gcode',
+            dest: 'gcodes/b.gcode',
+        })
+        expect(toast.success).toHaveBeenCalledWith(expect.stringContaining('Files.SuccessfullyRenamed'))
+    })
+
+    it('shows the error message if a request fails', async () => {
+        const store = createStore()
+
+        await expect(store.dispatch('files/deleteFile', { path: 'gcodes/a.gcode' })).resolves.toBe(false)
+
+        expect(toast.error).toHaveBeenCalledWith('Method not found: server.files.delete_file')
+    })
+
+    it('downloads a zip archive', async () => {
+        const store = createStore()
+        responders['server.files.zip'] = () => ({
+            destination: { root: 'config', path: 'my files.zip', modified: 1, size: 1, permissions: 'rw' },
+            action: 'zip_files',
+        })
+
+        await store.dispatch('files/downloadZip', { items: ['/gcodes/sub'], dest: 'config/my files.zip' })
+
+        expect(emitAndWait).toHaveBeenCalledWith(
+            'server.files.zip',
+            { items: ['gcodes/sub'], dest: 'config/my files.zip' },
+            { loading: undefined }
+        )
+        expect(windowStub.open).toHaveBeenCalledWith('http://printer/server/files/config/my%20files.zip')
+    })
+})
