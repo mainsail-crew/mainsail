@@ -109,6 +109,12 @@ export const isGcodeFile = (filename: string): boolean => validGcodeExtensions.i
 
 export const isHiddenDirectory = (name: string): boolean => hiddenDirectories.includes(name)
 
+/** Checks if a file or one of its parent directories is hidden (starts with a dot), e.g. '.trash/a.gcode' */
+export const isHiddenPath = (path: string): boolean =>
+    normalizePath(path)
+        .split('/')
+        .some((segment) => segment.startsWith('.'))
+
 /*
  * Records keyed by path
  */

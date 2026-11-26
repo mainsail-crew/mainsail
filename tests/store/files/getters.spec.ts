@@ -167,6 +167,19 @@ describe('files/getters', () => {
         expect(files.sort()).toEqual(['a.gcode', 'sub/b.gcode'])
     })
 
+    it('skips hidden files and directories in the list of all gcode files', () => {
+        const state = createState()
+        mutations.setDirectoryEntry(state, { path: 'gcodes/.hidden.gcode', type: 'files', item: entry('') })
+        mutations.setDirectory(state, {
+            path: 'gcodes/.trash',
+            directory: { dirs: {}, files: { 'c.gcode': entry('c.gcode') }, disk_usage: null },
+        })
+        const { getters } = createGetters(state)
+
+        const files = getters.getAllGcodes.map((file: { filename: string }) => file.filename)
+        expect(files.sort()).toEqual(['a.gcode', 'sub/b.gcode'])
+    })
+
     it('looks up the print history with the modified date in whole milliseconds', () => {
         const state = createState()
         mutations.setDirectoryEntry(state, {

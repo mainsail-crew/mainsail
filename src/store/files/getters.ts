@@ -8,6 +8,7 @@ import {
     createGcodeFileBuilder,
     getRoot,
     isGcodeFile,
+    isHiddenPath,
     isInPath,
     joinPath,
     normalizePath,
@@ -97,7 +98,7 @@ export const getters: GetterTree<FileState, RootState> = {
         },
 
     /**
-     * Returns all gcode files of the gcodes root and its subdirectories.
+     * Returns all gcode files of the gcodes root and its subdirectories, without hidden files and directories.
      * The filename is the path relative to the gcodes root.
      */
     getAllGcodes: (state, _getters, rootState, rootGetters): FileStateGcodefile[] => {
@@ -112,7 +113,7 @@ export const getters: GetterTree<FileState, RootState> = {
                 .filter((entry) => isGcodeFile(entry.name))
                 .forEach((entry) => {
                     const path = joinPath(relativeDir, entry.name)
-                    output.push(build(entry, path, false, path))
+                    if (!isHiddenPath(path)) output.push(build(entry, path, false, path))
                 })
         })
 
