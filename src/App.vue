@@ -211,7 +211,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     current_fileChanged(newVal: string): void {
         if (newVal === '') return
 
-        this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
+        // the metadata of the printed file is also stored as printer.current_file
+        this.$store.dispatch('files/fetchMetadata', newVal)
     }
 
     @Watch('primaryColor')

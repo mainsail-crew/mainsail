@@ -62,7 +62,7 @@ export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
 
     @VModel({ type: Boolean }) showDialog!: boolean
 
-    selectedRolloverLogs: string[] = []
+    selectedRolloverLogs: ('klipper' | 'moonraker')[] = []
 
     get loadingRolloverLogs() {
         return this.loadings.filter((log) => log?.startsWith('rolloverLog_')).length > 0
@@ -76,13 +76,7 @@ export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
     btnRolloverLogs() {
         if (this.selectedRolloverLogs.length === 0) return
 
-        this.selectedRolloverLogs.forEach((name) => {
-            this.$socket.emit(
-                'server.logs.rollover',
-                { application: name },
-                { loading: 'rolloverLog_' + name, action: 'files/rolloverLog' }
-            )
-        })
+        this.$store.dispatch('files/rolloverLogs', this.selectedRolloverLogs)
 
         this.selectedRolloverLogs = []
     }

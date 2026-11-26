@@ -11,6 +11,7 @@ import BaseMixin from '@/components/mixins/base'
 import Component from 'vue-class-component'
 import { validGcodeExtensions } from '@/store/variables'
 import { mdiTrayArrowDown } from '@mdi/js'
+import { FileUploadItem } from '@/store/files/types'
 
 @Component
 export default class TheFullscreenUpload extends Mixins(BaseMixin) {
@@ -74,32 +75,18 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
         e.preventDefault()
         this.hideDropZone()
 
-        if (e.dataTransfer?.files?.length) {
-            const files = [...e.dataTransfer.files]
+        const files: FileUploadItem[] = [...(e.dataTransfer?.files ?? [])].map((file) => {
+            const extension = file.name.slice(file.name.lastIndexOf('.'))
+            const isGcode = validGcodeExtensions.includes(extension)
 
-            await this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
-            await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
-            await this.$store.dispatch('files/uploadSetMaxNumber', files.length)
+            let path = ''
+            if (this.currentRoute === '/files' && isGcode) path = this.currentPathGcodes
+            else if (this.currentRoute === '/config' && !isGcode) path = this.currentPathConfig
 
-            for (const file of files) {
-                const extensionPos = file.name.lastIndexOf('.')
-                const extension = file.name.slice(extensionPos)
-                const isGcode = validGcodeExtensions.includes(extension)
+            return { file, path, root: isGcode ? 'gcodes' : 'config' }
+        })
 
-                let path = ''
-                if (this.currentRoute === '/files' && isGcode) path = this.currentPathGcodes
-                else if (this.currentRoute === '/config' && !isGcode) path = this.currentPathConfig
-
-                const root = isGcode ? 'gcodes' : 'config'
-                await this.$store.dispatch('files/uploadIncrementCurrentNumber')
-                const result = await this.$store.dispatch('files/uploadFile', { file, path, root })
-
-                if (result !== false)
-                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
-            }
-
-            await this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-        }
+        await this.$store.dispatch('files/uploadFiles', { files, loading: 'gcodeUpload' })
     }
 }
 </script>
