@@ -80,16 +80,6 @@ export class WebSocketClient {
         this.handleRequest(this.socket.call(method, params), params, options)
     }
 
-    emitBatch(messages: BatchMessage[]): void {
-        if (messages.length === 0 || !this.socket.isOpen) return
-
-        const requests = this.socket.batch(messages.map(({ method, params }) => ({ method, params })))
-        requests.forEach((request, index) => {
-            const { params, emitOptions } = messages[index]
-            this.handleRequest(request, params, emitOptions)
-        })
-    }
-
     private trackLoading(request: Promise<unknown>, name: string): void {
         this.store.dispatch('socket/addLoading', { name })
 
@@ -156,12 +146,6 @@ export interface WebSocketPluginOptions {
     maxReconnects?: number
     reconnectInterval?: number
     store: Store<RootState>
-}
-
-export interface BatchMessage {
-    method: string
-    params: Params
-    emitOptions: EmitOptions
 }
 
 type Params = object
