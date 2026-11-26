@@ -13,6 +13,7 @@
 # Maintainers can vouch via issue/PR comments: "vouch", "vouch @user",
 # or denounce via "denounce" / "denounce @user".
 bigtreetech
+diehardave
 ghzserg
 hannott
 jacrob32
