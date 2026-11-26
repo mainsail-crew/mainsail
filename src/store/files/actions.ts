@@ -6,7 +6,7 @@ import { escapePath } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 import { FileState, FileStateDirectory, FileStateEntry, FileStateUpload, FileUploadItem } from '@/store/files/types'
 import { hiddenDirectories, themeDir, validGcodeExtensions } from '@/store/variables'
-import { getExtension, getRoot, joinPath, normalizePath, splitPath, stripRoot } from '@/store/files/paths'
+import { getExtension, getRoot, isInPath, joinPath, normalizePath, splitPath, stripRoot } from '@/store/files/paths'
 import { RequestTracker } from '@/store/editor/requestTracker'
 import { isJsonRpcError } from '@/types/moonraker'
 import type {
@@ -179,11 +179,18 @@ export const actions: ActionTree<FileState, RootState> = {
      * Loads the config root with the theme files and the complete gcodes root.
      * All other directories are loaded when they are opened.
      */
-    async init({ dispatch }, registeredDirectories: string[]): Promise<void> {
+    async init({ state, dispatch }, registeredDirectories: string[]): Promise<void> {
+        // directories that were loaded before a reconnect could have missed changes
+        const loadedDirectories = Object.keys(state.directories).filter(
+            (path) => !isInPath(path, GCODES_ROOT) && ![CONFIG_ROOT, THEME_DIR].includes(path)
+        )
+
         if (registeredDirectories.includes(CONFIG_ROOT)) await dispatch('loadConfigRoot')
 
         // the gcodes root can be huge, so it is loaded in the background
         if (registeredDirectories.includes(GCODES_ROOT)) dispatch('loadDirectoryTree', GCODES_ROOT)
+
+        loadedDirectories.forEach((path) => dispatch('loadDirectory', path))
     },
 
     async loadConfigRoot({ dispatch }): Promise<void> {

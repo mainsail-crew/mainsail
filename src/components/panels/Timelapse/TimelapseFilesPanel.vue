@@ -370,11 +370,11 @@
     </div>
 </template>
 <script lang="ts">
-import { Component, Mixins, Ref } from 'vue-property-decorator'
+import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import type { LongpressEvent } from '@/directives/longpress'
 import BaseMixin from '@/components/mixins/base'
 import { escapePath, formatFilesize, sortFiles } from '@/plugins/helpers'
-import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { FileStateDirectoryListing, FileStateFile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import PathNavigation from '@/components/ui/PathNavigation.vue'
 import {
@@ -394,6 +394,13 @@ import {
 } from '@mdi/js'
 import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
 import type { FocusableRef } from '@/types/vuetify'
+
+interface contextMenuObject {
+    shown: boolean
+    x: number
+    y: number
+    item: FileStateFile
+}
 
 interface dialogRenameObject {
     show: boolean
@@ -435,10 +442,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         name: '',
     }
 
-    private contextMenu = {
+    private contextMenu: contextMenuObject = {
         shown: false,
-        isDirectory: false,
-        touchTimer: undefined,
         x: 0,
         y: 0,
         item: {
@@ -446,6 +451,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -457,6 +463,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -468,6 +475,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -479,6 +487,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -512,7 +521,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         ]
     }
 
-    get directory() {
+    get directory(): FileStateDirectoryListing | null {
         return this.$store.getters['files/getDirectory'](this.currentPath)
     }
 
@@ -525,7 +534,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     get files() {
-        return [...(this.directory?.childrens ?? [])]
+        return [...(this.directory?.items ?? [])]
     }
 
     get sortBy() {
@@ -570,6 +579,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.view.timelapse.currentPath
     }
 
+    // directories are loaded when they are opened, as soon as their root is registered
+    get directoryToLoad(): string | null {
+        const registeredDirectories: string[] = this.$store.state.server.registered_directories ?? []
+        if (!registeredDirectories.includes(this.rootDirectory)) return null
+
+        return this.currentPath
+    }
+
     get currentPathForNavigation() {
         if (this.currentPath === this.rootDirectory) {
             return ''
@@ -584,7 +601,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.currentPath', value: newVal })
     }
 
-    get selectedFiles() {
+    get selectedFiles(): FileStateFile[] {
         return this.$store.state.gui.view.timelapse.selectedFiles ?? []
     }
 
@@ -604,6 +621,13 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         }).toString()
     }
 
+    @Watch('directoryToLoad', { immediate: true })
+    directoryToLoadChanged(path: string | null) {
+        if (path === null) return
+
+        this.$store.dispatch('files/loadDirectory', path)
+    }
+
     createDirectory() {
         this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
@@ -616,17 +640,11 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     createDirectoryAction() {
         this.dialogCreateDirectory.show = false
 
-        this.$socket.emit(
-            'server.files.post_directory',
-            {
-                path: this.currentPath + '/' + this.dialogCreateDirectory.name,
-            },
-            { action: 'files/getCreateDir' }
-        )
+        this.$store.dispatch('files/createDirectory', `${this.currentPath}/${this.dialogCreateDirectory.name}`)
     }
 
     refreshFileList() {
-        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
+        this.$store.dispatch('files/loadDirectory', this.currentPath)
     }
 
     advancedSearch(value: string | number, search: string) {
@@ -702,41 +720,24 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     async downloadSelectedFiles() {
         const items: string[] = []
 
-        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
-            for (const file of directory) {
-                const filePath = `${absolutPath}/${file.filename}`
+        this.selectedFiles.forEach((file) => {
+            items.push(`${this.currentPath}/${file.filename}`)
+            if (file.isDirectory || !file.filename.endsWith('.mp4')) return
 
-                if (file.isDirectory && file.childrens) {
-                    await addElementToItems(filePath, file.childrens)
+            // the jpg with the same name is the thumbnail of the video
+            const filenameJpg = `${file.filename.slice(0, file.filename.lastIndexOf('.'))}.jpg`
+            if (this.files.some((f) => f.filename === filenameJpg)) items.push(`${this.currentPath}/${filenameJpg}`)
+        })
+        this.selectedFiles = []
 
-                    continue
-                }
-
-                items.push(filePath)
-
-                if (file.filename.endsWith('.mp4')) {
-                    const indexLastPoint = file.filename.lastIndexOf('.')
-                    const filenameWithoutExtension = file.filename.slice(0, indexLastPoint)
-                    const filenameJpg = `${filenameWithoutExtension}.jpg`
-
-                    if (this.files.some((f: FileStateFile) => f.filename === filenameJpg)) {
-                        items.push(`${absolutPath}/${filenameJpg}`)
-                    }
-                }
-            }
-        }
-
-        await addElementToItems(this.currentPath, this.selectedFiles)
         const date = new Date()
         const timestamp = `${date.getFullYear()}${date.getMonth()}${date.getDate()}-${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
-        this.$socket.emit(
-            'server.files.zip',
-            { items, dest: `timelapse/timelapse-${timestamp}.zip` },
-            { action: 'files/downloadZip', loading: 'timelapseDownloadZip' }
-        )
-
-        this.selectedFiles = []
+        await this.$store.dispatch('files/downloadZip', {
+            items,
+            dest: `timelapse/timelapse-${timestamp}.zip`,
+            loading: 'timelapseDownloadZip',
+        })
     }
 
     renameFile(item: FileStateFile) {
@@ -761,14 +762,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         /**
          * rename the file regardless of its file-extension
          */
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: `${this.currentPath}/${this.dialogRenameFile.item.filename}`,
-                dest: `${this.currentPath}/${this.dialogRenameFile.newName}.${fileExtension}`,
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', {
+            source: `${this.currentPath}/${this.dialogRenameFile.item.filename}`,
+            dest: `${this.currentPath}/${this.dialogRenameFile.newName}.${fileExtension}`,
+        })
 
         if (fileExtension !== 'mp4') return
 
@@ -779,9 +776,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const fileJpg = this.files.find((file) => file.filename === `${oldNameWithoutExtension}.jpg`)
 
         if (fileJpg) {
-            this.$socket.emit('server.files.move', {
+            this.$store.dispatch('files/move', {
                 source: `${this.currentPath}/${oldNameWithoutExtension}.jpg`,
                 dest: `${this.currentPath}/${this.dialogRenameFile.newName}.jpg`,
+                silent: true,
             })
         }
     }
@@ -798,14 +796,10 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     renameDirectoryAction() {
         this.dialogRenameDirectory.show = false
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: this.currentPath + '/' + this.dialogRenameDirectory.item.filename,
-                dest: this.currentPath + '/' + this.dialogRenameDirectory.newName,
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', {
+            source: `${this.currentPath}/${this.dialogRenameDirectory.item.filename}`,
+            dest: `${this.currentPath}/${this.dialogRenameDirectory.newName}`,
+        })
     }
 
     removeFile() {
@@ -815,26 +809,22 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         /**
          * delete the file regardless of its file-extension
          */
-        this.$socket.emit(
-            'server.files.delete_file',
-            { path: this.currentPath + '/' + this.contextMenu.item.filename },
-            { action: 'files/getDeleteFile' }
-        )
+        this.$store.dispatch('files/deleteFile', { path: `${this.currentPath}/${this.contextMenu.item.filename}` })
 
         if (fileExtension !== 'mp4') return
 
         /**
          * if file-extension is mp4, also delete its corresponding thumbnail jpg
          */
-        const previewFilename = filename + '.jpg'
-        const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
+        this.deletePreview(filename)
+    }
 
-        if (previewExists)
-            this.$socket.emit(
-                'server.files.delete_file',
-                { path: this.currentPath + '/' + previewFilename },
-                { action: 'files/getDeleteFile' }
-            )
+    deletePreview(filename: string) {
+        const previewFilename = filename + '.jpg'
+        const previewExists = this.files.some((file) => file.filename === previewFilename)
+        if (!previewExists) return
+
+        this.$store.dispatch('files/deleteFile', { path: `${this.currentPath}/${previewFilename}`, silent: true })
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -843,46 +833,24 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     deleteDirectoryAction() {
-        this.$socket.emit(
-            'server.files.delete_directory',
-            { path: this.currentPath + '/' + this.contextMenu.item.filename, force: true },
-            { action: 'files/getDeleteDir' }
-        )
+        this.$store.dispatch('files/deleteDirectory', `${this.currentPath}/${this.contextMenu.item.filename}`)
     }
 
     deleteSelectedFiles() {
-        this.selectedFiles.forEach((item: FileStateGcodefile) => {
+        this.selectedFiles.forEach((item) => {
+            const path = `${this.currentPath}/${item.filename}`
             if (item.isDirectory) {
-                this.$socket.emit(
-                    'server.files.delete_directory',
-                    { path: this.currentPath + '/' + item.filename, force: true },
-                    { action: 'files/getDeleteDir' }
-                )
-            } else {
-                const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
-                const fileExtension = item.filename.split('.').pop()
-
-                this.$socket.emit(
-                    'server.files.delete_file',
-                    { path: this.currentPath + '/' + item.filename },
-                    { action: 'files/getDeleteFile' }
-                )
-
-                if (fileExtension !== 'mp4') return
-
-                /**
-                 * if file-extension is mp4, also delete its corresponding thumbnail jpg
-                 */
-                const previewFilename = filename + '.jpg'
-                const previewExists = this.files.findIndex((file) => file.filename === previewFilename) !== -1
-
-                if (previewExists)
-                    this.$socket.emit(
-                        'server.files.delete_file',
-                        { path: this.currentPath + '/' + previewFilename },
-                        { action: 'files/getDeleteFile' }
-                    )
+                this.$store.dispatch('files/deleteDirectory', path)
+                return
             }
+
+            this.$store.dispatch('files/deleteFile', { path })
+
+            /**
+             * if file-extension is mp4, also delete its corresponding thumbnail jpg
+             */
+            if (item.filename.split('.').pop() !== 'mp4') return
+            this.deletePreview(item.filename.slice(0, item.filename.lastIndexOf('.')))
         })
 
         this.selectedFiles = []

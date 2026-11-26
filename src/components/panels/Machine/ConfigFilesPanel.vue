@@ -463,11 +463,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Ref } from 'vue-property-decorator'
+import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
 import { escapePath, formatFilesize, generateTimestamp, sortFiles } from '@/plugins/helpers'
-import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
+import { FileStateDirectoryListing, FileStateFile, FileUploadItem } from '@/store/files/types'
 import axios from 'axios'
 import type { CancelTokenSource } from 'axios'
 import Panel from '@/components/ui/Panel.vue'
@@ -581,6 +581,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -606,6 +607,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -617,6 +619,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -633,6 +636,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -643,6 +647,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -663,6 +668,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         },
     }
 
@@ -763,7 +769,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         return path
     }
 
-    get directory() {
+    get directory(): FileStateDirectoryListing | null {
         return this.$store.getters['files/getDirectory'](this.absolutePath)
     }
 
@@ -776,7 +782,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get files() {
-        let files = [...(this.directory?.childrens ?? [])]
+        let files = [...(this.directory?.items ?? [])]
 
         if (!this.showHiddenFiles) {
             files = files.filter((file) => file.filename.slice(0, 1) !== '.')
@@ -806,7 +812,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         ]
     }
 
-    get selectedFiles() {
+    get selectedFiles(): FileStateFile[] {
         return this.$store.state.gui.view.configfiles.selectedFiles ?? []
     }
 
@@ -862,6 +868,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         return this.$store.state.server.registered_directories ?? []
     }
 
+    // directories are loaded when they are opened, as soon as their root is registered
+    get directoryToLoad(): string | null {
+        if (!this.registeredDirectories.includes(this.root)) return null
+
+        return this.absolutePath
+    }
+
     get existConfigRoot() {
         return this.registeredDirectories.findIndex((root: string) => root === 'config') !== -1
     }
@@ -911,12 +924,15 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
         }).toString()
     }
 
+    @Watch('directoryToLoad', { immediate: true })
+    directoryToLoadChanged(path: string | null) {
+        if (path === null) return
+
+        this.$store.dispatch('files/loadDirectory', path)
+    }
+
     refreshFileList() {
-        this.$socket.emit(
-            'server.files.get_directory',
-            { path: this.absolutePath.substring(1) },
-            { action: 'files/getDirectory' }
-        )
+        this.$store.dispatch('files/loadDirectory', this.absolutePath)
     }
 
     changeRoot() {
@@ -997,37 +1013,20 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     async downloadSelectedFiles() {
-        if (this.selectedFiles.length === 1) {
+        if (this.selectedFiles.length === 1 && !this.selectedFiles[0].isDirectory) {
             this.startDownloadFile(this.selectedFiles[0].filename)
             this.selectedFiles = []
             return
         }
 
-        const items: string[] = []
-
-        const addElementToItems = async (absolutPath: string, directory: FileStateFile[]) => {
-            for (const file of directory) {
-                const filePath = `${absolutPath}/${file.filename}`
-
-                if (file.isDirectory && file.childrens) {
-                    await addElementToItems(filePath, file.childrens)
-
-                    continue
-                }
-
-                items.push(filePath)
-            }
-        }
-
-        await addElementToItems(this.absolutePath, this.selectedFiles)
-
-        this.$socket.emit(
-            'server.files.zip',
-            { items, dest: `config/${this.root}-${generateTimestamp()}.zip` },
-            { action: 'files/downloadZip', loading: 'configDownloadZip' }
-        )
-
+        const items = this.selectedFiles.map((file) => `${this.absolutePath}/${file.filename}`)
         this.selectedFiles = []
+
+        await this.$store.dispatch('files/downloadZip', {
+            items,
+            dest: `config/${this.root}-${generateTimestamp()}.zip`,
+            loading: 'configDownloadZip',
+        })
     }
 
     createDirectory() {
@@ -1042,13 +1041,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     createDirectoryAction() {
         this.dialogCreateDirectory.show = false
 
-        this.$socket.emit(
-            'server.files.post_directory',
-            {
-                path: this.absolutePath.substring(1) + '/' + this.dialogCreateDirectory.name,
-            },
-            { action: 'files/getCreateDir' }
-        )
+        this.$store.dispatch('files/createDirectory', `${this.absolutePath}/${this.dialogCreateDirectory.name}`)
     }
 
     renameDirectory(item: FileStateFile) {
@@ -1063,14 +1056,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
     renameDirectoryAction() {
         this.dialogRenameDirectory.show = false
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: (this.absolutePath + '/' + this.dialogRenameDirectory.item.filename).slice(1),
-                dest: (this.absolutePath + '/' + this.dialogRenameDirectory.newName).slice(1),
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', {
+            source: `${this.absolutePath}/${this.dialogRenameDirectory.item.filename}`,
+            dest: `${this.absolutePath}/${this.dialogRenameDirectory.newName}`,
+        })
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -1079,10 +1068,9 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     deleteDirectoryAction() {
-        this.$socket.emit(
-            'server.files.delete_directory',
-            { path: this.absolutePath + '/' + this.dialogDeleteDirectory.item.filename, force: true },
-            { action: 'files/getDeleteDir' }
+        this.$store.dispatch(
+            'files/deleteDirectory',
+            `${this.absolutePath}/${this.dialogDeleteDirectory.item.filename}`
         )
     }
 
@@ -1131,14 +1119,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
     renameFileAction() {
         this.dialogRenameFile.show = false
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: (this.absolutePath + '/' + this.dialogRenameFile.item.filename).slice(1),
-                dest: (this.absolutePath + '/' + this.dialogRenameFile.newName).slice(1),
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', {
+            source: `${this.absolutePath}/${this.dialogRenameFile.item.filename}`,
+            dest: `${this.absolutePath}/${this.dialogRenameFile.newName}`,
+        })
     }
 
     duplicateFile(item: FileStateFile) {
@@ -1153,35 +1137,22 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
 
     duplicateFileAction() {
         this.dialogDuplicateFile.show = false
-        this.$socket.emit('server.files.copy', {
-            source: (this.absolutePath + '/' + this.dialogDuplicateFile.item.filename).slice(1),
-            dest: (this.absolutePath + '/' + this.dialogDuplicateFile.newName).slice(1),
+        this.$store.dispatch('files/copy', {
+            source: `${this.absolutePath}/${this.dialogDuplicateFile.item.filename}`,
+            dest: `${this.absolutePath}/${this.dialogDuplicateFile.newName}`,
         })
     }
 
     removeFile() {
-        this.$socket.emit(
-            'server.files.delete_file',
-            { path: this.absolutePath + '/' + this.contextMenu.item.filename },
-            { action: 'files/getDeleteFile' }
-        )
+        this.$store.dispatch('files/deleteFile', { path: `${this.absolutePath}/${this.contextMenu.item.filename}` })
     }
 
     deleteSelectedFiles() {
-        this.selectedFiles.forEach((item: FileStateGcodefile) => {
-            if (item.isDirectory) {
-                this.$socket.emit(
-                    'server.files.delete_directory',
-                    { path: this.absolutePath + '/' + item.filename, force: true },
-                    { action: 'files/getDeleteDir' }
-                )
-            } else {
-                this.$socket.emit(
-                    'server.files.delete_file',
-                    { path: this.absolutePath + '/' + item.filename },
-                    { action: 'files/getDeleteFile' }
-                )
-            }
+        this.selectedFiles.forEach((item) => {
+            const path = `${this.absolutePath}/${item.filename}`
+
+            if (item.isDirectory) this.$store.dispatch('files/deleteDirectory', path)
+            else this.$store.dispatch('files/deleteFile', { path })
         })
 
         this.selectedFiles = []
@@ -1192,29 +1163,14 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     async uploadFile() {
-        const files = [...(this.fileUpload.files ?? [])]
-        if (files.length === 0) return
-
+        const files: FileUploadItem[] = [...(this.fileUpload.files ?? [])].map((file) => ({
+            file,
+            root: 'config',
+            path: this.currentPath,
+        }))
         this.fileUpload.value = ''
 
-        await this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
-        await this.$store.dispatch('files/uploadSetCurrentNumber', 0)
-        await this.$store.dispatch('files/uploadSetMaxNumber', files.length)
-
-        for (const file of files) {
-            await this.$store.dispatch('files/uploadIncrementCurrentNumber')
-            const path = this.currentPath.slice(0, 1) === '/' ? this.currentPath.slice(1) : this.currentPath
-            const result = await this.$store.dispatch('files/uploadFile', {
-                file,
-                path,
-                root: 'config',
-            })
-
-            if (result !== false)
-                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: result }).toString())
-        }
-
-        await this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
+        await this.$store.dispatch('files/uploadFiles', { files, loading: 'configFileUpload' })
     }
 
     cancelUpload() {
@@ -1236,6 +1192,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             filename: '',
             permissions: '',
             modified: new Date(),
+            size: 0,
         }
     }
 
@@ -1267,14 +1224,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin, ThemeMixin) {
             dest = this.absolutePath.slice(1, this.absolutePath.lastIndexOf('/') + 1) + this.draggingFile.item.filename
         }
 
-        this.$socket.emit(
-            'server.files.move',
-            {
-                source: this.absolutePath.slice(1) + '/' + this.draggingFile.item.filename,
-                dest: dest,
-            },
-            { action: 'files/getMove' }
-        )
+        this.$store.dispatch('files/move', {
+            source: `${this.absolutePath}/${this.draggingFile.item.filename}`,
+            dest,
+        })
     }
 }
 </script>
