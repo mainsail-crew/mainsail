@@ -1,4 +1,5 @@
 import type { FileDiskUsage, FilePermission, GcodeMetadata } from '@/types/moonraker/FileManagerRPC'
+import type { ServerHistoryStateJob } from '@/store/server/history/types'
 
 export interface FileState {
     /** Permissions of the registered roots, keyed by the root name */
@@ -31,6 +32,12 @@ export interface FileStateEntry {
     permissions: FilePermission
 }
 
+/** Subdirectories or files of a directory */
+export type FileStateEntryType = 'dirs' | 'files'
+
+/** File info of an entry without its name, e.g. from a Moonraker response */
+export type FileStateEntryInfo = Omit<FileStateEntry, 'name'>
+
 export interface FileStateUpload {
     show: boolean
     filename: string
@@ -46,6 +53,38 @@ export interface FileUploadItem {
     /** Directory relative to the root */
     path: string
 }
+
+/** Applications whose logs can be rolled over */
+export type FileRolloverApplication = 'klipper' | 'moonraker'
+
+/** A get_directory response, converted into a directory and the metadata of its gcode files */
+export interface FileDirectoryParseResult {
+    directory: FileStateDirectory
+    metadata: GcodeMetadata[]
+}
+
+/** Signature of the server/history/getPrintJobsForGcodes getter. `modified` is in milliseconds. */
+export type FilePrintJobsGetter = (
+    filename: string,
+    modified: number,
+    filesize: number,
+    uuid: string | null,
+    job_id: string | null
+) => ServerHistoryStateJob[]
+
+/**
+ * Builds a gcode file with metadata and print history.
+ * @param entry file or directory entry
+ * @param path path of the entry relative to the gcodes root
+ * @param isDirectory
+ * @param filename name to display, e.g. the name or the path relative to the gcodes root
+ */
+export type FileGcodefileBuilder = (
+    entry: FileStateEntry,
+    path: string,
+    isDirectory: boolean,
+    filename: string
+) => FileStateGcodefile
 
 /**
  * File or directory of a directory listing, as used by the file browsers.

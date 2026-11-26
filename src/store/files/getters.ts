@@ -1,123 +1,38 @@
 import { GetterTree } from 'vuex'
-import { themeDir, validGcodeExtensions } from '@/store/variables'
-import {
-    FileState,
-    FileStateDirectoryListing,
-    FileStateEntry,
-    FileStateFile,
-    FileStateGcodefile,
-} from '@/store/files/types'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { FileState, FileStateDirectoryListing, FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { RootState } from '@/store/types'
-import { getExtension, getRoot, isInPath, joinPath, normalizePath, splitPath, stripRoot } from '@/store/files/paths'
+import {
+    CONFIG_ROOT,
+    GCODES_ROOT,
+    THEME_DIR,
+    createGcodeFileBuilder,
+    getRoot,
+    isGcodeFile,
+    isInPath,
+    joinPath,
+    normalizePath,
+    splitPath,
+    stripRoot,
+    toFile,
+} from '@/store/files/helpers'
 import type { FilePermission } from '@/types/moonraker/FileManagerRPC'
-
-const GCODES_ROOT = 'gcodes'
-
-const PREHEAT_GCODES = [
-    { name: 'first_layer_extr_temp', gcode: 'M104' },
-    { name: 'first_layer_bed_temp', gcode: 'M140' },
-    { name: 'chamber_temp', gcode: 'M141' },
-] as const
-
-const toFile = (entry: FileStateEntry, isDirectory: boolean): FileStateFile => ({
-    isDirectory,
-    filename: entry.name,
-    modified: new Date(entry.modified * 1000),
-    size: entry.size,
-    permissions: entry.permissions,
-})
-
-const isGcodeFilename = (filename: string): boolean => validGcodeExtensions.includes(getExtension(filename))
-
-const getPermissions = (state: FileState, path: string): FilePermission => {
-    const rootPermissions = state.roots[getRoot(path)] ?? 'r'
-    const { dir, name } = splitPath(path)
-    if (dir === '') return rootPermissions
-
-    return state.directories[dir]?.dirs[name]?.permissions ?? rootPermissions
-}
-
-/**
- * Returns a function that combines a file of the gcodes root with its metadata and print history.
- * Everything that is the same for all files is calculated once.
- */
-const createGcodeFileBuilder = (state: FileState, rootState: RootState, rootGetters: Record<string, unknown>) => {
-    const commands = Object.keys(rootState.printer?.gcode?.commands ?? {})
-    const preheatGcodes = PREHEAT_GCODES.filter((obj) => commands.includes(obj.gcode))
-    const getPrintJobs = rootGetters['server/history/getPrintJobsForGcodes'] as (
-        filename: string,
-        modified: number,
-        filesize: number,
-        uuid: string | null,
-        job_id: string | null
-    ) => ServerHistoryStateJob[]
-
-    /**
-     * @param entry file or directory entry
-     * @param path path of the entry relative to the gcodes root
-     * @param isDirectory
-     * @param filename name to display, e.g. the name or the path relative to the gcodes root
-     */
-    return (entry: FileStateEntry, path: string, isDirectory: boolean, filename: string): FileStateGcodefile => {
-        const metadata = isDirectory ? undefined : state.metadata[path]
-        const file: FileStateGcodefile = {
-            ...metadata,
-            ...toFile(entry, isDirectory),
-            filename,
-            full_filename: path,
-            hasMetadata: metadata !== undefined,
-            preheat_gcode: null,
-            count_printed: 0,
-            last_status: null,
-            last_start_time: null,
-            last_end_time: null,
-            last_filament_used: null,
-            last_print_duration: null,
-            last_total_duration: null,
-        }
-        if (isDirectory) return file
-
-        const preheat = preheatGcodes
-            .filter((obj) => (file[obj.name] ?? 0) > 1)
-            .map((obj) => `${obj.gcode} S${file[obj.name]}`)
-        if (preheat.length) file.preheat_gcode = preheat.join('\n')
-
-        const histories = getPrintJobs(
-            path,
-            entry.modified * 1000,
-            entry.size,
-            metadata?.uuid ?? null,
-            metadata?.job_id ?? null
-        )
-        if (histories.length === 0) return file
-
-        const sorted = [...histories].sort((a, b) => b.start_time - a.start_time)
-        const completed = sorted.filter((history) => history.status === 'completed')
-        const lastHistory = sorted[0]
-
-        file.last_status = lastHistory.status
-        file.count_printed = completed.length
-        file.last_start_time = new Date(lastHistory.start_time * 1000)
-
-        const lastCompleted = completed[0]
-        if (!lastCompleted) return file
-
-        file.last_start_time = new Date(lastCompleted.start_time * 1000)
-        file.last_end_time = new Date(lastCompleted.end_time * 1000)
-        file.last_filament_used = lastCompleted.filament_used
-        file.last_print_duration = lastCompleted.print_duration
-        file.last_total_duration = lastCompleted.total_duration
-
-        return file
-    }
-}
 
 export const getters: GetterTree<FileState, RootState> = {
     isDirectoryLoaded: (state) => (path: string) => normalizePath(path) in state.directories,
 
-    getDirectory:
+    /** Returns the permissions of a directory, subdirectories get them from their parent directory. */
+    getDirectoryPermissions:
         (state) =>
+        (path: string): FilePermission => {
+            const rootPermissions = state.roots[getRoot(path)] ?? 'r'
+            const { dir, name } = splitPath(path)
+            if (dir === '') return rootPermissions
+
+            return state.directories[dir]?.dirs[name]?.permissions ?? rootPermissions
+        },
+
+    getDirectory:
+        (state, getters) =>
         (path: string): FileStateDirectoryListing | null => {
             const normalized = normalizePath(path)
             const directory = state.directories[normalized]
@@ -125,7 +40,7 @@ export const getters: GetterTree<FileState, RootState> = {
 
             return {
                 path: normalized,
-                permissions: getPermissions(state, normalized),
+                permissions: getters.getDirectoryPermissions(normalized),
                 disk_usage: directory.disk_usage,
                 items: [
                     ...Object.values(directory.dirs).map((entry) => toFile(entry, true)),
@@ -175,7 +90,7 @@ export const getters: GetterTree<FileState, RootState> = {
                 build(entry, joinPath(dirPath, entry.name), true, entry.name)
             )
             const files = Object.values(directory.files)
-                .filter((entry) => isGcodeFilename(entry.name))
+                .filter((entry) => isGcodeFile(entry.name))
                 .map((entry) => build(entry, joinPath(dirPath, entry.name), false, entry.name))
 
             return [...dirs, ...files]
@@ -194,7 +109,7 @@ export const getters: GetterTree<FileState, RootState> = {
 
             const relativeDir = stripRoot(dirPath)
             Object.values(directory.files)
-                .filter((entry) => isGcodeFilename(entry.name))
+                .filter((entry) => isGcodeFile(entry.name))
                 .forEach((entry) => {
                     const path = joinPath(relativeDir, entry.name)
                     output.push(build(entry, path, false, path))
@@ -207,7 +122,7 @@ export const getters: GetterTree<FileState, RootState> = {
     getThemeFileUrl:
         (state, getters, rootState, rootGetters) =>
         (acceptName: string, acceptExtensions: string[]): string | null => {
-            const files = Object.values(state.directories[`config/${themeDir}`]?.files ?? {})
+            const files = Object.values(state.directories[THEME_DIR]?.files ?? {})
             const file = files.find((entry) => {
                 const pos = entry.name.lastIndexOf('.')
                 if (pos === -1) return false
@@ -216,7 +131,7 @@ export const getters: GetterTree<FileState, RootState> = {
             })
             if (!file) return null
 
-            return `${rootGetters['socket/getUrl']}/server/files/config/${themeDir}/${file.name}?timestamp=${
+            return `${rootGetters['socket/getUrl']}/server/files/${THEME_DIR}/${file.name}?timestamp=${
                 file.modified * 1000
             }`
         },
@@ -271,5 +186,5 @@ export const getters: GetterTree<FileState, RootState> = {
         return null
     },
 
-    checkConfigFile: (state) => (acceptName: string) => acceptName in (state.directories.config?.files ?? {}),
+    checkConfigFile: (state) => (acceptName: string) => acceptName in (state.directories[CONFIG_ROOT]?.files ?? {}),
 }

@@ -35,7 +35,7 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
 import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { FileStateGcodefile } from '@/store/files/types'
-import { splitPath } from '@/store/files/paths'
+import { splitPath } from '@/store/files/helpers'
 
 @Component({
     components: { Panel },

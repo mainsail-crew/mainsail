@@ -42,17 +42,26 @@ describe('files/mutations', () => {
     it('adds and replaces entries of a loaded directory', () => {
         const state = createState()
 
-        mutations.setDirectoryEntry(state, { path: 'gcodes', type: 'files', entry: entry('new.gcode') })
-        mutations.setDirectoryEntry(state, { path: 'gcodes', type: 'files', entry: entry('a.gcode', { size: 99 }) })
+        mutations.setDirectoryEntry(state, { path: 'gcodes/new.gcode', type: 'files', item: entry('ignored') })
+        mutations.setDirectoryEntry(state, { path: 'gcodes/a.gcode', type: 'files', item: entry('a', { size: 99 }) })
 
         expect(Object.keys(state.directories.gcodes.files)).toEqual(['a.gcode', 'new.gcode'])
-        expect(state.directories.gcodes.files['a.gcode'].size).toBe(99)
+        expect(state.directories.gcodes.files['a.gcode']).toEqual(entry('a.gcode', { size: 99 }))
+        expect(state.directories.gcodes.files['new.gcode'].name).toBe('new.gcode')
+    })
+
+    it('ignores hidden directories', () => {
+        const state = createState()
+
+        mutations.setDirectoryEntry(state, { path: 'gcodes/.git', type: 'dirs', item: entry('.git') })
+
+        expect(Object.keys(state.directories.gcodes.dirs)).toEqual(['sub'])
     })
 
     it('ignores entries of directories that are not loaded', () => {
         const state = createState()
 
-        mutations.setDirectoryEntry(state, { path: 'config', type: 'files', entry: entry('printer.cfg') })
+        mutations.setDirectoryEntry(state, { path: 'config/printer.cfg', type: 'files', item: entry('printer.cfg') })
 
         expect(state.directories.config).toBeUndefined()
     })
@@ -60,7 +69,7 @@ describe('files/mutations', () => {
     it('removes entries', () => {
         const state = createState()
 
-        mutations.removeDirectoryEntry(state, { path: 'gcodes', type: 'dirs', name: 'sub' })
+        mutations.removeDirectoryEntry(state, { path: 'gcodes/sub', type: 'dirs' })
 
         expect(state.directories.gcodes.dirs).toEqual({})
         expect(state.directories.gcodes.files['a.gcode']).toBeDefined()

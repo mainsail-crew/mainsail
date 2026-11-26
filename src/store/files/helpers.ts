@@ -1,0 +1,288 @@
+import Vue from 'vue'
+import axios from 'axios'
+import i18n from '@/plugins/i18n'
+import { RequestTracker } from '@/store/editor/requestTracker'
+import { hiddenDirectories, themeDir, validGcodeExtensions } from '@/store/variables'
+import { isJsonRpcError } from '@/types/moonraker'
+import type { RootState } from '@/store/types'
+import type {
+    FileDirectoryParseResult,
+    FileGcodefileBuilder,
+    FilePrintJobsGetter,
+    FileState,
+    FileStateEntry,
+    FileStateEntryInfo,
+    FileStateFile,
+    FileStateGcodefile,
+    FileStateUpload,
+    FileUploadItem,
+} from '@/store/files/types'
+import type { FileDirectoryResponse, FileUploadResponse, GcodeMetadata } from '@/types/moonraker/FileManagerRPC'
+
+/*
+ * Constants
+ */
+
+export const GCODES_ROOT = 'gcodes'
+export const CONFIG_ROOT = 'config'
+export const LOGS_ROOT = 'logs'
+
+/** Path of the directory with the theme files */
+export const THEME_DIR = `${CONFIG_ROOT}/${themeDir}`
+
+/** Delay before the logs root is reloaded after a rollover, so the new files exist */
+export const ROLLOVER_RELOAD_DELAY = 500
+
+/** File info fields, every other field of an extended get_directory file entry is metadata */
+const FILE_INFO_FIELDS = ['filename', 'modified', 'size', 'permissions']
+
+/** Metadata fields with the gcode to preheat to their temperature */
+const PREHEAT_GCODES = [
+    { name: 'first_layer_extr_temp', gcode: 'M104' },
+    { name: 'first_layer_bed_temp', gcode: 'M140' },
+    { name: 'chamber_temp', gcode: 'M141' },
+] as const
+
+/*
+ * Logging and toasts
+ */
+
+const LOG_PREFIX = '[Files]'
+export const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
+export const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
+export const getErrorMessage = (error: unknown): string => {
+    if (isJsonRpcError(error) || error instanceof Error) return error.message
+
+    return String(error)
+}
+
+export const toastError = (error: unknown): void => {
+    Vue.$toast.error(getErrorMessage(error))
+}
+
+export const toastSuccess = (key: string, filename: string): void => {
+    Vue.$toast.success(i18n.t(key, { filename }).toString())
+}
+
+/*
+ * Paths
+ *
+ * All paths in the store are normalized: no leading, trailing or double slashes,
+ * e.g. 'gcodes/subdir/file.gcode'. The first segment is the root.
+ */
+
+export const normalizePath = (path: string): string =>
+    path
+        .split('/')
+        .filter((segment) => segment !== '')
+        .join('/')
+
+export const joinPath = (...parts: string[]): string => normalizePath(parts.join('/'))
+
+/** Splits a path into its parent directory and its name, e.g. 'gcodes/a/b.gcode' -> 'gcodes/a' + 'b.gcode' */
+export const splitPath = (path: string): { dir: string; name: string } => {
+    const normalized = normalizePath(path)
+    const pos = normalized.lastIndexOf('/')
+    if (pos === -1) return { dir: '', name: normalized }
+
+    return { dir: normalized.slice(0, pos), name: normalized.slice(pos + 1) }
+}
+
+export const getRoot = (path: string): string => normalizePath(path).split('/')[0]
+
+/** Returns the path without its root, e.g. 'gcodes/a/b.gcode' -> 'a/b.gcode' */
+export const stripRoot = (path: string): string => normalizePath(path).split('/').slice(1).join('/')
+
+/** Checks if a path is the given directory or inside of it. */
+export const isInPath = (path: string, directory: string): boolean =>
+    path === directory || path.startsWith(directory + '/')
+
+/** Replaces the directory prefix of a path, e.g. ('gcodes/a/b', 'gcodes/a', 'gcodes/c') -> 'gcodes/c/b' */
+export const replacePathPrefix = (path: string, source: string, dest: string): string =>
+    dest + path.slice(source.length)
+
+export const getExtension = (filename: string): string => {
+    const pos = filename.lastIndexOf('.')
+    if (pos === -1) return ''
+
+    return filename.slice(pos).toLowerCase()
+}
+
+export const isGcodeFile = (filename: string): boolean => validGcodeExtensions.includes(getExtension(filename))
+
+export const isHiddenDirectory = (name: string): boolean => hiddenDirectories.includes(name)
+
+/*
+ * Records keyed by path
+ */
+
+/** Re-keys all keys inside `source` to `dest`. Existing keys inside `dest` are dropped. */
+export const moveKeys = <T>(record: Record<string, T>, source: string, dest: string): Record<string, T> => {
+    const output: Record<string, T> = {}
+
+    for (const [key, value] of Object.entries(record)) {
+        if (isInPath(key, source)) output[replacePathPrefix(key, source, dest)] = value
+        else if (!isInPath(key, dest)) output[key] = value
+    }
+
+    return output
+}
+
+/** Removes all keys inside `path`. An empty path removes everything. */
+export const removeKeys = <T>(record: Record<string, T>, path: string): Record<string, T> => {
+    if (path === '') return {}
+
+    return Object.fromEntries(Object.entries(record).filter(([key]) => !isInPath(key, path)))
+}
+
+/*
+ * Entries and directories
+ */
+
+export const toEntry = (name: string, item: FileStateEntryInfo): FileStateEntry => ({
+    name,
+    modified: item.modified,
+    size: item.size,
+    permissions: item.permissions,
+})
+
+export const toFile = (entry: FileStateEntry, isDirectory: boolean): FileStateFile => ({
+    isDirectory,
+    filename: entry.name,
+    modified: new Date(entry.modified * 1000),
+    size: entry.size,
+    permissions: entry.permissions,
+})
+
+/** Converts a get_directory response into a directory and the metadata of its gcode files. */
+export const parseDirectoryResponse = (path: string, response: FileDirectoryResponse): FileDirectoryParseResult => {
+    const isGcodesRoot = getRoot(path) === GCODES_ROOT
+    const metadata: GcodeMetadata[] = []
+
+    const dirs: Record<string, FileStateEntry> = {}
+    response.dirs
+        .filter((dir) => !isHiddenDirectory(dir.dirname))
+        .forEach((dir) => (dirs[dir.dirname] = toEntry(dir.dirname, dir)))
+
+    const files: Record<string, FileStateEntry> = {}
+    response.files.forEach((file) => {
+        files[file.filename] = toEntry(file.filename, file)
+
+        // Moonraker only adds the metadata to files it has already scanned
+        const hasMetadata = Object.keys(file).some((key) => !FILE_INFO_FIELDS.includes(key))
+        if (!isGcodesRoot || !isGcodeFile(file.filename) || !hasMetadata) return
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { permissions, ...fileMetadata } = file
+        metadata.push({ ...fileMetadata, filename: joinPath(stripRoot(path), file.filename) })
+    })
+
+    return { directory: { dirs, files, disk_usage: response.disk_usage }, metadata }
+}
+
+/*
+ * Gcode files
+ */
+
+/**
+ * Returns a function that combines a file of the gcodes root with its metadata and print history.
+ * Everything that is the same for all files is calculated once.
+ */
+export const createGcodeFileBuilder = (
+    state: FileState,
+    rootState: RootState,
+    rootGetters: Record<string, unknown>
+): FileGcodefileBuilder => {
+    const commands = Object.keys(rootState.printer?.gcode?.commands ?? {})
+    const preheatGcodes = PREHEAT_GCODES.filter((obj) => commands.includes(obj.gcode))
+    const getPrintJobs = rootGetters['server/history/getPrintJobsForGcodes'] as FilePrintJobsGetter
+
+    return (entry, path, isDirectory, filename) => {
+        const metadata = isDirectory ? undefined : state.metadata[path]
+        const file: FileStateGcodefile = {
+            ...metadata,
+            ...toFile(entry, isDirectory),
+            filename,
+            full_filename: path,
+            hasMetadata: metadata !== undefined,
+            preheat_gcode: null,
+            count_printed: 0,
+            last_status: null,
+            last_start_time: null,
+            last_end_time: null,
+            last_filament_used: null,
+            last_print_duration: null,
+            last_total_duration: null,
+        }
+        if (isDirectory) return file
+
+        const preheat = preheatGcodes
+            .filter((obj) => (file[obj.name] ?? 0) > 1)
+            .map((obj) => `${obj.gcode} S${file[obj.name]}`)
+        if (preheat.length) file.preheat_gcode = preheat.join('\n')
+
+        const histories = getPrintJobs(
+            path,
+            entry.modified * 1000,
+            entry.size,
+            metadata?.uuid ?? null,
+            metadata?.job_id ?? null
+        )
+        if (histories.length === 0) return file
+
+        const sorted = [...histories].sort((a, b) => b.start_time - a.start_time)
+        const completed = sorted.filter((history) => history.status === 'completed')
+        const lastHistory = sorted[0]
+
+        file.last_status = lastHistory.status
+        file.count_printed = completed.length
+        file.last_start_time = new Date(lastHistory.start_time * 1000)
+
+        const lastCompleted = completed[0]
+        if (!lastCompleted) return file
+
+        file.last_start_time = new Date(lastCompleted.start_time * 1000)
+        file.last_end_time = new Date(lastCompleted.end_time * 1000)
+        file.last_filament_used = lastCompleted.filament_used
+        file.last_print_duration = lastCompleted.print_duration
+        file.last_total_duration = lastCompleted.total_duration
+
+        return file
+    }
+}
+
+/*
+ * Uploads
+ */
+
+/** Tracks the running upload batch, so it can be cancelled. */
+export const uploadRequests = new RequestTracker<'upload'>()
+
+/** Uploads a file. Returns the filename on success, or null on failure or cancellation. */
+export const uploadFile = async (
+    apiUrl: string,
+    item: FileUploadItem,
+    signal: AbortSignal,
+    onProgress: (progress: Partial<FileStateUpload>) => void
+): Promise<string | null> => {
+    const formData = new FormData()
+    formData.append('file', item.file, item.file.name)
+    formData.append('root', item.root)
+    formData.append('path', normalizePath(item.path))
+
+    try {
+        const response = await axios.post<FileUploadResponse>(`${apiUrl}/server/files/upload`, formData, {
+            signal,
+            onUploadProgress: (event) => onProgress({ percent: (event.progress ?? 0) * 100, speed: event.rate ?? 0 }),
+        })
+
+        return splitPath(response.data.item.path).name
+    } catch (error) {
+        if (axios.isCancel(error)) return null
+
+        logError(`cannot upload ${item.file.name}:`, error)
+        Vue.$toast.error(i18n.t('FullscreenUpload.CannotUploadFile').toString())
+        return null
+    }
+}

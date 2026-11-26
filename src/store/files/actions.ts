@@ -1,173 +1,38 @@
 import Vue from 'vue'
-import { ActionContext, ActionTree } from 'vuex'
-import axios from 'axios'
+import { ActionTree } from 'vuex'
 import i18n from '@/plugins/i18n'
 import { escapePath } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
-import { FileState, FileStateDirectory, FileStateEntry, FileStateUpload, FileUploadItem } from '@/store/files/types'
-import { hiddenDirectories, themeDir, validGcodeExtensions } from '@/store/variables'
-import { getExtension, getRoot, isInPath, joinPath, normalizePath, splitPath, stripRoot } from '@/store/files/paths'
-import { RequestTracker } from '@/store/editor/requestTracker'
+import { FileRolloverApplication, FileState, FileStateDirectory, FileUploadItem } from '@/store/files/types'
+import { themeDir } from '@/store/variables'
+import {
+    CONFIG_ROOT,
+    GCODES_ROOT,
+    LOGS_ROOT,
+    ROLLOVER_RELOAD_DELAY,
+    THEME_DIR,
+    getErrorMessage,
+    getRoot,
+    isGcodeFile,
+    isInPath,
+    joinPath,
+    logDebug,
+    logError,
+    normalizePath,
+    parseDirectoryResponse,
+    splitPath,
+    stripRoot,
+    toastError,
+    toastSuccess,
+    uploadFile,
+    uploadRequests,
+} from '@/store/files/helpers'
 import { isJsonRpcError } from '@/types/moonraker'
 import type {
     FileDirectoryResponse,
     FileListChangedNotification,
-    FilePermission,
-    FileUploadResponse,
     GcodeMetadata,
 } from '@/types/moonraker/FileManagerRPC'
-
-const LOG_PREFIX = '[Files]'
-const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
-const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
-
-const GCODES_ROOT = 'gcodes'
-const CONFIG_ROOT = 'config'
-const LOGS_ROOT = 'logs'
-const THEME_DIR = joinPath(CONFIG_ROOT, themeDir)
-/** Delay before the logs root is reloaded after a rollover, so the new files exist. */
-const ROLLOVER_RELOAD_DELAY = 500
-/** File info fields, every other field of an extended get_directory file entry is metadata. */
-const FILE_INFO_FIELDS = ['filename', 'modified', 'size', 'permissions']
-
-type FilesContext = ActionContext<FileState, RootState>
-type EntryType = 'dirs' | 'files'
-
-const uploadRequests = new RequestTracker<'upload'>()
-
-const isGcodeFile = (filename: string): boolean => validGcodeExtensions.includes(getExtension(filename))
-
-const getErrorMessage = (error: unknown): string => {
-    if (isJsonRpcError(error) || error instanceof Error) return error.message
-
-    return String(error)
-}
-
-const toastError = (error: unknown): void => {
-    Vue.$toast.error(getErrorMessage(error))
-}
-
-const toastSuccess = (key: string, filename: string): void => {
-    Vue.$toast.success(i18n.t(key, { filename }).toString())
-}
-
-const toEntry = (
-    name: string,
-    item: { modified: number; size: number; permissions: FilePermission }
-): FileStateEntry => ({ name, modified: item.modified, size: item.size, permissions: item.permissions })
-
-/** Converts a get_directory response into a directory and the metadata of its gcode files. */
-const parseDirectoryResponse = (path: string, response: FileDirectoryResponse) => {
-    const isGcodesRoot = getRoot(path) === GCODES_ROOT
-    const directory: FileStateDirectory = { dirs: {}, files: {}, disk_usage: response.disk_usage }
-    const metadata: GcodeMetadata[] = []
-
-    const dirs: Record<string, FileStateEntry> = {}
-    response.dirs
-        .filter((dir) => !hiddenDirectories.includes(dir.dirname))
-        .forEach((dir) => (dirs[dir.dirname] = toEntry(dir.dirname, dir)))
-
-    const files: Record<string, FileStateEntry> = {}
-    response.files.forEach((file) => {
-        files[file.filename] = toEntry(file.filename, file)
-
-        // Moonraker only adds the metadata to files it has already scanned
-        const hasMetadata = Object.keys(file).some((key) => !FILE_INFO_FIELDS.includes(key))
-        if (!isGcodesRoot || !isGcodeFile(file.filename) || !hasMetadata) return
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { permissions, ...fileMetadata } = file
-        metadata.push({ ...fileMetadata, filename: joinPath(stripRoot(path), file.filename) })
-    })
-
-    return { directory: { ...directory, dirs, files }, metadata }
-}
-
-/** Stores a loaded directory and removes everything that doesn't exist anymore. */
-const applyDirectory = (
-    { state, commit }: FilesContext,
-    path: string,
-    response: FileDirectoryResponse
-): FileStateDirectory => {
-    const { directory, metadata } = parseDirectoryResponse(path, response)
-    const isGcodesRoot = getRoot(path) === GCODES_ROOT
-    const relativePath = stripRoot(path)
-
-    const removedDirs = Object.keys(state.directories[path]?.dirs ?? {})
-        .filter((name) => !(name in directory.dirs))
-        .map((name) => joinPath(path, name))
-    removedDirs.forEach((dirPath) => commit('removeDirectoryTree', dirPath))
-
-    if (isGcodesRoot) {
-        const loadedMetadata = metadata.map((entry) => entry.filename)
-        const staleMetadata = Object.keys(state.metadata).filter(
-            (key) => splitPath(key).dir === relativePath && !loadedMetadata.includes(key)
-        )
-
-        commit('removeMetadata', [...removedDirs.map(stripRoot), ...staleMetadata])
-        commit('setMetadata', metadata)
-    }
-
-    commit('setDirectory', { path, directory })
-    commit('setRootPermissions', { root: response.root_info.name, permissions: response.root_info.permissions })
-
-    return directory
-}
-
-const setEntry = (
-    { commit }: FilesContext,
-    path: string,
-    type: EntryType,
-    item: { modified: number; size: number; permissions: FilePermission }
-): void => {
-    const { dir, name } = splitPath(path)
-    if (type === 'dirs' && hiddenDirectories.includes(name)) return
-
-    commit('setDirectoryEntry', { path: dir, type, entry: toEntry(name, item) })
-}
-
-const removeEntry = ({ commit }: FilesContext, path: string, type: EntryType): void => {
-    const { dir, name } = splitPath(path)
-
-    commit('removeDirectoryEntry', { path: dir, type, name })
-}
-
-/** Stores metadata and updates the current print file, if it is the printed file. */
-const storeMetadata = ({ commit, rootState }: FilesContext, metadata: GcodeMetadata): void => {
-    commit('setMetadata', [metadata])
-
-    if (metadata.filename !== rootState.printer?.print_stats?.filename) return
-    commit('printer/clearCurrentFile', null, { root: true })
-    commit('printer/setData', { current_file: { ...metadata } }, { root: true })
-}
-
-/** Uploads a file. Returns the filename on success, or null on failure or cancellation. */
-const uploadFile = async (
-    apiUrl: string,
-    item: FileUploadItem,
-    signal: AbortSignal,
-    onProgress: (progress: Partial<FileStateUpload>) => void
-): Promise<string | null> => {
-    const formData = new FormData()
-    formData.append('file', item.file, item.file.name)
-    formData.append('root', item.root)
-    formData.append('path', normalizePath(item.path))
-
-    try {
-        const response = await axios.post<FileUploadResponse>(`${apiUrl}/server/files/upload`, formData, {
-            signal,
-            onUploadProgress: (event) => onProgress({ percent: (event.progress ?? 0) * 100, speed: event.rate ?? 0 }),
-        })
-
-        return splitPath(response.data.item.path).name
-    } catch (error) {
-        if (axios.isCancel(error)) return null
-
-        logError(`cannot upload ${item.file.name}:`, error)
-        Vue.$toast.error(i18n.t('FullscreenUpload.CannotUploadFile').toString())
-        return null
-    }
-}
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }): void {
@@ -202,7 +67,7 @@ export const actions: ActionTree<FileState, RootState> = {
      * Loads a directory. Gcode files also get their metadata.
      * Returns null if the directory cannot be loaded.
      */
-    async loadDirectory(context, path: string): Promise<FileStateDirectory | null> {
+    async loadDirectory({ commit, dispatch }, path: string): Promise<FileStateDirectory | null> {
         const normalized = normalizePath(path)
 
         try {
@@ -211,14 +76,41 @@ export const actions: ActionTree<FileState, RootState> = {
                 extended: getRoot(normalized) === GCODES_ROOT,
             })
 
-            return applyDirectory(context, normalized, response)
+            return await dispatch('storeDirectory', { path: normalized, response })
         } catch (error) {
             logError(`cannot load directory ${normalized}:`, getErrorMessage(error))
 
             // Moonraker rejects directories that don't exist (anymore)
-            if (isJsonRpcError(error)) context.commit('removeDirectoryTree', normalized)
+            if (isJsonRpcError(error)) commit('removeDirectoryTree', normalized)
             return null
         }
+    },
+
+    /** Stores a loaded directory and removes everything inside of it that doesn't exist anymore. */
+    storeDirectory({ state, commit }, payload: { path: string; response: FileDirectoryResponse }): FileStateDirectory {
+        const { path, response } = payload
+        const { directory, metadata } = parseDirectoryResponse(path, response)
+
+        const removedDirs = Object.keys(state.directories[path]?.dirs ?? {})
+            .filter((name) => !(name in directory.dirs))
+            .map((name) => joinPath(path, name))
+        removedDirs.forEach((dirPath) => commit('removeDirectoryTree', dirPath))
+
+        if (getRoot(path) === GCODES_ROOT) {
+            const relativePath = stripRoot(path)
+            const loadedMetadata = metadata.map((entry) => entry.filename)
+            const staleMetadata = Object.keys(state.metadata).filter(
+                (key) => splitPath(key).dir === relativePath && !loadedMetadata.includes(key)
+            )
+
+            commit('removeMetadata', [...removedDirs.map(stripRoot), ...staleMetadata])
+            commit('setMetadata', metadata)
+        }
+
+        commit('setDirectory', { path, directory })
+        commit('setRootPermissions', { root: response.root_info.name, permissions: response.root_info.permissions })
+
+        return directory
     },
 
     /** Loads a directory and all its subdirectories. */
@@ -231,44 +123,46 @@ export const actions: ActionTree<FileState, RootState> = {
         )
     },
 
-    async onFilelistChanged(context, payload: FileListChangedNotification): Promise<void> {
+    async onFilelistChanged({ commit, dispatch }, payload: FileListChangedNotification): Promise<void> {
         const { item, source_item } = payload
         const path = joinPath(item.root, item.path)
         const isGcodesRoot = item.root === GCODES_ROOT
-        const { commit, dispatch } = context
 
         switch (payload.action) {
             case 'create_file':
             case 'modify_file':
-                setEntry(context, path, 'files', item)
+                commit('setDirectoryEntry', { path, type: 'files', item })
                 if (isGcodesRoot && isGcodeFile(item.path)) await dispatch('fetchMetadata', item.path)
                 break
 
             case 'delete_file':
-                removeEntry(context, path, 'files')
+                commit('removeDirectoryEntry', { path, type: 'files' })
                 if (isGcodesRoot) commit('removeMetadata', item.path)
                 break
 
             case 'move_file':
                 if (source_item) {
-                    removeEntry(context, joinPath(source_item.root, source_item.path), 'files')
+                    commit('removeDirectoryEntry', {
+                        path: joinPath(source_item.root, source_item.path),
+                        type: 'files',
+                    })
                     if (source_item.root === GCODES_ROOT) commit('removeMetadata', source_item.path)
                 }
 
-                setEntry(context, path, 'files', item)
+                commit('setDirectoryEntry', { path, type: 'files', item })
                 // thumbnail paths are relative to the gcode file, so the metadata has to be loaded again
                 if (isGcodesRoot && isGcodeFile(item.path)) await dispatch('fetchMetadata', item.path)
                 break
 
             case 'create_dir':
-                setEntry(context, path, 'dirs', item)
+                commit('setDirectoryEntry', { path, type: 'dirs', item })
                 // a copied directory already contains files
                 if (isGcodesRoot) await dispatch('loadDirectoryTree', path)
                 else if (path === THEME_DIR) await dispatch('loadDirectory', THEME_DIR)
                 break
 
             case 'delete_dir':
-                removeEntry(context, path, 'dirs')
+                commit('removeDirectoryEntry', { path, type: 'dirs' })
                 commit('removeDirectoryTree', path)
                 if (isGcodesRoot) commit('removeMetadata', item.path)
                 break
@@ -287,17 +181,16 @@ export const actions: ActionTree<FileState, RootState> = {
         }
     },
 
-    async onDirectoryMoved(context, payload: FileListChangedNotification): Promise<void> {
+    async onDirectoryMoved({ state, commit, dispatch }, payload: FileListChangedNotification): Promise<void> {
         const { item, source_item } = payload
         if (!source_item) return
 
-        const { state, commit, dispatch } = context
         const source = joinPath(source_item.root, source_item.path)
         const dest = joinPath(item.root, item.path)
         const wasLoaded = source in state.directories
 
-        removeEntry(context, source, 'dirs')
-        setEntry(context, dest, 'dirs', item)
+        commit('removeDirectoryEntry', { path: source, type: 'dirs' })
+        commit('setDirectoryEntry', { path: dest, type: 'dirs', item })
         commit('moveDirectoryTree', { source, dest })
 
         const isSourceGcodes = source_item.root === GCODES_ROOT
@@ -328,10 +221,10 @@ export const actions: ActionTree<FileState, RootState> = {
      * Loads the metadata of a gcode file. Returns null if Moonraker has no metadata for the file.
      * @param filename path relative to the gcodes root
      */
-    async fetchMetadata(context, filename: string): Promise<GcodeMetadata | null> {
+    async fetchMetadata({ dispatch }, filename: string): Promise<GcodeMetadata | null> {
         try {
             const metadata = await Vue.$socket.emitAndWait('server.files.metadata', { filename })
-            storeMetadata(context, metadata)
+            await dispatch('storeMetadata', metadata)
 
             return metadata
         } catch (error) {
@@ -344,15 +237,24 @@ export const actions: ActionTree<FileState, RootState> = {
      * Forces Moonraker to scan the metadata of a gcode file again.
      * @param filename path relative to the gcodes root
      */
-    async scanMetadata(context, filename: string): Promise<void> {
+    async scanMetadata({ dispatch }, filename: string): Promise<void> {
         try {
             const metadata = await Vue.$socket.emitAndWait('server.files.metascan', { filename })
-            storeMetadata(context, metadata)
+            await dispatch('storeMetadata', metadata)
 
             toastSuccess('Files.ScanMetaSuccess', filename)
         } catch (error) {
             toastError(error)
         }
+    },
+
+    /** Stores metadata and updates the current print file, if it is the printed file. */
+    storeMetadata({ commit, rootState }, metadata: GcodeMetadata): void {
+        commit('setMetadata', [metadata])
+
+        if (metadata.filename !== rootState.printer?.print_stats?.filename) return
+        commit('printer/clearCurrentFile', null, { root: true })
+        commit('printer/setData', { current_file: { ...metadata } }, { root: true })
     },
 
     /** @param path path of the new directory, starting with the root */
@@ -491,7 +393,7 @@ export const actions: ActionTree<FileState, RootState> = {
         commit('resetUpload')
     },
 
-    async rolloverLogs({ dispatch, getters }, applications: ('klipper' | 'moonraker')[]): Promise<void> {
+    async rolloverLogs({ dispatch, getters }, applications: FileRolloverApplication[]): Promise<void> {
         await Promise.all(
             applications.map(async (application) => {
                 try {

@@ -48,6 +48,7 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiFileSyncOutline } from '@mdi/js'
 import { rolloverLogfiles } from '@/store/variables'
+import { FileRolloverApplication } from '@/store/files/types'
 import { capitalize } from '@/plugins/helpers'
 import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/LogfilesPanelGenericLog.vue'
 @Component({
@@ -62,7 +63,7 @@ export default class LogfilesPanelRolloverDialog extends Mixins(BaseMixin) {
 
     @VModel({ type: Boolean }) showDialog!: boolean
 
-    selectedRolloverLogs: ('klipper' | 'moonraker')[] = []
+    selectedRolloverLogs: FileRolloverApplication[] = []
 
     get loadingRolloverLogs() {
         return this.loadings.filter((log) => log?.startsWith('rolloverLog_')).length > 0
