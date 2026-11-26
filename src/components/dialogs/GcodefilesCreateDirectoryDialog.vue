@@ -2,7 +2,7 @@
     <v-dialog v-model="showDialog" width="400">
         <panel :title="$t('Files.NewDirectory')" card-class="gcodefiles-new-directory-dialog" :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon tile @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -14,16 +14,12 @@
                     required
                     :rules="nameInputRules"
                     @update:error="updateIsInvalidName"
-                    @keydown.enter="createDirectoryAction" />
+                    @keydown.enter="createDirectory" />
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn
-                    :disabled="isInvalidName || name.length === 0"
-                    color="primary"
-                    text
-                    @click="createDirectoryAction">
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn :disabled="!isValid" :loading="isLoading" color="primary" text @click="createDirectory">
                     {{ $t('Files.Create') }}
                 </v-btn>
             </v-card-actions>
@@ -35,9 +31,9 @@
 import { Component, Mixins, Ref, VModel, Watch } from 'vue-property-decorator'
 import type { FocusableRef } from '@/types/vuetify'
 import BaseMixin from '@/components/mixins/base'
+import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
 
 @Component({
     components: { Panel },
@@ -45,29 +41,24 @@ import GcodefilesMixin from '@/components/mixins/gcodefiles'
 export default class GcodefilesCreateDirectoryDialog extends Mixins(BaseMixin, GcodefilesMixin) {
     mdiCloseThick = mdiCloseThick
 
-    name = ''
-    isInvalidName = false
-
     @VModel({ type: Boolean }) showDialog!: boolean
     @Ref() readonly inputField!: FocusableRef
 
+    name = ''
+    isInvalidName = false
+    isLoading = false
+
     nameInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
+        (value: string) => !this.existsName(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
 
-    updateIsInvalidName(value: boolean) {
-        this.isInvalidName = value
+    get path() {
+        return `gcodes${this.currentPath}/${this.name}`
     }
 
-    createDirectoryAction() {
-        this.$store.dispatch('files/createDirectory', `gcodes${this.currentPath}/${this.name}`)
-
-        this.closePrompt()
-    }
-
-    closePrompt() {
-        this.showDialog = false
+    get isValid() {
+        return !this.isInvalidName && this.name.length > 0
     }
 
     @Watch('showDialog')
@@ -80,6 +71,28 @@ export default class GcodefilesCreateDirectoryDialog extends Mixins(BaseMixin, G
         setTimeout(() => {
             this.inputField?.focus()
         })
+    }
+
+    existsName(name: string) {
+        return this.$store.getters['files/existsPath'](`gcodes${this.currentPath}/${name}`)
+    }
+
+    updateIsInvalidName(value: boolean) {
+        this.isInvalidName = value
+    }
+
+    async createDirectory() {
+        if (!this.isValid || this.isLoading) return
+
+        this.isLoading = true
+        const success = await this.$store.dispatch('files/createDirectory', this.path)
+        this.isLoading = false
+
+        if (success) this.closeDialog()
+    }
+
+    closeDialog() {
+        this.showDialog = false
     }
 }
 </script>

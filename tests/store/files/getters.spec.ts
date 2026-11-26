@@ -124,6 +124,15 @@ describe('files/getters', () => {
         expect(getters.isDirectoryLoaded('/gcodes/sub')).toBe(true)
     })
 
+    it('checks if a file or directory exists', () => {
+        const { getters } = createGetters(createState())
+
+        expect(getters.existsPath('gcodes/sub')).toBe(true)
+        expect(getters.existsPath('/gcodes/a.gcode')).toBe(true)
+        expect(getters.existsPath('gcodes/missing.gcode')).toBe(false)
+        expect(getters.existsPath('logs/klippy.log')).toBe(false)
+    })
+
     it('returns a single file', () => {
         const { getters } = createGetters(createState())
 

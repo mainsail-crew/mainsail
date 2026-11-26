@@ -50,6 +50,17 @@ export const getters: GetterTree<FileState, RootState> = {
             }
         },
 
+    /** Checks if a file or directory exists in a loaded directory. */
+    existsPath:
+        (state) =>
+        (path: string): boolean => {
+            const { dir, name } = splitPath(path)
+            const directory = state.directories[dir]
+            if (!directory) return false
+
+            return name in directory.dirs || name in directory.files
+        },
+
     getFile:
         (state) =>
         (path: string): FileStateFile | null => {

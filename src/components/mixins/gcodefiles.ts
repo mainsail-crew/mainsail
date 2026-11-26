@@ -271,8 +271,4 @@ export default class GcodefilesMixin extends Vue {
     set selectedFiles(newVal: FileStateGcodefile[]) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.selectedFiles', value: newVal })
     }
-
-    existsFilename(name: string) {
-        return this.files.some((file) => file.filename === name)
-    }
 }

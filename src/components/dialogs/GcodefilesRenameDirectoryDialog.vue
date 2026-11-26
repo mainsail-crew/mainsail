@@ -5,7 +5,7 @@
             card-class="gcodefiles-rename-directory-dialog"
             :margin-bottom="false">
             <template #buttons>
-                <v-btn icon tile @click="closePrompt">
+                <v-btn icon tile @click="closeDialog">
                     <v-icon>{{ mdiCloseThick }}</v-icon>
                 </v-btn>
             </template>
@@ -17,16 +17,12 @@
                     required
                     :rules="nameInputRules"
                     @update:error="updateIsInvalidName"
-                    @keydown.enter="renameDirectoryAction" />
+                    @keydown.enter="renameDirectory" />
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
-                <v-btn text @click="closePrompt">{{ $t('Buttons.Cancel') }}</v-btn>
-                <v-btn
-                    :disabled="isInvalidName || name.length === 0"
-                    color="primary"
-                    text
-                    @click="renameDirectoryAction">
+                <v-btn text @click="closeDialog">{{ $t('Buttons.Cancel') }}</v-btn>
+                <v-btn :disabled="!isValid" :loading="isLoading" color="primary" text @click="renameDirectory">
                     {{ $t('Files.Rename') }}
                 </v-btn>
             </v-card-actions>
@@ -38,41 +34,36 @@
 import { Component, Mixins, Prop, Ref, VModel, Watch } from 'vue-property-decorator'
 import type { FocusableRef } from '@/types/vuetify'
 import BaseMixin from '@/components/mixins/base'
+import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
-import GcodefilesMixin from '@/components/mixins/gcodefiles'
 import { FileStateGcodefile } from '@/store/files/types'
+import { joinPath, splitPath } from '@/store/files/helpers'
 
-@Component
-export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, GcodefilesMixin) {
+@Component({
+    components: { Panel },
+})
+export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin) {
     mdiCloseThick = mdiCloseThick
+
+    @VModel({ type: Boolean }) showDialog!: boolean
+    @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
+    @Ref() readonly inputField!: FocusableRef
 
     name = ''
     isInvalidName = true
-
-    @VModel({ type: Boolean }) showDialog!: boolean
-    @Prop({ type: Object, required: true }) item!: FileStateGcodefile
-    @Ref() readonly inputField!: FocusableRef
+    isLoading = false
 
     nameInputRules = [
         (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsFilename(value) || this.$t('Files.InvalidNameAlreadyExists'),
+        (value: string) => !this.existsName(value) || this.$t('Files.InvalidNameAlreadyExists'),
     ]
 
-    updateIsInvalidName(value: boolean) {
-        this.isInvalidName = value
+    get parentDirectory() {
+        return joinPath('gcodes', splitPath(this.item.full_filename).dir)
     }
 
-    renameDirectoryAction() {
-        this.$store.dispatch('files/move', {
-            source: `gcodes${this.currentPath}/${this.item.filename}`,
-            dest: `gcodes${this.currentPath}/${this.name}`,
-        })
-
-        this.closePrompt()
-    }
-
-    closePrompt() {
-        this.showDialog = false
+    get isValid() {
+        return !this.isInvalidName && this.name.length > 0
     }
 
     @Watch('showDialog')
@@ -85,6 +76,32 @@ export default class GcodefilesRenameDirectoryDialog extends Mixins(BaseMixin, G
         setTimeout(() => {
             this.inputField?.focus()
         })
+    }
+
+    // renaming to an existing directory would move the directory into it
+    existsName(name: string) {
+        return this.$store.getters['files/existsPath'](`${this.parentDirectory}/${name}`)
+    }
+
+    updateIsInvalidName(value: boolean) {
+        this.isInvalidName = value
+    }
+
+    async renameDirectory() {
+        if (!this.isValid || this.isLoading) return
+
+        this.isLoading = true
+        const success = await this.$store.dispatch('files/move', {
+            source: `gcodes/${this.item.full_filename}`,
+            dest: `${this.parentDirectory}/${this.name}`,
+        })
+        this.isLoading = false
+
+        if (success) this.closeDialog()
+    }
+
+    closeDialog() {
+        this.showDialog = false
     }
 }
 </script>
