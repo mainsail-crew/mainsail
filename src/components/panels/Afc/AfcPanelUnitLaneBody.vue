@@ -7,8 +7,7 @@
                         <span class="d-flex align-center justify-center" v-bind="attr" v-on="on">
                             <afc-filament-reel
                                 :percent="spoolPercent"
-                                :color="spoolColor"
-                                :multi-color-hexes="spoolMultiColorHexes"
+                                :colors="spoolColors"
                                 :multi-color-direction="spoolMultiColorDirection"
                                 class="filamentSpool cursor-pointer"
                                 @click-spool="onFilamentClick" />
@@ -116,20 +115,16 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return array.join(' | ')
     }
 
-    get spoolColor() {
-        if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
-
-        return this.lane.color || '#000000'
-    }
-
-    get spoolMultiColorHexes(): string[] {
+    get spoolColors(): string[] {
         // a TD-1 reading is a single measured color, so it replaces the filament colors
-        if (this.hasTd && this.showTd1Color) return []
+        if (this.hasTd && this.showTd1Color) return [`#${this.tdColor}`]
 
         const spoolmanHexes = this.spool?.filament?.multi_color_hexes
         if (spoolmanHexes) return spoolmanHexes.split(',')
 
-        return this.lane.multi_color_hexes ?? []
+        if (this.lane.multi_color_hexes?.length) return this.lane.multi_color_hexes
+
+        return [this.lane.color || '#000000']
     }
 
     get spoolMultiColorDirection(): ServerSpoolmanStateFilament['multi_color_direction'] {

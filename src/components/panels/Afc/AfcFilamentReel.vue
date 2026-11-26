@@ -75,9 +75,8 @@ interface GradientStop {
 
 @Component
 export default class AfcFilamentReel extends Mixins(BaseMixin) {
-    @Prop({ type: String, default: '#ff0' }) readonly color!: string
+    @Prop({ type: Array, default: () => ['#ff0'] }) readonly colors!: string[]
     @Prop({ type: Number, default: 100 }) readonly percent!: number
-    @Prop({ type: Array, default: () => [] }) readonly multiColorHexes!: string[]
     @Prop({ type: String, required: false })
     readonly multiColorDirection!: ServerSpoolmanStateFilament['multi_color_direction']
 
@@ -90,10 +89,11 @@ export default class AfcFilamentReel extends Mixins(BaseMixin) {
     spoolRimColor = '#9b7242'
 
     get multiColors(): string[] {
-        return this.multiColorHexes
+        // Spoolman stores hexes without a leading '#'
+        return this.colors
             .map((h) => h.trim())
             .filter((h) => h !== '')
-            .map((h) => (h.startsWith('#') ? h : `#${h}`))
+            .map((h) => (/^[0-9a-f]{3,8}$/i.test(h) ? `#${h}` : h))
     }
 
     get isMultiColor(): boolean {
@@ -136,7 +136,7 @@ export default class AfcFilamentReel extends Mixins(BaseMixin) {
     get filamentFill(): string {
         if (this.isMultiColor) return `url(#${this.gradientId})`
 
-        return this.color
+        return this.multiColors[0] ?? '#ff0'
     }
 
     get styleReel() {
