@@ -167,6 +167,20 @@ describe('files/getters', () => {
         expect(files.sort()).toEqual(['a.gcode', 'sub/b.gcode'])
     })
 
+    it('looks up the print history with the modified date in whole milliseconds', () => {
+        const state = createState()
+        mutations.setDirectoryEntry(state, {
+            path: 'gcodes/sub/b.gcode',
+            type: 'files',
+            item: entry('', { modified: 1700000000.123456 }),
+        })
+        const { getters, getPrintJobs } = createGetters(state)
+
+        getters.getGcodeFile('sub/b.gcode')
+
+        expect(getPrintJobs).toHaveBeenCalledWith('sub/b.gcode', 1700000000123, 10, null, null)
+    })
+
     it('returns theme file urls', () => {
         const { getters } = createGetters(createState())
 

@@ -220,7 +220,7 @@ export const createGcodeFileBuilder = (
 
         const histories = getPrintJobs(
             path,
-            entry.modified * 1000,
+            Math.round(entry.modified * 1000),
             entry.size,
             metadata?.uuid ?? null,
             metadata?.job_id ?? null
