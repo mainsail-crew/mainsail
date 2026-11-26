@@ -275,6 +275,19 @@ export const abortUploadQueue = (): void => {
     uploadQueue.current = null
 }
 
+/** Name of the loading state while files are uploaded into a root */
+export const getUploadLoadingName = (root: string): string => `upload_${root}`
+
+/** Form data of the HTTP upload endpoint. @param path directory relative to the root */
+export const createUploadFormData = (file: File, root: string, path: string): FormData => {
+    const formData = new FormData()
+    formData.append('file', file, file.name)
+    formData.append('root', root)
+    formData.append('path', normalizePath(path))
+
+    return formData
+}
+
 /** Uploads a file. Returns the filename on success, or null on failure or cancellation. */
 export const uploadFile = async (
     apiUrl: string,
@@ -282,10 +295,7 @@ export const uploadFile = async (
     signal: AbortSignal,
     onProgress: (progress: Partial<FileStateUpload>) => void
 ): Promise<string | null> => {
-    const formData = new FormData()
-    formData.append('file', item.file, item.file.name)
-    formData.append('root', item.root)
-    formData.append('path', normalizePath(item.path))
+    const formData = createUploadFormData(item.file, item.root, item.path)
 
     try {
         const response = await axios.post<FileUploadResponse>(`${apiUrl}/server/files/upload`, formData, {

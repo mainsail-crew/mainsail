@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
+import axios from 'axios'
 import i18n from '@/plugins/i18n'
 import { escapePath } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -25,6 +26,7 @@ import {
     toastError,
     UploadQueue,
     abortUploadQueue,
+    createUploadFormData,
     runUploadQueue,
     uploadQueue,
 } from '@/store/files/helpers'
@@ -32,6 +34,7 @@ import { isJsonRpcError } from '@/types/moonraker'
 import type {
     FileDirectoryResponse,
     FileListChangedNotification,
+    FileUploadResponse,
     GcodeMetadata,
 } from '@/types/moonraker/FileManagerRPC'
 
@@ -114,6 +117,25 @@ export const actions: ActionTree<FileState, RootState> = {
         commit('setRootPermissions', { root: response.root_info.name, permissions: response.root_info.permissions })
 
         return directory
+    },
+
+    /**
+     * Loads a directory that is opened in a file browser. The gcodes root is always loaded completely and
+     * kept up to date, so its directories are only loaded if they are missing.
+     */
+    async openDirectory({ state, dispatch }, path: string): Promise<void> {
+        const normalized = normalizePath(path)
+
+        if (getRoot(normalized) !== GCODES_ROOT) await dispatch('loadDirectory', normalized)
+        else if (!(normalized in state.directories)) await dispatch('loadDirectoryTree', normalized)
+    },
+
+    /** Loads a directory again. Directories in the gcodes root are loaded with all their subdirectories. */
+    async reloadDirectory({ dispatch }, path: string): Promise<void> {
+        const normalized = normalizePath(path)
+        const action = getRoot(normalized) === GCODES_ROOT ? 'loadDirectoryTree' : 'loadDirectory'
+
+        await dispatch(action, normalized)
     },
 
     /** Loads a directory and all its subdirectories. */
@@ -267,6 +289,22 @@ export const actions: ActionTree<FileState, RootState> = {
         try {
             await Vue.$socket.emitAndWait('server.files.post_directory', { path: normalized })
             Vue.$toast.success(i18n.t('Files.SuccessfullyCreated', { filename: splitPath(normalized).name }).toString())
+
+            return true
+        } catch (error) {
+            toastError(error)
+            return false
+        }
+    },
+
+    /** Creates an empty file. @param path path of the new file, starting with the root */
+    async createFile({ rootGetters }, path: string): Promise<boolean> {
+        const { dir, name } = splitPath(path)
+        const formData = createUploadFormData(new File([''], name), getRoot(dir), stripRoot(dir))
+
+        try {
+            await axios.post<FileUploadResponse>(`${rootGetters['socket/getUrl']}/server/files/upload`, formData)
+            Vue.$toast.success(i18n.t('Files.SuccessfullyCreated', { filename: name }).toString())
 
             return true
         } catch (error) {

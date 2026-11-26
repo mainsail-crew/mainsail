@@ -49,7 +49,8 @@ export interface FileStateUpload {
 
 export interface FileUploadItem {
     file: File
-    root: 'gcodes' | 'config'
+    /** Root to upload into, Moonraker accepts uploads into 'gcodes' and 'config' */
+    root: string
     /** Directory relative to the root */
     path: string
 }

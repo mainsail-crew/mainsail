@@ -336,6 +336,68 @@ describe('files/actions', () => {
         expect(windowStub.open).toHaveBeenCalledWith('http://printer/server/files/config/my%20files.zip')
     })
 
+    describe('openDirectory and reloadDirectory', () => {
+        it('loads a directory outside of the gcodes root every time it is opened', async () => {
+            const store = createStore()
+
+            await store.dispatch('files/openDirectory', '/config/')
+            await store.dispatch('files/openDirectory', 'config')
+
+            const requests = emitAndWait.mock.calls.filter(([method]) => method === 'server.files.get_directory')
+            expect(requests).toHaveLength(2)
+            expect(filesState(store).directories.config).toBeDefined()
+        })
+
+        it('only loads missing directories of the gcodes root, because it is kept up to date', async () => {
+            const store = createStore()
+            await store.dispatch('files/loadDirectoryTree', 'gcodes')
+            emitAndWait.mockClear()
+
+            await store.dispatch('files/openDirectory', 'gcodes/sub')
+
+            expect(emitAndWait).not.toHaveBeenCalled()
+        })
+
+        it('reloads directories of the gcodes root with their subdirectories', async () => {
+            const store = createStore()
+
+            await store.dispatch('files/reloadDirectory', 'gcodes')
+
+            expect(Object.keys(filesState(store).directories).sort()).toEqual(['gcodes', 'gcodes/sub'])
+        })
+    })
+
+    describe('createFile', () => {
+        afterEach(() => {
+            vi.restoreAllMocks()
+        })
+
+        it('uploads an empty file into the directory', async () => {
+            const store = createStore()
+            const post = vi.spyOn(axios, 'post').mockResolvedValue({ data: {} })
+
+            await expect(store.dispatch('files/createFile', 'config/sub/new.cfg')).resolves.toBe(true)
+
+            const [url, data] = post.mock.calls[0]
+            const formData = data as FormData
+            expect(url).toBe('http://printer/server/files/upload')
+            expect((formData.get('file') as File).name).toBe('new.cfg')
+            expect((formData.get('file') as File).size).toBe(0)
+            expect(formData.get('root')).toBe('config')
+            expect(formData.get('path')).toBe('sub')
+            expect(toast.success).toHaveBeenCalledWith(expect.stringContaining('Files.SuccessfullyCreated'))
+        })
+
+        it('shows the error and returns false if the file cannot be created', async () => {
+            const store = createStore()
+            vi.spyOn(axios, 'post').mockRejectedValue(new Error('Request failed'))
+
+            await expect(store.dispatch('files/createFile', 'config/new.cfg')).resolves.toBe(false)
+
+            expect(toast.error).toHaveBeenCalledWith('Request failed')
+        })
+    })
+
     describe('uploadFiles', () => {
         type PendingUpload = { name: string; resolve: () => void; signal: AbortSignal }
         let pending: PendingUpload[]
