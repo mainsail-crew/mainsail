@@ -69,13 +69,12 @@ export const actions: ActionTree<FileState, RootState> = {
     async loadDirectory({ commit, dispatch }, path: string): Promise<FileStateDirectory | null> {
         const normalized = normalizePath(path)
 
+        let response: FileDirectoryResponse
         try {
-            const response = await Vue.$socket.emitAndWait('server.files.get_directory', {
+            response = await Vue.$socket.emitAndWait('server.files.get_directory', {
                 path: normalized,
                 extended: getRoot(normalized) === GCODES_ROOT,
             })
-
-            return await dispatch('storeDirectory', { path: normalized, response })
         } catch (error) {
             logError(`cannot load directory ${normalized}:`, getErrorMessage(error))
 
@@ -83,6 +82,9 @@ export const actions: ActionTree<FileState, RootState> = {
             if (isJsonRpcError(error)) commit('removeDirectoryTree', normalized)
             return null
         }
+
+        // errors while storing the response are bugs, so they are not handled here
+        return await dispatch('storeDirectory', { path: normalized, response })
     },
 
     /** Stores a loaded directory and removes everything inside of it that doesn't exist anymore. */

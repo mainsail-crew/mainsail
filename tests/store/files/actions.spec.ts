@@ -138,6 +138,15 @@ describe('files/actions', () => {
         expect(filesState(store).directories).toEqual({})
     })
 
+    it('does not handle errors while storing a loaded directory', async () => {
+        const store = createStore()
+        await store.dispatch('files/loadDirectory', 'gcodes')
+        responders['server.files.get_directory'] = () => ({})
+
+        await expect(store.dispatch('files/loadDirectory', 'gcodes')).rejects.toThrow(TypeError)
+        expect(filesState(store).directories.gcodes).toBeDefined()
+    })
+
     afterEach(() => {
         vi.unstubAllGlobals()
     })
