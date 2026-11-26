@@ -8,6 +8,8 @@
                             <afc-filament-reel
                                 :percent="spoolPercent"
                                 :color="spoolColor"
+                                :multi-color-hexes="spoolMultiColorHexes"
+                                :multi-color-direction="spoolMultiColorDirection"
                                 class="filamentSpool cursor-pointer"
                                 @click-spool="onFilamentClick" />
                         </span>
@@ -63,7 +65,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcMixin from '@/components/mixins/afc'
-import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import { ServerSpoolmanStateFilament, ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import { afcIconInfintiy } from '@/plugins/afcIcons'
 import AfcUnitLaneInfiniteDialog from '@/components/dialogs/AfcUnitLaneInfiniteDialog.vue'
 import AfcUnitLaneFilamentDialog from '@/components/dialogs/AfcUnitLaneFilamentDialog.vue'
@@ -118,6 +120,27 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
 
         return this.lane.color || '#000000'
+    }
+
+    get spoolMultiColorHexes(): string[] {
+        // a TD-1 reading is a single measured color, so it replaces the filament colors
+        if (this.hasTd && this.showTd1Color) return []
+
+        const spoolmanHexes = this.spool?.filament?.multi_color_hexes
+        if (spoolmanHexes) return spoolmanHexes.split(',')
+
+        return this.lane.multi_color_hexes ?? []
+    }
+
+    get spoolMultiColorDirection(): ServerSpoolmanStateFilament['multi_color_direction'] {
+        const spoolmanDirection = this.spool?.filament?.multi_color_direction
+        if (spoolmanDirection) return spoolmanDirection
+
+        // AFC reports the lane's color mode as 'gradient' or 'coaxial'
+        if (this.lane.color_mode === 'coaxial') return 'coaxial'
+        if (this.lane.color_mode === 'gradient') return 'longitudinal'
+
+        return undefined
     }
 
     get spoolRemainingWeight(): number | undefined {

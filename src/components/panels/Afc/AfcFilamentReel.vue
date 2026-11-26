@@ -8,6 +8,16 @@
         width="100"
         height="80"
         @click="clickSpool">
+        <defs>
+            <linearGradient v-if="isMultiColor" :id="gradientId" v-bind="gradientVector">
+                <stop
+                    v-for="(stop, i) in gradientStops"
+                    :key="`stop-${i}`"
+                    :offset="stop.offset"
+                    :stop-color="stop.color" />
+            </linearGradient>
+        </defs>
+
         <path
             id="spool_right_rim"
             d="M202.1,0.3h-5v2.3C179,19,165,123.6,165,250s14,231.1,32.2,247.5v2.3h5
@@ -56,16 +66,78 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { ServerSpoolmanStateFilament } from '@/store/server/spoolman/types'
+
+interface GradientStop {
+    offset: string
+    color: string
+}
 
 @Component
 export default class AfcFilamentReel extends Mixins(BaseMixin) {
     @Prop({ type: String, default: '#ff0' }) readonly color!: string
     @Prop({ type: Number, default: 100 }) readonly percent!: number
+    @Prop({ type: Array, default: () => [] }) readonly multiColorHexes!: string[]
+    @Prop({ type: String, required: false })
+    readonly multiColorDirection!: ServerSpoolmanStateFilament['multi_color_direction']
+
+    // gradient ids need to be unique document-wide, not just within the scope of the svg
+    gradientId = `afcReelGradient-${Math.random().toString(36).slice(2)}`
 
     spoolColor = '#c08f4f'
     spoolHoleColor = '#231a0f'
     spoolTubeColor = '#594226'
     spoolRimColor = '#9b7242'
+
+    get multiColors(): string[] {
+        return this.multiColorHexes
+            .map((h) => h.trim())
+            .filter((h) => h !== '')
+            .map((h) => (h.startsWith('#') ? h : `#${h}`))
+    }
+
+    get isMultiColor(): boolean {
+        return this.multiColors.length > 1
+    }
+
+    get isCoaxial(): boolean {
+        return this.multiColorDirection === 'coaxial'
+    }
+
+    get gradientVector() {
+        // coaxial: colors run side by side across the reel width
+        // longitudinal (and unknown directions): colors change from top to bottom
+        // the bands span only the visible filament (x 75 to 197): the spool sides hide the rest
+        if (this.isCoaxial) return { gradientUnits: 'userSpaceOnUse', x1: 75, y1: 0, x2: 197, y2: 0 }
+
+        return { x1: '0%', y1: '0%', x2: '0%', y2: '100%' }
+    }
+
+    get gradientStops(): GradientStop[] {
+        const colors = this.multiColors
+        const count = colors.length
+        if (count < 2) return []
+
+        // coaxial: hard edges between the color bands
+        if (this.isCoaxial) {
+            return colors.flatMap((color, i) => [
+                { offset: `${(i / count) * 100}%`, color },
+                { offset: `${((i + 1) / count) * 100}%`, color },
+            ])
+        }
+
+        // longitudinal: smooth transition between the colors
+        return colors.map((color, i) => ({
+            offset: `${(i / (count - 1)) * 100}%`,
+            color,
+        }))
+    }
+
+    get filamentFill(): string {
+        if (this.isMultiColor) return `url(#${this.gradientId})`
+
+        return this.color
+    }
 
     get styleReel() {
         const minScale = 0.37 // 37% is the minimum visible size
@@ -82,7 +154,7 @@ export default class AfcFilamentReel extends Mixins(BaseMixin) {
 
         // If percent greater than 0, set fill to color and apply scaling
         if (this.percent > 0) {
-            style.fill = this.color
+            style.fill = this.filamentFill
 
             const scaleY = minScale + (this.percent / 100) * (1 - minScale)
             style.transform = `scale(1, ${scaleY})`
