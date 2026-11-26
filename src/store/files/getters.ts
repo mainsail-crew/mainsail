@@ -257,7 +257,7 @@ export const getters: GetterTree<FileState, RootState> = {
     },
 
     getCustomFavicons: (state, getters) => {
-        const acceptName16 = 'favicon-32x32'
+        const acceptName16 = 'favicon-16x16'
         const acceptName32 = 'favicon-32x32'
         const acceptExtensions = ['png', 'svg']
 
