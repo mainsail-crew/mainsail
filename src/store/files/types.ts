@@ -1,5 +1,6 @@
 import type { FileDiskUsage, FilePermission, GcodeMetadata } from '@/types/moonraker/FileManagerRPC'
 import type { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { rolloverLogfiles } from '@/store/variables'
 
 export interface FileState {
     /** Permissions of the registered roots, keyed by the root name */
@@ -56,7 +57,7 @@ export interface FileUploadItem {
 }
 
 /** Applications whose logs can be rolled over */
-export type FileRolloverApplication = 'klipper' | 'moonraker'
+export type FileRolloverApplication = (typeof rolloverLogfiles)[number]
 
 /** A get_directory response, converted into a directory and the metadata of its gcode files */
 export interface FileDirectoryParseResult {

@@ -123,7 +123,7 @@ export const genericLogfiles = ['AFC', 'crowsnest', 'mms', 'mmu', 'sonar']
 /*
  * List of all rollover logfiles
  */
-export const rolloverLogfiles = ['klipper', 'moonraker']
+export const rolloverLogfiles = ['klipper', 'moonraker'] as const
 
 /*
  * List of keys that should not be saved to Moonraker DB
