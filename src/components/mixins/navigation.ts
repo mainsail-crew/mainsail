@@ -118,8 +118,8 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
         return this.$store.state.printer.configfile?.settings ?? {}
     }
 
-    get sidebarNaviFile(): string {
-        return this.$store.getters['files/getCustomNaviPoints']
+    get sidebarNaviFile(): string | null {
+        return this.$store.getters['files/customNaviPointsUrl']
     }
 
     get webcamCount(): number {
@@ -127,7 +127,7 @@ export default class NavigationMixin extends Mixins(BaseMixin) {
     }
 
     @Watch('sidebarNaviFile', { immediate: true })
-    async sidebarNaviFileChanged(newVal: string) {
+    async sidebarNaviFileChanged(newVal: string | null) {
         this.customNaviLinks = []
 
         // stop if no file is set

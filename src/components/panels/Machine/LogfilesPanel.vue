@@ -12,7 +12,6 @@
                         tile
                         color="primary"
                         :ripple="true"
-                        :loading="loadings.includes('loadingBtnRolloverLogs')"
                         :disabled="['printing', 'paused'].includes(printer_state)"
                         v-bind="attrs"
                         v-on="on"
@@ -31,13 +30,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiFileDocumentEdit, mdiFileSyncOutline } from '@mdi/js'
 import { genericLogfiles } from '@/store/variables'
 import LogfilesPanelGenericLog from '@/components/panels/Machine/LogfilesPanel/LogfilesPanelGenericLog.vue'
 import { FileStateFile } from '@/store/files/types'
+
+const LOGS_ROOT = 'logs'
+
 @Component({
     components: { LogfilesPanelGenericLog, Panel },
 })
@@ -47,8 +49,12 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
 
     showRolloverDialog = false
 
+    get existsLogsRoot(): boolean {
+        return (this.$store.state.server.registered_directories ?? []).includes(LOGS_ROOT)
+    }
+
     get filesInLogRoot(): FileStateFile[] {
-        return this.$store.getters['files/getDirectory']('logs')?.childrens ?? []
+        return this.$store.getters['files/getDirectory'](LOGS_ROOT)?.items ?? []
     }
 
     get logfiles() {
@@ -62,6 +68,13 @@ export default class LogfilesPanel extends Mixins(BaseMixin) {
         })
 
         return logfiles
+    }
+
+    @Watch('existsLogsRoot', { immediate: true })
+    existsLogsRootChanged(newVal: boolean) {
+        if (!newVal) return
+
+        this.$store.dispatch('files/loadDirectory', LOGS_ROOT)
     }
 }
 </script>

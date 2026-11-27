@@ -60,7 +60,7 @@ export default class MinSettingsPanel extends Mixins(BaseMixin) {
     }
 
     get mainsailCfgExists() {
-        return this.$store.getters['files/checkConfigFile']('mainsail.cfg') ?? false
+        return this.$store.getters['files/hasConfigFile']('mainsail.cfg')
     }
 }
 </script>

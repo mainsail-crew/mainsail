@@ -56,16 +56,12 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
         return this.$store.state.gui.webcams.webcams ?? []
     }
 
-    get configfiles() {
-        return this.$store.getters['files/getDirectory']('config')?.childrens ?? []
-    }
-
     get crowsnestConf(): FileStateFile | null {
-        return this.configfiles.find((file: FileStateFile) => file.filename === 'crowsnest.conf')
+        return this.$store.getters['files/getFile']('config/crowsnest.conf')
     }
 
     get existCrowsnestConf(): boolean {
-        return this.configfiles.findIndex((file: FileStateFile) => file.filename === 'crowsnest.conf') !== -1
+        return this.crowsnestConf !== null
     }
 
     openCrowsnestConf() {

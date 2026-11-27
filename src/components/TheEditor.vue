@@ -148,7 +148,7 @@
 <script lang="ts">
 import { Component, Mixins, Ref, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { escapePath, windowBeforeUnloadFunction } from '@/plugins/helpers'
+import { escapePath, splitExtension, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
@@ -223,15 +223,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get filenameWithoutExtension(): string {
-        if (this.filename.lastIndexOf('.')) return this.filename.slice(0, this.filename.lastIndexOf('.'))
-
-        return this.filename
+        return splitExtension(this.filename).name
     }
 
+    /** Lowercase extension without the dot, e.g. 'cfg' */
     get fileExtension() {
-        if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1).toLowerCase()
-
-        return ''
+        return splitExtension(this.filename).extension.slice(1).toLowerCase()
     }
 
     get fileroot() {

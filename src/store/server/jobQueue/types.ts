@@ -1,4 +1,4 @@
-import { FileStateFile } from '@/store/files/types'
+import { FileStateGcodefile } from '@/store/files/types'
 
 export interface ServerJobQueueState {
     queued_jobs: ServerJobQueueStateJob[]
@@ -10,7 +10,7 @@ export interface ServerJobQueueStateJob {
     job_id: string
     time_added: number
     time_in_queue: number
-    metadata?: FileStateFile | null
+    metadata?: FileStateGcodefile | null
     isFirst?: boolean
     combinedIds?: string[]
 }

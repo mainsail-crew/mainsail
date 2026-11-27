@@ -1,4 +1,4 @@
-import { FileStateFileThumbnail } from '@/store/files/types'
+import type { GcodeThumbnail } from '@/types/moonraker/FileManagerRPC'
 
 export interface ServerHistoryState {
     jobs: ServerHistoryStateJob[]
@@ -33,7 +33,7 @@ export interface ServerHistoryStateJob {
         filament_total?: number
         filament_weight_total?: number
         estimated_time?: number
-        thumbnails?: FileStateFileThumbnail[]
+        thumbnails?: GcodeThumbnail[]
         first_layer_bed_temp?: number
         first_layer_extr_temp?: number
         gcode_start_byte?: number

@@ -101,12 +101,12 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         return style
     }
 
-    get customStylesheet() {
-        return this.$store.getters['files/getCustomStylesheet']
+    get customStylesheet(): string | null {
+        return this.$store.getters['files/customStylesheetUrl']
     }
 
-    get customFavicons(): string | null {
-        return this.$store.getters['files/getCustomFavicons'] ?? null
+    get customFavicons(): [string, string] | null {
+        return this.$store.getters['files/customFaviconUrls']
     }
 
     get language(): string {
@@ -211,7 +211,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     current_fileChanged(newVal: string): void {
         if (newVal === '') return
 
-        this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
+        // the metadata of the printed file is also stored as printer.current_file
+        this.$store.dispatch('files/fetchMetadata', newVal)
     }
 
     @Watch('primaryColor')

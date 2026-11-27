@@ -1,391 +1,496 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import {
-    ApiGetDirectoryReturn,
-    ApiGetDirectoryReturnDir,
-    ApiGetDirectoryReturnFile,
-    FileState,
-    FileStateFile,
-} from '@/store/files/types'
-import { RootState } from '@/store/types'
+import axios from 'axios'
 import i18n from '@/plugins/i18n'
-import { hiddenDirectories, validGcodeExtensions } from '@/store/variables'
-import axios, { AxiosProgressEvent, AxiosResponse } from 'axios'
-import { BatchMessage } from '@/plugins/webSocketClient'
+import { escapePath } from '@/plugins/helpers'
+import { RootState } from '@/store/types'
+import { FileRolloverApplication, FileState, FileStateDirectory, FileUploadItem } from '@/store/files/types'
+import { themeDir } from '@/store/variables'
+import {
+    CONFIG_ROOT,
+    GCODES_ROOT,
+    LOGS_ROOT,
+    ROLLOVER_RELOAD_DELAY,
+    THEME_DIR,
+    getErrorMessage,
+    getRoot,
+    isGcodeFile,
+    isHiddenDirectory,
+    isInPath,
+    joinPath,
+    logDebug,
+    logError,
+    normalizePath,
+    parseDirectoryResponse,
+    splitPath,
+    stripRoot,
+    toastError,
+    UploadQueue,
+    abortUploadQueue,
+    createUploadFormData,
+    runUploadQueue,
+    uploadQueue,
+} from '@/store/files/helpers'
+import { isJsonRpcError } from '@/types/moonraker'
+import type {
+    FileDirectoryResponse,
+    FileListChangedNotification,
+    FileUploadResponse,
+    GcodeMetadata,
+} from '@/types/moonraker/FileManagerRPC'
 
 export const actions: ActionTree<FileState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
+        abortUploadQueue()
         commit('reset')
     },
 
-    initRootDirs({ state, commit }, dirs) {
-        dirs.forEach((dirname: string) => {
-            if (state.filetree.findIndex((tmp: FileStateFile) => tmp.filename === dirname) === -1) {
-                commit('createRootDir', {
-                    name: dirname,
-                    permissions: 'r',
-                })
-                Vue.$socket.emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
-            }
-        })
+    /**
+     * Loads the config root with the theme files and the complete gcodes root.
+     * All other directories are loaded when they are opened.
+     */
+    async init({ state, dispatch }, registeredDirectories: string[]): Promise<void> {
+        // directories that were loaded before a reconnect could have missed changes
+        const loadedDirectories = Object.keys(state.directories).filter(
+            (path) => !isInPath(path, GCODES_ROOT) && ![CONFIG_ROOT, THEME_DIR].includes(path)
+        )
+
+        if (registeredDirectories.includes(CONFIG_ROOT)) await dispatch('loadConfigRoot')
+
+        // the gcodes root can be huge, so it is loaded in the background
+        if (registeredDirectories.includes(GCODES_ROOT)) dispatch('loadDirectoryTree', GCODES_ROOT)
+
+        loadedDirectories.forEach((path) => dispatch('loadDirectory', path))
     },
 
-    getDirectory({ state, commit, getters }, payload: ApiGetDirectoryReturn) {
-        const requestPath = (payload.requestParams?.path ?? '') as string
-        const pathArray = requestPath.split('/')
-        const root = pathArray.length ? pathArray[0] : requestPath
-
-        const slashIndex = requestPath.indexOf('/')
-        const path = slashIndex > 1 ? requestPath.slice(slashIndex + 1) : ''
-        const directory = getters['getDirectory'](root + '/' + path)
-
-        if (directory?.childrens?.length) {
-            directory?.childrens.forEach((item: FileStateFile) => {
-                if (
-                    item?.isDirectory &&
-                    payload.dirs?.findIndex((element: ApiGetDirectoryReturnDir) => element.dirname === item.filename) <
-                        0
-                ) {
-                    commit('setDeleteDir', {
-                        item: {
-                            path: path.length ? path + '/' + item.filename : item.filename,
-                            root: root,
-                        },
-                    })
-                } else if (
-                    !item?.isDirectory &&
-                    payload.files?.findIndex(
-                        (element: ApiGetDirectoryReturnFile) => element.filename === item.filename
-                    ) < 0
-                ) {
-                    commit('setDeleteFile', {
-                        item: {
-                            path: path.length ? path + '/' + item.filename : item.filename,
-                            root: root,
-                        },
-                    })
-                }
-            })
-        }
-
-        if (payload.dirs?.length) {
-            payload.dirs
-                .filter((dir) => !hiddenDirectories.includes(dir.dirname))
-                .forEach((dir: ApiGetDirectoryReturnDir) => {
-                    if (
-                        directory?.childrens?.findIndex(
-                            (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname
-                        ) === -1
-                    ) {
-                        commit('setCreateDir', {
-                            item: {
-                                path: path.length ? path + '/' + dir.dirname : dir.dirname,
-                                root: root,
-                                permissions: dir.permissions,
-                                modified: dir.modified * 1000,
-                            },
-                        })
-
-                        Vue.$socket.emit(
-                            'server.files.get_directory',
-                            { path: requestPath + '/' + dir.dirname },
-                            { action: 'files/getDirectory' }
-                        )
-                    }
-                })
-        }
-
-        if (payload.files?.length) {
-            payload.files.forEach((file: ApiGetDirectoryReturnFile) => {
-                const existingFile = directory?.childrens?.find(
-                    (element: FileStateFile) => !element.isDirectory && element.filename === file.filename
-                )
-
-                if (
-                    existingFile &&
-                    (existingFile.size !== file.size ||
-                        existingFile.modified.getTime() !== new Date(file.modified * 1000).getTime())
-                ) {
-                    commit('setModifyFile', {
-                        item: {
-                            path: path.length ? path + '/' + file.filename : file.filename,
-                            root: root,
-                            modified: file.modified,
-                            size: file.size,
-                        },
-                    })
-                } else if (!existingFile) {
-                    commit('setCreateFile', {
-                        item: {
-                            path: path.length ? path + '/' + file.filename : file.filename,
-                            root: root,
-                            permissions: file.permissions,
-                            modified: file.modified,
-                            size: file.size,
-                        },
-                    })
-                }
-            })
-        }
-
-        if (payload?.root_info?.name) {
-            const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload?.root_info?.name)
-            if (rootState && rootState.permissions !== payload.root_info?.permissions)
-                commit('setRootPermissions', payload.root_info)
-        }
-
-        if (payload.requestParams?.path && payload.disk_usage) {
-            commit('setDiskUsage', { disk_usage: payload.disk_usage, path: payload.requestParams.path })
-        }
+    async loadConfigRoot({ dispatch }): Promise<void> {
+        const config: FileStateDirectory | null = await dispatch('loadDirectory', CONFIG_ROOT)
+        if (config && themeDir in config.dirs) await dispatch('loadDirectory', THEME_DIR)
     },
 
-    scanMetadata({ commit }, payload: { filename: string }) {
-        const rootPath = payload.filename.slice(0, payload.filename.indexOf('/'))
-        if (rootPath === 'gcodes') {
-            const requestFilename = payload.filename.slice(7)
-            commit('setMetadataRequested', { filename: requestFilename })
-            Vue.$socket.emit(
-                'server.files.metascan',
-                { filename: requestFilename },
-                { action: 'files/getScanMetadata' }
+    /**
+     * Loads a directory. Gcode files also get their metadata.
+     * Returns null if the directory cannot be loaded.
+     */
+    async loadDirectory({ commit, dispatch }, path: string): Promise<FileStateDirectory | null> {
+        const normalized = normalizePath(path)
+
+        let response: FileDirectoryResponse
+        try {
+            response = await Vue.$socket.emitAndWait('server.files.get_directory', {
+                path: normalized,
+                extended: getRoot(normalized) === GCODES_ROOT,
+            })
+        } catch (error) {
+            logError(`cannot load directory ${normalized}:`, getErrorMessage(error))
+
+            // Moonraker rejects directories that don't exist (anymore)
+            if (isJsonRpcError(error)) commit('removeDirectoryTree', normalized)
+            return null
+        }
+
+        // errors while storing the response are bugs, so they are not handled here
+        return await dispatch('storeDirectory', { path: normalized, response })
+    },
+
+    /** Stores a loaded directory and removes everything inside of it that doesn't exist anymore. */
+    storeDirectory({ state, commit }, payload: { path: string; response: FileDirectoryResponse }): FileStateDirectory {
+        const { path, response } = payload
+        const { directory, metadata } = parseDirectoryResponse(path, response)
+
+        const removedDirs = Object.keys(state.directories[path]?.dirs ?? {})
+            .filter((name) => !(name in directory.dirs))
+            .map((name) => joinPath(path, name))
+        removedDirs.forEach((dirPath) => commit('removeDirectoryTree', dirPath))
+
+        if (getRoot(path) === GCODES_ROOT) {
+            const relativePath = stripRoot(path)
+            const loadedMetadata = metadata.map((entry) => entry.filename)
+            const staleMetadata = Object.keys(state.metadata).filter(
+                (key) => splitPath(key).dir === relativePath && !loadedMetadata.includes(key)
             )
-        }
-    },
 
-    getScanMetadata({ dispatch }, payload: { filename: string }) {
-        if (payload !== undefined && payload.filename !== '') {
-            dispatch('getMetadata', payload)
-
-            const filename = payload.filename
-            Vue.$toast.success(i18n.t('Files.ScanMetaSuccess', { filename }).toString())
-        }
-    },
-
-    requestMetadata({ commit }, payload: { filename: string }[]) {
-        // request file metadata in batches to reduce the number of table re-renders when responses are received
-        let messages: BatchMessage[] = []
-        for (const { filename } of payload) {
-            if (messages.length >= 100) {
-                Vue.$socket.emitBatch(messages)
-                messages = []
-            }
-            const rootPath = filename.slice(0, filename.indexOf('/'))
-            if (rootPath === 'gcodes') {
-                const requestFilename = filename.slice(7)
-                commit('setMetadataRequested', { filename: requestFilename })
-                messages.push({
-                    method: 'server.files.metadata',
-                    params: { filename: requestFilename },
-                    emitOptions: { action: 'files/getMetadata' },
-                })
-            }
-        }
-        Vue.$socket.emitBatch(messages)
-    },
-
-    getMetadata({ commit, rootState }, payload) {
-        if (payload === null || payload === undefined || payload.filename === '') return
-
-        if (payload.filename === rootState?.printer?.print_stats?.filename) {
-            commit('printer/clearCurrentFile', null, { root: true })
-            commit('printer/setData', { current_file: payload }, { root: true })
+            commit('removeMetadata', [...removedDirs.map(stripRoot), ...staleMetadata])
+            commit('setMetadata', metadata)
         }
 
-        commit('setMetadata', payload)
+        commit('setDirectory', { path, directory })
+        commit('setRootPermissions', { root: response.root_info.name, permissions: response.root_info.permissions })
+
+        return directory
     },
 
-    getMetadataCurrentFile({ commit }, payload) {
-        commit('printer/clearCurrentFile', null, { root: true })
-        commit('printer/setData', { current_file: payload }, { root: true })
+    /**
+     * Loads a directory that is opened in a file browser. The gcodes root is always loaded completely and
+     * kept up to date, so its directories are only loaded if they are missing.
+     */
+    async openDirectory({ state, dispatch }, path: string): Promise<void> {
+        const normalized = normalizePath(path)
+
+        if (getRoot(normalized) !== GCODES_ROOT) await dispatch('loadDirectory', normalized)
+        else if (!(normalized in state.directories)) await dispatch('loadDirectoryTree', normalized)
     },
 
-    async filelist_changed({ commit, dispatch }, payload) {
+    /** Loads a directory again. Directories in the gcodes root are loaded with all their subdirectories. */
+    async reloadDirectory({ dispatch }, path: string): Promise<void> {
+        const normalized = normalizePath(path)
+        const action = getRoot(normalized) === GCODES_ROOT ? 'loadDirectoryTree' : 'loadDirectory'
+
+        await dispatch(action, normalized)
+    },
+
+    /** Loads a directory and all its subdirectories. */
+    async loadDirectoryTree({ dispatch }, path: string): Promise<void> {
+        const directory: FileStateDirectory | null = await dispatch('loadDirectory', path)
+        if (!directory) return
+
+        await Promise.all(
+            Object.keys(directory.dirs).map((name) => dispatch('loadDirectoryTree', joinPath(path, name)))
+        )
+    },
+
+    async onFilelistChanged({ commit, dispatch }, payload: FileListChangedNotification): Promise<void> {
+        const { item, source_item } = payload
+        const path = joinPath(item.root, item.path)
+        const isGcodesRoot = item.root === GCODES_ROOT
+
         switch (payload.action) {
             case 'create_file':
-                commit('setCreateFile', payload)
-                break
-
-            case 'move_file':
-                // just create a new printer_autosave.cfg file instead of rename the printer.cfg
-                if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config') {
-                    commit('setCreateFile', payload)
-                    return
-                }
-
-                // move all other files
-                await commit('setMoveFile', payload)
-                if (
-                    payload.item.root === 'gcodes' &&
-                    validGcodeExtensions.includes(payload.item.path.slice(payload.item.path.lastIndexOf('.')))
-                ) {
-                    await dispatch('requestMetadata', [
-                        {
-                            filename: 'gcodes/' + payload.item.path,
-                        },
-                    ])
-                }
+            case 'modify_file':
+                commit('setDirectoryEntry', { path, type: 'files', item })
+                if (isGcodesRoot && isGcodeFile(item.path)) await dispatch('fetchMetadata', item.path)
                 break
 
             case 'delete_file':
-                commit('setDeleteFile', payload)
+                commit('removeDirectoryEntry', { path, type: 'files' })
+                if (isGcodesRoot) commit('removeMetadata', item.path)
                 break
 
-            case 'modify_file':
-                commit('setModifyFile', payload)
+            case 'move_file':
+                if (source_item) {
+                    commit('removeDirectoryEntry', {
+                        path: joinPath(source_item.root, source_item.path),
+                        type: 'files',
+                    })
+                    if (source_item.root === GCODES_ROOT) commit('removeMetadata', source_item.path)
+                }
+
+                commit('setDirectoryEntry', { path, type: 'files', item })
+                // thumbnail paths are relative to the gcode file, so the metadata has to be loaded again
+                if (isGcodesRoot && isGcodeFile(item.path)) await dispatch('fetchMetadata', item.path)
                 break
 
             case 'create_dir':
-                commit('setCreateDir', payload)
-
-                // Request directory details to update disk usage
-                Vue.$socket.emit(
-                    'server.files.get_directory',
-                    { path: `${payload.item.root}/${payload.item.path}` },
-                    { action: 'files/getDirectory' }
-                )
-                break
-
-            case 'move_dir':
-                commit('setMoveDir', payload)
+                commit('setDirectoryEntry', { path, type: 'dirs', item })
+                // a copied directory already contains files
+                if (isGcodesRoot) await dispatch('loadDirectoryTree', path)
+                else if (path === THEME_DIR) await dispatch('loadDirectory', THEME_DIR)
                 break
 
             case 'delete_dir':
-                commit('setDeleteDir', payload)
+                commit('removeDirectoryEntry', { path, type: 'dirs' })
+                commit('removeDirectoryTree', path)
+                if (isGcodesRoot) commit('removeMetadata', item.path)
+                break
+
+            case 'move_dir':
+                await dispatch('onDirectoryMoved', payload)
                 break
 
             case 'root_update':
-                dispatch('server/addRootDirectory', payload, { root: true })
-                commit('setRootUpdate', payload)
+                await dispatch('server/addRootDirectory', payload, { root: true })
+                await dispatch('onRootUpdated', item.root)
                 break
 
             default:
-                window.console.error('Unknown filelist_changed action: ' + payload.action)
-                break
+                logError('unknown filelist_changed action:', payload.action)
         }
     },
 
-    getMove(_, payload) {
-        if (payload.error) {
-            Vue.$toast.error(payload.error.message)
-        } else {
-            const filename = payload.requestParams.dest
-                .substr(payload.requestParams.dest.lastIndexOf('/'))
-                .replace('/', '')
-            const sourceDir = payload.requestParams.source.substr(0, payload.requestParams.source.lastIndexOf('/'))
-            const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
+    async onDirectoryMoved({ state, commit, dispatch }, payload: FileListChangedNotification): Promise<void> {
+        const { item, source_item } = payload
+        if (!source_item) return
 
-            if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t('Files.SuccessfullyRenamed', { filename }))
-            else Vue.$toast.success(<string>i18n.t('Files.SuccessfullyMoved', { filename }))
+        const source = joinPath(source_item.root, source_item.path)
+        const dest = joinPath(item.root, item.path)
+        const wasLoaded = source in state.directories
+
+        commit('removeDirectoryEntry', { path: source, type: 'dirs' })
+        commit('setDirectoryEntry', { path: dest, type: 'dirs', item })
+        commit('moveDirectoryTree', { source, dest })
+
+        const isSourceGcodes = source_item.root === GCODES_ROOT
+        const isDestGcodes = item.root === GCODES_ROOT
+        if (isSourceGcodes && isDestGcodes) {
+            // thumbnails are moved with the directory, so the metadata stays valid
+            commit('moveMetadata', { source: source_item.path, dest: item.path })
+        } else if (isSourceGcodes) {
+            commit('removeMetadata', source_item.path)
+        }
+
+        if (isDestGcodes && !(isSourceGcodes && wasLoaded)) await dispatch('loadDirectoryTree', dest)
+        else if (dest === THEME_DIR && !wasLoaded) await dispatch('loadDirectory', THEME_DIR)
+    },
+
+    async onRootUpdated({ commit, dispatch }, root: string): Promise<void> {
+        commit('removeDirectoryTree', root)
+
+        if (root === GCODES_ROOT) {
+            commit('removeMetadata', '')
+            await dispatch('loadDirectoryTree', GCODES_ROOT)
+        } else if (root === CONFIG_ROOT) {
+            await dispatch('loadConfigRoot')
         }
     },
 
-    getCreateDir(_, payload) {
-        if (payload.error) {
-            Vue.$toast.error(payload.error.message)
-        } else {
-            const newPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/') + 1)
+    /**
+     * Loads the metadata of a gcode file. Returns null if Moonraker has no metadata for the file.
+     * @param filename path relative to the gcodes root
+     */
+    async fetchMetadata({ dispatch }, filename: string): Promise<GcodeMetadata | null> {
+        try {
+            const metadata = await Vue.$socket.emitAndWait('server.files.metadata', { filename })
+            await dispatch('storeMetadata', metadata)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyCreated', { filename: newPath }))
+            return metadata
+        } catch (error) {
+            logDebug(`no metadata for ${filename}:`, getErrorMessage(error))
+            return null
         }
     },
 
-    getDeleteDir(_, payload) {
-        if (payload.error) {
-            Vue.$toast.error(payload.error.message)
-        } else {
-            const delPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/') + 1)
+    /**
+     * Forces Moonraker to scan the metadata of a gcode file again.
+     * @param filename path relative to the gcodes root
+     */
+    async scanMetadata({ dispatch }, filename: string): Promise<void> {
+        try {
+            const metadata = await Vue.$socket.emitAndWait('server.files.metascan', { filename })
+            await dispatch('storeMetadata', metadata)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
+            Vue.$toast.success(i18n.t('Files.ScanMetaSuccess', { filename }).toString())
+        } catch (error) {
+            toastError(error)
         }
     },
 
-    getDeleteFile(_, payload) {
-        if (payload.error) {
-            Vue.$toast.error(payload.error.message)
-        } else {
-            const delPath = payload.item.path.substr(payload.item.path.lastIndexOf('/') + 1)
-            const fileExtension = payload.item.path.substr(payload.item.path.lastIndexOf('.') + 1)
+    /** Stores metadata and updates the current print file, if it is the printed file. */
+    storeMetadata({ commit, rootState }, metadata: GcodeMetadata): void {
+        commit('setMetadata', [metadata])
 
-            if (!(payload.item.root === 'timelapse' && fileExtension === 'jpg'))
-                Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
+        if (metadata.filename !== rootState.printer?.print_stats?.filename) return
+        commit('printer/clearCurrentFile', null, { root: true })
+        commit('printer/setData', { current_file: { ...metadata } }, { root: true })
+    },
+
+    /** @param path path of the new directory, starting with the root */
+    async createDirectory(_, path: string): Promise<boolean> {
+        const normalized = normalizePath(path)
+
+        try {
+            await Vue.$socket.emitAndWait('server.files.post_directory', { path: normalized })
+            Vue.$toast.success(i18n.t('Files.SuccessfullyCreated', { filename: splitPath(normalized).name }).toString())
+
+            return true
+        } catch (error) {
+            toastError(error)
+            return false
         }
     },
 
-    async uploadFile({ commit, rootGetters }, payload: { file: File; path: string; root: 'gcodes' | 'config' }) {
-        const apiUrl = rootGetters['socket/getUrl']
-        const formData = new FormData()
-        formData.append('file', payload.file, payload.file.name)
-        formData.append('root', payload.root)
-        formData.append('path', payload.path)
-        const cancelTokenSource = axios.CancelToken.source()
+    /** Creates an empty file. @param path path of the new file, starting with the root */
+    async createFile({ rootGetters }, path: string): Promise<boolean> {
+        const { dir, name } = splitPath(path)
+        const formData = createUploadFormData(new File([''], name), getRoot(dir), stripRoot(dir))
 
-        await commit('uploadClearState')
-        await commit('uploadSetCancelTokenSource', cancelTokenSource)
-        await commit('uploadSetFilename', payload.file.name)
-        await commit('uploadSetShow', true)
+        try {
+            await axios.post<FileUploadResponse>(`${rootGetters['socket/getUrl']}/server/files/upload`, formData)
+            Vue.$toast.success(i18n.t('Files.SuccessfullyCreated', { filename: name }).toString())
 
-        return new Promise((resolve) => {
-            axios
-                .post(apiUrl + '/server/files/upload', formData, {
-                    cancelToken: cancelTokenSource.token,
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: (progressEvent: AxiosProgressEvent) => {
-                        const percent = (progressEvent.progress ?? 0) * 100
-                        commit('uploadSetPercent', percent)
-
-                        const rate = progressEvent.rate ?? 0
-                        commit('uploadSetSpeed', rate)
-                    },
-                })
-                .then((result: AxiosResponse<{ item: { path: string } }>) => {
-                    commit('uploadSetShow', false)
-                    const lastPos = result.data.item.path.lastIndexOf('/')
-                    const filename = result.data.item.path.slice(lastPos + 1)
-                    resolve(filename)
-                })
-                .catch(() => {
-                    commit('uploadSetShow', false)
-                    Vue.$toast.error(i18n.t('FullscreenUpload.CannotUploadFile').toString())
-                    resolve(false)
-                })
-        })
+            return true
+        } catch (error) {
+            toastError(error)
+            return false
+        }
     },
 
-    uploadSetShow({ commit }, payload) {
-        commit('uploadSetShow', payload)
+    /** Deletes a directory with all its content. */
+    async deleteDirectory(_, path: string): Promise<boolean> {
+        const normalized = normalizePath(path)
+
+        try {
+            await Vue.$socket.emitAndWait('server.files.delete_directory', { path: normalized, force: true })
+            Vue.$toast.success(i18n.t('Files.SuccessfullyDeleted', { filename: splitPath(normalized).name }).toString())
+
+            return true
+        } catch (error) {
+            toastError(error)
+            return false
+        }
     },
 
-    uploadSetCurrentNumber({ commit }, payload) {
-        commit('uploadSetCurrentNumber', payload)
+    /** @param payload.silent don't show a toast on success, e.g. for files that are deleted along with others */
+    async deleteFile(_, payload: { path: string; silent?: boolean }): Promise<boolean> {
+        const normalized = normalizePath(payload.path)
+
+        try {
+            await Vue.$socket.emitAndWait('server.files.delete_file', { path: normalized })
+            if (payload.silent) return true
+
+            Vue.$toast.success(i18n.t('Files.SuccessfullyDeleted', { filename: splitPath(normalized).name }).toString())
+
+            return true
+        } catch (error) {
+            toastError(error)
+            return false
+        }
     },
 
-    uploadIncrementCurrentNumber({ state, commit }) {
-        commit('uploadSetCurrentNumber', state.upload.currentNumber + 1)
+    /** Moves or renames a file or directory. */
+    async move(_, payload: { source: string; dest: string; silent?: boolean }): Promise<boolean> {
+        const source = normalizePath(payload.source)
+        const dest = normalizePath(payload.dest)
+
+        try {
+            await Vue.$socket.emitAndWait('server.files.move', { source, dest })
+            if (payload.silent) return true
+
+            const filename = splitPath(dest).name
+            const isRename = splitPath(source).dir === splitPath(dest).dir
+            const message = isRename
+                ? i18n.t('Files.SuccessfullyRenamed', { filename })
+                : i18n.t('Files.SuccessfullyMoved', { filename })
+            Vue.$toast.success(message.toString())
+
+            return true
+        } catch (error) {
+            toastError(error)
+            return false
+        }
     },
 
-    uploadSetMaxNumber({ commit }, payload) {
-        commit('uploadSetMaxNumber', payload)
+    async copy(_, payload: { source: string; dest: string }): Promise<boolean> {
+        try {
+            await Vue.$socket.emitAndWait('server.files.copy', {
+                source: normalizePath(payload.source),
+                dest: normalizePath(payload.dest),
+            })
+
+            return true
+        } catch (error) {
+            toastError(error)
+            return false
+        }
     },
 
-    downloadZip({ rootGetters }, payload) {
-        const apiUrl = rootGetters['socket/getUrl']
-        const url = `${apiUrl}/server/files/${payload.destination.root}/${encodeURI(payload.destination.path)}`
-        window.open(url)
+    /**
+     * Returns a directory and all its subdirectories, without storing them. Hidden directories are skipped.
+     * Request errors are not handled here, so the caller never continues with an incomplete list.
+     */
+    async listDirectoryTree({ dispatch }, path: string): Promise<string[]> {
+        const normalized = normalizePath(path)
+        const response = await Vue.$socket.emitAndWait('server.files.get_directory', { path: normalized })
+
+        const subdirectories: string[][] = await Promise.all(
+            response.dirs
+                .filter((dir) => !isHiddenDirectory(dir.dirname))
+                .map((dir) => dispatch('listDirectoryTree', joinPath(normalized, dir.dirname)))
+        )
+
+        return [normalized, ...subdirectories.flat()]
     },
 
-    rolloverLog(_, payload) {
-        payload.rolled_over.forEach((name: string) => {
-            Vue.$toast.success(<string>i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }))
-        })
+    /**
+     * Creates a zip archive and downloads it. Moonraker only archives the files directly inside of a
+     * directory, so the subdirectories of every directory are added as well.
+     * @param payload.files paths of files, starting with the root
+     * @param payload.directories paths of directories, starting with the root
+     * @param payload.dest path of the archive, starting with a writable root
+     */
+    async downloadZip(
+        { dispatch, rootGetters },
+        payload: { files: string[]; directories: string[]; dest: string }
+    ): Promise<void> {
+        try {
+            const directoryTrees: string[][] = await Promise.all(
+                payload.directories.map((path) => dispatch('listDirectoryTree', path))
+            )
 
-        Object.keys(payload.failed).forEach((name: string) => {
-            const message = payload.failed[name]
+            const { destination } = await Vue.$socket.emitAndWait('server.files.zip', {
+                items: [...payload.files.map(normalizePath), ...directoryTrees.flat()],
+                dest: normalizePath(payload.dest),
+            })
 
-            Vue.$toast.error(<string>i18n.t('Machine.LogfilesPanel.RolloverToastFailed', { name, message }))
-        })
+            window.open(
+                `${rootGetters['socket/getUrl']}/server/files/${destination.root}/${escapePath(destination.path)}`
+            )
+        } catch (error) {
+            toastError(error)
+        }
+    },
 
-        setTimeout(() => {
-            Vue.$socket.emit('server.files.get_directory', { path: 'logs' }, { action: 'files/getDirectory' })
-        }, 500)
+    /**
+     * Uploads files one after another and shows the progress in the upload snackbar.
+     * If an upload is already running, the files are appended to it. Resolves when the files are uploaded.
+     * @param payload.loading name of the loading state while uploading
+     */
+    async uploadFiles(
+        { commit, dispatch, rootGetters },
+        payload: { files: FileUploadItem[]; loading?: string }
+    ): Promise<void> {
+        if (payload.files.length === 0) return
+
+        if (payload.loading) await dispatch('socket/addLoading', { name: payload.loading }, { root: true })
+
+        try {
+            const running = uploadQueue.current
+            if (running) {
+                running.items.push(...payload.files)
+                commit('setUpload', { maxNumber: running.items.length })
+                await running.done
+                return
+            }
+
+            const queue: UploadQueue = {
+                items: [...payload.files],
+                controller: new AbortController(),
+                done: Promise.resolve(),
+            }
+            uploadQueue.current = queue
+            queue.done = runUploadQueue(queue, rootGetters['socket/getUrl'], commit)
+            await queue.done
+        } finally {
+            if (payload.loading) await dispatch('socket/removeLoading', { name: payload.loading }, { root: true })
+        }
+    },
+
+    cancelUpload({ commit }): void {
+        abortUploadQueue()
+        commit('resetUpload')
+    },
+
+    async rolloverLogs({ dispatch, getters }, applications: FileRolloverApplication[]): Promise<void> {
+        await Promise.all(
+            applications.map(async (application) => {
+                try {
+                    const result = await Vue.$socket.emitAndWait('server.logs.rollover', { application })
+
+                    result.rolled_over.forEach((name) => {
+                        Vue.$toast.success(i18n.t('Machine.LogfilesPanel.RolloverToastSuccessful', { name }).toString())
+                    })
+                    Object.entries(result.failed).forEach(([name, message]) => {
+                        Vue.$toast.error(
+                            i18n.t('Machine.LogfilesPanel.RolloverToastFailed', { name, message }).toString()
+                        )
+                    })
+                } catch (error) {
+                    toastError(error)
+                }
+            })
+        )
+
+        // Moonraker doesn't watch the logs root, so the new log files only show up after a reload
+        if (!getters['isDirectoryLoaded'](LOGS_ROOT)) return
+        setTimeout(() => dispatch('loadDirectory', LOGS_ROOT), ROLLOVER_RELOAD_DELAY)
     },
 }

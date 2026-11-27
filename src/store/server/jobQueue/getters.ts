@@ -1,6 +1,5 @@
 import { GetterTree } from 'vuex'
 import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import Vue from 'vue'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<ServerJobQueueState, RootState> = {
@@ -15,10 +14,7 @@ export const getters: GetterTree<ServerJobQueueState, RootState> = {
                 return
             }
 
-            const file = rootGetters['files/getFile']('gcodes/' + job.filename)
-            if (!file?.metadataPulled)
-                Vue.$socket.emit('server.files.metadata', { filename: job.filename }, { action: 'files/getMetadata' })
-            job.metadata = file
+            job.metadata = rootGetters['files/getGcodeFile'](job.filename)
             job.combinedIds = []
 
             jobs.push(job)

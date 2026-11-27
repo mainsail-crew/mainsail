@@ -46,7 +46,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     }
 
     get gcodeFiles() {
-        let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
+        let gcodes: FileStateGcodefile[] = this.$store.getters['files/allGcodeFiles']
 
         if (this.filesFilter.length > 0 && this.filesFilter.length < 3) {
             gcodes = gcodes.filter((file: FileStateGcodefile) => {
@@ -63,22 +63,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
             })
         }
 
-        gcodes = gcodes
-            .sort((a: FileStateGcodefile, b: FileStateGcodefile) => {
-                return b.modified.getTime() - a.modified.getTime()
-            })
-            .slice(0, this.filesLimit)
-
-        const requestItems = gcodes.filter(
-            (file: FileStateGcodefile) => !file.metadataRequested && !file.metadataPulled
-        )
-        this.$store.dispatch(
-            'files/requestMetadata',
-            requestItems.map((file: FileStateGcodefile) => ({
-                filename: 'gcodes/' + file.filename,
-            }))
-        )
-        return gcodes
+        return [...gcodes].sort((a, b) => b.modified.getTime() - a.modified.getTime()).slice(0, this.filesLimit)
     }
 
     mounted() {

@@ -67,8 +67,9 @@ export default class ThemeMixin extends Vue {
     }
 
     get sidebarLogo(): string {
-        const url = this.$store.getters['files/getSidebarLogo']
-        if (url !== '' || this.themeName === 'mainsail') return url
+        const url: string | null = this.$store.getters['files/sidebarLogoUrl']
+        if (url) return url
+        if (this.themeName === 'mainsail') return ''
 
         // if no theme is set, return empty string to load the default logo
         if (!(this.theme.logo?.show ?? false)) return ''
@@ -82,7 +83,7 @@ export default class ThemeMixin extends Vue {
     }
 
     get mainBgImage() {
-        const url = this.$store.getters['files/getMainBackground']
+        const url: string | null = this.$store.getters['files/mainBackgroundUrl']
         if (url || this.themeName === 'mainsail') return url
 
         if (!this.theme.mainBackground?.show) return null

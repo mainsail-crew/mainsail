@@ -201,7 +201,6 @@ export const getDefaultState = (): GuiState => {
                 showUnitIcons: true,
                 showTd1Color: true,
             },
-            blockFileUpload: false,
             configfiles: {
                 countPerPage: 10,
                 sortBy: 'filename',

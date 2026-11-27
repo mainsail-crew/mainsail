@@ -1,282 +1,176 @@
-import {
-    themeDir,
-    thumbnailBigMin,
-    thumbnailSmallMax,
-    thumbnailSmallMin,
-    validGcodeExtensions,
-} from '@/store/variables'
 import { GetterTree } from 'vuex'
-import { FileState, FileStateFile, FileStateGcodefile } from '@/store/files/types'
-import { ServerHistoryStateJob } from '@/store/server/history/types'
-import { escapePath } from '@/plugins/helpers'
+import { FileState, FileStateDirectoryListing, FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { RootState } from '@/store/types'
+import { splitExtension } from '@/plugins/helpers'
+import {
+    CONFIG_ROOT,
+    GCODES_ROOT,
+    THEME_DIR,
+    THEME_IMAGE_EXTENSIONS,
+    createGcodeFileBuilder,
+    getRoot,
+    isGcodeFile,
+    isHiddenPath,
+    isInPath,
+    joinPath,
+    normalizePath,
+    splitPath,
+    stripRoot,
+    toFile,
+} from '@/store/files/helpers'
+import type { FilePermission } from '@/types/moonraker/FileManagerRPC'
 
 export const getters: GetterTree<FileState, RootState> = {
-    getDirectory: (state) => (requestedPath: string) => {
-        if (requestedPath.startsWith('/')) requestedPath = requestedPath.substring(1)
-        if (requestedPath.endsWith('/')) requestedPath = requestedPath.substring(0, requestedPath.length - 1)
+    isDirectoryLoaded: (state) => (path: string) => normalizePath(path) in state.directories,
 
-        const findDirectory = function (filetree: FileStateFile, pathArray: string[]): FileStateFile | null {
-            if (pathArray.length) {
-                const newFiletree = filetree?.childrens?.find(
-                    (element: FileStateFile) => element.isDirectory && element.filename === pathArray[0]
-                )
+    /** Returns the permissions of a directory, subdirectories get them from their parent directory. */
+    getDirectoryPermissions:
+        (state) =>
+        (path: string): FilePermission => {
+            const rootPermissions = state.roots[getRoot(path)] ?? 'r'
+            const { dir, name } = splitPath(path)
+            if (dir === '') return rootPermissions
 
-                if (!newFiletree) return null
-
-                pathArray.shift()
-                return findDirectory(newFiletree, pathArray)
-            }
-
-            return filetree
-        }
-
-        return findDirectory({ childrens: state.filetree } as FileStateFile, requestedPath.split('/'))
-    },
-
-    getFile: (state, getters) => (requestedFilename: string) => {
-        const path = requestedFilename.slice(0, requestedFilename.lastIndexOf('/'))
-        const filename = requestedFilename.slice(requestedFilename.lastIndexOf('/') + 1)
-        const directory = getters['getDirectory'](path)
-
-        return directory?.childrens?.find((file: FileStateFile) => file.filename === filename && !file.isDirectory)
-    },
-
-    getGcodeFiles:
-        (state, getters, rootState, rootGetters) =>
-        (path: string | null, boolShowHiddenFiles: boolean, boolShowPrintedFiles: boolean) => {
-            const rootGcodes = getters['getDirectory']('gcodes')
-            if (rootGcodes === null) return []
-
-            let files: FileStateFile[] = []
-
-            if (path !== null) {
-                const directory = getters['getDirectory']('gcodes' + path)
-                files = directory?.childrens ?? []
-            } else {
-                const searchGcodes = (directory: FileStateFile, currentPath: string) => {
-                    if (directory.isDirectory && directory.childrens?.length) {
-                        directory.childrens?.forEach((file) => {
-                            if (!file.isDirectory) {
-                                const tmp = { ...file }
-                                tmp.filename = currentPath + file.filename
-                                files.push(tmp)
-                            } else searchGcodes(file, currentPath + file.filename + '/')
-                        })
-                    }
-                }
-
-                searchGcodes(rootGcodes, '')
-            }
-
-            files = files.filter((file: FileStateFile) => {
-                // filter hidden files
-                if (!boolShowHiddenFiles && (file.filename === 'thumbs' || file.filename.startsWith('.'))) return false
-
-                // START filter != gcode files or dirs
-                if (file.isDirectory) return true
-
-                const pos = file.filename.lastIndexOf('.')
-                const extension = file.filename.slice(pos)
-
-                return validGcodeExtensions.includes(extension)
-                // END filter != gcode files or dirs
-            })
-
-            const gcodes = Object.keys(rootState.printer?.gcode?.commands ?? {})
-            const preheat_gcode_objects = [
-                { name: 'first_layer_extr_temp', gcode: 'M104' },
-                { name: 'first_layer_bed_temp', gcode: 'M140' },
-                { name: 'chamber_temp', gcode: 'M141' },
-            ].filter((obj) => gcodes.includes(obj.gcode))
-
-            // build gcode files array with all data in one array
-            const output: FileStateGcodefile[] = []
-            files.forEach((file: FileStateFile) => {
-                const fileTimestamp = typeof file.modified.getTime === 'function' ? file.modified.getTime() : 0
-                const tmp: FileStateGcodefile = {
-                    ...file,
-                    full_filename: path ? path + '/' + file.filename : file.filename,
-                    preheat_gcode: null,
-                    count_printed: 0,
-                    last_start_time: null,
-                    last_end_time: null,
-                    last_filament_used: null,
-                    last_status: null,
-                    last_print_duration: null,
-                    last_total_duration: null,
-                }
-
-                const preheat_gcode_array: string[] = []
-                preheat_gcode_objects.forEach((object) => {
-                    if (object.name in file && file[object.name] > 1) {
-                        preheat_gcode_array.push(`${object.gcode} S${file[object.name]}`)
-                    }
-                })
-
-                if (preheat_gcode_array.length) {
-                    tmp.preheat_gcode = preheat_gcode_array.join('\n')
-                }
-
-                let histories = rootGetters['server/history/getPrintJobsForGcodes'](
-                    tmp.full_filename,
-                    fileTimestamp,
-                    file.size,
-                    file.uuid ?? null,
-                    file.job_id
-                )
-
-                if (histories && histories.length) {
-                    histories = histories.sort(
-                        (a: ServerHistoryStateJob, b: ServerHistoryStateJob) => b.start_time - a.start_time
-                    )
-
-                    const histories_completed = histories.filter(
-                        (history: ServerHistoryStateJob) => history.status === 'completed'
-                    )
-
-                    const last_history = [...histories].shift()
-                    tmp.last_status = last_history.status
-                    tmp.count_printed = histories_completed.length
-                    tmp.last_start_time = new Date(last_history.start_time * 1000)
-
-                    if (tmp.count_printed > 0) {
-                        const history_completed = histories_completed[0]
-                        tmp.last_start_time = new Date(history_completed.start_time * 1000)
-                        tmp.last_end_time = new Date(history_completed.end_time * 1000)
-                        tmp.last_filament_used = history_completed.filament_used
-                        tmp.last_print_duration = history_completed.print_duration
-                        tmp.last_total_duration = history_completed.total_duration
-                    }
-                }
-
-                if (boolShowPrintedFiles) output.push(tmp)
-                else if (tmp.count_printed === 0) output.push(tmp)
-            })
-
-            return output
+            return state.directories[dir]?.dirs[name]?.permissions ?? rootPermissions
         },
 
-    getAllGcodes: (state, getters) => {
-        return getters['getGcodeFiles'](null, false, true)
-    },
+    getDirectory:
+        (state, getters) =>
+        (path: string): FileStateDirectoryListing | null => {
+            const normalized = normalizePath(path)
+            const directory = state.directories[normalized]
+            if (!directory) return null
 
-    getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
-        const directory = getters['getDirectory']('config/' + themeDir)
+            return {
+                path: normalized,
+                permissions: getters.getDirectoryPermissions(normalized),
+                disk_usage: directory.disk_usage,
+                items: [
+                    ...Object.values(directory.dirs).map((entry) => toFile(entry, true)),
+                    ...Object.values(directory.files).map((entry) => toFile(entry, false)),
+                ],
+            }
+        },
 
-        const file = directory?.childrens?.find(
-            (element: FileStateFile) =>
-                element.filename?.slice(0, element.filename?.lastIndexOf('.')) === acceptName &&
-                acceptExtensions.includes(element.filename?.slice(element.filename?.lastIndexOf('.') + 1))
-        )
-        if (!file) return null
+    /** Checks if a file or directory exists in a loaded directory. */
+    pathExists:
+        (state) =>
+        (path: string): boolean => {
+            const { dir, name } = splitPath(path)
+            const directory = state.directories[dir]
+            if (!directory) return false
 
-        return `${rootGetters['socket/getUrl']}/server/files/config/${themeDir}/${
-            file.filename
-        }?timestamp=${file.modified.getTime()}`
-    },
+            return name in directory.dirs || name in directory.files
+        },
 
-    getSidebarLogo: (state, getters) => {
-        const acceptName = 'sidebar-logo'
-        const acceptExtensions = ['svg', 'jpg', 'jpeg', 'png', 'gif']
+    getFile:
+        (state) =>
+        (path: string): FileStateFile | null => {
+            const { dir, name } = splitPath(path)
+            const entry = state.directories[dir]?.files[name]
+            if (!entry) return null
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? ''
-    },
+            return toFile(entry, false)
+        },
 
-    getCustomSidebarBackground: (state, getters) => {
-        const acceptName = 'sidebar-background'
-        const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
+    /**
+     * Returns a gcode file with metadata and print history.
+     */
+    getGcodeFile:
+        (state, _getters, rootState, rootGetters) =>
+        (path: string): FileStateGcodefile | null => {
+            const normalized = normalizePath(path)
+            const { dir, name } = splitPath(joinPath(GCODES_ROOT, normalized))
+            const entry = state.directories[dir]?.files[name]
+            if (!entry) return null
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
-    },
+            return createGcodeFileBuilder(state, rootState, rootGetters)(entry, normalized, false, name)
+        },
 
-    getMainBackground: (state, getters) => {
-        const acceptName = 'main-background'
-        const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
+    /**
+     * Returns the directories and gcode files of a directory in the gcodes root.
+     */
+    getGcodeFiles:
+        (state, _getters, rootState, rootGetters) =>
+        (path: string): FileStateGcodefile[] => {
+            const dirPath = normalizePath(path)
+            const directory = state.directories[joinPath(GCODES_ROOT, dirPath)]
+            if (!directory) return []
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions)
-    },
-
-    getCustomStylesheet: (state, getters) => {
-        const acceptName = 'custom'
-        const acceptExtensions = ['css']
-
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
-    },
-
-    getCustomNaviPoints: (state, getters) => {
-        const acceptName = 'navi'
-        const acceptExtensions = ['json']
-
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
-    },
-
-    getCustomFavicons: (state, getters) => {
-        const acceptName16 = 'favicon-32x32'
-        const acceptName32 = 'favicon-32x32'
-        const acceptExtensions = ['png', 'svg']
-
-        const favicon16 = getters['getThemeFileUrl'](acceptName16, acceptExtensions)
-        const favicon32 = getters['getThemeFileUrl'](acceptName32, acceptExtensions)
-
-        if (favicon16 && favicon32) return [favicon16, favicon32]
-        else if (favicon16) return [favicon16, favicon16]
-        else if (favicon32) return [favicon32, favicon32]
-
-        return null
-    },
-
-    getDiskUsage: (state) => (path: string) => {
-        if (path.indexOf('/') === 0) path = path.substr(1)
-        if (path.indexOf('/') !== -1) path = path.substr(0, path.indexOf('/'))
-
-        const dir = state.filetree.find((dir) => dir.filename === path)
-        if (dir && 'disk_usage' in dir) return dir.disk_usage
-
-        return null
-    },
-
-    checkConfigFile: (state, getters) => (acceptName: string) => {
-        const directory = getters['getDirectory']('config')
-
-        return (
-            directory?.childrens?.findIndex(
-                (element: FileStateFile) => element.filename !== undefined && element.filename === acceptName
-            ) !== -1
-        )
-    },
-
-    getSmallThumbnail: (state, getters, rootState, rootGetters) => (item: FileStateFile, currentPath: string) => {
-        if ('thumbnails' in item && item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find(
-                (thumb) =>
-                    thumb.width >= thumbnailSmallMin &&
-                    thumb.width <= thumbnailSmallMax &&
-                    thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax
+            const build = createGcodeFileBuilder(state, rootState, rootGetters)
+            const dirs = Object.values(directory.dirs).map((entry) =>
+                build(entry, joinPath(dirPath, entry.name), true, entry.name)
             )
+            const files = Object.values(directory.files)
+                .filter((entry) => isGcodeFile(entry.name))
+                .map((entry) => build(entry, joinPath(dirPath, entry.name), false, entry.name))
 
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${rootGetters['socket/getUrl']}/server/files/${escapePath(currentPath)}/${escapePath(
-                    thumbnail.relative_path
-                )}?timestamp=${item.modified.getTime()}`
-            }
-        }
+            return [...dirs, ...files]
+        },
 
-        return ''
+    /**
+     * Returns all gcode files of the gcodes root and its subdirectories, without hidden files and directories.
+     * The filename is the path relative to the gcodes root.
+     */
+    allGcodeFiles: (state, _getters, rootState, rootGetters): FileStateGcodefile[] => {
+        const build = createGcodeFileBuilder(state, rootState, rootGetters)
+        const output: FileStateGcodefile[] = []
+
+        Object.entries(state.directories).forEach(([dirPath, directory]) => {
+            if (!isInPath(dirPath, GCODES_ROOT)) return
+
+            const relativeDir = stripRoot(dirPath)
+            Object.values(directory.files)
+                .filter((entry) => isGcodeFile(entry.name))
+                .forEach((entry) => {
+                    const path = joinPath(relativeDir, entry.name)
+                    if (!isHiddenPath(path)) output.push(build(entry, path, false, path))
+                })
+        })
+
+        return output
     },
 
-    getBigThumbnail: (state, getters, rootState, rootGetters) => (item: FileStateFile, currentPath: string) => {
-        if ('thumbnails' in item && item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
+    getThemeFileUrl:
+        (state, _getters, _rootState, rootGetters) =>
+        (acceptName: string, acceptExtensions: string[]): string | null => {
+            const files = Object.values(state.directories[THEME_DIR]?.files ?? {})
+            const file = files.find((entry) => {
+                const { name, extension } = splitExtension(entry.name)
+                return name === acceptName && acceptExtensions.includes(extension)
+            })
+            if (!file) return null
 
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${rootGetters['socket/getUrl']}/server/files/${escapePath(currentPath)}/${escapePath(
-                    thumbnail.relative_path
-                )}?timestamp=${item.modified.getTime()}`
-            }
-        }
+            return `${rootGetters['socket/getUrl']}/server/files/${THEME_DIR}/${file.name}?timestamp=${
+                file.modified * 1000
+            }`
+        },
 
-        return ''
+    sidebarLogoUrl: (_state, getters): string | null => getters.getThemeFileUrl('sidebar-logo', THEME_IMAGE_EXTENSIONS),
+
+    sidebarBackgroundUrl: (_state, getters): string | null =>
+        getters.getThemeFileUrl('sidebar-background', THEME_IMAGE_EXTENSIONS),
+
+    mainBackgroundUrl: (_state, getters): string | null =>
+        getters.getThemeFileUrl('main-background', THEME_IMAGE_EXTENSIONS),
+
+    customStylesheetUrl: (_state, getters): string | null => getters.getThemeFileUrl('custom', ['.css']),
+
+    customNaviPointsUrl: (_state, getters): string | null => getters.getThemeFileUrl('navi', ['.json']),
+
+    /** Returns the urls of the 16x16 and 32x32 favicons, a missing size falls back to the other one. */
+    customFaviconUrls: (_state, getters): [string, string] | null => {
+        const acceptExtensions = ['.png', '.svg']
+        const favicon16: string | null = getters.getThemeFileUrl('favicon-16x16', acceptExtensions)
+        const favicon32: string | null = getters.getThemeFileUrl('favicon-32x32', acceptExtensions)
+        const fallback = favicon16 ?? favicon32
+        if (!fallback) return null
+
+        return [favicon16 ?? fallback, favicon32 ?? fallback]
     },
+
+    hasConfigFile:
+        (state) =>
+        (name: string): boolean =>
+            name in (state.directories[CONFIG_ROOT]?.files ?? {}),
 }

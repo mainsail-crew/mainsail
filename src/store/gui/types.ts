@@ -134,7 +134,6 @@ export interface GuiState {
             showUnitIcons: boolean
             showTd1Color: boolean
         }
-        blockFileUpload: boolean
         configfiles: {
             countPerPage: number
             sortBy: string
