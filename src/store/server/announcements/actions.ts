@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { ServerAnnouncementsState, ServerAnnouncementsStateEntry } from './types'
+import { isJsonRpcError } from '@/types/moonraker'
 import type {
     AnnouncementDismissedNotification,
     AnnouncementEntry,
@@ -27,7 +28,7 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
         commit('reset')
     },
 
-    async init({ commit }): Promise<void> {
+    async init({ commit, dispatch }): Promise<void> {
         logDebug('init')
 
         try {
@@ -36,7 +37,12 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
             commit('setEntries', response.entries.map(convertEntry))
             commit('setFeeds', response.feeds)
         } catch (error) {
+            // connection loss, timeouts etc. are handled by server/init
+            if (!isJsonRpcError(error)) throw error
+
+            // Moonraker answered with an error: the component is optional, so report it instead of failing the init
             logError('Failed to initialize announcements:', error)
+            await dispatch('server/addFailedInitComponent', 'announcements', { root: true })
         }
     },
 

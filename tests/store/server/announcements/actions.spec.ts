@@ -4,6 +4,7 @@ import Vuex, { Store } from 'vuex'
 import { announcements, getDefaultState } from '@/store/server/announcements'
 import type { ServerAnnouncementsState } from '@/store/server/announcements/types'
 import type { AnnouncementEntry } from '@/types/moonraker/AnnouncementsRPC'
+import { WebSocketClosedError } from '@/plugins/jsonRpcSocket'
 
 Vue.use(Vuex)
 
@@ -32,9 +33,13 @@ const emitAndWait = vi.fn(async (method: string, params: Record<string, unknown>
     return responder(params)
 })
 const windowStub = { console: { error: vi.fn(), debug: vi.fn() } }
+const addFailedInitComponent = vi.fn()
 
 const createStore = () =>
     new Store({
+        actions: {
+            'server/addFailedInitComponent': (_, component: string) => addFailedInitComponent(component),
+        },
         modules: {
             announcements: { ...announcements, state: getDefaultState() },
         },
@@ -46,6 +51,7 @@ const announcementsState = (store: Store<unknown>) =>
 describe('server/announcements/actions', () => {
     beforeEach(() => {
         emitAndWait.mockClear()
+        addFailedInitComponent.mockClear()
         windowStub.console.error.mockClear()
         Vue.$socket = { emitAndWait } as unknown as typeof Vue.$socket
         vi.stubGlobal('window', windowStub)
@@ -74,13 +80,24 @@ describe('server/announcements/actions', () => {
         expect(state.entries[1].dismiss_wake).toEqual(new Date(3000 * 1000))
     })
 
-    it('does not throw when init fails', async () => {
+    it('reports a failed init component when Moonraker answers init with an error', async () => {
         responders = {}
         const store = createStore()
 
         await expect(store.dispatch('announcements/init')).resolves.toBeUndefined()
         expect(announcementsState(store).entries).toEqual([])
         expect(windowStub.console.error).toHaveBeenCalled()
+        expect(addFailedInitComponent).toHaveBeenCalledWith('announcements')
+    })
+
+    it('propagates non RPC errors on init to the caller', async () => {
+        responders['server.announcements.list'] = () => {
+            throw new WebSocketClosedError()
+        }
+        const store = createStore()
+
+        await expect(store.dispatch('announcements/init')).rejects.toBeInstanceOf(WebSocketClosedError)
+        expect(addFailedInitComponent).not.toHaveBeenCalled()
     })
 
     it('replaces entries on notify_announcement_update and keeps the feeds', async () => {
