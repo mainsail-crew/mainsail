@@ -26,6 +26,7 @@
  * 'method.without.params': () => Promise<{ data: string[] }>
  */
 
+import type { AnnouncementsRPC } from './AnnouncementsRPC'
 import type { DatabaseRPC } from './DatabaseRPC'
 import type { FileManagerRPC } from './FileManagerRPC'
 import type { HistoryRPC } from './HistoryRPC'
@@ -38,7 +39,7 @@ import type { WebcamRPC } from './WebcamRPC'
  * Combined Moonraker RPC Interface containing all method categories.
  */
 export interface MoonrakerRPCInterface
-    extends DatabaseRPC, FileManagerRPC, HistoryRPC, MachineRPC, PrinterRPC, ServerRPC, WebcamRPC {}
+    extends AnnouncementsRPC, DatabaseRPC, FileManagerRPC, HistoryRPC, MachineRPC, PrinterRPC, ServerRPC, WebcamRPC {}
 
 /**
  * Union type of all available RPC method names.
