@@ -51,7 +51,11 @@
                                 'service' in currentWebcam
                             "
                             class="webcamContainer">
-                            <webcam-wrapper :webcam="currentWebcam" :printer-url="printerUrl" :show-fps="false" />
+                            <webcam-wrapper
+                                :webcam="currentWebcam"
+                                :printer-url="printerUrl"
+                                :show-fps="false"
+                                overlay-display-mode="hidden" />
                         </div>
                         <v-card-title
                             class="white--text py-2"

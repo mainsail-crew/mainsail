@@ -2,6 +2,26 @@ export interface GuiWebcamState {
     webcams: GuiWebcamStateWebcam[]
 }
 
+export type OverlayPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+export type WebcamOverlayDisplayMode = 'auto' | 'hidden' | 'dummy'
+
+export type OverlayItemKey =
+    'extruders' | 'heatbed' | 'fan' | 'speed' | 'flowRate' | 'printTime' | 'estimate' | 'layerCount' | 'eta'
+
+/** `source` selects the data variant for items that offer one (printTime: current|total, estimate: avg|slicer). */
+export interface OverlayItemConfig {
+    enabled: boolean
+    position: OverlayPosition
+    source?: string
+}
+
+export interface WebcamOverlaysConfig {
+    enabled: boolean
+    /** Any CSS color; alpha 0 renders no background. */
+    backgroundColor?: string
+    items?: Partial<Record<OverlayItemKey, OverlayItemConfig>>
+}
+
 export interface GuiWebcamStateWebcam {
     name: string
     location?: string
@@ -33,6 +53,7 @@ export interface GuiWebcamStateWebcam {
         nozzleCrosshair?: boolean
         nozzleCrosshairColor?: string
         nozzleCrosshairSize?: number
+        overlays?: WebcamOverlaysConfig
     }
     source?: 'config' | 'database'
 }
