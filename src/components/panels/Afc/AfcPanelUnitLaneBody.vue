@@ -128,8 +128,8 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
     }
 
     get spoolMultiColorDirection(): ServerSpoolmanStateFilament['multi_color_direction'] {
-        const spoolmanDirection = this.spool?.filament?.multi_color_direction
-        if (spoolmanDirection) return spoolmanDirection
+        // take the direction from the same source as the colors
+        if (this.spool?.filament?.multi_color_hexes) return this.spool.filament.multi_color_direction
 
         // AFC reports the lane's color mode as 'gradient' or 'coaxial'
         if (this.lane.color_mode === 'coaxial') return 'coaxial'
