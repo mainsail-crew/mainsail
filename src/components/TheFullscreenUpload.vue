@@ -9,10 +9,9 @@
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Component from 'vue-class-component'
-import { validGcodeExtensions } from '@/store/variables'
 import { mdiTrayArrowDown } from '@mdi/js'
 import { FileUploadItem } from '@/store/files/types'
-import { getUploadLoadingName } from '@/store/files/helpers'
+import { getUploadLoadingName, isGcodeFile } from '@/store/files/helpers'
 
 @Component
 export default class TheFullscreenUpload extends Mixins(BaseMixin) {
@@ -77,8 +76,7 @@ export default class TheFullscreenUpload extends Mixins(BaseMixin) {
         this.hideDropZone()
 
         const files: FileUploadItem[] = [...(e.dataTransfer?.files ?? [])].map((file) => {
-            const extension = file.name.slice(file.name.lastIndexOf('.'))
-            const isGcode = validGcodeExtensions.includes(extension)
+            const isGcode = isGcodeFile(file.name)
 
             let path = ''
             if (this.currentRoute === '/files' && isGcode) path = this.currentPathGcodes

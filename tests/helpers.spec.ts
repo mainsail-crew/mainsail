@@ -1,7 +1,28 @@
 import { describe, expect, it } from 'vitest'
-import { isRecord, parseNumber, toggleArrayItem } from '@/plugins/helpers'
+import { isRecord, parseNumber, splitExtension, toggleArrayItem } from '@/plugins/helpers'
 
 describe('helpers', () => {
+    describe('splitExtension', () => {
+        it('splits the extension including the dot', () => {
+            expect(splitExtension('video.mp4')).toEqual({ name: 'video', extension: '.mp4' })
+            expect(splitExtension('archive.tar.gz')).toEqual({ name: 'archive.tar', extension: '.gz' })
+        })
+
+        it('returns no extension for files without one and hidden files', () => {
+            expect(splitExtension('README')).toEqual({ name: 'README', extension: '' })
+            expect(splitExtension('.gitignore')).toEqual({ name: '.gitignore', extension: '' })
+        })
+
+        it('only uses the last segment of a path', () => {
+            expect(splitExtension('.theme/sidebar-logo.png')).toEqual({
+                name: '.theme/sidebar-logo',
+                extension: '.png',
+            })
+            expect(splitExtension('.theme/navi')).toEqual({ name: '.theme/navi', extension: '' })
+            expect(splitExtension('dir.v2/file')).toEqual({ name: 'dir.v2/file', extension: '' })
+        })
+    })
+
     describe('parseNumber', () => {
         it('returns number values unchanged', () => {
             expect(parseNumber(250, 0)).toBe(250)

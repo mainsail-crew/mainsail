@@ -88,7 +88,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import FileBrowser from '@/components/files/FileBrowser.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { escapePath } from '@/plugins/helpers'
+import { escapePath, splitExtension } from '@/plugins/helpers'
 import { joinPath, stripRoot } from '@/store/files/helpers'
 import { FileStateDirectoryListing, FileStateFile } from '@/store/files/types'
 import {
@@ -105,8 +105,6 @@ const VIDEO_EXTENSION = '.mp4'
 const ZIP_EXTENSION = '.zip'
 /** The thumbnail of a video is a jpg file with the same name */
 const THUMBNAIL_EXTENSION = '.jpg'
-
-const getBasename = (filename: string) => filename.slice(0, filename.lastIndexOf('.'))
 
 @Component({
     components: { FileBrowser, Panel },
@@ -184,11 +182,11 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     getRelatedFiles(filename: string): string[] {
         if (!filename.endsWith(VIDEO_EXTENSION)) return []
 
-        return [getBasename(filename) + THUMBNAIL_EXTENSION]
+        return [splitExtension(filename).name + THUMBNAIL_EXTENSION]
     }
 
     getThumbnail(item: FileStateFile): string | undefined {
-        const thumbnailName = getBasename(item.filename) + THUMBNAIL_EXTENSION
+        const thumbnailName = splitExtension(item.filename).name + THUMBNAIL_EXTENSION
         const thumbnail = this.allFiles.find((file) => file.filename === thumbnailName)
         if (!thumbnail) return undefined
 

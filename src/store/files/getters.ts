@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
 import { FileState, FileStateDirectoryListing, FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import { RootState } from '@/store/types'
+import { splitExtension } from '@/plugins/helpers'
 import {
     CONFIG_ROOT,
     GCODES_ROOT,
@@ -136,10 +137,8 @@ export const getters: GetterTree<FileState, RootState> = {
         (acceptName: string, acceptExtensions: string[]): string | null => {
             const files = Object.values(state.directories[THEME_DIR]?.files ?? {})
             const file = files.find((entry) => {
-                const pos = entry.name.lastIndexOf('.')
-                if (pos === -1) return false
-
-                return entry.name.slice(0, pos) === acceptName && acceptExtensions.includes(entry.name.slice(pos + 1))
+                const { name, extension } = splitExtension(entry.name)
+                return name === acceptName && acceptExtensions.includes(extension)
             })
             if (!file) return null
 
@@ -150,35 +149,35 @@ export const getters: GetterTree<FileState, RootState> = {
 
     getSidebarLogo: (state, getters) => {
         const acceptName = 'sidebar-logo'
-        const acceptExtensions = ['svg', 'jpg', 'jpeg', 'png', 'gif']
+        const acceptExtensions = ['.svg', '.jpg', '.jpeg', '.png', '.gif']
 
         return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? ''
     },
 
     getCustomSidebarBackground: (state, getters) => {
         const acceptName = 'sidebar-background'
-        const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
+        const acceptExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
 
         return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
     },
 
     getMainBackground: (state, getters) => {
         const acceptName = 'main-background'
-        const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
+        const acceptExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
 
         return getters['getThemeFileUrl'](acceptName, acceptExtensions)
     },
 
     getCustomStylesheet: (state, getters) => {
         const acceptName = 'custom'
-        const acceptExtensions = ['css']
+        const acceptExtensions = ['.css']
 
         return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
     },
 
     getCustomNaviPoints: (state, getters) => {
         const acceptName = 'navi'
-        const acceptExtensions = ['json']
+        const acceptExtensions = ['.json']
 
         return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
     },
@@ -186,7 +185,7 @@ export const getters: GetterTree<FileState, RootState> = {
     getCustomFavicons: (state, getters) => {
         const acceptName16 = 'favicon-16x16'
         const acceptName32 = 'favicon-32x32'
-        const acceptExtensions = ['png', 'svg']
+        const acceptExtensions = ['.png', '.svg']
 
         const favicon16 = getters['getThemeFileUrl'](acceptName16, acceptExtensions)
         const favicon32 = getters['getThemeFileUrl'](acceptName32, acceptExtensions)

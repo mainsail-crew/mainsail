@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import type { Commit } from 'vuex'
 import i18n from '@/plugins/i18n'
+import { splitExtension } from '@/plugins/helpers'
 import { hiddenDirectories, themeDir, validGcodeExtensions } from '@/store/variables'
 import { isJsonRpcError } from '@/types/moonraker'
 import type { RootState } from '@/store/types'
@@ -98,12 +99,8 @@ export const isInPath = (path: string, directory: string): boolean =>
 export const replacePathPrefix = (path: string, source: string, dest: string): string =>
     dest + path.slice(source.length)
 
-export const getExtension = (filename: string): string => {
-    const pos = filename.lastIndexOf('.')
-    if (pos === -1) return ''
-
-    return filename.slice(pos).toLowerCase()
-}
+/** Returns the lowercase extension including the dot, e.g. 'Benchy.GCODE' -> '.gcode' */
+export const getExtension = (filename: string): string => splitExtension(filename).extension.toLowerCase()
 
 export const isGcodeFile = (filename: string): boolean => validGcodeExtensions.includes(getExtension(filename))
 

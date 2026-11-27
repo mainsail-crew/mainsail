@@ -125,6 +125,17 @@ export const convertName = (name: string): string => {
     return output
 }
 
+/**
+ * Splits a filename into its name and its extension (including the dot), e.g. 'video.mp4' -> 'video' + '.mp4'.
+ * Hidden files without an extension (e.g. '.gitignore') have no extension, the directories of a path stay in the name.
+ */
+export const splitExtension = (filename: string): { name: string; extension: string } => {
+    const pos = filename.lastIndexOf('.')
+    if (pos <= filename.lastIndexOf('/') + 1) return { name: filename, extension: '' }
+
+    return { name: filename.slice(0, pos), extension: filename.slice(pos) }
+}
+
 export const formatFilesize = (fileSizeInBytes: number): string => {
     let i = -1
     const byteUnits = [' kB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB']

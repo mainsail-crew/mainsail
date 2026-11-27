@@ -35,15 +35,8 @@ import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick } from '@mdi/js'
 import { FileStateFile } from '@/store/files/types'
 import { joinPath } from '@/store/files/helpers'
+import { splitExtension } from '@/plugins/helpers'
 import type { FileRelatedFilesGetter, FilesNameDialogMode } from '@/components/files/types'
-
-/** Splits a filename into its name and its extension, e.g. 'video.mp4' -> 'video' + '.mp4' */
-const splitExtension = (filename: string): { base: string; extension: string } => {
-    const pos = filename.lastIndexOf('.')
-    if (pos <= 0) return { base: filename, extension: '' }
-
-    return { base: filename.slice(0, pos), extension: filename.slice(pos) }
-}
 
 /**
  * Dialog to enter a name for a new directory or file, or to rename or duplicate a file or directory.
@@ -129,7 +122,7 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
         if (!newVal) return
 
         const filename = this.mode === 'rename' || this.mode === 'duplicate' ? (this.item?.filename ?? '') : ''
-        this.name = this.extension ? splitExtension(filename).base : filename
+        this.name = this.extension ? splitExtension(filename).name : filename
 
         setTimeout(() => {
             this.inputField?.focus()
@@ -174,8 +167,8 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
     async renameRelatedFiles() {
         if (!this.item || this.item.isDirectory || !this.relatedFiles) return
 
-        const oldBase = splitExtension(this.item.filename).base
-        const newBase = splitExtension(this.filename).base
+        const oldBase = splitExtension(this.item.filename).name
+        const newBase = splitExtension(this.filename).name
 
         const requests = this.relatedFiles(this.item.filename)
             .filter((related) => related.startsWith(oldBase))

@@ -1,20 +1,13 @@
 import { themeDir, thumbnailBigMin } from '@/store/variables'
-import { convertName, escapePath } from '@/plugins/helpers'
+import { convertName, escapePath, splitExtension } from '@/plugins/helpers'
 import { GetterTree } from 'vuex'
 import { FarmPrinterHeater, FarmPrinterState, FarmPrinterTemperature } from '@/store/farm/printer/types'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 import { RootState } from '@/store/types'
 
 const LOGO_NAME = 'sidebar-logo'
-const LOGO_EXTENSIONS = ['gif', 'jpg', 'png', 'svg']
+const LOGO_EXTENSIONS = ['.gif', '.jpg', '.png', '.svg']
 const EXTRUDER_OBJECT = /^extruder\d*$/
-
-const splitExtension = (filename: string): { name: string; extension: string } => {
-    const index = filename.lastIndexOf('.')
-    if (index === -1) return { name: filename, extension: '' }
-
-    return { name: filename.slice(0, index), extension: filename.slice(index + 1) }
-}
 
 const hasTemperature = (heater: FarmPrinterHeater | undefined): heater is { temperature: number; target: number } =>
     heater?.temperature !== undefined && heater?.target !== undefined
