@@ -63,25 +63,18 @@ export const getters: GetterTree<GuiNotificationState, RootState> = {
         })
     },
 
-    getNotificationsAnnouncements: (_state, _getters, _rootState, rootGetters) => {
-        // moonraker announcements
-        const announcements = rootGetters['server/announcements/getAnnouncements'] as ServerAnnouncementsStateEntry[]
-        if (announcements.length === 0) return []
+    getNotificationsAnnouncements: (_state, _getters, _rootState, rootGetters): GuiNotificationStateEntry[] => {
+        const announcements = rootGetters['server/announcements/activeAnnouncements'] as ServerAnnouncementsStateEntry[]
 
-        const notifications: GuiNotificationStateEntry[] = []
-        announcements.forEach((entry) => {
-            notifications.push({
-                id: 'announcement/' + entry.entry_id,
-                priority: entry.priority,
-                title: entry.title,
-                description: entry.description,
-                date: entry.date,
-                dismissed: entry.dismissed,
-                url: entry.url,
-            })
-        })
-
-        return notifications
+        return announcements.map((entry) => ({
+            id: `announcement/${entry.entry_id}`,
+            priority: entry.priority,
+            title: entry.title,
+            description: entry.description,
+            date: entry.date,
+            dismissed: entry.dismissed,
+            url: entry.url,
+        }))
     },
 
     getNotificationsFlags: (_state, getters, rootState, rootGetters) => {

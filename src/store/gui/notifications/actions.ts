@@ -29,7 +29,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
         if (!entry_id || !category) return
 
         if (category === 'announcement') {
-            await dispatch('server/announcements/close', { entry_id }, { root: true })
+            await dispatch('server/announcements/dismiss', { entry_id }, { root: true })
             return
         }
 
@@ -49,7 +49,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
         if (!entry_id) return
 
         if (category === 'announcement') {
-            await dispatch('server/announcements/dismiss', { entry_id, time: payload.time }, { root: true })
+            await dispatch('server/announcements/dismiss', { entry_id, wake_time: payload.time }, { root: true })
             return
         }
 
