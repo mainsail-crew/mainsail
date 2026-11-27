@@ -75,7 +75,6 @@ export const getters: GetterTree<FileState, RootState> = {
 
     /**
      * Returns a gcode file with metadata and print history.
-     * @param path path relative to the gcodes root
      */
     getGcodeFile:
         (state, _getters, rootState, rootGetters) =>
@@ -90,7 +89,6 @@ export const getters: GetterTree<FileState, RootState> = {
 
     /**
      * Returns the directories and gcode files of a directory in the gcodes root.
-     * @param path path relative to the gcodes root
      */
     getGcodeFiles:
         (state, _getters, rootState, rootGetters) =>
