@@ -13,8 +13,7 @@
                     :label="$t('Files.Name')"
                     :suffix="extension"
                     required
-                    :rules="nameInputRules"
-                    @update:error="updateIsInvalidName"
+                    :rules="nameRules"
                     @keydown.enter="submit" />
             </v-card-text>
             <v-card-actions>
@@ -69,13 +68,7 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
     @Ref() readonly inputField!: FocusableRef
 
     name = ''
-    isInvalidName = false
     isLoading = false
-
-    nameInputRules = [
-        (value: string) => !!value || this.$t('Files.InvalidNameEmpty'),
-        (value: string) => !this.existsName(value) || this.$t('Files.InvalidNameAlreadyExists'),
-    ]
 
     get title() {
         switch (this.mode) {
@@ -114,8 +107,21 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
         return this.name + this.extension
     }
 
+    /** Validation error of the current name, or null if it is valid */
+    get nameError(): string | null {
+        if (this.name === '') return this.$t('Files.InvalidNameEmpty').toString()
+        if (this.existsName(this.name)) return this.$t('Files.InvalidNameAlreadyExists').toString()
+
+        return null
+    }
+
+    /** The rules change with the error, so the input field validates again, e.g. when a file is created */
+    get nameRules() {
+        return [this.nameError ?? true]
+    }
+
     get isValid() {
-        return !this.isInvalidName && this.name.length > 0
+        return this.nameError === null
     }
 
     @Watch('showDialog')
@@ -124,8 +130,6 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
 
         const filename = this.mode === 'rename' || this.mode === 'duplicate' ? (this.item?.filename ?? '') : ''
         this.name = this.extension ? splitExtension(filename).base : filename
-        // an existing name is invalid, but the input field only validates after the first change
-        this.isInvalidName = filename !== ''
 
         setTimeout(() => {
             this.inputField?.focus()
@@ -134,10 +138,6 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
 
     existsName(name: string) {
         return this.$store.getters['files/existsPath'](joinPath(this.directory, name + this.extension))
-    }
-
-    updateIsInvalidName(value: boolean) {
-        this.isInvalidName = value
     }
 
     async submit() {

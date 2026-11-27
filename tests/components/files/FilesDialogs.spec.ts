@@ -51,7 +51,6 @@ const createStore = () => {
 // the build type check resolves .vue files with a generic shim, so the used members are typed here
 interface NameDialogInstance {
     name: string
-    isInvalidName: boolean
     isLoading: boolean
     readonly extension: string
     readonly isValid: boolean
@@ -104,7 +103,6 @@ describe('FilesNameDialog', () => {
         expect(dialog.existsName('renamed')).toBe(false)
 
         dialog.name = 'renamed'
-        dialog.isInvalidName = false
         await dialog.submit()
 
         expect(dispatch).toHaveBeenCalledWith('files/move', {
@@ -123,7 +121,6 @@ describe('FilesNameDialog', () => {
         const dialog = createNameDialog({ mode: 'rename', item: file('video.mp4'), keepExtension: true, relatedFiles })
         dialog.onShowDialogChanged(true)
         dialog.name = 'renamed'
-        dialog.isInvalidName = false
 
         await dialog.submit()
 
