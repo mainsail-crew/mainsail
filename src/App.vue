@@ -101,12 +101,12 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         return style
     }
 
-    get customStylesheet() {
-        return this.$store.getters['files/getCustomStylesheet']
+    get customStylesheet(): string | null {
+        return this.$store.getters['files/customStylesheetUrl']
     }
 
-    get customFavicons(): string | null {
-        return this.$store.getters['files/getCustomFavicons'] ?? null
+    get customFavicons(): [string, string] | null {
+        return this.$store.getters['files/customFaviconUrls']
     }
 
     get language(): string {

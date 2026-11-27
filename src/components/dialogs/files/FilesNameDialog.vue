@@ -130,7 +130,7 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
     }
 
     existsName(name: string) {
-        return this.$store.getters['files/existsPath'](joinPath(this.directory, name + this.extension))
+        return this.$store.getters['files/pathExists'](joinPath(this.directory, name + this.extension))
     }
 
     async submit() {
@@ -172,7 +172,7 @@ export default class FilesNameDialog extends Mixins(BaseMixin) {
 
         const requests = this.relatedFiles(this.item.filename)
             .filter((related) => related.startsWith(oldBase))
-            .filter((related) => this.$store.getters['files/existsPath'](joinPath(this.directory, related)))
+            .filter((related) => this.$store.getters['files/pathExists'](joinPath(this.directory, related)))
             .map((related) =>
                 this.$store.dispatch('files/move', {
                     source: joinPath(this.directory, related),

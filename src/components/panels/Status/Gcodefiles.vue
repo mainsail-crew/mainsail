@@ -46,7 +46,7 @@ export default class StatusPanelGcodefiles extends Mixins(BaseMixin, ControlMixi
     }
 
     get gcodeFiles() {
-        let gcodes: FileStateGcodefile[] = this.$store.getters['files/getAllGcodes'] ?? []
+        let gcodes: FileStateGcodefile[] = this.$store.getters['files/allGcodeFiles']
 
         if (this.filesFilter.length > 0 && this.filesFilter.length < 3) {
             gcodes = gcodes.filter((file: FileStateGcodefile) => {

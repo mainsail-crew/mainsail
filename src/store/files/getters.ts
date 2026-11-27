@@ -52,7 +52,7 @@ export const getters: GetterTree<FileState, RootState> = {
         },
 
     /** Checks if a file or directory exists in a loaded directory. */
-    existsPath:
+    pathExists:
         (state) =>
         (path: string): boolean => {
             const { dir, name } = splitPath(path)
@@ -113,7 +113,7 @@ export const getters: GetterTree<FileState, RootState> = {
      * Returns all gcode files of the gcodes root and its subdirectories, without hidden files and directories.
      * The filename is the path relative to the gcodes root.
      */
-    getAllGcodes: (state, _getters, rootState, rootGetters): FileStateGcodefile[] => {
+    allGcodeFiles: (state, _getters, rootState, rootGetters): FileStateGcodefile[] => {
         const build = createGcodeFileBuilder(state, rootState, rootGetters)
         const output: FileStateGcodefile[] = []
 
@@ -133,7 +133,7 @@ export const getters: GetterTree<FileState, RootState> = {
     },
 
     getThemeFileUrl:
-        (state, getters, rootState, rootGetters) =>
+        (state, _getters, _rootState, rootGetters) =>
         (acceptName: string, acceptExtensions: string[]): string | null => {
             const files = Object.values(state.directories[THEME_DIR]?.files ?? {})
             const file = files.find((entry) => {
@@ -147,55 +147,32 @@ export const getters: GetterTree<FileState, RootState> = {
             }`
         },
 
-    getSidebarLogo: (state, getters) => {
-        const acceptName = 'sidebar-logo'
-        const acceptExtensions = ['.svg', '.jpg', '.jpeg', '.png', '.gif']
+    sidebarLogoUrl: (state, getters): string | null =>
+        getters.getThemeFileUrl('sidebar-logo', ['.svg', '.jpg', '.jpeg', '.png', '.gif']),
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? ''
-    },
+    sidebarBackgroundUrl: (state, getters): string | null =>
+        getters.getThemeFileUrl('sidebar-background', ['.jpg', '.jpeg', '.png', '.gif', '.svg']),
 
-    getCustomSidebarBackground: (state, getters) => {
-        const acceptName = 'sidebar-background'
-        const acceptExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
+    mainBackgroundUrl: (state, getters): string | null =>
+        getters.getThemeFileUrl('main-background', ['.jpg', '.jpeg', '.png', '.gif', '.svg']),
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
-    },
+    customStylesheetUrl: (state, getters): string | null => getters.getThemeFileUrl('custom', ['.css']),
 
-    getMainBackground: (state, getters) => {
-        const acceptName = 'main-background'
-        const acceptExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
+    customNaviPointsUrl: (state, getters): string | null => getters.getThemeFileUrl('navi', ['.json']),
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions)
-    },
-
-    getCustomStylesheet: (state, getters) => {
-        const acceptName = 'custom'
-        const acceptExtensions = ['.css']
-
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
-    },
-
-    getCustomNaviPoints: (state, getters) => {
-        const acceptName = 'navi'
-        const acceptExtensions = ['.json']
-
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
-    },
-
-    getCustomFavicons: (state, getters) => {
-        const acceptName16 = 'favicon-16x16'
-        const acceptName32 = 'favicon-32x32'
+    /** Returns the urls of the 16x16 and 32x32 favicons, a missing size falls back to the other one. */
+    customFaviconUrls: (state, getters): [string, string] | null => {
         const acceptExtensions = ['.png', '.svg']
+        const favicon16: string | null = getters.getThemeFileUrl('favicon-16x16', acceptExtensions)
+        const favicon32: string | null = getters.getThemeFileUrl('favicon-32x32', acceptExtensions)
+        const fallback = favicon16 ?? favicon32
+        if (!fallback) return null
 
-        const favicon16 = getters['getThemeFileUrl'](acceptName16, acceptExtensions)
-        const favicon32 = getters['getThemeFileUrl'](acceptName32, acceptExtensions)
-
-        if (favicon16 && favicon32) return [favicon16, favicon32]
-        else if (favicon16) return [favicon16, favicon16]
-        else if (favicon32) return [favicon32, favicon32]
-
-        return null
+        return [favicon16 ?? fallback, favicon32 ?? fallback]
     },
 
-    checkConfigFile: (state) => (acceptName: string) => acceptName in (state.directories[CONFIG_ROOT]?.files ?? {}),
+    hasConfigFile:
+        (state) =>
+        (name: string): boolean =>
+            name in (state.directories[CONFIG_ROOT]?.files ?? {}),
 }

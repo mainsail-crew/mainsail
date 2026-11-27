@@ -102,7 +102,7 @@ export default class FilesDeleteDialog extends Mixins(BaseMixin) {
         const requests = this.relatedFiles(item.filename)
             .filter((related) => !targetNames.includes(related))
             .map((related) => joinPath(this.directory, related))
-            .filter((path) => this.$store.getters['files/existsPath'](path))
+            .filter((path) => this.$store.getters['files/pathExists'](path))
             .map((path) => this.$store.dispatch('files/deleteFile', { path, silent: true }))
 
         await Promise.all(requests)

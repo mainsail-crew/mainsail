@@ -127,10 +127,10 @@ describe('files/getters', () => {
     it('checks if a file or directory exists', () => {
         const { getters } = createGetters(createState())
 
-        expect(getters.existsPath('gcodes/sub')).toBe(true)
-        expect(getters.existsPath('/gcodes/a.gcode')).toBe(true)
-        expect(getters.existsPath('gcodes/missing.gcode')).toBe(false)
-        expect(getters.existsPath('logs/klippy.log')).toBe(false)
+        expect(getters.pathExists('gcodes/sub')).toBe(true)
+        expect(getters.pathExists('/gcodes/a.gcode')).toBe(true)
+        expect(getters.pathExists('gcodes/missing.gcode')).toBe(false)
+        expect(getters.pathExists('logs/klippy.log')).toBe(false)
     })
 
     it('returns a single file', () => {
@@ -172,7 +172,7 @@ describe('files/getters', () => {
     it('returns all gcode files with their path as filename', () => {
         const { getters } = createGetters(createState())
 
-        const files = getters.getAllGcodes.map((file: { filename: string }) => file.filename)
+        const files = getters.allGcodeFiles.map((file: { filename: string }) => file.filename)
         expect(files.sort()).toEqual(['a.gcode', 'sub/b.gcode'])
     })
 
@@ -185,7 +185,7 @@ describe('files/getters', () => {
         })
         const { getters } = createGetters(state)
 
-        const files = getters.getAllGcodes.map((file: { filename: string }) => file.filename)
+        const files = getters.allGcodeFiles.map((file: { filename: string }) => file.filename)
         expect(files.sort()).toEqual(['a.gcode', 'sub/b.gcode'])
     })
 
@@ -206,16 +206,16 @@ describe('files/getters', () => {
     it('returns theme file urls', () => {
         const { getters } = createGetters(createState())
 
-        expect(getters.getSidebarLogo).toBe(
+        expect(getters.sidebarLogoUrl).toBe(
             'http://printer/server/files/config/.theme/sidebar-logo.png?timestamp=1000000'
         )
-        expect(getters.getCustomStylesheet).toBeNull()
+        expect(getters.customStylesheetUrl).toBeNull()
     })
 
     it('checks if a file exists in the config root', () => {
         const { getters } = createGetters(createState())
 
-        expect(getters.checkConfigFile('printer.cfg')).toBe(true)
-        expect(getters.checkConfigFile('mainsail.cfg')).toBe(false)
+        expect(getters.hasConfigFile('printer.cfg')).toBe(true)
+        expect(getters.hasConfigFile('mainsail.cfg')).toBe(false)
     })
 })

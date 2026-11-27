@@ -36,7 +36,7 @@ const createStore = () => {
         modules: {
             files: {
                 namespaced: true,
-                getters: { existsPath: () => (path: string) => existingPaths.includes(path) },
+                getters: { pathExists: () => (path: string) => existingPaths.includes(path) },
                 actions: Object.fromEntries(
                     ['move', 'copy', 'createDirectory', 'createFile', 'deleteFile', 'deleteDirectory'].map((name) => [
                         name,

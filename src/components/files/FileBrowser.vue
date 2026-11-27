@@ -496,7 +496,7 @@ export default class FileBrowser extends Mixins(BaseMixin) {
         if (!this.relatedFiles) return []
 
         return this.relatedFiles(filename).filter((related) =>
-            this.$store.getters['files/existsPath'](joinPath(this.directoryPath, related))
+            this.$store.getters['files/pathExists'](joinPath(this.directoryPath, related))
         )
     }
 
