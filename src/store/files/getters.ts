@@ -148,20 +148,20 @@ export const getters: GetterTree<FileState, RootState> = {
             }`
         },
 
-    sidebarLogoUrl: (state, getters): string | null => getters.getThemeFileUrl('sidebar-logo', THEME_IMAGE_EXTENSIONS),
+    sidebarLogoUrl: (_state, getters): string | null => getters.getThemeFileUrl('sidebar-logo', THEME_IMAGE_EXTENSIONS),
 
-    sidebarBackgroundUrl: (state, getters): string | null =>
+    sidebarBackgroundUrl: (_state, getters): string | null =>
         getters.getThemeFileUrl('sidebar-background', THEME_IMAGE_EXTENSIONS),
 
-    mainBackgroundUrl: (state, getters): string | null =>
+    mainBackgroundUrl: (_state, getters): string | null =>
         getters.getThemeFileUrl('main-background', THEME_IMAGE_EXTENSIONS),
 
-    customStylesheetUrl: (state, getters): string | null => getters.getThemeFileUrl('custom', ['.css']),
+    customStylesheetUrl: (_state, getters): string | null => getters.getThemeFileUrl('custom', ['.css']),
 
-    customNaviPointsUrl: (state, getters): string | null => getters.getThemeFileUrl('navi', ['.json']),
+    customNaviPointsUrl: (_state, getters): string | null => getters.getThemeFileUrl('navi', ['.json']),
 
     /** Returns the urls of the 16x16 and 32x32 favicons, a missing size falls back to the other one. */
-    customFaviconUrls: (state, getters): [string, string] | null => {
+    customFaviconUrls: (_state, getters): [string, string] | null => {
         const acceptExtensions = ['.png', '.svg']
         const favicon16: string | null = getters.getThemeFileUrl('favicon-16x16', acceptExtensions)
         const favicon32: string | null = getters.getThemeFileUrl('favicon-32x32', acceptExtensions)
