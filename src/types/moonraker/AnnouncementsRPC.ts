@@ -49,9 +49,12 @@ export interface AnnouncementsRPC {
         entry_id: string
         /**
          * A time, in seconds, after which the entry's dismissed flag will revert to false.
-         * When set to null (or omitted) the entry remains dismissed indefinitely (default: null)
+         * When omitted the entry remains dismissed indefinitely.
+         *
+         * Note: The docs list `null` as the default, but Moonraker rejects an explicit null
+         * (it fails the int conversion), so the parameter must be omitted instead.
          */
-        wake_time?: number | null
+        wake_time?: number
     }) => Promise<{
         /** The entry ID of the dismissed announcement entry */
         entry_id: string

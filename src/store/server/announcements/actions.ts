@@ -57,9 +57,11 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
      * The state is updated via the notify_announcement_dismissed notification.
      */
     async dismiss(_, payload: { entry_id: string; wake_time?: number | null }): Promise<void> {
-        await Vue.$socket.emitAndWait('server.announcements.dismiss', {
-            entry_id: payload.entry_id,
-            wake_time: payload.wake_time ?? null,
-        })
+        const { entry_id, wake_time } = payload
+
+        // Moonraker rejects an explicit null, so wake_time has to be omitted to dismiss indefinitely
+        const params = wake_time == null ? { entry_id } : { entry_id, wake_time }
+
+        await Vue.$socket.emitAndWait('server.announcements.dismiss', params)
     },
 }

@@ -122,7 +122,15 @@ describe('server/announcements/actions', () => {
 
         await store.dispatch('announcements/dismiss', { entry_id: 'a' })
 
-        expect(emitAndWait).toHaveBeenCalledWith('server.announcements.dismiss', { entry_id: 'a', wake_time: null })
+        expect(emitAndWait).toHaveBeenCalledWith('server.announcements.dismiss', { entry_id: 'a' })
+    })
+
+    it('omits a null wake time, because Moonraker rejects an explicit null', async () => {
+        const store = createStore()
+
+        await store.dispatch('announcements/dismiss', { entry_id: 'a', wake_time: null })
+
+        expect(emitAndWait).toHaveBeenCalledWith('server.announcements.dismiss', { entry_id: 'a' })
     })
 
     it('dismisses an announcement with a wake time', async () => {
