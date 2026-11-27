@@ -7,7 +7,8 @@
                         <span class="d-flex align-center justify-center" v-bind="attr" v-on="on">
                             <afc-filament-reel
                                 :percent="spoolPercent"
-                                :color="spoolColor"
+                                :colors="spoolColors"
+                                :multi-color-direction="spoolMultiColorDirection"
                                 class="filamentSpool cursor-pointer"
                                 @click-spool="onFilamentClick" />
                         </span>
@@ -63,7 +64,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import AfcMixin from '@/components/mixins/afc'
-import { ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
+import { ServerSpoolmanStateFilament, ServerSpoolmanStateSpool } from '@/store/server/spoolman/types'
 import { afcIconInfintiy } from '@/plugins/afcIcons'
 import AfcUnitLaneInfiniteDialog from '@/components/dialogs/AfcUnitLaneInfiniteDialog.vue'
 import AfcUnitLaneFilamentDialog from '@/components/dialogs/AfcUnitLaneFilamentDialog.vue'
@@ -114,10 +115,28 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         return array.join(' | ')
     }
 
-    get spoolColor() {
-        if (this.hasTd && this.showTd1Color) return `#${this.tdColor}`
+    get spoolColors(): string[] {
+        // a TD-1 reading is a single measured color, so it replaces the filament colors
+        if (this.hasTd && this.showTd1Color) return [`#${this.tdColor}`]
 
-        return this.lane.color || '#000000'
+        const spoolmanHexes = this.spool?.filament?.multi_color_hexes
+        if (spoolmanHexes) return spoolmanHexes.split(',')
+
+        // a linked spool wins over the lane: the lane's colors only count without one
+        if (!this.spool && this.lane.multi_color_hexes?.length) return this.lane.multi_color_hexes
+
+        return [this.lane.color || '#000000']
+    }
+
+    get spoolMultiColorDirection(): ServerSpoolmanStateFilament['multi_color_direction'] {
+        // take the direction from the same source as the colors
+        if (this.spool?.filament?.multi_color_hexes) return this.spool.filament.multi_color_direction
+
+        // AFC reports the lane's color mode as 'gradient' or 'coaxial'
+        if (this.lane.color_mode === 'coaxial') return 'coaxial'
+        if (this.lane.color_mode === 'gradient') return 'longitudinal'
+
+        return undefined
     }
 
     get spoolRemainingWeight(): number | undefined {
