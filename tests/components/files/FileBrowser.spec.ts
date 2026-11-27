@@ -23,6 +23,7 @@ describe('FileBrowser', () => {
     let moved: unknown[]
     let errors: unknown[]
     let events: { name: string; payload: unknown }[]
+    let moveResult: boolean
 
     const createStore = (registeredDirectories: string[]) => {
         const store = new Store({
@@ -33,7 +34,10 @@ describe('FileBrowser', () => {
                     actions: {
                         ...files.actions,
                         openDirectory: (_, path: string) => opened.push(path),
-                        move: (_, payload: unknown) => moved.push(payload),
+                        move: (_, payload: unknown) => {
+                            moved.push(payload)
+                            return moveResult
+                        },
                     },
                 },
                 server: { namespaced: true, state: { registered_directories: registeredDirectories } },
@@ -60,7 +64,7 @@ describe('FileBrowser', () => {
         return store
     }
 
-    const mount = (registeredDirectories = ['config']) => {
+    const mount = (registeredDirectories = ['config'], props: Record<string, unknown> = {}) => {
         store = createStore(registeredDirectories)
         const items: FileStateFile[] = store.getters['files/getDirectory']('config/sub')?.items ?? []
         const record = (name: string) => (payload: unknown) => events.push({ name, payload })
@@ -74,7 +78,7 @@ describe('FileBrowser', () => {
                     h(
                         FileBrowser,
                         {
-                            props: { root: 'config', path: '/sub', items },
+                            props: { root: 'config', path: '/sub', items, ...props },
                             on: {
                                 'update:path': record('update:path'),
                                 'update:selected': record('update:selected'),
@@ -95,6 +99,7 @@ describe('FileBrowser', () => {
         moved = []
         errors = []
         events = []
+        moveResult = true
         Vue.config.errorHandler = (error) => errors.push(error)
     })
 
@@ -158,6 +163,46 @@ describe('FileBrowser', () => {
         rowByName('dir').dispatchEvent(drop)
 
         expect(moved).toEqual([{ source: 'config/sub/printer.cfg', dest: 'config/sub/dir/printer.cfg' }])
+    })
+
+    const dropOn = (row: HTMLElement, filename: string) => {
+        const drop = new Event('drop', { bubbles: true, cancelable: true })
+        Object.defineProperty(drop, 'dataTransfer', { value: { getData: () => filename } })
+        row.dispatchEvent(drop)
+    }
+
+    it('moves the existing related files along with a dropped file', async () => {
+        mount(['config'], { relatedFiles: () => ['printer.jpg', 'missing.jpg'] })
+        store.commit('files/setDirectoryEntry', {
+            path: 'config/sub/printer.jpg',
+            type: 'files',
+            item: { modified: 1, size: 5, permissions: 'rw' },
+        })
+        await tick()
+
+        dropOn(rowByName('dir'), 'printer.cfg')
+        await tick()
+
+        expect(moved).toEqual([
+            { source: 'config/sub/printer.cfg', dest: 'config/sub/dir/printer.cfg' },
+            { source: 'config/sub/printer.jpg', dest: 'config/sub/dir/printer.jpg', silent: true },
+        ])
+    })
+
+    it('does not move the related files if the dropped file cannot be moved', async () => {
+        moveResult = false
+        mount(['config'], { relatedFiles: () => ['printer.jpg'] })
+        store.commit('files/setDirectoryEntry', {
+            path: 'config/sub/printer.jpg',
+            type: 'files',
+            item: { modified: 1, size: 5, permissions: 'rw' },
+        })
+        await tick()
+
+        dropOn(rows()[0], 'printer.cfg')
+        await tick()
+
+        expect(moved).toEqual([{ source: 'config/sub/printer.cfg', dest: 'config/printer.cfg' }])
     })
 
     it('shows the root-missing slot instead of the table if the root is not registered', async () => {

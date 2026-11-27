@@ -550,21 +550,38 @@ export default class FileBrowser extends Mixins(BaseMixin) {
         this.dropTarget = item.filename
     }
 
-    /** Moves the dragged file into a directory, or into the parent directory without a target */
-    onDrop(e: DragEvent, target: FileStateFile | null) {
+    /**
+     * Moves the dragged file into a directory, or into the parent directory without a target.
+     * Related files are moved along, e.g. the thumbnail of a timelapse video.
+     */
+    async onDrop(e: DragEvent, target: FileStateFile | null) {
         e.preventDefault()
         this.dropTarget = null
 
         const filename = e.dataTransfer?.getData(DRAG_DATA_TYPE)
         if (!filename || filename === target?.filename) return
 
-        const destDirectory = target
-            ? joinPath(this.directoryPath, target.filename)
-            : joinPath(this.root, this.parentPath)
-        this.$store.dispatch('files/move', {
-            source: joinPath(this.directoryPath, filename),
+        const sourceDirectory = this.directoryPath
+        const destDirectory = target ? joinPath(sourceDirectory, target.filename) : joinPath(this.root, this.parentPath)
+        // read before the move, because the store removes the file afterwards
+        const isFile = this.$store.getters['files/getFile'](joinPath(sourceDirectory, filename)) !== null
+        const relatedFiles = isFile ? this.getRelatedFiles(filename) : []
+
+        const success = await this.$store.dispatch('files/move', {
+            source: joinPath(sourceDirectory, filename),
             dest: joinPath(destDirectory, filename),
         })
+        if (!success) return
+
+        await Promise.all(
+            relatedFiles.map((related) =>
+                this.$store.dispatch('files/move', {
+                    source: joinPath(sourceDirectory, related),
+                    dest: joinPath(destDirectory, related),
+                    silent: true,
+                })
+            )
+        )
     }
 
     advancedSearch(value: unknown, search: string | null) {
