@@ -44,6 +44,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('stopKlippyPolling')
 
         commit('reset')
+        dispatch('announcements/reset')
         dispatch('power/reset')
         dispatch('updateManager/reset')
     },
