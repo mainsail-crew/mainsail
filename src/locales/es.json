@@ -192,6 +192,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Asignación automática",
+                "AutoMapNoLanes": "Ningún carril con filamento cargado",
+                "AutoMapUnchanged": "Los carriles ya coinciden con el archivo",
+                "AutoMapUnmapped": "No queda carril cargado para {tools}"
+            },
             "DoYouWantToStartFilename": "¿Desea iniciar {filename}?",
             "DoYouWantToStartFilenameFilament": "¿Quieres iniciar {filename} con el siguiente filamento?",
             "Headline": "Iniciar trabajo",

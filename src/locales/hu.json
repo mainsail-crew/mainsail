@@ -194,6 +194,10 @@
     "Dialogs": {
         "StartPrint": {
             "Afc": {
+                "AutoMap": "Automatikus hozzárendelés",
+                "AutoMapNoLanes": "Nincs betöltött filamentes sáv",
+                "AutoMapUnchanged": "A sávok már megfelelnek a fájlnak",
+                "AutoMapUnmapped": "Nem maradt betöltött sáv ehhez: {tools}",
                 "FilamentTypeMismatch": "A ({file}) G-Code állományban szereplő filament típus nem egyezik a kiválasztott ({lane}) filament típussal .",
                 "FilamentWeightNotEnough": "Nincs elegendő filament a kiválasztott csatornában ({lane}). Szükséges: {required}, rendelkezésre áll: {available}."
             },

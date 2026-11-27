@@ -181,6 +181,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Automatisk tildeling",
+                "AutoMapNoLanes": "Ingen lane med filament indlæst",
+                "AutoMapUnchanged": "Lanes matcher allerede filen",
+                "AutoMapUnmapped": "Ingen indlæst lane tilbage til {tools}"
+            },
             "DoYouWantToStartFilename": "Vil du begynde at printe: {filename}?",
             "DoYouWantToStartFilenameFilament": "Vil du begynde at printe {filename} med dette filament?",
             "Headline": "Start print",

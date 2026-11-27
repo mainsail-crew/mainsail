@@ -181,6 +181,12 @@
     },
     "Dialogs": {
         "StartPrint": {
+            "Afc": {
+                "AutoMap": "Автопідбір",
+                "AutoMapNoLanes": "Немає lane із завантаженим філаментом",
+                "AutoMapUnchanged": "Lane вже відповідають файлу",
+                "AutoMapUnmapped": "Не залишилось завантаженої lane для {tools}"
+            },
             "DoYouWantToStartFilename": "Ви хочете роздрукувати {filename}?",
             "DoYouWantToStartFilenameFilament": "Хочете почати друк {filename} з наявного філаменту?",
             "Headline": "Почати друк",
