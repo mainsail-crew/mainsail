@@ -6,6 +6,7 @@ import {
     CONFIG_ROOT,
     GCODES_ROOT,
     THEME_DIR,
+    THEME_IMAGE_EXTENSIONS,
     createGcodeFileBuilder,
     getRoot,
     isGcodeFile,
@@ -147,14 +148,13 @@ export const getters: GetterTree<FileState, RootState> = {
             }`
         },
 
-    sidebarLogoUrl: (state, getters): string | null =>
-        getters.getThemeFileUrl('sidebar-logo', ['.svg', '.jpg', '.jpeg', '.png', '.gif']),
+    sidebarLogoUrl: (state, getters): string | null => getters.getThemeFileUrl('sidebar-logo', THEME_IMAGE_EXTENSIONS),
 
     sidebarBackgroundUrl: (state, getters): string | null =>
-        getters.getThemeFileUrl('sidebar-background', ['.jpg', '.jpeg', '.png', '.gif', '.svg']),
+        getters.getThemeFileUrl('sidebar-background', THEME_IMAGE_EXTENSIONS),
 
     mainBackgroundUrl: (state, getters): string | null =>
-        getters.getThemeFileUrl('main-background', ['.jpg', '.jpeg', '.png', '.gif', '.svg']),
+        getters.getThemeFileUrl('main-background', THEME_IMAGE_EXTENSIONS),
 
     customStylesheetUrl: (state, getters): string | null => getters.getThemeFileUrl('custom', ['.css']),
 

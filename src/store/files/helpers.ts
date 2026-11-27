@@ -31,6 +31,9 @@ export const LOGS_ROOT = 'logs'
 /** Path of the directory with the theme files */
 export const THEME_DIR = `${CONFIG_ROOT}/${themeDir}`
 
+/** Accepted file extensions for theme images (logo and backgrounds) */
+export const THEME_IMAGE_EXTENSIONS = ['.svg', '.jpg', '.jpeg', '.png', '.gif']
+
 /** Delay before the logs root is reloaded after a rollover, so the new files exist */
 export const ROLLOVER_RELOAD_DELAY = 500
 
