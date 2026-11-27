@@ -327,13 +327,93 @@ describe('files/actions', () => {
             action: 'zip_files',
         })
 
-        await store.dispatch('files/downloadZip', { items: ['/gcodes/sub'], dest: 'config/my files.zip' })
+        await store.dispatch('files/downloadZip', {
+            files: ['/gcodes/a.gcode'],
+            directories: [],
+            dest: 'config/my files.zip',
+        })
 
         expect(emitAndWait).toHaveBeenCalledWith('server.files.zip', {
-            items: ['gcodes/sub'],
+            items: ['gcodes/a.gcode'],
             dest: 'config/my files.zip',
         })
         expect(windowStub.open).toHaveBeenCalledWith('http://printer/server/files/config/my%20files.zip')
+    })
+
+    describe('downloadZip with directories', () => {
+        const zipResponse = () => ({
+            destination: { root: 'config', path: 'backup.zip', modified: 1, size: 1, permissions: 'rw' },
+            action: 'zip_files',
+        })
+
+        beforeEach(() => {
+            windowStub.open.mockClear()
+            responders['server.files.get_directory'] = (params) => {
+                switch (params.path) {
+                    case 'config/macros':
+                        return directoryResponse(['nested', 'empty', '.git'], [{ filename: 'a.cfg' }], 'config')
+                    case 'config/macros/nested':
+                        return directoryResponse(['deep'], [], 'config')
+                    case 'config/macros/nested/deep':
+                        return directoryResponse([], [{ filename: 'b.cfg' }], 'config')
+                    case 'config/macros/empty':
+                        return directoryResponse([], [], 'config')
+                    default:
+                        throw { code: 400, message: 'Directory does not exist' }
+                }
+            }
+        })
+
+        // Moonraker only archives the files directly inside of a directory
+        it('adds all subdirectories of a directory, without hidden directories', async () => {
+            const store = createStore()
+            responders['server.files.zip'] = zipResponse
+
+            await store.dispatch('files/downloadZip', {
+                files: ['config/printer.cfg'],
+                directories: ['/config/macros/'],
+                dest: 'config/backup.zip',
+            })
+
+            const [, params] = emitAndWait.mock.calls.find(([method]) => method === 'server.files.zip') ?? []
+            expect(params?.dest).toBe('config/backup.zip')
+            expect([...(params?.items as string[])].sort()).toEqual([
+                'config/macros',
+                'config/macros/empty',
+                'config/macros/nested',
+                'config/macros/nested/deep',
+                'config/printer.cfg',
+            ])
+            expect(windowStub.open).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not store the listed directories', async () => {
+            const store = createStore()
+            responders['server.files.zip'] = zipResponse
+
+            await store.dispatch('files/downloadZip', {
+                files: [],
+                directories: ['config/macros'],
+                dest: 'config/backup.zip',
+            })
+
+            expect(filesState(store).directories).toEqual({})
+        })
+
+        it('creates no archive if a directory cannot be listed', async () => {
+            const store = createStore()
+            responders['server.files.zip'] = zipResponse
+
+            await store.dispatch('files/downloadZip', {
+                files: ['config/printer.cfg'],
+                directories: ['config/missing'],
+                dest: 'config/backup.zip',
+            })
+
+            expect(emitAndWait).not.toHaveBeenCalledWith('server.files.zip', expect.anything())
+            expect(toast.error).toHaveBeenCalledWith('Directory does not exist')
+            expect(windowStub.open).not.toHaveBeenCalled()
+        })
     })
 
     describe('openDirectory and reloadDirectory', () => {

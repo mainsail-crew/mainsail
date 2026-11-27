@@ -511,14 +511,16 @@ export default class FileBrowser extends Mixins(BaseMixin) {
             return
         }
 
-        const names = this.selected.flatMap((item) => [
-            item.filename,
-            ...(item.isDirectory ? [] : this.getRelatedFiles(item.filename)),
-        ])
+        const toPath = (name: string) => joinPath(this.directoryPath, name)
+        const directories = this.selected.filter((item) => item.isDirectory).map((item) => item.filename)
+        const files = this.selected
+            .filter((item) => !item.isDirectory)
+            .flatMap((item) => [item.filename, ...this.getRelatedFiles(item.filename)])
 
         this.isDownloadingZip = true
         await this.$store.dispatch('files/downloadZip', {
-            items: [...new Set(names)].map((name) => joinPath(this.directoryPath, name)),
+            files: [...new Set(files)].map(toPath),
+            directories: directories.map(toPath),
             dest: `${this.zipRoot}/${this.root}-${generateTimestamp()}.zip`,
         })
         this.isDownloadingZip = false

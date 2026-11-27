@@ -15,6 +15,7 @@ import {
     getErrorMessage,
     getRoot,
     isGcodeFile,
+    isHiddenDirectory,
     isInPath,
     joinPath,
     logDebug,
@@ -383,14 +384,40 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     /**
-     * Creates a zip archive and downloads it.
-     * @param payload.items paths of files and directories, starting with the root
+     * Returns a directory and all its subdirectories, without storing them. Hidden directories are skipped.
+     * Request errors are not handled here, so the caller never continues with an incomplete list.
+     */
+    async listDirectoryTree({ dispatch }, path: string): Promise<string[]> {
+        const normalized = normalizePath(path)
+        const response = await Vue.$socket.emitAndWait('server.files.get_directory', { path: normalized })
+
+        const subdirectories: string[][] = await Promise.all(
+            response.dirs
+                .filter((dir) => !isHiddenDirectory(dir.dirname))
+                .map((dir) => dispatch('listDirectoryTree', joinPath(normalized, dir.dirname)))
+        )
+
+        return [normalized, ...subdirectories.flat()]
+    },
+
+    /**
+     * Creates a zip archive and downloads it. Moonraker only archives the files directly inside of a
+     * directory, so the subdirectories of every directory are added as well.
+     * @param payload.files paths of files, starting with the root
+     * @param payload.directories paths of directories, starting with the root
      * @param payload.dest path of the archive, starting with a writable root
      */
-    async downloadZip({ rootGetters }, payload: { items: string[]; dest: string }): Promise<void> {
+    async downloadZip(
+        { dispatch, rootGetters },
+        payload: { files: string[]; directories: string[]; dest: string }
+    ): Promise<void> {
         try {
+            const directoryTrees: string[][] = await Promise.all(
+                payload.directories.map((path) => dispatch('listDirectoryTree', path))
+            )
+
             const { destination } = await Vue.$socket.emitAndWait('server.files.zip', {
-                items: payload.items.map(normalizePath),
+                items: [...payload.files.map(normalizePath), ...directoryTrees.flat()],
                 dest: normalizePath(payload.dest),
             })
 

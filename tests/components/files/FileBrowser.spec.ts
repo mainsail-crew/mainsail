@@ -21,6 +21,7 @@ describe('FileBrowser', () => {
     let vm: Vue
     let opened: string[]
     let moved: unknown[]
+    let zipped: unknown[]
     let errors: unknown[]
     let events: { name: string; payload: unknown }[]
     let moveResult: boolean
@@ -38,6 +39,7 @@ describe('FileBrowser', () => {
                             moved.push(payload)
                             return moveResult
                         },
+                        downloadZip: (_, payload: unknown) => zipped.push(payload),
                     },
                 },
                 server: { namespaced: true, state: { registered_directories: registeredDirectories } },
@@ -97,6 +99,7 @@ describe('FileBrowser', () => {
     beforeEach(() => {
         opened = []
         moved = []
+        zipped = []
         errors = []
         events = []
         moveResult = true
@@ -203,6 +206,38 @@ describe('FileBrowser', () => {
         await tick()
 
         expect(moved).toEqual([{ source: 'config/sub/printer.cfg', dest: 'config/printer.cfg' }])
+    })
+
+    it('downloads selected directories and files with their related files as a zip archive', async () => {
+        const selectedItem = (filename: string, isDirectory: boolean): FileStateFile => ({
+            isDirectory,
+            filename,
+            modified: new Date(1000),
+            size: 10,
+            permissions: 'rw',
+        })
+        const selected = [selectedItem('dir', true), selectedItem('printer.cfg', false)]
+        mount(['config'], { relatedFiles: () => ['printer.jpg', 'missing.jpg'], selected })
+        store.commit('files/setDirectoryEntry', {
+            path: 'config/sub/printer.jpg',
+            type: 'files',
+            item: { modified: 1, size: 5, permissions: 'rw' },
+        })
+        await tick()
+
+        const button = vm.$el.querySelector('button[title="Files.Download"]') as HTMLElement
+        button.click()
+        await tick()
+
+        // directories are passed separately, so the store can add their subdirectories
+        expect(zipped).toEqual([
+            {
+                files: ['config/sub/printer.cfg', 'config/sub/printer.jpg'],
+                directories: ['config/sub/dir'],
+                dest: expect.stringMatching(/^config\/config-.+\.zip$/),
+            },
+        ])
+        expect(errors).toEqual([])
     })
 
     it('shows the root-missing slot instead of the table if the root is not registered', async () => {
