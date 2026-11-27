@@ -122,7 +122,8 @@ export default class AfcPanelUnitLaneBody extends Mixins(BaseMixin, AfcMixin) {
         const spoolmanHexes = this.spool?.filament?.multi_color_hexes
         if (spoolmanHexes) return spoolmanHexes.split(',')
 
-        if (this.lane.multi_color_hexes?.length) return this.lane.multi_color_hexes
+        // a linked spool wins over the lane: the lane's colors only count without one
+        if (!this.spool && this.lane.multi_color_hexes?.length) return this.lane.multi_color_hexes
 
         return [this.lane.color || '#000000']
     }
