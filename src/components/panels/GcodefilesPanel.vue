@@ -135,8 +135,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, Gco
     mdiPlaylistPlus = mdiPlaylistPlus
     mdiVideo3d = mdiVideo3d
 
-    /** File of the start print and add batch to queue dialogs */
-    activeFile: FileStateGcodefile | null = null
+    /** Path (relative to the gcodes root) of the file of the start print and add batch to queue dialogs */
+    activeFilePath: string | null = null
     showStartPrintDialog = false
     showAddBatchToQueueDialog = false
 
@@ -154,6 +154,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, Gco
 
     set sortDesc(newVal: boolean) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.sortDesc', value: newVal })
+    }
+
+    /** Looked up from the store, so the dialogs show metadata that is loaded while they are open */
+    get activeFile(): FileStateGcodefile | null {
+        if (this.activeFilePath === null) return null
+
+        return this.$store.getters['files/getGcodeFile'](this.activeFilePath)
     }
 
     get countPerPage() {
@@ -201,13 +208,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, Gco
     }
 
     openStartPrintDialog(item: FileStateGcodefile) {
-        this.activeFile = item
+        this.activeFilePath = item.full_filename
         // the dialog is created with the first file, so it has to be opened after it exists
         this.$nextTick(() => (this.showStartPrintDialog = true))
     }
 
     openAddBatchToQueueDialog(item: FileStateGcodefile) {
-        this.activeFile = item
+        this.activeFilePath = item.full_filename
         this.$nextTick(() => (this.showAddBatchToQueueDialog = true))
     }
 
