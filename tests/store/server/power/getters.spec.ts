@@ -14,10 +14,6 @@ const callGetter = <T>(name: string, devices: PowerDevice[]): T => {
 describe('server/power/getters', () => {
     const devices = [powerDevice('Printer'), powerDevice('_hidden'), powerDevice('light')]
 
-    it('returns all devices', () => {
-        expect(callGetter<PowerDevice[]>('devices', devices)).toBe(devices)
-    })
-
     it('hides devices with a leading underscore', () => {
         const visible = callGetter<PowerDevice[]>('visibleDevices', devices)
 

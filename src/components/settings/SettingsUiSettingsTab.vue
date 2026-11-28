@@ -567,7 +567,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
     }
 
     get powerDevices(): PowerDevice[] {
-        return this.$store.getters['server/power/devices']
+        return this.$store.state.server.power.devices
     }
 
     get autoPowerDevice(): string {

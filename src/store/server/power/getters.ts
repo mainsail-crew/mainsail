@@ -7,8 +7,6 @@ import type { PowerDevice } from '@/types/moonraker/DevicesRPC'
 const isHiddenDevice = (device: PowerDevice): boolean => device.device.startsWith('_')
 
 export const getters: GetterTree<ServerPowerState, RootState> = {
-    devices: (state): PowerDevice[] => state.devices,
-
     visibleDevices: (state): PowerDevice[] => state.devices.filter((device) => !isHiddenDevice(device)),
 
     getDevice:
