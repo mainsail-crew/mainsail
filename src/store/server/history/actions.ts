@@ -1,47 +1,18 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
+import { ServerHistoryState } from '@/store/server/history/types'
 import { RootState } from '@/store/types'
-import { isJsonRpcError, NAMESPACE_NOT_FOUND } from '@/types/moonraker'
-import type { HistoryChangedNotification, HistoryJob } from '@/types/moonraker/HistoryRPC'
-
-const LOG_PREFIX = '[Server][History]'
-const logDebug = (...args: unknown[]) => window.console.debug(LOG_PREFIX, ...args)
-const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
-
-const PAGE_SIZE = 50
-const INIT_MAX_JOBS = 100
-const NOTES_NAMESPACE = 'history_notes'
-
-/** Converts the history_notes namespace (`{ [job_id]: { text } }`) into a map of job ids and notes */
-const parseNotes = (value: unknown): Record<string, string> => {
-    if (typeof value !== 'object' || value === null) return {}
-
-    const notes: Record<string, string> = {}
-    Object.entries(value as Record<string, unknown>).forEach(([jobId, entry]) => {
-        const text = (entry as { text?: unknown } | null)?.text
-        if (typeof text === 'string') notes[jobId] = text
-    })
-
-    return notes
-}
-
-/** Loads jobs page by page, newest first. Without max all jobs are loaded. */
-const fetchJobPages = async (max: number | null): Promise<{ jobs: HistoryJob[]; allLoaded: boolean }> => {
-    const jobs = new Map<string, HistoryJob>()
-
-    while (max === null || jobs.size < max) {
-        const start = jobs.size
-        const response = await Vue.$socket.emitAndWait('server.history.list', { start, limit: PAGE_SIZE })
-
-        // a job started during the requests shifts the offsets, so jobs can be returned twice
-        response.jobs.forEach((job) => jobs.set(job.job_id, job))
-
-        if (response.jobs.length < PAGE_SIZE) return { jobs: [...jobs.values()], allLoaded: true }
-    }
-
-    return { jobs: [...jobs.values()], allLoaded: false }
-}
+import { isJsonRpcError } from '@/types/moonraker'
+import type { HistoryChangedNotification } from '@/types/moonraker/HistoryRPC'
+import {
+    addNotes,
+    fetchJobPages,
+    fetchNotes,
+    INIT_MAX_JOBS,
+    logDebug,
+    logError,
+    NOTES_NAMESPACE,
+} from '@/store/server/history/helpers'
 
 export const actions: ActionTree<ServerHistoryState, RootState> = {
     reset({ commit }): void {
@@ -64,30 +35,11 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
     },
 
     /** Loads the jobs including their notes. Without max all jobs are loaded. */
-    async fetchJobs({ commit, dispatch }, max: number | null = null): Promise<void> {
-        const { jobs, allLoaded } = await fetchJobPages(max)
-        const notes = (await dispatch('fetchNotes')) as Record<string, string>
+    async fetchJobs({ commit }, max: number | null = null): Promise<void> {
+        const [{ jobs, allLoaded }, notes] = await Promise.all([fetchJobPages(max), fetchNotes()])
 
-        const jobsWithNotes = jobs.map((job): ServerHistoryStateJob => {
-            const note = notes[job.job_id]
-            return note === undefined ? job : { ...job, note }
-        })
-
-        commit('setJobs', jobsWithNotes)
+        commit('setJobs', addNotes(jobs, notes))
         commit('setAllLoaded', allLoaded)
-    },
-
-    async fetchNotes(): Promise<Record<string, string>> {
-        try {
-            const response = await Vue.$socket.emitAndWait('server.database.get_item', { namespace: NOTES_NAMESPACE })
-
-            return parseNotes(response.value)
-        } catch (error) {
-            // the namespace is created with the first note
-            if (isJsonRpcError(error) && error.code === NAMESPACE_NOT_FOUND) return {}
-
-            throw error
-        }
     },
 
     async fetchTotals({ commit }): Promise<void> {

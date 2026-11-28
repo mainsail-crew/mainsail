@@ -1,21 +1,12 @@
 import { GetterTree } from 'vuex'
-import { ServerHistoryFileReference, ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
+import {
+    ServerHistoryFileReference,
+    ServerHistoryJobIndex,
+    ServerHistoryState,
+    ServerHistoryStateJob,
+} from '@/store/server/history/types'
 import { RootState } from '@/store/types'
-
-export interface ServerHistoryJobIndex {
-    byUuid: Map<string, ServerHistoryStateJob[]>
-    byFile: Map<string, ServerHistoryStateJob[]>
-    byJobId: Map<string, ServerHistoryStateJob>
-}
-
-/** Key to find the jobs of a file without uuid. `modified` is in milliseconds. */
-const getFileKey = (size: number, modified: number): string => `${size}-${modified}`
-
-const pushToIndex = (index: Map<string, ServerHistoryStateJob[]>, key: string, job: ServerHistoryStateJob): void => {
-    const jobs = index.get(key)
-    if (jobs) jobs.push(job)
-    else index.set(key, [job])
-}
+import { getFileKey, pushToIndex } from '@/store/server/history/helpers'
 
 export const getters: GetterTree<ServerHistoryState, RootState> = {
     // the gcode files list looks up the jobs of every file, so the jobs are indexed once

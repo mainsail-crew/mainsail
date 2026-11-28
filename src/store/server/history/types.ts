@@ -31,6 +31,13 @@ export interface ServerHistoryFileReference {
     job_id: string | null
 }
 
+/** Jobs indexed by uuid, file (size and modified date) and job id */
+export interface ServerHistoryJobIndex {
+    byUuid: Map<string, ServerHistoryStateJob[]>
+    byFile: Map<string, ServerHistoryStateJob[]>
+    byJobId: Map<string, ServerHistoryStateJob>
+}
+
 export interface HistoryListRowJob extends ServerHistoryStateJob {
     type: 'job'
     select_id: string
