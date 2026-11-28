@@ -283,12 +283,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.item.filename }).toString())
     }
 
-    deleteJob() {
-        this.$socket.emit(
-            'server.history.delete_job',
-            { uid: this.item.job_id },
-            { action: 'server/history/getDeletedJobs' }
-        )
+    async deleteJob() {
+        try {
+            await this.$store.dispatch('server/history/deleteJob', this.item.job_id)
+        } catch (e) {
+            window.console.error('[HistoryListEntryJob] Failed to delete job', e)
+        }
     }
 
     outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
@@ -305,7 +305,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         if (key.startsWith('history_field_')) {
             const fieldName = key.replace('history_field_', '')
             const field = item.auxiliary_data?.find((field) => field.name === fieldName)
-            if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
+            if (typeof field?.value === 'number') return `${Math.round(field.value * 1000) / 1000} ${field.units ?? ''}`
         }
 
         if (value === null) return '--'

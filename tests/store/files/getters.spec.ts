@@ -3,7 +3,7 @@ import { getters } from '@/store/files/getters'
 import { mutations } from '@/store/files/mutations'
 import { getDefaultState } from '@/store/files'
 import type { FileState, FileStateEntry } from '@/store/files/types'
-import type { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { ServerHistoryFileReference, ServerHistoryStateJob } from '@/store/server/history/types'
 import type { RootState } from '@/store/types'
 
 const entry = (name: string, overrides: Partial<FileStateEntry> = {}): FileStateEntry => ({
@@ -59,12 +59,12 @@ const createState = (): FileState => {
 
 const createGetters = (state: FileState, jobs: ServerHistoryStateJob[] = []) => {
     const rootState = { printer: { gcode: { commands: { M104: {}, M140: {} } } } } as unknown as RootState
-    const getPrintJobs = vi.fn((filename: string, modified: number, size: number, uuid: string | null) =>
-        jobs.filter((job) => job.metadata.uuid === uuid)
+    const getPrintJobs = vi.fn((file: ServerHistoryFileReference) =>
+        jobs.filter((job) => job.metadata.uuid === file.uuid)
     )
     const rootGetters = {
         'socket/getUrl': 'http://printer',
-        'server/history/getPrintJobsForGcodes': getPrintJobs,
+        'server/history/getJobsForFile': getPrintJobs,
     }
 
     const resolved: Record<string, unknown> = {}
@@ -200,7 +200,7 @@ describe('files/getters', () => {
 
         getters.getGcodeFile('sub/b.gcode')
 
-        expect(getPrintJobs).toHaveBeenCalledWith('sub/b.gcode', 1700000000123, 10, null, null)
+        expect(getPrintJobs).toHaveBeenCalledWith({ modified: 1700000000123, size: 10, uuid: null, job_id: null })
     })
 
     it('returns theme file urls', () => {

@@ -29,7 +29,7 @@
                                 <v-btn
                                     outlined
                                     small
-                                    :loading="loadings.includes('historyLoadAll')"
+                                    :loading="loadingAllJobs"
                                     class="ml-3 minwidth-0 px-2"
                                     color="primary"
                                     v-bind="attrs"
@@ -71,11 +71,8 @@ import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatusChart from '@/components/charts/HistoryAllPrintStatusChart.vue'
-import {
-    HistoryStatsValueNames,
-    ServerHistoryStateJob,
-    ServerHistoryStateJobAuxiliaryTotal,
-} from '@/store/server/history/types'
+import { HistoryStatsValueNames, ServerHistoryStateJob } from '@/store/server/history/types'
+import type { HistoryAuxiliaryTotal } from '@/types/moonraker/HistoryRPC'
 import { mdiChartAreaspline, mdiDatabaseArrowDownOutline } from '@mdi/js'
 import { formatPrintTime } from '@/plugins/helpers'
 import HistoryMixin from '@/components/mixins/history'
@@ -90,6 +87,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
     formatPrintTime = formatPrintTime
 
     toggleValue = 'jobs'
+    loadingAllJobs = false
 
     get toggleValueOptions(): { text: TranslateResult; value: HistoryStatsValueNames }[] {
         return [
@@ -281,7 +279,7 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
         const auxiliaries = this.$store.state.server.history.auxiliary_totals ?? []
         const output: { title: string; value: string }[] = []
 
-        auxiliaries.forEach((auxiliary: ServerHistoryStateJobAuxiliaryTotal) => {
+        auxiliaries.forEach((auxiliary: HistoryAuxiliaryTotal) => {
             const historyFieldName = `history_field_${auxiliary.field}`
             const historyField = this.moonrakerHistoryFields.find(
                 (historyField) => historyField.provider === auxiliary.provider && historyField.name === historyFieldName
@@ -301,10 +299,16 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin, HistoryMix
         return this.existsSelectedJobs ? this.selectedTotals : this.genericTotals
     }
 
-    refreshHistory() {
-        this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+    async refreshHistory() {
+        this.loadingAllJobs = true
 
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
+        try {
+            await this.$store.dispatch('server/history/loadAllJobs')
+        } catch (e) {
+            window.console.error('[HistoryStatisticsPanel] Failed to load history', e)
+        } finally {
+            this.loadingAllJobs = false
+        }
     }
 }
 </script>

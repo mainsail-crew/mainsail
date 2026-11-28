@@ -81,8 +81,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.EndTime').toString(),
-                value: this.formatDateTime(this.job.end_time * 1000),
-                exists: this.job.end_time > 0,
+                value: this.formatDateTime((this.job.end_time ?? 0) * 1000),
+                exists: (this.job.end_time ?? 0) > 0,
             },
             {
                 name: this.$t('History.EstimatedTime').toString(),
@@ -153,9 +153,9 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
 
         if ('auxiliary_data' in this.job) {
             this.job.auxiliary_data?.forEach((data) => {
-                let value = data.value.toString()
-                if (!Array.isArray(data.value)) {
-                    value = `${Math.round(data.value * 1000) / 1000} ${data.units}`
+                let value = String(data.value ?? '')
+                if (typeof data.value === 'number') {
+                    value = `${Math.round(data.value * 1000) / 1000} ${data.units ?? ''}`.trim()
                 }
                 if (value === '') value = '--'
 

@@ -1,5 +1,5 @@
 import type { FileDiskUsage, FilePermission, GcodeMetadata } from '@/types/moonraker/FileManagerRPC'
-import type { ServerHistoryStateJob } from '@/store/server/history/types'
+import type { ServerHistoryFileReference, ServerHistoryStateJob } from '@/store/server/history/types'
 import type { rolloverLogfiles } from '@/store/variables'
 
 export interface FileState {
@@ -65,14 +65,8 @@ export interface FileDirectoryParseResult {
     metadata: GcodeMetadata[]
 }
 
-/** Signature of the server/history/getPrintJobsForGcodes getter. `modified` is in milliseconds. */
-export type FilePrintJobsGetter = (
-    filename: string,
-    modified: number,
-    filesize: number,
-    uuid: string | null,
-    job_id: string | null
-) => ServerHistoryStateJob[]
+/** Signature of the server/history/getJobsForFile getter */
+export type FilePrintJobsGetter = (file: ServerHistoryFileReference) => ServerHistoryStateJob[]
 
 /**
  * Builds a gcode file with metadata and print history.

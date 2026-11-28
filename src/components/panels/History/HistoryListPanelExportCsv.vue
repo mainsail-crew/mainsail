@@ -120,7 +120,7 @@ export default class HistoryListPanelExportCsv extends Mixins(BaseMixin, History
         if (key.startsWith('history_field_')) {
             const fieldName = key.replace('history_field_', '')
             const field = job.auxiliary_data?.find((field) => field.name === fieldName)
-            if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
+            if (typeof field?.value === 'number') return `${Math.round(field.value * 1000) / 1000} ${field.units ?? ''}`
         }
 
         if (value === null) return ''
