@@ -197,8 +197,12 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         this.contextMenuShow = false
     }
 
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.item.filename])
+    async addToQueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', [this.item.filename])
+        } catch (e) {
+            window.console.error('[StatusPanelGcodefilesEntry] Failed to add file to the job queue', e)
+        }
     }
 
     view3D() {

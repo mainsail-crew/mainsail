@@ -3,6 +3,7 @@ import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { ServerHistoryState } from '@/store/server/history/types'
 import { ServerTimelapseState } from '@/store/server/timelapse/types'
 import { ServerAnnouncementsState } from '@/store/server/announcements/types'
+import { ServerJobQueueState } from '@/store/server/jobQueue/types'
 import type { RPCResult } from '@/types/moonraker'
 
 type ServerConfigResponse = RPCResult<'server.config'>
@@ -65,6 +66,7 @@ export interface ServerState {
 
     announcements?: ServerAnnouncementsState
     history?: ServerHistoryState
+    jobQueue?: ServerJobQueueState
     power?: ServerPowerState
     timelapse?: ServerTimelapseState
     updateManager?: ServerUpdateManagerState

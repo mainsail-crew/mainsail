@@ -80,7 +80,12 @@ export default class AddBatchToQueueDialog extends Mixins(BaseMixin) {
         if (filename.startsWith('/')) filename = filename.slice(1)
         const array = Array(parseInt(this.input)).fill(filename)
 
-        await this.$store.dispatch('server/jobQueue/addToQueue', array)
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', array)
+        } catch (e) {
+            window.console.error('[AddBatchToQueueDialog] Failed to add files to the job queue', e)
+            return
+        }
 
         if (this.showToast) this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename }).toString())
 

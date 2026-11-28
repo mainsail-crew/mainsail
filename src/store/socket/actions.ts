@@ -101,7 +101,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_job_queue_changed':
-                dispatch('server/jobQueue/getEvent', payload.params[0], { root: true })
+                dispatch('server/jobQueue/notifyJobQueueChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_announcement_update':
