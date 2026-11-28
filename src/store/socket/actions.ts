@@ -89,7 +89,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_history_changed':
-                dispatch('server/history/getChanged', payload.params[0], { root: true })
+                dispatch('server/history/notifyHistoryChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_service_state_changed':

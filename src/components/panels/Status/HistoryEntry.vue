@@ -252,12 +252,12 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.job.filename }).toString())
     }
 
-    deleteJob() {
-        this.$socket.emit(
-            'server.history.delete_job',
-            { uid: this.job.job_id },
-            { action: 'server/history/getDeletedJobs' }
-        )
+    async deleteJob() {
+        try {
+            await this.$store.dispatch('server/history/deleteJob', this.job.job_id)
+        } catch (e) {
+            window.console.error('[StatusPanelHistoryEntry] Failed to delete job', e)
+        }
     }
 
     createThumbnailUrl(thumbnail: GcodeThumbnail) {

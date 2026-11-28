@@ -198,7 +198,7 @@ export const createGcodeFileBuilder = (
 ): FileGcodefileBuilder => {
     const commands = Object.keys(rootState.printer?.gcode?.commands ?? {})
     const preheatGcodes = PREHEAT_GCODES.filter((obj) => commands.includes(obj.gcode))
-    const getPrintJobs = rootGetters['server/history/getPrintJobsForGcodes'] as FilePrintJobsGetter
+    const getPrintJobs = rootGetters['server/history/getJobsForFile'] as FilePrintJobsGetter
 
     return (entry, path, isDirectory, filename) => {
         const metadata = isDirectory ? undefined : state.metadata[path]
@@ -224,13 +224,12 @@ export const createGcodeFileBuilder = (
             .map((obj) => `${obj.gcode} S${file[obj.name]}`)
         if (preheat.length) file.preheat_gcode = preheat.join('\n')
 
-        const histories = getPrintJobs(
-            path,
-            Math.round(entry.modified * 1000),
-            entry.size,
-            metadata?.uuid ?? null,
-            metadata?.job_id ?? null
-        )
+        const histories = getPrintJobs({
+            modified: Math.round(entry.modified * 1000),
+            size: entry.size,
+            uuid: metadata?.uuid ?? null,
+            job_id: metadata?.job_id ?? null,
+        })
         if (histories.length === 0) return file
 
         const sorted = [...histories].sort((a, b) => b.start_time - a.start_time)
@@ -245,7 +244,7 @@ export const createGcodeFileBuilder = (
         if (!lastCompleted) return file
 
         file.last_start_time = new Date(lastCompleted.start_time * 1000)
-        file.last_end_time = new Date(lastCompleted.end_time * 1000)
+        file.last_end_time = lastCompleted.end_time ? new Date(lastCompleted.end_time * 1000) : null
         file.last_filament_used = lastCompleted.filament_used
         file.last_print_duration = lastCompleted.print_duration
         file.last_total_duration = lastCompleted.total_duration

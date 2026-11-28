@@ -47,8 +47,6 @@ export default class HistoryStatsMixin extends Mixins(HistoryMixin) {
             name: displayName,
             displayName,
             value,
-            valueFilament: 0,
-            valueTime: 0,
             itemStyle: {
                 opacity: 0.9,
                 color: '#616161',

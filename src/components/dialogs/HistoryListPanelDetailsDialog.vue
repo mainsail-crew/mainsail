@@ -59,8 +59,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.Filesize').toString(),
-                value: formatFilesize(this.job.metadata?.filesize ?? 0),
-                exists: (this.job.metadata?.filesize ?? 0) > 0,
+                value: formatFilesize(this.job.metadata?.size ?? 0),
+                exists: (this.job.metadata?.size ?? 0) > 0,
             },
             {
                 name: this.$t('History.LastModified').toString(),
@@ -81,8 +81,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.EndTime').toString(),
-                value: this.formatDateTime(this.job.end_time * 1000),
-                exists: this.job.end_time > 0,
+                value: this.formatDateTime((this.job.end_time ?? 0) * 1000),
+                exists: (this.job.end_time ?? 0) > 0,
             },
             {
                 name: this.$t('History.EstimatedTime').toString(),
@@ -111,8 +111,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.FilamentUsed').toString(),
-                value: `${Math.round(this.job.metadata?.filament_used ?? 0)} mm`,
-                exists: this.job.metadata && 'filament_used' in this.job.metadata,
+                value: `${Math.round(this.job.filament_used)} mm`,
+                exists: true,
             },
             {
                 name: this.$t('History.FirstLayerExtTemp').toString(),
@@ -153,9 +153,9 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
 
         if ('auxiliary_data' in this.job) {
             this.job.auxiliary_data?.forEach((data) => {
-                let value = data.value.toString()
-                if (!Array.isArray(data.value)) {
-                    value = `${Math.round(data.value * 1000) / 1000} ${data.units}`
+                let value = String(data.value ?? '')
+                if (typeof data.value === 'number') {
+                    value = `${Math.round(data.value * 1000) / 1000} ${data.units ?? ''}`.trim()
                 }
                 if (value === '') value = '--'
 

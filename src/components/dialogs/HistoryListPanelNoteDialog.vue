@@ -57,13 +57,13 @@ export default class HistoryListPanelNoteDialog extends Mixins(BaseMixin) {
         return mdiNoteEditOutline
     }
 
-    saveNote() {
-        this.$store.dispatch('server/history/saveHistoryNote', {
-            job_id: this.job?.job_id,
-            note: this.note,
-        })
-
-        this.closeDialog()
+    async saveNote() {
+        try {
+            await this.$store.dispatch('server/history/saveNote', { job_id: this.job.job_id, note: this.note })
+            this.closeDialog()
+        } catch (e) {
+            window.console.error('[HistoryListPanelNoteDialog] Failed to save note', e)
+        }
     }
 
     closeDialog() {

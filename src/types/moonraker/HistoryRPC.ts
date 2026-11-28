@@ -1,3 +1,5 @@
+import type { GcodeMetadata } from './FileManagerRPC'
+
 /**
  * Job History Management RPC Interface
  *
@@ -12,13 +14,22 @@ export interface HistoryRPC {
      * Returns a list of job history entries matching the specified criteria.
      */
     'server.history.list': (params?: {
-        /** Maximum number of job entries to return (default: 50) */
+        /**
+         * Maximum number of job entries to return (default: 50).
+         * Note: Not documented, but a value of 0 (or less) returns all entries.
+         */
         limit?: number
         /** The record number indicating the first entry of the returned list (default: 0) */
         start?: number
-        /** A timestamp in unix time. When specified, only entries created before this date are returned */
+        /**
+         * A timestamp in unix time. When specified, only entries created before this date are returned.
+         * Note: Moonraker actually compares this value with the `end_time` of the job.
+         */
         before?: number
-        /** A timestamp in unix time. When specified, only entries created after this date are returned */
+        /**
+         * A timestamp in unix time. When specified, only entries created after this date are returned.
+         * Note: Moonraker compares this value with the `start_time` of the job.
+         */
         since?: number
         /** The order of the list returned. May be 'asc' (ascending) or 'desc' (descending) (default: 'desc') */
         order?: 'asc' | 'desc'
@@ -43,6 +54,7 @@ export interface HistoryRPC {
     /**
      * Reset totals.
      * Resets the persistent "job totals" to zero.
+     * Note: Moonraker returns an error while a job is in progress.
      */
     'server.history.reset_totals': () => Promise<{
         /** A Job Totals object reporting all totals prior to the reset */
@@ -66,6 +78,7 @@ export interface HistoryRPC {
     /**
      * Delete a job.
      * Deletes one or all job history entries.
+     * Note: Moonraker does not emit a notification for deleted jobs.
      */
     'server.history.delete_job': (
         params:
@@ -93,8 +106,12 @@ export interface HistoryRPC {
 export interface HistoryJob {
     /** A unique ID for the entry */
     job_id: string
-    /** The user that started the job. Will be null if Moonraker cannot identify a user (ie: job was started via Klipper's display) */
-    user: string | null
+    /**
+     * The user that started the job.
+     * Note: The docs describe this as null when Moonraker cannot identify a user (ie: job was started via
+     * Klipper's display), but Moonraker actually stores 'No User' in this case.
+     */
+    user: string
     /** The path, relative to gcodes root, of the file associated with the job */
     filename: string
     /** A value of true indicates that the file associated with the job exists on disk and has not been modified */
@@ -111,11 +128,18 @@ export interface HistoryJob {
     total_duration: number
     /** The amount of filament (in mm) used during the job */
     filament_used: number
-    /** The gcode metadata object associated with the job. The job_id and print_start_time fields are removed from the metadata as they are redundant */
-    metadata: Record<string, unknown>
+    /** The gcode metadata object associated with the job */
+    metadata: HistoryJobMetadata
     /** An array of auxiliary field objects containing supplemental history data related to the job */
     auxiliary_data?: HistoryAuxiliaryField[]
 }
+
+/**
+ * Gcode metadata of a job history entry.
+ * The job_id and print_start_time fields are removed from the metadata as they are redundant.
+ * Note: The metadata is empty if it was not available when the job started (e.g. the file was not processed yet).
+ */
+export type HistoryJobMetadata = Partial<Omit<GcodeMetadata, 'job_id' | 'print_start_time'>>
 
 /**
  * Job History Status
@@ -137,6 +161,8 @@ export type HistoryJobStatus =
     | 'klippy_disconnect'
     /** Moonraker was abruptly terminated while the job was in progress */
     | 'interrupted'
+    /** Not documented: Moonraker was shut down while the job was in progress */
+    | 'server_exit'
 
 /**
  * Auxiliary Field
@@ -190,4 +216,24 @@ export interface HistoryAuxiliaryTotal {
     maximum: number | null
     /** The accumulated total value across all prints. Will be null if the total is not available */
     total: number | null
+}
+
+/**
+ * History Changed Action
+ *
+ * - `added`: A new job was started
+ * - `finished`: A job finished
+ */
+export type HistoryChangedAction = 'added' | 'finished'
+
+/**
+ * Payload of the notify_history_changed notification.
+ * Emitted when Moonraker's history component detects a new or completed job.
+ * @see https://moonraker.readthedocs.io/en/latest/external_api/jsonrpc_notifications/#history-changed
+ */
+export interface HistoryChangedNotification {
+    /** The action that triggered the notification */
+    action: HistoryChangedAction
+    /** The Job History object of the added or finished job */
+    job: HistoryJob
 }

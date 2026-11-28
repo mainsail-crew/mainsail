@@ -42,7 +42,7 @@
                     <v-tooltip v-if="!allLoaded" top>
                         <template #activator="{ on, attrs }">
                             <v-btn
-                                :loading="loadings.includes('historyLoadAll')"
+                                :loading="loadingAllJobs"
                                 class="px-2 minwidth-0 ml-3"
                                 v-bind="attrs"
                                 v-on="on"
@@ -172,7 +172,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { HistoryListPanelCol, HistoryListRowJob, ServerHistoryStateJob } from '@/store/server/history/types'
-import { caseInsensitiveSort, formatFilesize, toggleArrayItem } from '@/plugins/helpers'
+import { formatFilesize, toggleArrayItem } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseThick,
@@ -218,6 +218,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
     formatFilesize = formatFilesize
 
     search = ''
+    loadingAllJobs = false
     sortBy = 'start_time'
     sortDesc = true
 
@@ -436,12 +437,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         return this.headers.filter((header: HistoryListPanelCol) => header.visible)
     }
 
-    get allPrintStatusArray(): ServerHistoryStateAllPrintStatusEntry[] {
-        const statuses = this.$store.getters['server/history/getAllPrintStatusArray'] ?? []
-
-        return caseInsensitiveSort(statuses as ServerHistoryStateAllPrintStatusEntry[], 'name')
-    }
-
     get countPerPage() {
         return this.$store.state.gui.view.history.countPerPage ?? 10
     }
@@ -481,10 +476,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.selectedJobs', value: newVal })
     }
 
-    refreshHistory() {
-        this.$store.dispatch('socket/addLoading', { name: 'historyLoadAll' })
+    async refreshHistory() {
+        this.loadingAllJobs = true
 
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
+        try {
+            await this.$store.dispatch('server/history/loadAllJobs')
+        } catch (e) {
+            window.console.error('[HistoryListPanel] Failed to load history', e)
+        } finally {
+            this.loadingAllJobs = false
+        }
     }
 
     sortFiles(items: HistoryListPanelRow[], sortBy: string[], sortDesc: boolean[]) {
@@ -670,9 +671,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
             const sensorName = key.replace('history_field_', '')
             const sensor = job.auxiliary_data?.find((sensor) => sensor.name === sensorName)
 
-            value = sensor?.value?.toString() ?? null
-            if (sensor && !Array.isArray(sensor.value)) {
-                value = sensor.value?.toLocaleString(this.browserLocale, { useGrouping: false }) ?? 0
+            const sensorValue = sensor?.value ?? null
+            value = sensorValue === null ? null : String(sensorValue)
+            if (typeof sensorValue === 'number') {
+                value = sensorValue.toLocaleString(this.browserLocale, { useGrouping: false })
             }
         }
 
@@ -702,24 +704,19 @@ export default class HistoryListPanel extends Mixins(BaseMixin, HistoryMixin, Hi
         return this.$t('History.DeleteSelectedQuestion', { count: this.selectedJobsTable.length }).toString()
     }
 
-    deleteSelectedJobs() {
-        this.selectedJobsTable.forEach((item: HistoryListPanelRow) => {
-            if (item.type === 'maintenance') {
-                this.$store.dispatch('gui/maintenance/delete', item.id)
-                return
-            }
+    async deleteSelectedJobs() {
+        const requests = this.selectedJobsTable.map((item: HistoryListPanelRow) => {
+            if (item.type === 'maintenance') return this.$store.dispatch('gui/maintenance/delete', item.id)
 
-            // break if job_id is not present
-            if (!('job_id' in item)) return
-
-            this.$socket.emit(
-                'server.history.delete_job',
-                { uid: item.job_id },
-                { action: 'server/history/getDeletedJobs' }
-            )
+            return this.$store.dispatch('server/history/deleteJob', item.job_id)
         })
 
         this.selectedJobsTable = []
+
+        const results = await Promise.allSettled(requests)
+        results
+            .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
+            .forEach((result) => window.console.error('[HistoryListPanel] Failed to delete entry', result.reason))
     }
 }
 </script>
