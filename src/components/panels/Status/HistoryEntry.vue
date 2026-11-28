@@ -93,7 +93,7 @@ import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 import { mdiCloseThick, mdiDelete, mdiFile, mdiPlaylistPlus, mdiPrinter } from '@mdi/js'
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { ServerHistoryStateJobWithCount } from '@/store/server/history/types'
-import { FileStateFileThumbnail } from '@/store/files/types'
+import type { GcodeThumbnail } from '@/types/moonraker/FileManagerRPC'
 import { convertPrintStatusIcon, escapePath, formatPrintTime } from '@/plugins/helpers'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
 
@@ -117,7 +117,7 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
     startPrintDialogBool = false
 
     get file(): FileStateGcodefile | undefined {
-        return this.$store.getters['files/getFile']('gcodes/' + this.job.filename) ?? undefined
+        return this.$store.getters['files/getGcodeFile'](this.job.filename) ?? undefined
     }
 
     get currentPath(): string {
@@ -198,7 +198,7 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         const weight = this.job.filament_used * specificWeight
         if (weight === 0) return null
 
-        if (weight >= 1000) return (length / 1000).toFixed(1) + ' kg'
+        if (weight >= 1000) return (weight / 1000).toFixed(1) + ' kg'
 
         return weight.toFixed(0) + ' g'
     }
@@ -247,20 +247,24 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         this.showContextMenu = false
     }
 
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.job.filename])
-        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.job.filename }).toString())
+    async addToQueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', [this.job.filename])
+            this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.job.filename }).toString())
+        } catch (e) {
+            window.console.error('[StatusPanelHistoryEntry] Failed to add job to the job queue', e)
+        }
     }
 
-    deleteJob() {
-        this.$socket.emit(
-            'server.history.delete_job',
-            { uid: this.job.job_id },
-            { action: 'server/history/getDeletedJobs' }
-        )
+    async deleteJob() {
+        try {
+            await this.$store.dispatch('server/history/deleteJob', this.job.job_id)
+        } catch (e) {
+            window.console.error('[StatusPanelHistoryEntry] Failed to delete job', e)
+        }
     }
 
-    createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
+    createThumbnailUrl(thumbnail: GcodeThumbnail) {
         let relative_url = ''
         if (this.job.filename.lastIndexOf('/') !== -1) {
             relative_url = this.job.filename.substring(0, this.job.filename.lastIndexOf('/') + 1)

@@ -4,12 +4,12 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import GcodefilesMixin, { tableColumnSetting } from '@/components/mixins/gcodefiles'
+import type { tableColumnSetting } from '@/components/mixins/gcodefiles'
 import { FileStateGcodefile } from '@/store/files/types'
 import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 
 @Component
-export default class GcodefilesPanelTableRowFileMetadata extends Mixins(BaseMixin, GcodefilesMixin) {
+export default class GcodefilesPanelTableRowFileMetadata extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) readonly item!: FileStateGcodefile
     @Prop({ type: Object, required: true }) readonly col!: tableColumnSetting
 
@@ -18,9 +18,11 @@ export default class GcodefilesPanelTableRowFileMetadata extends Mixins(BaseMixi
     }
 
     get value() {
-        const value = this.col.value in this.item ? this.item[this.col.value] : null
+        const value = (this.item as unknown as Record<string, unknown>)[this.col.value] ?? null
 
         if (value === null) return '--'
+        if (value instanceof Date) return this.formatDateTime(value.getTime())
+        if (typeof value !== 'number') return value
 
         switch (this.col.outputType) {
             case 'filesize':

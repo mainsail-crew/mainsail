@@ -353,10 +353,6 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin, 
         this.$store.dispatch('gui/saveSetting', { name: 'control.actionButton', value: newVal })
     }
 
-    get defaultActionButton() {
-        return this.$store.getters['gui/getDefaultControlActionButton']
-    }
-
     get enableXYHoming(): boolean {
         return this.$store.state.gui.control.enableXYHoming ?? false
     }

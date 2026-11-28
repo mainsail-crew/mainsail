@@ -1,44 +1,100 @@
-import { GuiState } from '@/store/gui/types'
-import { FileStateFile } from '@/store/files/types'
-import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { GuiState } from '@/store/gui/types'
+import type { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import type { RPCResult } from '@/types/moonraker'
+import type { GcodeThumbnail } from '@/types/moonraker/FileManagerRPC'
+
+export type FarmPrinterKlippyState = RPCResult<'server.info'>['klippy_state']
 
 export interface FarmPrinterState {
-    _namespace: string
+    /** Printer id, equal to the module namespace in `farm/<id>` */
+    id: string
     socket: FarmPrinterStateSocket
-    server: FarmPrinterStateServer
-    data: {
-        gui: GuiState
-        webcams: GuiWebcamStateWebcam[]
-        [key: string]: any // eslint-disable-line @typescript-eslint/no-explicit-any
-    }
-    settings: Record<string, unknown>
-    databases: string[]
-    current_file: FileStateFile
-    theme_files: string[]
+    klippyState: FarmPrinterKlippyState
+    /** Subscribed Klipper objects */
+    data: FarmPrinterStateData
+    /** Metadata of the file in print_stats.filename */
+    currentFile: FarmPrinterStateCurrentFile | null
+    /** Files in the config/.theme directory */
+    themeFiles: string[]
+    /** Settings from the remote Mainsail database namespace */
+    mainsail: FarmPrinterStateMainsail
+    webcams: GuiWebcamStateWebcam[]
+    /** Local settings for this printer, persisted in gui/remoteprinters */
+    settings: FarmPrinterSettings
 }
 
 export interface FarmPrinterStateSocket {
-    instance: WebSocket | null
     hostname: string
     port: number
-    webPort: number
     path: string
-    protocol: string
+    protocol: 'ws' | 'wss'
     isConnected: boolean
     isConnecting: boolean
-    reconnects: number
-    maxReconnects: number
-    reconnectInterval: number
-    wsData: FarmPrinterWsDataEntry[]
 }
 
-export interface FarmPrinterWsDataEntry {
-    id: number
-    action?: string
-    params: Record<string, unknown>
-    actionPreload?: Record<string, unknown> | null
+export type FarmPrinterConnectionState = Pick<FarmPrinterStateSocket, 'isConnected' | 'isConnecting'>
+
+export interface FarmPrinterHeater {
+    temperature?: number
+    target?: number
+    power?: number
 }
 
-export interface FarmPrinterStateServer {
-    klippy_connected: boolean
+export interface FarmPrinterStateData {
+    webhooks?: {
+        state?: string
+        state_message?: string
+    }
+    print_stats?: {
+        filename?: string
+        state?: string
+        message?: string
+        print_duration?: number
+        total_duration?: number
+        filament_used?: number
+    }
+    virtual_sdcard?: {
+        file_path?: string | null
+        file_position?: number
+        file_size?: number
+        is_active?: boolean
+        progress?: number
+    }
+    display_status?: {
+        progress?: number
+        message?: string | null
+    }
+    heater_bed?: FarmPrinterHeater
+    'temperature_fan chamber'?: FarmPrinterHeater
+    'temperature_sensor chamber'?: {
+        temperature?: number
+    }
+    [extruder: `extruder${string}`]: FarmPrinterHeater | undefined
+}
+
+export interface FarmPrinterStateCurrentFile {
+    filename: string
+    thumbnails: GcodeThumbnail[]
+    gcode_start_byte: number | null
+    gcode_end_byte: number | null
+    filament_total: number | null
+    estimated_time: number | null
+}
+
+export interface FarmPrinterStateMainsail {
+    printername: string
+    logoColor: string
+    calcPrintProgress: GuiState['general']['calcPrintProgress']
+    calcEtaTime: GuiState['general']['calcEtaTime']
+}
+
+export interface FarmPrinterSettings {
+    /** Name of the webcam shown in the farm panel, 'off' disables it */
+    currentCamName?: string
+}
+
+export interface FarmPrinterTemperature {
+    name: string
+    temperature: number
+    target: number | null
 }

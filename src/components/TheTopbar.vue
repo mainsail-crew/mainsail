@@ -180,7 +180,7 @@ export default class TheTopbar extends Mixins(BaseMixin, ThemeMixin) {
     }
 
     get countPrinters() {
-        return this.$store.getters['farm/countPrinters']
+        return this.$store.getters['farm/printerCount']
     }
 
     get boolHideUploadAndPrintButton() {

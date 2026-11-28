@@ -127,7 +127,8 @@ import HistoryListPanelDetailsDialog from '@/components/dialogs/HistoryListPanel
 import Panel from '@/components/ui/Panel.vue'
 import BaseMixin from '@/components/mixins/base'
 import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
-import { FileStateFileThumbnail, FileStateGcodefile } from '@/store/files/types'
+import { FileStateGcodefile } from '@/store/files/types'
+import type { GcodeThumbnail } from '@/types/moonraker/FileManagerRPC'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import {
@@ -192,7 +193,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     @Prop({ type: Boolean, required: true }) readonly isSelected!: boolean
 
     get file(): FileStateGcodefile | undefined {
-        return this.$store.getters['files/getFile']('gcodes/' + this.item.filename) ?? undefined
+        return this.$store.getters['files/getGcodeFile'](this.item.filename) ?? undefined
     }
 
     get currentPath(): string {
@@ -277,17 +278,21 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.noteDialogBool = true
     }
 
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.item.filename])
-        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.item.filename }).toString())
+    async addToQueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', [this.item.filename])
+            this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.item.filename }).toString())
+        } catch (e) {
+            window.console.error('[HistoryListEntryJob] Failed to add job to the job queue', e)
+        }
     }
 
-    deleteJob() {
-        this.$socket.emit(
-            'server.history.delete_job',
-            { uid: this.item.job_id },
-            { action: 'server/history/getDeletedJobs' }
-        )
+    async deleteJob() {
+        try {
+            await this.$store.dispatch('server/history/deleteJob', this.item.job_id)
+        } catch (e) {
+            window.console.error('[HistoryListEntryJob] Failed to delete job', e)
+        }
     }
 
     outputValue(col: HistoryListPanelCol, item: ServerHistoryStateJob) {
@@ -304,7 +309,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         if (key.startsWith('history_field_')) {
             const fieldName = key.replace('history_field_', '')
             const field = item.auxiliary_data?.find((field) => field.name === fieldName)
-            if (field && !Array.isArray(field.value)) return `${Math.round(field.value * 1000) / 1000} ${field.units}`
+            if (typeof field?.value === 'number') return `${Math.round(field.value * 1000) / 1000} ${field.units ?? ''}`
         }
 
         if (value === null) return '--'
@@ -336,7 +341,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         }
     }
 
-    createThumbnailUrl(thumbnail: FileStateFileThumbnail) {
+    createThumbnailUrl(thumbnail: GcodeThumbnail) {
         let relative_url = ''
         if (this.item.filename.lastIndexOf('/') !== -1) {
             relative_url = this.item.filename.substring(0, this.item.filename.lastIndexOf('/') + 1)

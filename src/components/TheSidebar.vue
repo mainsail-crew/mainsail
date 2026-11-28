@@ -77,7 +77,7 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin, Theme
     }
 
     get sidebarBackground(): string {
-        return this.$store.getters['files/getCustomSidebarBackground'] ?? this.sidebarBgImage
+        return this.$store.getters['files/sidebarBackgroundUrl'] ?? this.sidebarBgImage
     }
 
     get boolNaviTemp(): boolean {
@@ -94,7 +94,7 @@ export default class TheSidebar extends Mixins(NavigationMixin, BaseMixin, Theme
     }
 
     get sidebarLogo(): string {
-        return this.$store.getters['files/getSidebarLogo']
+        return this.$store.getters['files/sidebarLogoUrl'] ?? ''
     }
 
     get logoColor(): string {

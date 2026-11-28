@@ -38,6 +38,7 @@ import { mdiFile, mdiFolder } from '@mdi/js'
 import { defaultBigThumbnailBackground, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 import { escapePath } from '@/plugins/helpers'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import type { GcodeThumbnail } from '@/types/moonraker/FileManagerRPC'
 
 @Component
 export default class GcodefilesThumbnail extends Mixins(BaseMixin) {
@@ -58,27 +59,23 @@ export default class GcodefilesThumbnail extends Mixins(BaseMixin) {
         return this.bigThumbnailBackground
     }
 
-    get fileTimestamp() {
-        if ('modified' in this.item && typeof this.item.modified?.getTime === 'function') {
-            return this.item.modified.getTime()
-        }
+    get file(): FileStateGcodefile | null {
+        // job queue entries contain the gcode file as metadata
+        if ('time_added' in this.item) return this.item.metadata ?? null
 
-        if ('metadata' in this.item && typeof this.item.metadata?.modified?.getTime === 'function') {
-            return this.item.metadata.modified.getTime()
-        }
-
-        return 0
+        return this.item
     }
 
-    get thumbnails(): FileStateGcodefile['thumbnails'] {
-        if ('thumbnails' in this.item) return this.item.thumbnails
+    get fileTimestamp() {
+        return this.file?.modified.getTime() ?? 0
+    }
 
-        return this.item.metadata?.thumbnails ?? []
+    get thumbnails(): GcodeThumbnail[] {
+        return this.file?.thumbnails ?? []
     }
 
     get subdirectory() {
-        let full_filename = this.item.filename
-        if ('full_filename' in this.item) full_filename = this.item.full_filename
+        const full_filename = this.file?.full_filename ?? this.item.filename
         if (!full_filename.includes('/')) return null
 
         return escapePath(full_filename.substring(0, full_filename.lastIndexOf('/')))

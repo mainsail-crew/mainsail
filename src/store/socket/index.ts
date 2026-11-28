@@ -22,7 +22,11 @@ export const getDefaultState = (): SocketState => {
         connectingFailed: false,
         connectionFailedMessage: null,
         loadings: [],
-        initializationList: ['server'],
+        // TODO: remove after converting to async init server components
+        initializationList: [],
+        initializationStep: null,
+        initializationProgress: null,
+        initializationError: null,
         connection_id: null,
     }
 }

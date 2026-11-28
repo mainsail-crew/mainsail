@@ -1,38 +1,32 @@
+import type { Webcam } from '@/types/moonraker/WebcamRPC'
+
 export interface GuiWebcamState {
     webcams: GuiWebcamStateWebcam[]
 }
 
-export interface GuiWebcamStateWebcam {
-    name: string
-    location?: string
-    service:
-        | 'grid'
-        | 'hlsstream'
-        | 'html-video'
-        | 'iframe'
-        | 'jmuxer-stream'
-        | 'mjpegstreamer'
-        | 'mjpegstreamer-adaptive'
-        | 'uv4l-mjpeg'
-        | 'webrtc-camerastreamer'
-        | 'webrtc-janus'
-        | 'webrtc-mediamtx'
-    enabled: boolean
-    icon: string
-    target_fps: number
-    target_fps_idle?: number
-    stream_url: string
-    snapshot_url: string
-    flip_horizontal: boolean
-    flip_vertical: boolean
-    rotation: number
-    aspect_ratio?: string
-    extra_data?: {
-        enableAudio?: boolean
-        hideFps?: boolean
-        nozzleCrosshair?: boolean
-        nozzleCrosshairColor?: string
-        nozzleCrosshairSize?: number
-    }
-    source?: 'config' | 'database'
+export interface GuiWebcamStateWebcam extends Omit<Webcam, 'service' | 'extra_data'> {
+    service: GuiWebcamStateWebcamService
+    extra_data?: GuiWebcamStateWebcamExtraData
+}
+
+export type GuiWebcamStateWebcamService =
+    | 'grid'
+    | 'hlsstream'
+    | 'html-video'
+    | 'iframe'
+    | 'jmuxer-stream'
+    | 'mjpegstreamer'
+    | 'mjpegstreamer-adaptive'
+    | 'uv4l-mjpeg'
+    | 'webrtc-camerastreamer'
+    | 'webrtc-go2rtc'
+    | 'webrtc-janus'
+    | 'webrtc-mediamtx'
+
+export interface GuiWebcamStateWebcamExtraData {
+    enableAudio?: boolean
+    hideFps?: boolean
+    nozzleCrosshair?: boolean
+    nozzleCrosshairColor?: string
+    nozzleCrosshairSize?: number
 }

@@ -27,6 +27,7 @@ import { heightmap } from '@/store/gui/heightmap'
 
 export const getDefaultState = (): GuiState => {
     return {
+        initVersion: null,
         general: {
             printername: '',
             language: 'en',
@@ -200,7 +201,6 @@ export const getDefaultState = (): GuiState => {
                 showUnitIcons: true,
                 showTd1Color: true,
             },
-            blockFileUpload: false,
             configfiles: {
                 countPerPage: 10,
                 sortBy: 'filename',

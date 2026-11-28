@@ -7,20 +7,19 @@ export const actions: ActionTree<RootState, RootState> = {
         if (router.currentRoute.fullPath !== '/') router.push('/')
     },
 
-    changePrinter({ dispatch, getters }, payload) {
+    changePrinter({ dispatch, state }, payload: { printer: string }) {
+        const printerSocket = state.farm?.[payload.printer]?.socket
+        if (!printerSocket) return
+
+        const { hostname, port, path } = printerSocket
+
+        dispatch('editor/reset')
         dispatch('files/reset')
         dispatch('gui/reset')
         dispatch('printer/reset')
         dispatch('server/reset')
         dispatch('socket/reset')
-
-        const printerSocket = getters['farm/' + payload.printer + '/getSocketData']
-
-        dispatch('socket/setSocket', {
-            hostname: printerSocket.hostname,
-            port: printerSocket.port,
-            path: printerSocket.path,
-        })
+        dispatch('socket/setSocket', { hostname, port, path })
     },
 
     setNaviDrawer({ commit }, payload) {

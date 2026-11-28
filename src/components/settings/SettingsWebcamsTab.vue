@@ -48,24 +48,20 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
     mdiPencil = mdiPencil
     mdiDelete = mdiDelete
 
-    private boolForm = false
-    private typeForm: 'create' | 'edit' = 'create'
-    private formWebcam: GuiWebcamStateWebcam = {} as GuiWebcamStateWebcam
+    boolForm = false
+    typeForm: 'create' | 'edit' = 'create'
+    formWebcam: GuiWebcamStateWebcam = {} as GuiWebcamStateWebcam
 
     get webcams() {
         return this.$store.state.gui.webcams.webcams ?? []
     }
 
-    get configfiles() {
-        return this.$store.getters['files/getDirectory']('config')?.childrens ?? []
-    }
-
     get crowsnestConf(): FileStateFile | null {
-        return this.configfiles.find((file: FileStateFile) => file.filename === 'crowsnest.conf')
+        return this.$store.getters['files/getFile']('config/crowsnest.conf')
     }
 
     get existCrowsnestConf(): boolean {
-        return this.configfiles.findIndex((file: FileStateFile) => file.filename === 'crowsnest.conf') !== -1
+        return this.crowsnestConf !== null
     }
 
     openCrowsnestConf() {
@@ -93,6 +89,8 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin, WebcamMixin) {
             flip_vertical: false,
             aspect_ratio: DEFAULT_ASPECT_RATIO,
             extra_data: {},
+            location: 'printer',
+            source: 'database',
         }
 
         this.typeForm = 'create'

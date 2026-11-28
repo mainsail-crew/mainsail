@@ -11,6 +11,7 @@
             <the-service-worker />
             <the-update-dialog />
             <the-editor />
+            <the-editor-transfer-snackbar />
             <the-timelapse-rendering-snackbar />
             <the-fullscreen-upload />
             <the-upload-snackbar />
@@ -31,6 +32,7 @@ import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from './components/mixins/theme'
 import TheTopbar from '@/components/TheTopbar.vue'
 import { Mixins, Watch } from 'vue-property-decorator'
+import TheEditorTransferSnackbar from '@/components/TheEditorTransferSnackbar.vue'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
 import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
@@ -51,6 +53,7 @@ import { AppRoute } from '@/routes'
         TheMacroPrompt,
         TheTimelapseRenderingSnackbar,
         TheEditor,
+        TheEditorTransferSnackbar,
         TheSelectPrinterDialog,
         TheConnectingDialog,
         TheUpdateDialog,
@@ -98,12 +101,12 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
         return style
     }
 
-    get customStylesheet() {
-        return this.$store.getters['files/getCustomStylesheet']
+    get customStylesheet(): string | null {
+        return this.$store.getters['files/customStylesheetUrl']
     }
 
-    get customFavicons(): string | null {
-        return this.$store.getters['files/getCustomFavicons'] ?? null
+    get customFavicons(): [string, string] | null {
+        return this.$store.getters['files/customFaviconUrls']
     }
 
     get language(): string {
@@ -208,7 +211,8 @@ export default class App extends Mixins(BaseMixin, ThemeMixin) {
     current_fileChanged(newVal: string): void {
         if (newVal === '') return
 
-        this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
+        // the metadata of the printed file is also stored as printer.current_file
+        this.$store.dispatch('files/fetchMetadata', newVal)
     }
 
     @Watch('primaryColor')

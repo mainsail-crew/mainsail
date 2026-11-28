@@ -99,7 +99,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ServerPowerStateDevice } from '@/store/server/power/types'
+import type { PowerDevice } from '@/types/moonraker/DevicesRPC'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiPowerStandby, mdiRestart, mdiPower, mdiToggleSwitch, mdiToggleSwitchOff } from '@mdi/js'
 import TopCornerMenuService from '@/components/ui/TopCornerMenuService.vue'
@@ -173,10 +173,8 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
         return services.sort()
     }
 
-    get powerDevices() {
-        const devices = this.$store.getters['server/power/getDevices'] ?? []
-
-        return devices.filter((device: ServerPowerStateDevice) => !device.device.startsWith('_'))
+    get powerDevices(): PowerDevice[] {
+        return this.$store.getters['server/power/visibleDevices']
     }
 
     get powerDeviceDialogTitle(): string {
@@ -238,7 +236,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
         this.$socket.emit('printer.gcode.script', { script: 'FIRMWARE_RESTART' })
     }
 
-    changeSwitch(device: ServerPowerStateDevice, value: string) {
+    changeSwitch(device: PowerDevice, value: string) {
         this.dialogPowerDeviceChange.device = device.device
         this.dialogPowerDeviceChange.value = value
 
@@ -250,14 +248,17 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin, ServiceMixins) {
         }
     }
 
-    powerDeviceToggle() {
-        const rpc =
-            this.dialogPowerDeviceChange.value === 'off' ? 'machine.device_power.on' : 'machine.device_power.off'
-        this.$socket.emit(
-            rpc,
-            { [this.dialogPowerDeviceChange.device]: null },
-            { action: 'server/power/responseToggle' }
-        )
+    async powerDeviceToggle() {
+        const { device, value } = this.dialogPowerDeviceChange
+
+        try {
+            await this.$store.dispatch('server/power/setDeviceState', {
+                device,
+                action: value === 'off' ? 'on' : 'off',
+            })
+        } catch (e) {
+            window.console.error(`[TheTopCornerMenu] Failed to switch the power device "${device}"`, e)
+        }
     }
 
     hostReboot() {

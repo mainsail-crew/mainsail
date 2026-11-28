@@ -6,6 +6,7 @@ import {
     PrinterTempHistoryStateSourceEntry,
 } from '@/store/printer/tempHistory/types'
 import { RootState } from '@/store/types'
+import { GuiTempchartDatasetSetting } from '@/store/gui/types'
 
 export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
     getDatasetColor: (_, getters) => (name: string) => {
@@ -94,13 +95,9 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
     },
 
     getSelectedLegends: (state, getters, rootState) => {
-        interface legends {
-            [key: string]: boolean
-        }
-
-        const selected: legends = {}
-        const available_sensors = rootState.printer?.heaters?.available_sensors ?? []
-        const available_monitors = rootState.printer?.heaters?.available_monitors ?? []
+        const selected: Record<string, boolean> = {}
+        const available_sensors: string[] = rootState.printer?.heaters?.available_sensors ?? []
+        const available_monitors: string[] = rootState.printer?.heaters?.available_monitors ?? []
         const viewSettings = rootState.gui?.view?.tempchart?.datasetSettings ?? {}
 
         Object.keys(viewSettings).forEach((key) => {
@@ -117,7 +114,7 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
                 if (state.series.findIndex((serie) => serie.name === serieName) === -1) return
 
                 // add to selected
-                selected[serieName] = viewSettings[key][attrKey] as boolean
+                selected[serieName] = viewSettings[key][attrKey as keyof GuiTempchartDatasetSetting] as boolean
             })
         })
 
@@ -166,8 +163,6 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
     },
 
     getTemperatureStoreSize: (state, getters, rootState, rootGetters) => {
-        const dataStoreSize = rootGetters['server/getConfig']('data_store', 'temperature_store_size')
-
-        return dataStoreSize ?? 1200
+        return rootGetters['server/getConfigValue']('data_store', 'temperature_store_size', 1200)
     },
 }

@@ -1,18 +1,15 @@
+import type { AnnouncementEntry } from '@/types/moonraker/AnnouncementsRPC'
+
 export interface ServerAnnouncementsState {
     entries: ServerAnnouncementsStateEntry[]
     feeds: string[]
 }
 
-export interface ServerAnnouncementsStateEntry {
-    entry_id: string
-    url: string
-    title: string
-    description: string
-    priority: 'normal' | 'high'
+export interface ServerAnnouncementsStateEntry extends Omit<
+    AnnouncementEntry,
+    'date' | 'date_dismissed' | 'dismiss_wake'
+> {
     date: Date
-    dismissed: boolean
     date_dismissed: Date | null
     dismiss_wake: Date | null
-    source: string
-    feed: string
 }

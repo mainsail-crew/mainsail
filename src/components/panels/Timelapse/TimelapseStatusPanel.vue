@@ -133,11 +133,11 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin, TimelapseMix
     }
 
     get existsSnapshoturlInMoonrakerConfig() {
-        return 'snapshoturl' in this.$store.state.server.config.orig.timelapse
+        return 'snapshoturl' in (this.$store.state.server.config.orig.timelapse ?? {})
     }
 
     get moonrakerTimelapseConfig() {
-        return this.$store.state.server.config.config.timelapse ?? {}
+        return this.$store.getters['server/getConfigSection']('timelapse', {})
     }
 
     get camId() {
@@ -145,7 +145,7 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin, TimelapseMix
     }
 
     get camSettings() {
-        return this.$store.getters['gui/webcams/getWebcam'](this.camId)
+        return this.$store.getters['gui/webcams/getWebcamByName'](this.camId)
     }
 
     get webcamStyle() {

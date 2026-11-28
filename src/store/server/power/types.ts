@@ -1,10 +1,5 @@
-export interface ServerPowerState {
-    devices: ServerPowerStateDevice[]
-}
+import type { PowerDevice } from '@/types/moonraker/DevicesRPC'
 
-export interface ServerPowerStateDevice {
-    device: string
-    status: 'off' | 'on' | 'error'
-    locked_while_printing: boolean
-    type: string
+export interface ServerPowerState {
+    devices: PowerDevice[]
 }

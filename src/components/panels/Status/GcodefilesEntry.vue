@@ -54,7 +54,7 @@
                     <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
-                <v-list-item @click="openRenameFileDialog">
+                <v-list-item @click="showRenameFileDialog = true">
                     <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
@@ -65,14 +65,9 @@
             </v-list>
         </v-menu>
         <start-print-dialog v-model="showPrintDialog" :file="item" current-path="" />
-        <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="filename" />
-        <gcodefiles-rename-file-dialog v-model="showRenameFileDialog" :item="item" />
-        <confirmation-dialog
-            v-model="showDeleteDialog"
-            :title="$t('Files.Delete')"
-            :text="$t('Files.DeleteSingleFileQuestion', { name: filename })"
-            :action-button-text="$t('Buttons.Delete')"
-            @action="removeFile" />
+        <add-batch-to-queue-dialog v-model="showAddBatchToQueueDialog" :filename="item.full_filename" />
+        <files-name-dialog v-model="showRenameFileDialog" mode="rename" :directory="directory" :item="file" />
+        <files-delete-dialog v-model="showDeleteDialog" :directory="directory" :items="[file]" />
     </tr>
 </template>
 
@@ -96,10 +91,12 @@ import {
 } from '@mdi/js'
 import Panel from '@/components/ui/Panel.vue'
 import AddBatchToQueueDialog from '@/components/dialogs/AddBatchToQueueDialog.vue'
-import ConfirmationDialog from '@/components/dialogs/ConfirmationDialog.vue'
+import FilesDeleteDialog from '@/components/dialogs/files/FilesDeleteDialog.vue'
+import FilesNameDialog from '@/components/dialogs/files/FilesNameDialog.vue'
 import { convertPrintStatusIcon, convertPrintStatusIconColor, escapePath, formatPrintTime } from '@/plugins/helpers'
 import GcodefilesThumbnail from '@/components/panels/Gcodefiles/GcodefilesThumbnail.vue'
 import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
+import { joinPath, splitPath } from '@/store/files/helpers'
 
 @Component({
     components: {
@@ -107,7 +104,8 @@ import { CLOSE_CONTEXT_MENU, EventBus } from '@/plugins/eventBus'
         Panel,
         StartPrintDialog,
         AddBatchToQueueDialog,
-        ConfirmationDialog,
+        FilesDeleteDialog,
+        FilesNameDialog,
     },
 })
 export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, ControlMixin) {
@@ -130,7 +128,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     showPrintDialog = false
     showAddBatchToQueueDialog = false
     showRenameFileDialog = false
-    renameFileNewName = ''
 
     showDeleteDialog = false
 
@@ -139,7 +136,7 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     get existsMetadata() {
-        return this.item?.metadataPulled ?? false
+        return this.item?.hasMetadata ?? false
     }
 
     get description() {
@@ -173,7 +170,17 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
     }
 
     get filename() {
-        return this.item.filename.slice(this.item.filename.lastIndexOf('/') + 1)
+        return splitPath(this.item.full_filename).name
+    }
+
+    /** Directory of the file, including the root */
+    get directory() {
+        return joinPath('gcodes', splitPath(this.item.full_filename).dir)
+    }
+
+    /** The filename of the dashboard items is the path, but the file dialogs need the name */
+    get file() {
+        return { ...this.item, filename: this.filename }
     }
 
     showContextMenu(e: MouseEvent | LongpressEvent) {
@@ -190,8 +197,12 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         this.contextMenuShow = false
     }
 
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.item.filename])
+    async addToQueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', [this.item.filename])
+        } catch (e) {
+            window.console.error('[StatusPanelGcodefilesEntry] Failed to add file to the job queue', e)
+        }
     }
 
     view3D() {
@@ -202,11 +213,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
         const href = this.apiUrl + '/server/files/gcodes/' + escapePath(this.item.filename)
 
         window.open(href)
-    }
-
-    openRenameFileDialog() {
-        this.renameFileNewName = this.filename
-        this.showRenameFileDialog = true
     }
 
     editFile() {
@@ -221,14 +227,6 @@ export default class StatusPanelGcodefilesEntry extends Mixins(BaseMixin, Contro
             size: this.item.size,
             permissions: this.item.permissions,
         })
-    }
-
-    removeFile() {
-        this.$socket.emit(
-            'server.files.delete_file',
-            { path: 'gcodes/' + this.item.filename },
-            { action: 'files/getDeleteFile' }
-        )
     }
 
     mounted() {

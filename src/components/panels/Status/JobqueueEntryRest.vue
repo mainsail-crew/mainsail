@@ -30,7 +30,7 @@ export default class StatusPanelJobqueueEntryRest extends Mixins(BaseMixin) {
         }
 
         this.jobs.forEach((job: ServerJobQueueStateJob) => {
-            const count = (job.combinedIds?.length ?? 0) + 1
+            const count = job.combinedIds.length + 1
 
             sums.filamentLength += (job.metadata?.filament_total ?? 0) * count
             sums.filamentWeight += (job.metadata?.filament_weight_total ?? 0) * count
@@ -44,7 +44,7 @@ export default class StatusPanelJobqueueEntryRest extends Mixins(BaseMixin) {
         let count = 0
 
         this.jobs.forEach((item: ServerJobQueueStateJob) => {
-            count += (item.combinedIds?.length ?? 0) + 1
+            count += item.combinedIds.length + 1
         })
 
         return count

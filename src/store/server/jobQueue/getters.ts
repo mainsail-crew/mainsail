@@ -1,33 +1,27 @@
 import { GetterTree } from 'vuex'
 import { ServerJobQueueState, ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
-import Vue from 'vue'
 import { RootState } from '@/store/types'
+import type { FileStateGcodefile } from '@/store/files/types'
 
 export const getters: GetterTree<ServerJobQueueState, RootState> = {
-    getJobs: (state, getters, rootState, rootGetters) => {
+    /** Queued jobs, consecutive jobs of the same file are combined into one entry */
+    jobs: (state, _getters, _rootState, rootGetters): ServerJobQueueStateJob[] => {
+        const getGcodeFile = rootGetters['files/getGcodeFile'] as (path: string) => FileStateGcodefile | null
         const jobs: ServerJobQueueStateJob[] = []
 
         state.queued_jobs.forEach((queuedJob) => {
-            const job = { ...queuedJob }
-
-            if (jobs.length && jobs[jobs.length - 1].filename === job.filename) {
-                jobs[jobs.length - 1].combinedIds?.push(job.job_id)
+            const lastJob = jobs[jobs.length - 1]
+            if (lastJob?.filename === queuedJob.filename) {
+                lastJob.combinedIds.push(queuedJob.job_id)
                 return
             }
 
-            const file = rootGetters['files/getFile']('gcodes/' + job.filename)
-            if (!file?.metadataPulled)
-                Vue.$socket.emit('server.files.metadata', { filename: job.filename }, { action: 'files/getMetadata' })
-            job.metadata = file
-            job.combinedIds = []
-
-            jobs.push(job)
+            jobs.push({ ...queuedJob, metadata: getGcodeFile(queuedJob.filename), combinedIds: [] })
         })
 
         return jobs
     },
 
-    getJobsCount: (state) => {
-        return state.queued_jobs.length
-    },
+    /** Number of queued jobs, combined jobs are counted individually */
+    jobsCount: (state): number => state.queued_jobs.length,
 }

@@ -63,45 +63,6 @@ export const checkKlipperConfigModules = [
     'gcode_macro cancel_print',
 ]
 
-/*
- * List of allowed metadata fields
- */
-export const allowedMetadata = [
-    'uuid',
-    'estimated_time',
-    'extruder_colors',
-    'filament_change_count',
-    'filament_colors',
-    'filament_name',
-    'filament_temps',
-    'filament_type',
-    'filament_colors',
-    'extruder_colors',
-    'filament_temps',
-    'referenced_tools',
-    'mmu_print',
-    'filament_total',
-    'filament_weight_total',
-    'filament_weights',
-    'nozzle_diameter',
-    'first_layer_bed_temp',
-    'first_layer_extr_temp',
-    'chamber_temp',
-    'first_layer_height',
-    'gcode_end_byte',
-    'gcode_start_byte',
-    'job_id',
-    'layer_height',
-    'mmu_print',
-    'object_height',
-    'print_start_time',
-    'referenced_tools',
-    'size',
-    'slicer',
-    'slicer_version',
-    'thumbnails',
-]
-
 export const maxEventHistory = 500
 export const maxGcodeHistory = 50
 
@@ -162,7 +123,7 @@ export const genericLogfiles = ['AFC', 'crowsnest', 'mms', 'mmu', 'sonar']
 /*
  * List of all rollover logfiles
  */
-export const rolloverLogfiles = ['klipper', 'moonraker']
+export const rolloverLogfiles = ['klipper', 'moonraker'] as const
 
 /*
  * List of keys that should not be saved to Moonraker DB
@@ -172,7 +133,6 @@ export const excludeKeys = [
     'view.timelapse.currentPath',
     'view.timelapse.selectedFiles',
     'view.history.selectedJobs',
-    'view.blockFileUpload',
     'view.configfiles.selectedFiles',
     'view.configfiles.rootPath',
     'view.configfiles.currentPath',

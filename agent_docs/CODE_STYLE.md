@@ -11,6 +11,19 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for commands.
 - **PascalCase** - Components, classes, types, interfaces
 - **camelCase** - Functions, variables, methods
 
+### Vuex Getters
+
+Name getters by how they are used:
+
+- **Property-style getters** (return a value) - nouns, no `get` prefix: `allGcodeFiles`, `sidebarLogoUrl`
+- **Method-style getters** (return a function) - verbs: `getFile(path)`, `getDirectory(path)`
+- **Boolean getters** - `is`, `has` or `...Exists`: `isDirectoryLoaded(path)`, `hasConfigFile(name)`, `pathExists(path)`
+
+Avoid vague verbs like `check...`. Return `null` when nothing is found, not `''` or `undefined`.
+Annotate the return type of every getter.
+
+> Older store modules still use the `get` prefix for property-style getters. Use this convention for new and refactored modules.
+
 ## Nullish Handling
 
 Use `??` for default values (checks null/undefined only):

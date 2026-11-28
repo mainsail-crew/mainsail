@@ -1,71 +1,41 @@
-import { FileStateFileThumbnail } from '@/store/files/types'
+import type {
+    HistoryAuxiliaryTotal,
+    HistoryJob,
+    HistoryJobMetadata,
+    HistoryJobTotals,
+} from '@/types/moonraker/HistoryRPC'
 
 export interface ServerHistoryState {
     jobs: ServerHistoryStateJob[]
-    job_totals: {
-        total_jobs: number
-        total_time: number
-        total_print_time: number
-        total_filament_used: number
-        longest_job: number
-        longest_print: number
-    }
-    auxiliary_totals: ServerHistoryStateJobAuxiliaryTotal[]
+    job_totals: HistoryJobTotals
+    auxiliary_totals: HistoryAuxiliaryTotal[]
     all_loaded: boolean
 }
 
-export interface ServerHistoryStateJob {
-    job_id: string
-    exists: boolean
-    end_time: number
-    filament_used: number
-    filename: string
-    metadata: {
-        print_start_time?: number
-        job_id?: number
-        size?: number
-        slicer?: string
-        slicer_version?: string
-        layer_count?: number
-        layer_height?: number
-        first_layer_height?: number
-        object_height?: number
-        filament_total?: number
-        filament_weight_total?: number
-        estimated_time?: number
-        thumbnails?: FileStateFileThumbnail[]
-        first_layer_bed_temp?: number
-        first_layer_extr_temp?: number
-        gcode_start_byte?: number
-        gcode_end_byte?: number
-        filename?: string
-        filesize?: number
-        modified?: number
-        uuid?: string
-        nozzle_diameter?: number
-        [key: string]: unknown
-    }
+export interface ServerHistoryStateJob extends Omit<HistoryJob, 'metadata'> {
+    metadata: ServerHistoryStateJobMetadata
+    /** User note, stored in the history_notes namespace of the Moonraker database */
     note?: string
-    print_duration: number
-    status: string
-    start_time: number
-    total_duration: number
-    auxiliary_data?: ServerHistoryStateJobAuxiliaryData[]
 }
 
-export interface ServerHistoryStateJobAuxiliaryData {
-    description: string
-    name: string
-    provider: string
-    units: string
-    value: number | number[]
+/** Moonraker passes through metadata fields that are not typed (e.g. added by newer versions) */
+export interface ServerHistoryStateJobMetadata extends HistoryJobMetadata {
+    [key: string]: unknown
 }
 
-export interface ServerHistoryStateJobAuxiliaryTotal {
-    field: string
-    maximum: number
-    provider: string
-    total: number
+/** Identifies a gcode file to find its jobs. `modified` is in milliseconds. */
+export interface ServerHistoryFileReference {
+    modified: number
+    size: number
+    uuid: string | null
+    job_id: string | null
+}
+
+/** Jobs indexed by uuid, file (size and modified date) and job id */
+export interface ServerHistoryJobIndex {
+    byUuid: Map<string, ServerHistoryStateJob[]>
+    byFile: Map<string, ServerHistoryStateJob[]>
+    byJobId: Map<string, ServerHistoryStateJob>
 }
 
 export interface HistoryListRowJob extends ServerHistoryStateJob {

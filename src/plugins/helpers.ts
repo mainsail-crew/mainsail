@@ -15,6 +15,7 @@ import {
 import Vue from 'vue'
 import { VColorPickerColor } from '@/types/vuetify'
 import DOMPurify from 'dompurify'
+import { sha256 } from 'js-sha256'
 
 export const isRecord = (value: unknown): value is Record<string, unknown> => {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -58,22 +59,6 @@ export const setDataDeep = (currentState: unknown, payload: unknown): void => {
 
         Vue.set(currentState, key, value)
     })
-}
-
-export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
-    if (folder !== undefined && folder !== null && dirArray.length) {
-        const parent = folder?.find((element: FileStateFile) => element.isDirectory && element.filename === dirArray[0])
-        if (parent) {
-            dirArray.shift()
-
-            if (parent.childrens && dirArray.length) return findDirectory(parent.childrens, dirArray)
-            else if (parent.childrens) return parent.childrens
-        }
-
-        return folder
-    }
-
-    return null
 }
 
 export const caseInsensitiveSort = <T extends object>(values: T[], ...orderTypes: (keyof T)[]): T[] => {
@@ -140,6 +125,17 @@ export const convertName = (name: string): string => {
     return output
 }
 
+/**
+ * Splits a filename into its name and its extension (including the dot), e.g. 'video.mp4' -> 'video' + '.mp4'.
+ * Hidden files without an extension (e.g. '.gitignore') have no extension, the directories of a path stay in the name.
+ */
+export const splitExtension = (filename: string): { name: string; extension: string } => {
+    const pos = filename.lastIndexOf('.')
+    if (pos <= filename.lastIndexOf('/') + 1) return { name: filename, extension: '' }
+
+    return { name: filename.slice(0, pos), extension: filename.slice(pos) }
+}
+
 export const formatFilesize = (fileSizeInBytes: number): string => {
     let i = -1
     const byteUnits = [' kB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB']
@@ -188,7 +184,40 @@ export const formatPrintTime = (totalSeconds: number, boolDays = true): string =
     return output.join(' ')
 }
 
-export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
+const MS_PER_DAY = 86_400_000
+
+/**
+ * Formats an ETA timestamp as clock time ('16:05', '04:05 PM'). Appends the number of days
+ * if the ETA is not today ('01:00 +1'). Returns '--' if the ETA is not in the future.
+ */
+export const formatEta = (eta: number, hours12Format = false): string => {
+    const now = new Date()
+    const etaDate = new Date(eta)
+    if (etaDate <= now) return '--'
+
+    const hours = etaDate.getHours()
+    const minutes = etaDate.getMinutes()
+
+    let displayHour = hours
+    let amPm = ''
+
+    if (hours12Format) {
+        amPm = hours >= 12 ? ' PM' : ' AM'
+        displayHour = hours % 12 || 12
+    }
+
+    const output = `${String(displayHour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}${amPm}`
+
+    now.setHours(0, 0, 0, 0)
+    etaDate.setHours(0, 0, 0, 0)
+    const dayDiff = Math.round((etaDate.getTime() - now.getTime()) / MS_PER_DAY)
+
+    if (dayDiff > 0) return `${output} +${dayDiff}`
+
+    return output
+}
+
+export const sortFiles = <T extends FileStateFile>(items: T[] | null, sortBy: string[], sortDesc: boolean[]): T[] => {
     const sortBySingle = sortBy.length ? sortBy[0] : 'filename'
     const sortDescSingle = sortDesc[0]
 
@@ -198,9 +227,9 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
 
     if (items !== null) {
         // Sort by index
-        items.sort((a: FileStateFile, b: FileStateFile) => {
-            const valueA = a[sortBySingle]
-            const valueB = b[sortBySingle]
+        items.sort((a: T, b: T) => {
+            const valueA = (a as unknown as Record<string, unknown>)[sortBySingle]
+            const valueB = (b as unknown as Record<string, unknown>)[sortBySingle]
 
             if (valueA === valueB) return 0
             if (valueA === null || valueA === undefined) return -1
@@ -229,9 +258,7 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
         if (sortDescSingle) items.reverse()
 
         // Then make sure directories come first
-        items.sort((a: FileStateFile, b: FileStateFile) =>
-            a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1
-        )
+        items.sort((a: T, b: T) => (a.isDirectory === b.isDirectory ? 0 : a.isDirectory ? -1 : 1))
     }
 
     return items ?? []
@@ -614,4 +641,37 @@ export function getFileFilamentColors(file: FileStateGcodefile): string[] {
     if (extruder.length) return extruder
 
     return file.filament_colors ?? []
+}
+
+/**
+ * Toggles an item in an array (adds if missing, removes if present).
+ * Returns a new array without mutating the original.
+ *
+ * @param array - The source array
+ * @param item - The item to toggle
+ * @returns A new array with the item added or removed
+ *
+ * @example
+ * toggleArrayItem([1, 2, 3], 2) // [1, 3]
+ * toggleArrayItem([1, 2, 3], 4) // [1, 2, 3, 4]
+ */
+export function toggleArrayItem<T>(array: T[], item: T): T[] {
+    const result = [...array]
+    const index = result.indexOf(item)
+
+    if (index === -1) result.push(item)
+    else result.splice(index, 1)
+
+    return result
+}
+
+/**
+ * Computes an SHA-256 hash of the given editor content, normalizing line endings to Unix-style (`\n`).
+ *
+ * Because the used editor converts all Windows-Style line endings with unix ones on load,
+ * the hash is computed with the source always having unix-style line endings.
+ * https://github.com/codemirror/CodeMirror/issues/3395
+ */
+export function hashEditorContent(content: string): string {
+    return sha256(content.replace(/(?:\r\n|\r|\n)/g, '\n'))
 }

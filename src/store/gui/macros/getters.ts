@@ -4,7 +4,7 @@ import { caseInsensitiveSort } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
 
 export const getters: GetterTree<GuiMacrosState, RootState> = {
-    getAllMacrogroups: (state) => {
+    getAllMacrogroups: (state): GuiMacrosStateMacrogroup[] => {
         const macrogroups: GuiMacrosStateMacrogroup[] = []
 
         Object.keys(state.macrogroups).forEach((id: string) => {
@@ -12,9 +12,5 @@ export const getters: GetterTree<GuiMacrosState, RootState> = {
         })
 
         return caseInsensitiveSort(macrogroups, 'name')
-    },
-
-    getMacrogroup: (state) => (id: string) => {
-        return state.macrogroups[id]
     },
 }

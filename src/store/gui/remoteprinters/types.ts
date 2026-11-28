@@ -1,9 +1,7 @@
-import { FarmPrinterStateSocket } from '@/store/farm/printer/types'
+import { FarmPrinterConnectionState, FarmPrinterSettings } from '@/store/farm/printer/types'
 
 export interface GuiRemoteprintersState {
-    printers: {
-        [key: string]: GuiRemoteprintersStatePrinter
-    }
+    printers: Record<string, GuiRemoteprintersStatePrinter>
 }
 
 export interface GuiRemoteprintersStatePrinter {
@@ -12,8 +10,6 @@ export interface GuiRemoteprintersStatePrinter {
     port: number
     path?: string | null
     name?: string | null
-    socket?: FarmPrinterStateSocket
-    settings?: {
-        [key: string]: unknown
-    }
+    socket?: FarmPrinterConnectionState
+    settings?: FarmPrinterSettings
 }

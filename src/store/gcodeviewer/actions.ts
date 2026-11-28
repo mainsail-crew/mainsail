@@ -1,21 +1,22 @@
 import { ActionTree } from 'vuex'
-import { GcodeviewerState } from '@/store/gcodeviewer/types'
+import { GCodeViewerInstance, GcodeviewerState } from '@/store/gcodeviewer/types'
 import { RootState } from '@/store/types'
+import { markRaw } from 'vue'
 
 export const actions: ActionTree<GcodeviewerState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    setViewerBackup({ commit }, backup) {
-        commit('setViewerBackup', backup)
+    setViewerBackup({ commit }, payload: GCodeViewerInstance): void {
+        commit('setValue', { key: 'viewerBackup', value: markRaw(payload) })
     },
 
-    setCanvasBackup({ commit }, backup) {
-        commit('setCanvasBackup', backup)
+    setCanvasBackup({ commit }, payload: HTMLCanvasElement): void {
+        commit('setValue', { key: 'canvasBackup', value: payload })
     },
 
-    setLoadedFileBackup({ commit }, backup) {
-        commit('setLoadedFileBackup', backup)
+    setLoadedFileBackup({ commit }, payload: string | null): void {
+        commit('setValue', { key: 'loadedFileBackup', value: payload })
     },
 }

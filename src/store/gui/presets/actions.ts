@@ -1,53 +1,24 @@
 import { ActionTree } from 'vuex'
 import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
-import Vue from 'vue'
-import { GuiPresetsState } from '@/store/gui/presets/types'
+import { GuiPresetsState, GuiPresetsStatePreset } from '@/store/gui/presets/types'
 
 export const actions: ActionTree<GuiPresetsState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    saveSetting({ dispatch }, payload) {
-        dispatch(
-            'gui/saveSetting',
-            {
-                name: 'presets.' + payload.name,
-                value: payload.value,
-            },
-            { root: true }
-        )
+    async saveSetting({ dispatch }, payload: { name: string; value: GuiPresetsStatePreset | string }): Promise<void> {
+        await dispatch('gui/saveSetting', { name: `presets.${payload.name}`, value: payload.value }, { root: true })
     },
 
-    upload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', {
-            namespace: 'mainsail',
-            key: 'presets.presets.' + payload.id,
-            value: payload.value,
-        })
+    async updateOrCreate({ dispatch }, payload: GuiPresetsStatePreset): Promise<void> {
+        const { id, ...value } = payload
+        await dispatch('saveSetting', { name: `presets.${id ?? uuidv4()}`, value })
     },
 
-    store({ commit, dispatch, state }, payload) {
-        const id = uuidv4()
-
-        commit('store', { id, values: { ...payload.values } })
-        dispatch('upload', {
-            id,
-            value: state.presets[id],
-        })
-    },
-
-    update({ commit, dispatch, state }, payload) {
-        commit('update', payload)
-        dispatch('upload', {
-            id: payload.id,
-            value: state.presets[payload.id],
-        })
-    },
-
-    delete({ commit }, payload) {
-        commit('delete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets.presets.' + payload })
+    async delete({ commit, dispatch }, presetId: string): Promise<void> {
+        await dispatch('gui/deleteSetting', `presets.presets.${presetId}`, { root: true })
+        commit('delete', presetId)
     },
 }

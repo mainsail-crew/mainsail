@@ -1,246 +1,225 @@
 import { ActionTree } from 'vuex'
-import { FarmPrinterState } from '@/store/farm/printer/types'
+import {
+    FarmPrinterSettings,
+    FarmPrinterState,
+    FarmPrinterStateData,
+    FarmPrinterStateMainsail,
+} from '@/store/farm/printer/types'
 import { RootState } from '@/store/types'
+import { GuiState } from '@/store/gui/types'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { createFarmClient, getFarmClient } from '@/store/farm/printer/clients'
+import { getDefaultMainsail } from '@/store/farm/printer/index'
+import { themeDir } from '@/store/variables'
+import { JsonRpcSocket } from '@/plugins/jsonRpcSocket'
+import { isRecord } from '@/plugins/helpers'
+import { isJsonRpcError, NAMESPACE_NOT_FOUND } from '@/types/moonraker'
+
+const LOG_PREFIX = '[FARM]'
+const logError = (...args: unknown[]) => window.console.error(LOG_PREFIX, ...args)
+
+/** Klipper objects the farm panel needs. Objects with a space in the name must match exactly. */
+const SUBSCRIBED_OBJECTS = [
+    'webhooks',
+    'print_stats',
+    'virtual_sdcard',
+    'display_status',
+    'heater_bed',
+    'temperature_fan chamber',
+    'temperature_sensor chamber',
+]
+const EXTRUDER_OBJECT = /^extruder\d*$/
+
+/** Server notifications that are passed on to an action. All others are ignored. */
+const NOTIFICATION_ACTIONS: Record<string, string> = {
+    notify_status_update: 'onStatusUpdate',
+    notify_klippy_ready: 'onKlippyReady',
+    notify_klippy_shutdown: 'onKlippyShutdown',
+    notify_klippy_disconnected: 'onKlippyDisconnected',
+}
+
+/** The client of a printer. Throws if the printer is not connected (e.g. it was unregistered meanwhile). */
+const requireClient = (id: string): JsonRpcSocket => {
+    const client = getFarmClient(id)
+    if (!client) throw new Error(`No client for farm printer ${id}`)
+
+    return client
+}
+
+const parseMainsail = (value: unknown): FarmPrinterStateMainsail => {
+    const defaults = getDefaultMainsail()
+    if (!isRecord(value)) return defaults
+
+    const general = (isRecord(value.general) ? value.general : {}) as Partial<GuiState['general']>
+    const uiSettings = (isRecord(value.uiSettings) ? value.uiSettings : {}) as Partial<GuiState['uiSettings']>
+
+    return {
+        printername: general.printername ?? defaults.printername,
+        logoColor: uiSettings.logo ?? defaults.logoColor,
+        calcPrintProgress: general.calcPrintProgress ?? defaults.calcPrintProgress,
+        calcEtaTime: general.calcEtaTime ?? defaults.calcEtaTime,
+    }
+}
 
 export const actions: ActionTree<FarmPrinterState, RootState> = {
-    reset({ commit }) {
+    reset({ commit }): void {
         commit('reset')
     },
 
-    connect({ state, commit, dispatch, getters, rootGetters }) {
-        commit('setSocketData', { isConnecting: true })
-        const socket = new WebSocket(getters.getSocketUrl)
+    /** Opens a new connection. An existing connection is dropped, so this is also used to reconnect. */
+    connect({ state, commit, dispatch, getters }): void {
+        // an existing connection is dropped without onClose, so reset its state here
+        commit('setSocket', { isConnected: false, isConnecting: true })
+        commit('setKlippyState', 'disconnected')
 
-        socket.onopen = () => {
-            commit('setSocketData', {
-                instance: socket,
-                reconnects: 0,
-                isConnecting: false,
-                isConnected: true,
+        const client =
+            getFarmClient(state.id) ??
+            createFarmClient(state.id, getters.socketUrl, {
+                onOpen: () => dispatch('onOpen'),
+                onClose: () => dispatch('onClose'),
+                onNotification: ({ method, params }) => {
+                    const action = NOTIFICATION_ACTIONS[method]
+                    if (action) dispatch(action, params?.[0])
+                },
             })
 
-            dispatch('sendObj', {
-                method: 'server.info',
-                action: 'getServerInfo',
-            })
-        }
-
-        socket.onclose = (e) => {
-            if (!rootGetters['farm/existsPrinter'](state._namespace)) return
-
-            if (!e.wasClean && state.socket.reconnects < state.socket.maxReconnects) {
-                commit('setSocketData', { reconnects: state.socket.reconnects + 1 })
-
-                setTimeout(() => {
-                    dispatch('connect')
-                }, state.socket.reconnectInterval)
-            } else {
-                commit('setSocketData', {
-                    isConnecting: false,
-                    isConnected: false,
-                    reconnects: 0,
-                })
-            }
-        }
-
-        socket.onerror = () => {
-            window.console.error('Farm Printer WebSocket Error')
-        }
-
-        socket.onmessage = (msg) => {
-            const data = JSON.parse(msg.data)
-            if (data && data.method) {
-                switch (data.method) {
-                    case 'notify_status_update':
-                        dispatch('getData', data.params[0])
-                        break
-
-                    case 'notify_klippy_disconnected':
-                        dispatch('disconnectKlippy')
-                        break
-
-                    case 'notify_klippy_ready':
-                        dispatch('connectKlippy')
-                        break
-                }
-            } else if ('result' in data) {
-                const requestIndex = state.socket.wsData.findIndex((item) => item.id === data.id)
-
-                if (
-                    requestIndex !== -1 &&
-                    state.socket.wsData[requestIndex].action !== undefined &&
-                    state.socket.wsData[requestIndex].action !== ''
-                ) {
-                    let result = data.result
-                    if (result === 'ok') result = { result: result }
-                    if (typeof result === 'string') result = { result: result }
-
-                    const preload = {}
-                    const wsData = state.socket.wsData[requestIndex]
-                    if (wsData.actionPreload) Object.assign(preload, wsData.actionPreload)
-                    Object.assign(preload, { requestParams: wsData.params })
-                    Object.assign(preload, result)
-
-                    if (wsData.action) dispatch(wsData.action, preload)
-                }
-
-                if (requestIndex !== -1) commit('removeWsData', requestIndex)
-            }
-        }
+        client.setUrl(getters.socketUrl)
+        client.connect()
     },
 
-    reconnect({ state, dispatch }) {
-        if (state.socket.instance) state.socket.instance.close()
-        dispatch('connect')
+    disconnect({ state }): void {
+        getFarmClient(state.id)?.close()
     },
 
-    sendObj({ state, commit }, payload) {
-        if (state.socket.instance && state.socket.instance.readyState === WebSocket.OPEN) {
-            const id = Math.floor(Math.random() * 10000) + 1
-
-            commit('addWsData', {
-                id: id,
-                action: payload.action,
-                params: payload.params || {},
-                actionPreload: payload.actionPreload || null,
-            })
-
-            state.socket.instance.send(
-                JSON.stringify({
-                    jsonrpc: '2.0',
-                    method: payload.method,
-                    params: payload.params || {},
-                    id: id,
-                })
-            )
-        }
+    async onOpen({ commit, dispatch }): Promise<void> {
+        commit('setSocket', { isConnected: true, isConnecting: false })
+        await dispatch('init')
     },
 
-    connectKlippy({ commit, dispatch }) {
-        commit('setKlippyConnected', true)
-        dispatch('initPrinter')
+    onClose({ commit }): void {
+        commit('setSocket', { isConnected: false, isConnecting: false })
+        commit('setKlippyState', 'disconnected')
     },
 
-    disconnectKlippy({ commit }) {
-        commit('setKlippyConnected', false)
-    },
-
-    getServerInfo({ commit, dispatch }, payload) {
-        commit('setKlippyConnected', payload.klippy_connected)
-        dispatch('initPrinter')
-    },
-
-    initPrinter({ state, commit, dispatch }) {
-        commit('resetData')
-
-        if (state.server.klippy_connected) {
-            dispatch('sendObj', {
-                method: 'printer.objects.list',
-                action: 'getObjectsList',
-            })
+    async init({ state, commit, dispatch }): Promise<void> {
+        try {
+            const info = await requireClient(state.id).request('server.info')
+            commit('setKlippyState', info.klippy_state)
+        } catch (error) {
+            logError(`${state.socket.hostname}: server.info failed`, error)
+            return
         }
 
-        dispatch('sendObj', {
-            method: 'server.files.list',
-            action: 'getConfigDir',
-            params: { root: 'config' },
-        })
+        await dispatch('fetchPrinterData')
+    },
 
-        dispatch('sendObj', {
-            method: 'server.database.list',
-            action: 'getDatabases',
+    async fetchPrinterData({ state, dispatch }): Promise<void> {
+        const requests = [dispatch('fetchThemeFiles'), dispatch('fetchMainsail'), dispatch('fetchWebcams')]
+        // during startup, Moonraker sends notify_klippy_ready once the printer objects are available
+        if (!['disconnected', 'startup'].includes(state.klippyState)) requests.push(dispatch('subscribe'))
+
+        const results = await Promise.allSettled(requests)
+        results.forEach((result) => {
+            if (result.status === 'rejected') logError(`${state.socket.hostname}:`, result.reason)
         })
     },
 
-    getObjectsList({ dispatch }, payload) {
-        const allowed = [
-            'webhooks',
-            'print_stats',
-            'virtual_sdcard',
-            'display_status',
-            'heaters',
-            'heater_bed',
-            'heater_fan',
-            'fan',
-            'temperature_fan',
-            'temperature_sensor',
-            'idle_timeout',
-            'toolhead',
-        ]
+    async subscribe({ state, commit, dispatch }): Promise<void> {
+        const client = requireClient(state.id)
+        const { objects } = await client.request('printer.objects.list')
 
-        let subscripts = {}
-        payload.objects?.forEach((object: string) => {
-            const splits = object.split(' ')
-            const objectName = splits[0]
-
-            if (allowed.includes(objectName) || objectName.startsWith('extruder')) {
-                subscripts = { ...subscripts, [object]: null }
-            }
-        })
-
-        if (Object.keys(subscripts).length > 0)
-            dispatch('sendObj', {
-                method: 'printer.objects.subscribe',
-                params: { objects: subscripts },
-                action: 'getData',
-            })
-    },
-
-    getData({ commit, dispatch }, payload) {
-        const data = 'status' in payload ? { ...payload.status } : { ...payload }
-        commit('setData', data)
-
-        if ((data.print_stats?.filename ?? '') !== '') {
-            dispatch('sendObj', {
-                method: 'server.files.metadata',
-                params: { filename: data.print_stats?.filename },
-                action: 'getMetadataCurrentFile',
-            })
-        }
-    },
-
-    setSettings({ commit, dispatch, state }, payload) {
-        commit('setSettings', payload)
-        dispatch(
-            'gui/remoteprinters/updateSettings',
-            {
-                id: state._namespace,
-                values: state.settings,
-            },
-            { root: true }
+        const subscriptions = Object.fromEntries(
+            objects
+                .filter((name) => SUBSCRIBED_OBJECTS.includes(name) || EXTRUDER_OBJECT.test(name))
+                .map((name) => [name, null])
         )
+        if (Object.keys(subscriptions).length === 0) return
+
+        const result = await client.request('printer.objects.subscribe', { objects: subscriptions })
+        commit('resetData')
+        await dispatch('onStatusUpdate', result.status)
     },
 
-    getMetadataCurrentFile({ commit }, payload) {
-        commit('setCurrentFile', payload)
+    async fetchThemeFiles({ state, commit }): Promise<void> {
+        const files = await requireClient(state.id).request('server.files.list', { root: 'config' })
+        const themeFiles = files.map((file) => file.path).filter((path) => path.startsWith(`${themeDir}/`))
+
+        commit('setThemeFiles', themeFiles)
     },
 
-    getConfigDir({ commit }, payload) {
-        commit('setConfigDir', payload)
-    },
-
-    getDatabases({ commit, dispatch }, payload) {
-        commit('setDatabases', payload.namespaces)
-
-        if (payload.namespaces.includes('mainsail')) {
-            dispatch('sendObj', {
-                method: 'server.database.get_item',
-                params: { namespace: 'mainsail' },
-                action: 'getMainsailData',
+    async fetchMainsail({ state, commit }): Promise<void> {
+        try {
+            const response = await requireClient(state.id).request('server.database.get_item', {
+                namespace: 'mainsail',
             })
+            commit('setMainsail', parseMainsail(response.value))
+        } catch (error) {
+            // a printer without a mainsail namespace uses the defaults
+            if (!isJsonRpcError(error) || error.code !== NAMESPACE_NOT_FOUND) throw error
+            commit('setMainsail', getDefaultMainsail())
+        }
+    },
+
+    async fetchWebcams({ state, commit }): Promise<void> {
+        const { webcams } = await requireClient(state.id).request('server.webcams.list')
+        commit('setWebcams', webcams as GuiWebcamStateWebcam[])
+    },
+
+    async fetchCurrentFile({ state, commit }, filename: string): Promise<void> {
+        if (filename === '') {
+            commit('setCurrentFile', null)
+            return
         }
 
-        dispatch('sendObj', {
-            method: 'server.webcams.list',
-            action: 'getWebcamsData',
-        })
+        try {
+            const metadata = await requireClient(state.id).request('server.files.metadata', { filename })
+            // the printer could have started another file in the meantime
+            if (state.data.print_stats?.filename !== filename) return
+
+            commit('setCurrentFile', {
+                filename,
+                thumbnails: metadata.thumbnails ?? [],
+                gcode_start_byte: metadata.gcode_start_byte ?? null,
+                gcode_end_byte: metadata.gcode_end_byte ?? null,
+                filament_total: metadata.filament_total ?? null,
+                estimated_time: metadata.estimated_time ?? null,
+            })
+        } catch (error) {
+            if (state.data.print_stats?.filename === filename) commit('setCurrentFile', null)
+            logError(`${state.socket.hostname}: cannot load metadata of ${filename}`, error)
+        }
     },
 
-    getMainsailData({ commit }, payload) {
-        commit('setMainsailData', payload.value)
+    async onStatusUpdate({ state, commit, dispatch }, status: FarmPrinterStateData): Promise<void> {
+        commit('setData', status)
+
+        const filename = status.print_stats?.filename
+        if (filename === undefined || filename === state.currentFile?.filename) return
+
+        await dispatch('fetchCurrentFile', filename)
     },
 
-    getWebcamsData({ commit }, payload) {
-        commit('setWebcamsData', payload.webcams)
+    async onKlippyReady({ state, commit, dispatch }): Promise<void> {
+        commit('setKlippyState', 'ready')
+
+        try {
+            await dispatch('subscribe')
+        } catch (error) {
+            logError(`${state.socket.hostname}: subscribe failed`, error)
+        }
+    },
+
+    onKlippyShutdown({ commit }): void {
+        commit('setKlippyState', 'shutdown')
+    },
+
+    onKlippyDisconnected({ commit }): void {
+        commit('setKlippyState', 'disconnected')
+        commit('resetData')
+    },
+
+    async saveSettings({ commit, dispatch, state }, settings: FarmPrinterSettings): Promise<void> {
+        commit('setSettings', settings)
+        await dispatch('gui/remoteprinters/updateSettings', { id: state.id, settings: state.settings }, { root: true })
     },
 }

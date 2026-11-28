@@ -158,15 +158,12 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
         if (href) window.open(href)
     }
 
-    powerOn() {
-        this.$socket.emit(
-            'machine.device_power.post_device',
-            {
-                device: this.printerPowerDevice,
-                action: 'on',
-            },
-            { action: 'server/power/responseToggle' }
-        )
+    async powerOn() {
+        try {
+            await this.$store.dispatch('server/power/setDeviceState', { device: this.printerPowerDevice, action: 'on' })
+        } catch (e) {
+            window.console.error(`[KlippyStatePanel] Failed to power on "${this.printerPowerDevice}"`, e)
+        }
     }
 }
 </script>

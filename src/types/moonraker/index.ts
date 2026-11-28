@@ -10,6 +10,7 @@
  * - PrinterRPC.ts     → https://moonraker.readthedocs.io/en/latest/external_api/printer/
  * - MachineRPC.ts     → https://moonraker.readthedocs.io/en/latest/external_api/machine/
  * - FileManagerRPC.ts → https://moonraker.readthedocs.io/en/latest/external_api/file_manager/
+ * - DevicesRPC.ts     → https://moonraker.readthedocs.io/en/latest/external_api/devices/
  * - etc.
  *
  * To add a new method:
@@ -26,14 +27,32 @@
  * 'method.without.params': () => Promise<{ data: string[] }>
  */
 
-import type { ServerRPC } from './ServerRPC'
-import type { PrinterRPC } from './PrinterRPC'
+import type { AnnouncementsRPC } from './AnnouncementsRPC'
+import type { DatabaseRPC } from './DatabaseRPC'
+import type { DevicesRPC } from './DevicesRPC'
+import type { FileManagerRPC } from './FileManagerRPC'
+import type { HistoryRPC } from './HistoryRPC'
+import type { JobQueueRPC } from './JobQueueRPC'
 import type { MachineRPC } from './MachineRPC'
+import type { PrinterRPC } from './PrinterRPC'
+import type { ServerRPC } from './ServerRPC'
+import type { WebcamRPC } from './WebcamRPC'
 
 /**
  * Combined Moonraker RPC Interface containing all method categories.
  */
-export interface MoonrakerRPCInterface extends ServerRPC, PrinterRPC, MachineRPC {}
+export interface MoonrakerRPCInterface
+    extends
+        AnnouncementsRPC,
+        DatabaseRPC,
+        DevicesRPC,
+        FileManagerRPC,
+        HistoryRPC,
+        JobQueueRPC,
+        MachineRPC,
+        PrinterRPC,
+        ServerRPC,
+        WebcamRPC {}
 
 /**
  * Union type of all available RPC method names.
@@ -52,3 +71,41 @@ export type RPCParams<M extends RPCMethods> =
  * Helper type to extract the return type from an RPC method.
  */
 export type RPCResult<M extends RPCMethods> = Awaited<ReturnType<MoonrakerRPCInterface[M]>>
+
+/**
+ * JSON-RPC 2.0 Error Object
+ * @see https://moonraker.readthedocs.io/en/latest/external_api/introduction/#json-rpc-api-overview
+ */
+export interface JsonRpcError {
+    code: number
+    message: string
+}
+
+/**
+ * Helper function to check if an object is a valid JSON-RPC error.
+ * @param err
+ */
+export const isJsonRpcError = (err: unknown): err is JsonRpcError =>
+    typeof err === 'object' &&
+    err !== null &&
+    'code' in err &&
+    typeof (err as Record<string, unknown>).code === 'number' &&
+    'message' in err &&
+    typeof (err as Record<string, unknown>).message === 'string'
+
+/**
+ * JSON-RPC 2.0 Response Object
+ * @see https://moonraker.readthedocs.io/en/latest/external_api/introduction/#json-rpc-api-overview
+ */
+export interface JsonRpcResponse {
+    jsonrpc: '2.0'
+    id?: number
+    result?: unknown
+    error?: JsonRpcError
+}
+
+/**
+ * Moonraker returns JSON-RPC -32601 ("Method not found") when the requested namespace does not exist.
+ * This is expected on a fresh installation to seed defaults. All other errors propagate.
+ */
+export const NAMESPACE_NOT_FOUND = -32601

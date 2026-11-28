@@ -2,6 +2,8 @@ import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { SocketState } from '@/store/socket/types'
 import { RootState } from '@/store/types'
+import i18n from '@/plugins/i18n'
+import { convertName } from '@/plugins/helpers'
 
 export const actions: ActionTree<SocketState, RootState> = {
     reset({ commit }) {
@@ -14,20 +16,18 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setData', payload)
     },
 
-    setSocket({ commit, state }, payload) {
+    setSocket({ commit, getters }, payload: { hostname: string; port: number; path: string }): void {
         commit('setData', payload)
 
-        const normPath = payload.path.replaceAll(/(^\/*)|(\/*$)/g, '')
-        const path = normPath.length > 0 ? `/${normPath}` : ''
-
         Vue.$socket.close()
-        Vue.$socket.setUrl(state.protocol + '://' + payload.hostname + ':' + payload.port + path + '/websocket')
+        Vue.$socket.setUrl(getters.getWebsocketUrl)
         Vue.$socket.reconnect()
     },
 
     onOpen({ commit, dispatch, rootState }) {
         //set socket connection to connected
         commit('setConnected')
+        commit('resetInitialization')
 
         // init server
         dispatch('server/init', null, { root: true })
@@ -53,10 +53,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_klippy_ready':
-                commit('server/setKlippyConnected', null, { root: true })
-                dispatch('server/stopKlippyConnectedInterval', null, { root: true })
-                dispatch('server/stopKlippyStateInterval', null, { root: true })
-                dispatch('printer/init', null, { root: true })
+                dispatch('server/setKlippyReady', null, { root: true })
                 break
 
             case 'notify_klippy_disconnected':
@@ -76,15 +73,11 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_filelist_changed':
-                dispatch('files/filelist_changed', payload.params[0], { root: true })
-                break
-
-            case 'notify_metadata_update':
-                commit('files/setMetadata', payload.params[0], { root: true })
+                dispatch('files/onFilelistChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_power_changed':
-                commit('server/power/setStatus', payload.params[0], { root: true })
+                dispatch('server/power/notifyPowerChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_update_response':
@@ -96,7 +89,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_history_changed':
-                dispatch('server/history/getChanged', payload.params[0], { root: true })
+                dispatch('server/history/notifyHistoryChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_service_state_changed':
@@ -108,23 +101,23 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_job_queue_changed':
-                dispatch('server/jobQueue/getEvent', payload.params[0], { root: true })
+                dispatch('server/jobQueue/notifyJobQueueChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_announcement_update':
-                dispatch('server/announcements/getList', payload.params[0], { root: true })
+                dispatch('server/announcements/notifyAnnouncementUpdate', payload.params[0], { root: true })
                 break
 
             case 'notify_announcement_dismissed':
-                dispatch('server/announcements/getDismissed', payload.params[0], { root: true })
+                dispatch('server/announcements/notifyAnnouncementDismissed', payload.params[0], { root: true })
                 break
 
             case 'notify_announcement_wake':
-                dispatch('server/announcements/getWaked', payload.params[0], { root: true })
+                dispatch('server/announcements/notifyAnnouncementWake', payload.params[0], { root: true })
                 break
 
             case 'notify_webcams_changed':
-                dispatch('gui/webcams/initStore', payload.params[0], { root: true })
+                dispatch('gui/webcams/notifyWebcamsChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_active_spool_set':
@@ -152,16 +145,17 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('clearLoadings')
     },
 
+    // TODO: remove after converting to async init server components
     addInitModule({ commit }, payload: string) {
         commit('addInitModule', payload)
     },
 
-    // remove only one module from init component like 'server/spoolman/getActiveSpoolId'
+    // TODO: remove after converting to async init server components
     removeInitModule({ commit }, payload: string) {
         commit('removeInitModule', payload)
     },
 
-    // remove a complete init component like 'server/spoolman'
+    // TODO: remove after converting to async init server components
     removeInitComponent({ commit }, payload: string) {
         commit('removeInitComponent', payload)
     },
@@ -172,5 +166,33 @@ export const actions: ActionTree<SocketState, RootState> = {
 
     setConnectionFailed({ commit }, payload) {
         commit('setDisconnected', payload)
+    },
+
+    setInitializationStep({ commit }, payload: string | null) {
+        commit('setInitializationStep', payload)
+    },
+
+    setInitializationStepComponent({ commit }, component: string) {
+        const translationKey = `ConnectionDialog.InitComponents.${component}`
+        let componentName = convertName(component)
+        if (i18n.te(translationKey)) {
+            componentName = i18n.t(translationKey).toString()
+        }
+
+        const output = i18n.t('ConnectionDialog.LoadingComponent', { component: componentName }).toString()
+
+        commit('setInitializationStep', output)
+    },
+
+    setInitializationProgress({ commit }, payload: number | null) {
+        commit('setInitializationProgress', payload)
+    },
+
+    setInitializationError({ commit }, payload: string | null) {
+        commit('setInitializationError', payload)
+    },
+
+    resetInitialization({ commit }) {
+        commit('resetInitialization')
     },
 }

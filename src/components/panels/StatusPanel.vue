@@ -201,12 +201,8 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     activeTab = 'files'
     lastFilename = ''
 
-    get jobs() {
-        return this.$store.getters['server/jobQueue/getJobs']
-    }
-
-    get jobsCount() {
-        return this.$store.getters['server/jobQueue/getJobsCount']
+    get jobsCount(): number {
+        return this.$store.getters['server/jobQueue/jobsCount']
     }
 
     get jobQueueBadgeColor() {

@@ -1,48 +1,51 @@
 import { getDefaultState } from './index'
 import Vue from 'vue'
 import { MutationTree } from 'vuex'
-import { ServerHistoryState } from '@/store/server/history/types'
+import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
+import type { HistoryAuxiliaryTotal, HistoryJobTotals } from '@/types/moonraker/HistoryRPC'
 
 export const mutations: MutationTree<ServerHistoryState> = {
-    reset(state) {
+    reset(state): void {
         Object.assign(state, getDefaultState())
     },
 
-    resetJobs(state) {
-        Vue.set(state, 'jobs', [])
-    },
-
-    setTotals(state, payload) {
-        Vue.set(state, 'job_totals', payload)
-    },
-
-    setAuxiliaryTotals(state, payload) {
-        Vue.set(state, 'auxiliary_totals', payload)
-    },
-
-    setHistoryNotes(state, payload) {
-        const job = state.jobs.find((job) => job.job_id === payload.job_id)
-        if (job) Vue.set(job, 'note', payload.text)
-    },
-
-    addJob(state, payload) {
-        const jobs = [...state.jobs]
-        jobs.push(payload)
-
+    setJobs(state, jobs: ServerHistoryStateJob[]): void {
         Vue.set(state, 'jobs', jobs)
     },
 
-    updateJob(state, payload) {
+    /** Replaces an existing job or prepends a new one, because the list is sorted from newest to oldest */
+    setJob(state, job: ServerHistoryStateJob): void {
+        const index = state.jobs.findIndex((entry) => entry.job_id === job.job_id)
+        if (index === -1) {
+            state.jobs.unshift(job)
+            return
+        }
+
+        // keep the note, because it is not part of the job sent by Moonraker
+        state.jobs.splice(index, 1, { ...job, note: job.note ?? state.jobs[index].note })
+    },
+
+    removeJobs(state, jobIds: string[]): void {
+        Vue.set(
+            state,
+            'jobs',
+            state.jobs.filter((job) => !jobIds.includes(job.job_id))
+        )
+    },
+
+    setJobNote(state, payload: { job_id: string; note: string }): void {
         const index = state.jobs.findIndex((job) => job.job_id === payload.job_id)
-        if (index !== -1) Vue.set(state.jobs, index, payload)
+        if (index === -1) return
+
+        state.jobs.splice(index, 1, { ...state.jobs[index], note: payload.note })
     },
 
-    destroyJob(state, payload) {
-        const index = state.jobs.findIndex((job) => job.job_id === payload)
-        if (index !== -1) state.jobs.splice(index, 1)
+    setTotals(state, payload: { job_totals: HistoryJobTotals; auxiliary_totals: HistoryAuxiliaryTotal[] }): void {
+        Vue.set(state, 'job_totals', payload.job_totals)
+        Vue.set(state, 'auxiliary_totals', payload.auxiliary_totals)
     },
 
-    setAllLoaded(state) {
-        Vue.set(state, 'all_loaded', true)
+    setAllLoaded(state, allLoaded: boolean): void {
+        Vue.set(state, 'all_loaded', allLoaded)
     },
 }

@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { themes } from '@/store/variables'
+import { Theme } from '@/store/types'
 
 @Component
 export default class ThemeMixin extends Vue {
@@ -13,11 +15,11 @@ export default class ThemeMixin extends Vue {
     }
 
     get themeName() {
-        return this.$store.getters['gui/theme']
+        return this.$store.getters['gui/getThemeName']
     }
 
     get theme() {
-        return this.$store.getters['gui/getTheme']
+        return themes.find((theme: Theme) => theme.name === this.themeName) ?? themes[0]
     }
 
     get themeMode() {
@@ -65,8 +67,9 @@ export default class ThemeMixin extends Vue {
     }
 
     get sidebarLogo(): string {
-        const url = this.$store.getters['files/getSidebarLogo']
-        if (url !== '' || this.themeName === 'mainsail') return url
+        const url: string | null = this.$store.getters['files/sidebarLogoUrl']
+        if (url) return url
+        if (this.themeName === 'mainsail') return ''
 
         // if no theme is set, return empty string to load the default logo
         if (!(this.theme.logo?.show ?? false)) return ''
@@ -80,7 +83,7 @@ export default class ThemeMixin extends Vue {
     }
 
     get mainBgImage() {
-        const url = this.$store.getters['files/getMainBackground']
+        const url: string | null = this.$store.getters['files/mainBackgroundUrl']
         if (url || this.themeName === 'mainsail') return url
 
         if (!this.theme.mainBackground?.show) return null

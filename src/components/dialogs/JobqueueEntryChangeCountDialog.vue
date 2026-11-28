@@ -69,13 +69,18 @@ export default class JobqueueEntryChangeCountDialog extends Mixins(BaseMixin) {
         (value: string) => parseInt(value) > 0 || this.$t('JobQueue.InvalidCountGreaterZero'),
     ]
 
-    update() {
-        this.$store.dispatch('server/jobQueue/changeCount', {
-            job_id: this.job.job_id,
-            count: this.count,
-        })
+    async update() {
+        // the text field sets the count as string
+        const count = parseInt(String(this.count), 10)
+        if (!(count > 0)) return
 
         this.closeDialog()
+
+        try {
+            await this.$store.dispatch('server/jobQueue/setJobCount', { job_id: this.job.job_id, count })
+        } catch (e) {
+            window.console.error('[JobqueueEntryChangeCountDialog] Failed to change the job count', e)
+        }
     }
 
     closeDialog() {
@@ -86,7 +91,7 @@ export default class JobqueueEntryChangeCountDialog extends Mixins(BaseMixin) {
     onShowDialogChanged(newVal: boolean) {
         if (!newVal) return
 
-        this.count = (this.job.combinedIds?.length ?? 0) + 1
+        this.count = this.job.combinedIds.length + 1
         setTimeout(() => {
             this.inputField.focus()
         })

@@ -3,6 +3,9 @@ import { ServerState } from '@/store/server/types'
 import { PrinterState } from '@/store/printer/types'
 import { GuiState } from '@/store/gui/types'
 import { EditorState } from '@/store/editor/types'
+import { FarmState } from '@/store/farm/types'
+import { FileState } from '@/store/files/types'
+import { GcodeviewerState } from '@/store/gcodeviewer/types'
 
 export interface RootState {
     packageVersion: string
@@ -16,6 +19,9 @@ export interface RootState {
     printer?: PrinterState
     server?: ServerState
     editor?: EditorState
+    farm?: FarmState
+    files?: FileState
+    gcodeviewer?: GcodeviewerState
 }
 
 export interface RootStateDependency {
