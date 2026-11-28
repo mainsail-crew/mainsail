@@ -105,15 +105,15 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_announcement_update':
-                dispatch('server/announcements/getList', payload.params[0], { root: true })
+                dispatch('server/announcements/notifyAnnouncementUpdate', payload.params[0], { root: true })
                 break
 
             case 'notify_announcement_dismissed':
-                dispatch('server/announcements/getDismissed', payload.params[0], { root: true })
+                dispatch('server/announcements/notifyAnnouncementDismissed', payload.params[0], { root: true })
                 break
 
             case 'notify_announcement_wake':
-                dispatch('server/announcements/getWaked', payload.params[0], { root: true })
+                dispatch('server/announcements/notifyAnnouncementWake', payload.params[0], { root: true })
                 break
 
             case 'notify_webcams_changed':

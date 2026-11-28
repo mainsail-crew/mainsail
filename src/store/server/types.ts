@@ -2,6 +2,7 @@ import { ServerPowerState } from '@/store/server/power/types'
 import { ServerUpdateManagerState } from '@/store/server/updateManager/types'
 import { ServerHistoryState } from '@/store/server/history/types'
 import { ServerTimelapseState } from '@/store/server/timelapse/types'
+import { ServerAnnouncementsState } from '@/store/server/announcements/types'
 import type { RPCResult } from '@/types/moonraker'
 
 type ServerConfigResponse = RPCResult<'server.config'>
@@ -62,10 +63,11 @@ export interface ServerState {
 
     console_cleared_this_session: boolean
 
-    power?: ServerPowerState
-    updateManager?: ServerUpdateManagerState
+    announcements?: ServerAnnouncementsState
     history?: ServerHistoryState
+    power?: ServerPowerState
     timelapse?: ServerTimelapseState
+    updateManager?: ServerUpdateManagerState
 }
 
 export interface ServerStateEvent {
