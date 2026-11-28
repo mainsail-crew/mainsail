@@ -342,7 +342,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { defaultLogoColor, defaultPrimaryColor, defaultBigThumbnailBackground, themes } from '@/store/variables'
 import { Debounce } from 'vue-debounce-decorator'
 import { mdiRestart, mdiTimerOutline } from '@mdi/js'
-import { ServerPowerStateDevice } from '@/store/server/power/types'
+import type { PowerDevice } from '@/types/moonraker/DevicesRPC'
 import ThemeMixin from '@/components/mixins/theme'
 import { clearColorObject, ColorPickerValue } from '@/plugins/helpers'
 
@@ -566,15 +566,13 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolHideUploadAndPrintButton', value: newVal })
     }
 
-    get powerDevices() {
-        return this.$store.getters['server/power/getDevices'] ?? []
+    get powerDevices(): PowerDevice[] {
+        return this.$store.state.server.power.devices
     }
 
-    get autoPowerDevice() {
-        return (
-            this.powerDevices.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')
-                ?.device ?? '--'
-        )
+    get autoPowerDevice(): string {
+        const device: PowerDevice | null = this.$store.getters['server/power/autoPrinterDevice']
+        return device?.device ?? '--'
     }
 
     get powerDeviceName() {
@@ -590,7 +588,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin, ThemeMixin)
             { text: `Auto (${this.autoPowerDevice})`, value: null },
         ]
 
-        this.powerDevices.forEach((device: ServerPowerStateDevice) => {
+        this.powerDevices.forEach((device: PowerDevice) => {
             items.push({
                 text: `${device.device} (${device.type})`,
                 value: device.device.toString(),

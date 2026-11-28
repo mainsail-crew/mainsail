@@ -77,7 +77,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_power_changed':
-                commit('server/power/setStatus', payload.params[0], { root: true })
+                dispatch('server/power/notifyPowerChanged', payload.params[0], { root: true })
                 break
 
             case 'notify_update_response':

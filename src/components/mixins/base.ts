@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { DateTimeFormatOptions } from 'vue-i18n'
-import { ServerPowerStateDevice } from '@/store/server/power/types'
+import type { PowerDevice } from '@/types/moonraker/DevicesRPC'
 import { GuiViewport } from '@/store/gui/types'
 import { klipperRepos } from '@/store/variables'
 
@@ -80,25 +80,15 @@ export default class BaseMixin extends Vue {
         const deviceName = this.$store.state.gui.uiSettings.powerDeviceName ?? null
         if (deviceName !== null) return deviceName
 
-        const devices = this.$store.getters['server/power/getDevices'] ?? []
-        return (
-            devices.find((device: ServerPowerStateDevice) => device.device.toLowerCase() === 'printer')?.device ??
-            'printer'
-        )
+        const autoDevice: PowerDevice | null = this.$store.getters['server/power/autoPrinterDevice']
+        return autoDevice?.device ?? 'printer'
     }
 
-    get isPrinterPowerOff() {
-        const devices = this.$store.getters['server/power/getDevices'] ?? []
-        if (devices.length === 0) return false
+    get isPrinterPowerOff(): boolean {
+        const device: PowerDevice | null = this.$store.getters['server/power/getDevice'](this.printerPowerDevice)
+        if (device === null) return false
 
-        const deviceIndex = devices.findIndex(
-            (device: ServerPowerStateDevice) => device.device === this.printerPowerDevice
-        )
-        // stop if device is not found
-        if (deviceIndex === -1) return false
-
-        const device = devices[deviceIndex]
-        // Printer is on, if device status is "on" or "error"
+        // Printer is on, if device status is "on", "init" or "error"
         if (device.status !== 'off') return false
 
         // if klippy is not connected (service shutdown) and device.status === off
