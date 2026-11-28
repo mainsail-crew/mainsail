@@ -59,8 +59,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.Filesize').toString(),
-                value: formatFilesize(this.job.metadata?.filesize ?? 0),
-                exists: (this.job.metadata?.filesize ?? 0) > 0,
+                value: formatFilesize(this.job.metadata?.size ?? 0),
+                exists: (this.job.metadata?.size ?? 0) > 0,
             },
             {
                 name: this.$t('History.LastModified').toString(),
@@ -111,8 +111,8 @@ export default class HistoryListPanelDetailsDialog extends Mixins(BaseMixin) {
             },
             {
                 name: this.$t('History.FilamentUsed').toString(),
-                value: `${Math.round(this.job.metadata?.filament_used ?? 0)} mm`,
-                exists: this.job.metadata && 'filament_used' in this.job.metadata,
+                value: `${Math.round(this.job.filament_used)} mm`,
+                exists: true,
             },
             {
                 name: this.$t('History.FirstLayerExtTemp').toString(),
