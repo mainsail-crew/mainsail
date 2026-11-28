@@ -30,6 +30,7 @@ import type { AnnouncementsRPC } from './AnnouncementsRPC'
 import type { DatabaseRPC } from './DatabaseRPC'
 import type { FileManagerRPC } from './FileManagerRPC'
 import type { HistoryRPC } from './HistoryRPC'
+import type { JobQueueRPC } from './JobQueueRPC'
 import type { MachineRPC } from './MachineRPC'
 import type { PrinterRPC } from './PrinterRPC'
 import type { ServerRPC } from './ServerRPC'
@@ -39,7 +40,16 @@ import type { WebcamRPC } from './WebcamRPC'
  * Combined Moonraker RPC Interface containing all method categories.
  */
 export interface MoonrakerRPCInterface
-    extends AnnouncementsRPC, DatabaseRPC, FileManagerRPC, HistoryRPC, MachineRPC, PrinterRPC, ServerRPC, WebcamRPC {}
+    extends
+        AnnouncementsRPC,
+        DatabaseRPC,
+        FileManagerRPC,
+        HistoryRPC,
+        JobQueueRPC,
+        MachineRPC,
+        PrinterRPC,
+        ServerRPC,
+        WebcamRPC {}
 
 /**
  * Union type of all available RPC method names.

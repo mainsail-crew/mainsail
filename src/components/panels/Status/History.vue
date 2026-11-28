@@ -60,8 +60,12 @@ export default class StatusPanelHistory extends Mixins(BaseMixin) {
         return jobs
     }
 
-    startJobqueue() {
-        this.$store.dispatch('server/jobQueue/start')
+    async startJobqueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/start')
+        } catch (e) {
+            window.console.error('[StatusPanelHistory] Failed to start the job queue', e)
+        }
     }
 }
 </script>

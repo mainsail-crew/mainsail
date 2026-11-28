@@ -198,7 +198,7 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         const weight = this.job.filament_used * specificWeight
         if (weight === 0) return null
 
-        if (weight >= 1000) return (length / 1000).toFixed(1) + ' kg'
+        if (weight >= 1000) return (weight / 1000).toFixed(1) + ' kg'
 
         return weight.toFixed(0) + ' g'
     }
@@ -247,9 +247,13 @@ export default class StatusPanelHistoryEntry extends Mixins(BaseMixin) {
         this.showContextMenu = false
     }
 
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.job.filename])
-        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.job.filename }).toString())
+    async addToQueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', [this.job.filename])
+            this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.job.filename }).toString())
+        } catch (e) {
+            window.console.error('[StatusPanelHistoryEntry] Failed to add job to the job queue', e)
+        }
     }
 
     async deleteJob() {

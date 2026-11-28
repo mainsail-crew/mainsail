@@ -278,9 +278,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.noteDialogBool = true
     }
 
-    addToQueue() {
-        this.$store.dispatch('server/jobQueue/addToQueue', [this.item.filename])
-        this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.item.filename }).toString())
+    async addToQueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', [this.item.filename])
+            this.$toast.info(this.$t('History.AddToQueueSuccessful', { filename: this.item.filename }).toString())
+        } catch (e) {
+            window.console.error('[HistoryListEntryJob] Failed to add job to the job queue', e)
+        }
     }
 
     async deleteJob() {

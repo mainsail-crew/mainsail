@@ -8,7 +8,7 @@ import { RootState } from '@/store/types'
 export const getDefaultState = (): ServerJobQueueState => {
     return {
         queued_jobs: [],
-        queue_state: '',
+        queue_state: null,
     }
 }
 

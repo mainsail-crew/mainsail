@@ -24,12 +24,13 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
+import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 @Component({
     components: { JobqueueEntry },
 })
 export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
-    get jobs() {
-        return this.$store.getters['server/jobQueue/getJobs'] ?? []
+    get jobs(): ServerJobQueueStateJob[] {
+        return this.$store.getters['server/jobQueue/jobs']
     }
 
     get maxLength() {
@@ -46,8 +47,12 @@ export default class StatusPanelJobqueue extends Mixins(BaseMixin) {
         return this.jobs.slice(this.maxLength)
     }
 
-    startJobqueue() {
-        this.$store.dispatch('server/jobQueue/start')
+    async startJobqueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/start')
+        } catch (e) {
+            window.console.error('[StatusPanelJobqueue] Failed to start the job queue', e)
+        }
     }
 }
 </script>

@@ -218,8 +218,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin, ControlMixin, Gco
         this.$nextTick(() => (this.showAddBatchToQueueDialog = true))
     }
 
-    addToQueue(item: FileStateGcodefile) {
-        this.$store.dispatch('server/jobQueue/addToQueue', [item.full_filename])
+    async addToQueue(item: FileStateGcodefile) {
+        try {
+            await this.$store.dispatch('server/jobQueue/addJobs', [item.full_filename])
+        } catch (e) {
+            window.console.error('[GcodefilesPanel] Failed to add file to the job queue', e)
+        }
     }
 
     view3D(item: FileStateGcodefile) {

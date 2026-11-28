@@ -11,7 +11,7 @@
         </v-col>
         <v-col class="py-1" style="min-width: 0; font-size: 0.875em">
             <div class="text-truncate">
-                <strong v-if="job.combinedIds?.length">{{ job.combinedIds.length + 1 }}x</strong>
+                <strong v-if="job.combinedIds.length">{{ job.combinedIds.length + 1 }}x</strong>
                 {{ job.filename }}
             </div>
             <small v-if="description" class="text-truncate">{{ description }}</small>
@@ -103,7 +103,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         const weight = this.job.metadata?.filament_weight_total ?? 0
         if (weight === 0) return null
 
-        if (weight >= 1000) return (length / 1000).toFixed(1) + ' kg'
+        if (weight >= 1000) return (weight / 1000).toFixed(1) + ' kg'
 
         return weight.toFixed(0) + ' g'
     }
@@ -150,18 +150,30 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         this.showContextMenu = false
     }
 
-    printJob() {
-        this.$store.dispatch('server/jobQueue/startByJobId', this.job.job_id)
+    async printJob() {
+        try {
+            await this.$store.dispatch('server/jobQueue/startJob', this.job.job_id)
+        } catch (e) {
+            window.console.error('[StatusPanelJobqueueEntry] Failed to start the job', e)
+        }
     }
 
-    startJobqueue() {
-        this.$store.dispatch('server/jobQueue/start')
+    async startJobqueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/start')
+        } catch (e) {
+            window.console.error('[StatusPanelJobqueueEntry] Failed to start the job queue', e)
+        }
     }
 
-    removeFromJobqueue() {
-        const ids = [...(this.job.combinedIds ?? []), this.job.job_id]
+    async removeFromJobqueue() {
+        const ids = [this.job.job_id, ...this.job.combinedIds]
 
-        this.$store.dispatch('server/jobQueue/deleteFromQueue', ids)
+        try {
+            await this.$store.dispatch('server/jobQueue/deleteJobs', ids)
+        } catch (e) {
+            window.console.error('[StatusPanelJobqueueEntry] Failed to remove the job', e)
+        }
     }
 
     mounted() {

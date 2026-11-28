@@ -61,6 +61,8 @@ import JobqueueEntry from '@/components/panels/Status/JobqueueEntry.vue'
 import draggable from 'vuedraggable'
 import JobqueueEntrySum from '@/components/panels/Status/JobqueueEntrySum.vue'
 import { DraggableEndEvent } from '@/types/vuedraggable'
+import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import type { QueueState } from '@/types/moonraker/JobQueueRPC'
 @Component({
     components: { JobqueueEntrySum, draggable, JobqueueEntry, Panel },
 })
@@ -71,27 +73,39 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 
     joblist = []
 
-    get jobs() {
-        return this.$store.getters['server/jobQueue/getJobs']
+    get jobs(): ServerJobQueueStateJob[] {
+        return this.$store.getters['server/jobQueue/jobs']
     }
 
-    get queueState() {
-        return this.$store.state.server.jobQueue.queue_state ?? ''
+    get queueState(): QueueState | null {
+        return this.$store.state.server.jobQueue.queue_state
     }
 
-    startJobqueue() {
-        this.$store.dispatch('server/jobQueue/start')
+    async startJobqueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/start')
+        } catch (e) {
+            window.console.error('[JobqueuePanel] Failed to start the job queue', e)
+        }
     }
 
-    pauseJobqueue() {
-        this.$store.dispatch('server/jobQueue/pause')
+    async pauseJobqueue() {
+        try {
+            await this.$store.dispatch('server/jobQueue/pause')
+        } catch (e) {
+            window.console.error('[JobqueuePanel] Failed to pause the job queue', e)
+        }
     }
 
-    updateOrder(event: DraggableEndEvent) {
-        this.$store.dispatch('server/jobQueue/changePosition', {
-            newIndex: event.newIndex,
-            oldIndex: event.oldIndex,
-        })
+    async updateOrder(event: DraggableEndEvent) {
+        try {
+            await this.$store.dispatch('server/jobQueue/moveJob', {
+                newIndex: event.newIndex,
+                oldIndex: event.oldIndex,
+            })
+        } catch (e) {
+            window.console.error('[JobqueuePanel] Failed to move the job', e)
+        }
     }
 }
 </script>
