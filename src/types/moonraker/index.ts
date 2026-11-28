@@ -10,6 +10,7 @@
  * - PrinterRPC.ts     → https://moonraker.readthedocs.io/en/latest/external_api/printer/
  * - MachineRPC.ts     → https://moonraker.readthedocs.io/en/latest/external_api/machine/
  * - FileManagerRPC.ts → https://moonraker.readthedocs.io/en/latest/external_api/file_manager/
+ * - DevicesRPC.ts     → https://moonraker.readthedocs.io/en/latest/external_api/devices/
  * - etc.
  *
  * To add a new method:
@@ -28,6 +29,7 @@
 
 import type { AnnouncementsRPC } from './AnnouncementsRPC'
 import type { DatabaseRPC } from './DatabaseRPC'
+import type { DevicesRPC } from './DevicesRPC'
 import type { FileManagerRPC } from './FileManagerRPC'
 import type { HistoryRPC } from './HistoryRPC'
 import type { JobQueueRPC } from './JobQueueRPC'
@@ -43,6 +45,7 @@ export interface MoonrakerRPCInterface
     extends
         AnnouncementsRPC,
         DatabaseRPC,
+        DevicesRPC,
         FileManagerRPC,
         HistoryRPC,
         JobQueueRPC,
