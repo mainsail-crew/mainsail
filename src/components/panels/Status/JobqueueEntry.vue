@@ -103,7 +103,7 @@ export default class StatusPanelJobqueueEntry extends Mixins(BaseMixin) {
         const weight = this.job.metadata?.filament_weight_total ?? 0
         if (weight === 0) return null
 
-        if (weight >= 1000) return (length / 1000).toFixed(1) + ' kg'
+        if (weight >= 1000) return (weight / 1000).toFixed(1) + ' kg'
 
         return weight.toFixed(0) + ' g'
     }
